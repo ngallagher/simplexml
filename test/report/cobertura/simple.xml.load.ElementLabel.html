@@ -74,11 +74,11 @@
 <tr>  <td class="numLine">&nbsp;28</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment"> * represent an XML element in a class schema. This element can be</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;29</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment"> * used to convert a DOM node into either a primitive value such as</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment"> * used to convert an XML node into either a primitive value such as</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;30</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment"> * a string or composite object value, which is itself a schema for</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;31</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment"> * a section of XML within the DOM document. </span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment"> * a section of XML within the XML document. </span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;32</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment"> * </span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;33</td>  <td class="nbHits">&nbsp;</td>
@@ -128,7 +128,7 @@
 <tr>  <td class="numLine">&nbsp;55</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * Constructor for the &lt;code&gt;ElementLabel&lt;/code&gt; object. This is</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;56</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * used to create a label that can convert a DOM node into a </span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * used to create a label that can convert a XML node into a </span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;57</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * composite object or a primitive type from an XML element. </span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;58</td>  <td class="nbHits">&nbsp;</td>
@@ -139,17 +139,17 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * @param label this is the annotation for the field </span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;61</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;62</td>  <td class="nbHitsCovered">&nbsp;75</td>  <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> ElementLabel(Field field, Element label) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;63</td>  <td class="nbHitsCovered">&nbsp;75</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">this</span>.type = field.getType();</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;64</td>  <td class="nbHitsCovered">&nbsp;75</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">this</span>.label = label;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;65</td>  <td class="nbHitsCovered">&nbsp;75</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">this</span>.field = field;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;66</td>  <td class="nbHitsCovered">&nbsp;75</td>  <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;62</td>  <td class="nbHitsCovered">&nbsp;70</td>  <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> ElementLabel(Field field, Element label) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;63</td>  <td class="nbHitsCovered">&nbsp;70</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">this</span>.type = field.getType();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;64</td>  <td class="nbHitsCovered">&nbsp;70</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">this</span>.label = label;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;65</td>  <td class="nbHitsCovered">&nbsp;70</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">this</span>.field = field;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;66</td>  <td class="nbHitsCovered">&nbsp;70</td>  <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;67</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;68</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="comment">/**</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;69</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * Creates a converter that can be used to transform a DOM node to</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * Creates a converter that can be used to transform an XML node to</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;70</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * an object and vice versa. The converter created will handles</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;71</td>  <td class="nbHits">&nbsp;</td>
@@ -166,11 +166,11 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;77</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> Converter getConverter(Source source) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;78</td>  <td class="nbHitsCovered">&nbsp;90198</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(isPrimitive(type)) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;79</td>  <td class="nbHitsCovered">&nbsp;90179</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">return</span> <span class="keyword">new</span> Primitive(source, type);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;78</td>  <td class="nbHitsCovered">&nbsp;720931</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(isPrimitive(type)) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;79</td>  <td class="nbHitsCovered">&nbsp;560822</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">return</span> <span class="keyword">new</span> Primitive(source, type);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;80</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;      }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;81</td>  <td class="nbHitsCovered">&nbsp;19</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> <span class="keyword">new</span> Composite(source, type);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;81</td>  <td class="nbHitsCovered">&nbsp;160109</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> <span class="keyword">new</span> Composite(source, type);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;82</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;83</td>  <td class="nbHits">&nbsp;</td>
@@ -195,7 +195,7 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;93</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> Field getField() {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;94</td>  <td class="nbHitsCovered">&nbsp;90199</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> field;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;94</td>  <td class="nbHitsCovered">&nbsp;720932</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> field;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;95</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;96</td>  <td class="nbHits">&nbsp;</td>
@@ -218,7 +218,7 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span>   </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;105</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> String getName() {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;106</td>  <td class="nbHitsCovered">&nbsp;142</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> label.name();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;106</td>  <td class="nbHitsCovered">&nbsp;180608</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> label.name();</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;107</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;108</td>  <td class="nbHits">&nbsp;</td>
@@ -230,7 +230,7 @@
 <tr>  <td class="numLine">&nbsp;111</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * the field this represents. This is used when an object is written</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;112</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * to a DOM. It determines whether a &lt;code&gt;class&lt;/code&gt; attribute</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * to XML. It determines whether a &lt;code&gt;class&lt;/code&gt; attribute</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;113</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * is required within the serialized XML element, that is, if the</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;114</td>  <td class="nbHits">&nbsp;</td>
@@ -245,7 +245,7 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span>   </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;119</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> Class getType() {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;120</td>  <td class="nbHitsCovered">&nbsp;67</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> type;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;120</td>  <td class="nbHitsCovered">&nbsp;180538</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> type;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;121</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;122</td>  <td class="nbHits">&nbsp;</td>
@@ -261,7 +261,7 @@
 <tr>  <td class="numLine">&nbsp;127</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * serialization, if a value is null it does not need to be </span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;128</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * written to the resulting DOM document.</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * written to the resulting XML document.</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;129</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * </span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;130</td>  <td class="nbHits">&nbsp;</td>
@@ -270,7 +270,7 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span>   </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;132</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> <span class="keyword">boolean</span> isRequired() {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;133</td>  <td class="nbHitsCovered">&nbsp;69</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> label.required();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;133</td>  <td class="nbHitsCovered">&nbsp;180540</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> label.required();</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;134</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;135</td>  <td class="nbHits">&nbsp;</td>
@@ -297,43 +297,43 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;146</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="keyword">private</span> <span class="keyword">boolean</span> isPrimitive(Class type) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;147</td>  <td class="nbHitsCovered">&nbsp;90198</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(type.equals(Boolean.<span class="keyword">class</span>)) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;148</td>  <td class="nbHitsCovered">&nbsp;4</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">return</span> <span class="keyword">true</span>;              </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;147</td>  <td class="nbHitsCovered">&nbsp;720931</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(type.equals(Boolean.<span class="keyword">class</span>)) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;148</td>  <td class="nbHitsCovered">&nbsp;5</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">return</span> <span class="keyword">true</span>;              </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;149</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;      }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;150</td>  <td class="nbHitsCovered">&nbsp;90194</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(type.equals(Integer.<span class="keyword">class</span>)) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;151</td>  <td class="nbHitsCovered">&nbsp;4</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">return</span> <span class="keyword">true</span>;              </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;150</td>  <td class="nbHitsCovered">&nbsp;720926</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(type.equals(Integer.<span class="keyword">class</span>)) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;151</td>  <td class="nbHitsCovered">&nbsp;5</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">return</span> <span class="keyword">true</span>;              </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;152</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;      }      </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;153</td>  <td class="nbHitsCovered">&nbsp;90190</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(type.equals(Float.<span class="keyword">class</span>)) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;154</td>  <td class="nbHitsCovered">&nbsp;4</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">return</span> <span class="keyword">true</span>;               </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;153</td>  <td class="nbHitsCovered">&nbsp;720921</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(type.equals(Float.<span class="keyword">class</span>)) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;154</td>  <td class="nbHitsCovered">&nbsp;5</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">return</span> <span class="keyword">true</span>;               </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;155</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;      }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;156</td>  <td class="nbHitsCovered">&nbsp;90186</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(type.equals(Long.<span class="keyword">class</span>)) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;157</td>  <td class="nbHitsCovered">&nbsp;4</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">return</span> <span class="keyword">true</span>;              </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;156</td>  <td class="nbHitsCovered">&nbsp;720916</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(type.equals(Long.<span class="keyword">class</span>)) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;157</td>  <td class="nbHitsCovered">&nbsp;5</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">return</span> <span class="keyword">true</span>;              </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;158</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;      }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;159</td>  <td class="nbHitsCovered">&nbsp;90182</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(type.equals(String.<span class="keyword">class</span>)) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;160</td>  <td class="nbHitsCovered">&nbsp;90119</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">return</span> <span class="keyword">true</span>;              </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;159</td>  <td class="nbHitsCovered">&nbsp;720911</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(type.equals(String.<span class="keyword">class</span>)) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;160</td>  <td class="nbHitsCovered">&nbsp;560747</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">return</span> <span class="keyword">true</span>;              </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;161</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;      }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;162</td>  <td class="nbHitsCovered">&nbsp;63</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(type.equals(Double.<span class="keyword">class</span>)) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;163</td>  <td class="nbHitsCovered">&nbsp;4</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">return</span> <span class="keyword">true</span>;              </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;162</td>  <td class="nbHitsCovered">&nbsp;160164</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(type.equals(Double.<span class="keyword">class</span>)) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;163</td>  <td class="nbHitsCovered">&nbsp;5</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">return</span> <span class="keyword">true</span>;              </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;164</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;      }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;165</td>  <td class="nbHitsCovered">&nbsp;59</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(type.equals(Byte.<span class="keyword">class</span>)) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;166</td>  <td class="nbHitsCovered">&nbsp;4</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">return</span> <span class="keyword">true</span>;              </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;165</td>  <td class="nbHitsCovered">&nbsp;160159</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(type.equals(Byte.<span class="keyword">class</span>)) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;166</td>  <td class="nbHitsCovered">&nbsp;5</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">return</span> <span class="keyword">true</span>;              </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;167</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;      }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;168</td>  <td class="nbHitsCovered">&nbsp;55</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(type.equals(Short.<span class="keyword">class</span>)) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;169</td>  <td class="nbHitsCovered">&nbsp;4</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">return</span> <span class="keyword">true</span>;              </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;168</td>  <td class="nbHitsCovered">&nbsp;160154</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(type.equals(Short.<span class="keyword">class</span>)) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;169</td>  <td class="nbHitsCovered">&nbsp;5</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">return</span> <span class="keyword">true</span>;              </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;170</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;      }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;171</td>  <td class="nbHitsCovered">&nbsp;51</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(type.isPrimitive()) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;172</td>  <td class="nbHitsCovered">&nbsp;28</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">return</span> <span class="keyword">true</span>;                 </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;171</td>  <td class="nbHitsCovered">&nbsp;160149</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(type.isPrimitive()) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;172</td>  <td class="nbHitsCovered">&nbsp;35</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">return</span> <span class="keyword">true</span>;                 </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;173</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;      }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;174</td>  <td class="nbHitsCovered">&nbsp;23</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> type.isEnum();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;174</td>  <td class="nbHitsCovered">&nbsp;160114</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> type.isEnum();</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;175</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;176</td>  <td class="nbHits">&nbsp;</td>
@@ -361,6 +361,6 @@
   <td class="src"><pre class="src">&nbsp;}</pre></td></tr>
 </table>
 
-<div class="footer">Report generated by <a href="http://cobertura.sourceforge.net/" target="_top">Cobertura</a> 1.8 on 02/01/07 14:42.</div>
+<div class="footer">Report generated by <a href="http://cobertura.sourceforge.net/" target="_top">Cobertura</a> 1.8 on 20/01/07 03:28.</div>
 </body>
 </html>

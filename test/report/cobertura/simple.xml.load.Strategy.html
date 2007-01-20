@@ -62,7 +62,7 @@
 <tr>  <td class="numLine">&nbsp;22</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;23</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> org.w3c.dom.Element;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> simple.xml.stream.NodeMap;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;24</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> java.util.Map;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;25</td>  <td class="nbHits">&nbsp;</td>
@@ -76,9 +76,9 @@
 <tr>  <td class="numLine">&nbsp;29</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment"> * a serializable object. A strategy implementation will make use of the</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;30</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment"> * provided DOM element to extract child elements or attributes that</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment"> * provided attribute node map to extract details that can be used to</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;31</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment"> * are used to determine what type is to be used. </span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment"> * determine what type of object must be used. </span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;32</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment"> * &lt;pre&gt;</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;33</td>  <td class="nbHits">&nbsp;</td>
@@ -136,9 +136,9 @@
 <tr>  <td class="numLine">&nbsp;59</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * This is used to resolve and load the root class type. To perform</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;60</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * the resolution this method is given the root element for the</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * the resolution this method is given the root node map for the</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;61</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * XML document. This is separate to the &lt;code&gt;getElement&lt;/code&gt;</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * XML document. This is separate to the &lt;code&gt;readElement&lt;/code&gt;</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;62</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * because the root element may contain details like the location</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;63</td>  <td class="nbHits">&nbsp;</td>
@@ -152,7 +152,7 @@
 <tr>  <td class="numLine">&nbsp;67</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * @param field this is the type of the root element expected</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;68</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * @param root this is the element used to resolve an override</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * @param node this is the node map used to resolve an override</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;69</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * @param map this is used to maintain contextual information</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;70</td>  <td class="nbHits">&nbsp;</td>
@@ -166,7 +166,7 @@
 <tr>  <td class="numLine">&nbsp;74</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;75</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> Class readRoot(Class field, Element root, Map map) <span class="keyword">throws</span> Exception;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> Class readRoot(Class field, NodeMap node, Map map) <span class="keyword">throws</span> Exception;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;76</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;77</td>  <td class="nbHits">&nbsp;</td>
@@ -178,19 +178,19 @@
 <tr>  <td class="numLine">&nbsp;80</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * specificed. It can be resolved using the details within the</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;81</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * provided DOM element, if the details used do not represent any</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * provided XML node map, if the details used do not represent any</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;82</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * serializable values they should be removed so as not to disrupt</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;83</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * the deserialization process. For example the default strategy</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;84</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * removes all "class" attributes from the given elements.</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * removes all "class" attributes from the given node map.</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;85</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * </span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;86</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * @param field this is the type of the root element expected</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;87</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * @param node this is the element used to resolve an override</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * @param node this is the node map used to resolve an override</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;88</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * @param map this is used to maintain contextual information</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;89</td>  <td class="nbHits">&nbsp;</td>
@@ -204,21 +204,21 @@
 <tr>  <td class="numLine">&nbsp;93</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;94</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> Class readElement(Class field, Element node, Map map) <span class="keyword">throws</span> Exception;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> Class readElement(Class field, NodeMap node, Map map) <span class="keyword">throws</span> Exception;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;95</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;96</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="comment">/**</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;97</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * This is used to attach elements or attributes to the given </span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * This is used to attach attributes values to the given node</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;98</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * element during the serialization process. This method allows</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * map during the serialization process. This method allows</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;99</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * the strategy to augment the XML document so that it can be</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;100</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * deserialized using a similar strategy. For example the </span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;101</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * default strategy adds a "class" attribute to the element.</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * default strategy adds a "class" attribute to the node map.</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;102</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * The root element is a special element in that it can add</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;103</td>  <td class="nbHits">&nbsp;</td>
@@ -230,7 +230,7 @@
 <tr>  <td class="numLine">&nbsp;106</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * @param value this is the instance variable being serialized</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;107</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * @param root this is the element used to represent the value</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * @param node this is the node map used to represent the value</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;108</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * @param map this is used to maintain contextual information</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;109</td>  <td class="nbHits">&nbsp;</td>
@@ -240,21 +240,21 @@
 <tr>  <td class="numLine">&nbsp;111</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;112</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> <span class="keyword">void</span> writeRoot(Class field, Object value, Element root, Map map) <span class="keyword">throws</span> Exception;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> <span class="keyword">void</span> writeRoot(Class field, Object value, NodeMap node, Map map) <span class="keyword">throws</span> Exception;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;113</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;114</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="comment">/**</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;115</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * This is used to attach elements or attributes to the given </span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * This is used to attach attribute values to the given node</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;116</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * element during the serialization process. This method allows</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * map during the serialization process. This method allows</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;117</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * the strategy to augment the XML document so that it can be</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;118</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * deserialized using a similar strategy. For example the </span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;119</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * default strategy adds a "class" attribute to the element.</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * default strategy adds a "class" attribute to the node map.</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;120</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    *  </span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;121</td>  <td class="nbHits">&nbsp;</td>
@@ -262,7 +262,7 @@
 <tr>  <td class="numLine">&nbsp;122</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * @param value this is the instance variable being serialized</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;123</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * @param node this is the element used to represent the value</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * @param node this is the node map used to represent the value</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;124</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * @param map this is used to maintain contextual information</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;125</td>  <td class="nbHits">&nbsp;</td>
@@ -272,13 +272,13 @@
 <tr>  <td class="numLine">&nbsp;127</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;128</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> <span class="keyword">void</span> writeElement(Class field, Object value, Element node, Map map) <span class="keyword">throws</span> Exception;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> <span class="keyword">void</span> writeElement(Class field, Object value, NodeMap node, Map map) <span class="keyword">throws</span> Exception;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;129</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;130</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;}</pre></td></tr>
 </table>
 
-<div class="footer">Report generated by <a href="http://cobertura.sourceforge.net/" target="_top">Cobertura</a> 1.8 on 02/01/07 14:42.</div>
+<div class="footer">Report generated by <a href="http://cobertura.sourceforge.net/" target="_top">Cobertura</a> 1.8 on 20/01/07 03:28.</div>
 </body>
 </html>

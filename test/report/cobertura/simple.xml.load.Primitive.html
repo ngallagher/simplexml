@@ -12,7 +12,7 @@
 <div class="separator">&nbsp;</div>
 <table class="report">
 <thead><tr>  <td class="heading">Classes in this File</td>  <td class="heading"><a class="dfn" href="help.html" onclick="popupwindow('help.html'); return false;">Line Coverage</a></td>  <td class="heading"><a class="dfn" href="help.html" onclick="popupwindow('help.html'); return false;">Branch Coverage</a></td>  <td class="heading"><a class="dfn" href="help.html" onclick="popupwindow('help.html'); return false;">Complexity</a></td></tr></thead>
-  <tr><td><a href="simple.xml.load.Primitive.html">Primitive</a></td><td><table cellpadding="0px" cellspacing="0px" class="percentgraph"><tr class="percentgraph"><td align="right" class="percentgraph" width="40">100%</td><td class="percentgraph"><div class="percentgraph"><div class="greenbar" style="width:100px"><span class="text">19/19</span></div></div></td></tr></table></td><td><table cellpadding="0px" cellspacing="0px" class="percentgraph"><tr class="percentgraph"><td align="right" class="percentgraph" width="40">100%</td><td class="percentgraph"><div class="percentgraph"><div class="greenbar" style="width:100px"><span class="text">2/2</span></div></div></td></tr></table></td><td class="value"><span class="hidden">2.0;</span>2</td></tr>
+  <tr><td><a href="simple.xml.load.Primitive.html">Primitive</a></td><td><table cellpadding="0px" cellspacing="0px" class="percentgraph"><tr class="percentgraph"><td align="right" class="percentgraph" width="40">100%</td><td class="percentgraph"><div class="percentgraph"><div class="greenbar" style="width:100px"><span class="text">18/18</span></div></div></td></tr></table></td><td><table cellpadding="0px" cellspacing="0px" class="percentgraph"><tr class="percentgraph"><td align="right" class="percentgraph" width="40">100%</td><td class="percentgraph"><div class="percentgraph"><div class="greenbar" style="width:100px"><span class="text">2/2</span></div></div></td></tr></table></td><td class="value"><span class="hidden">2.0;</span>2</td></tr>
 
 </table>
 <div class="separator">&nbsp;</div>
@@ -62,9 +62,9 @@
 <tr>  <td class="numLine">&nbsp;22</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;23</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> org.w3c.dom.Element;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> simple.xml.stream.InputNode;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;24</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> org.w3c.dom.Node;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> simple.xml.stream.OutputNode;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;25</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;26</td>  <td class="nbHits">&nbsp;</td>
@@ -152,7 +152,7 @@
 <tr>  <td class="numLine">&nbsp;67</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * Constructor for the &lt;code&gt;Primitive&lt;/code&gt; object. This is used</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;68</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * to convert a DOM node to a primitive object and vice versa. To</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * to convert an XML node to a primitive object and vice versa. To</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;69</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * perform deserialization the primitive object requires the source</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;70</td>  <td class="nbHits">&nbsp;</td>
@@ -165,10 +165,10 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * @param type this is the type of primitive this represents</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;74</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span> </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;75</td>  <td class="nbHitsCovered">&nbsp;160339</td>  <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> Primitive(Source root, Class type) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;76</td>  <td class="nbHitsCovered">&nbsp;160339</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">this</span>.factory = <span class="keyword">new</span> PrimitiveFactory(root, type);           </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;77</td>  <td class="nbHitsCovered">&nbsp;160339</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">this</span>.root = root;           </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;78</td>  <td class="nbHitsCovered">&nbsp;160339</td>  <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;75</td>  <td class="nbHitsCovered">&nbsp;861309</td>  <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> Primitive(Source root, Class type) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;76</td>  <td class="nbHitsCovered">&nbsp;861309</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">this</span>.factory = <span class="keyword">new</span> PrimitiveFactory(root, type);           </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;77</td>  <td class="nbHitsCovered">&nbsp;861309</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">this</span>.root = root;           </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;78</td>  <td class="nbHitsCovered">&nbsp;861309</td>  <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;79</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;80</td>  <td class="nbHits">&nbsp;</td>
@@ -194,92 +194,89 @@
 <tr>  <td class="numLine">&nbsp;90</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span> </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;91</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> Object read(Node node) <span class="keyword">throws</span> Exception{</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;92</td>  <td class="nbHitsCovered">&nbsp;160281</td>  <td class="src"><pre class="src">&nbsp;      Node child = node.getFirstChild();</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;93</td>  <td class="nbHitsCovered">&nbsp;160281</td>  <td class="src"><pre class="src">&nbsp;      String name = node.getNodeName();</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> Object read(InputNode node) <span class="keyword">throws</span> Exception{</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;92</td>  <td class="nbHitsCovered">&nbsp;720842</td>  <td class="src"><pre class="src">&nbsp;      String value = node.getValue();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;93</td>  <td class="nbHitsCovered">&nbsp;720842</td>  <td class="src"><pre class="src">&nbsp;      String name = node.getName();</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;94</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;95</td>  <td class="nbHitsCovered">&nbsp;160281</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(child == <span class="keyword">null</span>) {</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;      </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;95</td>  <td class="nbHitsCovered">&nbsp;720842</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(value == <span class="keyword">null</span>) {</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;96</td>  <td class="nbHitsCovered">&nbsp;4</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">throw</span> <span class="keyword">new</span> ElementException(<span class="string">"Element %s is empty"</span>, name);              </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;97</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;      }         </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;98</td>  <td class="nbHitsCovered">&nbsp;160277</td>  <td class="src"><pre class="src">&nbsp;      String value = child.getNodeValue();</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;99</td>  <td class="nbHitsCovered">&nbsp;160277</td>  <td class="src"><pre class="src">&nbsp;      String text = root.getProperty(value);</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;      } </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;98</td>  <td class="nbHitsCovered">&nbsp;720838</td>  <td class="src"><pre class="src">&nbsp;      String text = root.getProperty(value);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;99</td>  <td class="nbHitsCovered">&nbsp;720838</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> factory.getInstance(text);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;100</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;      </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;101</td>  <td class="nbHitsCovered">&nbsp;160277</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> factory.getInstance(text);</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;102</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   }      </pre></td></tr>
-<tr>  <td class="numLine">&nbsp;103</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;101</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp; </pre></td></tr>
-<tr>  <td class="numLine">&nbsp;104</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;102</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="comment">/**</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;105</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;103</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * This &lt;code&gt;write&lt;/code&gt; method will serialize the contents of</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;106</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * the provided object to the given DOM element. This will use</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;107</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;104</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * the provided object to the given XML element. This will use</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;105</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * the &lt;code&gt;String.valueOf&lt;/code&gt; method to convert the object to</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;108</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;106</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * a string if the object represents a primitive, if however the</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;109</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;107</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * object represents an enumerated type then the text value is</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;110</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;108</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * created using &lt;code&gt;Enum.name&lt;/code&gt;.</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;111</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;109</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    *</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;112</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;110</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * @param source this is the object to be serialized</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;113</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * @param node this is the DOM element to have its text set</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;114</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;111</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * @param node this is the XML element to have its text set</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;112</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span>  </pre></td></tr>
-<tr>  <td class="numLine">&nbsp;115</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> <span class="keyword">void</span> write(Object source, Element node) <span class="keyword">throws</span> Exception {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;116</td>  <td class="nbHitsCovered">&nbsp;58</td>  <td class="src"><pre class="src">&nbsp;      Class type = source.getClass();</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;117</td>  <td class="nbHitsCovered">&nbsp;58</td>  <td class="src"><pre class="src">&nbsp;      String text = getText(source, type);</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;118</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;113</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> <span class="keyword">void</span> write(OutputNode node, Object source) <span class="keyword">throws</span> Exception {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;114</td>  <td class="nbHitsCovered">&nbsp;140467</td>  <td class="src"><pre class="src">&nbsp;      Class type = source.getClass();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;115</td>  <td class="nbHitsCovered">&nbsp;140467</td>  <td class="src"><pre class="src">&nbsp;      String text = getText(source, type);</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;116</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;      </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;119</td>  <td class="nbHitsCovered">&nbsp;58</td>  <td class="src"><pre class="src">&nbsp;      node.setTextContent(text);      </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;120</td>  <td class="nbHitsCovered">&nbsp;58</td>  <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;121</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLineCover">&nbsp;117</td>  <td class="nbHitsCovered">&nbsp;140467</td>  <td class="src"><pre class="src">&nbsp;      node.setValue(text);      </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;118</td>  <td class="nbHitsCovered">&nbsp;140467</td>  <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;119</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;122</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;120</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="comment">/**</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;123</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;121</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * This method is used to convert the provided object to a text</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;124</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * value so that it can be written to a DOM element. This will</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;125</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;122</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * value so that it can be written to an XML element. This will</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;123</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * check the object type to convert enumerations using the</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;126</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;124</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * &lt;code&gt;Enum.name&lt;/code&gt; and primitives to their string values.</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;127</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;125</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * </span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;128</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;126</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * @param source this is the primitive object to be converted</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;129</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;127</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * @param type the type of the object, checks for enumerations</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;130</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;128</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * </span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;131</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;129</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * @return this returns the text value for the primitive object </span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;132</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;130</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span> </pre></td></tr>
-<tr>  <td class="numLine">&nbsp;133</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;131</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="keyword">private</span> String getText(Object source, Class type) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;134</td>  <td class="nbHitsCovered">&nbsp;58</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(!type.isEnum()) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;135</td>  <td class="nbHitsCovered">&nbsp;56</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">return</span> String.valueOf(source);              </pre></td></tr>
-<tr>  <td class="numLine">&nbsp;136</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLineCover">&nbsp;132</td>  <td class="nbHitsCovered">&nbsp;140467</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(!type.isEnum()) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;133</td>  <td class="nbHitsCovered">&nbsp;140464</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">return</span> String.valueOf(source);              </pre></td></tr>
+<tr>  <td class="numLine">&nbsp;134</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;      }           </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;137</td>  <td class="nbHitsCovered">&nbsp;2</td>  <td class="src"><pre class="src">&nbsp;      Enum value = (Enum)source;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;138</td>  <td class="nbHitsCovered">&nbsp;2</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> value.name();</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;139</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLineCover">&nbsp;135</td>  <td class="nbHitsCovered">&nbsp;3</td>  <td class="src"><pre class="src">&nbsp;      Enum value = (Enum)source;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;136</td>  <td class="nbHitsCovered">&nbsp;3</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> value.name();</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;137</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;140</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;138</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;}</pre></td></tr>
 </table>
 
-<div class="footer">Report generated by <a href="http://cobertura.sourceforge.net/" target="_top">Cobertura</a> 1.8 on 02/01/07 14:42.</div>
+<div class="footer">Report generated by <a href="http://cobertura.sourceforge.net/" target="_top">Cobertura</a> 1.8 on 20/01/07 03:28.</div>
 </body>
 </html>

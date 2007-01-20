@@ -74,7 +74,7 @@
 <tr>  <td class="numLine">&nbsp;28</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment"> * to represent an XML element list in a class schema. This element </span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;29</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment"> * list label can be used to convert a DOM node into a collection of</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment"> * list label can be used to convert an XML node into a collection of</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;30</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment"> * composite objects. Each element converted with the converter this</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;31</td>  <td class="nbHits">&nbsp;</td>
@@ -138,7 +138,7 @@
 <tr>  <td class="numLine">&nbsp;60</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * Constructor for the &lt;code&gt;ElementListLabel&lt;/code&gt; object. This</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;61</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * creates a label object, which can be used to convert a DOM </span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * creates a label object, which can be used to convert an XML </span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;62</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * node to a &lt;code&gt;Collection&lt;/code&gt; of XML serializable objects.</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;63</td>  <td class="nbHits">&nbsp;</td>
@@ -160,7 +160,7 @@
 <tr>  <td class="numLine">&nbsp;74</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="comment">/**</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;75</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * This will create a &lt;code&gt;Converter&lt;/code&gt; for transforming a DOM</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * This will create a &lt;code&gt;Converter&lt;/code&gt; for transforming an XML</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;76</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * element into a collection of XML serializable objects. The XML</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;77</td>  <td class="nbHits">&nbsp;</td>
@@ -179,7 +179,7 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;84</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> Converter getConverter(Source root) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;85</td>  <td class="nbHitsCovered">&nbsp;10035</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> <span class="keyword">new</span> CompositeList(root, type, item);      </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;85</td>  <td class="nbHitsCovered">&nbsp;40067</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> <span class="keyword">new</span> CompositeList(root, type, item);      </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;86</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;87</td>  <td class="nbHits">&nbsp;</td>
@@ -191,7 +191,7 @@
 <tr>  <td class="numLine">&nbsp;90</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * the field this represents. This is used when an object is written</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;91</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * to a DOM. It determines whether a &lt;code&gt;class&lt;/code&gt; attribute</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * to XML. It determines whether a &lt;code&gt;class&lt;/code&gt; attribute</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;92</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * is required within the serialized XML element, that is, if the</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;93</td>  <td class="nbHits">&nbsp;</td>
@@ -206,7 +206,7 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;98</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> Class getType() {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;99</td>  <td class="nbHitsCovered">&nbsp;8</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> type;      </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;99</td>  <td class="nbHitsCovered">&nbsp;10029</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> type;      </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;100</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;101</td>  <td class="nbHits">&nbsp;</td>
@@ -231,7 +231,7 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span>   </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;111</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> Field getField() {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;112</td>  <td class="nbHitsCovered">&nbsp;10035</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> field;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;112</td>  <td class="nbHitsCovered">&nbsp;40067</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> field;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;113</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;114</td>  <td class="nbHits">&nbsp;</td>
@@ -254,7 +254,7 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span>    </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;123</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> String getName() {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;124</td>  <td class="nbHitsCovered">&nbsp;21</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> label.name();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;124</td>  <td class="nbHitsCovered">&nbsp;10042</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> label.name();</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;125</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;126</td>  <td class="nbHits">&nbsp;</td>
@@ -270,7 +270,7 @@
 <tr>  <td class="numLine">&nbsp;131</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * serialization, if a value is null it does not need to be </span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;132</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * written to the resulting DOM document.</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * written to the resulting XML document.</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;133</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * </span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;134</td>  <td class="nbHits">&nbsp;</td>
@@ -279,7 +279,7 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span>  </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;136</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> <span class="keyword">boolean</span> isRequired() {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;137</td>  <td class="nbHitsCovered">&nbsp;8</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> label.required();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;137</td>  <td class="nbHitsCovered">&nbsp;10029</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> label.required();</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;138</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;139</td>  <td class="nbHits">&nbsp;</td>
@@ -307,6 +307,6 @@
   <td class="src"><pre class="src">&nbsp;}</pre></td></tr>
 </table>
 
-<div class="footer">Report generated by <a href="http://cobertura.sourceforge.net/" target="_top">Cobertura</a> 1.8 on 02/01/07 14:42.</div>
+<div class="footer">Report generated by <a href="http://cobertura.sourceforge.net/" target="_top">Cobertura</a> 1.8 on 20/01/07 03:28.</div>
 </body>
 </html>

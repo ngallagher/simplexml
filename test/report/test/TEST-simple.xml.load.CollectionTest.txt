@@ -1,19 +1,19 @@
 Testsuite: simple.xml.load.CollectionTest
-Tests run: 13, Failures: 0, Errors: 0, Time elapsed: 0.241 sec
+Tests run: 13, Failures: 0, Errors: 0, Time elapsed: 0.245 sec
 ------------- Standard Error -----------------
 <test name="example">
    <list class="java.util.HashSet">
-      <entry id="3">
-         <text>three</text>
-      </entry>
-      <extended-entry class="simple.xml.load.CollectionTest$ExtendedEntry" id="1">
-         <text>one</text>
-         <description>this is an extended entry</description>
-      </extended-entry>
       <extended-entry class="simple.xml.load.CollectionTest$ExtendedEntry" id="2">
          <text>two</text>
          <description>this is the second one</description>
       </extended-entry>
+      <extended-entry class="simple.xml.load.CollectionTest$ExtendedEntry" id="1">
+         <text>one</text>
+         <description>this is an extended entry</description>
+      </extended-entry>
+      <entry id="3">
+         <text>three</text>
+      </entry>
    </list>
 </test><test name="example">
    <list class="java.util.HashSet">
@@ -31,16 +31,16 @@ Tests run: 13, Failures: 0, Errors: 0, Time elapsed: 0.241 sec
    </list>
 </test>------------- ---------------- ---------------
 
-Testcase: testSet took 0.123 sec
-Testcase: testSortedSet took 0.002 sec
-Testcase: testList took 0.004 sec
-Testcase: testHashSet took 0.001 sec
+Testcase: testSet took 0.181 sec
+Testcase: testSortedSet took 0.004 sec
+Testcase: testList took 0.003 sec
+Testcase: testHashSet took 0.003 sec
 Testcase: testTreeSet took 0.001 sec
-Testcase: testArrayList took 0.004 sec
+Testcase: testArrayList took 0.008 sec
 Testcase: testSortedSetToSet took 0.002 sec
-Testcase: testExtendedEntry took 0.08 sec
-Testcase: testSetToSortedSet took 0.016 sec
-Testcase: testListToSet took 0.001 sec
-Testcase: testAbstractList took 0.001 sec
-Testcase: testNotACollection took 0.002 sec
-Testcase: testMissingCollection took 0.001 sec
+Testcase: testExtendedEntry took 0.029 sec
+Testcase: testSetToSortedSet took 0.003 sec
+Testcase: testListToSet took 0.003 sec
+Testcase: testAbstractList took 0.002 sec
+Testcase: testNotACollection took 0.001 sec
+Testcase: testMissingCollection took 0.002 sec

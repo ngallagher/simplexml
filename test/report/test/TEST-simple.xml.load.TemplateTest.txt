@@ -1,5 +1,5 @@
 Testsuite: simple.xml.load.TemplateTest
-Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 0.183 sec
+Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 0.244 sec
 ------------- Standard Output ---------------
 <test name="test">
    <config class="java.util.ArrayList">
@@ -14,4 +14,4 @@ Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 0.183 sec
    </details>
 </test>------------- ---------------- ---------------
 
-Testcase: testTemplate took 0.183 sec
+Testcase: testTemplate took 0.244 sec
