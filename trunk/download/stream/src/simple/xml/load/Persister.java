@@ -315,8 +315,6 @@ public class Persister implements Serializer {
     * @param source this is the object that is to be serialized
     * @param root this is where the serialized XML is written to
     * 
-    * @return this returns the XML containing the serialized XML
-    * 
     * @throws Exception if the schema for the object is not valid
     */
    public void write(Object source, OutputNode root) throws Exception {
@@ -336,8 +334,6 @@ public class Persister implements Serializer {
     * @param root this is where the serialized XML is written to
     * @param filter this is the filter object used for templating
     * 
-    * @return this returns the XML containing the serialized XML
-    * 
     * @throws Exception if the schema for the object is not valid
     */   
    private void write(Object source, OutputNode root, Filter filter) throws Exception {   
@@ -355,8 +351,6 @@ public class Persister implements Serializer {
     * 
     * @param source this is the object that is to be serialized
     * @param root this is a contextual object used for serialization
-    * 
-    * @return this returns the XML containing the serialized XML
     * 
     * @throws Exception if the schema for the object is not valid
     */     
@@ -376,8 +370,6 @@ public class Persister implements Serializer {
     * @param source this is the object that is to be serialized
     * @param out this is where the serialized XML is written to
     * 
-    * @return this returns the XML containing the serialized XML
-    * 
     * @throws Exception if the schema for the object is not valid
     */  
    public void write(Object source, File out) throws Exception {
@@ -395,8 +387,6 @@ public class Persister implements Serializer {
     * 
     * @param source this is the object that is to be serialized
     * @param out this is where the serialized XML is written to
-    * 
-    * @return this returns the XML containing the serialized XML
     * 
     * @throws Exception if the schema for the object is not valid
     */   
@@ -417,8 +407,6 @@ public class Persister implements Serializer {
     * @param out this is where the serialized XML is written to
     * @param charset this is the character encoding to be used
     * 
-    * @return this returns the XML containing the serialized XML
-    * 
     * @throws Exception if the schema for the object is not valid
     */  
    public void write(Object source, OutputStream out, String charset) throws Exception {
@@ -436,8 +424,6 @@ public class Persister implements Serializer {
     * 
     * @param source this is the object that is to be serialized
     * @param out this is where the serialized XML is written to
-    * 
-    * @return this returns the XML containing the serialized XML
     * 
     * @throws Exception if the schema for the object is not valid
     */   
