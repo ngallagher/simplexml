@@ -1,5 +1,5 @@
 Testsuite: simple.xml.load.TypeTest
-Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 0.276 sec
+Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 0.256 sec
 ------------- Standard Output ---------------
 <test>
    <object>
@@ -45,4 +45,4 @@ Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 0.276 sec
    </primitive>
 </test>------------- ---------------- ---------------
 
-Testcase: testPrimitive took 0.276 sec
+Testcase: testPrimitive took 0.255 sec

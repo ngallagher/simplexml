@@ -1,15 +1,15 @@
 Testsuite: simple.xml.load.CollectionTest
-Tests run: 13, Failures: 0, Errors: 0, Time elapsed: 0.339 sec
+Tests run: 13, Failures: 0, Errors: 0, Time elapsed: 0.239 sec
 ------------- Standard Error -----------------
 <test name="example">
    <list class="java.util.HashSet">
-      <entry id="3">
-         <text>three</text>
-      </entry>
       <extended-entry class="simple.xml.load.CollectionTest$ExtendedEntry" id="1">
          <text>one</text>
          <description>this is an extended entry</description>
       </extended-entry>
+      <entry id="3">
+         <text>three</text>
+      </entry>
       <extended-entry class="simple.xml.load.CollectionTest$ExtendedEntry" id="2">
          <text>two</text>
          <description>this is the second one</description>
@@ -31,16 +31,16 @@ Tests run: 13, Failures: 0, Errors: 0, Time elapsed: 0.339 sec
    </list>
 </test>------------- ---------------- ---------------
 
-Testcase: testSet took 0.13 sec
+Testcase: testSet took 0.177 sec
 Testcase: testSortedSet took 0.004 sec
 Testcase: testList took 0.003 sec
-Testcase: testHashSet took 0.001 sec
+Testcase: testHashSet took 0.002 sec
 Testcase: testTreeSet took 0.002 sec
-Testcase: testArrayList took 0.005 sec
-Testcase: testSortedSetToSet took 0.002 sec
-Testcase: testExtendedEntry took 0.155 sec
-Testcase: testSetToSortedSet took 0.032 sec
+Testcase: testArrayList took 0.006 sec
+Testcase: testSortedSetToSet took 0.003 sec
+Testcase: testExtendedEntry took 0.028 sec
+Testcase: testSetToSortedSet took 0.005 sec
 Testcase: testListToSet took 0.001 sec
 Testcase: testAbstractList took 0.001 sec
 Testcase: testNotACollection took 0.002 sec
-Testcase: testMissingCollection took 0.001 sec
+Testcase: testMissingCollection took 0.002 sec
