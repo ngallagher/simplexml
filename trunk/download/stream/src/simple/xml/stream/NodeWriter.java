@@ -63,7 +63,7 @@ final class NodeWriter {
     * @param result this is the output for the resulting document
     */ 
    public NodeWriter(Writer result) {
-      this(writer, new Format());
+      this(result, new Format());
    }  
    
    /**
@@ -92,7 +92,7 @@ final class NodeWriter {
     *
     * @return this returns an output element for the document
     */ 
-   public OutputNode writeRoot() {
+   public OutputNode writeRoot() throws Exception {
       OutputDocument root = new OutputDocument(this, stack);
 
       if(stack.isEmpty()) {

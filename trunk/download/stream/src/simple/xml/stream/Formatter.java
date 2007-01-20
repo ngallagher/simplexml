@@ -69,6 +69,11 @@ final class Formatter {
     * Output used to write the generated XML result to.
     */ 
    private Writer result;
+
+   /**
+    * Represents the encoding to use in the generated prolog.
+    */ 
+   private String encoding;
    
    /**
     * Represents the last type of content that was written.
