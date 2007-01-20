@@ -21,7 +21,13 @@
    </target> 
 
    <target name="test" depends="prepare">
-      <javac srcdir="${parent.path}/${source.path}" destdir="${build.path}/core" debug="true" debuglevel="lines,vars,source"/>
+      <javac srcdir="${parent.path}/${source.path}" destdir="${build.path}/core" debug="true" debuglevel="lines,vars,source">
+         <classpath>
+            <fileset dir="${lib.path}">
+               <include name="**/*.jar"/>
+            </fileset>
+         </classpath>
+      </javac>
       <copy todir="${build.path}">
          <fileset dir="${parent.path}/${source.path}">
             <exclude name="**/*.java"/>

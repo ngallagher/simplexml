@@ -58,6 +58,10 @@
          <fileset dir="${skel.path}/${test.path}"/>
       </copy>
 
+      <copy todir="${target.path}/${build.path}/simple-xml-${version}/${lib.path}">
+         <fileset dir="${skel.path}/${lib.path}"/>
+      </copy>
+
       <copy todir="${target.path}/${build.path}/simple-xml-${version}/${test.path}/${source.path}">
          <fileset dir="${test.path}/${source.path}"/>
       </copy>
@@ -95,7 +99,13 @@
 
    <target name="javadoc" depends="layout">
       <mkdir dir="${javadoc.path}"/>
-      <javadoc sourcepath="${source.path}" packagenames="simple.*" destdir="${javadoc.path}" private="false"/>
+      <javadoc sourcepath="${source.path}" packagenames="simple.*" destdir="${javadoc.path}" private="false">
+         <classpath>
+            <fileset dir="${lib.path}">
+               <include name="**/*.jar"/>
+            </fileset>
+         </classpath>  
+      </javadoc>
       <delete dir="${build.path}"/>
    </target>
 
