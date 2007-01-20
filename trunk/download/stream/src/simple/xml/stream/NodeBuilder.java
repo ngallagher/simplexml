@@ -85,6 +85,21 @@ public final class NodeBuilder {
     * @throws Exception this is thrown if there is an I/O error
     */ 
    public static OutputNode write(Writer result) throws Exception {
-      return new NodeWriter(result).writeRoot();
+      return write(result, new Format());
    }
+
+   /**
+    * This is used to create an <code>OutputNode</code> that can be
+    * used to write a well formed XML document. The writer specified
+    * will have XML elements, attributes, and text written to it as
+    * output nodes are created and populated.
+    * 
+    * @param result this contains the result of the generated XML
+    * @param format this is the format to use for the document
+    *
+    * @throws Exception this is thrown if there is an I/O error
+    */ 
+   public static OutputNode write(Writer result, Format format) throws Exception {
+      return new NodeWriter(result, format).writeRoot();
+   }   
 }
