@@ -1,0 +1,5 @@
+Testsuite: simple.xml.stream.StateReaderTest
+Tests run: 2, Failures: 0, Errors: 0, Time elapsed: 0.071 sec
+
+Testcase: testSmallSource took 0.069 sec
+Testcase: testLargeSource took 0.002 sec

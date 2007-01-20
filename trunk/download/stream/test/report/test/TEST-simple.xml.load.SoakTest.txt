@@ -1,0 +1,11 @@
+Testsuite: simple.xml.load.SoakTest
+Tests run: 3, Failures: 0, Errors: 0, Time elapsed: 1.904 sec
+------------- Standard Error -----------------
+Took '667' ms to process 5000 documents
+Took '533' ms to process 5000 documents with templates
+Took '534' ms to process 5000 documents with an empty filter
+------------- ---------------- ---------------
+
+Testcase: testBasicDocument took 0.766 sec
+Testcase: testTemplateDocument took 0.567 sec
+Testcase: testEmptyFilter took 0.57 sec
