@@ -134,7 +134,7 @@ public class Persister implements Serializer {
     * to structure the generated XML. It determines the indent size
     * of the document and whether it should contain a prolog.
     * 
-    * @param strategy this is the strategy used to resolve classes
+    * @param format this is used to structure the generated XML
     */
    public Persister(Format format) {
       this(new DefaultStrategy(), format);
@@ -213,7 +213,7 @@ public class Persister implements Serializer {
     * data, such as the class name or version of the document.
     * 
     * @param strategy this is the strategy used to resolve classes 
-    * @param filter the filter used to replace template variables
+    * @param data the filter data used to replace template variables
     * @param format this is used to format the generated XML document
     */
    public Persister(Strategy strategy, Map data, Format format) {
