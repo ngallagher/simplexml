@@ -63,20 +63,42 @@ final class NodeWriter {
     * @param result this is the output for the resulting document
     */ 
    public NodeWriter(Writer result) {
+      this(writer, new Format());
+   }  
+   
+   /**
+    * Constructor for the <code>NodeWriter</code> object. This will
+    * create the object that is used to control an output elements
+    * access to the generated XML document. This keeps a stack of
+    * active and uncommitted elements.
+    *
+    * @param result this is the output for the resulting document
+    * @param format this is used to format the generated document
+    */ 
+   public NodeWriter(Writer result, Format format) {
+      this.writer = new Formatter(result, format);
       this.active = new HashSet();
       this.stack = new OutputStack(active);           
-      this.writer = new Formatter(result);
    }  
    
    /**
     * This is used to acquire the root output node for the document.
     * This will create an empty node that can be used to generate
     * the root document element as a child to the document.
+    * <p>
+    * Depending on whether or not an encoding has been specified 
+    * this method will write a prolog to the generated XML document.
+    * Each prolog written uses an XML version of "1.0".
     *
     * @return this returns an output element for the document
     */ 
    public OutputNode writeRoot() {
-      return new OutputDocument(this, stack);
+      OutputDocument root = new OutputDocument(this, stack);
+
+      if(stack.isEmpty()) {
+         writer.writeProlog();              
+      }
+      return root;
    }
    
    /**

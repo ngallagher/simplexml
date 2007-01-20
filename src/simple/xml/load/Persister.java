@@ -39,6 +39,7 @@ import simple.xml.filter.PlatformFilter;
 import simple.xml.stream.NodeBuilder;
 import simple.xml.stream.InputNode;
 import simple.xml.stream.OutputNode;
+import simple.xml.stream.Format;
 
 /**
  * The <code>Persister</code> object is used to provide an implementation

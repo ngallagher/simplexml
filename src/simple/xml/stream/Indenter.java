@@ -63,7 +63,7 @@ final class Indenter {
     * size of sixteen, which should be sufficient for most files.
     */ 
    public Indenter() {
-      this(3);
+      this(new Format());
    }
 
    /**
@@ -72,10 +72,10 @@ final class Indenter {
     * create each entry pushed on to the stack. This uses a cache
     * size of sixteen, which should be sufficient for most files.
     *
-    * @param indent this is the number of spaces per indent
+    * @param format determines the number of spaces per indent
     */ 
-   public Indenter(int indent) {
-      this(indent, 16);           
+   public Indenter(Format format) {
+      this(format, 16);           
    }
    
    /**
@@ -84,12 +84,12 @@ final class Indenter {
     * create each entry pushed on to the stack. This uses a cache
     * of the specified size, which is used to optimize the object.
     *
-    * @param indent this is the number of spaces per indent
+    * @param format determines the number of spaces per indent
     * @param size this is the initial size of the indent cache
     */ 
-   private Indenter(int indent, int size) {
+   private Indenter(Format format, int size) {
+      this.indent = format.getIndent();           
       this.cache = new Cache(size);
-      this.indent = indent;
    }  
 
    /**

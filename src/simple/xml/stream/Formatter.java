@@ -81,10 +81,28 @@ final class Formatter {
     * to the specified writer. The XML written will be well formed.
     *
     * @param result this is where the XML should be written to
+    * @param format this is the format object to use 
     */ 
-   public Formatter(Writer result){
-       this.indenter = new Indenter();
+   public Formatter(Writer result, Format format){
+       this.indenter = new Indenter(format);
+       this.encoding = format.getEncoding();
        this.result = result;
+   }
+
+   /**
+    * This is used to write a prolog to the specified output. This is
+    * only written if the specified <code>Format</code> object has
+    * been given a non null encoding. If no encoding is specified no
+    * prolog is written to the generated XML.
+    *
+    * @throws Exception thrown if there is an I/O problem 
+    */ 
+   public void writeProlog() throws Exception {
+      if(encoding != null) {
+         write("<?xml version='1.0' encoding='");
+         write(encoding);
+         write("'?>\n");         
+      }
    }
    
    /**
