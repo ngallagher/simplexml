@@ -75,6 +75,11 @@ public class Persister implements Serializer {
    private Filter filter;
 
    /**
+    * This object is used to format the the generated XML document.
+    */ 
+   private Format format;
+
+   /**
     * Constructor for the <code>Persister</code> object. This is used
     * to create a serializer object that will use an empty filter.
     * This means that template variables will remain unchanged within
@@ -109,7 +114,7 @@ public class Persister implements Serializer {
       this(new DefaultStrategy(), filter);
    }      
 
-    /**
+   /**
     * Constructor for the <code>Persister</code> object. This is used
     * to create a serializer object that will use a strategy object. 
     * This persister will use the provided <code>Strategy</code> to
@@ -121,6 +126,46 @@ public class Persister implements Serializer {
    public Persister(Strategy strategy) {
       this(strategy, new HashMap());
    }     
+   
+   /**
+    * Constructor for the <code>Persister</code> object. This is used
+    * to create a serializer object that will use the provided format
+    * instructions. The persister uses the <code>Format</code> object
+    * to structure the generated XML. It determines the indent size
+    * of the document and whether it should contain a prolog.
+    * 
+    * @param strategy this is the strategy used to resolve classes
+    */
+   public Persister(Format format) {
+      this(new DefaultStrategy(), format);
+   }  
+
+   /**
+    * Constructor for the <code>Persister</code> object. This is used
+    * to create a serializer object that will use the provided filter.
+    * This persister will replace all variables encountered when
+    * deserializing an object with mappings found in the filter.
+    * 
+    * @param filter the filter used to replace template variables
+    * @param format this is used to structure the generated XML
+    */
+   public Persister(Filter filter, Format format) {
+      this(new DefaultStrategy(), filter, format);
+   }
+
+   /**
+    * Constructor for the <code>Persister</code> object. This is used
+    * to create a serializer object that will use a strategy object. 
+    * This persister will use the provided <code>Strategy</code> to
+    * intercept the XML elements in order to read and write persisent
+    * data, such as the class name or version of the document.
+    * 
+    * @param strategy this is the strategy used to resolve classes
+    * @param format this is used to structure the generated XML
+    */
+   public Persister(Strategy strategy, Format format) {
+      this(strategy, new HashMap(), format);           
+   }
 
    /**
     * Constructor for the <code>Persister</code> object. This is used
@@ -154,9 +199,46 @@ public class Persister implements Serializer {
     * @param filter the filter used to replace template variables
     */
    public Persister(Strategy strategy, Filter filter) {
+      this(strategy, filter, new Format());
+   }     
+   
+   /**
+    * Constructor for the <code>Persister</code> object. This is used
+    * to create a serializer object that will use the provided filter.
+    * This persister will replace all variables encountered when
+    * deserializing an object with mappings found in the filter.
+    * <p>
+    * This persister will use the provided <code>Strategy</code> to
+    * intercept the XML elements in order to read and write persisent
+    * data, such as the class name or version of the document.
+    * 
+    * @param strategy this is the strategy used to resolve classes 
+    * @param filter the filter used to replace template variables
+    * @param format this is used to format the generated XML document
+    */
+   public Persister(Strategy strategy, Map data, Format format) {
+      this(strategy, new PlatformFilter(data), format);
+   }  
+   
+   /**
+    * Constructor for the <code>Persister</code> object. This is used
+    * to create a serializer object that will use the provided filter.
+    * This persister will replace all variables encountered when
+    * deserializing an object with mappings found in the filter.
+    * <p>
+    * This persister will use the provided <code>Strategy</code> to
+    * intercept the XML elements in order to read and write persisent
+    * data, such as the class name or version of the document.
+    * 
+    * @param strategy this is the strategy used to resolve classes 
+    * @param filter the filter used to replace template variables
+    * @param format this is used to format the generated XML document
+    */
+   public Persister(Strategy strategy, Filter filter, Format format) {
       this.strategy = strategy;           
       this.filter = filter;           
-   }     
+      this.format = format;
+   }    
    
    /**
     * This <code>read</code> method will read the contents of the XML
@@ -429,6 +511,6 @@ public class Persister implements Serializer {
     * @throws Exception if the schema for the object is not valid
     */   
    public void write(Object source, Writer out) throws Exception {
-	   write(source, NodeBuilder.write(out));
+	   write(source, NodeBuilder.write(out, format));
    }
 }
