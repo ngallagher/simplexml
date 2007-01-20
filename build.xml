@@ -1,0 +1,102 @@
+<?xml version="1.0"?>
+<project name="Simple" default="build" basedir=".">
+
+   <target name="layout">
+      <property name="source.path" value="src"/>
+      <property name="javadoc.path" value="doc/javadoc"/>
+      <property name="build.path" value="build"/>
+      <property name="jar.path" value="jar"/>
+      <property name="lib.path" value="lib"/>
+      <property name="target.path" value="target"/>
+      <property name="test.path" value="test"/>
+      <property name="skel.path" value="skel"/>
+      <property file="build.properties"/>
+   </target>
+
+   <target name="clean" depends="layout">
+      <delete dir="${build.path}"/>
+      <delete dir="${jar.path}"/>
+   </target>
+
+   <target name="prepare" depends="clean">
+      <mkdir dir="${build.path}"/>
+      <mkdir dir="${jar.path}"/>
+   </target>
+
+   <target name="build" depends="prepare">
+      <javac srcdir="${source.path}" destdir="${build.path}">
+         <classpath>
+            <fileset dir="${lib.path}">
+               <include name="**/*.jar"/>
+            </fileset>
+         </classpath>         
+      </javac>
+      <jar jarfile="${jar.path}/simple-xml-${version}.jar" basedir="${build.path}"/>
+      <delete dir="${build.path}"/>
+   </target>
+
+   <target name="test" depends="prepare">
+      <ant antfile="build.xml" dir="${test.path}" inheritall="false"/>
+      <delete dir="${build.path}"/>
+   </target>
+
+   <target name="package" depends="test">
+      <mkdir dir="${target.path}/${build.path}"/>
+      <mkdir dir="${target.path}/${build.path}/simple-xml-${version}"/>
+
+      <copy todir="${target.path}/${build.path}/simple-xml-${version}/${source.path}">
+         <fileset dir="${source.path}"> <!-- was "src" -->
+            <exclude name="**/*.class"/>
+         </fileset>
+      </copy>
+
+      <copy todir="${target.path}/${build.path}/simple-xml-${version}/${doc.path}">
+         <fileset file="${doc.path}"/>
+      </copy>
+
+      <copy todir="${target.path}/${build.path}/simple-xml-${version}/${test.path}">
+         <fileset dir="${skel.path}/${test.path}"/>
+      </copy>
+
+      <copy todir="${target.path}/${build.path}/simple-xml-${version}/${test.path}/${source.path}">
+         <fileset dir="${test.path}/${source.path}"/>
+      </copy>
+
+      <copy todir="${target.path}/${build.path}/simple-xml-${version}">
+         <fileset file="${skel.path}/build.xml"/>
+         <filterset>
+            <filter token="version" value="${version}"/>
+         </filterset>
+      </copy>
+
+      <mkdir dir="${target.path}/${version}"/>
+
+      <ant antfile="build.xml" dir="${test.path}" target="report" inheritall="false"/>
+      <ant antfile="build.xml" dir="${target.path}/${build.path}/simple-xml-${version}" target="all" inheritall="false"/>
+      <ant antfile="build.xml" dir="${target.path}/${build.path}/simple-xml-${version}/${test.path}" target="test" inheritall="false"/>
+      <tar tarfile="${target.path}/${version}/simple-xml-${version}.tar" basedir="${target.path}/${build.path}"/>
+      <gzip zipfile="${target.path}/${version}/simple-xml-${version}.tar.gz" src="${target.path}/${version}/simple-xml-${version}.tar"/>
+
+      <tstamp>
+         <format property="build.time" pattern="d MMMM yyyy" locale="en"/>
+      </tstamp>
+
+      <copy todir="${target.path}/${version}">
+         <fileset file="${skel.path}/build.time"/>
+         <filterset>
+            <filter token="timestamp" value="${build.time}"/>
+         </filterset>
+      </copy>
+
+      <delete file="${target.path}/${version}/simple-xml-${version}.tar"/>
+      <delete dir="${target.path}/${build.path}"/>
+      <delete dir="${build.path}"/>
+   </target>
+
+   <target name="javadoc" depends="layout">
+      <mkdir dir="${javadoc.path}"/>
+      <javadoc sourcepath="${source.path}" packagenames="simple.*" destdir="${javadoc.path}" private="false"/>
+      <delete dir="${build.path}"/>
+   </target>
+
+</project>

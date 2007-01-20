@@ -1,0 +1,37 @@
+Testsuite: simple.xml.load.SoapTest
+Tests run: 2, Failures: 0, Errors: 2, Time elapsed: 0.126 sec
+
+Testcase: testBalanceEnvelope took 0.115 sec
+	Caused an ERROR
+Unable to satisfy @simple.xml.Attribute(required=true, name=xmlns:soap) for simple.xml.load.SoapTest$BalanceEnvelope
+simple.xml.load.FieldRequiredException: Unable to satisfy @simple.xml.Attribute(required=true, name=xmlns:soap) for simple.xml.load.SoapTest$BalanceEnvelope
+	at simple.xml.load.Composite.validate(Composite.java:303)
+	at simple.xml.load.Composite.readAttributes(Composite.java:172)
+	at simple.xml.load.Composite.read(Composite.java:144)
+	at simple.xml.load.Composite.read(Composite.java:123)
+	at simple.xml.load.Composite.read(Composite.java:102)
+	at simple.xml.load.Traverser.read(Traverser.java:85)
+	at simple.xml.load.Persister.read(Persister.java:303)
+	at simple.xml.load.Persister.read(Persister.java:285)
+	at simple.xml.load.Persister.read(Persister.java:266)
+	at simple.xml.load.Persister.read(Persister.java:248)
+	at simple.xml.load.Persister.read(Persister.java:175)
+	at simple.xml.load.SoapTest.testBalanceEnvelope(SoapTest.java:100)
+
+Testcase: testStockPriceEnvelope took 0.004 sec
+	Caused an ERROR
+Attribute 'encodingStyle' does not exist
+simple.xml.load.AttributeException: Attribute 'encodingStyle' does not exist
+	at simple.xml.load.Composite.readAttribute(Composite.java:225)
+	at simple.xml.load.Composite.readAttributes(Composite.java:170)
+	at simple.xml.load.Composite.read(Composite.java:144)
+	at simple.xml.load.Composite.read(Composite.java:123)
+	at simple.xml.load.Composite.read(Composite.java:102)
+	at simple.xml.load.Traverser.read(Traverser.java:85)
+	at simple.xml.load.Persister.read(Persister.java:303)
+	at simple.xml.load.Persister.read(Persister.java:285)
+	at simple.xml.load.Persister.read(Persister.java:266)
+	at simple.xml.load.Persister.read(Persister.java:248)
+	at simple.xml.load.Persister.read(Persister.java:175)
+	at simple.xml.load.SoapTest.testStockPriceEnvelope(SoapTest.java:110)
+

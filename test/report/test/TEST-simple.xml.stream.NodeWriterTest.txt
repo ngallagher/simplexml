@@ -1,0 +1,5 @@
+Testsuite: simple.xml.stream.NodeWriterTest
+Tests run: 2, Failures: 0, Errors: 0, Time elapsed: 0.043 sec
+
+Testcase: testBasicWrite took 0.039 sec
+Testcase: testWrite took 0.004 sec
