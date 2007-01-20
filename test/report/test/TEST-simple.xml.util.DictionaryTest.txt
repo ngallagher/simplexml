@@ -1,5 +1,5 @@
 Testsuite: simple.xml.util.DictionaryTest
-Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 0.236 sec
+Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 0.209 sec
 ------------- Standard Output ---------------
 <test name="example">
    <list>
@@ -15,4 +15,4 @@ Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 0.236 sec
    </list>
 </test>------------- ---------------- ---------------
 
-Testcase: testDictionary took 0.235 sec
+Testcase: testDictionary took 0.208 sec

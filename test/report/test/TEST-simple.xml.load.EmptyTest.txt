@@ -1,9 +1,9 @@
 Testsuite: simple.xml.load.EmptyTest
-Tests run: 6, Failures: 0, Errors: 0, Time elapsed: 0.18 sec
+Tests run: 6, Failures: 0, Errors: 0, Time elapsed: 0.343 sec
 
-Testcase: testRequiredEmpty took 0.156 sec
-Testcase: testRequiredBlank took 0.001 sec
-Testcase: testOptionalEmpty took 0.001 sec
-Testcase: testOptionalBlank took 0.004 sec
-Testcase: testRequiredEmptyAttribute took 0.014 sec
-Testcase: testOptionalEmptyAttribute took 0.002 sec
+Testcase: testRequiredEmpty took 0.245 sec
+Testcase: testRequiredBlank took 0 sec
+Testcase: testOptionalEmpty took 0.002 sec
+Testcase: testOptionalBlank took 0.002 sec
+Testcase: testRequiredEmptyAttribute took 0.01 sec
+Testcase: testOptionalEmptyAttribute took 0.083 sec
