@@ -1,5 +1,5 @@
 Testsuite: simple.xml.load.PerformanceTest
-Tests run: 4, Failures: 0, Errors: 0, Time elapsed: 57.183 sec
+Tests run: 4, Failures: 0, Errors: 0, Time elapsed: 14.862 sec
 ------------- Standard Output ---------------
 <root flag="true" number="1234">
    <child name="first">
@@ -459,13 +459,13 @@ Tests run: 4, Failures: 0, Errors: 0, Time elapsed: 57.183 sec
    <constant>&gt;&gt;&lt;&lt;</constant>
 </root>------------- ---------------- ---------------
 ------------- Standard Error -----------------
-Took '11855' ms to process 10000 documents
-Took '14933' ms to process 10000 documents with templates
-Took '14632' ms to process 10000 documents with an empty filter
-Took '15427' ms to write 10000 documents
+Took '4076' ms to process 10000 documents
+Took '3764' ms to process 10000 documents with templates
+Took '4271' ms to process 10000 documents with an empty filter
+Took '1547' ms to write 10000 documents
 ------------- ---------------- ---------------
 
-Testcase: testBasicDocument took 12.115 sec
-Testcase: testTemplateDocument took 14.967 sec
-Testcase: testEmptyFilter took 14.655 sec
-Testcase: testBasicWrite took 15.446 sec
+Testcase: testBasicDocument took 4.627 sec
+Testcase: testTemplateDocument took 3.984 sec
+Testcase: testEmptyFilter took 4.47 sec
+Testcase: testBasicWrite took 1.769 sec
