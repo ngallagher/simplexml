@@ -1,5 +1,0 @@
-Testsuite: simple.xml.load.VersionTest
-Tests run: 2, Failures: 0, Errors: 0, Time elapsed: 0.122 sec
-
-Testcase: testVersion1 took 0.117 sec
-Testcase: testVersion2 took 0.004 sec
