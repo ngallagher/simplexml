@@ -1,5 +1,5 @@
 Testsuite: simple.xml.load.RequiredTest
-Tests run: 2, Failures: 0, Errors: 0, Time elapsed: 0.169 sec
+Tests run: 2, Failures: 0, Errors: 0, Time elapsed: 0.114 sec
 
-Testcase: testComplete took 0.166 sec
-Testcase: testOptional took 0.001 sec
+Testcase: testComplete took 0.113 sec
+Testcase: testOptional took 0 sec

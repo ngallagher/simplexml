@@ -1,5 +1,5 @@
 Testsuite: simple.xml.load.PrologTest
-Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 0.185 sec
+Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 0.167 sec
 ------------- Standard Output ---------------
 <?xml version='1.0' encoding='UTF-8'?>
 <source flag="true" id="12">
@@ -7,4 +7,4 @@ Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 0.185 sec
     <name>some name</name>
 </source>------------- ---------------- ---------------
 
-Testcase: testProlog took 0.184 sec
+Testcase: testProlog took 0.166 sec
