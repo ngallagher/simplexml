@@ -139,11 +139,11 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * @param reader this is the reader used to read XML elements</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;61</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span> </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;62</td>  <td class="nbHitsCovered">&nbsp;750755</td>  <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> InputElement(NodeReader reader, StartElement element) <span class="keyword">throws</span> Exception {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;63</td>  <td class="nbHitsCovered">&nbsp;750755</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">this</span>.map = <span class="keyword">new</span> InputNodeMap(<span class="keyword">this</span>, element);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;64</td>  <td class="nbHitsCovered">&nbsp;750755</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">this</span>.element = element;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;65</td>  <td class="nbHitsCovered">&nbsp;750755</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">this</span>.reader = reader;           </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;66</td>  <td class="nbHitsCovered">&nbsp;750755</td>  <td class="src"><pre class="src">&nbsp;   }        </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;62</td>  <td class="nbHitsCovered">&nbsp;750765</td>  <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> InputElement(NodeReader reader, StartElement element) <span class="keyword">throws</span> Exception {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;63</td>  <td class="nbHitsCovered">&nbsp;750765</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">this</span>.map = <span class="keyword">new</span> InputNodeMap(<span class="keyword">this</span>, element);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;64</td>  <td class="nbHitsCovered">&nbsp;750765</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">this</span>.element = element;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;65</td>  <td class="nbHitsCovered">&nbsp;750765</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">this</span>.reader = reader;           </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;66</td>  <td class="nbHitsCovered">&nbsp;750765</td>  <td class="src"><pre class="src">&nbsp;   }        </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;67</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;68</td>  <td class="nbHits">&nbsp;</td>
@@ -162,7 +162,7 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span>   </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;75</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> String getName() {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;76</td>  <td class="nbHitsCovered">&nbsp;1171095</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> element.getName().getLocalPart();           </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;76</td>  <td class="nbHitsCovered">&nbsp;1171111</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> element.getName().getLocalPart();           </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;77</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;78</td>  <td class="nbHits">&nbsp;</td>
@@ -187,7 +187,7 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span>    </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;88</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> InputNode getAttribute(String name) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;89</td>  <td class="nbHitsCovered">&nbsp;300503</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> map.get(name);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;89</td>  <td class="nbHitsCovered">&nbsp;300505</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> map.get(name);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;90</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;91</td>  <td class="nbHits">&nbsp;</td>
@@ -208,7 +208,7 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span>    </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;99</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> NodeMap getAttributes() {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;100</td>  <td class="nbHitsCovered">&nbsp;630726</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> map;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;100</td>  <td class="nbHitsCovered">&nbsp;630734</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> map;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;101</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;102</td>  <td class="nbHits">&nbsp;</td>
@@ -229,7 +229,7 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span>     </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;110</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> String getValue() <span class="keyword">throws</span> Exception {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;111</td>  <td class="nbHitsCovered">&nbsp;420365</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> reader.readValue(<span class="keyword">this</span>);           </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;111</td>  <td class="nbHitsCovered">&nbsp;420371</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> reader.readValue(<span class="keyword">this</span>);           </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;112</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;113</td>  <td class="nbHits">&nbsp;</td>
@@ -258,7 +258,7 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span>  </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;125</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> InputNode getNext() <span class="keyword">throws</span> Exception {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;126</td>  <td class="nbHitsCovered">&nbsp;1051055</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> reader.readElement(<span class="keyword">this</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;126</td>  <td class="nbHitsCovered">&nbsp;1051067</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> reader.readElement(<span class="keyword">this</span>);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;127</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;128</td>  <td class="nbHits">&nbsp;</td>
@@ -269,6 +269,6 @@
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 </table>
 
-<div class="footer">Report generated by <a href="http://cobertura.sourceforge.net/" target="_top">Cobertura</a> 1.8 on 20/01/07 08:35.</div>
+<div class="footer">Report generated by <a href="http://cobertura.sourceforge.net/" target="_top">Cobertura</a> 1.8 on 21/01/07 07:05.</div>
 </body>
 </html>

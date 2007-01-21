@@ -133,14 +133,14 @@
   <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> <span class="keyword">static</span> Label getInstance(Field field, Annotation label) {</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;58</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;      <span class="keyword">try</span> {                </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;59</td>  <td class="nbHitsCovered">&nbsp;137</td>  <td class="src"><pre class="src">&nbsp;         Constructor factory = getConstructor(label);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;59</td>  <td class="nbHitsCovered">&nbsp;142</td>  <td class="src"><pre class="src">&nbsp;         Constructor factory = getConstructor(label);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;60</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;61</td>  <td class="nbHitsCovered">&nbsp;137</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">if</span>(!field.isAccessible()) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;62</td>  <td class="nbHitsCovered">&nbsp;137</td>  <td class="src"><pre class="src">&nbsp;            field.setAccessible(<span class="keyword">true</span>);                 </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;61</td>  <td class="nbHitsCovered">&nbsp;142</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">if</span>(!field.isAccessible()) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;62</td>  <td class="nbHitsCovered">&nbsp;142</td>  <td class="src"><pre class="src">&nbsp;            field.setAccessible(<span class="keyword">true</span>);                 </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;63</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;         }         </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;64</td>  <td class="nbHitsCovered">&nbsp;137</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">return</span> (Label)factory.newInstance(field, label);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;64</td>  <td class="nbHitsCovered">&nbsp;142</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">return</span> (Label)factory.newInstance(field, label);</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;65</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;      }<span class="keyword">catch</span>(Exception e) {</span></pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;66</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;         <span class="keyword">return</span> <span class="keyword">null</span>;</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;67</td>  <td class="nbHits">&nbsp;</td>
@@ -175,7 +175,7 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;82</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> <span class="keyword">static</span> Constructor getConstructor(Annotation label) <span class="keyword">throws</span> Exception {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;83</td>  <td class="nbHitsCovered">&nbsp;137</td>  <td class="src"><pre class="src">&nbsp;       <span class="keyword">return</span> getEntry(label).getConstructor();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;83</td>  <td class="nbHitsCovered">&nbsp;142</td>  <td class="src"><pre class="src">&nbsp;       <span class="keyword">return</span> getEntry(label).getConstructor();</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;84</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;85</td>  <td class="nbHits">&nbsp;</td>
@@ -208,16 +208,16 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;99</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> <span class="keyword">static</span> Entry getEntry(Annotation label) <span class="keyword">throws</span> Exception{      </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;100</td>  <td class="nbHitsCovered">&nbsp;137</td>  <td class="src"><pre class="src">&nbsp;       <span class="keyword">if</span>(label <span class="keyword">instanceof</span> Element) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;101</td>  <td class="nbHitsCovered">&nbsp;72</td>  <td class="src"><pre class="src">&nbsp;          <span class="keyword">return</span> <span class="keyword">new</span> Entry(ElementLabel.<span class="keyword">class</span>, Element.<span class="keyword">class</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;100</td>  <td class="nbHitsCovered">&nbsp;142</td>  <td class="src"><pre class="src">&nbsp;       <span class="keyword">if</span>(label <span class="keyword">instanceof</span> Element) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;101</td>  <td class="nbHitsCovered">&nbsp;76</td>  <td class="src"><pre class="src">&nbsp;          <span class="keyword">return</span> <span class="keyword">new</span> Entry(ElementLabel.<span class="keyword">class</span>, Element.<span class="keyword">class</span>);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;102</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;       }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;103</td>  <td class="nbHitsCovered">&nbsp;65</td>  <td class="src"><pre class="src">&nbsp;       <span class="keyword">if</span>(label <span class="keyword">instanceof</span> ElementList) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;103</td>  <td class="nbHitsCovered">&nbsp;66</td>  <td class="src"><pre class="src">&nbsp;       <span class="keyword">if</span>(label <span class="keyword">instanceof</span> ElementList) {</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;104</td>  <td class="nbHitsCovered">&nbsp;13</td>  <td class="src"><pre class="src">&nbsp;          <span class="keyword">return</span> <span class="keyword">new</span> Entry(ElementListLabel.<span class="keyword">class</span>, ElementList.<span class="keyword">class</span>);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;105</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;       }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;106</td>  <td class="nbHitsCovered">&nbsp;52</td>  <td class="src"><pre class="src">&nbsp;       <span class="keyword">if</span>(label <span class="keyword">instanceof</span> Attribute) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;107</td>  <td class="nbHitsCovered">&nbsp;52</td>  <td class="src"><pre class="src">&nbsp;          <span class="keyword">return</span> <span class="keyword">new</span> Entry(AttributeLabel.<span class="keyword">class</span>, Attribute.<span class="keyword">class</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;106</td>  <td class="nbHitsCovered">&nbsp;53</td>  <td class="src"><pre class="src">&nbsp;       <span class="keyword">if</span>(label <span class="keyword">instanceof</span> Attribute) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;107</td>  <td class="nbHitsCovered">&nbsp;53</td>  <td class="src"><pre class="src">&nbsp;          <span class="keyword">return</span> <span class="keyword">new</span> Entry(AttributeLabel.<span class="keyword">class</span>, Attribute.<span class="keyword">class</span>);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;108</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;       }</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;109</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;       <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"Annotation not supported"</span>);</span></pre></td></tr>
@@ -280,10 +280,10 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">        * @param argument type that is used within the constructor</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;139</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">        */</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;140</td>  <td class="nbHitsCovered">&nbsp;137</td>  <td class="src"><pre class="src">&nbsp;       <span class="keyword">public</span> Entry(Class label, Class argument) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;141</td>  <td class="nbHitsCovered">&nbsp;137</td>  <td class="src"><pre class="src">&nbsp;          <span class="keyword">this</span>.argument = argument;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;142</td>  <td class="nbHitsCovered">&nbsp;137</td>  <td class="src"><pre class="src">&nbsp;          <span class="keyword">this</span>.label = label;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;143</td>  <td class="nbHitsCovered">&nbsp;137</td>  <td class="src"><pre class="src">&nbsp;       }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;140</td>  <td class="nbHitsCovered">&nbsp;142</td>  <td class="src"><pre class="src">&nbsp;       <span class="keyword">public</span> Entry(Class label, Class argument) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;141</td>  <td class="nbHitsCovered">&nbsp;142</td>  <td class="src"><pre class="src">&nbsp;          <span class="keyword">this</span>.argument = argument;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;142</td>  <td class="nbHitsCovered">&nbsp;142</td>  <td class="src"><pre class="src">&nbsp;          <span class="keyword">this</span>.label = label;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;143</td>  <td class="nbHitsCovered">&nbsp;142</td>  <td class="src"><pre class="src">&nbsp;       }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;144</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;       </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;145</td>  <td class="nbHits">&nbsp;</td>
@@ -302,7 +302,7 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">        */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;152</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;       <span class="keyword">public</span> Constructor getConstructor() <span class="keyword">throws</span> Exception {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;153</td>  <td class="nbHitsCovered">&nbsp;137</td>  <td class="src"><pre class="src">&nbsp;          <span class="keyword">return</span> getConstructor(Field.<span class="keyword">class</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;153</td>  <td class="nbHitsCovered">&nbsp;142</td>  <td class="src"><pre class="src">&nbsp;          <span class="keyword">return</span> getConstructor(Field.<span class="keyword">class</span>);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;154</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;       }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;155</td>  <td class="nbHits">&nbsp;</td>
@@ -327,7 +327,7 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">        */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;165</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;       <span class="keyword">private</span> Constructor getConstructor(Class type) <span class="keyword">throws</span> Exception {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;166</td>  <td class="nbHitsCovered">&nbsp;137</td>  <td class="src"><pre class="src">&nbsp;          <span class="keyword">return</span> label.getConstructor(type, argument);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;166</td>  <td class="nbHitsCovered">&nbsp;142</td>  <td class="src"><pre class="src">&nbsp;          <span class="keyword">return</span> label.getConstructor(type, argument);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;167</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;       }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;168</td>  <td class="nbHits">&nbsp;</td>
@@ -336,6 +336,6 @@
   <td class="src"><pre class="src">&nbsp;}</pre></td></tr>
 </table>
 
-<div class="footer">Report generated by <a href="http://cobertura.sourceforge.net/" target="_top">Cobertura</a> 1.8 on 20/01/07 08:35.</div>
+<div class="footer">Report generated by <a href="http://cobertura.sourceforge.net/" target="_top">Cobertura</a> 1.8 on 21/01/07 07:05.</div>
 </body>
 </html>
