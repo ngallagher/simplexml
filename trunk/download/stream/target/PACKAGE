@@ -1,0 +1,12 @@
+<h2>Streaming API for XML package</h2>
+<table cellpadding="10">
+<tr>
+<td>
+This package provides an implementation of the XML serialization framework that makes use of
+the Streaming API for XML (StAX). It provides a lighter, leaner, more performant implementation
+that the Document Object Model (DOM) implementation. For Java 6 the framework has no external
+dependancies and is completely self contained. For Java 5 two external JAR files are required,
+the StAX API and the StAX implementation, both are provided with the download.
+</td>
+</tr>
+</table>
