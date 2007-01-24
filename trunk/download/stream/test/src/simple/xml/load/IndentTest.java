@@ -56,12 +56,10 @@ public class IndentTest extends ValidationTestCase {
       assertEquals(contact.details.title, "Some Title");
       assertEquals(contact.details.mail, "email@domain.com");
       assertEquals(contact.details.name, "Name Surname");
-      serializer.write(contact, System.out);
+      
       StringWriter buffer = new StringWriter();
       serializer.write(contact, buffer);
       String text = buffer.toString();
-
-      System.out.printf(">>%s<<\n", text);
 
       assertTrue(text.indexOf("     ") > 0); // indents
       assertTrue(text.indexOf('\n') > 0); // line feed
