@@ -83,6 +83,6 @@ class InputPosition implements Position {
     * @return this returns a textual description of the position
     */    
    public String toString() {
-      return String.format("line=%s", getLine());           
+      return String.format("line %s", getLine());           
    }
 }
