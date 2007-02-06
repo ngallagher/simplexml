@@ -341,7 +341,7 @@ final class Scanner {
     */
    private void process(Field field, Annotation type, Map map) {
       Label label = LabelFactory.getInstance(field, type);
-      String name = label.getName();
+      String name = label.getName().toLowerCase();
       
       if(!map.containsKey(name)) { 
          map.put(name, label);

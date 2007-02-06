@@ -33,6 +33,16 @@ package simple.xml.stream;
 public interface InputNode extends Node {
 
    /**
+    * This provides the position of this node within the document.
+    * This allows the user of this node to report problems with
+    * the location within the document, allowing the XML to be
+    * debugged if it does not match the class schema.
+    *
+    * @return this returns the position of the XML read cursor
+    */         
+   public Position getPosition();
+        
+   /**
     * Provides an attribute from the element represented. If an
     * attribute for the specified name does not exist within the
     * element represented then this method will return null.

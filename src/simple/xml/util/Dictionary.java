@@ -20,12 +20,9 @@
 
 package simple.xml.util;
 
-import simple.xml.Root;
-import simple.xml.load.Commit;
 import java.util.AbstractSet;
 import java.util.Iterator;
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * The <code>Dictionary</code> object represents a mapped set of entry
