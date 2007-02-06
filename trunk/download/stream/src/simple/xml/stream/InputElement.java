@@ -63,7 +63,19 @@ class InputElement implements InputNode {
       this.map = new InputNodeMap(this, element);
       this.element = element;
       this.reader = reader;           
-   }        
+   }    
+
+   /**
+    * This provides the position of this node within the document.
+    * This allows the user of this node to report problems with
+    * the location within the document, allowing the XML to be
+    * debugged if it does not match the class schema.
+    *
+    * @return this returns the position of the XML read cursor
+    */      
+   public Position getPosition() {
+      return new InputPosition(element);           
+   }   
 
    /**
     * Returns the name of the node that this represents. This is

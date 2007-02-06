@@ -20,9 +20,9 @@
  
 package simple.xml.util;
 
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.AbstractSet;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -258,7 +258,7 @@ public class Resolver<M extends Match> extends AbstractSet<M> {
     * 
     * @author Niall Gallagher
     */ 
-   private class Cache extends HashMap<String, M> {
+   private class Cache extends LinkedHashMap<String, M> {
 
       /**
        * By default only 1K of resolved matches will be cached.
@@ -274,6 +274,7 @@ public class Resolver<M extends Match> extends AbstractSet<M> {
        *
        * @return this returns true if the entry should be removed
        */ 
+      @Override
       public boolean removeEldestEntry(Map.Entry entry) {
          return size() > MAX_ENTRIES;                                    
       } 

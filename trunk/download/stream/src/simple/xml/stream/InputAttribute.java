@@ -36,6 +36,11 @@ import javax.xml.namespace.QName;
 class InputAttribute implements InputNode {
 
    /**
+    * Represents the source attribute if one was specified.
+    */         
+   private Attribute source;
+        
+   /**
     * Represents the name of this input attribute instance.
     */         
    private String name;
@@ -53,19 +58,21 @@ class InputAttribute implements InputNode {
     * @param source this is the attribute that this will wrap
     */   
    public InputAttribute(Attribute source) {
-      this(source.getName(), source.getValue());
+      this(source, source.getName());
    }        
 
    /**
     * Constructor for the <code>InputAttribute</code> object. This
-    * is used to create an input attribute using the provided name
-    * and value, all other values for this input node will be null.
+    * is used to wrap a an attribute as an input state object. The
+    * attribute can then be used in a similar manner to elements.
     *
-    * @param name this is the name for this attribute object
-    * @param value this is the value for this attribute object
-    */     
-   public InputAttribute(QName name, String value) {
-      this(name.getLocalPart(), value);           
+    * @param source this is the attribute that this will wrap
+    * @param name this is the name of the XML attribute
+    */   
+   private InputAttribute(Attribute source, QName name) {
+      this.name = name.getLocalPart();
+      this.value = source.getValue();
+      this.source = source;      
    }
 
    /**
@@ -79,6 +86,18 @@ class InputAttribute implements InputNode {
    public InputAttribute(String name, String value) {
       this.value = value;
       this.name = name;           
+   }
+
+   /**
+    * This provides the position of this node within the document.
+    * This allows the user of this node to report problems with
+    * the location within the document, allowing the XML to be
+    * debugged if it does not match the class schema.
+    *
+    * @return this returns the position of the XML read cursor
+    */  
+   public Position getPosition() {
+      return new InputPosition(source);           
    }
 
    /**

@@ -20,10 +20,12 @@
 
 package simple.xml.load;
 
-import simple.xml.stream.OutputNode;
+import java.lang.reflect.Field;
+
 import simple.xml.stream.InputNode;
 import simple.xml.stream.NodeMap;
-import java.lang.reflect.Field;
+import simple.xml.stream.OutputNode;
+import simple.xml.stream.Position;
 
 /**
  * The <code>Composite</code> object is used to perform serialization
@@ -217,11 +219,12 @@ final class Composite implements Converter {
     * @throws Exception thrown if the the label object does not exist
     */
    private void readAttribute(InputNode node, Object source, LabelMap map) throws Exception {
+	  Position line = node.getPosition();
       String name = node.getName();
-      Label label = map.remove(name);
+      Label label = map.take(name);
       
       if(label == null) {
-         throw new AttributeException("Attribute '%s' does not exist", name);
+         throw new AttributeException("Attribute '%s' does not exist at %s", name, line);
       }
       read(node, source, label);
    }
@@ -241,11 +244,12 @@ final class Composite implements Converter {
     * @throws Exception thrown if the the label object does not exist
     */
    private void readElement(InputNode node, Object source, LabelMap map) throws Exception {
+	  Position line = node.getPosition();
       String name = node.getName();
-      Label label = map.remove(name);
+      Label label = map.take(name);
       
       if(label == null) {
-         throw new ElementException("Element '%s' does not exist", name);
+         throw new ElementException("Element '%s' does not exist at %s", name, line);
       }
       read(node, source, label);
    }

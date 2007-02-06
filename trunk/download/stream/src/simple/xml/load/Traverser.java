@@ -20,9 +20,10 @@
 
 package simple.xml.load;
 
-import simple.xml.stream.OutputNode;
-import simple.xml.stream.InputNode;
 import simple.xml.Root;
+import simple.xml.stream.InputNode;
+import simple.xml.stream.OutputNode;
+import simple.xml.stream.Position;
 
 /**
  * The <code>Traverser</code> object is used to traverse the XML class
@@ -96,11 +97,12 @@ final class Traverser {
       if(label == null) {
          throw new RootException("No root annotation defined for %s", type);              
       }      
+      Position line = node.getPosition();
       String name = node.getName();
       String root = label.name();
       
       if(!root.equalsIgnoreCase(name)) {
-         throw new RootException("Annotation %s does not match XML element %s", label, name);              
+         throw new RootException("Annotation %s does not match XML element %s at %s", label, name, line);              
       } 
       return value;
    }
@@ -137,7 +139,7 @@ final class Traverser {
       Root label = getRoot(type);
 
       if(label == null) {
-         throw new RootException("No root annotation defined for %s", type.getName());              
+         throw new RootException("No root annotation defined for %s", type);              
       }
       write(node, source, expect, label.name());
    }
