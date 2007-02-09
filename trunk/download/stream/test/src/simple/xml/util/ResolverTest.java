@@ -54,6 +54,10 @@ public class ResolverTest extends ValidationTestCase {
       @Attribute(name="name")
       private String name;
 
+      private ContentResolver() {
+         this.list = new Resolver<ContentType>();              
+      }
+
       public Iterator<ContentType> iterator() {
          return list.iterator();
       }
@@ -135,9 +139,18 @@ public class ResolverTest extends ValidationTestCase {
 
       assertEquals(6, resolver.size());
       resolver.add(new ContentType("/*?/html/*", "text/html"));
-      
       assertEquals(7, resolver.size());
       assertEquals(null, resolver.resolve("/a/b/html/index.jsp"));
       assertEquals("text/html", resolver.resolve("/a/html/index.jsp").value);
+   }
+
+   public void testResolverCache() throws Exception {
+      ContentResolver resolver = new ContentResolver();           
+
+      for(int i = 0; i <= 2000; i++) {
+         resolver.add(new ContentType(String.valueOf(i), String.valueOf(i)));          
+      }
+      assertEquals(resolver.resolve("1").value, "1");
+      assertEquals(resolver.resolve("2000").value, "2000");
    }
 }

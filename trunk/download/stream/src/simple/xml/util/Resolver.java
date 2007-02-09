@@ -266,6 +266,22 @@ public class Resolver<M extends Match> extends AbstractSet<M> {
       private static final int MAX_ENTRIES = 1024;                   
 
       /**
+       * Represents the load capacity for this cache object.
+       */ 
+      private static final float INITIAL_CAPACITY = 0.75f;
+
+      /**
+       * Constructor for the <code>Cache</code> object. This is a
+       * constructor that creates the linked hash map such that 
+       * it will purge the entries that are oldest within the map.
+       *
+       * @param capacity this is the capacity of the cache object
+       */ 
+      public Cache() {      
+         super(MAX_ENTRIES, INITIAL_CAPACITY, false);              
+      }
+      
+      /**
        * This is used to remove the eldest entry from the LRU cache.
        * The eldest entry is removed from the cache if the size of
        * the map grows larger than the maximum entiries permitted.
