@@ -20,12 +20,11 @@
 
 package simple.xml.load;
 
-import java.lang.reflect.Field;
-
 import simple.xml.stream.InputNode;
 import simple.xml.stream.NodeMap;
 import simple.xml.stream.OutputNode;
 import simple.xml.stream.Position;
+import java.lang.reflect.Field;
 
 /**
  * The <code>Composite</code> object is used to perform serialization
