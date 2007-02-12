@@ -20,7 +20,13 @@
 
 package simple.xml.load;
 
-import java.io.File;
+import simple.xml.Serializer;
+import simple.xml.filter.Filter;
+import simple.xml.filter.PlatformFilter;
+import simple.xml.stream.NodeBuilder;
+import simple.xml.stream.InputNode;
+import simple.xml.stream.OutputNode;
+import simple.xml.stream.Format;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -32,14 +38,7 @@ import java.io.StringReader;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
-
-import simple.xml.Serializer;
-import simple.xml.filter.Filter;
-import simple.xml.filter.PlatformFilter;
-import simple.xml.stream.NodeBuilder;
-import simple.xml.stream.InputNode;
-import simple.xml.stream.OutputNode;
-import simple.xml.stream.Format;
+import java.io.File;
 
 /**
  * The <code>Persister</code> object is used to provide an implementation
