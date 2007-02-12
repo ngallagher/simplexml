@@ -20,7 +20,7 @@
 
 package simple.xml.load;
 
-import simple.xml.stream.InputNode
+import simple.xml.stream.InputNode;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
