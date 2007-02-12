@@ -21,7 +21,6 @@
 package simple.xml.load;
 
 import java.lang.reflect.Modifier;
-
 import simple.xml.stream.InputNode;
 import simple.xml.stream.OutputNode;
 

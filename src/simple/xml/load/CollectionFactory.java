@@ -20,12 +20,11 @@
 
 package simple.xml.load;
 
+import simple.xml.stream.InputNode
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.TreeSet;
-
-import simple.xml.stream.InputNode;
 
 /**
  * The <code>CollectionFactory</code> is used to create collection

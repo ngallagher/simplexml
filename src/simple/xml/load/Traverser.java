@@ -20,10 +20,10 @@
 
 package simple.xml.load;
 
-import simple.xml.Root;
 import simple.xml.stream.InputNode;
 import simple.xml.stream.OutputNode;
 import simple.xml.stream.Position;
+import simple.xml.Root;
 
 /**
  * The <code>Traverser</code> object is used to traverse the XML class
