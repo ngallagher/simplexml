@@ -134,7 +134,6 @@ final class CompositeList implements Converter {
          if(!entry.isAssignableFrom(type)) {
             throw new RuntimeException("Type does not match list entry");                     
          }
-         // Will the traversr create a child node for the list parent node???
          root.write(node, item, entry);
       }
    }
