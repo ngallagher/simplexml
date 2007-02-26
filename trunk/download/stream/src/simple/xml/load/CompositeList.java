@@ -132,7 +132,7 @@ final class CompositeList implements Converter {
          Class type = item.getClass();
 
          if(!entry.isAssignableFrom(type)) {
-            throw new RuntimeException("Type does not match list entry");                     
+            throw new PersistenceException("Entry %s does not match %s", type, entry);                     
          }
          root.write(node, item, entry);
       }
