@@ -106,7 +106,7 @@ final class LabelFactory {
        if(label instanceof Attribute) {
           return new Entry(AttributeLabel.class, Attribute.class);
        }
-       throw new RuntimeException("Annotation not supported");
+       throw new PersistenceException("Annotation %s not supported", label);
     }
     
     /**
