@@ -1,0 +1,3 @@
+Added capability to provide custom constructor of serialized types
+Enhanced XML streaming package so that root nodes can be detected
+Updated unit tests to cover changes to XML streaming and filteration
