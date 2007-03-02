@@ -102,6 +102,20 @@ final class NodeWriter {
    }
    
    /**
+    * This method is used to determine if the node is the root 
+    * node for the XML document. The root node is the first node
+    * in the document and has no sibling nodes. This is false
+    * if the node has a parent node or a sibling node.
+    *
+    * @param node this is the node that is check as the root 
+    *
+    * @return true if the node is the root node for the document
+    */
+   public boolean isRoot(OutputNode node) {
+      return stack.bottom() == node;        
+   }
+   
+   /**
     * This is used to determine if the specified node has been 
     * committed. If this returns tre then the node is committed
     * and cannot be used to add further child elements.

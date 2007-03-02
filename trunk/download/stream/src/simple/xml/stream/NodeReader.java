@@ -1,5 +1,5 @@
 /*
- * StateReader.java July 2006
+ * NodeReader.java July 2006
  *
  * Copyright (C) 2006, Niall Gallagher <niallg@users.sf.net>
  *
@@ -26,15 +26,15 @@ import javax.xml.stream.events.XMLEvent;
 import javax.xml.stream.XMLEventReader;
 
 /**
- * The <code>StateReader</code> object is used to read elements from
- * the specified XML event reader. This reads input state objects
+ * The <code>NodeReader</code> object is used to read elements from
+ * the specified XML event reader. This reads input node objects
  * that represent elements within the source XML document. This will
- * allow details to be read using input state objects, as long as
- * the end elements for those input states have not been ended.
+ * allow details to be read using input node objects, as long as
+ * the end elements for those input nodes have not been ended.
  * <p>
- * For example, if an input state represented the root element of a
- * document then that input state could read all elements within the
- * document. However, if the input state represented a child element
+ * For example, if an input node represented the root element of a
+ * document then that input node could read all elements within the
+ * document. However, if the input node represented a child element
  * then it would only be able to read its children.
  *
  * @author Niall Gallagher
@@ -52,8 +52,8 @@ final class NodeReader {
    private InputStack stack;
    
    /**
-    * Constructor for the <code>StateReader</code> object. This is used
-    * to read XML events a input state objects from the event reader.
+    * Constructor for the <code>NodeReader</code> object. This is used
+    * to read XML events a input node objects from the event reader.
     *
     * @param reader this is the event reader for the XML document
     */ 
@@ -63,11 +63,11 @@ final class NodeReader {
    }        
    
    /**
-    * Returns the root input state for the document. This is returned
+    * Returns the root input node for the document. This is returned
     * only if no other elements have been read. Once the root element
     * has been read from the event reader this will return null.
     *
-    * @return this returns the root input state for the document
+    * @return this returns the root input node for the document
     */ 
    public InputNode readRoot() throws Exception {
       if(stack.isEmpty()) {
@@ -75,18 +75,30 @@ final class NodeReader {
       }
       return null;
    }
-
+   
    /**
-    * Returns the next input state from the XML document, if it is a
-    * child element of the specified input state. This essentially
+    * This method is used to determine if this node is the root 
+    * node for the XML document. The root node is the first node
+    * in the document and has no sibling nodes. This is false
+    * if the node has a parent node or a sibling node.
+    * 
+    * @return true if this is the root node within the document
+    */
+   public boolean isRoot(InputNode node) {
+      return stack.bottom() == node;        
+   }
+   
+   /**
+    * Returns the next input node from the XML document, if it is a
+    * child element of the specified input node. This essentially
     * determines whether the end tag has been read for the specified
-    * state, if so then null is returned. If however the specified
-    * state has not had its end tag read then this returns the next
-    * element, if that element is a child of the that state.
+    * node, if so then null is returned. If however the specified
+    * node has not had its end tag read then this returns the next
+    * element, if that element is a child of the that node.
     *
-    * @param from this is the input state to read with 
+    * @param from this is the input node to read with 
     *
-    * @return this returns the next input state from the document
+    * @return this returns the next input node from the document
     */ 
    public InputNode readElement(InputNode from) throws Exception {
       if(!stack.contains(from) && !stack.isEmpty()) {
@@ -128,11 +140,11 @@ final class NodeReader {
     * Read the contents of the characters between the specified XML
     * element tags, if the read is currently at that element. This 
     * allows characters associated with the element to be used. If
-    * the specified state is not the current state, null is returned.
+    * the specified node is not the current node, null is returned.
     *
-    * @param from this is the input state to read the value from
+    * @param from this is the input node to read the value from
     *
-    * @return this returns the characters from the specified state
+    * @return this returns the characters from the specified node
     */ 
    public String readValue(InputNode from) throws Exception {
       StringBuilder value = new StringBuilder();

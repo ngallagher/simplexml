@@ -69,7 +69,21 @@ final class InputStack extends LinkedList<InputNode> {
       }           
       return getLast();
    }
-
+   
+   /**
+    * This is used to acquire the <code>InputNode</code> from the
+    * bottom of the input stack. This is used when the reader wants
+    * to determine the root element for the read XML document.
+    *
+    * @return this returns the node from the bottom of the stack
+    */ 
+   public InputNode bottom() {
+      if(isEmpty()) {
+         return null;              
+      }           
+      return getFirst();           
+   }
+   
    /**
     * This method is used to add an <code>InputNode</code> to the
     * top of the stack. This is used when an element has been read

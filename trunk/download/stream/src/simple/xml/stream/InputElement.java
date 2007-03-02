@@ -87,7 +87,19 @@ class InputElement implements InputNode {
    public String getName() {
       return element.getName().getLocalPart();           
    }
-
+   
+   /**
+    * This method is used to determine if this node is the root 
+    * node for the XML document. The root node is the first node
+    * in the document and has no sibling nodes. This is false
+    * if the node has a parent node or a sibling node.
+    * 
+    * @return true if this is the root node within the document
+    */
+   public boolean isRoot() {
+      return reader.isRoot(this);
+   }
+   
    /**
     * Provides an attribute from the element represented. If an
     * attribute for the specified name does not exist within the

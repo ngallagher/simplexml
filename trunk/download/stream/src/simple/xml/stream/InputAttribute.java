@@ -27,7 +27,7 @@ import javax.xml.namespace.QName;
  * The <code>InputAttribute</code> is used to represent an attribute
  * within an element. Rather than representing an attribute as a
  * name value pair of strings, an attribute is instead represented
- * as an input state, in the same manner as an element. The reason
+ * as an input node, in the same manner as an element. The reason
  * for representing an attribute in this way is such that a uniform
  * means of extracting and parsing values can be used for inputs.
  *
@@ -52,7 +52,7 @@ class InputAttribute implements InputNode {
         
    /**
     * Constructor for the <code>InputAttribute</code> object. This
-    * is used to wrap a an attribute as an input state object. The
+    * is used to wrap a an attribute as an input node object. The
     * attribute can then be used in a similar manner to elements.
     *
     * @param source this is the attribute that this will wrap
@@ -63,7 +63,7 @@ class InputAttribute implements InputNode {
 
    /**
     * Constructor for the <code>InputAttribute</code> object. This
-    * is used to wrap a an attribute as an input state object. The
+    * is used to wrap a an attribute as an input node object. The
     * attribute can then be used in a similar manner to elements.
     *
     * @param source this is the attribute that this will wrap
@@ -118,6 +118,17 @@ class InputAttribute implements InputNode {
     */   
    public String getValue() {
       return value;
+   }
+   
+   /**
+    * This method is used to determine if this node is the root 
+    * node for the XML document. This will return false as this 
+    * node can never be the root node because it is an attribute.
+    * 
+    * @return this will always return false for attribute nodes
+    */
+   public boolean isRoot() {
+      return false;
    }
    
    /**

@@ -1,5 +1,5 @@
 /*
- * OutputState.java July 2006
+ * OutputNode.java July 2006
  *
  * Copyright (C) 2006, Niall Gallagher <niallg@users.sf.net>
  *
@@ -21,14 +21,24 @@
 package simple.xml.stream;
 
 /**
- * The <code>OutputState</code> object is used to represent a cursor
+ * The <code>OutputNode</code> object is used to represent a cursor
  * which can be used to write XML elements and attributes. Each of
- * the output state objects represents a element, and can be used 
+ * the output node objects represents a element, and can be used 
  * to add attributes to that element as well as child elements.
  *
  * @author Niall Gallagher
  */ 
 public interface OutputNode extends Node {
+   
+   /**
+    * This method is used to determine if this node is the root 
+    * node for the XML document. The root node is the first node
+    * in the document and has no sibling nodes. This is false
+    * if the node has a parent node or a sibling node.
+    * 
+    * @return true if this is the root node within the document
+    */
+   public boolean isRoot();
    
    /**
     * This returns a <code>NodeMap</code> which can be used to add
