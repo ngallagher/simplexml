@@ -32,7 +32,7 @@ import java.util.Map;
  * <pre>
  * 
  *    &lt;xml version="1.0"&gt;
- *    &lt;example class="some.example.Type"&gt;
+ *    &lt;example class="some.example.Demo"&gt;
  *       &lt;integer&gt;2&lt;/integer&gt;
  *    &lt;/example&gt;
  *    
@@ -40,7 +40,7 @@ import java.util.Map;
  * The above example shows how the default strategy augments elements
  * with "class" attributes that describe the type that should be used
  * to instantiate a field when an object is deserialized. So looking at
- * the above example the root element would be a "some.example.Type".
+ * the above example the root element would be a "some.example.Demo".
  * <p>
  * Custom <code>Strategy</code> implementations give the persister a
  * chance to intercept the class loading and type resolution for XML
