@@ -4,6 +4,9 @@ import java.io.StringReader;
 import java.util.HashMap;
 
 import junit.framework.TestCase;
+import simple.xml.filter.EnvironmentFilter;
+import simple.xml.filter.SystemFilter;
+import simple.xml.filter.Filter;
 import simple.xml.Attribute;
 import simple.xml.Element;
 import simple.xml.Root;
@@ -85,5 +88,28 @@ public class FilterTest extends TestCase {
       assertEquals(entry.constant, "some constant");      
       assertTrue(entry.text.indexOf(entry.name) > 0);
       assertTrue(entry.text.indexOf(entry.path) > 0);           
+   }
+
+   public void testEnvironmentFilter() throws Exception {
+      Filter filter = new EnvironmentFilter(null);           
+      Persister persister = new Persister(filter);
+      Entry entry = persister.read(Entry.class, new StringReader(ENTRY));
+      
+      assertEquals(entry.number, 1234);
+      assertEquals(entry.bool, true);
+      assertEquals(entry.name, "${example.name}");
+      assertEquals(entry.path, "${example.path}");
+
+      Filter systemFilter = new SystemFilter();
+      Filter environmentFilter = new EnvironmentFilter(systemFilter);
+      Persister environmentPersister = new Persister(environmentFilter);
+      Entry secondEntry = environmentPersister.read(Entry.class, new StringReader(ENTRY));
+      
+      assertEquals(secondEntry.number, 1234);
+      assertEquals(secondEntry.bool, true);
+      assertEquals(secondEntry.name, "some name");
+      assertEquals(secondEntry.path, "/some/path");
+      assertEquals(secondEntry.constant, "some constant");      
+      
    }
 }
