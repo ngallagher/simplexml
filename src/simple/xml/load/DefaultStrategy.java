@@ -104,14 +104,14 @@ final class DefaultStrategy implements Strategy {
     * @throws Exception thrown if the class cannot be resolved
     */
    public Type getElement(Class field, NodeMap node, Map map) throws Exception {
-	  Node entry = node.remove(label);
-	      
-	  if(entry == null) {
-	     return null;
-	  }
-	  String name = entry.getValue();
-	  Class type = Class.forName(name);
-	      
+      Node entry = node.remove(label);
+         
+      if(entry == null) {
+         return null;
+      }
+      String name = entry.getValue();
+      Class type = Class.forName(name);
+         
       return new DefaultType(type);  
    }
    
