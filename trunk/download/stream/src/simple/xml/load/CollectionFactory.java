@@ -75,11 +75,12 @@ final class CollectionFactory extends Factory {
    }     
 
    /**
-    * This creates a <code>Collection</code> instance from the class
+    * This creates a <code>Collection</code> instance from the type
     * provided. If the type provided is abstract or an interface then
-    * a suitable match is searched from within the Java Collections
-    * framework. If the type is concrete and a collection then its
-    * default no argument constructor is used to create the instance.
+    * this throws an exception to indicate that the type can not be 
+    * used to represent the field value. Also, if the type class is 
+    * not a collection this will throw an exception. If however the 
+    * type class is suitable, the type will create an instance.
     * 
     * @param type the type used to instantiate the collection
     * 

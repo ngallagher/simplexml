@@ -58,17 +58,17 @@ public interface Strategy {
    /**
     * This is used to resolve and load the root class type. To perform
     * the resolution this method is given the root node map for the
-    * XML document. This is separate to the <code>readElement</code>
+    * XML document. This is separate to the <code>getElement</code>
     * because the root element may contain details like the location
     * of the byte codes, much like the RMI codebase annotation, or
     * the version of the package for example "some.package.v2". This 
-    * must return null if a class cannot be resolved.  
+    * must return null if a type cannot be resolved.  
     *  
     * @param field this is the type of the root element expected
     * @param node this is the node map used to resolve an override
     * @param map this is used to maintain contextual information
     * 
-    * @return returns the class that should be used for the object
+    * @return the type that should be used to create a new instance
     * 
     * @throws Exception thrown if the class cannot be resolved
     */
@@ -87,7 +87,7 @@ public interface Strategy {
     * @param node this is the node map used to resolve an override
     * @param map this is used to maintain contextual information
     * 
-    * @return returns the class that should be used for the object
+    * @return the type that should be used to create a new instance
     * 
     * @throws Exception thrown if the class cannot be resolved
     */

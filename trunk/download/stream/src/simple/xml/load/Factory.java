@@ -30,8 +30,9 @@ import simple.xml.stream.OutputNode;
  * type of factory is to make use of the <code>Strategy</code> object
  * to determine the type of the field value. The strategy class must be 
  * assignable to the field class type, that is, it must extend it or
- * implement it if it represents an interface. If the strategy class is
- * null then the subclass implementation determines the type.
+ * implement it if it represents an interface. If the strategy returns
+ * a null <code>Type</code> then the subclass implementation determines 
+ * the type used to populate the object field value.
  * 
  * @author Niall Gallagher
  */
@@ -66,8 +67,8 @@ abstract class Factory {
     * If the node provided is an element then this checks for a  
     * specific class override using the <code>Strategy</code> object.
     * If the strategy cannot resolve a class then this will return 
-    * null. If the resolved class is not assignable to the field 
-    * then this will thrown an exception.
+    * null. If the resolved <code>Type</code> is not assignable to 
+    * the field then this will thrown an exception.
     * 
     * @param node this is the node used to search for the override
     * 
