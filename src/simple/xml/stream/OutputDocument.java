@@ -86,7 +86,19 @@ final class OutputDocument implements OutputNode {
    public String getValue() throws Exception {
       return value;
    }
-
+   
+   /**
+    * This method is used to determine if this node is the root 
+    * node for the XML document. The root node is the first node
+    * in the document and has no sibling nodes. This will return
+    * true although the codument node is not strictly the root.
+    * 
+    * @return returns true although this is not really a root
+    */
+   public boolean isRoot() {
+      return true;
+   }
+   
    /**
     * This method is used for convinience to add an attribute node 
     * to the attribute <code>NodeMap</code>. The attribute added

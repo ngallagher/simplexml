@@ -1,5 +1,5 @@
 /*
- * InputState.java July 2006
+ * InputNode.java July 2006
  *
  * Copyright (C) 2006, Niall Gallagher <niallg@users.sf.net>
  *
@@ -21,17 +21,27 @@
 package simple.xml.stream;
 
 /**
- * The <code>InputState</code> object represents an iterator for the
- * elements within an element. This allows the input state object to
+ * The <code>InputNode</code> object represents an iterator for the
+ * elements within an element. This allows the input node object to
  * become a self contained iterator for an element and its children.
- * Each child taken from the input state object, is itself an input
- * state, can can be used to exlpore its sub elements without having
+ * Each child taken from the input node object, is itself an input
+ * node, and can be used to exlpore its sub elements without having
  * any affect on its outer elements.
  *
  * @author Niall Gallagher
  */ 
 public interface InputNode extends Node {
 
+   /**
+    * This method is used to determine if this node is the root 
+    * node for the XML document. The root node is the first node
+    * in the document and has no sibling nodes. This is false
+    * if the node has a parent node or a sibling node.
+    * 
+    * @return true if this is the root node within the document
+    */
+   public boolean isRoot();
+   
    /**
     * This provides the position of this node within the document.
     * This allows the user of this node to report problems with
@@ -67,7 +77,7 @@ public interface InputNode extends Node {
     * one exists. If all children have been read, or if there are
     * no child elements for this element then this returns null.
     *
-    * @return this returns an input state for the next child
+    * @return this returns an input node for the next child
     *
     * @exception Exception thrown if there was a parse error
     */ 

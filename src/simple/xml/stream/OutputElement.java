@@ -87,7 +87,19 @@ class OutputElement implements OutputNode {
    public String getValue() {
       return value;
    }
-
+   
+   /**
+    * This method is used to determine if this node is the root 
+    * node for the XML document. The root node is the first node
+    * in the document and has no sibling nodes. This is false
+    * if the node has a parent node or a sibling node.
+    * 
+    * @return true if this is the root node within the document
+    */
+   public boolean isRoot() {
+      return writer.isRoot(this);
+   }
+   
    /**
     * This returns a <code>NodeMap</code> which can be used to add
     * nodes to the element before that element has been committed. 
