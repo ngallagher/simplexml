@@ -7,6 +7,8 @@ import simple.xml.Serializer;
 import simple.xml.Attribute;
 import simple.xml.Element;
 import simple.xml.Root;
+
+import java.lang.reflect.Constructor;
 import java.util.Map;
 
 public class StrategyTest extends TestCase {
@@ -56,29 +58,32 @@ public class StrategyTest extends TestCase {
          this.test = test;              
       }
 
-      public Class readRoot(Class type, NodeMap root, Map map) throws Exception {
+      public Type getRoot(Class type, NodeMap root, Map map) throws Exception {
          readRootCount++;
-         return readElement(type, root, map);              
+         return getElement(type, root, map);              
       }
 
-      public Class readElement(Class type, NodeMap node, Map map) throws Exception {
+      public Type getElement(Class field, NodeMap node, Map map) throws Exception {
          Node value = node.remove(ELEMENT_NAME);
 
          if(readRootCount != 1) {
             test.assertTrue("Root must only be read once", false);                 
          }         
-         if(value != null) {
-            return Class.forName(value.getValue());
+         if(value == null) {
+        	 return null;
          }
-         return null;
+         String name = value.getValue();
+         Class type = Class.forName(name);
+         
+         return new SimpleType(type);
       }         
 
-      public void writeRoot(Class field, Object value, NodeMap root, Map map) throws Exception {                       
+      public void setRoot(Class field, Object value, NodeMap root, Map map) throws Exception {                       
          writeRootCount++;              
-         writeElement(field, value, root, map);              
+         setElement(field, value, root, map);              
       }              
 
-      public void writeElement(Class field, Object value, NodeMap node, Map map) throws Exception {
+      public void setElement(Class field, Object value, NodeMap node, Map map) throws Exception {
          if(writeRootCount != 1) {
             test.assertTrue("Root must be written only once", false);                 
          }                 
@@ -86,6 +91,32 @@ public class StrategyTest extends TestCase {
             node.put(ELEMENT_NAME, value.getClass().getName());
          }            
       }
+   }
+   
+   public static class SimpleType implements Type{
+	   
+	   private Class type;
+	   
+	   public SimpleType(Class type) {
+		   this.type = type;
+	   }
+	   
+	   public Object getInstance() throws Exception {
+		   return getInstance(type);
+	   }
+
+       private Object getInstance(Class type) throws Exception {
+		   Constructor method = type.getDeclaredConstructor();
+
+		   if(!method.isAccessible()) {
+		      method.setAccessible(true);              
+		   }
+		   return method.newInstance();   
+	   }   
+
+	   public Class getType() {
+		  return type;
+	   } 
    }
 
    public void testExampleStrategy() throws Exception {    

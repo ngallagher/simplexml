@@ -75,12 +75,14 @@ abstract class Factory {
     * 
     * @throws Exception if the override type is not compatible
     */
-   public Class getOverride(InputNode node) throws Exception {
-      Class type = getConversion(node);
+   public Type getOverride(InputNode node) throws Exception {
+      Type type = getConversion(node);      
 
       if(type != null) { 
-         if(!isCompatible(field, type)) {
-            throw new InstantiationException("Type %s is not compatible with %s", type, field);              
+    	 Class real = type.getType();
+    	 
+         if(!isCompatible(field, real)) {
+            throw new InstantiationException("Type %s is not compatible with %s", real, field);              
          }
       }         
       return type; 
@@ -118,7 +120,7 @@ abstract class Factory {
     * 
     * @throws Exception thrown if the override class cannot be loaded    
     */ 
-   public Class getConversion(InputNode node) throws Exception {
+   public Type getConversion(InputNode node) throws Exception {
       return source.getOverride(field, node);
    }
 

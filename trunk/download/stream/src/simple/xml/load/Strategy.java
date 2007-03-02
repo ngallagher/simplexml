@@ -72,7 +72,7 @@ public interface Strategy {
     * 
     * @throws Exception thrown if the class cannot be resolved
     */
-   public Class readRoot(Class field, NodeMap node, Map map) throws Exception;
+   public Type getRoot(Class field, NodeMap node, Map map) throws Exception;
 
    /**
     * This is used to resolve and load a class for the given element.
@@ -91,7 +91,7 @@ public interface Strategy {
     * 
     * @throws Exception thrown if the class cannot be resolved
     */
-   public Class readElement(Class field, NodeMap node, Map map) throws Exception;
+   public Type getElement(Class field, NodeMap node, Map map) throws Exception;
 
    /**
     * This is used to attach attributes values to the given node
@@ -109,7 +109,7 @@ public interface Strategy {
     * 
     * @throws Exception thrown if the details cannot be set
     */
-   public void writeRoot(Class field, Object value, NodeMap node, Map map) throws Exception;
+   public void setRoot(Class field, Object value, NodeMap node, Map map) throws Exception;
 
    /**
     * This is used to attach attribute values to the given node
@@ -125,6 +125,6 @@ public interface Strategy {
     * 
     * @throws Exception thrown if the details cannot be set
     */
-   public void writeElement(Class field, Object value, NodeMap node, Map map) throws Exception;
+   public void setElement(Class field, Object value, NodeMap node, Map map) throws Exception;
 
 }

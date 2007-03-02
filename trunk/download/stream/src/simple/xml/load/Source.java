@@ -139,13 +139,13 @@ final class Source {
     * 
     * @throws Exception thrown if the class cannot be resolved  
     */
-   public Class getOverride(Class type, InputNode node) throws Exception {
+   public Type getOverride(Class type, InputNode node) throws Exception {
       NodeMap map = node.getAttributes();
       
       if(read++ == 0) {
-         return strategy.readRoot(type, map, table);
+         return strategy.getRoot(type, map, table);
       }           
-      return strategy.readElement(type, map, table);
+      return strategy.getElement(type, map, table);
    } 
 
    /**    
@@ -165,9 +165,9 @@ final class Source {
       NodeMap map = node.getAttributes();
       
       if(write++ == 0) {
-         strategy.writeRoot(type, value, map, table);              
+         strategy.setRoot(type, value, map, table);              
       }           
-      strategy.writeElement(type, value, map, table);
+      strategy.setElement(type, value, map, table);
    }
    
    /**

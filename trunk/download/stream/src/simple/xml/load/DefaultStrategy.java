@@ -84,8 +84,8 @@ final class DefaultStrategy implements Strategy {
     * 
     * @throws Exception thrown if the class cannot be resolved
     */
-   public Class readRoot(Class field, NodeMap node, Map map) throws Exception {
-      return readElement(field, node, map);
+   public Type getRoot(Class field, NodeMap node, Map map) throws Exception {
+      return getElement(field, node, map);
    }  
    
    /**
@@ -103,13 +103,16 @@ final class DefaultStrategy implements Strategy {
     * 
     * @throws Exception thrown if the class cannot be resolved
     */
-   public Class readElement(Class field, NodeMap node, Map map) throws Exception {
-      Node entry = node.remove(label);
-      
-      if(entry != null) {
-         return Class.forName(entry.getValue());              
-      }      
-      return null;             
+   public Type getElement(Class field, NodeMap node, Map map) throws Exception {
+	  Node entry = node.remove(label);
+	      
+	  if(entry == null) {
+	     return null;
+	  }
+	  String name = entry.getValue();
+	  Class type = Class.forName(name);
+	      
+      return new DefaultType(type);  
    }
    
    /**
@@ -126,8 +129,8 @@ final class DefaultStrategy implements Strategy {
     * 
     * @throws Exception thrown if the details cannot be set
     */
-   public void writeRoot(Class field, Object value, NodeMap node, Map map) throws Exception {
-      writeElement(field, value, node, map);
+   public void setRoot(Class field, Object value, NodeMap node, Map map) throws Exception {
+      setElement(field, value, node, map);
    }   
    
    /**
@@ -144,7 +147,7 @@ final class DefaultStrategy implements Strategy {
     * 
     * @throws Exception thrown if the details cannot be set
     */   
-   public void writeElement(Class field, Object value, NodeMap node, Map map) throws Exception {
+   public void setElement(Class field, Object value, NodeMap node, Map map) throws Exception {
       Class type = value.getClass();
       
       if(type != field) {

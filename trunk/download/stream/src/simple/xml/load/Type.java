@@ -20,23 +20,18 @@
 
 package simple.xml.load;
 
-/*
-      Node entry = node.remove(label);
-      
-      if(entry == null) {
-    	  return null;
-      }
-      String name = entry.getValue();
-      Class type = Class.forName(name);
-      
-      return new Entry(type);  
-*/
 /**
  * The <code>Type</code> object describes a type that is represented 
  * by an XML element. This enables a <code>Strategy</code> to define
  * not only the type an element represents, but also defines how that
- * type can be created. This allows object that do not have default
+ * type can be created. This allows objects that do not have default
  * no argument constructors to be created during deserialization.
+ * <p>
+ * Typically the <code>getInstance</code> method acts as a proxy to 
+ * the classes new instance method, which takes no arguments. Simply
+ * delegating to <code>Class.newInstance</code> will sometimes not
+ * be sufficient, is such cases reflectively acquiring the classes
+ * constructor may be required in order to pass arguments.
  * 
  * @author Niall Gallagher
  * 

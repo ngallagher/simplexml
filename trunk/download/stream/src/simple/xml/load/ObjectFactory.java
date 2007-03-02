@@ -60,15 +60,15 @@ final class ObjectFactory extends Factory {
     * @return this returns an instance of the resulting type
     */         
    public Object getInstance(InputNode node) throws Exception {
-      Class type = getOverride(node);
+      Type type = getOverride(node);
     
       if(type == null) { 
-         type = field;                           
-      } 
-      if(!isInstantiable(type)) {
-         throw new InstantiationException("Cannot instantiate %s", field);              
+         if(!isInstantiable(field)) {
+            throw new InstantiationException("Cannot instantiate %s", field);              
+         }
+         return getInstance(field);
       }
-      return getInstance(type);
+      return type.getInstance();
    }
 
    /**
