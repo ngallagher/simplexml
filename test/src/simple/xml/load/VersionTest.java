@@ -7,6 +7,8 @@ import simple.xml.Serializer;
 import simple.xml.Attribute;
 import simple.xml.Element;
 import simple.xml.Root;
+
+import java.lang.reflect.Constructor;
 import java.util.Map;
 
 public class VersionTest extends TestCase {
@@ -87,40 +89,68 @@ public class VersionTest extends TestCase {
 
       private String version;           
 
-      public Class readRoot(Class type, NodeMap root, Map map) throws Exception {
+      public Type getRoot(Class field, NodeMap root, Map map) throws Exception {
          Node version = root.get(VERSION_ATTRIBUTE);                       
 
          if(version != null){
             map.put(VERSION_ATTRIBUTE, version.getValue());
          }
-         return readElement(type, root, map);
+         return getElement(field, root, map);
       }
 
-      public Class readElement(Class type, NodeMap node, Map map) throws Exception {
-         String value = type.getName() + map.get(VERSION_ATTRIBUTE);
+      public Type getElement(Class field, NodeMap node, Map map) throws Exception {
+         String value = field.getName() + map.get(VERSION_ATTRIBUTE);
      
          try {    
-            return Class.forName(value);
+            Class type = Class.forName(value);
+            
+            return new SimpleType(type);
          } catch(ClassNotFoundException e) {
             return null;                 
          }            
       }         
 
-      public void writeRoot(Class field, Object value, NodeMap root, Map map) throws Exception {
+      public void setRoot(Class field, Object value, NodeMap root, Map map) throws Exception {
          Class type = value.getClass();
          
          if(Versionable.class.isAssignableFrom(type)) {
             Versionable versionable = (Versionable)value;
             map.put(VERSION_ATTRIBUTE, String.valueOf(versionable.getVersion()));
          }              
-         writeElement(field, value, root, map);
+         setElement(field, value, root, map);
       }              
 
-      public void writeElement(Class field, Object value, NodeMap node, Map map) throws Exception {
+      public void setElement(Class field, Object value, NodeMap node, Map map) throws Exception {
          node.put(VERSION_ATTRIBUTE, (String)map.get(VERSION_ATTRIBUTE));
       }
    }
+   
+   public static class SimpleType implements Type{
+	   
+	   private Class type;
+	   
+	   public SimpleType(Class type) {
+		   this.type = type;
+	   }
+	   
+	   public Object getInstance() throws Exception {
+		   return getInstance(type);
+	   }
 
+       private Object getInstance(Class type) throws Exception {
+		   Constructor method = type.getDeclaredConstructor();
+
+		   if(!method.isAccessible()) {
+		      method.setAccessible(true);              
+		   }
+		   return method.newInstance();   
+	   }   
+
+	   public Class getType() {
+		  return type;
+	   } 
+   }
+   
    public void testVersion1() throws Exception {    
       Strategy strategy = new VersionStrategy();           
       Serializer persister = new Persister(strategy);
