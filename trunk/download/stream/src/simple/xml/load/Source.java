@@ -33,7 +33,7 @@ import java.util.Map;
  * or deserialization. This maintains the <code>Strategy</code> as
  * well as the <code>Filter</code> used to replace template variables.
  * When serialization and deserialization are performed the source is
- * required as tt acts as a factory for objects used in the process.
+ * required as it acts as a factory for objects used in the process.
  * <p>
  * For serialization the source object is required as a factory for
  * <code>Schema</code> objects, which are used to visit each field 
@@ -82,16 +82,6 @@ final class Source {
     * This is used to store the source context attribute values.
     */ 
    private Map table;
-
-   /**
-    * This counts the number of elements that have been read.
-    */ 
-   private int read;
-
-   /**
-    * This counts the number of elements that have been written.
-    */
-   private int write;
    
    /**
     * Constructor for the <code>Source</code> object. This is used to
@@ -135,14 +125,14 @@ final class Source {
     * @param type this is the type of the root element expected
     * @param node this is the element used to resolve an override
     * 
-    * @return returns the class that should be used for the object
+    * @return returns the type that should be used for the object
     * 
     * @throws Exception thrown if the class cannot be resolved  
     */
    public Type getOverride(Class type, InputNode node) throws Exception {
       NodeMap map = node.getAttributes();
       
-      if(read++ == 0) {
+      if(node.isRoot()) {
          return strategy.getRoot(type, map, table);
       }           
       return strategy.getElement(type, map, table);
@@ -164,7 +154,7 @@ final class Source {
    public void setOverride(Class type, Object value, OutputNode node) throws Exception {
       NodeMap map = node.getAttributes();
       
-      if(write++ == 0) {
+      if(node.isRoot()) {
          strategy.setRoot(type, value, map, table);              
       }           
       strategy.setElement(type, value, map, table);
