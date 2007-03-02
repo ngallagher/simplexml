@@ -39,6 +39,7 @@ public class NodeReaderTest extends TestCase {
    public void testSmallSource() throws Exception {
       InputNode event = NodeBuilder.read(new StringReader(SMALL_SOURCE));
 
+      assertTrue(event.isRoot());
       assertEquals("override", event.getName());         
       assertEquals("12", event.getAttribute("id").getValue());
       assertEquals("true", event.getAttribute("flag").getValue());
@@ -49,13 +50,16 @@ public class NodeReaderTest extends TestCase {
       assertEquals("true", list.get("flag").getValue());
 
       InputNode text = event.getNext();
-
+      
+      assertFalse(text.isRoot());
+      assertTrue(event.isRoot());
       assertEquals("text", text.getName());
       assertEquals("entry text", text.getValue());
       assertEquals(null, text.getNext());
       
       InputNode name = event.getNext();
       
+      assertFalse(name.isRoot());
       assertEquals("name", name.getName());
       assertEquals("some name", name.getValue());
       assertEquals(null, name.getNext());
@@ -63,6 +67,8 @@ public class NodeReaderTest extends TestCase {
       
       InputNode third = event.getNext();
       
+      assertTrue(event.isRoot());
+      assertFalse(third.isRoot());
       assertEquals("third", third.getName());
       assertEquals("text", text.getName());
       assertEquals(null, text.getNext());
@@ -74,6 +80,7 @@ public class NodeReaderTest extends TestCase {
    public void testLargeSource() throws Exception {
       InputNode event = NodeBuilder.read(new StringReader(LARGE_SOURCE));
 
+      assertTrue(event.isRoot());
       assertEquals("root", event.getName());         
       assertEquals("2.1", event.getAttribute("version").getValue());
       assertEquals("234", event.getAttribute("id").getValue());
@@ -85,6 +92,7 @@ public class NodeReaderTest extends TestCase {
 
       InputNode list = event.getNext();
 
+      assertFalse(list.isRoot());
       assertEquals("list", list.getName());
       assertEquals("sorted", list.getAttribute("type").getValue());
       
