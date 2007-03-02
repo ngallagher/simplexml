@@ -3,6 +3,7 @@ package simple.xml.load;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Collection;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.Set;
@@ -206,15 +207,47 @@ public class CollectionTest extends TestCase {
       public Iterator<Entry> iterator() {
          return list.iterator();  
       }
+   }
+
+   @Root(name="test")
+   public static class InvalidList {
+
+      @ElementList(name="list", type=Entry.class)
+      private String list;
+
+      @Attribute(name="name")
+      private String name;      
    } 
 
-   private abstract class AbstractList extends ArrayList {
+   @Root(name="test")
+   public static class UnknownCollectionList implements Iterable<Entry> {
+
+      @ElementList(name="list", type=Entry.class)
+      private UnknownCollection<Entry> list;
+
+      @Attribute(name="name")
+      private String name;   
+
+      public Iterator<Entry> iterator() {
+         return list.iterator();  
+      }
+   } 
+   
+   private abstract class AbstractList<T> extends ArrayList<T> {
 
       public AbstractList() {
          super();              
       }        
    }
-        
+   
+   private abstract class UnknownCollection<T> implements Collection<T> {
+
+      public UnknownCollection() {
+         super();              
+      }           
+   }
+   
+   
 	private Persister serializer;
 
 	public void setUp() {
@@ -442,6 +475,28 @@ public class CollectionTest extends TestCase {
    }  
 
 
+   public void testInvalidList() throws Exception {    
+      boolean success = false;
+
+      try {      
+         InvalidList set = serializer.read(InvalidList.class, LIST);
+      } catch(InstantiationException e) {
+         success = true;              
+      }         
+      assertTrue(success);
+   }  
+
+   public void testUnknownCollectionList() throws Exception {    
+      boolean success = false;
+
+      try {      
+         UnknownCollectionList set = serializer.read(UnknownCollectionList.class, LIST);
+      } catch(InstantiationException e) {
+         success = true;              
+      }         
+      assertTrue(success);
+   }  
+
    public void testAbstractList() throws Exception {    
       boolean success = false;
 
@@ -452,7 +507,7 @@ public class CollectionTest extends TestCase {
       }         
       assertTrue(success);
    }  
-
+   
    public void testNotACollection() throws Exception {    
       boolean success = false;
 
