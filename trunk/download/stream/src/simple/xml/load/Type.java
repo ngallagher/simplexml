@@ -38,22 +38,22 @@ package simple.xml.load;
  * @see simple.xml.load.Strategy
  */
 public interface Type {
-	
-	/**
-	 * This method is used to acquire an instance of the type that
-	 * is defined by this object. If for some reason the type can
-	 * not be instantiated an exception is thrown from this.
-	 * 
-	 * @return an instance of the type this object represents
-	 */
-	public Object getInstance() throws Exception;
-	
-	/**
-	 * This is the type of the object instance that will be created
-	 * by the <code>getInstance</code> method. This allows the 
-	 * deserialization process to perform checks against the field.
-	 * 
-	 * @return the type of the object that will be instantiated
-	 */
-	public Class getType();
+   
+   /**
+    * This method is used to acquire an instance of the type that
+    * is defined by this object. If for some reason the type can
+    * not be instantiated an exception is thrown from this.
+    * 
+    * @return an instance of the type this object represents
+    */
+   public Object getInstance() throws Exception;
+   
+   /**
+    * This is the type of the object instance that will be created
+    * by the <code>getInstance</code> method. This allows the 
+    * deserialization process to perform checks against the field.
+    * 
+    * @return the type of the object that will be instantiated
+    */
+   public Class getType();
 }
