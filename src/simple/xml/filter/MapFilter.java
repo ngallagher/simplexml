@@ -79,10 +79,10 @@ public class MapFilter implements Filter {
     * @return this will return the replacement text resolved
     */
    public String replace(String text) {
-      String value = (String)map.get(text);
+      Object value = map.get(text);
 
       if(value != null) {
-         return value;                       
+         return value.toString();                       
       }
       if(filter != null) {
          return filter.replace(text);              
