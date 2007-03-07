@@ -473,7 +473,7 @@ public class Persister implements Serializer {
     * @throws Exception if the schema for the object is not valid
     */   
    public void write(Object source, OutputStream out) throws Exception {
-	   write(source, out, "utf-8");
+      write(source, out, "utf-8");
    }
    
    /**
@@ -492,7 +492,7 @@ public class Persister implements Serializer {
     * @throws Exception if the schema for the object is not valid
     */  
    public void write(Object source, OutputStream out, String charset) throws Exception {
-	   write(source, new OutputStreamWriter(out, charset));
+      write(source, new OutputStreamWriter(out, charset));
    }
    
    /**
@@ -510,6 +510,6 @@ public class Persister implements Serializer {
     * @throws Exception if the schema for the object is not valid
     */   
    public void write(Object source, Writer out) throws Exception {
-	   write(source, NodeBuilder.write(out, format));
+      write(source, NodeBuilder.write(out, format));
    }
 }
