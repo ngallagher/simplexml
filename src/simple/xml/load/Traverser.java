@@ -102,7 +102,7 @@ final class Traverser {
       String root = label.name();
       
       if(!root.equalsIgnoreCase(name)) {
-         throw new RootException("Annotation %s does not match XML element %s at %s", label, name, line);              
+         throw new RootException("Annotation %s does not match element '%s' at %s", label, name, line);              
       } 
       return value;
    }
