@@ -169,7 +169,7 @@ final class Composite implements Converter {
       for(String name : list) {
          readAttribute(node.getAttribute(name), source, map);
       }  
-      validate(map, source);
+      validate(node, map, source);
    }
 
    /**
@@ -200,7 +200,7 @@ final class Composite implements Converter {
          }
          readElement(child, source, map);
       } 
-      validate(map, source);
+      validate(node, map, source);
    }
    
    /**
@@ -273,10 +273,11 @@ final class Composite implements Converter {
       Object object = reader.read(node);
     
       if(object == null) { 
+         Position line = node.getPosition();
          Class type = source.getClass();
          
          if(label.isRequired()) {              
-            throw new FieldRequiredException("Empty value for %s in %s", label, type);
+            throw new FieldRequiredException("Empty value for %s in %s at %s", label, type, line);
          }
       } else {         
          field.set(source, object);
@@ -296,13 +297,13 @@ final class Composite implements Converter {
     * 
     * @throws Exception thrown if an XML property was not declared
     */
-   private void validate(LabelMap map, Object source) throws Exception {
+   private void validate(InputNode node, LabelMap map, Object source) throws Exception {
+      Position line = node.getPosition();
       Class type = source.getClass();
-      String name = type.getName();
       
       for(Label label : map) {
          if(label.isRequired()) {
-            throw new FieldRequiredException("Unable to satisfy %s for %s", label,  name);
+            throw new FieldRequiredException("Unable to satisfy %s for %s at %s", label, type, line);
          }
       }      
    }

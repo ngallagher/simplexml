@@ -95,7 +95,7 @@ final class Primitive implements Converter {
       String value = node.getValue();
       
       if(value == null) {
-         throw new ElementException("Element %s is empty at %s", name, line);              
+         throw new ElementException("Element '%s' is empty at %s", name, line);              
       } 
       String text = root.getProperty(value);
       return factory.getInstance(text);

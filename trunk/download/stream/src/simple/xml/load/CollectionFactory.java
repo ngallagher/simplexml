@@ -92,7 +92,7 @@ final class CollectionFactory extends Factory {
       Class real = type.getType();
 
       if(!isInstantiable(real)) {
-         throw new InstantiationException("Could not instantiate class %s", real);
+         throw new InstantiationException("Could not instantiate %s", real);
       }
       if(!isCollection(real)) {
          throw new InstantiationException("Type is not a collection %s", real);              
