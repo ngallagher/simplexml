@@ -218,7 +218,7 @@ final class Composite implements Converter {
     * @throws Exception thrown if the the label object does not exist
     */
    private void readAttribute(InputNode node, Object source, LabelMap map) throws Exception {
-	  Position line = node.getPosition();
+     Position line = node.getPosition();
       String name = node.getName();
       Label label = map.take(name);
       
@@ -243,7 +243,7 @@ final class Composite implements Converter {
     * @throws Exception thrown if the the label object does not exist
     */
    private void readElement(InputNode node, Object source, LabelMap map) throws Exception {
-	  Position line = node.getPosition();
+      Position line = node.getPosition();
       String name = node.getName();
       Label label = map.take(name);
       
