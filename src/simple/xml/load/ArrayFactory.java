@@ -36,8 +36,10 @@ import java.util.TreeSet;
  * 
  * @author Niall Gallagher
  */ 
-final class ArrayFactory extends Factory {
+final class ArrayFactory {
 
+   private Class field;
+        
    /**
     * Constructor for the <code>ArrayFactory</code> object. This
     * is given the field type as taken from the owning object. The
@@ -45,8 +47,8 @@ final class ArrayFactory extends Factory {
     * 
     * @param field this is the class for the owning object
     */
-   public ArrayFactory(Source root, Class field) {
-      super(root, field);           
+   public ArrayFactory(Class field) {
+      this.field = field;           
    }        
 
    /**
@@ -59,81 +61,10 @@ final class ArrayFactory extends Factory {
     * 
     * @return this is the collection instantiated for the field
     */         
-   public Array getInstance(InputNode node) throws Exception {
-      Type type = getOverride(node);
-     
-      if(type != null) {              
-         return getInstance(type);
-      }
-      if(!isInstantiable(field)) {
-         field = getConversion(field);
-      }
-      if(!isArray(field)) {
-         throw new InstantiationException("Type is not a collection %s", field);
-      }
-      return (Array)field.newInstance();   
+   public Object[] getInstance(int size) throws Exception {
+      if(!field.isArray()) {
+         throw new InstantiationException("Type is not an array %s" field);              
+      }           
+      return Array.newInstance(field, size);
    }     
-
-   /**
-    * This creates a <code>Array</code> instance from the type
-    * provided. If the type provided is abstract or an interface then
-    * this throws an exception to indicate that the type can not be 
-    * used to represent the field value. Also, if the type class is 
-    * not a collection this will throw an exception. If however the 
-    * type class is suitable, the type will create an instance.
-    * 
-    * @param type the type used to instantiate the collection
-    * 
-    * @return this returns a compatible collection instance 
-    * 
-    * @throws Exception if the collection cannot be instantiated
-    */
-   public Array getInstance(Type type) throws Exception {
-      Class real = type.getType();
-
-      if(!isInstantiable(real)) {
-         throw new InstantiationException("Could not instantiate %s", real);
-      }
-      if(!isArray(real)) {
-         throw new InstantiationException("Type is not a collection %s", real);              
-      }
-      return (Array)type.getInstance();    
-   }  
-
-   /**
-    * This is used to convert the provided type to a collection type
-    * from the Java Arrays framework. This will check to see if
-    * the type is a <code>List</code> or <code>Set</code> and return
-    * an <code>ArrayList</code> or <code>HashSet</code> type. If no
-    * suitable match can be found this throws an exception.
-    * 
-    * @param type this is the type that is to be converted
-    * 
-    * @return a collection that is assignable to the provided type
-    */
-   public Class getConversion(Class type) throws Exception {
-      if(type.isAssignableFrom(ArrayList.class)) {
-         return ArrayList.class;
-      }
-      if(type.isAssignableFrom(HashSet.class)) {
-         return HashSet.class;                 
-      }
-      if(type.isAssignableFrom(TreeSet.class)) {
-         return TreeSet.class;              
-      }       
-      throw new InstantiationException("Cannot instantiate %s", type);
-   }
-
-   /**
-    * This determines whether the type provided is a collection type.
-    * If the type is assignable to a <code>Array</code> then 
-    * this returns true, otherwise this returns false.
-    * 
-    * @param type given to determine whether it is a collection  
-    * 
-    * @return true if the provided type is a collection type
-    */
-   private boolean isArray(Class type) {
-      return Array.class.isAssignableFrom(type);           
-   }
 }
