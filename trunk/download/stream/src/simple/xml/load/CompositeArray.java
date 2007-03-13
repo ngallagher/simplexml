@@ -78,6 +78,7 @@ final class CompositeArray implements Converter {
     * @param entry the entry type to be stored within the list
     */    
    public CompositeList(Source root, Class type) {
+      this.factory = new ArrayFactory(type);           
       this.entry = type.getComponentType();           
       this.root = new Traverser(root);      
    }
@@ -112,7 +113,7 @@ final class CompositeArray implements Converter {
    }
 
    private Object read(List list, int size) throws Exception {
-      Object[] array = Array.newInstance(entry, size);
+      Object[] array = factory.getInstance(size);
 
       for(int i = 0; i < list.size(); i++) {
          array[i] = list.get(i);
