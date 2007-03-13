@@ -103,6 +103,9 @@ final class LabelFactory {
        if(label instanceof ElementList) {
           return new Entry(ElementListLabel.class, ElementList.class);
        }
+       if(label instanceof ElementArray) {
+          return new Entry(ElementArrayLabel.class, ElementArray.class);               
+       }
        if(label instanceof Attribute) {
           return new Entry(AttributeLabel.class, Attribute.class);
        }
