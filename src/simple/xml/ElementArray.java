@@ -32,9 +32,9 @@ import java.lang.annotation.Retention;
  * <pre>
  * 
  *    &lt;array&gt;
- *       &lt;entry&gt;one&lt;entry/&gt;
- *       &lt;entry&gt;two&lt;entry/&gt;
- *       &lt;entry&gt;three&lt;entry/&gt;
+ *       &lt;entry&gt;one&lt;/entry&gt;
+ *       &lt;entry&gt;two&lt;/entry&gt;
+ *       &lt;entry&gt;three&lt;/entry&gt;
  *    &lt;/array&gt;
  * 
  * </pre>

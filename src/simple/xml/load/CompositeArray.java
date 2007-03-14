@@ -103,30 +103,15 @@ final class CompositeArray implements Converter {
    public Object read(InputNode node) throws Exception{
       List list = new ArrayList();
       
-      while(true) {
+      for(int i = 0; true; i++) {
          InputNode next = node.getNext();
         
          if(next == null) {
-            break;
+            return read(list, i);
          }
          list.add(root.read(next, entry));
       } 
-      return read(list);
    }    
-
-   /**
-    * This <code>read</code> method is used to convert the list of
-    * objects specified into an array. The array created will be the
-    * same size as the number of objects within the list. This means
-    * that no objects within the array will contain a null value.
-    *
-    * @param list this is the list of objects to convert to an array
-    *
-    * @return an array object containing the deserialized elements
-    */
-   private Object read(List list) throws Exception {
-      return read(list, list.size());           
-   }
 
    /**
     * This <code>read</code> method is used to convert the list of
@@ -163,13 +148,28 @@ final class CompositeArray implements Converter {
       
       for(Object item : list) {
          if(item != null) {  
-            Class type = item.getClass();
-
-            if(!entry.isAssignableFrom(type)) {
-               throw new PersistenceException("Entry %s does not match %s", type, entry);                     
-            } 
-            root.write(node, item, entry);                       
+            write(node, item, entry);
          }
       }
+   }
+   
+   /**
+    * This <code>write</code> method will write the specified object
+    * to the given XML element as as array entries. Each entry within
+    * the given array must be assignable to the array component type.
+    * Each array entry is serialized as a root element, that is, its
+    * <code>Root</code> annotation is used to extract the name. 
+    * 
+    * @param source this is the source object array to be serialized 
+    * @param node this is the XML element container to be populated
+    * @param entry this is the type of the object that is expected
+    */ 
+   private void write(OutputNode node, Object item, Class entry) throws Exception {   
+      Class type = item.getClass();
+
+      if(!entry.isAssignableFrom(type)) {
+         throw new PersistenceException("Entry %s does not match %s", type, entry);                     
+      } 
+      root.write(node, item, entry);                       
    }
 }

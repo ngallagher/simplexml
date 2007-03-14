@@ -20,7 +20,6 @@
 
 package simple.xml.load;
 
-import simple.xml.stream.InputNode;
 import java.lang.reflect.Array;
 
 /**
