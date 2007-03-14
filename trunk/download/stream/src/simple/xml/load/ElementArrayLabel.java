@@ -47,7 +47,7 @@ final class ElementArrayLabel implements Label {
    private Field field;
    
    /**
-    * This is the type of collection this list will instantiate.
+    * This is the type of array this label will represent.
     */
    private Class type;
 	
