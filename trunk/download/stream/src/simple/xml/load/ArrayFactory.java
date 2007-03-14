@@ -27,23 +27,26 @@ import java.util.HashSet;
 import java.util.TreeSet;
 
 /**
- * The <code>ArrayFactory</code> is used to create collection
- * instances that are compatible with the field type. This performs
- * resolution of the collection class by firstly consulting the
- * specified <code>Strategy</code> implementation. If the strategy
- * cannot resolve the collection class then this will select a type
- * from the Java Arrays framework, if a compatible one exists.
+ * The <code>ArrayFactory</code> is used to create object array
+ * instances that are compatible with the field type. This simply
+ * requires the type of the array in order to instantiate that
+ * array. However, this also performs a check on the field type 
+ * to ensure that it is a valid array class before instantiation.
  * 
  * @author Niall Gallagher
  */ 
 final class ArrayFactory {
 
+   /**
+    * This represents the array type from the object field.
+    */
    private Class field;
         
    /**
-    * Constructor for the <code>ArrayFactory</code> object. This
-    * is given the field type as taken from the owning object. The
-    * given type is used to determine the collection instance created.
+    * Constructor for the <code>ArrayFactory</code> object. This is
+    * given the field type as taken from the owning object. If the
+    * field type is not an array this throws an exception for each
+    * request to instantiate an array of the specified length.
     * 
     * @param field this is the class for the owning object
     */
@@ -52,14 +55,13 @@ final class ArrayFactory {
    }        
 
    /**
-    * Creates the collection to use. The <code>Strategy</code> object
-    * is consulted for the collection class, if one is not resolved
-    * by the strategy implementation or if the collection resolved is
-    * abstract then the Java Arrays framework is consulted.
+    * Creates the object array to use. This will check to ensure 
+    * that the field type is an array before instantiating it. If
+    * the field type is not an array then this throws an exception.
     * 
     * @param node this is the input node representing the list
     * 
-    * @return this is the collection instantiated for the field
+    * @return this is the obejct array instantiated for the field
     */         
    public Object[] getInstance(int size) throws Exception {
       if(!field.isArray()) {

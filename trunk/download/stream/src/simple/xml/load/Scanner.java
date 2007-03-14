@@ -323,6 +323,9 @@ final class Scanner {
       if(label instanceof ElementList) {
          process(field, label, elements);
       }
+      if(label instanceof ElementArray) {
+         process(field, label, elements);
+      }
       if(label instanceof Element) {
          process(field, label, elements);
       }             

@@ -75,7 +75,12 @@ final class ElementArrayLabel implements Label {
     * @return this returns the converter for creating a collection 
     */
    public Converter getConverter(Source root) {
-      return new CompositeArray(root, type);      
+      if(!type.isArray()) {
+         throw new InstantiationException("Type is not an array %s", type);
+      }
+      Class entry = type.getComponentType();
+
+      return new CompositeArray(root, type, entry);      
    }
 
    /**
