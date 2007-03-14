@@ -107,11 +107,10 @@ final class CompositeList implements Converter {
          InputNode next = node.getNext();
         
          if(next == null) {
-            break;
+            return list;
          }
          list.add(root.read(next, entry));
       }
-      return list;
    }      
 
    /**
