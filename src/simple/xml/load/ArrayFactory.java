@@ -21,10 +21,7 @@
 package simple.xml.load;
 
 import simple.xml.stream.InputNode;
-import java.util.ArrayList;
-import java.util.Array;
-import java.util.HashSet;
-import java.util.TreeSet;
+import java.lang.reflect.Array;
 
 /**
  * The <code>ArrayFactory</code> is used to create object array
@@ -65,8 +62,11 @@ final class ArrayFactory {
     */         
    public Object[] getInstance(int size) throws Exception {
       if(!field.isArray()) {
-         throw new InstantiationException("Type is not an array %s" field);              
-      }           
-      return Array.newInstance(field, size);
+         throw new InstantiationException("Type is not an array %s", field);  
+      }                 
+      Class type = field.getComponentType();
+      Object list = Array.newInstance(type, size);
+
+      return (Object[])list;
    }     
 }

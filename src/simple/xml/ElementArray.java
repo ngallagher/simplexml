@@ -31,11 +31,11 @@ import java.lang.annotation.Retention;
  * used to override an entry, this entry must be an assignable type.
  * <pre>
  * 
- *    &lt;list&gt;
- *       &lt;element name="one"/&gt;
- *       &lt;element name="two"/&gt;
- *       &lt;element name="three"/&gt;  
- *    &lt;/list&gt;
+ *    &lt;array&gt;
+ *       &lt;entry&gt;one&lt;entry/&gt;
+ *       &lt;entry&gt;two&lt;entry/&gt;
+ *       &lt;entry&gt;three&lt;entry/&gt;
+ *    &lt;/array&gt;
  * 
  * </pre>
  * All null objects within the array are ignored on serialization.

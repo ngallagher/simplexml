@@ -49,7 +49,7 @@ interface Label {
     * @return this returns an object that can be used to convert
     *         XML elements to objects and vice versa
     */
-   public Converter getConverter(Source root);
+   public Converter getConverter(Source root) throws Exception;
 
    /**
     * This is used to acquire the field object for this label. The 

@@ -59,7 +59,7 @@ final class ElementArrayLabel implements Label {
     * @param field this is the field that this label represents
     * @param label the annotation that contains the schema details
     */
-   public ElementListLabel(Field field, ElementArray label) {
+   public ElementArrayLabel(Field field, ElementArray label) {
       this.type = field.getType();
       this.field = field;
       this.label = label;
@@ -74,7 +74,7 @@ final class ElementArrayLabel implements Label {
     * 
     * @return this returns the converter for creating a collection 
     */
-   public Converter getConverter(Source root) {
+   public Converter getConverter(Source root) throws Exception {
       if(!type.isArray()) {
          throw new InstantiationException("Type is not an array %s", type);
       }

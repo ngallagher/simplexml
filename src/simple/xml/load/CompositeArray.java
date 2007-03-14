@@ -22,7 +22,8 @@ package simple.xml.load;
 
 import simple.xml.stream.OutputNode;
 import simple.xml.stream.InputNode;
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The <code>CompositeArray</code> object is used to convert a list of
@@ -33,14 +34,14 @@ import java.util.Collection;
  * that can be deserialized dynamically. 
  * <pre>
  *
- *    &lt;list&gt;
+ *    &lt;array&gt;
  *       &lt;entry attribute="value"&gt;
  *          &lt;text&gt;example text value&lt;/text&gt;
  *       &lt;/entry&gt;
  *       &lt;entry attribute="demo"&gt;
  *          &lt;text&gt;some other example&lt;/text/&gt;
  *       &lt;/entry&gt;
- *    &lt;/list&gt;
+ *    &lt;/array&gt;
  * 
  * </pre>
  * For the above XML element list the element <code>entry</code> is
@@ -74,13 +75,13 @@ final class CompositeArray implements Converter {
 
    /**
     * Constructor for the <code>CompositeArray</code> object. This is
-    * given the array type for the field that is to be converted. The
-    * the <code>Collection</code> implementation that deserialized
-    * entry objects are inserted into. 
+    * given the array type for the field that is to be converted. An
+    * array of the specified type is used to hold the deserialized
+    * elements and will be the same length as the number of elements.
     *
     * @param root this is the source object used for serialization
-    * @param type this is the collection type for the list used
-    * @param entry the entry type to be stored within the list
+    * @param type this is the object array type that is to be used
+    * @param entry the entry type to be stored within the array
     */    
    public CompositeArray(Source root, Class type, Class entry) {
       this.factory = new ArrayFactory(type);           
@@ -113,14 +114,35 @@ final class CompositeArray implements Converter {
       return read(list);
    }    
 
+   /**
+    * This <code>read</code> method is used to convert the list of
+    * objects specified into an array. The array created will be the
+    * same size as the number of objects within the list. This means
+    * that no objects within the array will contain a null value.
+    *
+    * @param list this is the list of objects to convert to an array
+    *
+    * @return an array object containing the deserialized elements
+    */
    private Object read(List list) throws Exception {
       return read(list, list.size());           
    }
 
+   /**
+    * This <code>read</code> method is used to convert the list of
+    * objects specified into an array. The array created will be the
+    * same size as the number of objects within the list. This means
+    * that no objects within the array will contain a null value.
+    *
+    * @param list this is the list of objects to convert to an array
+    * @param size this is the size of the array to be created
+    *
+    * @return an array object containing the deserialized elements
+    */
    private Object read(List list, int size) throws Exception {
       Object[] array = factory.getInstance(size);
 
-      for(int i = 0; i < list.size(); i++) {
+      for(int i = 0; i < size; i++) {
          array[i] = list.get(i);
       }
       return array;
@@ -128,27 +150,26 @@ final class CompositeArray implements Converter {
 
    /**
     * This <code>write</code> method will write the specified object
-    * to the given XML element as as list entries. Each entry within
-    * the given collection must be assignable from the annotated 
-    * type specified within the <code>ElementList</code> annotation.
-    * Each entry is serialized as a root element, that is, its
+    * to the given XML element as as array entries. Each entry within
+    * the given array must be assignable to the array component type.
+    * Each array entry is serialized as a root element, that is, its
     * <code>Root</code> annotation is used to extract the name. 
     * 
-    * @param source this is the source collection to be serialized 
+    * @param source this is the source object array to be serialized 
     * @param node this is the XML element container to be populated
     */ 
    public void write(OutputNode node, Object source) throws Exception {
       Object[] list = (Object[]) source;                
       
       for(Object item : list) {
-         if(item != null) {              
+         if(item != null) {  
             Class type = item.getClass();
 
             if(!entry.isAssignableFrom(type)) {
                throw new PersistenceException("Entry %s does not match %s", type, entry);                     
-            }
-            root.write(node, item, entry);
-         }            
+            } 
+            root.write(node, item, entry);                       
+         }
       }
    }
 }
