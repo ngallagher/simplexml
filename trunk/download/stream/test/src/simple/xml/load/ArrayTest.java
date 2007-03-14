@@ -28,6 +28,13 @@ public class ArrayTest extends TestCase {
       public Text[] array;
    }
 
+   @Root(name="root")
+   private static class BadExample {
+ 
+      @ElementArray(name="array")
+      public Text array;
+   }   
+
    @Root(name="text") 
    private static class Text {
 
@@ -41,7 +48,7 @@ public class ArrayTest extends TestCase {
       serializer = new Persister();
    }
 	
-   public void testFirst() throws Exception {    
+   public void testExample() throws Exception {    
       Example example = serializer.read(Example.class, SOURCE);
       
       assertEquals(example.array.length, 5);
@@ -51,4 +58,16 @@ public class ArrayTest extends TestCase {
       assertEquals(example.array[3].value, "entry four");
       assertEquals(example.array[4].value, "entry five");
    }
- }
+
+   public void testBadExample() throws Exception {    
+      boolean success = false;
+
+      try {
+         BadExample example = serializer.read(BadExample.class, SOURCE);
+      } catch(InstantiationException e) {
+         success = true;
+      }
+      assertTrue(success);
+   }
+
+}
