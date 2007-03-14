@@ -58,6 +58,11 @@ import java.util.Collection;
 final class CompositeArray implements Converter {
 
    /**
+    * This factory is used to create an array for the field.
+    */
+   private ArrayFactory factory;
+
+   /**
     * This performs the traversal used for object serialization.
     */ 
    private Traverser root;
@@ -77,10 +82,10 @@ final class CompositeArray implements Converter {
     * @param type this is the collection type for the list used
     * @param entry the entry type to be stored within the list
     */    
-   public CompositeList(Source root, Class type) {
+   public CompositeArray(Source root, Class type, Class entry) {
       this.factory = new ArrayFactory(type);           
-      this.entry = type.getComponentType();           
       this.root = new Traverser(root);      
+      this.entry = entry;
    }
 
    /**
