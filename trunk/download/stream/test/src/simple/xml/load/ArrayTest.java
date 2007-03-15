@@ -2,12 +2,12 @@ package simple.xml.load;
 
 import java.io.StringReader;
 
-import junit.framework.TestCase;
+import simple.xml.ValidationTestCase;
 import simple.xml.ElementArray;
 import simple.xml.Attribute;
 import simple.xml.Root;
 
-public class ArrayTest extends TestCase {
+public class ArrayTest extends ValidationTestCase {
 
    private static final String SOURCE =
    "<?xml version=\"1.0\"?>\n"+
@@ -22,14 +22,14 @@ public class ArrayTest extends TestCase {
    "</root>";
 
    @Root(name="root")
-   private static class Example {
+   private static class ArrayExample {
 
       @ElementArray(name="array")           
       public Text[] array;
    }
 
    @Root(name="root")
-   private static class BadExample {
+   private static class BadArrayExample {
  
       @ElementArray(name="array")
       public Text array;
@@ -40,6 +40,14 @@ public class ArrayTest extends TestCase {
 
       @Attribute(name="value")
       public String value;
+
+      public Text() {
+         super();              
+      }
+
+      public Text(String value) {
+         this.value = value;              
+      }
    }
 
    private Persister serializer;
@@ -49,7 +57,7 @@ public class ArrayTest extends TestCase {
    }
 	
    public void testExample() throws Exception {    
-      Example example = serializer.read(Example.class, SOURCE);
+      ArrayExample example = serializer.read(ArrayExample.class, SOURCE);
       
       assertEquals(example.array.length, 5);
       assertEquals(example.array[0].value, "entry one");
@@ -63,11 +71,21 @@ public class ArrayTest extends TestCase {
       boolean success = false;
 
       try {
-         BadExample example = serializer.read(BadExample.class, SOURCE);
+         BadArrayExample example = serializer.read(BadArrayExample.class, SOURCE);
       } catch(InstantiationException e) {
          success = true;
       }
       assertTrue(success);
+   }
+
+   public void testWriteArray() throws Exception {
+      ArrayExample example = new ArrayExample();
+      example.array = new Text[100];
+              
+      for(int i = 0; i < example.array.length; i++) {
+         example.array[i] = new Text(String.format("index %s", i));
+      }      
+      validate(example, serializer);
    }
 
 }
