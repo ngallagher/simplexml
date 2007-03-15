@@ -175,10 +175,10 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * @param type this is the XML schema class to use</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;79</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;80</td>  <td class="nbHitsCovered">&nbsp;400768</td>  <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> Composite(Source root, Class type) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;81</td>  <td class="nbHitsCovered">&nbsp;400768</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">this</span>.factory = <span class="keyword">new</span> ObjectFactory(root, type);           </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;82</td>  <td class="nbHitsCovered">&nbsp;400768</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">this</span>.root = root;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;83</td>  <td class="nbHitsCovered">&nbsp;400768</td>  <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;80</td>  <td class="nbHitsCovered">&nbsp;401172</td>  <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> Composite(Source root, Class type) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;81</td>  <td class="nbHitsCovered">&nbsp;401172</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">this</span>.factory = <span class="keyword">new</span> ObjectFactory(root, type);           </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;82</td>  <td class="nbHitsCovered">&nbsp;401172</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">this</span>.root = root;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;83</td>  <td class="nbHitsCovered">&nbsp;401172</td>  <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;84</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;85</td>  <td class="nbHits">&nbsp;</td>
@@ -213,9 +213,9 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;100</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> Object read(InputNode node) <span class="keyword">throws</span> Exception {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;101</td>  <td class="nbHitsCovered">&nbsp;300365</td>  <td class="src"><pre class="src">&nbsp;      Object source = factory.getInstance(node);      </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;102</td>  <td class="nbHitsCovered">&nbsp;300365</td>  <td class="src"><pre class="src">&nbsp;      read(node, source);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;103</td>  <td class="nbHitsCovered">&nbsp;300346</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> source;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;101</td>  <td class="nbHitsCovered">&nbsp;300466</td>  <td class="src"><pre class="src">&nbsp;      Object source = factory.getInstance(node);      </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;102</td>  <td class="nbHitsCovered">&nbsp;300466</td>  <td class="src"><pre class="src">&nbsp;      read(node, source);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;103</td>  <td class="nbHitsCovered">&nbsp;300447</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> source;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;104</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;105</td>  <td class="nbHits">&nbsp;</td>
@@ -250,13 +250,13 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;120</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="keyword">private</span> <span class="keyword">void</span> read(InputNode node, Object source) <span class="keyword">throws</span> Exception {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;121</td>  <td class="nbHitsCovered">&nbsp;300365</td>  <td class="src"><pre class="src">&nbsp;      Schema schema = root.getSchema(source);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;121</td>  <td class="nbHitsCovered">&nbsp;300466</td>  <td class="src"><pre class="src">&nbsp;      Schema schema = root.getSchema(source);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;122</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;      </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;123</td>  <td class="nbHitsCovered">&nbsp;300365</td>  <td class="src"><pre class="src">&nbsp;      read(node, source, schema);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;124</td>  <td class="nbHitsCovered">&nbsp;300346</td>  <td class="src"><pre class="src">&nbsp;      schema.validate(source);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;125</td>  <td class="nbHitsCovered">&nbsp;300346</td>  <td class="src"><pre class="src">&nbsp;      schema.commit(source);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;126</td>  <td class="nbHitsCovered">&nbsp;300346</td>  <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;123</td>  <td class="nbHitsCovered">&nbsp;300466</td>  <td class="src"><pre class="src">&nbsp;      read(node, source, schema);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;124</td>  <td class="nbHitsCovered">&nbsp;300447</td>  <td class="src"><pre class="src">&nbsp;      schema.validate(source);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;125</td>  <td class="nbHitsCovered">&nbsp;300447</td>  <td class="src"><pre class="src">&nbsp;      schema.commit(source);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;126</td>  <td class="nbHitsCovered">&nbsp;300447</td>  <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;127</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;128</td>  <td class="nbHits">&nbsp;</td>
@@ -291,9 +291,9 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;143</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="keyword">private</span> <span class="keyword">void</span> read(InputNode node, Object source, Schema schema) <span class="keyword">throws</span> Exception {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;144</td>  <td class="nbHitsCovered">&nbsp;300365</td>  <td class="src"><pre class="src">&nbsp;      readAttributes(node, source, schema);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;145</td>  <td class="nbHitsCovered">&nbsp;300361</td>  <td class="src"><pre class="src">&nbsp;      readElements(node, source, schema);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;146</td>  <td class="nbHitsCovered">&nbsp;300346</td>  <td class="src"><pre class="src">&nbsp;   }   </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;144</td>  <td class="nbHitsCovered">&nbsp;300466</td>  <td class="src"><pre class="src">&nbsp;      readAttributes(node, source, schema);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;145</td>  <td class="nbHitsCovered">&nbsp;300462</td>  <td class="src"><pre class="src">&nbsp;      readElements(node, source, schema);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;146</td>  <td class="nbHitsCovered">&nbsp;300447</td>  <td class="src"><pre class="src">&nbsp;   }   </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;147</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;148</td>  <td class="nbHits">&nbsp;</td>
@@ -332,15 +332,15 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;165</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="keyword">private</span> <span class="keyword">void</span> readAttributes(InputNode node, Object source, Schema schema) <span class="keyword">throws</span> Exception {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;166</td>  <td class="nbHitsCovered">&nbsp;300365</td>  <td class="src"><pre class="src">&nbsp;      NodeMap list = node.getAttributes();</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;167</td>  <td class="nbHitsCovered">&nbsp;300365</td>  <td class="src"><pre class="src">&nbsp;      LabelMap map = schema.getAttributes();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;166</td>  <td class="nbHitsCovered">&nbsp;300466</td>  <td class="src"><pre class="src">&nbsp;      NodeMap list = node.getAttributes();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;167</td>  <td class="nbHitsCovered">&nbsp;300466</td>  <td class="src"><pre class="src">&nbsp;      LabelMap map = schema.getAttributes();</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;168</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;169</td>  <td class="nbHitsCovered">&nbsp;300365</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">for</span>(String name : list) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;170</td>  <td class="nbHitsCovered">&nbsp;300517</td>  <td class="src"><pre class="src">&nbsp;         readAttribute(node.getAttribute(name), source, map);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;171</td>  <td class="nbHitsCovered">&nbsp;300516</td>  <td class="src"><pre class="src">&nbsp;      }  </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;172</td>  <td class="nbHitsCovered">&nbsp;300364</td>  <td class="src"><pre class="src">&nbsp;      validate(node, map, source);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;173</td>  <td class="nbHitsCovered">&nbsp;300361</td>  <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;169</td>  <td class="nbHitsCovered">&nbsp;300466</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">for</span>(String name : list) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;170</td>  <td class="nbHitsCovered">&nbsp;300617</td>  <td class="src"><pre class="src">&nbsp;         readAttribute(node.getAttribute(name), source, map);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;171</td>  <td class="nbHitsCovered">&nbsp;300616</td>  <td class="src"><pre class="src">&nbsp;      }  </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;172</td>  <td class="nbHitsCovered">&nbsp;300465</td>  <td class="src"><pre class="src">&nbsp;      validate(node, map, source);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;173</td>  <td class="nbHitsCovered">&nbsp;300462</td>  <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;174</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;175</td>  <td class="nbHits">&nbsp;</td>
@@ -379,22 +379,22 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;192</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="keyword">private</span> <span class="keyword">void</span> readElements(InputNode node, Object source, Schema schema) <span class="keyword">throws</span> Exception {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;193</td>  <td class="nbHitsCovered">&nbsp;300361</td>  <td class="src"><pre class="src">&nbsp;      LabelMap map = schema.getElements();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;193</td>  <td class="nbHitsCovered">&nbsp;300462</td>  <td class="src"><pre class="src">&nbsp;      LabelMap map = schema.getElements();</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;194</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;      </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;195</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;      <span class="keyword">while</span>(<span class="keyword">true</span>) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;196</td>  <td class="nbHitsCovered">&nbsp;870803</td>  <td class="src"><pre class="src">&nbsp;         InputNode child = node.getNext(); </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;196</td>  <td class="nbHitsCovered">&nbsp;870905</td>  <td class="src"><pre class="src">&nbsp;         InputNode child = node.getNext(); </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;197</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;         </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;198</td>  <td class="nbHitsCovered">&nbsp;870803</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">if</span>(child == <span class="keyword">null</span>) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;199</td>  <td class="nbHitsCovered">&nbsp;300346</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">break</span>;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;198</td>  <td class="nbHitsCovered">&nbsp;870905</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">if</span>(child == <span class="keyword">null</span>) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;199</td>  <td class="nbHitsCovered">&nbsp;300447</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">break</span>;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;200</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;         }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;201</td>  <td class="nbHitsCovered">&nbsp;570457</td>  <td class="src"><pre class="src">&nbsp;         readElement(child, source, map);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;202</td>  <td class="nbHitsCovered">&nbsp;570442</td>  <td class="src"><pre class="src">&nbsp;      } </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;203</td>  <td class="nbHitsCovered">&nbsp;300346</td>  <td class="src"><pre class="src">&nbsp;      validate(node, map, source);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;204</td>  <td class="nbHitsCovered">&nbsp;300346</td>  <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;201</td>  <td class="nbHitsCovered">&nbsp;570458</td>  <td class="src"><pre class="src">&nbsp;         readElement(child, source, map);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;202</td>  <td class="nbHitsCovered">&nbsp;570443</td>  <td class="src"><pre class="src">&nbsp;      } </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;203</td>  <td class="nbHitsCovered">&nbsp;300447</td>  <td class="src"><pre class="src">&nbsp;      validate(node, map, source);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;204</td>  <td class="nbHitsCovered">&nbsp;300447</td>  <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;205</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;206</td>  <td class="nbHits">&nbsp;</td>
@@ -427,17 +427,17 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;220</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="keyword">private</span> <span class="keyword">void</span> readAttribute(InputNode node, Object source, LabelMap map) <span class="keyword">throws</span> Exception {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;221</td>  <td class="nbHitsCovered">&nbsp;300517</td>  <td class="src"><pre class="src">&nbsp;     Position line = node.getPosition();</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;222</td>  <td class="nbHitsCovered">&nbsp;300517</td>  <td class="src"><pre class="src">&nbsp;      String name = node.getName();</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;223</td>  <td class="nbHitsCovered">&nbsp;300517</td>  <td class="src"><pre class="src">&nbsp;      Label label = map.take(name);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;221</td>  <td class="nbHitsCovered">&nbsp;300617</td>  <td class="src"><pre class="src">&nbsp;      Position line = node.getPosition();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;222</td>  <td class="nbHitsCovered">&nbsp;300617</td>  <td class="src"><pre class="src">&nbsp;      String name = node.getName();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;223</td>  <td class="nbHitsCovered">&nbsp;300617</td>  <td class="src"><pre class="src">&nbsp;      Label label = map.take(name);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;224</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;      </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;225</td>  <td class="nbHitsCovered">&nbsp;300517</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(label == <span class="keyword">null</span>) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;225</td>  <td class="nbHitsCovered">&nbsp;300617</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(label == <span class="keyword">null</span>) {</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;226</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">throw</span> <span class="keyword">new</span> AttributeException(<span class="string">"Attribute '%s' does not exist at %s"</span>, name, line);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;227</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;      }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;228</td>  <td class="nbHitsCovered">&nbsp;300516</td>  <td class="src"><pre class="src">&nbsp;      read(node, source, label);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;229</td>  <td class="nbHitsCovered">&nbsp;300516</td>  <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;228</td>  <td class="nbHitsCovered">&nbsp;300616</td>  <td class="src"><pre class="src">&nbsp;      read(node, source, label);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;229</td>  <td class="nbHitsCovered">&nbsp;300616</td>  <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;230</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;231</td>  <td class="nbHits">&nbsp;</td>
@@ -470,17 +470,17 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;245</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="keyword">private</span> <span class="keyword">void</span> readElement(InputNode node, Object source, LabelMap map) <span class="keyword">throws</span> Exception {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;246</td>  <td class="nbHitsCovered">&nbsp;570457</td>  <td class="src"><pre class="src">&nbsp;      Position line = node.getPosition();</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;247</td>  <td class="nbHitsCovered">&nbsp;570457</td>  <td class="src"><pre class="src">&nbsp;      String name = node.getName();</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;248</td>  <td class="nbHitsCovered">&nbsp;570457</td>  <td class="src"><pre class="src">&nbsp;      Label label = map.take(name);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;246</td>  <td class="nbHitsCovered">&nbsp;570458</td>  <td class="src"><pre class="src">&nbsp;      Position line = node.getPosition();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;247</td>  <td class="nbHitsCovered">&nbsp;570458</td>  <td class="src"><pre class="src">&nbsp;      String name = node.getName();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;248</td>  <td class="nbHitsCovered">&nbsp;570458</td>  <td class="src"><pre class="src">&nbsp;      Label label = map.take(name);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;249</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;      </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;250</td>  <td class="nbHitsCovered">&nbsp;570457</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(label == <span class="keyword">null</span>) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;250</td>  <td class="nbHitsCovered">&nbsp;570458</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(label == <span class="keyword">null</span>) {</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;251</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">throw</span> <span class="keyword">new</span> ElementException(<span class="string">"Element '%s' does not exist at %s"</span>, name, line);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;252</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;      }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;253</td>  <td class="nbHitsCovered">&nbsp;570456</td>  <td class="src"><pre class="src">&nbsp;      read(node, source, label);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;254</td>  <td class="nbHitsCovered">&nbsp;570442</td>  <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;253</td>  <td class="nbHitsCovered">&nbsp;570457</td>  <td class="src"><pre class="src">&nbsp;      read(node, source, label);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;254</td>  <td class="nbHitsCovered">&nbsp;570443</td>  <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;255</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;256</td>  <td class="nbHits">&nbsp;</td>
@@ -513,12 +513,12 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;270</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="keyword">private</span> <span class="keyword">void</span> read(InputNode node, Object source, Label label) <span class="keyword">throws</span> Exception {      </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;271</td>  <td class="nbHitsCovered">&nbsp;870972</td>  <td class="src"><pre class="src">&nbsp;      Converter reader = label.getConverter(root);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;272</td>  <td class="nbHitsCovered">&nbsp;870971</td>  <td class="src"><pre class="src">&nbsp;      Field field = label.getField();      </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;273</td>  <td class="nbHitsCovered">&nbsp;870971</td>  <td class="src"><pre class="src">&nbsp;      Object object = reader.read(node);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;271</td>  <td class="nbHitsCovered">&nbsp;871073</td>  <td class="src"><pre class="src">&nbsp;      Converter reader = label.getConverter(root);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;272</td>  <td class="nbHitsCovered">&nbsp;871072</td>  <td class="src"><pre class="src">&nbsp;      Field field = label.getField();      </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;273</td>  <td class="nbHitsCovered">&nbsp;871072</td>  <td class="src"><pre class="src">&nbsp;      Object object = reader.read(node);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;274</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;275</td>  <td class="nbHitsCovered">&nbsp;870958</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(object == <span class="keyword">null</span>) { </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;275</td>  <td class="nbHitsCovered">&nbsp;871059</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(object == <span class="keyword">null</span>) { </pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;276</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;         Position line = node.getPosition();</span></pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;277</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;         Class type = source.getClass();</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;278</td>  <td class="nbHits">&nbsp;</td>
@@ -528,10 +528,10 @@
 <tr>  <td class="numLine">&nbsp;281</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;         }</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;282</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;      } <span class="keyword">else</span> {         </span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;283</td>  <td class="nbHitsCovered">&nbsp;870958</td>  <td class="src"><pre class="src">&nbsp;         field.set(source, object);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;283</td>  <td class="nbHitsCovered">&nbsp;871059</td>  <td class="src"><pre class="src">&nbsp;         field.set(source, object);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;284</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;      }         </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;285</td>  <td class="nbHitsCovered">&nbsp;870958</td>  <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;285</td>  <td class="nbHitsCovered">&nbsp;871059</td>  <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;286</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;287</td>  <td class="nbHits">&nbsp;</td>
@@ -562,17 +562,17 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;300</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="keyword">private</span> <span class="keyword">void</span> validate(InputNode node, LabelMap map, Object source) <span class="keyword">throws</span> Exception {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;301</td>  <td class="nbHitsCovered">&nbsp;600710</td>  <td class="src"><pre class="src">&nbsp;      Position line = node.getPosition();</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;302</td>  <td class="nbHitsCovered">&nbsp;600710</td>  <td class="src"><pre class="src">&nbsp;      Class type = source.getClass();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;301</td>  <td class="nbHitsCovered">&nbsp;600912</td>  <td class="src"><pre class="src">&nbsp;      Position line = node.getPosition();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;302</td>  <td class="nbHitsCovered">&nbsp;600912</td>  <td class="src"><pre class="src">&nbsp;      Class type = source.getClass();</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;303</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;      </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;304</td>  <td class="nbHitsCovered">&nbsp;600710</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">for</span>(Label label : map) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;304</td>  <td class="nbHitsCovered">&nbsp;600912</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">for</span>(Label label : map) {</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;305</td>  <td class="nbHitsCovered">&nbsp;5</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">if</span>(label.isRequired()) {</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;306</td>  <td class="nbHitsCovered">&nbsp;3</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> FieldRequiredException(<span class="string">"Unable to satisfy %s for %s at %s"</span>, label, type, line);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;307</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;         }</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;308</td>  <td class="nbHitsCovered">&nbsp;2</td>  <td class="src"><pre class="src">&nbsp;      }      </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;309</td>  <td class="nbHitsCovered">&nbsp;600707</td>  <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;309</td>  <td class="nbHitsCovered">&nbsp;600909</td>  <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;310</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;311</td>  <td class="nbHits">&nbsp;</td>
@@ -603,18 +603,18 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;324</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> <span class="keyword">void</span> write(OutputNode node, Object source) <span class="keyword">throws</span> Exception {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;325</td>  <td class="nbHitsCovered">&nbsp;100403</td>  <td class="src"><pre class="src">&nbsp;      Schema schema = root.getSchema(source);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;325</td>  <td class="nbHitsCovered">&nbsp;100706</td>  <td class="src"><pre class="src">&nbsp;      Schema schema = root.getSchema(source);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;326</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;      </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;327</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;      <span class="keyword">try</span> {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;328</td>  <td class="nbHitsCovered">&nbsp;100403</td>  <td class="src"><pre class="src">&nbsp;         schema.persist(source); </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;329</td>  <td class="nbHitsCovered">&nbsp;100403</td>  <td class="src"><pre class="src">&nbsp;         write(node, source, schema);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;328</td>  <td class="nbHitsCovered">&nbsp;100706</td>  <td class="src"><pre class="src">&nbsp;         schema.persist(source); </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;329</td>  <td class="nbHitsCovered">&nbsp;100706</td>  <td class="src"><pre class="src">&nbsp;         write(node, source, schema);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;330</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;      } <span class="keyword">finally</span> {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;331</td>  <td class="nbHitsCovered">&nbsp;100403</td>  <td class="src"><pre class="src">&nbsp;         schema.complete(source);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;332</td>  <td class="nbHitsCovered">&nbsp;100403</td>  <td class="src"><pre class="src">&nbsp;      }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;333</td>  <td class="nbHitsCovered">&nbsp;100401</td>  <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;331</td>  <td class="nbHitsCovered">&nbsp;100706</td>  <td class="src"><pre class="src">&nbsp;         schema.complete(source);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;332</td>  <td class="nbHitsCovered">&nbsp;100706</td>  <td class="src"><pre class="src">&nbsp;      }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;333</td>  <td class="nbHitsCovered">&nbsp;100704</td>  <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;334</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;335</td>  <td class="nbHits">&nbsp;</td>
@@ -647,9 +647,9 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;349</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="keyword">private</span> <span class="keyword">void</span> write(OutputNode node, Object source, Schema schema) <span class="keyword">throws</span> Exception {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;350</td>  <td class="nbHitsCovered">&nbsp;100403</td>  <td class="src"><pre class="src">&nbsp;      writeAttributes(node, source, schema);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;351</td>  <td class="nbHitsCovered">&nbsp;100402</td>  <td class="src"><pre class="src">&nbsp;      writeElements(node, source, schema);      </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;352</td>  <td class="nbHitsCovered">&nbsp;100401</td>  <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;350</td>  <td class="nbHitsCovered">&nbsp;100706</td>  <td class="src"><pre class="src">&nbsp;      writeAttributes(node, source, schema);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;351</td>  <td class="nbHitsCovered">&nbsp;100705</td>  <td class="src"><pre class="src">&nbsp;      writeElements(node, source, schema);      </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;352</td>  <td class="nbHitsCovered">&nbsp;100704</td>  <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;353</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;354</td>  <td class="nbHits">&nbsp;</td>
@@ -682,21 +682,21 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;368</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="keyword">private</span> <span class="keyword">void</span> writeAttributes(OutputNode node, Object source, Schema schema) <span class="keyword">throws</span> Exception {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;369</td>  <td class="nbHitsCovered">&nbsp;100403</td>  <td class="src"><pre class="src">&nbsp;      LabelMap attributes = schema.getAttributes();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;369</td>  <td class="nbHitsCovered">&nbsp;100706</td>  <td class="src"><pre class="src">&nbsp;      LabelMap attributes = schema.getAttributes();</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;370</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;371</td>  <td class="nbHitsCovered">&nbsp;100403</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">for</span>(Label label : attributes) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;372</td>  <td class="nbHitsCovered">&nbsp;100580</td>  <td class="src"><pre class="src">&nbsp;         Field field = label.getField();</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;373</td>  <td class="nbHitsCovered">&nbsp;100580</td>  <td class="src"><pre class="src">&nbsp;         Object value = field.get(source);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;371</td>  <td class="nbHitsCovered">&nbsp;100706</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">for</span>(Label label : attributes) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;372</td>  <td class="nbHitsCovered">&nbsp;100880</td>  <td class="src"><pre class="src">&nbsp;         Field field = label.getField();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;373</td>  <td class="nbHitsCovered">&nbsp;100880</td>  <td class="src"><pre class="src">&nbsp;         Object value = field.get(source);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;374</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;         </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;375</td>  <td class="nbHitsCovered">&nbsp;100580</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">if</span>(label.isRequired() &amp;&amp; value == <span class="keyword">null</span>) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;375</td>  <td class="nbHitsCovered">&nbsp;100880</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">if</span>(label.isRequired() &amp;&amp; value == <span class="keyword">null</span>) {</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;376</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> AttributeException(<span class="string">"Value for %s is null"</span>, label);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;377</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;         }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;378</td>  <td class="nbHitsCovered">&nbsp;100579</td>  <td class="src"><pre class="src">&nbsp;         writeAttribute(node, value, label);              </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;379</td>  <td class="nbHitsCovered">&nbsp;100579</td>  <td class="src"><pre class="src">&nbsp;      }      </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;380</td>  <td class="nbHitsCovered">&nbsp;100402</td>  <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;378</td>  <td class="nbHitsCovered">&nbsp;100879</td>  <td class="src"><pre class="src">&nbsp;         writeAttribute(node, value, label);              </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;379</td>  <td class="nbHitsCovered">&nbsp;100879</td>  <td class="src"><pre class="src">&nbsp;      }      </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;380</td>  <td class="nbHitsCovered">&nbsp;100705</td>  <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;381</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;382</td>  <td class="nbHits">&nbsp;</td>
@@ -729,21 +729,21 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;396</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="keyword">private</span> <span class="keyword">void</span> writeElements(OutputNode node, Object source, Schema schema) <span class="keyword">throws</span> Exception {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;397</td>  <td class="nbHitsCovered">&nbsp;100402</td>  <td class="src"><pre class="src">&nbsp;      LabelMap elements = schema.getElements();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;397</td>  <td class="nbHitsCovered">&nbsp;100705</td>  <td class="src"><pre class="src">&nbsp;      LabelMap elements = schema.getElements();</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;398</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;      </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;399</td>  <td class="nbHitsCovered">&nbsp;100402</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">for</span>(Label label : elements) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;400</td>  <td class="nbHitsCovered">&nbsp;190591</td>  <td class="src"><pre class="src">&nbsp;         Field field = label.getField();</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;401</td>  <td class="nbHitsCovered">&nbsp;190591</td>  <td class="src"><pre class="src">&nbsp;         Object value = field.get(source);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;399</td>  <td class="nbHitsCovered">&nbsp;100705</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">for</span>(Label label : elements) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;400</td>  <td class="nbHitsCovered">&nbsp;190594</td>  <td class="src"><pre class="src">&nbsp;         Field field = label.getField();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;401</td>  <td class="nbHitsCovered">&nbsp;190594</td>  <td class="src"><pre class="src">&nbsp;         Object value = field.get(source);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;402</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;                 </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;403</td>  <td class="nbHitsCovered">&nbsp;190591</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">if</span>(label.isRequired() &amp;&amp; value == <span class="keyword">null</span>) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;403</td>  <td class="nbHitsCovered">&nbsp;190594</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">if</span>(label.isRequired() &amp;&amp; value == <span class="keyword">null</span>) {</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;404</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> ElementException(<span class="string">"Value for %s is null"</span>, label);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;405</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;         }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;406</td>  <td class="nbHitsCovered">&nbsp;190590</td>  <td class="src"><pre class="src">&nbsp;         writeElement(node, value, label);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;407</td>  <td class="nbHitsCovered">&nbsp;190590</td>  <td class="src"><pre class="src">&nbsp;      }         </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;408</td>  <td class="nbHitsCovered">&nbsp;100401</td>  <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;406</td>  <td class="nbHitsCovered">&nbsp;190593</td>  <td class="src"><pre class="src">&nbsp;         writeElement(node, value, label);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;407</td>  <td class="nbHitsCovered">&nbsp;190593</td>  <td class="src"><pre class="src">&nbsp;      }         </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;408</td>  <td class="nbHitsCovered">&nbsp;100704</td>  <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;409</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;410</td>  <td class="nbHits">&nbsp;</td>
@@ -774,20 +774,20 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;423</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="keyword">private</span> <span class="keyword">void</span> writeAttribute(OutputNode node, Object value, Label label) <span class="keyword">throws</span> Exception {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;424</td>  <td class="nbHitsCovered">&nbsp;100579</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(value != <span class="keyword">null</span>) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;425</td>  <td class="nbHitsCovered">&nbsp;100579</td>  <td class="src"><pre class="src">&nbsp;         String name = label.getName();</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;426</td>  <td class="nbHitsCovered">&nbsp;100579</td>  <td class="src"><pre class="src">&nbsp;         String text = value.toString();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;424</td>  <td class="nbHitsCovered">&nbsp;100879</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(value != <span class="keyword">null</span>) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;425</td>  <td class="nbHitsCovered">&nbsp;100879</td>  <td class="src"><pre class="src">&nbsp;         String name = label.getName();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;426</td>  <td class="nbHitsCovered">&nbsp;100879</td>  <td class="src"><pre class="src">&nbsp;         String text = value.toString();</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;427</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;         </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;428</td>  <td class="nbHitsCovered">&nbsp;100579</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">if</span>(value <span class="keyword">instanceof</span> Enum) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;428</td>  <td class="nbHitsCovered">&nbsp;100879</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">if</span>(value <span class="keyword">instanceof</span> Enum) {</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;429</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            Enum type = (Enum) value;</span></pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;430</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            text = type.name();</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;431</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;         }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;432</td>  <td class="nbHitsCovered">&nbsp;100579</td>  <td class="src"><pre class="src">&nbsp;         node.setAttribute(name, text);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;432</td>  <td class="nbHitsCovered">&nbsp;100879</td>  <td class="src"><pre class="src">&nbsp;         node.setAttribute(name, text);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;433</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;      }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;434</td>  <td class="nbHitsCovered">&nbsp;100579</td>  <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;434</td>  <td class="nbHitsCovered">&nbsp;100879</td>  <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;435</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;436</td>  <td class="nbHits">&nbsp;</td>
@@ -820,23 +820,23 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;450</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="keyword">private</span> <span class="keyword">void</span> writeElement(OutputNode node, Object value, Label label) <span class="keyword">throws</span> Exception {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;451</td>  <td class="nbHitsCovered">&nbsp;190590</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(value != <span class="keyword">null</span>) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;452</td>  <td class="nbHitsCovered">&nbsp;190590</td>  <td class="src"><pre class="src">&nbsp;         String name = label.getName();</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;453</td>  <td class="nbHitsCovered">&nbsp;190590</td>  <td class="src"><pre class="src">&nbsp;         OutputNode next = node.getChild(name);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;454</td>  <td class="nbHitsCovered">&nbsp;190590</td>  <td class="src"><pre class="src">&nbsp;         Class type = label.getType();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;451</td>  <td class="nbHitsCovered">&nbsp;190593</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(value != <span class="keyword">null</span>) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;452</td>  <td class="nbHitsCovered">&nbsp;190593</td>  <td class="src"><pre class="src">&nbsp;         String name = label.getName();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;453</td>  <td class="nbHitsCovered">&nbsp;190593</td>  <td class="src"><pre class="src">&nbsp;         OutputNode next = node.getChild(name);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;454</td>  <td class="nbHitsCovered">&nbsp;190593</td>  <td class="src"><pre class="src">&nbsp;         Class type = label.getType();</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;455</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;456</td>  <td class="nbHitsCovered">&nbsp;190590</td>  <td class="src"><pre class="src">&nbsp;         factory.setOverride(type, value, next);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;457</td>  <td class="nbHitsCovered">&nbsp;190590</td>  <td class="src"><pre class="src">&nbsp;         label.getConverter(root).write(next, value);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;456</td>  <td class="nbHitsCovered">&nbsp;190593</td>  <td class="src"><pre class="src">&nbsp;         factory.setOverride(type, value, next);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;457</td>  <td class="nbHitsCovered">&nbsp;190593</td>  <td class="src"><pre class="src">&nbsp;         label.getConverter(root).write(next, value);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;458</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;      }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;459</td>  <td class="nbHitsCovered">&nbsp;190590</td>  <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;459</td>  <td class="nbHitsCovered">&nbsp;190593</td>  <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;460</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;}</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;461</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 </table>
 
-<div class="footer">Report generated by <a href="http://cobertura.sourceforge.net/" target="_top">Cobertura</a> 1.8 on 15/03/07 13:24.</div>
+<div class="footer">Report generated by <a href="http://cobertura.sourceforge.net/" target="_top">Cobertura</a> 1.8 on 15/03/07 14:03.</div>
 </body>
 </html>

@@ -2,6 +2,7 @@ package simple.xml.load;
 
 import java.io.StringReader;
 
+import java.io.StringWriter;
 import simple.xml.ValidationTestCase;
 import simple.xml.ElementArray;
 import simple.xml.Attribute;
@@ -86,6 +87,19 @@ public class ArrayTest extends ValidationTestCase {
          example.array[i] = new Text(String.format("index %s", i));
       }      
       validate(example, serializer);
+
+      StringWriter writer = new StringWriter();
+      serializer.write(example, writer);
+
+      String content = writer.toString();
+      ArrayExample deserialized = serializer.read(ArrayExample.class, content);
+
+      assertEquals(deserialized.array.length, example.array.length);
+      
+      for(int i = 0; i < deserialized.array.length; i++) {
+         assertEquals(deserialized.array[i].value, example.array[i].value);                    
+      }
+      validate(deserialized, serializer);
    }
 
 }
