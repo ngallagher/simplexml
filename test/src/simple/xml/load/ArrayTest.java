@@ -95,11 +95,29 @@ public class ArrayTest extends ValidationTestCase {
       ArrayExample deserialized = serializer.read(ArrayExample.class, content);
 
       assertEquals(deserialized.array.length, example.array.length);
-      
+     
+      // Ensure serialization maintains exact content 
       for(int i = 0; i < deserialized.array.length; i++) {
          assertEquals(deserialized.array[i].value, example.array[i].value);                    
       }
-      validate(deserialized, serializer);
+      for(int i = 0; i < example.array.length; i++) {
+         if(i % 2 == 0) {              
+            example.array[i] = null;              
+         }            
+      }
+      validate(example, serializer);
+
+      StringWriter oddOnly = new StringWriter();
+      serializer.write(example, oddOnly);
+
+      content = oddOnly.toString();
+      deserialized = serializer.read(ArrayExample.class, content);
+      
+      for(int i = 0, j = 0; i < example.array.length; i++) {
+         if(i % 2 != 0) {
+            assertEquals(example.array[i].value, deserialized.array[j++].value);                 
+         }              
+      }
    }
 
 }
