@@ -144,7 +144,7 @@ final class CompositeArray implements Converter {
     * @param node this is the XML element container to be populated
     */ 
    public void write(OutputNode node, Object source) throws Exception {
-      Object[] list = (Object[]) source;                
+      Object[] list = (Object[])source;                
       
       for(Object item : list) {
          if(item != null) {  
