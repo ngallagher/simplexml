@@ -169,11 +169,11 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * @param format this is used to format the generated document</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;77</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span> </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;78</td>  <td class="nbHitsCovered">&nbsp;10050</td>  <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> NodeWriter(Writer result, Format format) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;79</td>  <td class="nbHitsCovered">&nbsp;10050</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">this</span>.writer = <span class="keyword">new</span> Formatter(result, format);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;80</td>  <td class="nbHitsCovered">&nbsp;10050</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">this</span>.active = <span class="keyword">new</span> HashSet();</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;81</td>  <td class="nbHitsCovered">&nbsp;10050</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">this</span>.stack = <span class="keyword">new</span> OutputStack(active);           </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;82</td>  <td class="nbHitsCovered">&nbsp;10050</td>  <td class="src"><pre class="src">&nbsp;   }  </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;78</td>  <td class="nbHitsCovered">&nbsp;10051</td>  <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> NodeWriter(Writer result, Format format) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;79</td>  <td class="nbHitsCovered">&nbsp;10051</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">this</span>.writer = <span class="keyword">new</span> Formatter(result, format);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;80</td>  <td class="nbHitsCovered">&nbsp;10051</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">this</span>.active = <span class="keyword">new</span> HashSet();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;81</td>  <td class="nbHitsCovered">&nbsp;10051</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">this</span>.stack = <span class="keyword">new</span> OutputStack(active);           </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;82</td>  <td class="nbHitsCovered">&nbsp;10051</td>  <td class="src"><pre class="src">&nbsp;   }  </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;83</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;84</td>  <td class="nbHits">&nbsp;</td>
@@ -200,14 +200,14 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span> </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;95</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> OutputNode writeRoot() <span class="keyword">throws</span> Exception {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;96</td>  <td class="nbHitsCovered">&nbsp;10050</td>  <td class="src"><pre class="src">&nbsp;      OutputDocument root = <span class="keyword">new</span> OutputDocument(<span class="keyword">this</span>, stack);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;96</td>  <td class="nbHitsCovered">&nbsp;10051</td>  <td class="src"><pre class="src">&nbsp;      OutputDocument root = <span class="keyword">new</span> OutputDocument(<span class="keyword">this</span>, stack);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;97</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;98</td>  <td class="nbHitsCovered">&nbsp;10050</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(stack.isEmpty()) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;99</td>  <td class="nbHitsCovered">&nbsp;10050</td>  <td class="src"><pre class="src">&nbsp;         writer.writeProlog();              </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;98</td>  <td class="nbHitsCovered">&nbsp;10051</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(stack.isEmpty()) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;99</td>  <td class="nbHitsCovered">&nbsp;10051</td>  <td class="src"><pre class="src">&nbsp;         writer.writeProlog();              </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;100</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;      }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;101</td>  <td class="nbHitsCovered">&nbsp;10050</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> root;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;101</td>  <td class="nbHitsCovered">&nbsp;10051</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> root;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;102</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;103</td>  <td class="nbHits">&nbsp;</td>
@@ -234,7 +234,7 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;114</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> <span class="keyword">boolean</span> isRoot(OutputNode node) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;115</td>  <td class="nbHitsCovered">&nbsp;251192</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> stack.bottom() == node;        </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;115</td>  <td class="nbHitsCovered">&nbsp;251194</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> stack.bottom() == node;        </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;116</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;117</td>  <td class="nbHits">&nbsp;</td>
@@ -259,7 +259,7 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span> </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;127</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> <span class="keyword">boolean</span> isCommitted(OutputNode node) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;128</td>  <td class="nbHitsCovered">&nbsp;301822</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> !active.contains(node);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;128</td>  <td class="nbHitsCovered">&nbsp;301824</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> !active.contains(node);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;129</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;130</td>  <td class="nbHits">&nbsp;</td>
@@ -284,22 +284,22 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span> </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;140</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> <span class="keyword">void</span> commit(OutputNode parent) <span class="keyword">throws</span> Exception {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;141</td>  <td class="nbHitsCovered">&nbsp;60634</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(stack.contains(parent)) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;142</td>  <td class="nbHitsCovered">&nbsp;60634</td>  <td class="src"><pre class="src">&nbsp;         OutputNode top = stack.top();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;141</td>  <td class="nbHitsCovered">&nbsp;60635</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(stack.contains(parent)) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;142</td>  <td class="nbHitsCovered">&nbsp;60635</td>  <td class="src"><pre class="src">&nbsp;         OutputNode top = stack.top();</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;143</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;         </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;144</td>  <td class="nbHitsCovered">&nbsp;60634</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">if</span>(!isCommitted(top)) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;144</td>  <td class="nbHitsCovered">&nbsp;60635</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">if</span>(!isCommitted(top)) {</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;145</td>  <td class="nbHitsCovered">&nbsp;60617</td>  <td class="src"><pre class="src">&nbsp;            writeAttributes(top);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;146</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;         }         </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;147</td>  <td class="nbHitsCovered">&nbsp;120955</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">while</span>(stack.top() != parent) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;148</td>  <td class="nbHitsCovered">&nbsp;60321</td>  <td class="src"><pre class="src">&nbsp;            writeEnd(stack.pop());</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;149</td>  <td class="nbHitsCovered">&nbsp;60321</td>  <td class="src"><pre class="src">&nbsp;         }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;150</td>  <td class="nbHitsCovered">&nbsp;60634</td>  <td class="src"><pre class="src">&nbsp;         writeEnd(parent);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;151</td>  <td class="nbHitsCovered">&nbsp;60634</td>  <td class="src"><pre class="src">&nbsp;         stack.pop();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;147</td>  <td class="nbHitsCovered">&nbsp;120957</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">while</span>(stack.top() != parent) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;148</td>  <td class="nbHitsCovered">&nbsp;60322</td>  <td class="src"><pre class="src">&nbsp;            writeEnd(stack.pop());</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;149</td>  <td class="nbHitsCovered">&nbsp;60322</td>  <td class="src"><pre class="src">&nbsp;         }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;150</td>  <td class="nbHitsCovered">&nbsp;60635</td>  <td class="src"><pre class="src">&nbsp;         writeEnd(parent);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;151</td>  <td class="nbHitsCovered">&nbsp;60635</td>  <td class="src"><pre class="src">&nbsp;         stack.pop();</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;152</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;      }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;153</td>  <td class="nbHitsCovered">&nbsp;60634</td>  <td class="src"><pre class="src">&nbsp;   } </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;153</td>  <td class="nbHitsCovered">&nbsp;60635</td>  <td class="src"><pre class="src">&nbsp;   } </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;154</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;155</td>  <td class="nbHits">&nbsp;</td>
@@ -326,22 +326,22 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span> </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;166</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> OutputNode writeElement(OutputNode parent, String name) <span class="keyword">throws</span> Exception {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;167</td>  <td class="nbHitsCovered">&nbsp;251242</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(stack.isEmpty()) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;168</td>  <td class="nbHitsCovered">&nbsp;10050</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">return</span> writeStart(name);       </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;167</td>  <td class="nbHitsCovered">&nbsp;251244</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(stack.isEmpty()) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;168</td>  <td class="nbHitsCovered">&nbsp;10051</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">return</span> writeStart(name);       </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;169</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;      }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;170</td>  <td class="nbHitsCovered">&nbsp;241192</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(stack.contains(parent)) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;171</td>  <td class="nbHitsCovered">&nbsp;241186</td>  <td class="src"><pre class="src">&nbsp;         OutputNode top = stack.top();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;170</td>  <td class="nbHitsCovered">&nbsp;241193</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(stack.contains(parent)) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;171</td>  <td class="nbHitsCovered">&nbsp;241187</td>  <td class="src"><pre class="src">&nbsp;         OutputNode top = stack.top();</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;172</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;      </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;173</td>  <td class="nbHitsCovered">&nbsp;241186</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">if</span>(!isCommitted(top)) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;174</td>  <td class="nbHitsCovered">&nbsp;190617</td>  <td class="src"><pre class="src">&nbsp;            writeAttributes(top);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;173</td>  <td class="nbHitsCovered">&nbsp;241187</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">if</span>(!isCommitted(top)) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;174</td>  <td class="nbHitsCovered">&nbsp;190619</td>  <td class="src"><pre class="src">&nbsp;            writeAttributes(top);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;175</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;         }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;176</td>  <td class="nbHitsCovered">&nbsp;371465</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">while</span>(stack.top() != parent) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;176</td>  <td class="nbHitsCovered">&nbsp;371466</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">while</span>(stack.top() != parent) {</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;177</td>  <td class="nbHitsCovered">&nbsp;130279</td>  <td class="src"><pre class="src">&nbsp;            writeEnd(stack.pop());</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;178</td>  <td class="nbHitsCovered">&nbsp;130279</td>  <td class="src"><pre class="src">&nbsp;         }       </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;179</td>  <td class="nbHitsCovered">&nbsp;241186</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">return</span> writeStart(name);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;179</td>  <td class="nbHitsCovered">&nbsp;241187</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">return</span> writeStart(name);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;180</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;      }</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;181</td>  <td class="nbHitsCovered">&nbsp;6</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> <span class="keyword">null</span>;</pre></td></tr>
@@ -371,14 +371,14 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span>       </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;194</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="keyword">private</span> OutputNode writeStart(String name) <span class="keyword">throws</span> Exception {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;195</td>  <td class="nbHitsCovered">&nbsp;251236</td>  <td class="src"><pre class="src">&nbsp;      OutputNode node = <span class="keyword">new</span> OutputElement(<span class="keyword">this</span>, name);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;195</td>  <td class="nbHitsCovered">&nbsp;251238</td>  <td class="src"><pre class="src">&nbsp;      OutputNode node = <span class="keyword">new</span> OutputElement(<span class="keyword">this</span>, name);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;196</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;197</td>  <td class="nbHitsCovered">&nbsp;251236</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(name != <span class="keyword">null</span>) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;198</td>  <td class="nbHitsCovered">&nbsp;251236</td>  <td class="src"><pre class="src">&nbsp;          writer.writeStart(name);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;197</td>  <td class="nbHitsCovered">&nbsp;251238</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(name != <span class="keyword">null</span>) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;198</td>  <td class="nbHitsCovered">&nbsp;251238</td>  <td class="src"><pre class="src">&nbsp;          writer.writeStart(name);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;199</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;      }          </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;200</td>  <td class="nbHitsCovered">&nbsp;251236</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> stack.push(node);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;200</td>  <td class="nbHitsCovered">&nbsp;251238</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> stack.push(node);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;201</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;202</td>  <td class="nbHits">&nbsp;</td>
@@ -401,17 +401,17 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span>  </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;211</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="keyword">private</span> <span class="keyword">void</span> writeEnd(OutputNode node) <span class="keyword">throws</span> Exception {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;212</td>  <td class="nbHitsCovered">&nbsp;251234</td>  <td class="src"><pre class="src">&nbsp;      String value = node.getValue();</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;213</td>  <td class="nbHitsCovered">&nbsp;251234</td>  <td class="src"><pre class="src">&nbsp;      String name = node.getName();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;212</td>  <td class="nbHitsCovered">&nbsp;251236</td>  <td class="src"><pre class="src">&nbsp;      String value = node.getValue();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;213</td>  <td class="nbHitsCovered">&nbsp;251236</td>  <td class="src"><pre class="src">&nbsp;      String name = node.getName();</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;214</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;215</td>  <td class="nbHitsCovered">&nbsp;251234</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(value != <span class="keyword">null</span>) { </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;215</td>  <td class="nbHitsCovered">&nbsp;251236</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(value != <span class="keyword">null</span>) { </pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;216</td>  <td class="nbHitsCovered">&nbsp;140492</td>  <td class="src"><pre class="src">&nbsp;         writer.writeText(value);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;217</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;      }         </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;218</td>  <td class="nbHitsCovered">&nbsp;251234</td>  <td class="src"><pre class="src">&nbsp;      writer.writeEnd(name);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;219</td>  <td class="nbHitsCovered">&nbsp;251234</td>  <td class="src"><pre class="src">&nbsp;      writer.flush(); </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;220</td>  <td class="nbHitsCovered">&nbsp;251234</td>  <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;218</td>  <td class="nbHitsCovered">&nbsp;251236</td>  <td class="src"><pre class="src">&nbsp;      writer.writeEnd(name);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;219</td>  <td class="nbHitsCovered">&nbsp;251236</td>  <td class="src"><pre class="src">&nbsp;      writer.flush(); </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;220</td>  <td class="nbHitsCovered">&nbsp;251236</td>  <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;221</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;222</td>  <td class="nbHits">&nbsp;</td>
@@ -430,24 +430,24 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span> </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;229</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="keyword">private</span> <span class="keyword">void</span> writeAttributes(OutputNode node) <span class="keyword">throws</span> Exception {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;230</td>  <td class="nbHitsCovered">&nbsp;251234</td>  <td class="src"><pre class="src">&nbsp;      NodeMap map = node.getAttributes();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;230</td>  <td class="nbHitsCovered">&nbsp;251236</td>  <td class="src"><pre class="src">&nbsp;      NodeMap map = node.getAttributes();</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;231</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;      </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;232</td>  <td class="nbHitsCovered">&nbsp;251234</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">for</span>(String name : map) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;232</td>  <td class="nbHitsCovered">&nbsp;251236</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">for</span>(String name : map) {</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;233</td>  <td class="nbHitsCovered">&nbsp;110918</td>  <td class="src"><pre class="src">&nbsp;         Node entry = map.get(name);</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;234</td>  <td class="nbHitsCovered">&nbsp;110918</td>  <td class="src"><pre class="src">&nbsp;         String value = entry.getValue();</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;235</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;         </pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;236</td>  <td class="nbHitsCovered">&nbsp;110918</td>  <td class="src"><pre class="src">&nbsp;         writer.writeAttribute(name, value);</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;237</td>  <td class="nbHitsCovered">&nbsp;110918</td>  <td class="src"><pre class="src">&nbsp;      }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;238</td>  <td class="nbHitsCovered">&nbsp;251234</td>  <td class="src"><pre class="src">&nbsp;      active.remove(node);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;239</td>  <td class="nbHitsCovered">&nbsp;251234</td>  <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;238</td>  <td class="nbHitsCovered">&nbsp;251236</td>  <td class="src"><pre class="src">&nbsp;      active.remove(node);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;239</td>  <td class="nbHitsCovered">&nbsp;251236</td>  <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;240</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;}</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;241</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 </table>
 
-<div class="footer">Report generated by <a href="http://cobertura.sourceforge.net/" target="_top">Cobertura</a> 1.8 on 15/03/07 14:03.</div>
+<div class="footer">Report generated by <a href="http://cobertura.sourceforge.net/" target="_top">Cobertura</a> 1.8 on 29/03/07 11:34.</div>
 </body>
 </html>
