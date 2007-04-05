@@ -65,6 +65,11 @@ final class Schema {
     * This is the pointer to the schema class complete method.
     */
    private Method complete;
+   
+   /**
+    * This is used to represent a text value within the schema.
+    */
+   private Label text;
 
    /**
     * This is the table used to maintain attributes by the source.
@@ -86,6 +91,7 @@ final class Schema {
       this.complete = schema.getComplete();
       this.commit = schema.getCommit();      
       this.persist = schema.getPersist();
+      this.text = schema.getText();
       this.table = table;
    }
    
@@ -110,7 +116,20 @@ final class Schema {
    public LabelMap getElements() {
       return elements;
    }
-
+   
+   /**
+    * This returns the <code>Label</code> that represents the text
+    * annotation for the scanned class. Only a single text annotation
+    * can be used per class, so this returns only a single label
+    * rather than a <code>LabelMap</code> object. Also if this is
+    * not null then the elements label map will be empty.
+    * 
+    * @return this returns the text label for the scanned class
+    */
+   public Label getText() {
+	   return text;
+   }
+   
    /**
     * This method is used to invoke the provided objects commit method
     * during the deserialization process. The commit method must be
