@@ -1,7 +1,7 @@
 /*
- * TextException.java July 2006
+ * TextException.java April 2007
  *
- * Copyright (C) 2006, Niall Gallagher <niallg@users.sf.net>
+ * Copyright (C) 2007, Niall Gallagher <niallg@users.sf.net>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,11 +22,10 @@ package simple.xml.load;
 
 /**
  * The <code>TextException</code> is used to represent conditions 
- * when an XML attribute is in an invalid state. Typically this is 
- * used when and attribute cannot be serialized or deserialized. Such 
- * a condition can arise when an attribute exists within the source 
- * XML that does not match the schema class. For serialization this
- * exception is thrown if a required field is null.
+ * when an XML element text value is in an invalid state. Typically 
+ * this is used when text cannot be serialized or deserialized. Also
+ * this may be thrown if the <code>Text</code> annotation is used 
+ * to label a field that is not a primitive type.
  * 
  * @author Niall Gallagher
  */
