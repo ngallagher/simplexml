@@ -141,7 +141,7 @@ final class Composite implements Converter {
     * @param schema this object visits the objects fields
     */
    private void read(InputNode node, Object source, Schema schema) throws Exception {
-	  readText(node, source, schema);
+      readText(node, source, schema);
       readAttributes(node, source, schema);
       readElements(node, source, schema);
    }   
