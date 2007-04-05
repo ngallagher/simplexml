@@ -56,6 +56,10 @@ final class Scanner {
    private LabelMap elements;
 
    /**
+
+   private LabelMap text;
+
+   /**
     * This method acts as a pointer to the types commit process.
     */
    private Method commit;
@@ -330,6 +334,9 @@ final class Scanner {
       if(label instanceof Element) {
          process(field, label, elements);
       }             
+      if(label instanceof Text) {
+         process(field, label, text);
+      }
    }
    
    /**
