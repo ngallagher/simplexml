@@ -2,6 +2,7 @@ package simple.xml.load;
 
 import java.io.FileOutputStream;
 import java.io.StringWriter;
+import java.util.List;
 
 import simple.xml.ValidationTestCase;
 import simple.xml.ElementArray;
@@ -85,6 +86,12 @@ public class TextTest extends ValidationTestCase {
 
       @Element(name="illegal")
       private String name;              
+   }
+
+   private static class NonPrimitiveTextEntry extends TextEntry {
+
+      @Text
+      private List list;           
    }
 
    private enum Version {
@@ -204,4 +211,16 @@ public class TextTest extends ValidationTestCase {
       
       validate(entry, persister);            
    }    
+
+   public void testNonPrimitive() throws Exception {
+      boolean success = false;
+      
+      try {
+         persister.read(NonPrimitiveTextEntry.class, DATA_TEXT);                       
+      } catch(TextException e) {
+         success = true;              
+      }              
+      assertTrue(success);
+   }
+   
 }
