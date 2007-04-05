@@ -88,8 +88,14 @@ public class TextTest extends ValidationTestCase {
       private String name;              
    }
 
-   private static class NonPrimitiveTextEntry extends TextEntry {
+   private static class NonPrimitiveTextEntry {
+           
+      @Attribute(name="name")
+      private String name;
 
+      @Attribute(name="version")
+      private Version version; 
+      
       @Text
       private List list;           
    }
