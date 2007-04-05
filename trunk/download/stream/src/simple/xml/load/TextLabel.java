@@ -144,6 +144,9 @@ final class TextLabel implements Label {
     * @return true if the type is primitive, false otherwise
     */
    private boolean isPrimitive(Class type) {
+      if(type.equals(String.class)) {
+         return true;              
+      }
       if(type.equals(Boolean.class)) {
          return true;              
       }
@@ -154,9 +157,6 @@ final class TextLabel implements Label {
          return true;               
       }
       if(type.equals(Long.class)) {
-         return true;              
-      }
-      if(type.equals(String.class)) {
          return true;              
       }
       if(type.equals(Double.class)) {

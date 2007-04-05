@@ -64,7 +64,7 @@ public class EmptyTest extends TestCase {
       
       try {           
          persister.read(RequiredElement.class, EMPTY_ELEMENT);      
-      } catch(ElementException e) {
+      } catch(FieldRequiredException e) {
          success = true;              
       }
       assertTrue(success);
@@ -75,7 +75,7 @@ public class EmptyTest extends TestCase {
       
       try {           
          persister.read(RequiredElement.class, BLANK_ELEMENT);     
-      } catch(ElementException e) {
+      } catch(FieldRequiredException e) {
          success = true;              
       }
       assertTrue(success);           
@@ -86,21 +86,16 @@ public class EmptyTest extends TestCase {
       
       try {           
          persister.read(RequiredElement.class, EMPTY_ELEMENT);     
-      } catch(ElementException e) {
+      } catch(FieldRequiredException e) {
          success = true;              
       }
       assertTrue(success);   
    }
 
    public void testOptionalBlank() throws Exception {    
-      boolean success = false;
-      
-      try {           
-         persister.read(OptionalElement.class, BLANK_ELEMENT);     
-      } catch(ElementException e) {
-         success = true;              
-      }
-      assertTrue(success);      
+      OptionalElement element = persister.read(OptionalElement.class, BLANK_ELEMENT);     
+
+      assertNull(element.empty);
    }     
 
    public void testRequiredEmptyAttribute() throws Exception {

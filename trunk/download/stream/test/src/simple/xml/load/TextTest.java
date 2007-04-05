@@ -39,6 +39,9 @@ public class TextTest extends ValidationTestCase {
    "  <illegal>Not allowed</illegal>\r\n"+
    "</text>\r\n";
 
+   private static final String EMPTY_TEXT = 
+   "<text name='a' version='ONE'/>";
+
    @Root(name="test")
    private static class TextList {
 
@@ -58,6 +61,19 @@ public class TextTest extends ValidationTestCase {
       @Text
       private String text;
    }
+
+   @Root(name="text")
+   private static class OptionalTextEntry {
+     
+      @Attribute(name="name")
+      private String name;
+
+      @Attribute(name="version")
+      private Version version;        
+
+      @Text(required=false)
+      private String text;           
+   }           
 
    private static class DuplicateTextEntry extends TextEntry {
 
@@ -157,4 +173,35 @@ public class TextTest extends ValidationTestCase {
       }              
       assertTrue(success);
    }
+   
+   public void testEmpty() throws Exception {
+      boolean success = false;
+      
+      try {
+         persister.read(TextEntry.class, EMPTY_TEXT);                       
+      } catch(FieldRequiredException e) {
+         success = true;              
+      }              
+      assertTrue(success);
+   }
+
+   public void testOptional() throws Exception {
+      OptionalTextEntry entry = persister.read(OptionalTextEntry.class, EMPTY_TEXT);
+
+      assertEquals(entry.version, Version.ONE);
+      assertEquals(entry.name, "a");
+      assertTrue(entry.text == null);
+      
+      StringWriter buffer = new StringWriter();
+      persister.write(entry, buffer);
+      validate(entry, persister);
+
+      entry = persister.read(OptionalTextEntry.class, buffer.toString());
+
+      assertEquals(entry.version, Version.ONE);
+      assertEquals(entry.name, "a");
+      assertTrue(entry.text == null);
+      
+      validate(entry, persister);            
+   }    
 }
