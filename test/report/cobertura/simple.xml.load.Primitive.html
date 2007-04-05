@@ -167,10 +167,10 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * @param type this is the type of primitive this represents</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;75</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span> </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;76</td>  <td class="nbHitsCovered">&nbsp;861524</td>  <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> Primitive(Source root, Class type) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;77</td>  <td class="nbHitsCovered">&nbsp;861524</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">this</span>.factory = <span class="keyword">new</span> PrimitiveFactory(root, type);           </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;78</td>  <td class="nbHitsCovered">&nbsp;861524</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">this</span>.root = root;           </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;79</td>  <td class="nbHitsCovered">&nbsp;861524</td>  <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;76</td>  <td class="nbHitsCovered">&nbsp;861548</td>  <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> Primitive(Source root, Class type) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;77</td>  <td class="nbHitsCovered">&nbsp;861548</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">this</span>.factory = <span class="keyword">new</span> PrimitiveFactory(root, type);           </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;78</td>  <td class="nbHitsCovered">&nbsp;861548</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">this</span>.root = root;           </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;79</td>  <td class="nbHitsCovered">&nbsp;861548</td>  <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;80</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;81</td>  <td class="nbHits">&nbsp;</td>
@@ -197,17 +197,17 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span> </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;92</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> Object read(InputNode node) <span class="keyword">throws</span> Exception{</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;93</td>  <td class="nbHitsCovered">&nbsp;721039</td>  <td class="src"><pre class="src">&nbsp;      Position line = node.getPosition();</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;94</td>  <td class="nbHitsCovered">&nbsp;721039</td>  <td class="src"><pre class="src">&nbsp;      String name = node.getName();     </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;95</td>  <td class="nbHitsCovered">&nbsp;721039</td>  <td class="src"><pre class="src">&nbsp;      String value = node.getValue();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;93</td>  <td class="nbHitsCovered">&nbsp;721063</td>  <td class="src"><pre class="src">&nbsp;      Position line = node.getPosition();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;94</td>  <td class="nbHitsCovered">&nbsp;721063</td>  <td class="src"><pre class="src">&nbsp;      String name = node.getName();     </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;95</td>  <td class="nbHitsCovered">&nbsp;721063</td>  <td class="src"><pre class="src">&nbsp;      String value = node.getValue();</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;96</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;      </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;97</td>  <td class="nbHitsCovered">&nbsp;721039</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(value == <span class="keyword">null</span>) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;97</td>  <td class="nbHitsCovered">&nbsp;721063</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(value == <span class="keyword">null</span>) {</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;98</td>  <td class="nbHitsCovered">&nbsp;4</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">throw</span> <span class="keyword">new</span> ElementException(<span class="string">"Element '%s' is empty at %s"</span>, name, line);              </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;99</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;      } </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;100</td>  <td class="nbHitsCovered">&nbsp;721035</td>  <td class="src"><pre class="src">&nbsp;      String text = root.getProperty(value);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;101</td>  <td class="nbHitsCovered">&nbsp;721035</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> factory.getInstance(text);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;100</td>  <td class="nbHitsCovered">&nbsp;721059</td>  <td class="src"><pre class="src">&nbsp;      String text = root.getProperty(value);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;101</td>  <td class="nbHitsCovered">&nbsp;721059</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> factory.getInstance(text);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;102</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   }      </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;103</td>  <td class="nbHits">&nbsp;</td>
@@ -280,6 +280,6 @@
   <td class="src"><pre class="src">&nbsp;}</pre></td></tr>
 </table>
 
-<div class="footer">Report generated by <a href="http://cobertura.sourceforge.net/" target="_top">Cobertura</a> 1.8 on 29/03/07 11:34.</div>
+<div class="footer">Report generated by <a href="http://cobertura.sourceforge.net/" target="_top">Cobertura</a> 1.8 on 05/04/07 13:13.</div>
 </body>
 </html>
