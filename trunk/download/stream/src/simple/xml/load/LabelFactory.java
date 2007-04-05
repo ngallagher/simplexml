@@ -27,6 +27,7 @@ import simple.xml.ElementArray;
 import simple.xml.ElementList;
 import simple.xml.Element;
 import simple.xml.Attribute;
+import simple.xml.Text;
 
 /**
  * The <code>LabelFactory</code> object is used to create instances of
@@ -109,6 +110,9 @@ final class LabelFactory {
        }
        if(label instanceof Attribute) {
           return new Entry(AttributeLabel.class, Attribute.class);
+       }
+       if(label instanceof Text) {
+    	   return new Entry(TextLabel.class, Text.class);
        }
        throw new PersistenceException("Annotation %s not supported", label);
     }
