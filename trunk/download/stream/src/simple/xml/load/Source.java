@@ -170,8 +170,10 @@ final class Source {
     * @param source the source object the schema is created for
     * 
     * @return a new schema that can track visits within the schema
+    * 
+    * @throws Exception if the class contains an illegal schema  
     */
-   public Schema getSchema(Object source) {
+   public Schema getSchema(Object source) throws Exception {
       return getSchema(source.getClass());           
    }
 
@@ -185,8 +187,10 @@ final class Source {
     * @param type the schema class the schema is created for
     * 
     * @return a new schema that can track visits within the schema
+    * 
+    * @throws Exception if the class contains an illegal schema 
     */   
-   public Schema getSchema(Class type) {
+   public Schema getSchema(Class type) throws Exception {
       Scanner schema = cache.get(type);
       
       if(schema == null) {

@@ -103,7 +103,7 @@ final class TextLabel implements Label {
     * @return returns the name of the field the annotation labels
     */   
    public String getName() {
-      return field.name();
+      return field.getName();
    }
    
    /**

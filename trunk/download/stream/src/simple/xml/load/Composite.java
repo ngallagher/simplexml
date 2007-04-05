@@ -143,6 +143,7 @@ final class Composite implements Converter {
    private void read(InputNode node, Object source, Schema schema) throws Exception {
       readAttributes(node, source, schema);
       readElements(node, source, schema);
+      readText(node, source, schema);
    }   
 
    /**
@@ -201,6 +202,27 @@ final class Composite implements Converter {
          readElement(child, source, map);
       } 
       validate(node, map, source);
+   }
+   
+   /**
+    * This <code>read</code> method is used to read the text value
+    * from the XML element node specified. This will check the class
+    * schema to determine if a <code>Text</code> annotation was
+    * specified. If one was specified then the text within the XML
+    * element input node is used to populate the field value.
+    * 
+    * @param node this is the XML element to acquire the text from
+    * @param source the source object which will be deserialized
+    * @param schema this is used to visit the element fields
+    * 
+    * @throws Exception thrown if a required text value was null
+    */
+   private void readText(InputNode node, Object source, Schema schema) throws Exception {
+      Label label = schema.getText();
+      
+      if(label != null) {
+         read(node, source, label);
+      }
    }
    
    /**
@@ -348,7 +370,8 @@ final class Composite implements Converter {
     */
    private void write(OutputNode node, Object source, Schema schema) throws Exception {
       writeAttributes(node, source, schema);
-      writeElements(node, source, schema);      
+      writeElements(node, source, schema);
+      writeText(node, source, schema);
    }
 
    /**
@@ -408,6 +431,30 @@ final class Composite implements Converter {
    }
    
    /**
+    * This write method is used to write the text field from the 
+    * provided source object to the XML element. This takes the text
+    * value from the source object and writes it to the single field
+    * marked with the <code>Text</code> annotation. If the value is
+    * null and the field value is required an exception is thrown.
+    * 
+    * @param source this is the source object to be serialized
+    * @param node this is the XML element to write text value to
+    * @param schema this is used to track the referenced elements
+    * 
+    * @throws Exception thrown if there is a serialization problem
+    */
+   private void writeText(OutputNode node, Object source, Schema schema) throws Exception {
+      Label label = schema.getText();
+      Field field = label.getField();
+      Object value = field.get(source);
+                 
+      if(label.isRequired() && value == null) {
+         throw new TextException("Value for %s is null", label);
+      }
+      writeText(node, value, label); 
+   }
+   
+   /**
     * This write method is used to set the value of the provided object
     * as an attribute to the XML element. This will acquire the string
     * value of the object using <code>toString</code> only if the
@@ -457,5 +504,29 @@ final class Composite implements Converter {
          label.getConverter(root).write(next, value);
       }
    }
+   
+   /**
+    * This write method is used to set the value of the provided object
+    * as the text for the XML element. This will acquire the string
+    * value of the object using <code>toString</code> only if the
+    * object provided is not an enumerated type. If the object is an
+    * enumerated type then the <code>Enum.name</code> method is used.
+    * 
+    * @param value this is the value toset as the XML element text
+    * @param node this is the XML element to write the text value to
+    * @param label the label that contains the field details
+    * 
+    * @throws Exception thrown if there is a serialization problem
+    */
+   private void writeText(OutputNode node, Object value, Label label) throws Exception {
+      if(value != null) {         
+         String text = value.toString();
+         
+         if(value instanceof Enum) {
+            Enum type = (Enum) value;
+            text = type.name();
+         }
+         node.setValue(text);        
+      }
+   }
 }
-
