@@ -24,11 +24,11 @@ import java.lang.reflect.Field;
 import simple.xml.Text;
 
 /**
- * The <code>TextLabel</code> represents a label that is used to
- * represent an XML element in a class schema. This element can be
- * used to convert an XML node into either a primitive value such as
- * a string or composite object value, which is itself a schema for
- * a section of XML within the XML document. 
+ * The <code>TextLabel</code> represents a label that is used to get
+ * a converter for a text entry within an XML element. This label is
+ * used to convert an XML text entry into a primitive value such as 
+ * a string or an integer, this will throw an exception if the field
+ * value does not represent a primitive object.
  * 
  * @author Niall Gallagher
  * 
@@ -42,7 +42,7 @@ final class TextLabel implements Label {
    private Text label;
    
    /**
-    * The field that this element label represents.
+    * The field that this annotation label represents.
     */
    private Field field;
    
@@ -54,7 +54,7 @@ final class TextLabel implements Label {
    /**
     * Constructor for the <code>TextLabel</code> object. This is
     * used to create a label that can convert a XML node into a 
-    * composite object or a primitive type from an XML element. 
+    * primitive value from an XML element text value.
     * 
     * @param field this is the field that this label represents
     * @param label this is the annotation for the field 
@@ -68,22 +68,22 @@ final class TextLabel implements Label {
    /**
     * Creates a converter that can be used to transform an XML node to
     * an object and vice versa. The converter created will handles
-    * only XML elements and requires the source object to be provided. 
+    * only XML text and requires the source object to be provided. 
     * 
     * @param source this is the source object used for serialization
     * 
     * @return this returns a converter for serializing XML elements
     */
-   public Converter getConverter(Source source) {
+   public Converter getConverter(Source source) throws Exception {
       if(!isPrimitive(type)) {
-         throw new IllegalStateException("ERRRRROOOORRRR!!!");
+         throw new TextException("Cannot use %s to represent %s", label, type);
       }
       return new Primitive(source, type);
    }
    
    /**
     * This is used to acquire the field object for this label. The 
-    * field retrieved can be used to set any object or primitive that
+    * field retrieved can be used to set the primitive instance that
     * has been deserialized, and can also be used to acquire values to
     * be serialized in the case of object persistance. All fields that
     * are retrieved from this method will be accessible. 
@@ -95,15 +95,15 @@ final class TextLabel implements Label {
    }
    
    /**
-    * This is used to acquire the name of the XML element as taken
-    * from the field annotation. Every XML annotation must contain a
-    * name, so that it can be identified from the XML source. This
-    * allows the class to be used as a schema for the XML document. 
+    * This is used to acquire the name of the annotated element. The
+    * name of the field can be used as the text annotation does not
+    * contain any naming information due to the fact that only one
+    * can exist within a given class, and that it represents text.
     * 
-    * @return returns the name of the annotation for the field
+    * @return returns the name of the field the annotation labels
     */   
    public String getName() {
-      return label.name();
+      return field.name();
    }
    
    /**
@@ -121,11 +121,11 @@ final class TextLabel implements Label {
    }
    
    /**
-    * This is used to determine whether the XML element is required. 
-    * This ensures that if an XML element is missing from a document
+    * This is used to determine whether the text value is required. 
+    * This ensures that if the text value is missing from an element
     * that deserialization can continue. Also, in the process of
     * serialization, if a value is null it does not need to be 
-    * written to the resulting XML document.
+    * written to the resulting XML element.
     * 
     * @return true if the label represents a some required data
     */   
@@ -136,8 +136,8 @@ final class TextLabel implements Label {
    /**
     * This method is used to determine whether the field type is a
     * primitive or enumerated type. If it is either of these then it
-    * must be a leaf element, that is, an element without any other
-    * elements. If this is true a primitive converter is used.
+    * it acceptible for the <code>Text</code> annotation, as it can
+    * only be used to represent a primitive or an enumerated type.
     * 
     * @param type the type checked to determine if it is primitive
     * 
