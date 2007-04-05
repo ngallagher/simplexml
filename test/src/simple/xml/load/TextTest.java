@@ -12,7 +12,7 @@ import simple.xml.Root;
 
 public class TextTest extends ValidationTestCase {
         
-   private static final String SOURCE =
+   private static final String TEXT_LIST =
    "<test>\n"+
    "   <array>\n"+
    "     <text name='a' version='ONE'>Example 1</text>\r\n"+
@@ -20,7 +20,24 @@ public class TextTest extends ValidationTestCase {
    "     <text name='c' version='THREE'>Example 3</text>\r\n"+
    "   </array>\n\r"+
    "</test>";
-   
+
+   private static final String DATA_TEXT =
+   "<text name='a' version='ONE'>\r\n"+
+   "   <![CDATA[ \n"+
+   "      <element> \n"+
+   "         <data>This is hidden</data>\n"+
+   "      </element> \n"+   
+   "   ]]>\n"+   
+   "</text>\r\n";
+
+   private static final String DUPLICATE_TEXT =
+   "<text name='a' version='ONE'>Example 1</text>\r\n";
+
+   private static final String ILLEGAL_ELEMENT =
+   "<text name='a' version='ONE'>\r\n"+
+   "  Example 1\n\r"+
+   "  <illegal>Not allowed</illegal>\r\n"+
+   "</text>\r\n";
 
    @Root(name="test")
    private static class TextList {
@@ -42,6 +59,18 @@ public class TextTest extends ValidationTestCase {
       private String text;
    }
 
+   private static class DuplicateTextEntry extends TextEntry {
+
+      @Text 
+      private String duplicate;           
+   }
+
+   private static class IllegalElementTextEntry extends TextEntry {
+
+      @Element(name="illegal")
+      private String name;              
+   }
+
    private enum Version {
            
       ONE,
@@ -56,7 +85,7 @@ public class TextTest extends ValidationTestCase {
    }
 	
    public void testText() throws Exception {    
-      TextList list = persister.read(TextList.class, SOURCE);
+      TextList list = persister.read(TextList.class, TEXT_LIST);
 
       assertEquals(list.array[0].version, Version.ONE);
       assertEquals(list.array[0].name, "a");
@@ -85,5 +114,47 @@ public class TextTest extends ValidationTestCase {
       assertEquals(list.array[2].text, "Example 3");
       
       validate(list, persister);
+   }
+
+   public void testData() throws Exception {
+      TextEntry entry = persister.read(TextEntry.class, DATA_TEXT);
+
+      assertEquals(entry.version, Version.ONE);
+      assertEquals(entry.name, "a");
+      assertTrue(entry.text != null);
+      
+      StringWriter buffer = new StringWriter();
+      persister.write(entry, buffer);
+      validate(entry, persister);
+
+      entry = persister.read(TextEntry.class, buffer.toString());
+
+      assertEquals(entry.version, Version.ONE);
+      assertEquals(entry.name, "a");
+      assertTrue(entry.text != null);
+      
+      validate(entry, persister);           
+   }
+
+   public void testDuplicate() throws Exception {
+      boolean success = false;
+      
+      try {
+         persister.read(DuplicateTextEntry.class, DUPLICATE_TEXT);                       
+      } catch(TextException e) {
+         success = true;              
+      }              
+      assertTrue(success);
+   }
+
+   public void testIllegalElement() throws Exception {
+      boolean success = false;
+      
+      try {
+         persister.read(IllegalElementTextEntry.class, ILLEGAL_ELEMENT);                       
+      } catch(TextException e) {
+         success = true;              
+      }              
+      assertTrue(success);
    }
 }

@@ -141,9 +141,9 @@ final class Composite implements Converter {
     * @param schema this object visits the objects fields
     */
    private void read(InputNode node, Object source, Schema schema) throws Exception {
+	  readText(node, source, schema);
       readAttributes(node, source, schema);
       readElements(node, source, schema);
-      readText(node, source, schema);
    }   
 
    /**
@@ -445,13 +445,16 @@ final class Composite implements Converter {
     */
    private void writeText(OutputNode node, Object source, Schema schema) throws Exception {
       Label label = schema.getText();
-      Field field = label.getField();
-      Object value = field.get(source);
+
+      if(label != null) {
+         Field field = label.getField();
+         Object value = field.get(source);
                  
-      if(label.isRequired() && value == null) {
-         throw new TextException("Value for %s is null", label);
-      }
-      writeText(node, value, label); 
+         if(label.isRequired() && value == null) {
+            throw new TextException("Value for %s is null", label);
+         }
+         writeText(node, value, label); 
+      }         
    }
    
    /**
