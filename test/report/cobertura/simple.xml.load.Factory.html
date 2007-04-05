@@ -135,10 +135,10 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * @param field this is the field type to determine the value of</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;59</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;60</td>  <td class="nbHitsCovered">&nbsp;1302883</td>  <td class="src"><pre class="src">&nbsp;   <span class="keyword">protected</span> Factory(Source source, Class field) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;61</td>  <td class="nbHitsCovered">&nbsp;1302883</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">this</span>.source = source;           </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;62</td>  <td class="nbHitsCovered">&nbsp;1302883</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">this</span>.field = field;           </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;63</td>  <td class="nbHitsCovered">&nbsp;1302883</td>  <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;60</td>  <td class="nbHitsCovered">&nbsp;1302884</td>  <td class="src"><pre class="src">&nbsp;   <span class="keyword">protected</span> Factory(Source source, Class field) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;61</td>  <td class="nbHitsCovered">&nbsp;1302884</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">this</span>.source = source;           </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;62</td>  <td class="nbHitsCovered">&nbsp;1302884</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">this</span>.field = field;           </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;63</td>  <td class="nbHitsCovered">&nbsp;1302884</td>  <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;64</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;65</td>  <td class="nbHits">&nbsp;</td>
@@ -171,10 +171,10 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;79</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> Type getOverride(InputNode node) <span class="keyword">throws</span> Exception {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;80</td>  <td class="nbHitsCovered">&nbsp;330573</td>  <td class="src"><pre class="src">&nbsp;      Type type = getConversion(node);      </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;80</td>  <td class="nbHitsCovered">&nbsp;330574</td>  <td class="src"><pre class="src">&nbsp;      Type type = getConversion(node);      </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;81</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;82</td>  <td class="nbHitsCovered">&nbsp;330572</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(type != <span class="keyword">null</span>) { </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;82</td>  <td class="nbHitsCovered">&nbsp;330573</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(type != <span class="keyword">null</span>) { </pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;83</td>  <td class="nbHitsCovered">&nbsp;30033</td>  <td class="src"><pre class="src">&nbsp;             Class real = type.getType();</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;84</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;             </pre></td></tr>
@@ -184,7 +184,7 @@
   <td class="src"><pre class="src">&nbsp;         }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;88</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;      }         </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;89</td>  <td class="nbHitsCovered">&nbsp;330569</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> type; </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;89</td>  <td class="nbHitsCovered">&nbsp;330570</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> type; </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;90</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;91</td>  <td class="nbHits">&nbsp;</td>
@@ -251,7 +251,7 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span> </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;124</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> Type getConversion(InputNode node) <span class="keyword">throws</span> Exception {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;125</td>  <td class="nbHitsCovered">&nbsp;330573</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> source.getOverride(field, node);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;125</td>  <td class="nbHitsCovered">&nbsp;330574</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> source.getOverride(field, node);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;126</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;127</td>  <td class="nbHits">&nbsp;</td>
@@ -307,14 +307,14 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;153</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> <span class="keyword">boolean</span> isInstantiable(Class type) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;154</td>  <td class="nbHitsCovered">&nbsp;330560</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">int</span> modifiers = type.getModifiers();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;154</td>  <td class="nbHitsCovered">&nbsp;330561</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">int</span> modifiers = type.getModifiers();</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;155</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;156</td>  <td class="nbHitsCovered">&nbsp;330560</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(Modifier.isAbstract(modifiers)) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;156</td>  <td class="nbHitsCovered">&nbsp;330561</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(Modifier.isAbstract(modifiers)) {</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;157</td>  <td class="nbHitsCovered">&nbsp;7</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">return</span> <span class="keyword">false</span>;              </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;158</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;      }              </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;159</td>  <td class="nbHitsCovered">&nbsp;330553</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> !Modifier.isInterface(modifiers);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;159</td>  <td class="nbHitsCovered">&nbsp;330554</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> !Modifier.isInterface(modifiers);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;160</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   }      </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;161</td>  <td class="nbHits">&nbsp;</td>
@@ -378,6 +378,6 @@
   <td class="src"><pre class="src">&nbsp;}           </pre></td></tr>
 </table>
 
-<div class="footer">Report generated by <a href="http://cobertura.sourceforge.net/" target="_top">Cobertura</a> 1.8 on 05/04/07 14:05.</div>
+<div class="footer">Report generated by <a href="http://cobertura.sourceforge.net/" target="_top">Cobertura</a> 1.8 on 05/04/07 14:26.</div>
 </body>
 </html>
