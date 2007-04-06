@@ -144,4 +144,67 @@ public class NodeReaderTest extends TestCase {
       assertEquals("integer", integer.getName());
       assertEquals("12345", integer.getValue());
    }           
+
+   public void testSkip() throws Exception {
+      InputNode event = NodeBuilder.read(new StringReader(LARGE_SOURCE));
+
+      assertTrue(event.isRoot());
+      assertEquals("root", event.getName());         
+      assertEquals("2.1", event.getAttribute("version").getValue());
+      assertEquals("234", event.getAttribute("id").getValue());
+
+      NodeMap attrList = event.getAttributes();
+
+      assertEquals("2.1", attrList.get("version").getValue());
+      assertEquals("234", attrList.get("id").getValue());
+
+      InputNode list = event.getNext();
+
+      assertFalse(list.isRoot());
+      assertEquals("list", list.getName());
+      assertEquals("sorted", list.getAttribute("type").getValue());
+      
+      InputNode entry = list.getNext();
+      InputNode value = list.getNext(); // same as entry.getNext()
+      
+      assertEquals("entry", entry.getName());
+      assertEquals("1", entry.getAttribute("name").getValue());
+      assertEquals("value", value.getName());
+      assertEquals("value 1", value.getValue());
+      assertEquals(null, value.getAttribute("name"));
+      assertEquals(null, entry.getNext());
+      assertEquals(null, value.getNext());
+      
+      entry = list.getNext();
+      entry.skip();
+
+      assertEquals(entry.getNext(), null);
+
+      entry = list.getNext();
+      value = entry.getNext(); // same as list.getNext()
+      
+      assertEquals("entry", entry.getName());
+      assertEquals("3", entry.getAttribute("name").getValue());
+      assertEquals("value", value.getName());
+      assertEquals("value 3", value.getValue());
+      assertEquals(null, value.getAttribute("name"));
+      assertEquals(null, entry.getNext());
+      assertEquals(null, list.getNext());
+
+      InputNode object = event.getNext();
+      InputNode integer = event.getNext(); // same as object.getNext()
+
+      assertEquals("object", object.getName());
+      assertEquals("name", object.getAttribute("name").getValue());
+      assertEquals("integer", integer.getName());
+      assertEquals("123", integer.getValue());
+      
+      object = object.getNext(); // same as event.getNext()
+      integer = object.getNext();
+
+      assertEquals("object", object.getName());
+      assertEquals("key", object.getAttribute("name").getValue());
+      assertEquals("integer", integer.getName());
+      assertEquals("12345", integer.getValue());
+   }
 }
