@@ -149,6 +149,18 @@ class InputElement implements InputNode {
    public InputNode getNext() throws Exception {
       return reader.readElement(this);
    }
+
+   /**
+    * This method is used to skip all child elements from this
+    * element. This allows elements to be effectively skipped such
+    * that when parsing a document if an element is not required
+    * then that element can be completely removed from the XML.
+    *
+    * @exception Exception thrown if there was a parse error
+    */ 
+   public void skip() throws Exception {
+      reader.skipElement(this);           
+   }
 }
 
 

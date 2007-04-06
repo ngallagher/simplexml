@@ -46,4 +46,17 @@ public @interface Root {
     * @return the name of the XML element this represents
     */
    public String name();
+
+   /**
+    * This is used to determine whether the object represented
+    * should be parsed in a strict manner. Strict parsing requires
+    * that each element and attrivute in the XML document match a 
+    * field in the class schema. If an element or attribute does
+    * not match a field then the parsing fails with an exception.
+    * Setting strict parsing to false allows details within the
+    * source XML document to be skipped during deserialization.
+    * 
+    * @return true if strict parsing is enabled, false otherwise
+    */ 
+   public boolean strict() default true;
 }
