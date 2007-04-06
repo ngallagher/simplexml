@@ -115,4 +115,25 @@
       <delete dir="${build.path}"/>
    </target>
 
+   <target name="test-woodstox" depends="build">
+      <junit showoutput="true" printsummary="yes" haltonfailure="yes">
+	      <sysproperty key="javax.xml.stream.XMLInputFactory"  value="com.ctc.wstx.stax.WstxInputFactory"/>
+         <classpath location="${build.path}/core"/>
+         <classpath location="${build.path}/test"/>
+         <classpath>
+            <fileset dir="${lib.path}">
+               <include name="**/*.jar"/>
+            </fileset>
+         </classpath>
+         <formatter type="plain"/>
+         <batchtest fork="yes" todir="${report.path}/test">
+            <fileset dir="${build.path}/test">
+               <include name="**/*Test.class"/>
+               <exclude name="**/*TestSuite.class"/>
+            </fileset>
+         </batchtest>
+      </junit>
+      <delete dir="${build.path}"/>
+   </target>
+
 </project>
