@@ -227,7 +227,7 @@ final class Scanner {
       Class real = type;
       
       do {
-         if(root != null) {              
+         if(root == null) {              
             root(type);
          }            
          scan(real, type);

@@ -65,6 +65,10 @@ public class StrictTest extends ValidationTestCase {
       StrictExample example = persister.read(StrictExample.class, SOURCE);
 
       assertEquals(example.list.length, 3);
+      assertEquals(example.list[0].value, "value 1");   
+      assertEquals(example.list[1].value, "value 2");     
+      assertEquals(example.list[2].value, "value 3");     
+      assertEquals(example.object.integer, 123);
       
       validate(example, persister);
    }
