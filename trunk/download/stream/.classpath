@@ -3,7 +3,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="test/src"/>
 	<classpathentry kind="lib" path="lib/stax-1.2.0.jar"/>
-	<classpathentry kind="lib" path="lib/stax-api-1.0.1.jar"/>
 	<classpathentry kind="lib" path="lib/stax-api-1.0.jar"/>
 	<classpathentry kind="lib" path="skel/lib/stax-1.2.0.jar"/>
 	<classpathentry kind="lib" path="skel/lib/stax-api-1.0.1.jar"/>
@@ -19,5 +18,6 @@
 	<classpathentry kind="lib" path="test/lib/stax-api-1.0.1.jar"/>
 	<classpathentry kind="lib" path="test/lib/stax-api-1.0.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="test/lib/wstx-asl-3.2.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
