@@ -37,24 +37,17 @@ import java.util.HashMap;
 final class LabelMap extends HashMap<String, Label> implements Iterable<Label> { 
    
    /**
+    * This is the scanner object that represents the scanner used.
+    */        
+   private Scanner source;
+        
+   /**
     * Constructor for the <code>LabelMap</code> object is used to 
     * create an empty map. This is used for convinience as a typedef
     * like construct which avoids having to use the generic type.
     */ 
-   public LabelMap() {
-      super();
-   }
-   
-   /**
-    * Copy constructor for the <code>LabelMap</code> object. This is
-    * used to copy the mappings from the provided map. This is used
-    * when the map needs to be manipulated and the original map needs
-    * to remain unchanged. This allows the label maps to be cached. 
-    *
-    * @param map this is a map contain string to label mappings
-    */ 
-   public LabelMap(LabelMap map) {
-      super(map);
+   public LabelMap(Scanner source) {
+      this.source = source;
    }
 
    /**
@@ -86,5 +79,36 @@ final class LabelMap extends HashMap<String, Label> implements Iterable<Label> {
          return remove(key);              
       }
       return null;      
+   }
+
+   /**
+    * This method is used to clone the label map such that mappings
+    * can be maintained in the original even if they are modified
+    * in the clone. This is used to that the <code>Schema</code> can
+    * remove mappings from the label map as they are visited. 
+    *
+    * @return this returns a cloned representation of this map
+    */ 
+   public LabelMap clone() {
+      LabelMap clone = new LabelMap(source);
+      
+      if(!isEmpty()) {
+         clone.putAll(this);
+      }         
+      return clone;      
+   }   
+
+   /**
+    * This method is used to determine whether strict mappings are
+    * required. Strict mapping means that all labels in the class
+    * schema must match the XML elements and attributes in the
+    * source XML document. When strict mapping is disabled, then
+    * XML elements and attributes that do not exist in the schema
+    * class will be ignored without breaking the parser.
+    *
+    * @return true if strict parsing is enabled, false otherwise
+    */ 
+   public boolean isStrict() {
+      return source.isStrict();           
    }
 }

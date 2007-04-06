@@ -28,6 +28,7 @@ import simple.xml.ElementList;
 import simple.xml.Element;
 import simple.xml.Attribute;
 import simple.xml.Text;
+import simple.xml.Root;
 import java.util.Map;
 
 /**
@@ -85,6 +86,11 @@ final class Scanner {
     * This is the type the scanner uses to collection annotations.
     */
    private Class type;
+
+   /**
+    * This is the optional root annotation for the scanned class.
+    */
+   private Root root;
    
    /**
     * Constructor for the <code>Schema</code> object. This is used 
@@ -94,8 +100,8 @@ final class Scanner {
     * @param type this is the type that is scanned for a schema
     */
    public Scanner(Class type) throws Exception {           
-      this.attributes = new LabelMap();
-      this.elements = new LabelMap();
+      this.attributes = new LabelMap(this);
+      this.elements = new LabelMap(this);
       this.type = type;
       this.scan(type);
    }       
@@ -110,7 +116,7 @@ final class Scanner {
     * @return map with the details extracted from the schema class
     */ 
    public LabelMap getAttributes() {
-      return new LabelMap(attributes);
+      return attributes.clone();
    }        
 
    /**
@@ -123,7 +129,7 @@ final class Scanner {
     * @return a map containing the details for XML elements
     */
    public LabelMap getElements() {
-      return new LabelMap(elements);
+      return elements.clone();
    }
    
    /**
@@ -190,6 +196,23 @@ final class Scanner {
    public Method getComplete() {
       return complete;           
    }
+
+   /**
+    * This method is used to determine whether strict mappings are
+    * required. Strict mapping means that all labels in the class
+    * schema must match the XML elements and attributes in the
+    * source XML document. When strict mapping is disabled, then
+    * XML elements and attributes that do not exist in the schema
+    * class will be ignored without breaking the parser.
+    *
+    * @return true if strict parsing is enabled, false otherwise
+    */ 
+   public boolean isStrict() {
+      if(root != null) {
+         return root.strict();              
+      }              
+      return true;
+   }
    
    /**
     * Scan the fields such that the base class is scanned first then 
@@ -204,10 +227,27 @@ final class Scanner {
       Class real = type;
       
       do {
+         if(root != null) {              
+            root(type);
+         }            
          scan(real, type);
          type = type.getSuperclass();
       }
       while(type != null);    
+   }
+
+   /**
+    * This is used to acquire the optional <code>Root</code> from the
+    * specified class. The root annotation provides information as
+    * to how the object is to be parsed as well as other information
+    * such as the name of the object if it is to be serialized.
+    *
+    * @param type this is the type of the class to be inspected
+    */ 
+   private void root(Class type) {
+      if(type.isAnnotationPresent(Root.class)) {
+          root = (Root)type.getAnnotation(Root.class);
+      }
    }
 
    /**

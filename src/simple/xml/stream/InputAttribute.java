@@ -163,4 +163,14 @@ class InputAttribute implements InputNode {
    public InputNode getNext() {
       return null;           
    }
+
+   /**
+    * This method is used to skip all child elements from this
+    * element. This allows elements to be effectively skipped such
+    * that when parsing a document if an element is not required
+    * then that element can be completely removed from the XML.
+    */ 
+   public void skip() {
+      return;           
+   }
 }

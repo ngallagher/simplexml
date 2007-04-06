@@ -166,5 +166,17 @@ final class NodeReader {
       }         
       return null;
    }     
+
+   /**
+    * This method is used to skip an element within the XML document.
+    * This will simply read each element from the document until
+    * the specified element is at the top of the stack. When the
+    * specified element is at the top of the stack this returns.
+    *
+    * @param from this is the element to skip from the XML document
+    */ 
+   public void skipElement(InputNode from) throws Exception {
+      while(readElement(from) != null);           
+   }
 }
 

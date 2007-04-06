@@ -245,9 +245,12 @@ final class Composite implements Converter {
       Label label = map.take(name);
       
       if(label == null) {
-         throw new AttributeException("Attribute '%s' does not exist at %s", name, line);
-      }
-      read(node, source, label);
+         if(map.isStrict()) {              
+            throw new AttributeException("Attribute '%s' does not exist at %s", name, line);
+         }            
+      } else {
+         read(node, source, label);
+      }         
    }
 
    /**
@@ -270,9 +273,14 @@ final class Composite implements Converter {
       Label label = map.take(name);
       
       if(label == null) {
-         throw new ElementException("Element '%s' does not exist at %s", name, line);
-      }
-      read(node, source, label);
+         if(map.isStrict()) {              
+            throw new ElementException("Element '%s' does not exist at %s", name, line);
+         } else {
+            node.skip();                 
+         }
+      } else {
+         read(node, source, label);
+      }         
    }
    
    /**

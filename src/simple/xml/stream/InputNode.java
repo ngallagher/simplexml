@@ -82,4 +82,14 @@ public interface InputNode extends Node {
     * @exception Exception thrown if there was a parse error
     */ 
    public InputNode getNext() throws Exception;   
+
+   /**
+    * This method is used to skip all child elements from this
+    * element. This allows elements to be effectively skipped such
+    * that when parsing a document if an element is not required
+    * then that element can be completely removed from the XML.
+    *
+    * @exception Exception thrown if there was a parse error
+    */ 
+   public void skip() throws Exception;
 }
