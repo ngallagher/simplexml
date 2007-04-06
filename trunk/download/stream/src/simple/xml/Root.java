@@ -35,7 +35,7 @@ import java.lang.annotation.Retention;
  */
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Root {
-   
+  
    /**
     * This represents the name of the XML element. This must be 
     * used for objects within element lists and root elements
@@ -45,12 +45,12 @@ public @interface Root {
     * 
     * @return the name of the XML element this represents
     */
-   public String name();
+   public String name() default "";
 
    /**
     * This is used to determine whether the object represented
     * should be parsed in a strict manner. Strict parsing requires
-    * that each element and attrivute in the XML document match a 
+    * that each element and attribute in the XML document match a 
     * field in the class schema. If an element or attribute does
     * not match a field then the parsing fails with an exception.
     * Setting strict parsing to false allows details within the

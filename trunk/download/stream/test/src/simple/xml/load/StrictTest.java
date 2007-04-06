@@ -30,6 +30,14 @@ public class StrictTest extends ValidationTestCase {
     "      </object>\n" +
     "   </object>\n" +
     "</root>";
+
+   private static final String SIMPLE =
+    "<object name='name'>\n" +
+    "   <integer>123</integer>\n" +
+    "   <object name='key'>\n" +
+    "      <integer>12345</integer>\n" +
+    "   </object>\n" +
+    "</object>\n";
    
    @Root(name="root", strict=false)
    private static class StrictExample {
@@ -48,12 +56,16 @@ public class StrictTest extends ValidationTestCase {
       private String value;
    }
 
-   @Root(name="object", strict=false)
+   @Root(strict=false)
    private static class StrictObject {
 
       @Element(name="integer")
       private int integer;
    }  
+
+   @Root(name="object", strict=false)
+   private static class NamedStrictObject extends StrictObject {
+   }
 
    private Persister persister;
 
@@ -72,4 +84,22 @@ public class StrictTest extends ValidationTestCase {
       
       validate(example, persister);
    }
+
+   public void testUnnamedStrict() throws Exception {    
+      boolean success = false; 
+      
+      try {      
+         persister.read(StrictObject.class, SIMPLE);
+      } catch(RootException e) {
+         success = true;              
+      }
+      assertTrue(success);
+   }
+
+   public void testNamedStrict() throws Exception {    
+      StrictObject object = persister.read(NamedStrictObject.class, SIMPLE);
+
+      assertEquals(object.integer, 123);
+      validate(object, persister);
+   }   
 }
