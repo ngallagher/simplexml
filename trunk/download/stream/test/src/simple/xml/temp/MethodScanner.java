@@ -68,7 +68,7 @@ public class MethodScanner {
       while(type != null);    
    }
    
-   private void scan(Class real, Class type) {
+   private void scan(Class real, Class type) throws Exception {
       Method[] method = type.getDeclaredMethods();
 
       for(int i = 0; i < method.length; i++) {
@@ -76,7 +76,7 @@ public class MethodScanner {
       }     
    }
    
-   public void scan(Method method) {
+   public void scan(Method method) throws Exception {
       Annotation[] list = method.getDeclaredAnnotations();
       
       for(int i = 0; i < list.length; i++) {
@@ -84,7 +84,7 @@ public class MethodScanner {
       }  
    }
    
-   public void scan(Method method, Annotation label) {
+   public void scan(Method method, Annotation label) throws Exception {
       if(label instanceof Attribute) {
          process(method, label);
       }
@@ -102,7 +102,7 @@ public class MethodScanner {
       }
    }
    
-   public void process(Method method, Annotation label) {
+   public void process(Method method, Annotation label) throws Exception {
       if(isGet(method)) {
          process(new ReadPart(method, label), label);
       } 
@@ -123,23 +123,26 @@ public class MethodScanner {
       }
    }
    
-   public void build() {
+   public void build() throws Exception {
       for(Annotation label : read) {
          MethodPart part = read.get(label);
-         build(part, label);
+         
+         if(part != null) {
+            build(part, label);
+         }
       }
    }
    
-   public void build(MethodPart read, Annotation label) {
+   public void build(MethodPart read, Annotation label) throws Exception {
       MethodPart match = write.take(label);
       
       if(match == null) {
-         throw new RuntimeException("No setter");
+         throw new Exception("No setter");
       }
       Class type = match.getType();
       
       if(type != read.getType()) {
-         throw new RuntimeException("Match failure for "+type);
+         throw new Exception("Match failure for "+type);
       }      
       list.add(new MethodContact(read, match));      
    }   
@@ -149,12 +152,12 @@ public class MethodScanner {
          MethodPart part = write.get(label);
          
          if(part != null) {
-            throw new RuntimeException("No get for " + label);
+            throw new Exception("No get for " + label);
          }
       }
    }
    
-   public boolean isGet(Method method) {
+   public boolean isGet(Method method) throws Exception {
       String name = method.getName();
       
       if(!name.startsWith("get")) {
@@ -163,12 +166,12 @@ public class MethodScanner {
       Class type = method.getReturnType();
          
       if(type == Void.class) {
-         throw new RuntimeException("Void");
+         throw new Exception("Void");
       }
       return true;
    }
    
-   public boolean isSet(Method method) {
+   public boolean isSet(Method method) throws Exception {
       String name = method.getName();
       
       if(!name.startsWith("set")) {
@@ -177,7 +180,7 @@ public class MethodScanner {
       Class[] list = method.getParameterTypes();
          
       if(list.length != 1) {
-         throw new RuntimeException("Incorrect signature");
+         throw new Exception("Incorrect signature");
       }
       return true;
    }

@@ -9,23 +9,10 @@ import simple.xml.ElementArray;
 import simple.xml.ElementList;
 import simple.xml.Text;
 
-public class FieldScanner {
+public class FieldScanner extends ContactList {
    
-   private ContactList list;
-   
-   private Class type;
-   
-   public FieldScanner(Class type) {
-      this.list = new ContactList();
-      this.type = type;
-   }
-   
-   public ContactList getContacts() {
-      return list;
-   }
-   
-   public void run() throws Exception {
-      scan(type);
+   public FieldScanner(Class type) throws Exception {
+      this.scan(type);
    }
    
    private void scan(Class type) throws Exception {
@@ -73,6 +60,6 @@ public class FieldScanner {
    }
    
    public void process(Field field, Annotation label) {
-      list.add(new FieldContact(field, label));
+      add(new FieldContact(field, label));
    }
 }

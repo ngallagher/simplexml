@@ -31,41 +31,27 @@ import simple.xml.Text;
  * @author Niall Gallagher
  *
  */
-public class MethodScanner {
-   
-   private ContactList list;
+public class MethodScanner extends ContactList {
    
    private PartMap write;
    
    private PartMap read;
    
-   private Class type;
-   
-   public MethodScanner(Class type) {
-      this.list = new ContactList();
+   public MethodScanner(Class type) throws Exception {
       this.write = new PartMap();
       this.read = new PartMap();
-      this.type = type;
-   }
-   
-   public ContactList getContacts() {
-      return list;
-   }
-   
-   public void run() throws Exception {
-      scan(type);
-      build();
-      validate();
+      this.scan(type);
    }
    
    private void scan(Class type) throws Exception {
       Class real = type;
       
-      do {           
+      while(type != null) {         
          scan(real, type);
          type = type.getSuperclass();
       }
-      while(type != null);    
+      build();
+      validate();
    }
    
    private void scan(Class real, Class type) throws Exception {
@@ -144,7 +130,7 @@ public class MethodScanner {
       if(type != read.getType()) {
          throw new Exception("Match failure for "+type);
       }      
-      list.add(new MethodContact(read, match));      
+      add(new MethodContact(read, match));      
    }   
    
    public void validate() throws Exception {

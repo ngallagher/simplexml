@@ -109,13 +109,11 @@ public class MethodScannerTest extends TestCase {
    public void testExample() throws Exception {
       MethodScanner scanner = new MethodScanner(Example.class);
       ArrayList<Class> list = new ArrayList<Class>();
-      
-      scanner.run();
-      
-      for(Contact contact : scanner.getContacts()) {
+     
+      for(Contact contact : scanner) {
          list.add(contact.getType());
       }
-      assertEquals(scanner.getContacts().size(), 2);
+      assertEquals(scanner.size(), 2);
       assertTrue(list.contains(String.class));
       assertTrue(list.contains(int.class));
    }
@@ -124,7 +122,7 @@ public class MethodScannerTest extends TestCase {
       boolean success = false;
       
       try {
-         new MethodScanner(IllegalOverload.class).run();
+         new MethodScanner(IllegalOverload.class);
       }catch(Exception e){
          success = true;
       }
@@ -135,7 +133,7 @@ public class MethodScannerTest extends TestCase {
       boolean success = false;
       
       try {
-         new MethodScanner(NonMatchingMethods.class).run();
+         new MethodScanner(NonMatchingMethods.class);
       }catch(Exception e){
          success = true;
       }
@@ -146,7 +144,7 @@ public class MethodScannerTest extends TestCase {
       boolean success = false;
       
       try {
-         new MethodScanner(NotBeanMethod.class).run();
+         new MethodScanner(NotBeanMethod.class);
       }catch(Exception e){
          success = true;
       }
@@ -157,13 +155,11 @@ public class MethodScannerTest extends TestCase {
    public void testText() throws Exception {
       MethodScanner scanner = new MethodScanner(TextMethod.class);
       ArrayList<Class> list = new ArrayList<Class>();
-      
-      scanner.run();
-      
-      for(Contact contact : scanner.getContacts()) {
+
+      for(Contact contact : scanner) {
          list.add(contact.getType());
       }
-      assertEquals(scanner.getContacts().size(), 3);
+      assertEquals(scanner.size(), 3);
       assertTrue(list.contains(String.class));
       assertTrue(list.contains(int.class));
       assertTrue(list.contains(long.class));
@@ -173,12 +169,10 @@ public class MethodScannerTest extends TestCase {
       MethodScanner scanner = new MethodScanner(CollectionMethod.class);
       ArrayList<Class> list = new ArrayList<Class>();
       
-      scanner.run();
-      
-      for(Contact contact : scanner.getContacts()) {
+      for(Contact contact : scanner) {
          list.add(contact.getType());
       }
-      assertEquals(scanner.getContacts().size(), 4);
+      assertEquals(scanner.size(), 4);
       assertTrue(list.contains(String.class));
       assertTrue(list.contains(int.class));
       assertTrue(list.contains(long.class));
