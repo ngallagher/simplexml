@@ -61,18 +61,16 @@ public class MethodContactTest extends TestCase {
    public void testText() throws Exception {
       MethodScanner scanner = new MethodScanner(Example.class);
       ArrayList<Class> types = new ArrayList<Class>();
-      
-      scanner.run();
-      
-      for(Contact contact : scanner.getContacts()) {
+     
+      for(Contact contact : scanner) {
          types.add(contact.getType());
       }
-      assertEquals(scanner.getContacts().size(), 3);
+      assertEquals(scanner.size(), 3);
       assertTrue(types.contains(String.class));
       assertTrue(types.contains(float.class));
       assertTrue(types.contains(Collection.class));
       
-      ContactList contacts = scanner.getContacts();
+      ContactList contacts = scanner;
       Contact version = getContact(float.class, contacts);
       Example example = new Example();      
       

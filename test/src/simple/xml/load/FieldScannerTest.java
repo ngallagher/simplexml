@@ -34,10 +34,10 @@ public class FieldScannerTest extends TestCase {
       FieldScanner scanner = new FieldScanner(Example.class);
       ArrayList<Class> list = new ArrayList<Class>();
       
-      for(Contact contact : scanner.getContacts()) {
+      for(Contact contact : scanner) {
          list.add(contact.getType());
       }
-      assertEquals(scanner.getContacts().size(), 3);
+      assertEquals(scanner.size(), 3);
       assertTrue(list.contains(Collection.class));
       assertTrue(list.contains(String.class));
       assertTrue(list.contains(int.class));
