@@ -192,7 +192,7 @@ public class TextTest extends ValidationTestCase {
       
       try {
          persister.read(TextEntry.class, EMPTY_TEXT);                       
-      } catch(FieldRequiredException e) {
+      } catch(ValueRequiredException e) {
          success = true;              
       }              
       assertTrue(success);

@@ -225,7 +225,7 @@ public class ExceptionTest extends TestCase {
       
       try {           
          serializer.read(EntryList.class, NO_NAME_ATTRIBUTE);
-      }catch(FieldRequiredException e) {
+      }catch(ValueRequiredException e) {
          success = true;                               
       }
       assertTrue(success);
@@ -236,7 +236,7 @@ public class ExceptionTest extends TestCase {
       
       try {           
          serializer.read(EntryList.class, NO_TEXT_ELEMENT);
-      }catch(FieldRequiredException e) {
+      }catch(ValueRequiredException e) {
          success = true;              
       }         
       assertTrue(success);

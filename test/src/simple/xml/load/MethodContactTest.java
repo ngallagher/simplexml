@@ -58,7 +58,7 @@ public class MethodContactTest extends TestCase {
       public String text;
    }
    
-   public void testText() throws Exception {
+   public void testContact() throws Exception {
       MethodScanner scanner = new MethodScanner(Example.class);
       ArrayList<Class> types = new ArrayList<Class>();
      
