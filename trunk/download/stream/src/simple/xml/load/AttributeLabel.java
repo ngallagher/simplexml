@@ -20,7 +20,6 @@
 
 package simple.xml.load;
 
-import java.lang.reflect.Field;
 import simple.xml.Attribute;
 
 /**
@@ -39,9 +38,9 @@ final class AttributeLabel implements Label {
    private Attribute label;
 	
    /**
-    * This is the field that this label object represents.
+    * This is the contact that this label object represents.
     */
-   private Field field;
+   private Contact contact;
    
    /**
     * This is the type that the field object references. 
@@ -52,14 +51,14 @@ final class AttributeLabel implements Label {
     * Constructor for the <code>AttributeLabel</code> object. This 
     * is used to create a label that can convert from an object to an
     * XML attribute and vice versa. This requires the annotation and
-    * field extracted from the XML schema class.
+    * contact extracted from the XML schema class.
     * 
-    * @param field this is the field from the XML schema class
+    * @param contact this is the field from the XML schema class
     * @param label represents the annotation for the field
     */
-   public AttributeLabel(Field field, Attribute label) {
-      this.type = field.getType();
-      this.field = field;
+   public AttributeLabel(Contact contact, Attribute label) {
+      this.type = contact.getType();
+      this.contact = contact;
       this.label = label; 
    }   
    
@@ -76,10 +75,10 @@ final class AttributeLabel implements Label {
    
    /**
     * This acts as a convinience method used to determine the type of
-    * the field this represents. This will be a primitive type of a
+    * the contact this represents. This will be a primitive type of a
     * primitive type from the <code>java.lang</code> primitives.
     * 
-    * @return this returns the type of the field class
+    * @return this returns the type of the contact class
     */  
    public Class getType() {
       return type;
@@ -87,27 +86,27 @@ final class AttributeLabel implements Label {
    
    /**
     * This is used to acquire the name of the XML attribute as taken
-    * from the field annotation. Every XML annotation must contain a
-    * name, so that it can be identified from the XML source. This
+    * from the contact annotation. Every XML annotation must contain 
+    * a name, so that it can be identified from the XML source. This
     * allows the class to be used as a schema for the XML document. 
     * 
-    * @return returns the name of the annotation for the field
+    * @return returns the name of the annotation for the contact
     */   
    public String getName() {
       return label.name();
    }
    
    /**
-    * This is used to acquire the field object for this label. The 
-    * field retrieved can be used to set any object or primitive that
+    * This is used to acquire the contact object for this label. The 
+    * contact retrieved can be used to set any object or primitive that
     * has been deserialized, and can also be used to acquire values to
-    * be serialized in the case of object persistance. All fields that
-    * are retrieved from this method will be accessible. 
+    * be serialized in the case of object persistance. All contacts
+    * that are retrieved from this method will be accessible. 
     * 
-    * @return returns the field that this label is representing
+    * @return returns the contact that this label is representing
     */   
-   public Field getField() {
-      return field;
+   public Contact getContact() {
+      return contact;
    }
    
    /**

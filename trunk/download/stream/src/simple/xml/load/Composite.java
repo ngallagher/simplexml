@@ -24,7 +24,6 @@ import simple.xml.stream.InputNode;
 import simple.xml.stream.NodeMap;
 import simple.xml.stream.OutputNode;
 import simple.xml.stream.Position;
-import java.lang.reflect.Field;
 
 /**
  * The <code>Composite</code> object is used to perform serialization
@@ -48,10 +47,10 @@ import java.lang.reflect.Field;
  * type must also contain <code>Element</code> annotations for the
  * "text" and "integer" elements.
  * <p>
- * Serialization requires that all fields marked as required must have
+ * Serialization requires that contacts marked as required must have
  * values that are not null. This ensures that the serialized object
  * can be deserialized at a later stage using the same class schema.
- * If a required field is null the serialization terminates an an
+ * If a required value is null the serialization terminates an an
  * exception is thrown.
  * 
  * @author Niall Gallagher
@@ -84,16 +83,16 @@ final class Composite implements Converter {
 
    /**
     * This <code>read</code> method performs deserialization of the XML
-    * schema class type by traversing the fields and instantiating them
+    * schema class type by traversing the contacts and instantiating them
     * using details from the provided XML element. Because this will
     * convert a non-primitive value it delegates to other converters to
     * perform deserialization of lists and primitives.
     * <p>
-    * If any of the required fields are not present within the provided
+    * If any of the required contacts are not present within the provided
     * XML element this will terminate deserialization and throw an
     * exception. The annotation missing is reported in the exception.
     * 
-    * @param node the XML element field values are deserialized from
+    * @param node the XML element contact values are deserialized from
     * 
     * @return this returns the fully deserialized object graph
     */
@@ -105,17 +104,17 @@ final class Composite implements Converter {
    
    /**
     * This <code>read</code> method performs deserialization of the XML
-    * schema class type by traversing the fields and instantiating them
+    * schema class type by traversing the contacts and instantiating them
     * using details from the provided XML element. Because this will
     * convert a non-primitive value it delegates to other converters to
     * perform deserialization of lists and primitives.
     * <p>
-    * If any of the required fields are not present within the provided
+    * If any of the required contacts are not present within the provided
     * XML element this will terminate deserialization and throw an
     * exception. The annotation missing is reported in the exception.
     * 
-    * @param node the XML element field values are deserialized from
-    * @param source the object whose fields are to be deserialized
+    * @param node the XML element contact values are deserialized from
+    * @param source the object whose contacts are to be deserialized
     */
    private void read(InputNode node, Object source) throws Exception {
       Schema schema = root.getSchema(source);
@@ -127,18 +126,18 @@ final class Composite implements Converter {
    
    /**
     * This <code>read</code> method performs deserialization of the XML
-    * schema class type by traversing the fields and instantiating them
+    * schema class type by traversing the contacts and instantiating them
     * using details from the provided XML element. Because this will
     * convert a non-primitive value it delegates to other converters to
     * perform deserialization of lists and primitives.
     * <p>
-    * If any of the required fields are not present within the provided
+    * If any of the required contacts are not present within the provided
     * XML element this will terminate deserialization and throw an
     * exception. The annotation missing is reported in the exception.
     * 
-    * @param node the XML element field values are deserialized from
-    * @param source ths object whose fields are to be deserialized
-    * @param schema this object visits the objects fields
+    * @param node the XML element contact values are deserialized from
+    * @param source ths object whose contacts are to be deserialized
+    * @param schema this object visits the objects contacts
     */
    private void read(InputNode node, Object source, Schema schema) throws Exception {
       readText(node, source, schema);
@@ -150,16 +149,16 @@ final class Composite implements Converter {
     * This <code>read</code> method is used to read the attributes from
     * the provided XML element. This will iterate over all attributes
     * within the element and convert those attributes as primitives to
-    * field values within the source object.
+    * contact values within the source object.
     * <p>
     * Once all attributes within the XML element have been evaluated
     * the <code>Schema</code> is checked to ensure that there are no
-    * required fields annotated with the <code>Attribute</code> that
+    * required contacts annotated with the <code>Attribute</code> that
     * remain. If any required attribute remains an exception is thrown. 
     * 
     * @param node this is the XML element to be evaluated
     * @param source the source object which will be deserialized
-    * @param schema this is used to visit the attribute fields
+    * @param schema this is used to visit the attribute contacts
     * 
     * @throws Exception thrown if any required attributes remain
     */
@@ -177,16 +176,16 @@ final class Composite implements Converter {
     * This <code>read</code> method is used to read the elements from
     * the provided XML element. This will iterate over all elements
     * within the element and convert those elements to primitives or
-    * composite objects depending on the field annotation.
+    * composite objects depending on the contact annotation.
     * <p>
     * Once all elements within the XML element have been evaluated
     * the <code>Schema</code> is checked to ensure that there are no
-    * required fields annotated with the <code>Element</code> that
+    * required contacts annotated with the <code>Element</code> that
     * remain. If any required element remains an exception is thrown. 
     * 
     * @param node this is the XML element to be evaluated
     * @param source the source object which will be deserialized
-    * @param schema this is used to visit the element fields
+    * @param schema this is used to visit the element contacts
     * 
     * @throws Exception thrown if any required elements remain
     */
@@ -209,11 +208,11 @@ final class Composite implements Converter {
     * from the XML element node specified. This will check the class
     * schema to determine if a <code>Text</code> annotation was
     * specified. If one was specified then the text within the XML
-    * element input node is used to populate the field value.
+    * element input node is used to populate the contact value.
     * 
     * @param node this is the XML element to acquire the text from
     * @param source the source object which will be deserialized
-    * @param schema this is used to visit the element fields
+    * @param schema this is used to visit the element contacts
     * 
     * @throws Exception thrown if a required text value was null
     */
@@ -231,10 +230,10 @@ final class Composite implements Converter {
     * typically another <code>Composite</code> converter, or if the
     * node is an attribute a <code>Primitive</code> converter. When
     * the delegate converter has completed the deserialized value is
-    * assigned to the field.
+    * assigned to the contact.
     * 
-    * @param node this is the node that contains the field value
-    * @param source the source object to assign the field value to
+    * @param node this is the node that contains the contact value
+    * @param source the source object to assign the contact value to
     * @param map this is the map that contains the label objects
     * 
     * @throws Exception thrown if the the label object does not exist
@@ -259,10 +258,10 @@ final class Composite implements Converter {
     * typically another <code>Composite</code> converter, or if the
     * node is an attribute a <code>Primitive</code> converter. When
     * the delegate converter has completed the deserialized value is
-    * assigned to the field.
+    * assigned to the contact.
     * 
-    * @param node this is the node that contains the field value
-    * @param source the source object to assign the field value to
+    * @param node this is the node that contains the contact value
+    * @param source the source object to assign the contact value to
     * @param map this is the map that contains the label objects
     * 
     * @throws Exception thrown if the the label object does not exist
@@ -289,17 +288,17 @@ final class Composite implements Converter {
     * typically another <code>Composite</code> converter, or if the
     * node is an attribute a <code>Primitive</code> converter. When
     * the delegate converter has completed the deserialized value is
-    * assigned to the field.
+    * assigned to the contact.
     * 
-    * @param node this is the node that contains the field value
-    * @param source the source object to assign the field value to
+    * @param node this is the node that contains the contact value
+    * @param source the source object to assign the contact value to
     * @param label this is the label used to create the converter
     * 
-    * @throws Exception thrown if the field could not be deserialized
+    * @throws Exception thrown if the contact could not be deserialized
     */
    private void read(InputNode node, Object source, Label label) throws Exception {      
       Converter reader = label.getConverter(root);
-      Field field = label.getField();      
+      Contact contact = label.getContact();      
       Object object = reader.read(node);
     
       if(object == null) { 
@@ -307,10 +306,10 @@ final class Composite implements Converter {
          Class type = source.getClass();
          
          if(label.isRequired()) {              
-            throw new FieldRequiredException("Empty value for %s in %s at %s", label, type, line);
+            throw new ValueRequiredException("Empty value for %s in %s at %s", label, type, line);
          }
       } else {         
-         field.set(source, object);
+         contact.set(source, object);
       }         
    }
    
@@ -333,7 +332,7 @@ final class Composite implements Converter {
       
       for(Label label : map) {
          if(label.isRequired()) {
-            throw new FieldRequiredException("Unable to satisfy %s for %s at %s", label, type, line);
+            throw new ValueRequiredException("Unable to satisfy %s for %s at %s", label, type, line);
          }
       }      
    }
@@ -342,9 +341,9 @@ final class Composite implements Converter {
     * This <code>write</code> method is used to perform serialization of
     * the given source object. Serialization is performed by appending
     * elements and attributes from the source object to the provided XML
-    * element object. How the objects fields are serialized is 
+    * element object. How the objects contacts are serialized is 
     * determined by the XML schema class that the source object is an
-    * instance of. If a required field is null an exception is thrown.
+    * instance of. If a required contact is null an exception is thrown.
     * 
     * @param source this is the source object to be serialized
     * @param node the XML element the object is to be serialized to 
@@ -366,13 +365,13 @@ final class Composite implements Converter {
     * This <code>write</code> method is used to perform serialization of
     * the given source object. Serialization is performed by appending
     * elements and attributes from the source object to the provided XML
-    * element object. How the objects fields are serialized is 
+    * element object. How the objects contacts are serialized is 
     * determined by the XML schema class that the source object is an
-    * instance of. If a required field is null an exception is thrown.
+    * instance of. If a required contact is null an exception is thrown.
     * 
     * @param source this is the source object to be serialized
     * @param node the XML element the object is to be serialized to
-    * @param schema this is used to track the referenced fields 
+    * @param schema this is used to track the referenced contacts 
     * 
     * @throws Exception thrown if there is a serialization problem
     */
@@ -383,12 +382,12 @@ final class Composite implements Converter {
    }
 
    /**
-    * This write method is used to write all the attribute fields from
+    * This write method is used to write all the attribute contacts from
     * the provided source object to the XML element. This visits all
-    * the fields marked with the <code>Attribute</code> annotation in
-    * the source object. All annotated fields are written as attributes
+    * the contacts marked with the <code>Attribute</code> annotation in
+    * the source object. All annotated contacts are written as attributes
     * to the XML element. This will throw an exception if a required
-    * field within the source object is null. 
+    * contact within the source object is null. 
     * 
     * @param source this is the source object to be serialized
     * @param node this is the XML element to write attributes to
@@ -400,8 +399,8 @@ final class Composite implements Converter {
       LabelMap attributes = schema.getAttributes();
 
       for(Label label : attributes) {
-         Field field = label.getField();
-         Object value = field.get(source);
+         Contact contact = label.getContact();         
+         Object value = contact.get(source);
          
          if(label.isRequired() && value == null) {
             throw new AttributeException("Value for %s is null", label);
@@ -411,12 +410,12 @@ final class Composite implements Converter {
    }
 
    /**
-    * This write method is used to write all the element fields from
+    * This write method is used to write all the element contacts from
     * the provided source object to the XML element. This visits all
-    * the fields marked with the <code>Element</code> annotation in
-    * the source object. All annotated fields are written as children
+    * the contacts marked with the <code>Element</code> annotation in
+    * the source object. All annotated contacts are written as children
     * to the XML element. This will throw an exception if a required
-    * field within the source object is null. 
+    * contact within the source object is null. 
     * 
     * @param source this is the source object to be serialized
     * @param node this is the XML element to write elements to
@@ -428,8 +427,8 @@ final class Composite implements Converter {
       LabelMap elements = schema.getElements();
       
       for(Label label : elements) {
-         Field field = label.getField();
-         Object value = field.get(source);
+         Contact contact = label.getContact();
+         Object value = contact.get(source);
                  
          if(label.isRequired() && value == null) {
             throw new ElementException("Value for %s is null", label);
@@ -439,11 +438,11 @@ final class Composite implements Converter {
    }
    
    /**
-    * This write method is used to write the text field from the 
+    * This write method is used to write the text contact from the 
     * provided source object to the XML element. This takes the text
-    * value from the source object and writes it to the single field
+    * value from the source object and writes it to the single contact
     * marked with the <code>Text</code> annotation. If the value is
-    * null and the field value is required an exception is thrown.
+    * null and the contact value is required an exception is thrown.
     * 
     * @param source this is the source object to be serialized
     * @param node this is the XML element to write text value to
@@ -455,8 +454,8 @@ final class Composite implements Converter {
       Label label = schema.getText();
 
       if(label != null) {
-         Field field = label.getField();
-         Object value = field.get(source);
+         Contact contact = label.getContact();
+         Object value = contact.get(source);
                  
          if(label.isRequired() && value == null) {
             throw new TextException("Value for %s is null", label);
@@ -474,7 +473,7 @@ final class Composite implements Converter {
     * 
     * @param value this is the value to be set as an attribute
     * @param node this is the XML element to write the attribute to
-    * @param label the label that contains the field details
+    * @param label the label that contains the contact details
     * 
     * @throws Exception thrown if there is a serialization problem
     */
@@ -494,14 +493,14 @@ final class Composite implements Converter {
    /**
     * This write method is used to append the provided object as an
     * element to the given XML element object. This will recursively
-    * write the fields from the provided object as elements. This is
-    * done using the <code>Converter</code> acquired from the field
-    * label. If the type of the field value is not of the same
+    * write the contacts from the provided object as elements. This is
+    * done using the <code>Converter</code> acquired from the contact
+    * label. If the type of the contact value is not of the same
     * type as the XML schema class a "class" attribute is appended.
     * 
     * @param value this is the value to be set as an element
     * @param node this is the XML element to write the element to
-    * @param label the label that contains the field details
+    * @param label the label that contains the contact details
     * 
     * @throws Exception thrown if there is a serialization problem
     */
@@ -525,7 +524,7 @@ final class Composite implements Converter {
     * 
     * @param value this is the value toset as the XML element text
     * @param node this is the XML element to write the text value to
-    * @param label the label that contains the field details
+    * @param label the label that contains the contact details
     * 
     * @throws Exception thrown if there is a serialization problem
     */

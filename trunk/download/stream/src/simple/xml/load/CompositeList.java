@@ -98,7 +98,7 @@ final class CompositeList implements Converter {
     * 
     * @param node this is the XML element that is to be deserialized
     * 
-    * @return this returns the item to attach to the object field
+    * @return this returns the item to attach to the object contact
     */ 
    public Object read(InputNode node) throws Exception{
       Collection list = factory.getInstance(node);

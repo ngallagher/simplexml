@@ -20,8 +20,6 @@
 
 package simple.xml.load;
 
-import java.lang.reflect.Field;
-
 /**
  * The <code>Label</code> interface is used to describe an reference to
  * a field annotated with an XML schema annotation. Because each field
@@ -52,15 +50,15 @@ interface Label {
    public Converter getConverter(Source root) throws Exception;
 
    /**
-    * This is used to acquire the field object for this label. The 
-    * field retrieved can be used to set any object or primitive that
+    * This is used to acquire the contact object for this label. The 
+    * contact retrieved can be used to set any object or primitive that
     * has been deserialized, and can also be used to acquire values to
-    * be serialized in the case of object persistance. All fields that
-    * are retrieved from this method will be accessible. 
+    * be serialized in the case of object persistance. All contacts 
+    * that are retrieved from this method will be accessible. 
     * 
     * @return returns the field that this label is representing
     */
-   public Field getField();
+   public Contact getContact();
 
    /**
     * This acts as a convinience method used to determine the type of

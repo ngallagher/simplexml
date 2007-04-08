@@ -22,14 +22,12 @@ package simple.xml.load;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.lang.reflect.Field;
 import simple.xml.ElementArray;
 import simple.xml.ElementList;
 import simple.xml.Element;
 import simple.xml.Attribute;
-import simple.xml.Text;
 import simple.xml.Root;
-import java.util.Map;
+import simple.xml.Text;
 
 /**
  * The <code>Scanner</code> object performs the reflective inspection
@@ -45,8 +43,8 @@ import java.util.Map;
  * 
  * @see simple.xml.load.Schema
  */ 
-final class Scanner {
-
+final class Scanner  {
+  
    /**
     * This is used to store all labels that are XML attributes.
     */
@@ -102,7 +100,6 @@ final class Scanner {
    public Scanner(Class type) throws Exception {           
       this.attributes = new LabelMap(this);
       this.elements = new LabelMap(this);
-      this.type = type;
       this.scan(type);
    }       
 
@@ -142,7 +139,7 @@ final class Scanner {
     * @return this returns the text label for the scanned class
     */
    public Label getText() {
-	   return text;
+      return text;
    }
 
    /**
@@ -213,28 +210,65 @@ final class Scanner {
       }              
       return true;
    }
-   
+  
    /**
-    * Scan the fields such that the base class is scanned first then 
-    * all super classes up to the base class <code>Object</code>. All 
-    * fields from base classes override fields from higher up the 
-    * inheritance heirarchy. This means that a field annotation can 
-    * be overridden an may not have values assigned to them.  
+    * Scan the fields and methods such that the given class is scanned 
+    * first then all super classes up to the root <code>Object</code>. 
+    * All fields and methods from the most specialized classes override 
+    * fields and methods from higher up the inheritance heirarchy. This
+    * means that annotated details can be overridden and so may not 
+    * have a value assigned to them during deserialization.
     * 
-    * @param type the class to extract fields and annotations from
-    */
+    * @param type the class to extract fields and methods from
+    */   
    private void scan(Class type) throws Exception {
       Class real = type;
       
-      do {
+      while(type != null) {
          if(root == null) {              
             root(type);
          }            
          scan(real, type);
          type = type.getSuperclass();
       }
-      while(type != null);    
+      process(real);      
    }
+
+   /**
+    * This is used to scan the specified class for methods so that
+    * the persister callback annotations can be collected. These
+    * annotations help object implementations to validate the data
+    * that is injected into the instance during deserialization.
+    * 
+    * @param real this is the actual type of the scanned class 
+    * @param type this is a type from within the class heirarchy
+    * 
+    * @throws Exception thrown if the class schema is invalid
+    */
+   private void scan(Class real, Class type) throws Exception {
+      Method[] method = type.getDeclaredMethods();
+
+      for(int i = 0; i < method.length; i++) {
+         scan(method[i]);              
+      }      
+   }
+   
+   /**
+    * This is used to validate the configuration of the scanned class.
+    * If a <code>Text</code> annotation has been used with elements
+    * then validation will fail and an exception will be thrown.
+    * 
+    * @param type this is the object type that is being scanned
+    * 
+    * @throws Exception if text and element annotations are present
+    */
+   private void validate(Class type) throws Exception {
+      if(text != null) {
+         if(!elements.isEmpty()) {
+            throw new TextException("Elements used with %s in %s", text, type);
+         }
+      }
+   } 
 
    /**
     * This is used to acquire the optional <code>Root</code> from the
@@ -243,69 +277,57 @@ final class Scanner {
     * such as the name of the object if it is to be serialized.
     *
     * @param type this is the type of the class to be inspected
-    */ 
+    */    
    private void root(Class type) {
       if(type.isAnnotationPresent(Root.class)) {
           root = (Root)type.getAnnotation(Root.class);
       }
    }
-
+  
    /**
-    * Scans the provided class for all fields in order to extract any
-    * annotations from those fields. Each field extracted from the 
-    * class is checked for annotations that relate to the XML schema.
+    * This is used to scan the specified object to extract the fields
+    * and methods that are to be used in the serialization process.
+    * This will acquire all fields and getter setter pairs that have
+    * been annotated with the XML annotations.
+    *
+    * @param type this is the object type that is to be scanned
+    */  
+   private void process(Class type) throws Exception {
+      field(type);
+      method(type);
+      validate(type);
+   }
+  
+   /**
+    * This is used to acquire the contacts for the annotated fields 
+    * within the specified class. The field contacts are added to
+    * either the attributes or elements map depending on annotation.
     * 
-    * @param real this is the class the acts as the XML schema
-    * @param type the current class in the schema heirarchy to check
-    * 
-    * @throws Exception if a text annotation is used with elements
-    */
-   private void scan(Class real, Class type) throws Exception {
-      Field[] field = type.getDeclaredFields();
+    * @param type this is the object type that is to be scanned
+    */    
+   public void field(Class type) throws Exception {
+      ContactList list = new FieldScanner(type);
       
-      for(int i = 0; i < field.length; i++) {                       
-         scan(field[i]);                      
+      for(Contact contact : list) {
+         scan(contact, contact.getAnnotation());
       }
-      Method[] method = type.getDeclaredMethods();
-
-      for(int i = 0; i < method.length; i++) {
-         scan(method[i]);              
-      }
-      validate();
    }
    
    /**
-    * This is used to validate the configuration of the scanned class.
-    * If a <code>Text</code> annotation has been used with elements
-    * then validation will fail and an exception will be thrown.
+    * This is used to acquire the contacts for the annotated fields 
+    * within the specified class. The field contacts are added to
+    * either the attributes or elements map depending on annotation.
     * 
-    * @throws Exception if text and element annotations are present
-    */
-   private void validate() throws Exception {
-	   if(text != null) {
-		   if(!elements.isEmpty()) {
-			   throw new TextException("Elements used with %s in %s", text, type);
-		   }
-	   }
+    * @param type this is the object type that is to be scanned
+    */ 
+   public void method(Class type) throws Exception {
+      ContactList list = new MethodScanner(type);
+      
+      for(Contact contact : list) {           
+         scan(contact, contact.getAnnotation());
+      }
    }
    
-   /**
-    * Scans the provided field for all annotations in order to create
-    * a <code>Label</code> to represent that object. Only annotations
-    * that relate to the XML schema are considered within the field.
-    * 
-    * @param field the field to scan for XML schema annotations
-    * 
-    * @throws Exception if there is more than one text annotation
-    */
-   private void scan(Field field) throws Exception {      
-      Annotation[] list = field.getDeclaredAnnotations();
-      
-      for(int i = 0; i < list.length; i++) {
-         scan(field, list[i]);                       
-      }        
-   }
-
    /**
     * This reflectively checks the annotation to determine the type 
     * of annotation it represents. If it represents an XML schema
@@ -316,8 +338,8 @@ final class Scanner {
     * @param label the annotation used to model the XML schema
     * 
     * @throws Exception if there is more than one text annotation
-    */
-   private void scan(Field field, Annotation label) throws Exception {
+    */   
+   private void scan(Contact field, Annotation label) throws Exception {
       if(label instanceof Attribute) {
          process(field, label, attributes);
       }
@@ -336,6 +358,26 @@ final class Scanner {
    }
    
    /**
+    * This is used to process the <code>Text</code> annotations that
+    * are present in the scanned class. This will set the text label
+    * for the class and an ensure that if there is more than one
+    * text label within the class an exception is thrown.
+    * 
+    * @param field the field the annotation was extracted from
+    * @param type the annotation extracted from the field
+    * 
+    * @throws Exception if there is more than one text annotation
+    */   
+   private void process(Contact field, Annotation type) throws Exception {
+      Label label = LabelFactory.getInstance(field, type);
+      
+      if(text != null) {
+         throw new TextException("Multiple text annotations in %s", type);
+      }
+      text = label;
+   }
+   
+   /**
     * This is used when all details from a field have been gathered 
     * and a <code>Label</code> implementation needs to be created. 
     * This will build a label instance based on the field annotation.
@@ -347,34 +389,15 @@ final class Scanner {
     * @param map this is used to collect the label instance created
     * 
     * @throws Exception thrown if the label can not be created
-    */
-   private void process(Field field, Annotation type, Map map) throws Exception {
+    */   
+   private void process(Contact field, Annotation type, LabelMap map) throws Exception {
       Label label = LabelFactory.getInstance(field, type);
       String name = label.getName().toLowerCase();
       
-      if(!map.containsKey(name)) { 
-         map.put(name, label);
-      }  
-   }
-   
-   /**
-    * This is used to process the <code>Text</code> annotations that
-    * are present in the scanned class. This will set the text label
-    * for the class and an ensure that if there is more than one
-    * text label within the class an exception is thrown.
-    * 
-    * @param field the field the annotation was extracted from
-    * @param type the annotation extracted from the field
-    * 
-    * @throws Exception if there is more than one text annotation
-    */
-   private void process(Field field, Annotation type) throws Exception {
-	   Label label = LabelFactory.getInstance(field, type);
-	   
-	   if(text != null) {
-		   throw new TextException("Multiple text annotations in %s", type);
-	   }
-	   text = label;
+      if(map.containsKey(name)) {
+         throw new PersistenceException("Annotation of name '%s' declared twice", name);
+      }
+      map.put(name, label);      
    }
    
    /**
