@@ -22,11 +22,10 @@ package simple.xml.load;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-
-import simple.xml.Attribute;
-import simple.xml.Element;
 import simple.xml.ElementArray;
 import simple.xml.ElementList;
+import simple.xml.Attribute;
+import simple.xml.Element;
 import simple.xml.Text;
 
 /**
