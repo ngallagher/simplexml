@@ -59,7 +59,7 @@ import java.util.List;
 final class CompositeArray implements Converter {
 
    /**
-    * This factory is used to create an array for the field.
+    * This factory is used to create an array for the contact.
     */
    private ArrayFactory factory;
 
@@ -75,7 +75,7 @@ final class CompositeArray implements Converter {
 
    /**
     * Constructor for the <code>CompositeArray</code> object. This is
-    * given the array type for the field that is to be converted. An
+    * given the array type for the contact that is to be converted. An
     * array of the specified type is used to hold the deserialized
     * elements and will be the same length as the number of elements.
     *
@@ -98,7 +98,7 @@ final class CompositeArray implements Converter {
     * 
     * @param node this is the XML element that is to be deserialized
     * 
-    * @return this returns the item to attach to the object field
+    * @return this returns the item to attach to the object contact
     */ 
    public Object read(InputNode node) throws Exception{
       List list = new ArrayList();

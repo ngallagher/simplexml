@@ -37,14 +37,14 @@ import simple.xml.Text;
 final class TextLabel implements Label {
    
    /**
-    * References the annotation that was used by the field.
+    * The contact that this annotation label represents.
     */
-   private Text label;
+   private Contact contact;
    
    /**
-    * The field that this annotation label represents.
+    * References the annotation that was used by the contact.
     */
-   private Field field;
+   private Text label;
    
    /**
     * This is the type of the class that the field references.
@@ -56,13 +56,13 @@ final class TextLabel implements Label {
     * used to create a label that can convert a XML node into a 
     * primitive value from an XML element text value.
     * 
-    * @param field this is the field that this label represents
-    * @param label this is the annotation for the field 
+    * @param contact this is the contact this label represents
+    * @param label this is the annotation for the contact 
     */
-   public TextLabel(Field field, Text label) {
-      this.type = field.getType();
-      this.label = label;
-      this.field = field;
+   public TextLabel(Contact contact, Text label) {
+      this.type = contact.getType();
+      this.contact = contact;
+      this.label = label;      
    }
    
    /**
@@ -82,50 +82,50 @@ final class TextLabel implements Label {
    }
    
    /**
-    * This is used to acquire the field object for this label. The 
-    * field retrieved can be used to set the primitive instance that
+    * This is used to acquire the contact object for this label. The 
+    * contact retrieved can be used to set any object or primitive that
     * has been deserialized, and can also be used to acquire values to
-    * be serialized in the case of object persistance. All fields that
-    * are retrieved from this method will be accessible. 
+    * be serialized in the case of object persistance. All contacts 
+    * that are retrieved from this method will be accessible. 
     * 
-    * @return returns the field that this label is representing
+    * @return returns the contact that this label is representing
     */
-   public Field getField() {
-      return field;
+   public Contact getContact() {
+      return contact;
    }
    
    /**
-    * This is used to acquire the name of the annotated element. The
-    * name of the field can be used as the text annotation does not
-    * contain any naming information due to the fact that only one
-    * can exist within a given class, and that it represents text.
+    * This is used to acquire the name of the XML element as taken
+    * from the contact annotation. Every XML annotation must contain 
+    * a name, so that it can be identified from the XML source. This
+    * allows the class to be used as a schema for the XML document. 
     * 
-    * @return returns the name of the field the annotation labels
+    * @return returns the name of the annotation for the contact
     */   
    public String getName() {
-      return field.getName();
+      return contact.toString();
    }
    
    /**
     * This acts as a convinience method used to determine the type of
-    * the field this represents. This is used when an object is written
+    * contact this represents. This is used when an object is written
     * to XML. It determines whether a <code>class</code> attribute
     * is required within the serialized XML element, that is, if the
     * class returned by this is different from the actual value of the
     * object to be serialized then that type needs to be remembered.
     *  
-    * @return this returns the type of the field class
-    */   
+    * @return this returns the type of the contact class
+    */  
    public Class getType() {
       return type;
    }
    
    /**
-    * This is used to determine whether the text value is required. 
-    * This ensures that if the text value is missing from an element
+    * This is used to determine whether the XML element is required. 
+    * This ensures that if an XML element is missing from a document
     * that deserialization can continue. Also, in the process of
     * serialization, if a value is null it does not need to be 
-    * written to the resulting XML element.
+    * written to the resulting XML document.
     * 
     * @return true if the label represents a some required data
     */   
@@ -134,10 +134,10 @@ final class TextLabel implements Label {
    }
    
    /**
-    * This method is used to determine whether the field type is a
+    * This method is used to determine whether the contact type is a
     * primitive or enumerated type. If it is either of these then it
-    * it acceptible for the <code>Text</code> annotation, as it can
-    * only be used to represent a primitive or an enumerated type.
+    * must be a leaf element, that is, an element without any other
+    * elements. If this is true a primitive converter is used.
     * 
     * @param type the type checked to determine if it is primitive
     * 

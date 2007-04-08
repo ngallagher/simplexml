@@ -32,7 +32,7 @@ import simple.xml.Text;
 /**
  * The <code>LabelFactory</code> object is used to create instances of
  * the <code>Label</code> object that can be used to convert an XML
- * node into a Java object. Each label created requires the field it
+ * node into a Java object. Each label created requires the contact it
  * represents and the XML annotation it is marked with.  
  * <p>
  * The <code>Label</code> objects created by this factory a selected
@@ -45,25 +45,21 @@ import simple.xml.Text;
 final class LabelFactory {
 
    /**
-    * Creates a <code>Label</code> using the provided field and XML
+    * Creates a <code>Label</code> using the provided contact and XML
     * annotation. The label produced contains all information related
     * to an object member. It knows the name of the XML entity, as
     * well as whether it is required. Once created the converter can
     * transform an XML node into Java object and vice versa.
     * 
-    * @param field this is the field that the label is produced for
-    * @param label represents the XML annotation for the field
+    * @param contact this is contact that the label is produced for
+    * @param label represents the XML annotation for the contact
     * 
     * @return returns the label instantiated for the field
     */
-   public static Label getInstance(Field field, Annotation label) {
+   public static Label getInstance(Contact contact, Annotation label) {
       try {                
-         Constructor factory = getConstructor(label);
-
-         if(!field.isAccessible()) {
-            field.setAccessible(true);                 
-         }         
-         return (Label)factory.newInstance(field, label);
+         Constructor factory = getConstructor(label);         
+         return (Label)factory.newInstance(contact, label);
       }catch(Exception e) {
          return null;
       }
@@ -72,8 +68,8 @@ final class LabelFactory {
     /**
      * Creates a constructor that can be used to instantiate the label
      * used to represent the specified annotation. The constructor
-     * created by this method takes two arguments, a field object and
-     * an <code>Annotation</code> of the type specified.
+     * created by this method takes two arguments, a contact object 
+     * and an <code>Annotation</code> of the type specified.
      * 
      * @param label the XML annotation representing the label
      * 
@@ -88,7 +84,7 @@ final class LabelFactory {
     /**
      * Creates an entry that is used to select the constructor for the
      * label. Each label must implement a constructor that takes a
-     * field and the specific XML annotation for that field. If the
+     * contact and the specific XML annotation for that field. If the
      * annotation is not know this method throws an exception.
      * 
      * @param label the XML annotation used to create the label
@@ -121,7 +117,7 @@ final class LabelFactory {
      * The <code>Entry<code> object is used to create a constructor 
      * that can be used to instantiate the correct label for the XML
      * annotation specified. The constructor requires two arguments
-     * a <code>Field</code> and the specified XML annotation.
+     * a <code>Contact</code> and the specified XML annotation.
      * 
      * @see java.lang.reflect.Constructor
      */
@@ -153,18 +149,18 @@ final class LabelFactory {
        /**
         * Creates the constructor used to instantiate the label for
         * the XML annotation. The constructor returned will take two
-        * arguments, a field and the XML annotation type. 
+        * arguments, a contact and the XML annotation type. 
         * 
         * @return returns the constructor for the label object
         */
        public Constructor getConstructor() throws Exception {
-          return getConstructor(Field.class);
+          return getConstructor(Contact.class);
        }
        
        /**
         * Creates the constructor used to instantiate the label for
         * the XML annotation. The constructor returned will take two
-        * arguments, a field and the XML annotation type.
+        * arguments, a contact and the XML annotation type.
         * 
         * @param type this is the XML annotation argument type used
         * 

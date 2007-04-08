@@ -44,7 +44,7 @@ final class ElementArrayLabel implements Label {
    /**
     * This references the field from the source object.
     */
-   private Field field;
+   private Contact contact;
    
    /**
     * This is the type of array this label will represent.
@@ -56,12 +56,12 @@ final class ElementArrayLabel implements Label {
     * creates a label object, which can be used to convert an element
     * node to an array of XML serializable objects.
     * 
-    * @param field this is the field that this label represents
+    * @param contact this is the contact that this label represents
     * @param label the annotation that contains the schema details
     */
-   public ElementArrayLabel(Field field, ElementArray label) {
-      this.type = field.getType();
-      this.field = field;
+   public ElementArrayLabel(Contact contact, ElementArray label) {
+      this.type = contact.getType();
+      this.contact = contact;
       this.label = label;
    }
 	
@@ -85,35 +85,35 @@ final class ElementArrayLabel implements Label {
 
    /**
     * This acts as a convinience method used to determine the type of
-    * the field this represents. This is used when an object is written
+    * contact this represents. This is used when an object is written
     * to XML. It determines whether a <code>class</code> attribute
     * is required within the serialized XML element, that is, if the
     * class returned by this is different from the actual value of the
     * object to be serialized then that type needs to be remembered.
     *  
-    * @return this returns the type of the field class
+    * @return this returns the type of the contact class
     */
    public Class getType() {
       return type;      
    }
    
    /**
-    * This is used to acquire the field object for this label. The 
-    * field retrieved can be used to set any object or primitive that
+    * This is used to acquire the contact object for this label. The 
+    * contact retrieved can be used to set any object or primitive that
     * has been deserialized, and can also be used to acquire values to
-    * be serialized in the case of object persistance. All fields that
-    * are retrieved from this method will be accessible. 
+    * be serialized in the case of object persistance. All contacts
+    * that are retrieved from this method will be accessible. 
     * 
-    * @return returns the field that this label is representing
+    * @return returns the contact that this label is representing
     */   
-   public Field getField() {
-      return field;
+   public Contact getContact() {
+      return contact;
    }
    
    /**
     * This is used to acquire the name of the XML element as taken
-    * from the field annotation. Every XML annotation must contain a
-    * name, so that it can be identified from the XML source. This
+    * from the contact annotation. Every XML annotation must contain 
+    * a name, so that it can be identified from the XML source. This
     * allows the class to be used as a schema for the XML document. 
     * 
     * @return returns the name of the annotation for the field

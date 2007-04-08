@@ -55,7 +55,7 @@ final class Source {
    /**
     * This is used to cache all schemas built to represent a class.
     * 
-    * @see simple.xml.load.Scanner
+    * @see simple.Scanner
     */
    private static ScannerCache cache;
 
