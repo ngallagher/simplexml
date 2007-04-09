@@ -73,7 +73,7 @@ final class LabelMap extends HashMap<String, Label> implements Iterable<Label> {
     * @return this is the label object representing the XML node
     */ 
    public Label take(String name) {
-      String key = name.toLowerCase();
+      String key = name.toLowerCase(); 
       
       if(containsKey(key)) {
          return remove(key);              
