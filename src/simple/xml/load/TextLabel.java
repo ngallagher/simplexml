@@ -20,7 +20,6 @@
 
 package simple.xml.load;
 
-import java.lang.reflect.Field;
 import simple.xml.Text;
 
 /**
