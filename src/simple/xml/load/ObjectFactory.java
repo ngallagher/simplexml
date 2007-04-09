@@ -34,7 +34,18 @@ import simple.xml.stream.InputNode;
  * @author Niall Gallagher
  */ 
 final class ObjectFactory extends Factory {
+   
+   /**
+    * Caches the constructors used to convert composite types.
+    * 
+    * @see simple.xml.load.Composite
+    */
+   private static ConstructorCache cache;
 
+   static {
+      cache = new ConstructorCache();           
+   }
+   
    /**
     * Constructor for the <code>ObjectFactory</code> class. This is
     * given the field class that this should create object instances
@@ -66,7 +77,7 @@ final class ObjectFactory extends Factory {
          if(!isInstantiable(field)) {
             throw new InstantiationException("Cannot instantiate %s", field);              
          }
-         return getInstance(field);
+         return getInstance(field);         
       }
       return type.getInstance();
    }
@@ -81,10 +92,15 @@ final class ObjectFactory extends Factory {
     * @return this returns an instance of the specifiec class type
     */ 
    protected Object getInstance(Class type) throws Exception {
-      Constructor method = type.getDeclaredConstructor();
+      Constructor method = cache.get(type);
+      
+      if(method == null) {
+         method = type.getDeclaredConstructor();      
 
-      if(!method.isAccessible()) {
-         method.setAccessible(true);              
+         if(!method.isAccessible()) {
+            method.setAccessible(true);              
+         }
+         cache.cache(type, method);
       }
       return method.newInstance();   
    }      
