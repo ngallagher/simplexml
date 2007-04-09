@@ -29,7 +29,6 @@
    <target name="run" depends="build">
       <java classname="${class}">
          <arg value="${file}"/>
-         <arg value="${count}"/>
          <classpath>
             <fileset dir="${lib.path}">
                <include name="**/*.jar"/>

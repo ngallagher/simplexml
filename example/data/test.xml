@@ -3,13 +3,13 @@
    <list>
       <test id="JAXB Test">
          <executorClass>compare.jaxb.JAXBExecutor</executorClass>
-         <schemaClass>compare.jaxb.JAXBExample</schemaClass>
+         <schemaClass>compare.jaxb.JAXBClass</schemaClass>
          <sourceFile>${ROOT_PATH}\example.xml</sourceFile>
          <iterations>10000</iterations>
       </test>
       <test id="Simple Test">
          <executorClass>compare.simple.SimpleExecutor</executorClass>
-         <schemaClass>compare.simple.SimpleExample</schemaClass>
+         <schemaClass>compare.simple.SimpleClass</schemaClass>
          <sourceFile>${ROOT_PATH}\example.xml</sourceFile>
          <iterations>10000</iterations>
       </test>

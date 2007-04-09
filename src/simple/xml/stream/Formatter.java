@@ -20,6 +20,7 @@
 
 package simple.xml.stream;
 
+import java.io.BufferedWriter;
 import java.io.Writer;
 
 /**
@@ -89,9 +90,9 @@ final class Formatter {
     * @param format this is the format object to use 
     */ 
    public Formatter(Writer result, Format format){
+       this.result = new BufferedWriter(result);
        this.indenter = new Indenter(format);
-       this.encoding = format.getEncoding();
-       this.result = result;
+       this.encoding = format.getEncoding();      
    }
 
    /**

@@ -1,5 +1,6 @@
 package compare.simple;
 
+import simple.xml.Element;
 import simple.xml.Attribute;
 import simple.xml.Root;
 
@@ -7,8 +8,33 @@ import simple.xml.Root;
 public class SimpleExample {
 
    @Attribute(name="version")
-   public int version;
+   private int version;
    
    @Attribute(name="name")
-   public String name;
+   private String name;
+   
+   @Element(name="element1")
+   private SimpleElementExample example1;
+   
+   @Element(name="element2")
+   private SimpleElementExample example2;
+   
+   @Element(name="element3")
+   private SimpleElementExample example3;
+   
+   private SimpleElementExample example4;
+   
+   @Element(name="text")
+   private String text;
+   
+   @Element(name="element4")
+   private SimpleElementExample getElement() {      
+      return example4;
+   }
+   
+   @Element(name="element4")
+   private void setElement(SimpleElementExample example) {      
+      this.example4 = example; 
+   }
+   
 }
