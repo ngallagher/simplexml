@@ -1,0 +1,17 @@
+<execute>
+   <context identifier="ROOT_PATH" rootPath="C:\Documents and Settings\Niall Gallagher\Workspace\xml\example\data"/>
+   <list>
+      <test id="JAXB Test">
+         <executorClass>compare.jaxb.JAXBExecutor</executorClass>
+         <schemaClass>compare.jaxb.JAXBExample</schemaClass>
+         <sourceFile>${ROOT_PATH}\example.xml</sourceFile>
+         <iterations>10000</iterations>
+      </test>
+      <test id="Simple Test">
+         <executorClass>compare.simple.SimpleExecutor</executorClass>
+         <schemaClass>compare.simple.SimpleExample</schemaClass>
+         <sourceFile>${ROOT_PATH}\example.xml</sourceFile>
+         <iterations>10000</iterations>
+      </test>
+   </list>
+</execute>

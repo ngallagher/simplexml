@@ -1,3 +1,4 @@
+
 @Root(name="message",
       strict=false)
 public class Message {
@@ -5,7 +6,7 @@ public class Message {
    private Collection<Entry> list;
          
    @Attribute(name="version")        
-   private int version;        
+   private float version;        
 
    @ElementList(name="list",
                 type=Entry.class,
@@ -45,10 +46,9 @@ public class Entry {
    }
 }
 
-<message>
+<message version="1.2">
    <list>
       <entry name="a">Example text one</entry>
       <entry name="b">Example text two</entry>
-      </entry>
    </list>
 </message>

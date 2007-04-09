@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<project default="build" basedir=".">
+
+   <target name="layout">
+      <property name="source.path" value="src"/>
+      <property name="build.path" value="build"/>
+      <property name="lib.path" value="lib"/>
+      <property file="build.properties"/>
+   </target>
+
+   <target name="clean" depends="layout">
+      <delete dir="${build.path}"/>
+   </target>
+
+   <target name="prepare" depends="clean">
+      <mkdir dir="${build.path}"/>
+   </target>
+
+   <target name="build" depends="prepare">
+      <javac srcdir="${source.path}" destdir="${build.path}">
+         <classpath>
+            <fileset dir="${lib.path}">
+               <include name="**/*.jar"/>
+            </fileset>
+         </classpath>         
+      </javac>
+   </target>
+
+   <target name="run" depends="build">
+      <java classname="${class}">
+         <arg value="${file}"/>
+         <arg value="${count}"/>
+         <classpath>
+            <fileset dir="${lib.path}">
+               <include name="**/*.jar"/>
+            </fileset>
+            <pathelement path="${build.path}"/>
+         </classpath>
+      </java>           
+   </target>
+
+</project>

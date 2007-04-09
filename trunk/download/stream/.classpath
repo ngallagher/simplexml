@@ -2,6 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="test/src"/>
+	<classpathentry kind="src" path="example/src"/>
 	<classpathentry kind="lib" path="lib/stax-1.2.0.jar"/>
 	<classpathentry kind="lib" path="lib/stax-api-1.0.jar"/>
 	<classpathentry kind="lib" path="skel/lib/stax-1.2.0.jar"/>
@@ -19,5 +20,26 @@
 	<classpathentry kind="lib" path="test/lib/stax-api-1.0.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="test/lib/wstx-asl-3.2.1.jar"/>
+	<classpathentry kind="lib" path="example/lib/activation.jar"/>
+	<classpathentry kind="lib" path="example/lib/codemodel.jar"/>
+	<classpathentry kind="lib" path="example/lib/dtd-parser-1.0.jar"/>
+	<classpathentry kind="lib" path="example/lib/isorelax.jar"/>
+	<classpathentry kind="lib" path="example/lib/istack-commons-runtime.jar"/>
+	<classpathentry kind="lib" path="example/lib/istack-commons-tools.jar"/>
+	<classpathentry kind="lib" path="example/lib/jaxb1-impl.jar"/>
+	<classpathentry kind="lib" path="example/lib/jaxb-api.jar"/>
+	<classpathentry kind="lib" path="example/lib/jaxb-impl.jar"/>
+	<classpathentry kind="lib" path="example/lib/jaxb-xjc.jar"/>
+	<classpathentry kind="lib" path="example/lib/jsr173_1.0_api.jar"/>
+	<classpathentry kind="lib" path="example/lib/msv.jar"/>
+	<classpathentry kind="lib" path="example/lib/relaxngDatatype.jar"/>
+	<classpathentry kind="lib" path="example/lib/resolver.jar"/>
+	<classpathentry kind="lib" path="example/lib/rngom.jar"/>
+	<classpathentry kind="lib" path="example/lib/stax-1.2.0.jar"/>
+	<classpathentry kind="lib" path="example/lib/stax-api-1.0.1.jar"/>
+	<classpathentry kind="lib" path="example/lib/stax-api-1.0.jar"/>
+	<classpathentry kind="lib" path="example/lib/txw2.jar"/>
+	<classpathentry kind="lib" path="example/lib/xsdlib.jar"/>
+	<classpathentry kind="lib" path="example/lib/xsom.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
