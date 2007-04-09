@@ -216,7 +216,7 @@ final class NodeWriter {
          writer.writeText(value);
       }         
       writer.writeEnd(name);
-      writer.flush(); 
+      writer.flush();
    }
    
    /**

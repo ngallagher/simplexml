@@ -27,8 +27,8 @@
 	<classpathentry kind="lib" path="example/lib/istack-commons-runtime.jar"/>
 	<classpathentry kind="lib" path="example/lib/istack-commons-tools.jar"/>
 	<classpathentry kind="lib" path="example/lib/jaxb1-impl.jar"/>
-	<classpathentry kind="lib" path="example/lib/jaxb-api.jar"/>
-	<classpathentry kind="lib" path="example/lib/jaxb-impl.jar"/>
+	<classpathentry kind="lib" path="example/lib/jaxb-api.jar" sourcepath="/jaxb/src"/>
+	<classpathentry kind="lib" path="example/lib/jaxb-impl.jar" sourcepath="/jaxb/src"/>
 	<classpathentry kind="lib" path="example/lib/jaxb-xjc.jar"/>
 	<classpathentry kind="lib" path="example/lib/jsr173_1.0_api.jar"/>
 	<classpathentry kind="lib" path="example/lib/msv.jar"/>
