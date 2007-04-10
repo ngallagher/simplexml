@@ -34,38 +34,37 @@ import java.lang.reflect.Array;
 final class ArrayFactory {
 
    /**
-    * This represents the array type from the object field.
+    * This represents the array component type from the field.
     */
-   private Class field;
+   private Class type;
         
    /**
     * Constructor for the <code>ArrayFactory</code> object. This is
-    * given the field type as taken from the owning object. If the
-    * field type is not an array this throws an exception for each
-    * request to instantiate an array of the specified length.
+    * given the array component type as taken from the field type 
+    * of the source object. Each request for an array will return 
+    * an array which uses the specified component type.
     * 
-    * @param field this is the class for the owning object
+    * @param type the array component type for the field object
     */
-   public ArrayFactory(Class field) {
-      this.field = field;           
+   public ArrayFactory(Class type) {
+      this.type = type;           
    }        
 
    /**
     * Creates the object array to use. This will check to ensure 
-    * that the field type is an array before instantiating it. If
-    * the field type is not an array then this throws an exception.
+    * that the requested length is greater than or equal to zero.
+    * If the request is less than zero an exception is thrown.
     * 
     * @param node this is the input node representing the list
     * 
-    * @return this is the obejct array instantiated for the field
+    * @return this is the obejct array instantiated for the type
     */         
    public Object[] getInstance(int size) throws Exception {
-      if(!field.isArray()) {
-         throw new InstantiationException("Type is not an array %s", field);  
-      }                 
-      Class type = field.getComponentType();
+      if(size < 0) {
+         throw new PersistenceException("Array size cannot be less than zero");        
+      }
       Object list = Array.newInstance(type, size);
-
+      
       return (Object[])list;
    }     
 }

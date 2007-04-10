@@ -58,6 +58,17 @@ public @interface ElementArray {
    public String name();
    
    /**
+    * This is used to provide a parent XML element for each of the
+    * values within the array. This esentially wraps the entity to
+    * be serialized such that there is an extra XML element present.
+    * This is primarily used to wrap primitive values in an element
+    * so that they can be represented in a structured manner.
+    * 
+    * @return this returns the parent XML element for each value
+    */
+   public String parent() default "";
+   
+   /**
     * Determines whether the element is required within the XML
     * document. Any field marked as not required will not have its
     * value set when the object is deserialized. If an object is to
