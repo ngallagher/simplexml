@@ -21,6 +21,8 @@
 package simple.xml.load;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The <code>ArrayFactory</code> is used to create object array
@@ -51,20 +53,51 @@ final class ArrayFactory {
    }        
 
    /**
-    * Creates the object array to use. This will check to ensure 
-    * that the requested length is greater than or equal to zero.
-    * If the request is less than zero an exception is thrown.
+    * Creates the object array to use. This will use the provided
+    * list of values to form the values within the array. Each of
+    * the values witin the specified <code>List</code> will be
+    * set into a the array, if the type of the values within the
+    * list are not compatible then an exception is thrown.
     * 
-    * @param node this is the input node representing the list
+    * @param list this is the list of values for the array
     * 
     * @return this is the obejct array instantiated for the type
     */         
-   public Object[] getInstance(int size) throws Exception {
-      if(size < 0) {
-         throw new PersistenceException("Array size cannot be less than zero");        
-      }
-      Object list = Array.newInstance(type, size);
+   public Object getArray(List list) throws Exception {
+      return getArray(list, list.size());
+   }
+   
+   /**
+    * Creates the object array to use. This will use the provided
+    * list of values to form the values within the array. Each of
+    * the values witin the specified <code>List</code> will be
+    * set into a the array, if the type of the values within the
+    * list are not compatible then an exception is thrown.
+    * 
+    * @param list this is the list of values for the array
+    * @param size the number of values to consider for copying
+    * 
+    * @return this is the obejct array instantiated for the type
+    */ 
+   public Object getArray(List list, int size) throws Exception {
+      Object array = Array.newInstance(type, size);
       
-      return (Object[])list;
+      for(int i = 0; i < size; i++) {
+         Array.set(array, i, list.get(i));
+      }
+      return array;     
    }     
+   
+   public List getList(Object source) throws Exception {
+      return getList(source, Array.getLength(source));
+   }
+   
+   public List getList(Object source, int size) throws Exception { 
+      List list = new ArrayList();
+      
+      for(int i = 0; i < size; i++) {
+         list.add(Array.get(source, i));         
+      }
+      return list;
+   }
 }
