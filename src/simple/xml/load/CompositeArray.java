@@ -74,18 +74,24 @@ final class CompositeArray implements Converter {
    private Class entry;
 
    /**
+    * This is the name to wrap each entry that is represented.
+    */
+   private String parent;
+
+   /**
     * Constructor for the <code>CompositeArray</code> object. This is
     * given the array type for the contact that is to be converted. An
     * array of the specified type is used to hold the deserialized
     * elements and will be the same length as the number of elements.
     *
     * @param root this is the source object used for serialization
-    * @param type this is the object array type that is to be used
     * @param entry the entry type to be stored within the array
+    * @param parent this is the name to wrap the array element with
     */    
-   public CompositeArray(Source root, Class type, Class entry) {
-      this.factory = new ArrayFactory(type);           
+   public CompositeArray(Source root, Class entry, String parent) {
+      this.factory = new ArrayFactory(entry);           
       this.root = new Traverser(root);      
+      this.parent = parent;
       this.entry = entry;
    }
 
@@ -109,7 +115,7 @@ final class CompositeArray implements Converter {
          if(next == null) {
             return read(list, i);
          }
-         if(root != null) {
+         if(parent != null) {
             next = next.getNext();
          }
          list.add(root.read(next, entry));
@@ -173,8 +179,8 @@ final class CompositeArray implements Converter {
       if(!entry.isAssignableFrom(type)) {
          throw new PersistenceException("Entry %s does not match %s", type, entry);                     
       } 
-      if(root != null) {
-         node = node.getChild(root);
+      if(parent != null) {
+         node = node.getChild(parent);
       }
       root.write(node, item, entry);                       
    }

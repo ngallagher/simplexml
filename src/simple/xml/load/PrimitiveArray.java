@@ -74,18 +74,24 @@ final class PrimitiveArray implements Converter {
    private Class entry;
 
    /**
+    * This is the name that each array element is wrapped with.
+    */
+   private String parent;
+
+   /**
     * Constructor for the <code>PrimitiveArray</code> object. This is
     * given the array type for the contact that is to be converted. An
     * array of the specified type is used to hold the deserialized
     * elements and will be the same length as the number of elements.
     *
     * @param root this is the source object used for serialization
-    * @param type this is the object array type that is to be used
     * @param entry the entry type to be stored within the array
+    * @param parent this is the name to wrap the array element with
     */    
-   public PrimitiveArray(Source root, Class type, Class entry) {
+   public PrimitiveArray(Source root, Class entry, String parent) {
       this.root = new Primitive(root, entry);
-      this.factory = new ArrayFactory(type);           
+      this.factory = new ArrayFactory(entry);           
+      this.parent = parent;
       this.entry = entry;
    }
 
@@ -105,7 +111,7 @@ final class PrimitiveArray implements Converter {
       
       for(int i = 0; true; i++) {
          InputNode next = node.getNext();
-        
+    
          if(next == null) {
             return read(list, i);
          }
@@ -165,7 +171,7 @@ final class PrimitiveArray implements Converter {
     * @param entry this is the type of the object that is expected
     */ 
    private void write(OutputNode node, Object item, Class entry) throws Exception {   
-      OutputNode child = node.getChild(name);  
+      OutputNode child = node.getChild(parent);  
       Class type = item.getClass();
 
       if(!entry.isAssignableFrom(type)) {
