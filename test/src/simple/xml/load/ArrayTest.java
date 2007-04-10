@@ -32,29 +32,41 @@ public class ArrayTest extends ValidationTestCase {
    "      <text>entry four</text>  \n\r"+
    "      <text>entry five</text>  \n\r"+
    "   </array>\n\r"+
-   "</root>"; 
+   "</root>";   
    
    private static final String COMPOSITE =
-      "<?xml version=\"1.0\"?>\n"+
-      "<root>\n"+
-      "   <array>\n\r"+
-      "      <entry>\r\n"+
-      "         <text value='entry one'/>  \n\r"+
-      "      </entry>\n  "+      
-      "      <entry>\r\n"+
-      "         <text value='entry two'/>  \n\r"+
-      "      </entry>\n  "+
-      "      <entry>\r\n"+
-      "         <text value='entry three'/>  \n\r"+
-      "      </entry>\n  "+
-      "      <entry>\r\n"+
-      "         <text value='entry four'/>  \n\r"+
-      "      </entry>\n  "+
-      "      <entry>\r\n"+
-      "         <text value='entry five'/>  \n\r"+
-      "      </entry>\n  "+
-      "   </array>\n\r"+
-      "</root>"; 
+   "<?xml version=\"1.0\"?>\n"+
+   "<root>\n"+
+   "   <array>\n\r"+
+   "      <entry>\r\n"+
+   "         <text value='entry one'/>  \n\r"+
+   "      </entry>\n  "+      
+   "      <entry>\r\n"+
+   "         <text value='entry two'/>  \n\r"+
+   "      </entry>\n  "+
+   "      <entry>\r\n"+
+   "         <text value='entry three'/>  \n\r"+
+   "      </entry>\n  "+
+   "      <entry>\r\n"+
+   "         <text value='entry four'/>  \n\r"+
+   "      </entry>\n  "+
+   "      <entry>\r\n"+
+   "         <text value='entry five'/>  \n\r"+
+   "      </entry>\n  "+
+   "   </array>\n\r"+
+   "</root>";
+   
+   private static final String CHARACTER =
+   "<?xml version=\"1.0\"?>\n"+
+   "<root>\n"+
+   "   <array>\n\r"+
+   "      <char>a</char>  \n\r"+
+   "      <char>b</char>  \n\r"+
+   "      <char>c</char>  \n\r"+
+   "      <char>d</char>  \n\r"+
+   "      <char>e</char>  \n\r"+
+   "   </array>\n\r"+
+   "</root>";   
 
    @Root(name="root")
    private static class ArrayExample {
@@ -97,6 +109,13 @@ public class ArrayTest extends ValidationTestCase {
       
       @ElementArray(name="array", parent="entry")
       private Text[] array;
+   }
+   
+   @Root(name="root")
+   private static class CharacterArrayExample {
+      
+      @ElementArray(name="array", parent="char")
+      private char[] array;
    }
    
    private Persister serializer;
@@ -190,6 +209,19 @@ public class ArrayTest extends ValidationTestCase {
       assertEquals(example.array[2].value, "entry three");
       assertEquals(example.array[3].value, "entry four");
       assertEquals(example.array[4].value, "entry five");
+      
+      validate(example, serializer);
+   }
+   
+   public void testCharacter() throws Exception {    
+      CharacterArrayExample example = serializer.read(CharacterArrayExample.class, CHARACTER);
+      
+      assertEquals(example.array.length, 5);
+      assertEquals(example.array[0], 'a');
+      assertEquals(example.array[1], 'b');
+      assertEquals(example.array[2], 'c');
+      assertEquals(example.array[3], 'd');
+      assertEquals(example.array[4], 'e');
       
       validate(example, serializer);
    }

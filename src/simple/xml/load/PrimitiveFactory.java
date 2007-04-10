@@ -74,7 +74,7 @@ final class PrimitiveFactory extends Factory {
    public Object getInstance(String text) throws Exception {
       if(field == String.class) {
          return text;              
-      }           
+      }    
       if(field.isEnum()) {
          return getEnumeration(text);              
       }           
@@ -115,12 +115,54 @@ final class PrimitiveFactory extends Factory {
       if(method != null) {
          return method.newInstance(text);              
       }
-      method = getConstructor(field);
+      Class type = getConversion(field);
+      
+      if(type == Character.class) {
+         return getCharacter(text);
+      }
+      return getPrimitive(text, type);
+   }
+   
+   /**
+    * This will construct the primitive type from the provided text
+    * value. This reflectively constructs a primitive object using a
+    * single argument constructor that takes a string. For instance
+    * for the type <code>int.class</code> the value is created using
+    * the <code>Integer(String)</code> constructor.
+    * 
+    * @param text this is the text to be converted to a primitive
+    * @param type this is the converted type for the primitive
+    * 
+    * @return returns a primitive object representing the value
+    * 
+    * @throws Exception if the text value is not parsable
+    */
+   private Object getPrimitive(String text, Class type) throws Exception {
+      Constructor method = getConstructor(type);
 
       if(method != null) {
          cache.cache(field, method);              
       }
       return method.newInstance(text);
+   }
+   
+   /**
+    * This is used to acquire a character from the specified text 
+    * value. The character is a special entity as it does not have
+    * a constructor which will accept a string value for creation.
+    * As a result this method is required to extract the character.
+    *  
+    * @param text the text value that represents the character 
+    * 
+    * @return this returns the autoboxed value for the character
+    * 
+    * @throws Exception if the length of the string is not one
+    */
+   private Object getCharacter(String text) throws Exception {
+      if(text.length() != 1) {
+         throw new InstantiationException("Cannot convert '%s' to a character", text);
+      }
+      return text.charAt(0);
    }
 
    /**
@@ -128,15 +170,14 @@ final class PrimitiveFactory extends Factory {
     * for a single argument constructor that takes a string. The type
     * of object that is created is determined using the field type.
     * 
-    * @param type the field type used to determine the correct type 
+    * @param type the type that can be used to get the constructor
     * 
     * @return this returns a constructor for a primitive type
     * 
     * @throws Exception if a suitable constructor was not found
     */
    private Constructor getConstructor(Class type) throws Exception {
-      Class replace = getConversion(type);
-      return replace.getConstructor(String.class);
+      return type.getConstructor(String.class);
    }
 
    /**
@@ -150,26 +191,29 @@ final class PrimitiveFactory extends Factory {
     * @return this returns the primitive object type to be used
     */
    public Class getConversion(Class type) {
-      if(type.equals(int.class)) {
+      if(type == int.class) {
          return Integer.class;              
       }           
-      if(type.equals(boolean.class)) {
+      if(type == boolean.class) {
          return Boolean.class;               
       }
-      if(type.equals(float.class)) {
+      if(type == float.class) {
          return Float.class;                       
       }
-      if(type.equals(long.class)) {
+      if(type == long.class) {
          return Long.class;                   
       }
-      if(type.equals(double.class)) {
+      if(type == double.class) {
          return Double.class;              
       }
-      if(type.equals(byte.class)) {
+      if(type == byte.class) {
          return Byte.class;              
       }        
-      if(type.equals(short.class)) {
+      if(type == short.class) {
          return Short.class;              
+      }
+      if(type == char.class) {
+         return Character.class;
       }
       return type;
    }
