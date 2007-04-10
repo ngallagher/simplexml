@@ -64,21 +64,16 @@ final class LabelMap extends HashMap<String, Label> implements Iterable<Label> {
 
    /**
     * This performs a <code>remove</code> that will remove the label
-    * from the map in a case insensitive manner. This allows the XML
-    * elements and attributes to be acquired regardless of how they
-    * are represented in the XML schema class or XML document.
+    * from the map and return that label. This method allows the 
+    * values within the map to be exclusively taken one at a time,
+    * which enables the user to determine which labels remain.
     *
     * @param name this is the name of the element of attribute
     *
     * @return this is the label object representing the XML node
     */ 
    public Label take(String name) {
-      String key = name.toLowerCase(); 
-      
-      if(containsKey(key)) {
-         return remove(key);              
-      }
-      return null;      
+      return remove(name);    
    }
 
    /**

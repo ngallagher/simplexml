@@ -49,11 +49,6 @@ class InputElement implements InputNode {
     * This is the node reader that reads from the XML document.
     */ 
    private NodeReader reader;
-   
-   /**
-    * This is the name of this element as taken from the element.
-    */
-   private String name;
  
    /**
     * Constructor for the <code>InputElement</code> object. This 

@@ -21,6 +21,40 @@ public class ArrayTest extends ValidationTestCase {
    "      <text value='entry five'/>  \n\r"+
    "   </array>\n\r"+
    "</root>";
+   
+   private static final String PRIMITIVE =
+   "<?xml version=\"1.0\"?>\n"+
+   "<root>\n"+
+   "   <array>\n\r"+
+   "      <text>entry one</text>  \n\r"+
+   "      <text>entry two</text>  \n\r"+
+   "      <text>entry three</text>  \n\r"+
+   "      <text>entry four</text>  \n\r"+
+   "      <text>entry five</text>  \n\r"+
+   "   </array>\n\r"+
+   "</root>"; 
+   
+   private static final String COMPOSITE =
+      "<?xml version=\"1.0\"?>\n"+
+      "<root>\n"+
+      "   <array>\n\r"+
+      "      <entry>\r\n"+
+      "         <text value='entry one'/>  \n\r"+
+      "      </entry>\n  "+      
+      "      <entry>\r\n"+
+      "         <text value='entry two'/>  \n\r"+
+      "      </entry>\n  "+
+      "      <entry>\r\n"+
+      "         <text value='entry three'/>  \n\r"+
+      "      </entry>\n  "+
+      "      <entry>\r\n"+
+      "         <text value='entry four'/>  \n\r"+
+      "      </entry>\n  "+
+      "      <entry>\r\n"+
+      "         <text value='entry five'/>  \n\r"+
+      "      </entry>\n  "+
+      "   </array>\n\r"+
+      "</root>"; 
 
    @Root(name="root")
    private static class ArrayExample {
@@ -50,7 +84,21 @@ public class ArrayTest extends ValidationTestCase {
          this.value = value;              
       }
    }
-
+   
+   @Root(name="root")
+   private static class PrimitiveArrayExample {
+      
+      @ElementArray(name="array", parent="text")
+      private String[] array;
+   }
+   
+   @Root(name="root")
+   private static class ParentCompositeArrayExample {
+      
+      @ElementArray(name="array", parent="entry")
+      private Text[] array;
+   }
+   
    private Persister serializer;
 
    public void setUp() {
@@ -119,5 +167,30 @@ public class ArrayTest extends ValidationTestCase {
          }              
       }
    }
-
+   
+   public void testPrimitive() throws Exception {    
+      PrimitiveArrayExample example = serializer.read(PrimitiveArrayExample.class, PRIMITIVE);
+      
+      assertEquals(example.array.length, 5);
+      assertEquals(example.array[0], "entry one");
+      assertEquals(example.array[1], "entry two");
+      assertEquals(example.array[2], "entry three");
+      assertEquals(example.array[3], "entry four");
+      assertEquals(example.array[4], "entry five");
+      
+      validate(example, serializer);
+   }
+   
+   public void testParentComposite() throws Exception {    
+      ParentCompositeArrayExample example = serializer.read(ParentCompositeArrayExample.class, COMPOSITE);
+      
+      assertEquals(example.array.length, 5);
+      assertEquals(example.array[0].value, "entry one");
+      assertEquals(example.array[1].value, "entry two");
+      assertEquals(example.array[2].value, "entry three");
+      assertEquals(example.array[3].value, "entry four");
+      assertEquals(example.array[4].value, "entry five");
+      
+      validate(example, serializer);
+   }
 }

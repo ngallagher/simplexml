@@ -20,15 +20,15 @@
 
 package simple.xml.load;
 
-import java.lang.reflect.Field;
 import simple.xml.ElementArray;
 
 /**
  * The <code>ElementArrayLabel</code> represents a label that is used
  * to represent an XML element array in a class schema. This element 
  * array label can be used to convert an XML node into an array of
- * composite objects. Each element converted with the converter this
- * creates must be an XML serializable element.
+ * composite or primitive objects. If the array is of primitive types
+ * then the <code>parent</code> attribute must be specified so that 
+ * the primitive values can be serialized in a structured manner.
  * 
  * @author Niall Gallagher
  * 
@@ -60,7 +60,7 @@ final class ElementArrayLabel implements Label {
     * @param label the annotation that contains the schema details
     */
    public ElementArrayLabel(Contact contact, ElementArray label) {
-      this.type = contact.getType();
+      this.type = contact.getType();      
       this.contact = contact;
       this.label = label;
    }
@@ -76,25 +76,45 @@ final class ElementArrayLabel implements Label {
     */
    public Converter getConverter(Source root) throws Exception {
       if(!type.isArray()) {
-         throw new InstantiationException("Type is not an array %s", type);
+         throw new InstantiationException("Type is not an array %s for %s", type, label);
       }
+      return getConverter(root, getParent());
+   }
+      
+   /**
+    * This will create a <code>Converter</code> for transforming an XML
+    * element into an array of XML serializable objects. The XML schema
+    * class for these objects must present the element list annotation. 
+    * 
+    * @param root this is the source object used for serialization
+    * @param parent this is the name of the parent XML element to use
+    * 
+    * @return this returns the converter for creating a collection 
+    */      
+   private Converter getConverter(Source root, String parent) throws Exception {
       Class entry = type.getComponentType();
-      String parent = getParent();
-
-      if(isPrimitive(entry)) {
-         if(parent == null) {
-            throw new ElementException("Array annotation %s in %s requires parent", label, type);
-         }
-         return new PrimitiveArray(root, entry, parent);        
+      
+      if(!isPrimitive(entry)) {
+         return new CompositeArray(root, entry, parent);        
       }
-      return new CompositeArray(root, entry, parent);      
+      if(parent == null) {
+         throw new ElementException("Annotation %s requires parent for %s", label, type);        
+      }
+      return new PrimitiveArray(root, entry, parent);            
    }
 
-   
+   /**
+    * This method is used to acquire the parent element from the array
+    * label. This checks to ensure that the parent value has been 
+    * specified. If a value has not been specified then this method
+    * will return a null value, which represents no parent setting.
+    * 
+    * @return this returns null if not parent has been set
+    */
    public String getParent() {
       String parent = label.parent();
 
-      if(isEmpty(parent)) {
+      if(parent.length() == 0) {
          return null;
       }
       return parent;
@@ -150,6 +170,47 @@ final class ElementArrayLabel implements Label {
     */  
    public boolean isRequired() {
       return label.required();
+   }
+   
+   /**
+    * This method is used to determine whether the contact type is a
+    * primitive or enumerated type. If it is either of these then it
+    * must be a leaf element, that is, an element without any other
+    * elements. If this is true a primitive converter is used.
+    * 
+    * @param type the type checked to determine if it is primitive
+    * 
+    * @return true if the type is primitive, false otherwise
+    */
+   private boolean isPrimitive(Class type) {
+      if(type.equals(String.class)) {
+         return true;              
+      }
+      if(type.equals(Boolean.class)) {
+         return true;              
+      }
+      if(type.equals(Integer.class)) {
+         return true;              
+      }      
+      if(type.equals(Float.class)) {
+         return true;               
+      }
+      if(type.equals(Long.class)) {
+         return true;              
+      }
+      if(type.equals(Double.class)) {
+         return true;              
+      }
+      if(type.equals(Byte.class)) {
+         return true;              
+      }
+      if(type.equals(Short.class)) {
+         return true;              
+      }
+      if(type.isPrimitive()) {
+         return true;                 
+      }
+      return type.isEnum();
    }
    
    /**

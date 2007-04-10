@@ -392,7 +392,7 @@ final class Scanner  {
     */   
    private void process(Contact field, Annotation type, LabelMap map) throws Exception {
       Label label = LabelFactory.getInstance(field, type);
-      String name = label.getName().toLowerCase();
+      String name = label.getName();
       
       if(map.containsKey(name)) {
          throw new PersistenceException("Annotation of name '%s' declared twice", name);
