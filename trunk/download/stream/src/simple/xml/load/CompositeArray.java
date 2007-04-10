@@ -109,6 +109,9 @@ final class CompositeArray implements Converter {
          if(next == null) {
             return read(list, i);
          }
+         if(root != null) {
+            next = next.getNext();
+         }
          list.add(root.read(next, entry));
       } 
    }    
@@ -164,12 +167,15 @@ final class CompositeArray implements Converter {
     * @param node this is the XML element container to be populated
     * @param entry this is the type of the object that is expected
     */ 
-   private void write(OutputNode node, Object item, Class entry) throws Exception {   
+   private void write(OutputNode node, Object item, Class entry) throws Exception {         
       Class type = item.getClass();
 
       if(!entry.isAssignableFrom(type)) {
          throw new PersistenceException("Entry %s does not match %s", type, entry);                     
       } 
+      if(root != null) {
+         node = node.getChild(root);
+      }
       root.write(node, item, entry);                       
    }
 }

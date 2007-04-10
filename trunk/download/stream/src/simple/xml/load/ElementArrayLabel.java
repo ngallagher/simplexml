@@ -79,8 +79,12 @@ final class ElementArrayLabel implements Label {
          throw new InstantiationException("Type is not an array %s", type);
       }
       Class entry = type.getComponentType();
+      String root = label.root();
 
-      return new CompositeArray(root, type, entry);      
+      if(Primitive.isPrimitive(entry)) {
+        return new PrimitiveArray(root, entry, root);        
+      }
+      return new CompositeArray(root, entry, root);      
    }
 
    /**
