@@ -109,11 +109,11 @@ final class CompositeArray implements Converter {
    public Object read(InputNode node) throws Exception{
       List list = new ArrayList();
       
-      for(int i = 0; true; i++) {
+      while(true) {
          InputNode next = node.getNext();
         
          if(next == null) {
-            return read(list, i);
+            return factory.getArray(list);
          }
          if(parent != null) {
             next = next.getNext();
@@ -121,26 +121,6 @@ final class CompositeArray implements Converter {
          list.add(root.read(next, entry));
       } 
    }    
-
-   /**
-    * This <code>read</code> method is used to convert the list of
-    * objects specified into an array. The array created will be the
-    * same size as the number of objects within the list. This means
-    * that no objects within the array will contain a null value.
-    *
-    * @param list this is the list of objects to convert to an array
-    * @param size this is the size of the array to be created
-    *
-    * @return an array object containing the deserialized elements
-    */
-   private Object read(List list, int size) throws Exception {
-      Object[] array = factory.getInstance(size);
-
-      for(int i = 0; i < size; i++) {
-         array[i] = list.get(i);
-      }
-      return array;
-   }
 
    /**
     * This <code>write</code> method will write the specified object
@@ -153,7 +133,7 @@ final class CompositeArray implements Converter {
     * @param node this is the XML element container to be populated
     */ 
    public void write(OutputNode node, Object source) throws Exception {
-      Object[] list = (Object[])source;                
+      List list = factory.getList(source);                
       
       for(Object item : list) {
          if(item != null) {  
