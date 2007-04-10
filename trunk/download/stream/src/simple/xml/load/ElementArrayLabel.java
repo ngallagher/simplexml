@@ -94,7 +94,7 @@ final class ElementArrayLabel implements Label {
    private Converter getConverter(Source root, String parent) throws Exception {
       Class entry = type.getComponentType();
       
-      if(!isPrimitive(entry)) {
+      if(!Factory.isPrimitive(entry)) {
          return new CompositeArray(root, entry, parent);        
       }
       if(parent == null) {
@@ -170,47 +170,6 @@ final class ElementArrayLabel implements Label {
     */  
    public boolean isRequired() {
       return label.required();
-   }
-   
-   /**
-    * This method is used to determine whether the contact type is a
-    * primitive or enumerated type. If it is either of these then it
-    * must be a leaf element, that is, an element without any other
-    * elements. If this is true a primitive converter is used.
-    * 
-    * @param type the type checked to determine if it is primitive
-    * 
-    * @return true if the type is primitive, false otherwise
-    */
-   private boolean isPrimitive(Class type) {
-      if(type.equals(String.class)) {
-         return true;              
-      }
-      if(type.equals(Boolean.class)) {
-         return true;              
-      }
-      if(type.equals(Integer.class)) {
-         return true;              
-      }      
-      if(type.equals(Float.class)) {
-         return true;               
-      }
-      if(type.equals(Long.class)) {
-         return true;              
-      }
-      if(type.equals(Double.class)) {
-         return true;              
-      }
-      if(type.equals(Byte.class)) {
-         return true;              
-      }
-      if(type.equals(Short.class)) {
-         return true;              
-      }
-      if(type.isPrimitive()) {
-         return true;                 
-      }
-      return type.isEnum();
    }
    
    /**

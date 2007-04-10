@@ -74,7 +74,7 @@ final class TextLabel implements Label {
     * @return this returns a converter for serializing XML elements
     */
    public Converter getConverter(Source source) throws Exception {
-      if(!isPrimitive(type)) {
+      if(!Factory.isPrimitive(type)) {
          throw new TextException("Cannot use %s to represent %s", label, type);
       }
       return new Primitive(source, type);
@@ -130,47 +130,6 @@ final class TextLabel implements Label {
     */   
    public boolean isRequired() {
       return label.required();
-   }
-   
-   /**
-    * This method is used to determine whether the contact type is a
-    * primitive or enumerated type. If it is either of these then it
-    * must be a leaf element, that is, an element without any other
-    * elements. If this is true a primitive converter is used.
-    * 
-    * @param type the type checked to determine if it is primitive
-    * 
-    * @return true if the type is primitive, false otherwise
-    */
-   private boolean isPrimitive(Class type) {
-      if(type.equals(String.class)) {
-         return true;              
-      }
-      if(type.equals(Boolean.class)) {
-         return true;              
-      }
-      if(type.equals(Integer.class)) {
-         return true;              
-      }      
-      if(type.equals(Float.class)) {
-         return true;               
-      }
-      if(type.equals(Long.class)) {
-         return true;              
-      }
-      if(type.equals(Double.class)) {
-         return true;              
-      }
-      if(type.equals(Byte.class)) {
-         return true;              
-      }
-      if(type.equals(Short.class)) {
-         return true;              
-      }
-      if(type.isPrimitive()) {
-         return true;                 
-      }
-      return type.isEnum();
    }
    
    /**

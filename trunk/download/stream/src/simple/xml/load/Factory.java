@@ -136,7 +136,7 @@ abstract class Factory {
     * 
     * @return true if the field type can be assigned the type value
     */
-   public boolean isCompatible(Class field, Class type) {
+   public static boolean isCompatible(Class field, Class type) {
       return field.isAssignableFrom(type);           
    }
 
@@ -150,7 +150,7 @@ abstract class Factory {
     * 
     * @return false if the type is an interface or an abstract class
     */
-   public boolean isInstantiable(Class type) {
+   public static boolean isInstantiable(Class type) {
       int modifiers = type.getModifiers();
 
       if(Modifier.isAbstract(modifiers)) {
@@ -170,28 +170,37 @@ abstract class Factory {
     * 
     * @return true if the type is primitive, false otherwise
     */   
-   protected boolean isPrimitive(Class type) {
-      if(type.equals(Boolean.class)) {
+   public static boolean isPrimitive(Class type) {
+      if(type == String.class) {
          return true;              
       }
-      if(type.equals(Integer.class)) {
+      if(type == Boolean.class) {
+         return true;              
+      }
+      if(type == Integer.class) {
          return true;              
       }      
-      if(type.equals(Float.class)) {
+      if(type == Float.class) {
          return true;               
       }
-      if(type.equals(Long.class)) {
+      if(type == Long.class) {
          return true;              
       }
-      if(type.equals(Double.class)) {
+      if(type == Double.class) {
          return true;              
       }
-      if(type.equals(Byte.class)) {
+      if(type == Byte.class) {
          return true;              
       }
-      if(type.equals(Short.class)) {
+      if(type == Short.class) {
          return true;              
       }
-      return type.isPrimitive();
-   }    
+      if(type == Character.class) {
+         return true;
+      }
+      if(type.isPrimitive()) {
+         return true;                 
+      }
+      return type.isEnum();
+   }
 }           
