@@ -5,26 +5,29 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
+import compare.Duration;
 import compare.Executor;
 import compare.TestRun;
 
 public class JAXBExecutor implements Executor {
    
-   public long read(TestRun test) throws Exception {
+   public Duration read(TestRun test) throws Exception {
+	  long start = System.currentTimeMillis();
       JAXBContext context = JAXBContext.newInstance(test.getSchemaClass());      
       Unmarshaller unmarshaller = context.createUnmarshaller();
       
       // Perform once to build up internal caching
       Object result = unmarshaller.unmarshal(test.getSourceStream());     
-      long start = System.currentTimeMillis();
+      long startRead = System.currentTimeMillis();
       
       for(int i = 0; i < test.getIterations(); i++) {
          result = unmarshaller.unmarshal(test.getSourceStream());        
       }
-      return System.currentTimeMillis() - start;
+      return new Duration(start, startRead);      
    }        
    
-   public long write(TestRun test) throws Exception {
+   public Duration write(TestRun test) throws Exception {
+	  long start = System.currentTimeMillis();
       JAXBContext context = JAXBContext.newInstance(test.getSchemaClass());      
       Unmarshaller unmarshaller = context.createUnmarshaller();
       Object result = unmarshaller.unmarshal(test.getSourceStream());
@@ -34,11 +37,11 @@ public class JAXBExecutor implements Executor {
       marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
       marshaller.marshal(result, System.out);
       
-      long start = System.currentTimeMillis();
+      long startWrite = System.currentTimeMillis();
       
       for(int i = 0; i < test.getIterations(); i++) {
          marshaller.marshal(result, test.getResultStream());        
       }
-      return System.currentTimeMillis() - start;
+      return new Duration(start, startWrite);      
    }   
 }
