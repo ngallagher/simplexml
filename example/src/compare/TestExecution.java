@@ -25,10 +25,14 @@ public class TestExecution {
       Class executorClass = test.getExecutorClass();
       Executor executor = (Executor) executorClass.newInstance();
       
-      long readDuration = executor.read(test);
-      long writeDuration = executor.write(test);
+      Duration readDuration = executor.read(test);
+      Duration writeDuration = executor.write(test);
       
-      System.err.printf("Execution of "+test.getId()+": read=%s ms write=%s ms", readDuration, writeDuration);
+      System.err.printf("Execution of "+test.getId() + 
+    		  ": read=%s ms read-total=%s write=%s ms write-total=%s", 
+    		  readDuration.getOperation(), readDuration.getTotal(), 
+    		  writeDuration.getOperation(), writeDuration.getOperation());
+      
       System.err.println();
    }
    

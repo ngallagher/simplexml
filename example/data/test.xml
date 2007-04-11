@@ -1,5 +1,5 @@
 <execute>
-   <context identifier="ROOT_PATH" rootPath="e:\workspace\xml\example\data"/>
+   <context identifier="ROOT_PATH" rootPath="c:\tmp\simple\stream\example\data"/>
    <list>
       <test id="JAXB Test">
          <executorClass>compare.jaxb.JAXBExecutor</executorClass>
