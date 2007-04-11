@@ -63,7 +63,7 @@
    </target>
 
    <target name="coverage" depends="instrument">
-      <junit printsummary="yes" haltonfailure="yes">
+      <junit printsummary="yes" haltonfailure="yes" fork="yes">
 	      <sysproperty key="net.sourceforge.cobertura.datafile"  file="${build.path}/${cobertura.data}" />
          <classpath location="${build.path}/instrumented"/>
          <classpath location="${build.path}/test"/>
@@ -74,7 +74,7 @@
             </fileset>
          </classpath>
          <formatter type="plain"/>
-         <batchtest todir="${report.path}/test">
+         <batchtest fork="yes" todir="${report.path}/test">
             <fileset dir="${build.path}/test">
                <include name="**/*Test.class"/>
                <exclude name="**/*TestSuite.class"/>
@@ -105,7 +105,7 @@
             </fileset>
          </classpath>
          <formatter type="plain"/>
-         <batchtest todir="${report.path}/test">
+         <batchtest fork="yes" todir="${report.path}/test">
             <fileset dir="${build.path}/test">
                <include name="**/*Test.class"/>
                <exclude name="**/*TestSuite.class"/>
@@ -126,7 +126,7 @@
             </fileset>
          </classpath>
          <formatter type="plain"/>
-         <batchtest todir="${report.path}/test">
+         <batchtest fork="yes" todir="${report.path}/test">
             <fileset dir="${build.path}/test">
                <include name="**/*Test.class"/>
                <exclude name="**/*TestSuite.class"/>
