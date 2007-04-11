@@ -28,28 +28,24 @@ import java.util.List;
 /**
  * The <code>PrimitiveArray</code> object is used to convert a list of
  * elements to an array of object entries. This in effect performs a 
- * root serialization and deserialization of entry elements for the
- * array object. On serialization each objects type must be checked 
+ * serialization and deserialization of primitive elements for the
+ * array object. On serialization each primitive type must be checked 
  * against the array component type so that it is serialized in a form 
  * that can be deserialized dynamically. 
  * <pre>
  *
  *    &lt;array&gt;
- *       &lt;entry attribute="value"&gt;
- *          &lt;text&gt;example text value&lt;/text&gt;
- *       &lt;/entry&gt;
- *       &lt;entry attribute="demo"&gt;
- *          &lt;text&gt;some other example&lt;/text/&gt;
- *       &lt;/entry&gt;
+ *       &lt;entry&gt;example text one&lt;/entry&gt;
+ *       &lt;entry&gt;example text two&lt;/entry&gt;
+ *       &lt;entry&gt;example text three&lt;/entry&gt;
  *    &lt;/array&gt;
  * 
  * </pre>
  * For the above XML element list the element <code>entry</code> is
  * contained within the array. Each entry element is deserialized as 
- * a root element and then inserted into the array. For serialization 
- * the reverse is done, each element taken from the array is written
- * as a root element to the parent element to create the list. Entry
- * objects do not need to be of the same type.
+ * a from a parent XML element, which is specified in the annotation.
+ * For serialization the reverse is done, each element taken from the 
+ * array is written into an element created from the parent element.
  * 
  * @author Niall Gallagher
  *
@@ -64,7 +60,7 @@ final class PrimitiveArray implements Converter {
    private ArrayFactory factory;
 
    /**
-    * This performs the traversal used for object serialization.
+    * This performs the serialization of the primitive element.
     */ 
    private Primitive root;
       
@@ -98,9 +94,8 @@ final class PrimitiveArray implements Converter {
    /**
     * This <code>read</code> method wll read the XML element list from
     * the provided node and deserialize its children as entry types.
-    * This will each entry type is deserialized as a root type, that 
-    * is, its <code>Root</code> annotation must be present and the
-    * name of the entry element must match that root element name.
+    * This will deserialize each entry type as a primitive value. In
+    * order to do this the parent string provided forms the element.
     * 
     * @param node this is the XML element that is to be deserialized
     * 
@@ -123,8 +118,8 @@ final class PrimitiveArray implements Converter {
     * This <code>write</code> method will write the specified object
     * to the given XML element as as array entries. Each entry within
     * the given array must be assignable to the array component type.
-    * Each array entry is serialized as a root element, that is, its
-    * <code>Root</code> annotation is used to extract the name. 
+    * This will deserialize each entry type as a primitive value. In
+    * order to do this the parent string provided forms the element.
     * 
     * @param source this is the source object array to be serialized 
     * @param node this is the XML element container to be populated
@@ -143,9 +138,9 @@ final class PrimitiveArray implements Converter {
     * This <code>write</code> method will write the specified object
     * to the given XML element as as array entries. Each entry within
     * the given array must be assignable to the array component type.
-    * Each array entry is serialized as a root element, that is, its
-    * <code>Root</code> annotation is used to extract the name. 
-    * 
+    * This will serialize each entry type as a primitive value. In
+    * order to do this the parent string provided forms the element.
+    *  
     * @param source this is the source object array to be serialized 
     * @param node this is the XML element container to be populated
     * @param entry this is the type of the object that is expected
