@@ -166,7 +166,7 @@ final class Composite implements Converter {
       NodeMap list = node.getAttributes();
       LabelMap map = schema.getAttributes();
 
-      for(String name : list) {
+      for(String name : list) {         
          readAttribute(node.getAttribute(name), source, map);
       }  
       validate(node, map, source);
