@@ -128,27 +128,11 @@ final class PrimitiveArray implements Converter {
       List list = factory.getList(source);
       
       for(Object item : list) {
-         if(item != null) {  
-            write(node, item, entry);
+         OutputNode child = node.getChild(parent);
+         
+         if(item != null) {
+            root.write(child, item);
          }
       }
-   }
-   
-   /**
-    * This <code>write</code> method will write the specified object
-    * to the given XML element as as array entries. Each entry within
-    * the given array must be assignable to the array component type.
-    * This will serialize each entry type as a primitive value. In
-    * order to do this the parent string provided forms the element.
-    *  
-    * @param source this is the source object array to be serialized 
-    * @param node this is the XML element container to be populated
-    * @param entry this is the type of the object that is expected
-    */ 
-   private void write(OutputNode node, Object item, Class entry) throws Exception {   
-      OutputNode child = node.getChild(parent);  
-      Class type = item.getClass();
-
-      root.write(child, item);                       
    }
 }

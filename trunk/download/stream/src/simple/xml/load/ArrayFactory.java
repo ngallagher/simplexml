@@ -88,10 +88,33 @@ final class ArrayFactory {
       return array;     
    }     
    
+   /**
+    * This method is used to convert the specified array to a list
+    * that can be iterated in a generic way. This is used when an
+    * array is to be converted into a sequence of XML elements.
+    * 
+    * @param source this is the source array to be converted
+    * 
+    * @return this returns a list containing the array values
+    * 
+    * @throws Exception thrown if the array could not be used
+    */
    public List getList(Object source) throws Exception {
       return getList(source, Array.getLength(source));
    }
    
+   /**
+    * This method is used to convert the specified array to a list
+    * that can be iterated in a generic way. This is used when an
+    * array is to be converted into a sequence of XML elements.
+    * 
+    * @param source this is the source array to be converted
+    * @param size this is the number of values to iterate over
+    * 
+    * @return this returns a list containing the array values
+    * 
+    * @throws Exception thrown if the array could not be used
+    */  
    public List getList(Object source, int size) throws Exception { 
       List list = new ArrayList();
       
