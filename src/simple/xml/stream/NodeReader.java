@@ -118,7 +118,7 @@ final class NodeReader {
       }
       return null; 
    }
-
+   
    /**
     * This is used to convert the start element to an input node.
     * This will push the created input node on to the stack. The
@@ -167,6 +167,31 @@ final class NodeReader {
       return null;
    }     
 
+   /**
+    * This is used to determine if there is any further data from
+    * the specified node. This returns true if there is any text
+    * or child elements from the specified node. This allows the
+    * user of a node to determine if the next node will be null
+    * or if the value of a node will return a null value.
+    * 
+    * @param from this is the node to check if there is a child
+    * 
+    * @return this returns true if the next element is terminal
+    * 
+    * @throws Exception thrown if there is an XML parse error
+    */
+   public boolean isEmpty(InputNode from) throws Exception {
+      if(!stack.contains(from) && !stack.isEmpty()) {
+         return false;
+      }
+      XMLEvent event = reader.peek();
+      
+      if(!event.isEndElement()) {
+         return true;
+      }
+      return false;
+   }
+   
    /**
     * This method is used to skip an element within the XML document.
     * This will simply read each element from the document until
