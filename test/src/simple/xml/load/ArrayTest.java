@@ -56,6 +56,18 @@ public class ArrayTest extends ValidationTestCase {
    "   </array>\n\r"+
    "</root>";
    
+   private static final String NULL = 
+   "<?xml version=\"1.0\"?>\n"+
+   "<root>\n"+
+   "   <array>\n\r"+
+   "      <text/>  \n\r"+
+   "      <text>entry two</text>  \n\r"+
+   "      <text>entry three</text>  \n\r"+
+   "      <text/>  \n\r"+
+   "      <text/>  \n\r"+
+   "   </array>\n\r"+
+   "</root>";  
+   
    private static final String CHARACTER =
    "<?xml version=\"1.0\"?>\n"+
    "<root>\n"+
@@ -196,6 +208,19 @@ public class ArrayTest extends ValidationTestCase {
       assertEquals(example.array[2], "entry three");
       assertEquals(example.array[3], "entry four");
       assertEquals(example.array[4], "entry five");
+      
+      validate(example, serializer);
+   }
+   
+   public void testPrimitiveNull() throws Exception {    
+      PrimitiveArrayExample example = serializer.read(PrimitiveArrayExample.class, NULL);
+      
+      assertEquals(example.array.length, 5);
+      assertEquals(example.array[0], null);
+      assertEquals(example.array[1], "entry two");
+      assertEquals(example.array[2], "entry three");
+      assertEquals(example.array[3], null);
+      assertEquals(example.array[4], null);
       
       validate(example, serializer);
    }
