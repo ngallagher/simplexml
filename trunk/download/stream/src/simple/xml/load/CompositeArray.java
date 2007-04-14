@@ -118,9 +118,28 @@ final class CompositeArray implements Converter {
          if(parent != null) {
             next = next.getNext();
          }
-         list.add(root.read(next, entry));
+         read(next, list);
       } 
    }    
+   
+   /**
+    * This is used to read the specified node from in to the list. If
+    * the node is null then this represents a null element value in
+    * the array. The node can be null only if there is a parent and
+    * that parent contains no child XML elements.
+    * 
+    * @param node this is the node to read the array value from
+    * 
+    * @param list this is the list to add the array value in to
+    */
+   private void read(InputNode node, List list) throws Exception {
+      Object value = null;     
+      
+      if(node != null) {
+         value = root.read(node, entry);
+      }
+      list.add(value);      
+   }
 
    /**
     * This <code>write</code> method will write the specified object
@@ -136,8 +155,16 @@ final class CompositeArray implements Converter {
       List list = factory.getList(source);                
       
       for(Object item : list) {
-         if(item != null) {  
-            write(node, item, entry);
+         OutputNode child = node;
+         
+         if(parent != null) {
+            child = node.getChild(parent);
+         }
+         if(item != null) {
+            write(child, item, entry);
+         }
+         if(parent != null) {
+            child.commit();
          }
       }
    }
@@ -158,10 +185,7 @@ final class CompositeArray implements Converter {
 
       if(!entry.isAssignableFrom(type)) {
          throw new PersistenceException("Entry %s does not match %s", type, entry);                     
-      } 
-      if(parent != null) {
-         node = node.getChild(parent);
       }
-      root.write(node, item, entry);                       
+      root.write(node, item, entry);      
    }
 }
