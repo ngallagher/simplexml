@@ -56,7 +56,7 @@ public class ArrayTest extends ValidationTestCase {
    "   </array>\n\r"+
    "</root>";
    
-   private static final String NULL = 
+   private static final String PRIMITIVE_NULL = 
    "<?xml version=\"1.0\"?>\n"+
    "<root>\n"+
    "   <array>\n\r"+
@@ -66,7 +66,23 @@ public class ArrayTest extends ValidationTestCase {
    "      <text/>  \n\r"+
    "      <text/>  \n\r"+
    "   </array>\n\r"+
-   "</root>";  
+   "</root>";
+   
+   private static final String COMPOSITE_NULL = 
+   "<?xml version=\"1.0\"?>\n"+
+   "<root>\n"+
+   "   <array>\n\r"+
+   "      <entry/>\r\n"+     
+   "      <entry>\r\n"+
+   "         <text value='entry two'/>  \n\r"+
+   "      </entry>\n  "+
+   "      <entry/>\r\n"+
+   "      <entry/>\r\n"+
+   "      <entry>\r\n"+
+   "         <text value='entry five'/>  \n\r"+
+   "      </entry>\n  "+
+   "   </array>\n\r"+
+   "</root>"; 
    
    private static final String CHARACTER =
    "<?xml version=\"1.0\"?>\n"+
@@ -213,7 +229,7 @@ public class ArrayTest extends ValidationTestCase {
    }
    
    public void testPrimitiveNull() throws Exception {    
-      PrimitiveArrayExample example = serializer.read(PrimitiveArrayExample.class, NULL);
+      PrimitiveArrayExample example = serializer.read(PrimitiveArrayExample.class, PRIMITIVE_NULL);
       
       assertEquals(example.array.length, 5);
       assertEquals(example.array[0], null);
@@ -233,6 +249,19 @@ public class ArrayTest extends ValidationTestCase {
       assertEquals(example.array[1].value, "entry two");
       assertEquals(example.array[2].value, "entry three");
       assertEquals(example.array[3].value, "entry four");
+      assertEquals(example.array[4].value, "entry five");
+      
+      validate(example, serializer);
+   }
+   
+   public void testParentCompositeNull() throws Exception {    
+      ParentCompositeArrayExample example = serializer.read(ParentCompositeArrayExample.class, COMPOSITE_NULL);
+      
+      assertEquals(example.array.length, 5);
+      assertEquals(example.array[0], null);
+      assertEquals(example.array[1].value, "entry two");
+      assertEquals(example.array[2], null);
+      assertEquals(example.array[3], null);
       assertEquals(example.array[4].value, "entry five");
       
       validate(example, serializer);
