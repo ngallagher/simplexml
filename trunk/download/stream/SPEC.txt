@@ -1,0 +1,45 @@
+The arrays need to take the following format.
+
+1) @ElementArray for composite objects with parent
+
+<array>
+   <parent/>
+   <parent> 
+      <text version="1">
+         <value>This is some text</value>
+      </text/>
+   </parent>
+   <parent>
+      <text version="1">
+         <value>Some more text</value>
+      </text>
+   </parent>
+</array>
+
+Results in { null, object, object }
+
+2) @ElementArray for composite objects without parent does not support null values
+
+<array>
+   <text version="1">
+      <value>This is some text</value>
+   </text>
+   <text version="1">
+      <value>Some more text</value>
+   </text>
+</array>
+
+Results in { object, object }
+
+3) @ElementArray for primitives with parent
+
+<array>
+   <string>text</string>
+   <string/>
+   <string/>
+</array>
+
+Results in { text, null, null }   
+
+Arrays will always have the same number of elements as there are indexes in the array, this ensures that
+the arrays are brought back to life in the exact same format as they were acquired.
