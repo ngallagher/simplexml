@@ -62,7 +62,7 @@ public @interface ElementArray {
     * values within the array. This esentially wraps the entity to
     * be serialized such that there is an extra XML element present.
     * This is primarily used to wrap primitive values in an element
-    * so that they can be represented in a structured manner.
+    * and to allow serialization to maintain null array elements.    
     * 
     * @return this returns the parent XML element for each value
     */
