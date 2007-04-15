@@ -9,6 +9,7 @@
       <property name="lib.path" value="lib"/>
       <property name="target.path" value="target"/>
       <property name="test.path" value="test"/>
+      <property name="example.path" value="example"/>
       <property name="skel.path" value="skel"/>
       <property file="build.properties"/>
    </target>
@@ -37,6 +38,11 @@
 
    <target name="test" depends="prepare">
       <ant antfile="build.xml" dir="${test.path}" inheritall="false"/>
+      <delete dir="${build.path}"/>
+   </target>
+
+   <target name="profile" depends="build">       
+      <ant antfile="build.xml" dir="${example.path}" target="profile" inheritall="false"/>
       <delete dir="${build.path}"/>
    </target>
 
