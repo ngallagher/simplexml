@@ -1,10 +1,12 @@
 <?xml version="1.0"?>
-<project default="build" basedir=".">
+<project default="run" basedir=".">
 
    <target name="layout">
+      <property name="parent.path" value=".."/>          
       <property name="source.path" value="src"/>
       <property name="build.path" value="build"/>
       <property name="lib.path" value="lib"/>
+      <property name="jar.path" value="jar"/>
       <property file="build.properties"/>
    </target>
 
@@ -17,17 +19,52 @@
    </target>
 
    <target name="build" depends="prepare">
-      <javac srcdir="${source.path}" destdir="${build.path}">
+      <javac srcdir="${parent.path}/${source.path}" destdir="${build.path}" debug="true" debuglevel="lines,vars,source" encoding="UTF-8">
          <classpath>
             <fileset dir="${lib.path}">
                <include name="**/*.jar"/>
             </fileset>
-         </classpath>         
+         </classpath>
+      </javac>
+      <copy todir="${build.path}">
+         <fileset dir="${parent.path}/${source.path}">
+            <exclude name="**/*.java"/>
+         </fileset>
+      </copy>
+      <javac srcdir="${source.path}" destdir="${build.path}" debug="true" debuglevel="lines,vars,source" encoding="UTF-8">
+         <classpath>
+            <fileset dir="${lib.path}">
+               <include name="**/*.jar"/>
+            </fileset>
+            <pathelement path="${build.path}"/>
+         </classpath>
       </javac>
    </target>
 
    <target name="run" depends="build">
       <java classname="${class}">
+         <arg value="${file}"/>
+         <classpath>
+            <fileset dir="${lib.path}">
+               <include name="**/*.jar"/>
+            </fileset>
+            <pathelement path="${build.path}"/>
+         </classpath>
+      </java>           
+   </target>
+
+   <target name="profile" depends="build">
+      <fail unless="netbeans.home">Requires Net Beans IDE</fail>
+      <nbprofiledirect>
+         <classpath>
+            <fileset dir="${lib.path}">
+               <include name="**/*.jar"/>
+            </fileset>
+            <pathelement path="${build.path}"/>
+         </classpath> 
+      </nbprofiledirect> 
+      <java classname="${class}" fork="yes">
+         <jvmarg value="${profiler.info.jvmargs.agent}"/>                   
          <arg value="${file}"/>
          <classpath>
             <fileset dir="${lib.path}">
