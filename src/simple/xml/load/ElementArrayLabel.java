@@ -50,6 +50,16 @@ final class ElementArrayLabel implements Label {
     * This is the type of array this label will represent.
     */
    private Class type;
+   
+   /**
+    * This is the name of the XML parent from the annotation.
+    */
+   private String parent;
+   
+   /**
+    * This is the name of the element from the annotation.
+    */
+   private String name;
 	
    /**
     * Constructor for the <code>ElementArrayLabel</code> object. This
@@ -61,6 +71,7 @@ final class ElementArrayLabel implements Label {
     */
    public ElementArrayLabel(Contact contact, ElementArray label) {
       this.type = contact.getType();      
+      this.name = label.name();
       this.contact = contact;
       this.label = label;
    }
@@ -112,11 +123,14 @@ final class ElementArrayLabel implements Label {
     * @return this returns null if not parent has been set
     */
    public String getParent() {
-      String parent = label.parent();
-
-      if(parent.length() == 0) {
-         return null;
+      if(parent != null) {
+         return parent;
       }
+      parent = label.parent();
+      
+      if(parent.length() == 0) {
+         parent = null;
+      }      
       return parent;
    }
 
@@ -156,7 +170,7 @@ final class ElementArrayLabel implements Label {
     * @return returns the name of the annotation for the field
     */    
    public String getName() {
-      return label.name();
+      return name;
    }
    
    /**

@@ -51,6 +51,11 @@ final class ElementLabel implements Label {
    private Class type;
    
    /**
+    * This is the name of the element taken from the annotation.
+    */
+   private String name;
+   
+   /**
     * Constructor for the <code>ElementLabel</code> object. This is
     * used to create a label that can convert a XML node into a 
     * composite object or a primitive type from an XML element. 
@@ -58,8 +63,9 @@ final class ElementLabel implements Label {
     * @param contact this is the field that this label represents
     * @param label this is the annotation for the contact 
     */
-   public ElementLabel(Contact contact, Element label) {
+   public ElementLabel(Contact contact, Element label) {     
       this.type = contact.getType();
+      this.name = label.name();
       this.contact = contact;
       this.label = label;      
    }
@@ -102,7 +108,7 @@ final class ElementLabel implements Label {
     * @return returns the name of the annotation for the contact
     */   
    public String getName() {
-      return label.name();
+      return name;
    }
    
    /**

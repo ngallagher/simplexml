@@ -55,6 +55,11 @@ final class ElementListLabel implements Label {
     * Represents the type of objects this list will hold.
     */
    private Class item;
+   
+   /**
+    * This is the name of the element from the annotation.
+    */
+   private String name;
 	
    /**
     * Constructor for the <code>ElementListLabel</code> object. This
@@ -67,6 +72,7 @@ final class ElementListLabel implements Label {
    public ElementListLabel(Contact contact, ElementList label) {
       this.type = contact.getType();
       this.item = label.type();
+      this.name = label.name();
       this.contact = contact;
       this.label = label;
    }
@@ -121,7 +127,7 @@ final class ElementListLabel implements Label {
     * @return returns the name of the annotation for the contact
     */   
    public String getName() {
-      return label.name();
+      return name;
    }
    
    /**
