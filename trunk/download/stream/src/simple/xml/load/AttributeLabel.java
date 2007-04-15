@@ -48,6 +48,11 @@ final class AttributeLabel implements Label {
    private Class type;
    
    /**
+    * This is the name of the element from the annotation.
+    */
+   private String name;
+   
+   /**
     * Constructor for the <code>AttributeLabel</code> object. This 
     * is used to create a label that can convert from an object to an
     * XML attribute and vice versa. This requires the annotation and
@@ -58,6 +63,7 @@ final class AttributeLabel implements Label {
     */
    public AttributeLabel(Contact contact, Attribute label) {
       this.type = contact.getType();
+      this.name = label.name();
       this.contact = contact;
       this.label = label; 
    }   
@@ -93,7 +99,7 @@ final class AttributeLabel implements Label {
     * @return returns the name of the annotation for the contact
     */   
    public String getName() {
-      return label.name();
+      return name;
    }
    
    /**
