@@ -1,17 +1,17 @@
 <execute>
    <context identifier="ROOT_PATH" rootPath="e:\workspace\xml\example\data"/>
    <list>
-      <!--test id="JAXB Test">
+      <test id="JAXB Test">
          <executorClass>compare.jaxb.JAXBExecutor</executorClass>
          <schemaClass>compare.jaxb.JAXBClass</schemaClass>
          <sourceFile>${ROOT_PATH}\example.xml</sourceFile>
          <iterations>10000</iterations>
-      </test-->
+      </test>
       <test id="Simple Test">
          <executorClass>compare.simple.SimpleExecutor</executorClass>
          <schemaClass>compare.simple.SimpleClass</schemaClass>
          <sourceFile>${ROOT_PATH}\example.xml</sourceFile>
-         <iterations>1000</iterations>
+         <iterations>10000</iterations>
       </test>
    </list>
 </execute>

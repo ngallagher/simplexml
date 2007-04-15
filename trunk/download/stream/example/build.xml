@@ -42,7 +42,7 @@
    </target>
 
    <target name="run" depends="build">
-      <java classname="${class}">
+      <java classname="${class}" fork="yes">
          <arg value="${file}"/>
          <classpath>
             <fileset dir="${lib.path}">
