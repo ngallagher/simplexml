@@ -1,21 +1,14 @@
 package simple.xml.load;
 
-import java.io.StringReader;
-import java.util.HashMap;
-import java.util.Collection;
 import java.io.StringWriter;
+import java.util.Collection;
 
-import simple.xml.ValidationTestCase;
-import simple.xml.filter.Filter;
-import simple.xml.ElementList;
 import simple.xml.Attribute;
 import simple.xml.Element;
+import simple.xml.ElementList;
 import simple.xml.Root;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import org.xml.sax.InputSource;
-import org.w3c.dom.Document;
+import simple.xml.ValidationTestCase;
+import simple.xml.filter.Filter;
 
 public class PerformanceTest extends ValidationTestCase {
 
