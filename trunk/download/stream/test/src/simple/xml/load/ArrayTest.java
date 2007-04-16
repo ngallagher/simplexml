@@ -146,6 +146,17 @@ public class ArrayTest extends ValidationTestCase {
       private char[] array;
    }
    
+   @Root(name="root")
+   private static class DifferentArrayExample {
+      
+      @ElementArray(name="array", parent="entry")
+      private Object[] array;
+      
+      public DifferentArrayExample() {
+         this.array = new Text[] { new Text("one"), new Text("two"), new Text("three") };
+      }            
+   }
+   
    private Persister serializer;
 
    public void setUp() {
@@ -276,6 +287,12 @@ public class ArrayTest extends ValidationTestCase {
       assertEquals(example.array[2], 'c');
       assertEquals(example.array[3], 'd');
       assertEquals(example.array[4], 'e');
+      
+      validate(example, serializer);
+   }
+   
+   public void testDifferentArray() throws Exception {    
+      DifferentArrayExample example = new DifferentArrayExample();
       
       validate(example, serializer);
    }
