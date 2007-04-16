@@ -20,6 +20,7 @@
 
 package simple.xml.load;
 
+import simple.xml.stream.InputNode;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,12 +34,7 @@ import java.util.List;
  * 
  * @author Niall Gallagher
  */ 
-final class ArrayFactory {
-
-   /**
-    * This represents the array component type from the field.
-    */
-   private Class type;
+final class ArrayFactory extends Factory {
         
    /**
     * Constructor for the <code>ArrayFactory</code> object. This is
@@ -46,10 +42,11 @@ final class ArrayFactory {
     * of the source object. Each request for an array will return 
     * an array which uses the specified component type.
     * 
-    * @param type the array component type for the field object
+    * @param root this is the context object for serialization
+    * @param field the array component type for the field object
     */
-   public ArrayFactory(Class type) {
-      this.type = type;           
+   public ArrayFactory(Source root, Class field) {
+      super(root, field);                
    }        
 
    /**
@@ -59,12 +56,19 @@ final class ArrayFactory {
     * set into a the array, if the type of the values within the
     * list are not compatible then an exception is thrown.
     * 
+    * @param node this is the input node for the array element
     * @param list this is the list of values for the array
     * 
     * @return this is the obejct array instantiated for the type
     */         
-   public Object getArray(List list) throws Exception {
-      return getArray(list, list.size());
+   public Object getArray(InputNode node, List list) throws Exception {
+      Type type = getOverride(node);
+      int size = list.size();
+      
+      if(type == null) {
+         return getArray(field, list, size);         
+      }      
+      return getArray(type, list, size);
    }
    
    /**
@@ -74,19 +78,42 @@ final class ArrayFactory {
     * set into a the array, if the type of the values within the
     * list are not compatible then an exception is thrown.
     * 
+    * @param type this is the type used to create the new array
     * @param list this is the list of values for the array
     * @param size the number of values to consider for copying
     * 
     * @return this is the obejct array instantiated for the type
     */ 
-   public Object getArray(List list, int size) throws Exception {
+   private Object getArray(Type type, List list, int size) throws Exception {
+      Object array = type.getArray(size);
+
+      for(int i = 0; i < size; i++) {
+         Array.set(array, i, list.get(i));
+      }
+      return array;     
+   }   
+   
+   /**
+    * Creates the object array to use. This will use the provided
+    * list of values to form the values within the array. Each of
+    * the values witin the specified <code>List</code> will be
+    * set into a the array, if the type of the values within the
+    * list are not compatible then an exception is thrown.
+    * 
+    * @param type this is the type used to create the new array
+    * @param list this is the list of values for the array
+    * @param size the number of values to consider for copying
+    * 
+    * @return this is the obejct array instantiated for the type
+    */ 
+   private Object getArray(Class type, List list, int size) {
       Object array = Array.newInstance(type, size);
       
       for(int i = 0; i < size; i++) {
          Array.set(array, i, list.get(i));
       }
       return array;     
-   }     
+   }
    
    /**
     * This method is used to convert the specified array to a list

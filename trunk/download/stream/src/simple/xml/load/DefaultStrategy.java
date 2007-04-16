@@ -149,9 +149,13 @@ final class DefaultStrategy implements Strategy {
     */   
    public void setElement(Class field, Object value, NodeMap node, Map map) throws Exception {
       Class type = value.getClass();
+      Class real = type;
       
+      if(type.isArray()) {
+         real = type.getComponentType();
+      }
       if(type != field) {
-         node.put(label, type.getName());
+         node.put(label, real.getName());
       }             
    }
 }

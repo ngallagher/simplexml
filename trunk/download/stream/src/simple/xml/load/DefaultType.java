@@ -21,6 +21,7 @@
 package simple.xml.load;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Array;
 
 /**
  * The <code>DefaultType</code> is an implementation of the type that
@@ -59,6 +60,20 @@ final class DefaultType implements Type {
     */
    public Object getInstance() throws Exception {
       return getInstance(type);
+   }
+   
+   /**
+    * This method is used to acquire an array of the specified
+    * type. This will construct an one dimensional array using a
+    * specified size. If there is a problem creating the object
+    * for some reason, an exception is thrown. 
+    *  
+    * @param size this is the size of the created array 
+    * 
+    * @return this returns an array of the specified size
+    */
+   public Object getArray(int size) throws Exception {
+      return Array.newInstance(type, size);
    }
    
    /**

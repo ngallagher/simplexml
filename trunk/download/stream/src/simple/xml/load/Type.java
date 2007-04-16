@@ -49,6 +49,18 @@ public interface Type {
    public Object getInstance() throws Exception;
    
    /**
+    * This method is used to acquire an array of the specified
+    * type. This will construct an one dimensional array using a
+    * specified size. If there is a problem creating the object
+    * for some reason, an exception is thrown. 
+    *  
+    * @param size this is the size of the created array 
+    * 
+    * @return this returns an array of the specified size
+    */
+   public Object getArray(int size) throws Exception;
+   
+   /**
     * This is the type of the object instance that will be created
     * by the <code>getInstance</code> method. This allows the 
     * deserialization process to perform checks against the field.
