@@ -89,7 +89,7 @@ final class CompositeArray implements Converter {
     * @param parent this is the name to wrap the array element with
     */    
    public CompositeArray(Source root, Class entry, String parent) {
-      this.factory = new ArrayFactory(entry);           
+      this.factory = new ArrayFactory(root, entry);           
       this.root = new Traverser(root);      
       this.parent = parent;
       this.entry = entry;
@@ -113,7 +113,7 @@ final class CompositeArray implements Converter {
          InputNode next = node.getNext();
         
          if(next == null) {
-            return factory.getArray(list);
+            return factory.getArray(node, list);
          }
          if(parent != null) {
             next = next.getNext();

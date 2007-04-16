@@ -153,7 +153,7 @@ public class ArrayTest extends ValidationTestCase {
       private Object[] array;
       
       public DifferentArrayExample() {
-         this.array = new Text[] { new Text("one"), new Text("two"), new Text("three") };
+         this.array = new Text[] { new Text("one"), null, null, new Text("two"), null, new Text("three") };
       }            
    }
    

@@ -85,8 +85,8 @@ final class PrimitiveArray implements Converter {
     * @param parent this is the name to wrap the array element with
     */    
    public PrimitiveArray(Source root, Class entry, String parent) {
-      this.root = new Primitive(root, entry);
-      this.factory = new ArrayFactory(entry);           
+      this.factory = new ArrayFactory(root, entry); 
+      this.root = new Primitive(root, entry);          
       this.parent = parent;
       this.entry = entry;
    }
@@ -108,7 +108,7 @@ final class PrimitiveArray implements Converter {
          InputNode next = node.getNext();
     
          if(next == null) {
-            return factory.getArray(list);            
+            return factory.getArray(node, list);            
          }
          list.add(root.read(next));
       } 
