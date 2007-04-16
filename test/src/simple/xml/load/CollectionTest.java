@@ -9,12 +9,13 @@ import java.util.SortedSet;
 import java.util.Set;
 
 import junit.framework.TestCase;
+import simple.xml.ValidationTestCase;
 import simple.xml.Attribute;
 import simple.xml.Element;
 import simple.xml.ElementList;
 import simple.xml.Root;
 
-public class CollectionTest extends TestCase {
+public class CollectionTest extends ValidationTestCase {
         
    private static final String LIST = 
    "<?xml version=\"1.0\"?>\n"+
@@ -296,6 +297,8 @@ public class CollectionTest extends TestCase {
       assertEquals(one, 1);
       assertEquals(two, 1);
       assertEquals(three, 1);
+      
+      validate(set, serializer);
    }
 
    public void testList() throws Exception {    
@@ -318,6 +321,8 @@ public class CollectionTest extends TestCase {
       assertEquals(one, 1);
       assertEquals(two, 1);
       assertEquals(three, 1);
+      
+      validate(set, serializer);
    }
 
    public void testHashSet() throws Exception {    
@@ -340,6 +345,8 @@ public class CollectionTest extends TestCase {
       assertEquals(one, 1);
       assertEquals(two, 1);
       assertEquals(three, 1);
+      
+      validate(set, serializer);
    }  
 
    public void testTreeSet() throws Exception {    
@@ -362,6 +369,8 @@ public class CollectionTest extends TestCase {
       assertEquals(one, 1);
       assertEquals(two, 1);
       assertEquals(three, 1);
+      
+      validate(set, serializer);
    }  
    
    public void testArrayList() throws Exception {    
@@ -384,6 +393,8 @@ public class CollectionTest extends TestCase {
       assertEquals(one, 1);
       assertEquals(two, 1);
       assertEquals(three, 1);
+      
+      validate(list, serializer);
    } 
 
    public void testSortedSetToSet() throws Exception {    

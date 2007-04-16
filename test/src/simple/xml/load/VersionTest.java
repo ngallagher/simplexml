@@ -8,6 +8,7 @@ import simple.xml.Attribute;
 import simple.xml.Element;
 import simple.xml.Root;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.util.Map;
 
@@ -146,6 +147,10 @@ public class VersionTest extends TestCase {
 		   return method.newInstance();   
 	   }   
 
+       public Object getArray(int size) throws Exception {
+          return Array.newInstance(type, size);
+       }
+       
 	   public Class getType() {
 		  return type;
 	   } 
