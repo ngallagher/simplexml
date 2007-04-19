@@ -97,8 +97,12 @@ final class Composite implements Converter {
     * @return this returns the fully deserialized object graph
     */
    public Object read(InputNode node) throws Exception {
-      Object source = factory.getInstance(node);      
-      read(node, source);
+      Type type = factory.getInstance(node);
+      Object source = type.getInstance();
+      
+      if(!type.isReference()) {         
+         read(node, source);
+      }
       return source;
    }
    

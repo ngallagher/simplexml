@@ -102,13 +102,22 @@ final class PrimitiveArray implements Converter {
     * @return this returns the item to attach to the object contact
     */ 
    public Object read(InputNode node) throws Exception{
+      ArrayType type = factory.getInstance(node);
+      
+      if(!type.isReference()) {
+         return read(node, type);
+      }
+      return type.getInstance();
+   }
+   
+   private Object read(InputNode node, ArrayType type) throws Exception{
       List list = new ArrayList();
       
       while(true) {
          InputNode next = node.getNext();
     
          if(next == null) {
-            return factory.getArray(node, list);            
+            return type.getInstance(list);            
          }
          list.add(root.read(next));
       } 
