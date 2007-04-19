@@ -101,7 +101,29 @@ final class CompositeList implements Converter {
     * @return this returns the item to attach to the object contact
     */ 
    public Object read(InputNode node) throws Exception{
-      Collection list = factory.getInstance(node);
+      Type type = factory.getInstance(node);
+      Object list = type.getInstance();
+      
+      if(!type.isReference()) {
+         return read(node, list);
+      }
+      return list;
+   }
+   
+   /**
+    * This <code>read</code> method wll read the XML element list from
+    * the provided node and deserialize its children as entry types.
+    * This will each entry type is deserialized as a root type, that 
+    * is, its <code>Root</code> annotation must be present and the
+    * name of the entry element must match that root element name.
+    * 
+    * @param node this is the XML element that is to be deserialized
+    * @param result this is the collection that is to be populated
+    * 
+    * @return this returns the item to attach to the object contact
+    */ 
+   private Object read(InputNode node, Object result) throws Exception {
+      Collection list = (Collection) result;                 
       
       while(true) {
          InputNode next = node.getNext();

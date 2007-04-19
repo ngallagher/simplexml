@@ -106,18 +106,19 @@ public class StrategyTest extends TestCase {
 		   return getInstance(type);
 	   }
 
-       private Object getInstance(Class type) throws Exception {
+      private Object getInstance(Class type) throws Exception {
 		   Constructor method = type.getDeclaredConstructor();
 
 		   if(!method.isAccessible()) {
 		      method.setAccessible(true);              
 		   }
 		   return method.newInstance();   
-	   }   
+	   }
        
-       public Object getArray(int size) throws Exception {
-          return Array.newInstance(type, size);
+       public boolean isReference() {
+          return false;
        }
+       
 
 	   public Class getType() {
 		  return type;

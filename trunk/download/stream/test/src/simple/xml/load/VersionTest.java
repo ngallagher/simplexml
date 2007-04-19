@@ -147,8 +147,8 @@ public class VersionTest extends TestCase {
 		   return method.newInstance();   
 	   }   
 
-       public Object getArray(int size) throws Exception {
-          return Array.newInstance(type, size);
+       public boolean isReference() {
+          return false;
        }
        
 	   public Class getType() {

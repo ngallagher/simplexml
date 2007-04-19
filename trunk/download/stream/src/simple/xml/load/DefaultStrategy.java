@@ -112,7 +112,7 @@ final class DefaultStrategy implements Strategy {
       String name = entry.getValue();
       Class type = Class.forName(name);
          
-      return new DefaultType(type);  
+      return new ClassType(type);  
    }
    
    /**

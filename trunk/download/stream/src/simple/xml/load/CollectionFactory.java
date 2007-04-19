@@ -59,7 +59,7 @@ final class CollectionFactory extends Factory {
     * 
     * @return this is the collection instantiated for the field
     */         
-   public Collection getInstance(InputNode node) throws Exception {
+   public Type getInstance(InputNode node) throws Exception {
       Type type = getOverride(node);
      
       if(type != null) {              
@@ -71,7 +71,7 @@ final class CollectionFactory extends Factory {
       if(!isCollection(field)) {
          throw new InstantiationException("Type is not a collection %s", field);
       }
-      return (Collection)field.newInstance();   
+      return new ClassType(field);         
    }     
 
    /**
@@ -88,7 +88,7 @@ final class CollectionFactory extends Factory {
     * 
     * @throws Exception if the collection cannot be instantiated
     */
-   public Collection getInstance(Type type) throws Exception {
+   public Type getInstance(Type type) throws Exception {
       Class real = type.getType();
 
       if(!isInstantiable(real)) {
@@ -97,7 +97,7 @@ final class CollectionFactory extends Factory {
       if(!isCollection(real)) {
          throw new InstantiationException("Type is not a collection %s", real);              
       }
-      return (Collection)type.getInstance();    
+      return type;         
    }  
 
    /**

@@ -107,13 +107,22 @@ final class CompositeArray implements Converter {
     * @return this returns the item to attach to the object contact
     */ 
    public Object read(InputNode node) throws Exception{
+      ArrayType value = factory.getInstance(node);
+      
+      if(!value.isReference()) {
+         return read(node, value);         
+      }
+      return value.getInstance();
+   }
+   
+   private Object read(InputNode node, ArrayType type) throws Exception{
       List list = new ArrayList();
       
       while(true) {
          InputNode next = node.getNext();
         
          if(next == null) {
-            return factory.getArray(node, list);
+            return type.getInstance(list);
          }
          if(parent != null) {
             next = next.getNext();

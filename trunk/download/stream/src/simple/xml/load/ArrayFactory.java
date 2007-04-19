@@ -61,59 +61,18 @@ final class ArrayFactory extends Factory {
     * 
     * @return this is the obejct array instantiated for the type
     */         
-   public Object getArray(InputNode node, List list) throws Exception {
-      Type type = getOverride(node);
-      int size = list.size();
+   public ArrayType getInstance(InputNode node) throws Exception {
+      Type type = getOverride(node);    
       
-      if(type == null) {
-         return getArray(field, list, size);         
-      }      
-      return getArray(type, list, size);
+      if(type == null) { 
+         return new ArrayType(field);
+      }
+      if(!type.isReference()) {
+         return new ArrayType(type);
+      }
+      return new ArrayType(field);
    }
    
-   /**
-    * Creates the object array to use. This will use the provided
-    * list of values to form the values within the array. Each of
-    * the values witin the specified <code>List</code> will be
-    * set into a the array, if the type of the values within the
-    * list are not compatible then an exception is thrown.
-    * 
-    * @param type this is the type used to create the new array
-    * @param list this is the list of values for the array
-    * @param size the number of values to consider for copying
-    * 
-    * @return this is the obejct array instantiated for the type
-    */ 
-   private Object getArray(Type type, List list, int size) throws Exception {
-      Object array = type.getArray(size);
-
-      for(int i = 0; i < size; i++) {
-         Array.set(array, i, list.get(i));
-      }
-      return array;     
-   }   
-   
-   /**
-    * Creates the object array to use. This will use the provided
-    * list of values to form the values within the array. Each of
-    * the values witin the specified <code>List</code> will be
-    * set into a the array, if the type of the values within the
-    * list are not compatible then an exception is thrown.
-    * 
-    * @param type this is the type used to create the new array
-    * @param list this is the list of values for the array
-    * @param size the number of values to consider for copying
-    * 
-    * @return this is the obejct array instantiated for the type
-    */ 
-   private Object getArray(Class type, List list, int size) {
-      Object array = Array.newInstance(type, size);
-      
-      for(int i = 0; i < size; i++) {
-         Array.set(array, i, list.get(i));
-      }
-      return array;     
-   }
    
    /**
     * This method is used to convert the specified array to a list
@@ -127,7 +86,12 @@ final class ArrayFactory extends Factory {
     * @throws Exception thrown if the array could not be used
     */
    public List getList(Object source) throws Exception {
-      return getList(source, Array.getLength(source));
+      int size = Array.getLength(source);
+            
+      if(size > 0) {
+         return getList(source, size);
+      }
+      return new ArrayList();
    }
    
    /**
@@ -142,7 +106,7 @@ final class ArrayFactory extends Factory {
     * 
     * @throws Exception thrown if the array could not be used
     */  
-   public List getList(Object source, int size) throws Exception { 
+   private List getList(Object source, int size) throws Exception { 
       List list = new ArrayList();
       
       for(int i = 0; i < size; i++) {
