@@ -1,5 +1,5 @@
 /*
- * DefaultType.java January 2007
+ * ClassType.java January 2007
  *
  * Copyright (C) 2007, Niall Gallagher <niallg@users.sf.net>
  *
