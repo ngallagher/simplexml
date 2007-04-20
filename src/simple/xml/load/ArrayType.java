@@ -80,9 +80,9 @@ final class ArrayType implements Type {
     */
    public Object getInstance() throws Exception {
       if(type != null) {
-        return type.getInstance();
+        throw new InstantiationException("Invalid reference for %s", field);
       }
-      return null;
+      return type.getInstance();
    }
    
    /**

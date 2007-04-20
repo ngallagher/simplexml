@@ -114,7 +114,19 @@ final class CompositeArray implements Converter {
       }
       return value.getInstance();
    }
-   
+
+   /**
+    * This <code>read</code> method wll read the XML element list from
+    * the provided node and deserialize its children as entry types.
+    * This will each entry type is deserialized as a root type, that 
+    * is, its <code>Root</code> annotation must be present and the
+    * name of the entry element must match that root element name.
+    * 
+    * @param node this is the XML element that is to be deserialized
+    * @param type this is the array type used to create the array
+    * 
+    * @return this returns the item to attach to the object contact
+    */  
    private Object read(InputNode node, ArrayType type) throws Exception{
       List list = new ArrayList();
       
