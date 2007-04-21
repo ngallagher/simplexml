@@ -127,10 +127,10 @@ final class DefaultStrategy implements Strategy {
     * @param root this is the element used to represent the value
     * @param map this is used to maintain contextual information
     * 
-    * @throws Exception thrown if the details cannot be set
+    * @return this returns true if serialization is complete
     */
-   public void setRoot(Class field, Object value, NodeMap node, Map map) throws Exception {
-      setElement(field, value, node, map);
+   public boolean setRoot(Class field, Object value, NodeMap node, Map map){
+      return setElement(field, value, node, map);
    }   
    
    /**
@@ -145,9 +145,9 @@ final class DefaultStrategy implements Strategy {
     * @param node this is the element used to represent the value
     * @param map this is used to maintain contextual information
     * 
-    * @throws Exception thrown if the details cannot be set
+    * @return this returns true if serialization is complete
     */   
-   public void setElement(Class field, Object value, NodeMap node, Map map) throws Exception {
+   public boolean setElement(Class field, Object value, NodeMap node, Map map){
       Class type = value.getClass();
       Class real = type;
       
@@ -156,6 +156,7 @@ final class DefaultStrategy implements Strategy {
       }
       if(type != field) {
          node.put(label, real.getName());
-      }             
+      }       
+      return false;
    }
 }

@@ -111,18 +111,19 @@ public class VersionTest extends TestCase {
          }            
       }         
 
-      public void setRoot(Class field, Object value, NodeMap root, Map map) throws Exception {
+      public boolean setRoot(Class field, Object value, NodeMap root, Map map) throws Exception {
          Class type = value.getClass();
          
          if(Versionable.class.isAssignableFrom(type)) {
             Versionable versionable = (Versionable)value;
             map.put(VERSION_ATTRIBUTE, String.valueOf(versionable.getVersion()));
          }              
-         setElement(field, value, root, map);
+         return setElement(field, value, root, map);
       }              
 
-      public void setElement(Class field, Object value, NodeMap node, Map map) throws Exception {
+      public boolean setElement(Class field, Object value, NodeMap node, Map map) throws Exception {
          node.put(VERSION_ATTRIBUTE, (String)map.get(VERSION_ATTRIBUTE));
+         return false;
       }
    }
    
