@@ -1,21 +1,32 @@
 package simple.xml.graph;
 
+import java.lang.reflect.Constructor;
+
 import simple.xml.load.Type;
 
-public class ClassType implements Type {
+final class ClassType implements Type {
 
-   private Class field;
+   private Class type;
    
-   public ClassType(Class field) {
-      this.field = field;
+   public ClassType(Class type) {
+      this.type = type;
    }
    
    public Object getInstance() throws Exception {     
-      return field.newInstance();
+      return getInstance(type);
+   }
+   
+   private Object getInstance(Class type) throws Exception {
+      Constructor method = type.getDeclaredConstructor();      
+
+      if(!method.isAccessible()) {
+         method.setAccessible(true);              
+      }
+      return method.newInstance();
    }
 
    public Class getType() {      
-      return field;
+      return type;
    }
 
    public boolean isReference() {      

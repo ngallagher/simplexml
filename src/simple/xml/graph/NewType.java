@@ -1,38 +1,34 @@
 package simple.xml.graph;
 
-import java.lang.reflect.Constructor;
 import java.util.Map;
 
 import simple.xml.load.Type;
 
 final class NewType implements Type {
    
-   private Class field;
+   private Type type;
    
    private String key;
    
    private Map map;
    
    public NewType(Class field, Map map, String key) {
-      this.field = field;
+      this.type = new ClassType(field);
       this.map = map;
       this.key = key;
    }
    
    public Object getInstance() throws Exception {      
-      Constructor c = field.getDeclaredConstructor();
+      Object value = type.getInstance();
       
-      if(!c.isAccessible()) {
-         c.setAccessible(true);
+      if(value != null) {
+         map.put(key, value);
       }
-      Object o = c.newInstance();    
-     
-      map.put(key, o);
-      return o;
+      return value;
    }
    
    public Class getType() {
-      return field;
+      return type.getType();
    }
    
    public boolean isReference() {

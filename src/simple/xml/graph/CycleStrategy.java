@@ -33,7 +33,12 @@ public class CycleStrategy implements Strategy {
    }     
 
    public Type getElement(Class field, NodeMap node, Map map) throws Exception {
-      return read.find(map).getElement(field, node);
+      ReadGraph graph = read.find(map);
+      
+      if(graph != null) {
+         return graph.getElement(field, node);
+      }
+      return null;
    }
    
    public boolean setRoot(Class field, Object value, NodeMap node, Map map){
@@ -41,7 +46,12 @@ public class CycleStrategy implements Strategy {
    }   
      
    public boolean setElement(Class field, Object value, NodeMap node, Map map){
-      return write.find(map).setElement(field, value, node);
+      WriteGraph graph = write.find(map);
+      
+      if(graph != null) {
+         return graph.setElement(field, value, node);
+      }
+      return false;
    }
 
 }
