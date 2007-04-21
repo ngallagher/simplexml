@@ -2,7 +2,7 @@ package simple.xml.graph;
 
 import simple.xml.load.Type;
 
-public class ReferenceType implements Type {
+final class ReferenceType implements Type {
    
    private Object value;
    

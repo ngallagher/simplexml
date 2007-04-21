@@ -5,7 +5,7 @@ import java.util.Map;
 
 import simple.xml.load.Type;
 
-public class NewType implements Type {
+final class NewType implements Type {
    
    private Class field;
    

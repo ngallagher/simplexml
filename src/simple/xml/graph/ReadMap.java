@@ -3,7 +3,7 @@ package simple.xml.graph;
 import java.util.Map;
 import java.util.WeakHashMap;
 
-final class ReadMap extends WeakHashMap<Map, ReadCycle>{
+final class ReadMap extends WeakHashMap<Map, ReadGraph>{
    
    private String label;
    
@@ -17,11 +17,11 @@ final class ReadMap extends WeakHashMap<Map, ReadCycle>{
       this.mark = mark;
    }
 
-   public ReadCycle find(Map map) {
-      ReadCycle read = get(map);
+   public ReadGraph find(Map map) {
+      ReadGraph read = get(map);
       
       if(read == null) {
-         read = new ReadCycle(label, key, mark);
+         read = new ReadGraph(label, key, mark);
          put(map, read);
       }
       return read;
