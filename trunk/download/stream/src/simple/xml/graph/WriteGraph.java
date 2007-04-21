@@ -1,24 +1,22 @@
 package simple.xml.graph;
 
-import java.util.IdentityHashMap;
-
 import simple.xml.stream.NodeMap;
 
-public class WriteCycle {
+final class WriteGraph {
    
-   private IdentityHashMap<Object, String> graph;
-   
-   private String identity;
-   
-   private String reference;
+   private ObjectGraph graph;
    
    private String label;
-  
-   public WriteCycle(String label, String identity, String reference) {
-      this.graph = new IdentityHashMap<Object, String>();
-      this.reference = reference;
-      this.identity = identity;
+   
+   private String key;
+   
+   private String mark;
+   
+   public WriteGraph(String label, String key, String mark) {
+      this.graph = new ObjectGraph();
       this.label = label;
+      this.key = key;
+      this.mark = mark;
    }
 
    public boolean setElement(Class field, Object value, NodeMap node){
@@ -38,15 +36,21 @@ public class WriteCycle {
       String name = graph.get(value);
       
       if(name != null) {
-         node.put(reference, name); // put existing address
+         node.put(mark, name);
          return true;
       } 
-      name = String.valueOf(graph.size());
+      String unique = getKey();      
       
-      node.put(identity, name);
-      graph.put(value, name);
+      node.put(key, unique);
+      graph.put(value, unique);
       
       return false;     
+   }
+   
+   private String getKey() {
+      int size = graph.size();
+      
+      return String.valueOf(size);      
    }
 
 }

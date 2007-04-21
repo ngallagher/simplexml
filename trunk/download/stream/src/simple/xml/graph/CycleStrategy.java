@@ -1,11 +1,10 @@
 package simple.xml.graph;
 
-import java.util.IdentityHashMap;
-import java.util.Map;
 
 import simple.xml.load.Strategy;
 import simple.xml.load.Type;
 import simple.xml.stream.NodeMap;
+import java.util.Map;
 
 /**
 
