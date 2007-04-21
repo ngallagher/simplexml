@@ -191,12 +191,9 @@ final class Traverser {
       OutputNode child = node.getChild(name);
       Class type = source.getClass();
      
-      if(node != null) {
-         root.setOverride(expect, source, child);
-      }                         
-      Composite composite = getComposite(type);
-
-      composite.write(child, source);
+      if(!root.setOverride(expect, source, child)) {                               
+         getComposite(type).write(child, source);
+      }
       child.commit();  
    }
    
