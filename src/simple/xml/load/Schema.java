@@ -83,8 +83,9 @@ final class Schema {
     * a converter can determine if all fields have been serialized.
     * 
     * @param schema this contains all labels scanned from the class
+    * @param session this is the session map for the persister
     */
-   public Schema(Scanner schema, Map table) {
+   public Schema(Scanner schema, Session session) {      
       this.attributes = schema.getAttributes();
       this.elements = schema.getElements();
       this.validate = schema.getValidate();      
@@ -92,7 +93,7 @@ final class Schema {
       this.commit = schema.getCommit();      
       this.persist = schema.getPersist();
       this.text = schema.getText();
-      this.table = table;
+      this.table = session.getMap();
    }
    
    /**

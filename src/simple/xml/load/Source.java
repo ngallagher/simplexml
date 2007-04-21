@@ -67,21 +67,21 @@ final class Source {
     * This is used to replace variables within the XML source.
     */
    private TemplateEngine engine;
-  
+   
    /**
     * This is the strategy used to resolve the element classes.
     */
    private Strategy strategy;
+
+   /**
+    * This is used to store the source context attribute values.
+    */ 
+   private Session session;
    
    /**
     * This is the filter used by this object for templating.
     */ 
    private Filter filter;
-
-   /**
-    * This is used to store the source context attribute values.
-    */ 
-   private Map table;
    
    /**
     * Constructor for the <code>Source</code> object. This is used to
@@ -96,7 +96,7 @@ final class Source {
    public Source(Strategy strategy, Filter data) {
       this.filter = new TemplateFilter(this, data);           
       this.engine = new TemplateEngine(filter);           
-      this.table = new HashMap();
+      this.session = new Session();
       this.strategy = strategy;
    }   
 
@@ -110,7 +110,7 @@ final class Source {
     * @return this returns the value mapped to the specified key
     */     
    public Object getAttribute(Object key) {
-      return table.get(key);
+      return session.get(key);
    }
    
    /**
@@ -133,9 +133,9 @@ final class Source {
       NodeMap map = node.getAttributes();
       
       if(node.isRoot()) {
-         return strategy.getRoot(type, map, table);
+         return strategy.getRoot(type, map, session);
       }           
-      return strategy.getElement(type, map, table);
+      return strategy.getElement(type, map, session);
    } 
 
    /**    
@@ -157,9 +157,9 @@ final class Source {
       NodeMap map = node.getAttributes();
       
       if(node.isRoot()) {
-         return strategy.setRoot(type, value, map, table);              
+         return strategy.setRoot(type, value, map, session);              
       }           
-      return strategy.setElement(type, value, map, table);
+      return strategy.setElement(type, value, map, session);
    }
    
    /**
@@ -199,7 +199,7 @@ final class Source {
          schema = new Scanner(type);             
          cache.cache(type, schema);
       }
-      return new Schema(schema, table);
+      return new Schema(schema, session);
    }
 
    /**
