@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import simple.xml.Attribute;
+import simple.xml.Element;
 import simple.xml.ElementList;
 import simple.xml.Root;
 import simple.xml.Text;
@@ -19,8 +20,12 @@ public class CycleTest extends ValidationTestCase {
       @ElementList(name="list", type=Entry.class)
       private List<Entry> list;
       
+      @Element(name="cycle")
+      private CycleExample cycle;
+      
       public CycleExample() {
          this.list = new ArrayList();
+         this.cycle = this;
       }
       
       public void add(Entry entry) {
@@ -62,23 +67,27 @@ public class CycleTest extends ValidationTestCase {
       Entry one = new Entry("1", "one");
       Entry two = new Entry("2", "two");
       Entry three = new Entry("3", "three");
+      Entry threeDuplicate = new Entry("3", "three");
       
       example.add(one);
       example.add(two);
       example.add(three);
       example.add(one);
       example.add(two);
+      example.add(threeDuplicate);
       
       assertEquals(example.get(0).value, "one");
       assertEquals(example.get(1).value, "two");
       assertEquals(example.get(2).value, "three");
       assertEquals(example.get(3).value, "one");
       assertEquals(example.get(4).value, "two");
+      assertEquals(example.get(5).value, "three");
       assertTrue(example.get(0) == example.get(3));
       assertTrue(example.get(1) == example.get(4));
+      assertFalse(example.get(2) == example.get(5));
       
       StringWriter out = new StringWriter();
-      persister.write(example, out);
+      persister.write(example, out);      
       
       example = persister.read(CycleExample.class, out.toString());
       
@@ -88,8 +97,8 @@ public class CycleTest extends ValidationTestCase {
       assertEquals(example.get(3).value, "one");
       assertEquals(example.get(4).value, "two");
       assertTrue(example.get(0) == example.get(3));
-      assertTrue(example.get(1) == example.get(4)); 
-      
+      assertTrue(example.get(1) == example.get(4));
+      assertFalse(example.get(2) == example.get(5));
       
       validate(example, persister);
    }
