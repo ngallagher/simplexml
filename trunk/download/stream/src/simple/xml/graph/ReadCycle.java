@@ -7,7 +7,7 @@ import simple.xml.load.Type;
 import simple.xml.stream.Node;
 import simple.xml.stream.NodeMap;
 
-public class ReadCycle {
+final class ReadCycle {
    
    private Map map;
    
