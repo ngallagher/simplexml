@@ -3,7 +3,7 @@ package simple.xml.graph;
 import java.util.Map;
 import java.util.WeakHashMap;
 
-public class WriteMap extends WeakHashMap<Map, WriteCycle> {
+final class WriteMap extends WeakHashMap<Map, WriteCycle> {
    
    private String label;
    

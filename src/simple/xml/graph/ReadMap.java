@@ -3,7 +3,7 @@ package simple.xml.graph;
 import java.util.Map;
 import java.util.WeakHashMap;
 
-public class ReadMap extends WeakHashMap<Map, ReadCycle>{
+final class ReadMap extends WeakHashMap<Map, ReadCycle>{
    
    private String label;
    
