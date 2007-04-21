@@ -514,8 +514,9 @@ final class Composite implements Converter {
          OutputNode next = node.getChild(name);
          Class type = label.getType();
         
-         factory.setOverride(type, value, next);
-         label.getConverter(root).write(next, value);
+         if(!factory.setOverride(type, value, next)) {           
+            label.getConverter(root).write(next, value);
+         }
       }
    }
    

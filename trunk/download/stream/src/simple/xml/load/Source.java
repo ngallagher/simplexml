@@ -149,15 +149,17 @@ final class Source {
     * @param value this is the instance variable being serialized
     * @param node this is the element used to represent the value
     * 
+    * @return this returns true if serialization has complete
+    * 
     * @throws Exception thrown if the details cannot be set
     */
-   public void setOverride(Class type, Object value, OutputNode node) throws Exception {
+   public boolean setOverride(Class type, Object value, OutputNode node) throws Exception {
       NodeMap map = node.getAttributes();
       
       if(node.isRoot()) {
-         strategy.setRoot(type, value, map, table);              
+         return strategy.setRoot(type, value, map, table);              
       }           
-      strategy.setElement(type, value, map, table);
+      return strategy.setElement(type, value, map, table);
    }
    
    /**

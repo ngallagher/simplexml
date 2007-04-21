@@ -98,7 +98,7 @@ final class CompositeArray implements Converter {
    /**
     * This <code>read</code> method wll read the XML element list from
     * the provided node and deserialize its children as entry types.
-    * This will each entry type is deserialized as a root type, that 
+    * This ensures each entry type is deserialized as a root type, that 
     * is, its <code>Root</code> annotation must be present and the
     * name of the entry element must match that root element name.
     * 
@@ -118,7 +118,7 @@ final class CompositeArray implements Converter {
    /**
     * This <code>read</code> method wll read the XML element list from
     * the provided node and deserialize its children as entry types.
-    * This will each entry type is deserialized as a root type, that 
+    * This ensures each entry type is deserialized as a root type, that 
     * is, its <code>Root</code> annotation must be present and the
     * name of the entry element must match that root element name.
     * 

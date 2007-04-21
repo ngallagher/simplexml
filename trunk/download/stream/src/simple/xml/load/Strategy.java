@@ -107,9 +107,11 @@ public interface Strategy {
     * @param node this is the node map used to represent the value
     * @param map this is used to maintain contextual information
     * 
+    * @return this returns true if serialization is complete
+    * 
     * @throws Exception thrown if the details cannot be set
     */
-   public void setRoot(Class field, Object value, NodeMap node, Map map) throws Exception;
+   public boolean setRoot(Class field, Object value, NodeMap node, Map map) throws Exception;
 
    /**
     * This is used to attach attribute values to the given node
@@ -123,8 +125,10 @@ public interface Strategy {
     * @param node this is the node map used to represent the value
     * @param map this is used to maintain contextual information
     * 
+    * @return this returns true if serialization is complete    
+    * 
     * @throws Exception thrown if the details cannot be set
     */
-   public void setElement(Class field, Object value, NodeMap node, Map map) throws Exception;
+   public boolean setElement(Class field, Object value, NodeMap node, Map map) throws Exception;
 
 }

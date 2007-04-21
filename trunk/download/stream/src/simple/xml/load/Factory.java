@@ -100,12 +100,13 @@ abstract class Factory {
     *
     * @throws Exception thrown if an error occurs within the strategy
     */
-   public void setOverride(Class field, Object value, OutputNode node) throws Exception {
+   public boolean setOverride(Class field, Object value, OutputNode node) throws Exception {
       Class type = value.getClass();
       
       if(!isPrimitive(type)) {
-         source.setOverride(field, value, node);
+         return source.setOverride(field, value, node);
       }
+      return false;
    }
 
    /**
