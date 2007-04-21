@@ -69,6 +69,11 @@ public class CycleTest extends ValidationTestCase {
       example.add(one);
       example.add(two);
       
+      assertEquals(example.get(0).value, "one");
+      assertEquals(example.get(1).value, "two");
+      assertEquals(example.get(2).value, "three");
+      assertEquals(example.get(3).value, "one");
+      assertEquals(example.get(4).value, "two");
       assertTrue(example.get(0) == example.get(3));
       assertTrue(example.get(1) == example.get(4));
       
@@ -77,8 +82,14 @@ public class CycleTest extends ValidationTestCase {
       
       example = persister.read(CycleExample.class, out.toString());
       
+      assertEquals(example.get(0).value, "one");
+      assertEquals(example.get(1).value, "two");
+      assertEquals(example.get(2).value, "three");
+      assertEquals(example.get(3).value, "one");
+      assertEquals(example.get(4).value, "two");
       assertTrue(example.get(0) == example.get(3));
       assertTrue(example.get(1) == example.get(4)); 
+      
       
       validate(example, persister);
    }
