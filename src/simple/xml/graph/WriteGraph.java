@@ -1,10 +1,9 @@
 package simple.xml.graph;
 
+import java.util.IdentityHashMap;
 import simple.xml.stream.NodeMap;
 
-final class WriteGraph {
-   
-   private ObjectGraph graph;
+final class WriteGraph extends IdentityHashMap<Object, String> {
    
    private String label;
    
@@ -13,7 +12,6 @@ final class WriteGraph {
    private String mark;
    
    public WriteGraph(String label, String key, String mark) {
-      this.graph = new ObjectGraph();
       this.label = label;
       this.key = key;
       this.mark = mark;
@@ -33,24 +31,22 @@ final class WriteGraph {
    }
    
    private boolean setReference(Object value, NodeMap node) {
-      String name = graph.get(value);
+      String name = get(value);
       
       if(name != null) {
-         node.put(mark, name);
+         put(mark, name);
          return true;
       } 
       String unique = getKey();      
       
       node.put(key, unique);
-      graph.put(value, unique);
+      put(value, unique);
       
       return false;     
    }
    
-   private String getKey() {
-      int size = graph.size();
-      
-      return String.valueOf(size);      
+   private String getKey() {      
+      return String.valueOf(size());      
    }
 
 }
