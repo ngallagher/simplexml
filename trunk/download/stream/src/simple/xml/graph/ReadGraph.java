@@ -102,16 +102,16 @@ final class ReadGraph extends HashMap {
     * 
     * @return this is used to return the type to acquire the value
     */
-   private Type getInstance(Class field, NodeMap node) throws Exception {
+   private Type getInstance(Class field, NodeMap node) throws Exception {      
       Node entry = node.remove(mark);
       
       if(entry == null) {
          return getReference(field, node);
-      }
+      }      
       String key = entry.getValue();
       
       if(containsKey(key)) {
-         throw new Exception("Value already exists");
+         throw new CycleException("Element '%s' already exists", key);
       }
       return new NewType(field, this, key);
    }
@@ -137,7 +137,7 @@ final class ReadGraph extends HashMap {
       Object value = get(key); 
          
       if(value == null) {        
-         throw new Exception("Value does not exist");
+         throw new CycleException("Invalid reference '%s' found", key);
       }
       return new ReferenceType(value);
    }
