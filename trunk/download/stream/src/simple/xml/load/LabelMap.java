@@ -20,8 +20,8 @@
 
 package simple.xml.load;
 
+import java.util.LinkedHashMap;
 import java.util.Iterator;
-import java.util.HashMap;
 
 /**
  * The <code>LabelMap</code> object represents a map that contains 
@@ -34,7 +34,7 @@ import java.util.HashMap;
  *
  * @see simple.xml.load.Label
  */
-final class LabelMap extends HashMap<String, Label> implements Iterable<Label> { 
+final class LabelMap extends LinkedHashMap<String, Label> implements Iterable<Label> { 
    
    /**
     * This is the scanner object that represents the scanner used.
