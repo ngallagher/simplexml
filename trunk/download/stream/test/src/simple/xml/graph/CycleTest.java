@@ -59,7 +59,7 @@ public class CycleTest extends ValidationTestCase {
    private Persister persister;
    
    public void setUp() throws Exception {
-      persister = new Persister(new CycleStrategy("class", "id", "ref"));
+      persister = new Persister(new CycleStrategy("id", "ref"));
    }
    
    public void testCycle() throws Exception {
@@ -87,6 +87,7 @@ public class CycleTest extends ValidationTestCase {
       assertFalse(example.get(2) == example.get(5));
       
       StringWriter out = new StringWriter();
+      persister.write(example, System.out);
       persister.write(example, out);      
       
       example = persister.read(CycleExample.class, out.toString());

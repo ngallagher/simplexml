@@ -79,12 +79,12 @@ final class WriteState extends WeakHashMap<Object, WriteGraph> {
     * @return returns a graph used for writing the XML document
     */
    public WriteGraph find(Object map) {
-      WriteGraph read = get(map);
+      WriteGraph write = get(map);
       
-      if(read == null) {
-         read = new WriteGraph(mark, refer, label);
-         put(map, read);
+      if(write == null) {
+         write = new WriteGraph(mark, refer, label);
+         put(map, write);
       }
-      return read;
+      return write;
    }
 }
