@@ -115,7 +115,7 @@ final class WriteGraph extends IdentityHashMap<Object, String> {
       String name = get(value);
       
       if(name != null) {
-         put(refer, name);
+         node.put(refer, name);
          return true;
       } 
       String unique = getKey();      
