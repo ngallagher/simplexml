@@ -1,24 +1,20 @@
 package simple.xml.graph;
 
 import java.util.HashMap;
-import java.util.Map;
 
 import simple.xml.load.Type;
 import simple.xml.stream.Node;
 import simple.xml.stream.NodeMap;
 
-final class ReadGraph {
-   
-   private Map map;
-   
+final class ReadGraph extends HashMap {
+      
    private String label;
    
    private String key;
    
    private String mark;
    
-   public ReadGraph(String label, String key, String mark) {
-      this.map = new HashMap();
+   public ReadGraph(String label, String key, String mark) {     
       this.label = label;
       this.key = key;
       this.mark = mark;
@@ -42,10 +38,10 @@ final class ReadGraph {
       }
       String key = entry.getValue();
       
-      if(map.containsKey(key)) {
+      if(containsKey(key)) {
          throw new Exception("Value already exists");
       }
-      return new NewType(field, map, key);
+      return new NewType(field, this, key);
    }
    
    public Type getReference(Class field, NodeMap node) throws Exception {
@@ -55,7 +51,7 @@ final class ReadGraph {
          return new ClassType(field);
       }
       String key = entry.getValue();
-      Object value = map.get(key); 
+      Object value = get(key); 
          
       if(value == null) {        
          throw new Exception("Value does not exist");

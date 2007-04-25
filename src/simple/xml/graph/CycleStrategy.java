@@ -75,12 +75,12 @@ public class CycleStrategy implements Strategy {
    /**
     * This is used to maintain session state for writing the graph.
     */
-   private WriteMap write;
+   private WriteState write;
    
    /**
     * This is used to maintain session state for reading the graph.
     */
-   private ReadMap read;
+   private ReadState read;
   
    /**
     * Constructor for the <code>CycleStrategy</code> object. This is
@@ -118,8 +118,8 @@ public class CycleStrategy implements Strategy {
     * @param refer this is used to refer to an existing object
     */   
    public CycleStrategy(String mark, String refer, String label){
-      this.write = new WriteMap(mark, refer, label);
-      this.read = new ReadMap(mark, refer, label);
+      this.write = new WriteState(mark, refer, label);
+      this.read = new ReadState(mark, refer, label);
    }
 
    /**
