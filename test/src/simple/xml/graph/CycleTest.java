@@ -14,6 +14,8 @@ import simple.xml.load.Persister;
 
 public class CycleTest extends ValidationTestCase {
    
+   private static final int ITERATIONS = 10000;
+	
    @Root(name="example")
    public static class CycleExample {
       
@@ -21,7 +23,7 @@ public class CycleTest extends ValidationTestCase {
       private List<Entry> list;
       
       @Element(name="cycle")
-      private CycleExample cycle;
+      private CycleExample cycle;     
       
       public CycleExample() {
          this.list = new ArrayList();
@@ -103,5 +105,31 @@ public class CycleTest extends ValidationTestCase {
       
       validate(example, persister);
    }
-
+   
+   public void testMemory() throws Exception {
+       CycleExample example = new CycleExample();
+	   Entry one = new Entry("1", "one");
+	   Entry two = new Entry("2", "two");
+	   Entry three = new Entry("3", "three");
+	   Entry threeDuplicate = new Entry("3", "three");
+	      
+	   example.add(one);
+	   example.add(two);
+	   example.add(three);
+	   example.add(one);
+	   example.add(two);
+	   example.add(threeDuplicate);      
+	   
+	   StringWriter out = new StringWriter();
+	   persister.write(example, System.out);
+	   persister.write(example, out);      
+	   
+	   for(int i = 0; i < ITERATIONS; i++) {
+		  persister.write(example, new StringWriter());
+	   }
+	   for(int i = 0; i < ITERATIONS; i++) {
+	      persister.read(CycleExample.class, out.toString());
+	   }	      
+	   validate(example, persister);   
+   }
 }
