@@ -83,7 +83,7 @@ final class ReferenceType implements Type {
     * the deserialization process that there should be not further
     * deserialization of the object from the XML source stream.
     * 
-    * @return this method will always return true
+    * @return because this is a reference this is always true 
     */
    public boolean isReference() {      
       return true;
