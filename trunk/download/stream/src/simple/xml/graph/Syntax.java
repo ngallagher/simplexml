@@ -21,7 +21,7 @@
 package simple.xml.graph;
 
 /**
- * The <code>NameScheme</code> object is used to expose the attribute
+ * The <code>Syntax</code> object is used to expose the attribute
  * names used by the cycle strategy. This ensures that reading and
  * writing of the XML document is done in a consistent manner. Each
  * attribute is used to mark special meta-data for the object graph. 
@@ -30,7 +30,7 @@ package simple.xml.graph;
  * 
  * @see simple.xml.graph.CycleStrategy
  */
-final class NameScheme {
+final class Syntax {
              
    /**
     * This is used to specify the length of array instances.
@@ -53,8 +53,8 @@ final class NameScheme {
    private String refer;
    
    /**
-    * Constructor for the <code>NameScheme</code> object. This is
-    * used to expose the attribute names used by the strategy. All
+    * Constructor for the <code>Syntax</code> object. This is used
+    * to expose the attribute names used by the strategy. All the
     * names can be acquired and shared by the read and write graph
     * objects, which ensures consistency between the two objects.
     * 
@@ -63,7 +63,7 @@ final class NameScheme {
     * @param label this is used to specify the class for the field
     * @param length this is the length attribute used for arrays
     */   
-   public NameScheme(String mark, String refer, String label, String length){  
+   public Syntax(String mark, String refer, String label, String length){  
       this.length = length;
       this.label = label;
       this.refer = refer;
