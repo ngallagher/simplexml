@@ -1,5 +1,5 @@
 /*
- * NameScheme.java April 2007
+ * Syntax.java April 2007
  *
  * Copyright (C) 2007, Niall Gallagher <niallg@users.sf.net>
  *
