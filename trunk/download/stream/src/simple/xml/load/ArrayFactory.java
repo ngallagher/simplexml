@@ -61,13 +61,13 @@ final class ArrayFactory extends Factory {
     * 
     * @return the object array type used for the instantiation
     */         
-   public ArrayType getInstance(InputNode node) throws Exception {
+   public Type getInstance(InputNode node) throws Exception {
       Type type = getOverride(node);    
       
-      if(type != null) { 
-         return getInstance(type);
+      if(type == null) {
+         throw new ElementException("Array length required for %s", field);         
       }
-      return new ArrayType(field);
+      return getInstance(type);
    }
 
    /**
@@ -81,56 +81,12 @@ final class ArrayFactory extends Factory {
     * 
     * @return this object array type used for the instantiation  
     */
-   private ArrayType getInstance(Type type) throws Exception {
+   private Type getInstance(Type type) throws Exception {
       Class real = type.getType();
 
       if(!field.isAssignableFrom(real)) {
          throw new InstantiationException("Cannot assign %s to %s", real, field);
       }
-      if(!type.isReference()) {
-         return new ArrayType(real);
-      }
-      return new ArrayType(type);      
+      return type;      
    }   
-   
-   /**
-    * This method is used to convert the specified array to a list
-    * that can be iterated in a generic way. This is used when an
-    * array is to be converted into a sequence of XML elements.
-    * 
-    * @param source this is the source array to be converted
-    * 
-    * @return this returns a list containing the array values
-    * 
-    * @throws Exception thrown if the array could not be used
-    */
-   public List getList(Object source) throws Exception {
-      int size = Array.getLength(source);
-            
-      if(size > 0) {
-         return getList(source, size);
-      }
-      return new ArrayList();
-   }
-   
-   /**
-    * This method is used to convert the specified array to a list
-    * that can be iterated in a generic way. This is used when an
-    * array is to be converted into a sequence of XML elements.
-    * 
-    * @param source this is the source array to be converted
-    * @param size this is the number of values to iterate over
-    * 
-    * @return this returns a list containing the array values
-    * 
-    * @throws Exception thrown if the array could not be used
-    */  
-   private List getList(Object source, int size) throws Exception { 
-      List list = new ArrayList();
-      
-      for(int i = 0; i < size; i++) {
-         list.add(Array.get(source, i));         
-      }
-      return list;
-   }
 }

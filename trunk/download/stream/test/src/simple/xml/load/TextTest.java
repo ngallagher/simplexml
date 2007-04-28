@@ -1,24 +1,29 @@
 package simple.xml.load;
 
-import java.io.FileOutputStream;
 import java.io.StringWriter;
 import java.util.List;
 
-import simple.xml.ValidationTestCase;
-import simple.xml.ElementArray;
-import simple.xml.Element;
 import simple.xml.Attribute;
-import simple.xml.Text;
+import simple.xml.Element;
+import simple.xml.ElementArray;
 import simple.xml.Root;
+import simple.xml.Text;
+import simple.xml.ValidationTestCase;
 
 public class TextTest extends ValidationTestCase {
         
    private static final String TEXT_LIST =
    "<test>\n"+
-   "   <array>\n"+
-   "     <text name='a' version='ONE'>Example 1</text>\r\n"+
-   "     <text name='b' version='TWO'>Example 2</text>\r\n"+
-   "     <text name='c' version='THREE'>Example 3</text>\r\n"+
+   "   <array size='3'>\n"+
+   "     <entry>\n"+
+   "        <text name='a' version='ONE'>Example 1</text>\r\n"+
+   "     </entry>\n"+
+   "     <entry>\n"+
+   "        <text name='b' version='TWO'>Example 2</text>\r\n"+
+   "     </entry>\n"+
+   "     <entry>\n"+
+   "        <text name='c' version='THREE'>Example 3</text>\r\n"+
+   "     </entry>\n"+
    "   </array>\n\r"+
    "</test>";
 
@@ -46,7 +51,7 @@ public class TextTest extends ValidationTestCase {
    @Root(name="test")
    private static class TextList {
 
-      @ElementArray(name="array")
+      @ElementArray(name="array", parent="entry")
       private TextEntry[] array;
    }
 

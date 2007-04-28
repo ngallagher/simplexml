@@ -55,12 +55,12 @@ final class NewType implements Type {
     * to create a type that can be used to establish an instance and
     * insert that instance into a map of nodes with an unique key.
     * 
-    * @param field this is the type of the instance to be created
+    * @param type this is the type of the instance to be created
     * @param map this contains each instance mapped with a key
     * @param key this is the unique key representing this instance
     */
-   public NewType(Class field, Map map, String key) {
-      this.type = new ClassType(field);
+   public NewType(Type type, Map map, String key) {
+      this.type = type;
       this.map = map;
       this.key = key;
    }
@@ -75,6 +75,25 @@ final class NewType implements Type {
     */
    public Object getInstance() throws Exception {      
       Object value = type.getInstance();
+      
+      if(value != null) {
+         map.put(key, value);
+      }
+      return value;
+   }
+   
+   /**
+    * This method is used to acquire an instance of the type that
+    * is defined by this object. If for some reason the type can
+    * not be instantiated an exception is thrown from this. Once
+    * created the instance is inserted into the map of values.
+    * 
+    * @param convert this is the type to convert the instance to
+    * 
+    * @return an instance of the type this object represents
+    */
+   public Object getInstance(Class convert) throws Exception {      
+      Object value = type.getInstance(convert);
       
       if(value != null) {
          map.put(key, value);

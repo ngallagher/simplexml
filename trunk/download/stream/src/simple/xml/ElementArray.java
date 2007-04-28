@@ -66,7 +66,7 @@ public @interface ElementArray {
     * 
     * @return this returns the parent XML element for each value
     */
-   public String parent() default "";
+   public String parent();
    
    /**
     * Determines whether the element is required within the XML

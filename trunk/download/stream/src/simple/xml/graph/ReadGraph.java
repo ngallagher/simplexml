@@ -22,6 +22,7 @@ package simple.xml.graph;
 
 import simple.xml.stream.NodeMap;
 import simple.xml.stream.Node;
+import simple.xml.load.ElementException;
 import simple.xml.load.Type;
 import java.util.HashMap;
 
@@ -38,6 +39,11 @@ import java.util.HashMap;
  * @see simple.xml.graph.WriteGraph
  */
 final class ReadGraph extends HashMap {
+   
+   /**
+    * This is the attribute used to specify the array length.
+    */
+   private static final String SIZE = "size";   
    
    /**
     * This is the label used to mark the type of an object.
@@ -113,7 +119,7 @@ final class ReadGraph extends HashMap {
       if(containsKey(key)) {
          throw new CycleException("Element '%s' already exists", key);
       }
-      return new NewType(field, this, key);
+      return getType(field, node, key);
    }
    
    /**
@@ -131,7 +137,7 @@ final class ReadGraph extends HashMap {
       Node entry = node.remove(refer);
       
       if(entry == null) {
-         return new ClassType(field);
+         return getType(field, node);
       }
       String key = entry.getValue();
       Object value = get(key); 
@@ -140,5 +146,35 @@ final class ReadGraph extends HashMap {
          throw new CycleException("Invalid reference '%s' found", key);
       }
       return new ReferenceType(value);
+   }
+   
+   private Type getType(Class field, NodeMap node) throws Exception {
+      String size = SIZE;
+      
+      if(field.isArray()) {
+         return getArray(field, node, size);
+      }
+      return new ClassType(field);
+   }
+   
+   private Type getType(Class field, NodeMap node, String key) throws Exception {
+      Type type = getType(field, node);
+      
+      if(key != null) {
+         return new NewType(type, this, key);
+      }
+      return type;      
+   }
+   
+   private Type getArray(Class field, NodeMap node, String size) throws Exception {
+      Node entry = node.remove(size);
+      
+      if(entry == null) {
+         throw new ElementException("Array %s requires a %s attribute", field, size);
+      }
+      String value = entry.getValue();
+      int length = Integer.parseInt(value);
+      
+      return new ArrayType(field, length);      
    }
 }

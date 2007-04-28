@@ -22,8 +22,7 @@ package simple.xml.load;
 
 import simple.xml.stream.OutputNode;
 import simple.xml.stream.InputNode;
-import java.util.ArrayList;
-import java.util.List;
+import java.lang.reflect.Array;
 
 /**
  * The <code>PrimitiveArray</code> object is used to convert a list of
@@ -65,11 +64,6 @@ final class PrimitiveArray implements Converter {
    private Primitive root;
       
    /**
-    * This is the entry type for elements within the array.
-    */   
-   private Class entry;
-
-   /**
     * This is the name that each array element is wrapped with.
     */
    private String parent;
@@ -81,14 +75,14 @@ final class PrimitiveArray implements Converter {
     * elements and will be the same length as the number of elements.
     *
     * @param root this is the source object used for serialization
+    * @param field this is the actual field type from the schema
     * @param entry the entry type to be stored within the array
-    * @param parent this is the name to wrap the array element with
+    * @param parent this is the name to wrap the array element with     
     */    
-   public PrimitiveArray(Source root, Class entry, String parent) {
-      this.factory = new ArrayFactory(root, entry); 
+   public PrimitiveArray(Source root, Class field, Class entry, String parent) {
+      this.factory = new ArrayFactory(root, field); 
       this.root = new Primitive(root, entry);          
       this.parent = parent;
-      this.entry = entry;
    }
 
    /**
@@ -102,7 +96,7 @@ final class PrimitiveArray implements Converter {
     * @return this returns the item to attach to the object contact
     */ 
    public Object read(InputNode node) throws Exception{
-      ArrayType type = factory.getInstance(node);
+      Type type = factory.getInstance(node);
       
       if(!type.isReference()) {
          return read(node, type);
@@ -121,16 +115,16 @@ final class PrimitiveArray implements Converter {
     * 
     * @return this returns the item to attach to the object contact
     */ 
-   private Object read(InputNode node, ArrayType type) throws Exception{
-      List list = new ArrayList();
+   private Object read(InputNode node, Type type) throws Exception{
+      Object list = type.getInstance();
       
-      while(true) {
+      for(int i = 0; true; i++) {
          InputNode next = node.getNext();
     
          if(next == null) {
-            return type.getInstance(list);            
+            return list;            
          }
-         list.add(root.read(next));
+         Array.set(list, i, root.read(next));
       } 
    }    
 
@@ -145,14 +139,34 @@ final class PrimitiveArray implements Converter {
     * @param node this is the XML element container to be populated
     */ 
    public void write(OutputNode node, Object source) throws Exception {
-      List list = factory.getList(source);
+      int size = Array.getLength(source);
       
-      for(Object item : list) {
+      for(int i = 0; i < size; i++) {
          OutputNode child = node.getChild(parent);
          
-         if(item != null) {
-            root.write(child, item);
+         if(child == null) {
+            break;
          }
+         write(child, source, i);
       }
+   }   
+
+   /**
+    * This <code>write</code> method will write the specified object
+    * to the given XML element as as array entries. Each entry within
+    * the given array must be assignable to the array component type.
+    * This will deserialize each entry type as a primitive value. In
+    * order to do this the parent string provided forms the element.
+    * 
+    * @param source this is the source object array to be serialized 
+    * @param node this is the XML element container to be populated
+    * @param index this is the position in the array to set the item
+    */ 
+   private void write(OutputNode node, Object source, int index) throws Exception {   
+      Object item = Array.get(source, index);
+         
+      if(item != null) {
+         root.write(node, item);
+      }      
    }
 }

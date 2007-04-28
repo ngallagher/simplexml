@@ -22,6 +22,7 @@ package simple.xml.load;
 
 import simple.xml.stream.NodeMap;
 import simple.xml.stream.Node;
+import java.lang.reflect.Array;
 import java.util.Map;
 
 /**
@@ -41,11 +42,21 @@ final class DefaultStrategy implements Strategy {
     * This is the attribute that is used to determine the real type.
     */
    private static final String LABEL = "class";
+
+   /**
+    * This is used to specify the size of an array element instance.
+    */
+   private static final String SIZE = "size";
    
    /**   
     * This is the attribute that is used to determine the real type.
     */   
    private String label;
+   
+   /**
+    * This is the attribute that is used to determine an array size.
+    */
+   private String size;
    
    /**
     * Constructor for the <code>DefaultStrategy</code> object. This 
@@ -54,7 +65,7 @@ final class DefaultStrategy implements Strategy {
     * for serialization this will add the appropriate "class" value.
     */
    public DefaultStrategy() {
-      this(LABEL);           
+      this(LABEL, SIZE);           
    }        
    
    /**
@@ -64,9 +75,11 @@ final class DefaultStrategy implements Strategy {
     * The attribute value can be any legal XML attribute name.
     * 
     * @param label this is the name of the attribute to use
+    * @param size this is used to determine the array size
     */
-   public DefaultStrategy(String label) {
+   public DefaultStrategy(String label, String size) {
       this.label = label;           
+      this.size = size;
    }
    
    /**
@@ -104,16 +117,41 @@ final class DefaultStrategy implements Strategy {
     * @throws Exception thrown if the class cannot be resolved
     */
    public Type getElement(Class field, NodeMap node, Map map) throws Exception {
-      Node entry = node.remove(label);
-         
+      Class type = getType(field, node);
+      
+      if(field.isArray()) {
+         return getArray(type, node);   
+      }
+      if(field != type) {
+         return new ClassType(type);
+      }
+      return null;
+   }
+   
+   private Type getArray(Class field, NodeMap node) throws Exception {      
+      Node entry = node.remove(size);
+      
       if(entry == null) {
-         return null;
+         throw new ElementException("Array %s requires a %s attribute", field, size);
+      }
+      String value = entry.getValue();
+      int size = Integer.parseInt(value);
+      
+      return new ArrayType(field, size);
+   }
+      
+   private Class getType(Class field, NodeMap node) throws Exception {      
+      Node entry = node.remove(label);      
+      
+      if(entry == null) {
+         return field;
       }
       String name = entry.getValue();
       Class type = Class.forName(name);
-         
-      return new ClassType(type);  
-   }
+             
+      return type;
+   }   
+  
    
    /**
     * This is used to attach a attribute to the provided element
@@ -152,11 +190,21 @@ final class DefaultStrategy implements Strategy {
       Class real = type;
       
       if(type.isArray()) {
-         real = type.getComponentType();
+         real = setArray(field, value, node);
       }
       if(type != field) {
          node.put(label, real.getName());
       }       
       return false;
+   }
+   
+   private Class setArray(Class field, Object value, NodeMap node){
+      Class real = field.getComponentType();
+      int length = Array.getLength(value);
+      
+      if(size != null) {       
+         node.put(size, String.valueOf(length));
+      }
+      return real;
    }
 }

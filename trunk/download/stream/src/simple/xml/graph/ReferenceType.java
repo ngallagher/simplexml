@@ -65,7 +65,20 @@ final class ReferenceType implements Type {
    public Object getInstance() throws Exception {     
       return value;      
    }
-
+   
+   /**
+    * This is used to acquire a reference to the instance that is
+    * taken from the created object graph. This enables any cycles
+    * in the graph to be reestablished from the persisted XML.
+    * 
+    * @param convert this is ignored as this is a reference type
+    * 
+    * @return this returns a reference to the created instance
+    */
+   public Object getInstance(Class convert) throws Exception {     
+      return value;      
+   }
+   
    /**
     * This returns the type for the object that this references.
     * This will basically return the <code>getClass</code> class
