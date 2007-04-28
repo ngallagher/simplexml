@@ -31,7 +31,7 @@ import java.lang.annotation.Retention;
  * can not appear with the <code>Element</code> annotation.
  * <pre>
  * 
- *    &lt;example one="value" two="value&gt;
+ *    &lt;example one="value" two="value"&gt;
  *       Example text value       
  *    &lt;example&gt;
  * 
