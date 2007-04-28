@@ -38,34 +38,20 @@ import java.util.WeakHashMap;
 final class ReadState extends WeakHashMap<Object, ReadGraph>{
    
    /**
-    * This is the label used to mark the type of an object.
+    * This is the strategy used to perform the reference handling.
     */
-   private String label;
-   
-   /**
-    * This is the attribute used to mark the identity of an object.
-    */
-   private String mark;
-   
-   /**
-    * Thsi is the attribute used to refer to an existing instance.
-    */
-   private String refer;
+   private CycleStrategy source;
    
    /**
     * Constructor for the <code>ReadState</code> object. This is used
     * to create graphs that are used for reading objects from the XML
-    * document. The specified strings represent special attributes
-    * that are inserted in to the XML during the serialization.
+    * document. The specified strategy is used to acquire the names
+    * of the special attributes used during the serialization.
     * 
-    * @param mark this is used to mark the identity of an object
-    * @param refer this is used to refer to an existing instance
-    * @param label this is used to represent the objects type
+    * @param source this is the strategy used to handle cycles
     */
-   public ReadState(String mark, String refer, String label) {
-      this.label = label;
-      this.refer = refer;
-      this.mark = mark;
+   public ReadState(CycleStrategy source) {
+      this.source = source;
    }
 
    /**
@@ -82,7 +68,7 @@ final class ReadState extends WeakHashMap<Object, ReadGraph>{
       ReadGraph read = get(map);
       
       if(read == null) {
-         read = new ReadGraph(mark, refer, label);
+         read = new ReadGraph(source);
          put(map, read);
       }
       return read;

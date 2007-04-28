@@ -41,9 +41,9 @@ import java.util.HashMap;
 final class ReadGraph extends HashMap {
    
    /**
-    * This is the attribute used to specify the array length.
+    * This is used to represent the length of array object values.
     */
-   private static final String LENGTH = "length";   
+   private String length;
    
    /**
     * This is the label used to mark the type of an object.
@@ -63,17 +63,16 @@ final class ReadGraph extends HashMap {
    /**
     * Constructor for the <code>ReadGraph</code> object. This is used
     * to create graphs that are used for reading objects from the XML
-    * document. The specified strings represent special attributes
-    * that are inserted in to the XML during the serialization.
+    * document. The specified strategy is used to acquire the names
+    * of the special attributes used during the serialization.
     * 
-    * @param mark this is used to mark the identity of an object
-    * @param refer this is used to refer to an existing instance
-    * @param label this is used to represent the objects type
+    * @param source this is the strategy used to handle cycles
     */
-   public ReadGraph(String mark, String refer, String label) {
-      this.label = label;
-      this.refer = refer;
-      this.mark = mark;
+   public ReadGraph(CycleStrategy source) {
+      this.length = source.length;
+      this.label = source.label;
+      this.refer = source.refer;
+      this.mark = source.mark;
    }
    
    /**
@@ -166,11 +165,9 @@ final class ReadGraph extends HashMap {
     * 
     * @return this is used to return the type to acquire the value
     */
-   private Type getType(Class field, Class real, NodeMap node) throws Exception {
-      String size = LENGTH;
-      
+   private Type getType(Class field, Class real, NodeMap node) throws Exception {      
       if(field.isArray()) {
-         return getArray(field, real, node, size);
+         return getArray(field, real, node);
       }
       return new ClassType(real);
    }
@@ -205,12 +202,11 @@ final class ReadGraph extends HashMap {
     *
     * @param field the type of the field or method in the instance
     * @param real this is the overridden type from the XML element
-    * @param node this is the XML element to be deserialized
-    * @param length this is the attribute used to specify the length    
+    * @param node this is the XML element to be deserialized  
     * 
     * @return this is used to return the type to acquire the value
     */  
-   private Type getArray(Class field, Class real, NodeMap node, String length) throws Exception {
+   private Type getArray(Class field, Class real, NodeMap node) throws Exception {
       Node entry = node.remove(length);
       
       if(entry == null) {
