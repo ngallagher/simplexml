@@ -31,7 +31,7 @@ import java.lang.annotation.Retention;
  * used to override an entry, this entry must be an assignable type.
  * <pre>
  * 
- *    &lt;array&gt;
+ *    &lt;array length='3'&gt;
  *       &lt;entry&gt;one&lt;/entry&gt;
  *       &lt;entry&gt;two&lt;/entry&gt;
  *       &lt;entry&gt;three&lt;/entry&gt;
@@ -39,9 +39,9 @@ import java.lang.annotation.Retention;
  * 
  * </pre>
  * All null objects within the array are ignored on serialization.
- * For deserialization the size of the array is calculated to be 
- * the same size as the number of elements within the enclosing 
- * element. The index is determined using the order of appearance.
+ * The length of the array must be specified for deserialization to
+ * instantiate the array before the array values are instantiated.
+ * This is required to account for cyclical references in the graph.
  * 
  * @author Niall Gallagher
  */
@@ -61,8 +61,7 @@ public @interface ElementArray {
     * This is used to provide a parent XML element for each of the
     * values within the array. This esentially wraps the entity to
     * be serialized such that there is an extra XML element present.
-    * This is primarily used to wrap primitive values in an element
-    * and to allow serialization to maintain null array elements.    
+    * This is used to ensure that null values can be represented.  
     * 
     * @return this returns the parent XML element for each value
     */

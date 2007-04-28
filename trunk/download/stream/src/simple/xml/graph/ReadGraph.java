@@ -43,7 +43,7 @@ final class ReadGraph extends HashMap {
    /**
     * This is the attribute used to specify the array length.
     */
-   private static final String SIZE = "size";   
+   private static final String LENGTH = "length";   
    
    /**
     * This is the label used to mark the type of an object.
@@ -89,12 +89,16 @@ final class ReadGraph extends HashMap {
     */
    public Type getElement(Class field, NodeMap node) throws Exception {
       Node entry = node.remove(label);
-         
-      if(entry != null) {
+      Class type = field;
+      
+      if(field.isArray()) {
+         type = field.getComponentType();
+      }
+      if(entry != null) {      
          String name = entry.getValue();
-         field = Class.forName(name);
-      }         
-      return getInstance(field, node); 
+         type = Class.forName(name);
+      }  
+      return getInstance(field, type, node); 
    }
    
    /**
@@ -104,22 +108,23 @@ final class ReadGraph extends HashMap {
     * exactly which node in the object graph the element represents.
     * 
     * @param field the type of the field or method in the instance
+    * @param real this is the overridden type from the XML element
     * @param node this is the XML element to be deserialized
     * 
     * @return this is used to return the type to acquire the value
     */
-   private Type getInstance(Class field, NodeMap node) throws Exception {      
+   private Type getInstance(Class field, Class real, NodeMap node) throws Exception {      
       Node entry = node.remove(mark);
       
       if(entry == null) {
-         return getReference(field, node);
+         return getReference(field, real, node);
       }      
       String key = entry.getValue();
       
       if(containsKey(key)) {
          throw new CycleException("Element '%s' already exists", key);
       }
-      return getType(field, node, key);
+      return getType(field, real, node, key);
    }
    
    /**
@@ -129,15 +134,16 @@ final class ReadGraph extends HashMap {
     * exactly which node in the object graph the element represents.
     * 
     * @param field the type of the field or method in the instance
-    * @param node this is the XML element to be deserialized
+    * @param real this is the overridden type from the XML element
+    * @param node this is the XML element to be deserialized    
     * 
     * @return this is used to return the type to acquire the value
     */ 
-   private Type getReference(Class field, NodeMap node) throws Exception {
+   private Type getReference(Class field, Class real, NodeMap node) throws Exception {
       Node entry = node.remove(refer);
       
       if(entry == null) {
-         return getType(field, node);
+         return getType(field, real, node);
       }
       String key = entry.getValue();
       Object value = get(key); 
@@ -145,20 +151,45 @@ final class ReadGraph extends HashMap {
       if(value == null) {        
          throw new CycleException("Invalid reference '%s' found", key);
       }
-      return new ReferenceType(value);
+      return new ReferenceType(value, real);
    }
    
-   private Type getType(Class field, NodeMap node) throws Exception {
-      String size = SIZE;
+   /**
+    * This is used to acquire the <code>Type</code> which can be used 
+    * to represent the deserialized value. The type create cab be
+    * added to the graph of created instances if the XML element has
+    * an identification attribute, this allows cycles to be completed.
+    *
+    * @param field the type of the field or method in the instance
+    * @param real this is the overridden type from the XML element
+    * @param node this is the XML element to be deserialized    
+    * 
+    * @return this is used to return the type to acquire the value
+    */
+   private Type getType(Class field, Class real, NodeMap node) throws Exception {
+      String size = LENGTH;
       
       if(field.isArray()) {
-         return getArray(field, node, size);
+         return getArray(field, real, node, size);
       }
-      return new ClassType(field);
+      return new ClassType(real);
    }
    
-   private Type getType(Class field, NodeMap node, String key) throws Exception {
-      Type type = getType(field, node);
+   /**
+    * This is used to acquire the <code>Type</code> which can be used 
+    * to represent the deserialized value. The type create cab be
+    * added to the graph of created instances if the XML element has
+    * an identification attribute, this allows cycles to be completed.
+    *
+    * @param field the type of the field or method in the instance
+    * @param real this is the overridden type from the XML element
+    * @param node this is the XML element to be deserialized
+    * @param key the key the instance is known as in the graph    
+    * 
+    * @return this is used to return the type to acquire the value
+    */
+   private Type getType(Class field, Class real, NodeMap node, String key) throws Exception {
+      Type type = getType(field, real, node);
       
       if(key != null) {
          return new NewType(type, this, key);
@@ -166,15 +197,28 @@ final class ReadGraph extends HashMap {
       return type;      
    }
    
-   private Type getArray(Class field, NodeMap node, String size) throws Exception {
-      Node entry = node.remove(size);
+   /**
+    * This is used to acquire the <code>Type</code> which can be used 
+    * to represent the deserialized value. The type create cab be
+    * added to the graph of created instances if the XML element has
+    * an identification attribute, this allows cycles to be completed.
+    *
+    * @param field the type of the field or method in the instance
+    * @param real this is the overridden type from the XML element
+    * @param node this is the XML element to be deserialized
+    * @param length this is the attribute used to specify the length    
+    * 
+    * @return this is used to return the type to acquire the value
+    */  
+   private Type getArray(Class field, Class real, NodeMap node, String length) throws Exception {
+      Node entry = node.remove(length);
       
       if(entry == null) {
-         throw new ElementException("Array %s requires a %s attribute", field, size);
+         throw new ElementException("Array %s requires a '%s' attribute", field, length);
       }
       String value = entry.getValue();
-      int length = Integer.parseInt(value);
+      int size = Integer.parseInt(value);
       
-      return new ArrayType(field, length);      
+      return new ArrayType(real, size);      
    }
 }

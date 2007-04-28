@@ -21,9 +21,6 @@
 package simple.xml.load;
 
 import simple.xml.stream.InputNode;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * The <code>ArrayFactory</code> is used to create object array
@@ -52,10 +49,8 @@ final class ArrayFactory extends Factory {
    /**
     * Creates the array type to use. This will use the provided
     * XML element to determine the array type and provide a means
-    * for creating an array with an <code>ArrayType</code> object.
-    * This enables the array factory to determine whether the
-    * XML element is a reference type or not and so allows the
-    * returned type to gain access to the available reference.
+    * for creating an array with the <code>Type</code> object. If
+    * the array size cannot be determined an exception is thrown.
     * 
     * @param node this is the input node for the array element
     * 
@@ -66,26 +61,28 @@ final class ArrayFactory extends Factory {
       
       if(type == null) {
          throw new ElementException("Array length required for %s", field);         
-      }
-      return getInstance(type);
+      }      
+      Class entry = type.getType();
+      
+      return getInstance(type, entry);
    }
 
    /**
     * Creates the array type to use. This will use the provided
-    * type object to determine if the array component types are
-    * compatible. If the component types are compatible then this
-    * will return an <code>ArrayType</code> for the provided type.
-    * list of values to form the values within the array. 
+    * XML element to determine the array type and provide a means
+    * for creating an array with the <code>Type</code> object. If
+    * the array types are not compatible an exception is thrown.
     * 
-    * @param type this is the type object with the array details    
+    * @param type this is the type object with the array details
+    * @param entry this is the entry type for the array instance    
     * 
     * @return this object array type used for the instantiation  
     */
-   private Type getInstance(Type type) throws Exception {
-      Class real = type.getType();
+   private Type getInstance(Type type, Class entry) throws Exception {
+      Class expect = field.getComponentType();
 
-      if(!field.isAssignableFrom(real)) {
-         throw new InstantiationException("Cannot assign %s to %s", real, field);
+      if(!expect.isAssignableFrom(entry)) {
+         throw new InstantiationException("Array of type %s cannot hold %s", expect, entry);
       }
       return type;      
    }   

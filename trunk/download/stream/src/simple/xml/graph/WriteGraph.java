@@ -43,7 +43,10 @@ import simple.xml.stream.NodeMap;
  */
 final class WriteGraph extends IdentityHashMap<Object, String> {
    
-   private static final String SIZE = "size";
+   /**
+    * This is used to specify the length of array instances.
+    */
+   private static final String LENGTH = "length";
    
    /**
     * This is the label used to mark the type of an object.
@@ -94,7 +97,7 @@ final class WriteGraph extends IdentityHashMap<Object, String> {
       Class real = type;
       
       if(type.isArray()) {
-         real = setArray(field, value, node);
+         real = setArray(type, value, node);
       }
       if(type != field) {
          node.put(label, real.getName());
@@ -129,14 +132,24 @@ final class WriteGraph extends IdentityHashMap<Object, String> {
       return false;     
    }
    
+   /**
+    * This is used to add a length attribute to the element due to
+    * the fact that the serialized value is an array. The length
+    * of the array is acquired and inserted in to the attributes.
+    * 
+    * @param field this is the field type for the array to set
+    * @param value this is the actual value for the array to set
+    * @param node this is the map of attributes for the element
+    * 
+    * @return returns thr array component type that is set
+    */
    private Class setArray(Class field, Object value, NodeMap node){
-      Class real = field.getComponentType();
       int length = Array.getLength(value);
       
       if(!containsKey(value)) {       
-         node.put(SIZE, String.valueOf(length));
+         node.put(LENGTH, String.valueOf(length));
       }
-      return real;
+      return field.getComponentType();
    }
    
    /**

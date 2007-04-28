@@ -138,6 +138,9 @@ abstract class Factory {
     * @return true if the field type can be assigned the type value
     */
    public static boolean isCompatible(Class field, Class type) {
+      if(field.isArray()) {
+         field = field.getComponentType();
+      }
       return field.isAssignableFrom(type);           
    }
 
