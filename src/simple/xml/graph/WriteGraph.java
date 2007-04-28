@@ -46,7 +46,7 @@ final class WriteGraph extends IdentityHashMap<Object, String> {
    /**
     * This is used to specify the length of array instances.
     */
-   private static final String LENGTH = "length";
+   private String length;
    
    /**
     * This is the label used to mark the type of an object.
@@ -66,17 +66,16 @@ final class WriteGraph extends IdentityHashMap<Object, String> {
    /**
     * Constructor for the <code>WriteGraph</code> object. This is
     * used to build the graph used for writing objects to the XML 
-    * document. The specified strings represent attributes that 
-    * are inserted in to the XML during the serialization.
+    * document. The specified strategy is used to acquire the names
+    * of the special attributes used during the serialization.
     * 
-    * @param mark this is used to mark the identity of an object
-    * @param refer this is used to refer to an existing instance
-    * @param label this is used to represent the objects type
+    * @param source this is the strategy used to handle cycles
     */
-   public WriteGraph(String mark, String refer, String label) {
-      this.label = label;
-      this.refer = refer;
-      this.mark = mark;
+   public WriteGraph(CycleStrategy source) {
+      this.length = source.length;
+      this.label = source.label;
+      this.refer = source.refer;
+      this.mark = source.mark;
    }
    
    /**
@@ -144,10 +143,10 @@ final class WriteGraph extends IdentityHashMap<Object, String> {
     * @return returns thr array component type that is set
     */
    private Class setArray(Class field, Object value, NodeMap node){
-      int length = Array.getLength(value);
+      int size = Array.getLength(value);
       
       if(!containsKey(value)) {       
-         node.put(LENGTH, String.valueOf(length));
+         node.put(length, String.valueOf(size));
       }
       return field.getComponentType();
    }

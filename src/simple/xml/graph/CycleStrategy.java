@@ -68,6 +68,11 @@ public class CycleStrategy implements Strategy {
    private static final String MARK = "id";
    
    /**
+    * The default name of the attribute used to specify the length.
+    */
+   private static final String LENGTH = "length";
+   
+   /**
     * The default name of the attribute used to specify the class.
     */
    private static final String LABEL = "class";  
@@ -81,7 +86,27 @@ public class CycleStrategy implements Strategy {
     * This is used to maintain session state for reading the graph.
     */
    private ReadState read;
-  
+   
+   /**
+    * This is used to specify the length of array instances.
+    */
+   protected String length;
+   
+   /**
+    * This is the label used to mark the type of an object.
+    */
+   protected String label;
+   
+   /**
+    * This is the attribute used to mark the identity of an object.
+    */
+   protected String mark;
+   
+   /**
+    * Thsi is the attribute used to refer to an existing instance.
+    */
+   protected String refer;
+   
    /**
     * Constructor for the <code>CycleStrategy</code> object. This is
     * used to create a strategy with default values. By default the
@@ -116,10 +141,31 @@ public class CycleStrategy implements Strategy {
     * 
     * @param mark this is used to mark the identity of an object
     * @param refer this is used to refer to an existing object
+    * @param label this is used to specify the class for the field
     */   
    public CycleStrategy(String mark, String refer, String label){
-      this.write = new WriteState(mark, refer, label);
-      this.read = new ReadState(mark, refer, label);
+      this(mark, refer, label, LENGTH);
+   }
+   
+   /**
+    * Constructor for the <code>CycleStrategy</code> object. This is
+    * used to create a strategy with the sepcified attributes, which
+    * will be added to serialized XML elements. These attributes 
+    * are used to serialize the objects in such a way the cycles in
+    * the object graph can be deserialized and used fully. 
+    * 
+    * @param mark this is used to mark the identity of an object
+    * @param refer this is used to refer to an existing object
+    * @param label this is used to specify the class for the field
+    * @param length this is the length attribute used for arrays
+    */   
+   public CycleStrategy(String mark, String refer, String label, String length){  
+      this.write = new WriteState(this);
+      this.read = new ReadState(this);
+      this.length = length;
+      this.label = label;
+      this.refer = refer;
+      this.mark = mark;
    }
 
    /**

@@ -36,36 +36,22 @@ import java.util.WeakHashMap;
  * @see simple.xml.graph.WriteGraph
  */
 final class WriteState extends WeakHashMap<Object, WriteGraph> {
-   
+
    /**
-    * This is the label used to mark the type of an object.
+    * This is the strategy used to perform the reference handling.
     */
-   private String label;
-   
-   /**
-    * This is the attribute used to mark the identity of an object.
-    */
-   private String mark;
-   
-   /**
-    * Thsi is the attribute used to refer to an existing instance.
-    */
-   private String refer;
+   private CycleStrategy source;
    
    /**
     * Constructor for the <code>WriteState</code> object. This is
     * used to create graphs that are used for writing objects to the
-    * the XML document. The specified strings represent attributes
-    * that are inserted in to the XML during the serialization.
+    * the XML document. The specified strategy is used to acquire the
+    * names of the special attributes used during the serialization.
     * 
-    * @param mark this is used to mark the identity of an object
-    * @param refer this is used to refer to an existing instance
-    * @param label this is used to represent the objects type
+    * @param source this is the strategy used to handle cycles
     */
-   public WriteState(String mark, String refer, String label) {
-      this.label = label;
-      this.refer = refer;
-      this.mark = mark;
+   public WriteState(CycleStrategy source) {
+      this.source = source;
    }
 
    /**
@@ -82,7 +68,7 @@ final class WriteState extends WeakHashMap<Object, WriteGraph> {
       WriteGraph write = get(map);
       
       if(write == null) {
-         write = new WriteGraph(mark, refer, label);
+         write = new WriteGraph(source);
          put(map, write);
       }
       return write;

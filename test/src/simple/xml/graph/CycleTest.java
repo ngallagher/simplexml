@@ -107,7 +107,7 @@ public class CycleTest extends ValidationTestCase {
    }
    
    public void testMemory() throws Exception {
-       CycleExample example = new CycleExample();
+      CycleExample example = new CycleExample();
 	   Entry one = new Entry("1", "one");
 	   Entry two = new Entry("2", "two");
 	   Entry three = new Entry("3", "three");
