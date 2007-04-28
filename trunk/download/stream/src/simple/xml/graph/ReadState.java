@@ -40,7 +40,7 @@ final class ReadState extends WeakHashMap<Object, ReadGraph>{
    /**
     * This is the strategy used to perform the reference handling.
     */
-   private CycleStrategy source;
+   private NameScheme scheme;
    
    /**
     * Constructor for the <code>ReadState</code> object. This is used
@@ -48,10 +48,10 @@ final class ReadState extends WeakHashMap<Object, ReadGraph>{
     * document. The specified strategy is used to acquire the names
     * of the special attributes used during the serialization.
     * 
-    * @param source this is the strategy used to handle cycles
+    * @param scheme this is the strategy used to handle cycles
     */
-   public ReadState(CycleStrategy source) {
-      this.source = source;
+   public ReadState(NameScheme scheme) {
+      this.scheme = scheme;
    }
 
    /**
@@ -68,7 +68,7 @@ final class ReadState extends WeakHashMap<Object, ReadGraph>{
       ReadGraph read = get(map);
       
       if(read == null) {
-         read = new ReadGraph(source);
+         read = new ReadGraph(scheme);
          put(map, read);
       }
       return read;
