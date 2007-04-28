@@ -72,10 +72,10 @@ final class WriteGraph extends IdentityHashMap<Object, String> {
     * @param source this is the strategy used to handle cycles
     */
    public WriteGraph(CycleStrategy source) {
-      this.length = source.length;
-      this.label = source.label;
-      this.refer = source.refer;
-      this.mark = source.mark;
+      this.refer = source.getReference();
+      this.mark = source.getIdentity();
+      this.length = source.getLength();
+      this.label = source.getLabel();
    }
    
    /**
