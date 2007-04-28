@@ -31,7 +31,7 @@ package simple.xml.graph;
  * @see simple.xml.graph.CycleStrategy
  */
 final class NameScheme {
-   
+             
    /**
     * This is used to specify the length of array instances.
     */
