@@ -78,6 +78,11 @@ public class CycleStrategy implements Strategy {
    private static final String LABEL = "class";  
    
    /**
+    * This is used to provide the names of the attributes to use.
+    */
+   private NameScheme scheme;
+   
+   /**
     * This is used to maintain session state for writing the graph.
     */
    private WriteState write;
@@ -86,26 +91,6 @@ public class CycleStrategy implements Strategy {
     * This is used to maintain session state for reading the graph.
     */
    private ReadState read;
-   
-   /**
-    * This is used to specify the length of array instances.
-    */
-   private String length;
-   
-   /**
-    * This is the label used to mark the type of an object.
-    */
-   private String label;
-   
-   /**
-    * This is the attribute used to mark the identity of an object.
-    */
-   private String mark;
-   
-   /**
-    * Thsi is the attribute used to refer to an existing instance.
-    */
-   private String refer;
    
    /**
     * Constructor for the <code>CycleStrategy</code> object. This is
@@ -159,62 +144,11 @@ public class CycleStrategy implements Strategy {
     * @param label this is used to specify the class for the field
     * @param length this is the length attribute used for arrays
     */   
-   public CycleStrategy(String mark, String refer, String label, String length){  
-      this.write = new WriteState(this);
-      this.read = new ReadState(this);
-      this.length = length;
-      this.label = label;
-      this.refer = refer;
-      this.mark = mark;
+   public CycleStrategy(String mark, String refer, String label, String length){
+      this.scheme = new NameScheme(mark, refer, label, length);
+      this.write = new WriteState(scheme);
+      this.read = new ReadState(scheme);
    }
-   
-   /**
-    * This is returns the attribute used to store information about
-    * the type to the XML document. This attribute name is used to 
-    * add data to XML elements to enable the deserialization process
-    * to know the exact instance to use when creating a type.
-    * 
-    * @return the name of the attribute used to store the type
-    */
-   public String getLabel() {
-      return label;
-   }
-   
-   /**
-    * This returns the attribute used to store references within the
-    * serialized XML document. The reference attribute is added to
-    * the serialized XML element so that cycles in the object graph 
-    * can be recreated. This is an optional attribute.
-    * 
-    * @return this returns the name of the reference attribute
-    */
-   public String getReference() {
-      return refer;
-   }
-   
-   /**
-    * This returns the attribute used to store the identities of all
-    * objects serialized to the XML document. The identity attribute
-    * stores a unique identifiers, which enables this strategy to
-    * determine an objects identity within the serialized XML.
-    * 
-    * @return this returns the name of the identity attribute used
-    */
-   public String getIdentity() {
-      return mark;
-   }
-   
-   /**
-    * This returns the attribute used to store the array length in
-    * the serialized XML document. The array length is required so
-    * that the deserialization process knows how to construct the
-    * array before any of the array elements are deserialized.
-    * 
-    * @return this returns the name of the array length attribute
-    */
-   public String getLength() {
-      return length;
-   }  
 
    /**
     * This method is used to read an object from the specified node.

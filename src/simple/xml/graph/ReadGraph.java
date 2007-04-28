@@ -66,13 +66,13 @@ final class ReadGraph extends HashMap {
     * document. The specified strategy is used to acquire the names
     * of the special attributes used during the serialization.
     * 
-    * @param source this is the strategy used to handle cycles
+    * @param scheme this is the strategy used to handle cycles
     */
-   public ReadGraph(CycleStrategy source) {
-      this.refer = source.getReference();
-      this.mark = source.getIdentity();
-      this.length = source.getLength();
-      this.label = source.getLabel();
+   public ReadGraph(NameScheme scheme) {
+      this.refer = scheme.getReference();
+      this.mark = scheme.getIdentity();
+      this.length = scheme.getLength();
+      this.label = scheme.getLabel();
    }
    
    /**
@@ -189,7 +189,7 @@ final class ReadGraph extends HashMap {
       Type type = getType(field, real, node);
       
       if(key != null) {
-         return new NewType(type, this, key);
+         return new CreateType(type, this, key);
       }
       return type;      
    }
