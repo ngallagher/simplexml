@@ -169,10 +169,10 @@ public class CycleStrategy implements Strategy {
    }
    
    /**
-    * This is returns the label used by this strategy instance. This
-    * attribute name is used to add data to XML elements to enable
-    * the deserialization process to know the exact instance to use
-    * when creating a <code>Type</code> for a specific field.
+    * This is returns the attribute used to store information about
+    * the type to the XML document. This attribute name is used to 
+    * add data to XML elements to enable the deserialization process
+    * to know the exact instance to use when creating a type.
     * 
     * @return the name of the attribute used to store the type
     */
