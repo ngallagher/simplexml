@@ -90,22 +90,22 @@ public class CycleStrategy implements Strategy {
    /**
     * This is used to specify the length of array instances.
     */
-   protected String length;
+   private String length;
    
    /**
     * This is the label used to mark the type of an object.
     */
-   protected String label;
+   private String label;
    
    /**
     * This is the attribute used to mark the identity of an object.
     */
-   protected String mark;
+   private String mark;
    
    /**
     * Thsi is the attribute used to refer to an existing instance.
     */
-   protected String refer;
+   private String refer;
    
    /**
     * Constructor for the <code>CycleStrategy</code> object. This is
@@ -167,6 +167,54 @@ public class CycleStrategy implements Strategy {
       this.refer = refer;
       this.mark = mark;
    }
+   
+   /**
+    * This is returns the label used by this strategy instance. This
+    * attribute name is used to add data to XML elements to enable
+    * the deserialization process to know the exact instance to use
+    * when creating a <code>Type</code> for a specific field.
+    * 
+    * @return the name of the attribute used to store the type
+    */
+   public String getLabel() {
+      return label;
+   }
+   
+   /**
+    * This returns the attribute used to store references within the
+    * serialized XML document. The reference attribute is added to
+    * the serialized XML element so that cycles in the object graph 
+    * can be recreated. This is an optional attribute.
+    * 
+    * @return this returns the name of the reference attribute
+    */
+   public String getReference() {
+      return refer;
+   }
+   
+   /**
+    * This returns the attribute used to store the identities of all
+    * objects serialized to the XML document. The identity attribute
+    * stores a unique identifiers, which enables this strategy to
+    * determine an objects identity within the serialized XML.
+    * 
+    * @return this returns the name of the identity attribute used
+    */
+   public String getIdentity() {
+      return mark;
+   }
+   
+   /**
+    * This returns the attribute used to store the array length in
+    * the serialized XML document. The array length is required so
+    * that the deserialization process knows how to construct the
+    * array before any of the array elements are deserialized.
+    * 
+    * @return this returns the name of the array length attribute
+    */
+   public String getLength() {
+      return length;
+   }  
 
    /**
     * This method is used to read an object from the specified node.
