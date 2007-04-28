@@ -42,7 +42,7 @@ import java.util.Map;
  *       &lt;/object&gt;
  *    &lt;/root&gt;
  * 
- * <pre>
+ * </pre>
  * In the above serialized XML there is a circular reference, where
  * the XML element with id "2" contains a reference to itself. In
  * most data binding frameworks this will cause an infinite loop, 
