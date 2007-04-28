@@ -48,7 +48,7 @@ final class ReadState extends WeakHashMap<Object, ReadGraph>{
     * document. The specified strategy is used to acquire the names
     * of the special attributes used during the serialization.
     * 
-    * @param scheme this is the strategy used to handle cycles
+    * @param scheme this is name scheme used by the cycle strategy 
     */
    public ReadState(NameScheme scheme) {
       this.scheme = scheme;

@@ -66,7 +66,7 @@ final class ReadGraph extends HashMap {
     * document. The specified strategy is used to acquire the names
     * of the special attributes used during the serialization.
     * 
-    * @param scheme this is the strategy used to handle cycles
+    * @param scheme this is the name scheme used by the strategy 
     */
    public ReadGraph(NameScheme scheme) {
       this.refer = scheme.getReference();
