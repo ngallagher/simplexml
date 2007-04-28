@@ -77,6 +77,17 @@ public class ArrayCycleTest extends ValidationTestCase {
    "      </entry>\n"+
    "   </array>\n"+
    "</root>";
+   
+   private static final String PROMOTE =
+   "<value>\n"+
+   "   <list length='1' class='simple.xml.graph.ArrayCycleTest$ElementValue'>\n"+
+   "      <entry>\n"+
+   "         <value class='simple.xml.graph.ArrayCycleTest$ElementValue'>\n"+
+   "            <element>Example text</element>\n"+
+   "         </value>\n"+
+   "      </entry>\n"+
+   "   </list>\n"+
+   "</value>\n";
 
    @Root(name="root")
    private static class ArrayExample {
@@ -110,7 +121,7 @@ public class ArrayCycleTest extends ValidationTestCase {
    }   
    
    @Root(name="root")
-   private static class NestedExample {
+   private static class NestedArrayExample {
       
       @ElementArray(name="array", parent="entry")
       public Value[] array;
@@ -200,7 +211,7 @@ public class ArrayCycleTest extends ValidationTestCase {
    }
    
    public void testNestedExample() throws Exception {
-      NestedExample root = persister.read(NestedExample.class, NESTED);
+      NestedArrayExample root = persister.read(NestedArrayExample.class, NESTED);
       
       assertEquals(root.array.length, 2);
       assertTrue(root.array[0].list == root.array);
@@ -224,7 +235,7 @@ public class ArrayCycleTest extends ValidationTestCase {
       persister.write(root, out);
       
       // Ensure references survive serialization
-      root = persister.read(NestedExample.class, out.toString());
+      root = persister.read(NestedArrayExample.class, out.toString());
       
       assertEquals(root.array.length, 2);
       assertTrue(root.array[0].list == root.array);
@@ -241,6 +252,19 @@ public class ArrayCycleTest extends ValidationTestCase {
       assertEquals(element.element, "Example element text");
       assertEquals(text.name, "blah");
       assertEquals(text.text, "Some text");
+   }
+   
+   public void testPromotion() throws Exception {
+      Value example = persister.read(Value.class, PROMOTE);
+      
+      assertEquals(example.list.length, 1);
+      assertTrue(example.list instanceof ElementValue[]);
+      
+      ElementValue value = (ElementValue) example.list[0];
+      
+      assertEquals(value.element, "Example text");
+      
+      validate(example, persister);
    }
 }
 
