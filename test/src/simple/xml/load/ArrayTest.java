@@ -12,7 +12,7 @@ public class ArrayTest extends ValidationTestCase {
    private static final String SOURCE =
    "<?xml version=\"1.0\"?>\n"+
    "<root>\n"+
-   "   <array size='5'>\n\r"+
+   "   <array length='5'>\n\r"+
    "      <entry>\n"+
    "         <text value='entry one'/>  \n\r"+
    "      </entry>\n"+
@@ -34,7 +34,7 @@ public class ArrayTest extends ValidationTestCase {
    private static final String PRIMITIVE =
    "<?xml version=\"1.0\"?>\n"+
    "<root>\n"+
-   "   <array size='5'>\n\r"+
+   "   <array length='5'>\n\r"+
    "      <text>entry one</text>  \n\r"+
    "      <text>entry two</text>  \n\r"+
    "      <text>entry three</text>  \n\r"+
@@ -46,7 +46,7 @@ public class ArrayTest extends ValidationTestCase {
    private static final String COMPOSITE =
    "<?xml version=\"1.0\"?>\n"+
    "<root>\n"+
-   "   <array size='5'>\n\r"+
+   "   <array length='5'>\n\r"+
    "      <entry>\r\n"+
    "         <text value='entry one'/>  \n\r"+
    "      </entry>\n  "+      
@@ -68,7 +68,7 @@ public class ArrayTest extends ValidationTestCase {
    private static final String PRIMITIVE_NULL = 
    "<?xml version=\"1.0\"?>\n"+
    "<root>\n"+
-   "   <array size='5'>\n\r"+
+   "   <array length='5'>\n\r"+
    "      <text/>  \n\r"+
    "      <text>entry two</text>  \n\r"+
    "      <text>entry three</text>  \n\r"+
@@ -80,7 +80,7 @@ public class ArrayTest extends ValidationTestCase {
    private static final String COMPOSITE_NULL = 
    "<?xml version=\"1.0\"?>\n"+
    "<root>\n"+
-   "   <array size='5'>\n\r"+
+   "   <array length='5'>\n\r"+
    "      <entry/>\r\n"+     
    "      <entry>\r\n"+
    "         <text value='entry two'/>  \n\r"+
@@ -96,7 +96,7 @@ public class ArrayTest extends ValidationTestCase {
    private static final String CHARACTER =
    "<?xml version=\"1.0\"?>\n"+
    "<root>\n"+
-   "   <array size='5'>\n\r"+
+   "   <array length='5'>\n\r"+
    "      <char>a</char>  \n\r"+
    "      <char>b</char>  \n\r"+
    "      <char>c</char>  \n\r"+

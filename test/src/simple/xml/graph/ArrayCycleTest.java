@@ -8,14 +8,13 @@ import simple.xml.ElementArray;
 import simple.xml.Root;
 import simple.xml.ValidationTestCase;
 import simple.xml.load.Persister;
-import simple.xml.Text;
 
 public class ArrayCycleTest extends ValidationTestCase {
    
    private static final String SOURCE =
    "<?xml version=\"1.0\"?>\n"+
    "<root id='main'>\n"+
-   "   <one size='5' id='numbers'>\n\r"+
+   "   <one length='5' id='numbers'>\n\r"+
    "      <entry>\n"+
    "         <text value='entry one'/>  \n\r"+
    "      </entry>\n"+
@@ -33,7 +32,7 @@ public class ArrayCycleTest extends ValidationTestCase {
    "      </entry>\n"+
    "   </one>\n\r"+
    "   <two ref='numbers'/>\n"+
-   "   <three size='3'>\n" +
+   "   <three length='3'>\n" +
    "      <entry>\n"+
    "         <text value='tom'/>  \n\r"+
    "      </entry>\n"+
@@ -50,7 +49,7 @@ public class ArrayCycleTest extends ValidationTestCase {
    private static final String NESTED =
    "<?xml version=\"1.0\"?>\n"+
    "<root id='main'>\n"+
-   "   <array id='array' size='2'>\n" + // NestedExample.array : Value[]
+   "   <array id='array' length='2'>\n" + // NestedExample.array : Value[]
    "      <entry>\n"+
    "         <value>  \n\r"+
    "            <list ref='array'/>\n"+  // Value.list : Value[] -> NestedArray.array : Value[]
@@ -58,7 +57,7 @@ public class ArrayCycleTest extends ValidationTestCase {
    "      </entry>\n"+
    "      <entry>\n"+
    "         <value id='text'>\n"+
-   "            <list size='3' id='foo'>\n"+  // Value.list : Value[]
+   "            <list length='3' id='foo'>\n"+  // Value.list : Value[]
    "               <entry>\n"+
    "                  <value name='blah' class='simple.xml.graph.ArrayCycleTest$TextValue'>\n"+ // Value.list[0] : Value 
    "                    <text>Some text</text>\n"+  // TextExample.text : String

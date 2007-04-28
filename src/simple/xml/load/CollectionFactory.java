@@ -77,10 +77,8 @@ final class CollectionFactory extends Factory {
    /**
     * This creates a <code>Collection</code> instance from the type
     * provided. If the type provided is abstract or an interface then
-    * this throws an exception to indicate that the type can not be 
-    * used to represent the field value. Also, if the type class is 
-    * not a collection this will throw an exception. If however the 
-    * type class is suitable, the type will create an instance.
+    * this can promote the type to a collection type that can be 
+    * instantiated. This is done by asking the type to convert itself.
     * 
     * @param type the type used to instantiate the collection
     * 
@@ -97,7 +95,7 @@ final class CollectionFactory extends Factory {
       if(!isCollection(real)) {
          throw new InstantiationException("Type is not a collection %s", real);              
       }
-      return new CollectionType(type, real);         
+      return new ConversionType(type, real);         
    }  
 
    /**

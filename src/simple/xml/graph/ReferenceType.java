@@ -49,10 +49,11 @@ final class ReferenceType implements Type {
     * value when the <code>getInstance</code> methos is invoked.
     * 
     * @param value the value for the reference this represents
+    * @param type this is the type value for the instance
     */
-   public ReferenceType(Object value) {
-      this.type = value.getClass();
+   public ReferenceType(Object value, Class type) {      
       this.value = value;      
+      this.type = type;
    }
    
    /**

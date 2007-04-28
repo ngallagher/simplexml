@@ -38,7 +38,7 @@ final class ArrayType implements Type {
    /**
     * This is the optional field type for the array to be created. 
     */
-   private Class field;
+   private Class type;
    
    /**
     * This is used to determine the size of the array to be created.
@@ -51,10 +51,11 @@ final class ArrayType implements Type {
     * the specified type. The type specified must be the component
     * type for the array that is to be created. 
     * 
-    * @param field this is the component type for the array
+    * @param type this is the component type for the array
+    * @param size this is the size of the array to instantiate
     */
-   public ArrayType(Class field, int size) {
-      this.field = field;      
+   public ArrayType(Class type, int size) {
+      this.type = type;      
       this.size = size;
    }
    
@@ -67,7 +68,7 @@ final class ArrayType implements Type {
     * @return this returns a reference to an existing array
     */
    public Object getInstance() throws Exception {
-      return getInstance(field);
+      return getInstance(type);
    }
    
    /**
@@ -76,17 +77,12 @@ final class ArrayType implements Type {
     * If there was to type reference provided then this returns null
     * otherwise this will delegate to the <code>Type</code> given.
     * 
-    * @param this is the type to convert this array instance to
+    * @param type the type to convert this array instance to
     * 
     * @return this returns a reference to an existing array
     */
-   public Object getInstance(Class field) throws Exception {  
-      Class type = field.getComponentType();
-      
-      if(type != null) {
-         return Array.newInstance(type, size);
-      }
-      return null;
+   public Object getInstance(Class type) throws Exception {  
+      return Array.newInstance(type, size);
    }
    
    /**
@@ -98,7 +94,7 @@ final class ArrayType implements Type {
     * @return this returns the component type for the array
     */
    public Class getType() {
-      return field;
+      return type;
    }
    
    /**

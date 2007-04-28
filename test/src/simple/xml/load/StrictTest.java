@@ -12,7 +12,7 @@ public class StrictTest extends ValidationTestCase {
         
    private static final String SOURCE =
     "<root version='2.1' id='234'>\n" +
-    "   <list size='3' type='sorted'>\n" +
+    "   <list length='3' type='sorted'>\n" +
     "      <item>\n"+
     "         <entry name='1'>\n" +
     "            <value>value 1</value>\n" +

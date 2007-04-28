@@ -14,7 +14,7 @@ public class TextTest extends ValidationTestCase {
         
    private static final String TEXT_LIST =
    "<test>\n"+
-   "   <array size='3'>\n"+
+   "   <array length='3'>\n"+
    "     <entry>\n"+
    "        <text name='a' version='ONE'>Example 1</text>\r\n"+
    "     </entry>\n"+

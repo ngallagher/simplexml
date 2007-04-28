@@ -71,6 +71,7 @@ final class ElementArrayLabel implements Label {
     */
    public ElementArrayLabel(Contact contact, ElementArray label) {
       this.type = contact.getType();      
+      this.parent = label.parent();
       this.name = label.name();
       this.contact = contact;
       this.label = label;
@@ -89,7 +90,7 @@ final class ElementArrayLabel implements Label {
       if(!type.isArray()) {
          throw new InstantiationException("Type is not an array %s for %s", type, label);
       }
-      return getConverter(root, getParent());
+      return getConverter(root, parent);
    }
       
    /**
@@ -109,18 +110,6 @@ final class ElementArrayLabel implements Label {
          return new CompositeArray(root, type, entry, parent);        
       }
       return new PrimitiveArray(root, type, entry, parent);            
-   }
-
-   /**
-    * This method is used to acquire the parent element from the array
-    * label. For an array the parent must be set, it is required  so
-    * that null entries within the array can be specified by elements
-    * that contain not data. All parents must contain a valid name
-    * 
-    * @return this returns the name of the parent set on the array
-    */
-   private String getParent() {
-      return label.parent();
    }
 
    /**

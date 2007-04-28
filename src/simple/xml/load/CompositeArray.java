@@ -23,7 +23,6 @@ package simple.xml.load;
 import simple.xml.stream.OutputNode;
 import simple.xml.stream.InputNode;
 import java.lang.reflect.Array;
-import java.util.List;
 
 /**
  * The <code>CompositeArray</code> object is used to convert a list of
@@ -34,7 +33,7 @@ import java.util.List;
  * that can be deserialized dynamically. 
  * <pre>
  *
- *    &lt;array&gt;
+ *    &lt;array size="2"&gt;
  *       &lt;entry attribute="value"&gt;
  *          &lt;text&gt;example text value&lt;/text&gt;
  *       &lt;/entry&gt;

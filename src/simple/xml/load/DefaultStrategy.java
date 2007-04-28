@@ -38,25 +38,25 @@ import java.util.Map;
  */
 final class DefaultStrategy implements Strategy {
 
+   /**
+    * This is used to specify the size of an array element instance.
+    */
+   private static final String LENGTH = "length";
+   
    /**   
     * This is the attribute that is used to determine the real type.
     */
    private static final String LABEL = "class";
-
+   
    /**
-    * This is used to specify the size of an array element instance.
+    * This is the attribute that is used to determine an array size.
     */
-   private static final String SIZE = "size";
+   private String length;
    
    /**   
     * This is the attribute that is used to determine the real type.
     */   
    private String label;
-   
-   /**
-    * This is the attribute that is used to determine an array size.
-    */
-   private String size;
    
    /**
     * Constructor for the <code>DefaultStrategy</code> object. This 
@@ -65,7 +65,7 @@ final class DefaultStrategy implements Strategy {
     * for serialization this will add the appropriate "class" value.
     */
    public DefaultStrategy() {
-      this(LABEL, SIZE);           
+      this(LABEL, LENGTH);           
    }        
    
    /**
@@ -75,11 +75,11 @@ final class DefaultStrategy implements Strategy {
     * The attribute value can be any legal XML attribute name.
     * 
     * @param label this is the name of the attribute to use
-    * @param size this is used to determine the array size
+    * @param length this is used to determine the array length
     */
-   public DefaultStrategy(String label, String size) {
-      this.label = label;           
-      this.size = size;
+   public DefaultStrategy(String label, String length) {
+      this.length = length;
+      this.label = label;         
    }
    
    /**
@@ -128,30 +128,60 @@ final class DefaultStrategy implements Strategy {
       return null;
    }
    
-   private Type getArray(Class field, NodeMap node) throws Exception {      
-      Node entry = node.remove(size);
+   /**
+    * This is used to resolve and load a class for the given element.
+    * Resolution of the class to used is done by inspecting the
+    * XML element provided. If there is a "class" attribute on the
+    * element then its value is used to resolve the class to use.
+    * This also expects a "length" attribute for the array length.
+    * 
+    * @param type this is the type of the XML element expected
+    * @param node this is the element used to resolve an override
+    * 
+    * @return returns the class that should be used for the object
+    * 
+    * @throws Exception thrown if the class cannot be resolved
+    */   
+   private Type getArray(Class type, NodeMap node) throws Exception {      
+      Node entry = node.remove(length);
       
       if(entry == null) {
-         throw new ElementException("Array %s requires a %s attribute", field, size);
+         throw new ElementException("Array %s requires a '%s' attribute", type, length);
       }
       String value = entry.getValue();
       int size = Integer.parseInt(value);
       
-      return new ArrayType(field, size);
+      return new ArrayType(type, size);
    }
-      
+   
+   /**
+    * This is used to resolve and load a class for the given element.
+    * Resolution of the class to used is done by inspecting the
+    * XML element provided. If there is a "class" attribute on the
+    * element then its value is used to resolve the class to use.
+    * If no such attribute exists the specified field is returned,
+    * or if the field type is an array then the component type.
+    * 
+    * @param field this is the type of the XML element expected
+    * @param node this is the element used to resolve an override
+    * 
+    * @return returns the class that should be used for the object
+    * 
+    * @throws Exception thrown if the class cannot be resolved
+    */   
    private Class getType(Class field, NodeMap node) throws Exception {      
       Node entry = node.remove(label);      
+      Class type = field;
       
-      if(entry == null) {
-         return field;
+      if(field.isArray()) {
+         type = field.getComponentType();
       }
-      String name = entry.getValue();
-      Class type = Class.forName(name);
-             
+      if(entry != null) {
+         String name = entry.getValue();
+         type = Class.forName(name);
+      }    
       return type;
-   }   
-  
+   }     
    
    /**
     * This is used to attach a attribute to the provided element
@@ -198,13 +228,23 @@ final class DefaultStrategy implements Strategy {
       return false;
    }
    
+   /**
+    * This is used to add a length attribute to the element due to
+    * the fact that the serialized value is an array. The length
+    * of the array is acquired and inserted in to the attributes.
+    * 
+    * @param field this is the field type for the array to set
+    * @param value this is the actual value for the array to set
+    * @param node this is the map of attributes for the element
+    * 
+    * @return returns thr array component type that is set
+    */
    private Class setArray(Class field, Object value, NodeMap node){
-      Class real = field.getComponentType();
-      int length = Array.getLength(value);
+      int size = Array.getLength(value);
       
-      if(size != null) {       
-         node.put(size, String.valueOf(length));
+      if(length != null) {       
+         node.put(length, String.valueOf(size));
       }
-      return real;
+      return field.getComponentType();
    }
 }
