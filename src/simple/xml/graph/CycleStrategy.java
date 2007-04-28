@@ -80,7 +80,7 @@ public class CycleStrategy implements Strategy {
    /**
     * This is used to provide the names of the attributes to use.
     */
-   private NameScheme scheme;
+   private Syntax scheme;
    
    /**
     * This is used to maintain session state for writing the graph.
@@ -145,7 +145,7 @@ public class CycleStrategy implements Strategy {
     * @param length this is the length attribute used for arrays
     */   
    public CycleStrategy(String mark, String refer, String label, String length){
-      this.scheme = new NameScheme(mark, refer, label, length);
+      this.scheme = new Syntax(mark, refer, label, length);
       this.write = new WriteState(scheme);
       this.read = new ReadState(scheme);
    }

@@ -37,21 +37,21 @@ import java.util.WeakHashMap;
  */
 final class ReadState extends WeakHashMap<Object, ReadGraph>{
    
-   /**
+   /** 
     * This is the strategy used to perform the reference handling.
     */
-   private NameScheme scheme;
-   
+   private Syntax syntax;
+           
    /**
     * Constructor for the <code>ReadState</code> object. This is used
     * to create graphs that are used for reading objects from the XML
     * document. The specified strategy is used to acquire the names
     * of the special attributes used during the serialization.
     * 
-    * @param scheme this is name scheme used by the cycle strategy 
+    * @param syntax this is name scheme used by the cycle strategy 
     */
-   public ReadState(NameScheme scheme) {
-      this.scheme = scheme;
+   public ReadState(Syntax syntax) {
+      this.syntax = syntax;
    }
 
    /**
@@ -68,7 +68,7 @@ final class ReadState extends WeakHashMap<Object, ReadGraph>{
       ReadGraph read = get(map);
       
       if(read == null) {
-         read = new ReadGraph(scheme);
+         read = new ReadGraph(syntax);
          put(map, read);
       }
       return read;

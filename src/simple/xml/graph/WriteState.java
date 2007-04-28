@@ -40,7 +40,7 @@ final class WriteState extends WeakHashMap<Object, WriteGraph> {
    /**
     * This is the strategy used to perform the reference handling.
     */
-   private NameScheme scheme;
+   private Syntax syntax;
    
    /**
     * Constructor for the <code>WriteState</code> object. This is
@@ -48,10 +48,10 @@ final class WriteState extends WeakHashMap<Object, WriteGraph> {
     * the XML document. The specified strategy is used to acquire the
     * names of the special attributes used during the serialization.
     * 
-    * @param scheme this is the name scheme used by the strategy 
+    * @param syntax this is the name scheme used by the strategy 
     */
-   public WriteState(NameScheme scheme) {
-      this.scheme = scheme;
+   public WriteState(Syntax syntax) {
+      this.syntax = syntax;
    }
 
    /**
@@ -68,7 +68,7 @@ final class WriteState extends WeakHashMap<Object, WriteGraph> {
       WriteGraph write = get(map);
       
       if(write == null) {
-         write = new WriteGraph(scheme);
+         write = new WriteGraph(syntax);
          put(map, write);
       }
       return write;
