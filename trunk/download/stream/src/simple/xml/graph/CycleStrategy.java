@@ -75,12 +75,7 @@ public class CycleStrategy implements Strategy {
    /**
     * The default name of the attribute used to specify the class.
     */
-   private static final String LABEL = "class";  
-   
-   /**
-    * This is used to provide the names of the attributes to use.
-    */
-   private Syntax scheme;
+   private static final String LABEL = "class"; 
    
    /**
     * This is used to maintain session state for writing the graph.
@@ -91,6 +86,11 @@ public class CycleStrategy implements Strategy {
     * This is used to maintain session state for reading the graph.
     */
    private ReadState read;
+   
+   /**
+    * This is used to provide the names of the attributes to use.
+    */
+   private Syntax syntax;
    
    /**
     * Constructor for the <code>CycleStrategy</code> object. This is
@@ -145,9 +145,9 @@ public class CycleStrategy implements Strategy {
     * @param length this is the length attribute used for arrays
     */   
    public CycleStrategy(String mark, String refer, String label, String length){
-      this.scheme = new Syntax(mark, refer, label, length);
-      this.write = new WriteState(scheme);
-      this.read = new ReadState(scheme);
+      this.syntax = new Syntax(mark, refer, label, length);
+      this.write = new WriteState(syntax);
+      this.read = new ReadState(syntax);
    }
 
    /**
