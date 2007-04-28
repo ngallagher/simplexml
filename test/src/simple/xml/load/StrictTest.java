@@ -12,16 +12,22 @@ public class StrictTest extends ValidationTestCase {
         
    private static final String SOURCE =
     "<root version='2.1' id='234'>\n" +
-    "   <list type='sorted'>\n" +
-    "      <entry name='1'>\n" +
-    "         <value>value 1</value>\n" +
-    "      </entry>\n" +
-    "      <entry name='2'>\n" +
-    "         <value>value 2</value>\n" +
-    "      </entry>\n" +
-    "      <entry name='3'>\n" +
-    "         <value>value 3</value>\n" +
-    "      </entry>\n" +                   
+    "   <list size='3' type='sorted'>\n" +
+    "      <item>\n"+
+    "         <entry name='1'>\n" +
+    "            <value>value 1</value>\n" +
+    "         </entry>\n" +
+    "      </item>\n"+
+    "      <item>\n"+
+    "         <entry name='2'>\n" +
+    "            <value>value 2</value>\n" +
+    "         </entry>\n" +
+    "      </item>\n"+
+    "      <item>\n"+
+    "         <entry name='3'>\n" +
+    "            <value>value 3</value>\n" +
+    "         </entry>\n" +
+    "      </item>\n"+
     "   </list>\n" +
     "   <object name='name'>\n" +
     "      <integer>123</integer>\n" +
@@ -42,7 +48,7 @@ public class StrictTest extends ValidationTestCase {
    @Root(name="root", strict=false)
    private static class StrictExample {
 
-      @ElementArray(name="list")
+      @ElementArray(name="list", parent="item")
       private StrictEntry[] list;
 
       @Element(name="object")

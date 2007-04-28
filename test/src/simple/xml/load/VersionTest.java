@@ -139,7 +139,7 @@ public class VersionTest extends TestCase {
 		   return getInstance(type);
 	   }
 
-       private Object getInstance(Class type) throws Exception {
+       public Object getInstance(Class type) throws Exception {
 		   Constructor method = type.getDeclaredConstructor();
 
 		   if(!method.isAccessible()) {

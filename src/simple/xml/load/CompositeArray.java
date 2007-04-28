@@ -22,7 +22,7 @@ package simple.xml.load;
 
 import simple.xml.stream.OutputNode;
 import simple.xml.stream.InputNode;
-import java.util.ArrayList;
+import java.lang.reflect.Array;
 import java.util.List;
 
 /**
@@ -67,17 +67,17 @@ final class CompositeArray implements Converter {
     * This performs the traversal used for object serialization.
     */ 
    private Traverser root;
-      
-   /**
-    * This is the entry type for elements within the array.
-    */   
-   private Class entry;
 
    /**
     * This is the name to wrap each entry that is represented.
     */
    private String parent;
-
+   
+   /**
+    * This is the entry type for elements within the array.
+    */   
+   private Class entry;
+   
    /**
     * Constructor for the <code>CompositeArray</code> object. This is
     * given the array type for the contact that is to be converted. An
@@ -85,12 +85,13 @@ final class CompositeArray implements Converter {
     * elements and will be the same length as the number of elements.
     *
     * @param root this is the source object used for serialization
-    * @param entry the entry type to be stored within the array
+    * @param field this is the field type for the array being used
+    * @param entry this is the entry type for the array elements
     * @param parent this is the name to wrap the array element with
     */    
-   public CompositeArray(Source root, Class entry, String parent) {
-      this.factory = new ArrayFactory(root, entry);           
-      this.root = new Traverser(root);      
+   public CompositeArray(Source root, Class field, Class entry, String parent) {
+      this.factory = new ArrayFactory(root, field);           
+      this.root = new Traverser(root);     
       this.parent = parent;
       this.entry = entry;
    }
@@ -107,7 +108,7 @@ final class CompositeArray implements Converter {
     * @return this returns the item to attach to the object contact
     */ 
    public Object read(InputNode node) throws Exception{
-      ArrayType value = factory.getInstance(node);
+      Type value = factory.getInstance(node);
       
       if(!value.isReference()) {
          return read(node, value);         
@@ -127,19 +128,19 @@ final class CompositeArray implements Converter {
     * 
     * @return this returns the item to attach to the object contact
     */  
-   private Object read(InputNode node, ArrayType type) throws Exception{
-      List list = new ArrayList();
+   private Object read(InputNode node, Type type) throws Exception{
+      Object list = type.getInstance();      
       
-      while(true) {
+      for(int i = 0; true; i++) {
          InputNode next = node.getNext();
         
          if(next == null) {
-            return type.getInstance(list);
+            return list;
          }
          if(parent != null) {
             next = next.getNext();
          }
-         read(next, list);
+         read(next, list, i);
       } 
    }    
    
@@ -149,17 +150,17 @@ final class CompositeArray implements Converter {
     * the array. The node can be null only if there is a parent and
     * that parent contains no child XML elements.
     * 
-    * @param node this is the node to read the array value from
-    * 
+    * @param node this is the node to read the array value from 
     * @param list this is the list to add the array value in to
+    * @param index this is the offset to set the value in the array
     */
-   private void read(InputNode node, List list) throws Exception {
+   private void read(InputNode node, Object list, int index) throws Exception {
       Object value = null;     
       
       if(node != null) {
          value = root.read(node, entry);
       }
-      list.add(value);      
+      Array.set(list, index, value);      
    }
 
    /**
@@ -173,21 +174,36 @@ final class CompositeArray implements Converter {
     * @param node this is the XML element container to be populated
     */ 
    public void write(OutputNode node, Object source) throws Exception {
-      List list = factory.getList(source);                
+      int size = Array.getLength(source);                
       
-      for(Object item : list) {
-         OutputNode child = node;
+      for(int i = 0; i < size; i++) {   
+         OutputNode child = node.getChild(parent);
          
-         if(parent != null) {
-            child = node.getChild(parent);
+         if(child == null) {
+            break;
          }
-         if(item != null) {
-            write(child, item, entry);
-         }
-         if(parent != null) {
-            child.commit();
-         }
+         write(child, source, i);          
       }
+   }
+   
+   /**
+    * This <code>write</code> method will write the specified object
+    * to the given XML element as as array entries. Each entry within
+    * the given array must be assignable to the array component type.
+    * Each array entry is serialized as a root element, that is, its
+    * <code>Root</code> annotation is used to extract the name. 
+    * 
+    * @param source this is the source object array to be serialized 
+    * @param node this is the XML element container to be populated
+    * @param index this is the position in the array the value is in
+    */ 
+   private void write(OutputNode node, Object source, int index) throws Exception {
+      Object item = Array.get(source, index);      
+      
+      if(item != null) {
+         write(node, item, entry);
+      }    
+      node.commit();
    }
    
    /**
@@ -201,7 +217,7 @@ final class CompositeArray implements Converter {
     * @param node this is the XML element container to be populated
     * @param entry this is the type of the object that is expected
     */ 
-   private void write(OutputNode node, Object item, Class entry) throws Exception {         
+   private void write(OutputNode node, Object item, Class entry) throws Exception {      
       Class type = item.getClass();
 
       if(!entry.isAssignableFrom(type)) {

@@ -106,32 +106,21 @@ final class ElementArrayLabel implements Label {
       Class entry = type.getComponentType();
       
       if(!Factory.isPrimitive(entry)) {
-         return new CompositeArray(root, entry, parent);        
+         return new CompositeArray(root, type, entry, parent);        
       }
-      if(parent == null) {
-         throw new ElementException("Annotation %s requires parent for %s", label, type);        
-      }
-      return new PrimitiveArray(root, entry, parent);            
+      return new PrimitiveArray(root, type, entry, parent);            
    }
 
    /**
     * This method is used to acquire the parent element from the array
-    * label. This checks to ensure that the parent value has been 
-    * specified. If a value has not been specified then this method
-    * will return a null value, which represents no parent setting.
+    * label. For an array the parent must be set, it is required  so
+    * that null entries within the array can be specified by elements
+    * that contain not data. All parents must contain a valid name
     * 
-    * @return this returns null if not parent has been set
+    * @return this returns the name of the parent set on the array
     */
-   public String getParent() {
-      if(parent != null) {
-         return parent;
-      }
-      parent = label.parent();
-      
-      if(parent.length() == 0) {
-         parent = null;
-      }      
-      return parent;
+   private String getParent() {
+      return label.parent();
    }
 
    /**

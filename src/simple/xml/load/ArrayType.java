@@ -21,7 +21,6 @@
 package simple.xml.load;
 
 import java.lang.reflect.Array;
-import java.util.List;
 
 /**
  * The <code>ArrayType</code> object is a type used for constructing
@@ -42,9 +41,9 @@ final class ArrayType implements Type {
    private Class field;
    
    /**
-    * This is used if the array is a reference to an instance.
+    * This is used to determine the size of the array to be created.
     */
-   private Type type;
+   private int size;
    
    /**
     * This is used to specify the creation of an array type which
@@ -54,20 +53,9 @@ final class ArrayType implements Type {
     * 
     * @param field this is the component type for the array
     */
-   public ArrayType(Class field) {
+   public ArrayType(Class field, int size) {
       this.field = field;      
-   }
-   
-   /**
-    * This is used to construct an array from a reference to an
-    * existing array. The type specified must be a reference. If it
-    * is not a reference to an existing array type type returned is
-    * dependant on the implementation and could be a null value. 
-   
-    * @param type this is the type that references an array
-    */
-   public ArrayType(Type type) {
-      this.type = type;
+      this.size = size;
    }
    
    /**
@@ -76,49 +64,29 @@ final class ArrayType implements Type {
     * If there was to type reference provided then this returns null
     * otherwise this will delegate to the <code>Type</code> given.
     * 
-    *  @return this returns a reference to an existing array
+    * @return this returns a reference to an existing array
     */
    public Object getInstance() throws Exception {
-      if(type != null) {
-        throw new InstantiationException("Invalid reference for %s", field);
-      }
-      return type.getInstance();
+      return getInstance(field);
    }
    
    /**
-    * Creates the object array to use. This will use the provided
-    * list of values to form the values within the array. Each of
-    * the values witin the specified <code>List</code> will be
-    * set into a the array, if the type of the values within the
-    * list are not compatible then an exception is thrown.
+    * This is the instance that is acquired from this type. This is
+    * typically used if the <code>isReference</code> method is true.
+    * If there was to type reference provided then this returns null
+    * otherwise this will delegate to the <code>Type</code> given.
     * 
-    * @param list this is the list of values for the array    
+    * @param this is the type to convert this array instance to
     * 
-    * @return this is the obejct array instantiated for the type
+    * @return this returns a reference to an existing array
     */
-   public Object getInstance(List list) throws Exception {
-      return getInstance(list, list.size());
-   }
-   
-   /**
-    * Creates the object array to use. This will use the provided
-    * list of values to form the values within the array. Each of
-    * the values witin the specified <code>List</code> will be
-    * set into a the array, if the type of the values within the
-    * list are not compatible then an exception is thrown.
-    * 
-    * @param list this is the list of values for the array
-    * @param size the number of values to consider for copying
-    * 
-    * @return this is the obejct array instantiated for the type
-    */ 
-   private Object getInstance(List list, int size) throws Exception {
-      Object array = Array.newInstance(field, size);
-
-      for(int i = 0; i < size; i++) {
-         Array.set(array, i, list.get(i));
+   public Object getInstance(Class field) throws Exception {  
+      Class type = field.getComponentType();
+      
+      if(type != null) {
+         return Array.newInstance(type, size);
       }
-      return array;     
+      return null;
    }
    
    /**
@@ -130,9 +98,6 @@ final class ArrayType implements Type {
     * @return this returns the component type for the array
     */
    public Class getType() {
-      if(type != null) {
-         return type.getType();
-      }
       return field;
    }
    
@@ -145,9 +110,6 @@ final class ArrayType implements Type {
     * @retunr this returns true if the type is a reference type
     */
    public boolean isReference() {
-      if(type != null) {
-         return type.isReference();
-      }
       return false;
    }
    

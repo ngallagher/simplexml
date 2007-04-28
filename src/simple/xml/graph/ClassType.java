@@ -71,7 +71,7 @@ final class ClassType implements Type {
     *
     * @return this returns an instance of the specifiec class type
     */ 
-   private Object getInstance(Class type) throws Exception {
+   public Object getInstance(Class type) throws Exception {
       Constructor method = type.getDeclaredConstructor();   
 
       if(!method.isAccessible()) {

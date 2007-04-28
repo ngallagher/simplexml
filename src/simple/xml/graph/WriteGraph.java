@@ -20,6 +20,7 @@
 
 package simple.xml.graph;
 
+import java.lang.reflect.Array;
 import java.util.IdentityHashMap;
 import simple.xml.stream.NodeMap;
 
@@ -41,6 +42,8 @@ import simple.xml.stream.NodeMap;
  * @author Niall Gallagher
  */
 final class WriteGraph extends IdentityHashMap<Object, String> {
+   
+   private static final String SIZE = "size";
    
    /**
     * This is the label used to mark the type of an object.
@@ -91,7 +94,7 @@ final class WriteGraph extends IdentityHashMap<Object, String> {
       Class real = type;
       
       if(type.isArray()) {
-         real = type.getComponentType();
+         real = setArray(field, value, node);
       }
       if(type != field) {
          node.put(label, real.getName());
@@ -124,6 +127,16 @@ final class WriteGraph extends IdentityHashMap<Object, String> {
       put(value, unique);
       
       return false;     
+   }
+   
+   private Class setArray(Class field, Object value, NodeMap node){
+      Class real = field.getComponentType();
+      int length = Array.getLength(value);
+      
+      if(!containsKey(value)) {       
+         node.put(SIZE, String.valueOf(length));
+      }
+      return real;
    }
    
    /**
