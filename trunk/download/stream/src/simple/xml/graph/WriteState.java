@@ -38,9 +38,9 @@ import java.util.WeakHashMap;
 final class WriteState extends WeakHashMap<Object, WriteGraph> {
 
    /**
-    * This is the strategy used to perform the reference handling.
+    * This is the contract that specifies the attributes to use.
     */
-   private Syntax syntax;
+   private Contract contract;
    
    /**
     * Constructor for the <code>WriteState</code> object. This is
@@ -48,10 +48,10 @@ final class WriteState extends WeakHashMap<Object, WriteGraph> {
     * the XML document. The specified strategy is used to acquire the
     * names of the special attributes used during the serialization.
     * 
-    * @param syntax this is the name scheme used by the strategy 
+    * @param contract this is the name scheme used by the strategy 
     */
-   public WriteState(Syntax syntax) {
-      this.syntax = syntax;
+   public WriteState(Contract contract) {
+      this.contract = contract;
    }
 
    /**
@@ -68,7 +68,7 @@ final class WriteState extends WeakHashMap<Object, WriteGraph> {
       WriteGraph write = get(map);
       
       if(write == null) {
-         write = new WriteGraph(syntax);
+         write = new WriteGraph(contract);
          put(map, write);
       }
       return write;

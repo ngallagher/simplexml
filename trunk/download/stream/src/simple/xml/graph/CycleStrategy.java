@@ -90,7 +90,7 @@ public class CycleStrategy implements Strategy {
    /**
     * This is used to provide the names of the attributes to use.
     */
-   private Syntax syntax;
+   private Contract contract;
    
    /**
     * Constructor for the <code>CycleStrategy</code> object. This is
@@ -145,9 +145,9 @@ public class CycleStrategy implements Strategy {
     * @param length this is the length attribute used for arrays
     */   
    public CycleStrategy(String mark, String refer, String label, String length){
-      this.syntax = new Syntax(mark, refer, label, length);
-      this.write = new WriteState(syntax);
-      this.read = new ReadState(syntax);
+      this.contract = new Contract(mark, refer, label, length);
+      this.write = new WriteState(contract);
+      this.read = new ReadState(contract);
    }
 
    /**
