@@ -69,13 +69,13 @@ final class WriteGraph extends IdentityHashMap<Object, String> {
     * document. The specified strategy is used to acquire the names
     * of the special attributes used during the serialization.
     * 
-    * @param syntax this is the name scheme used by the strategy 
+    * @param contract this is the name scheme used by the strategy 
     */
-   public WriteGraph(Syntax syntax) {
-      this.refer = syntax.getReference();
-      this.mark = syntax.getIdentity();
-      this.length = syntax.getLength();
-      this.label = syntax.getLabel();
+   public WriteGraph(Contract contract) {
+      this.refer = contract.getReference();
+      this.mark = contract.getIdentity();
+      this.length = contract.getLength();
+      this.label = contract.getLabel();
    }
    
    /**

@@ -38,9 +38,9 @@ import java.util.WeakHashMap;
 final class ReadState extends WeakHashMap<Object, ReadGraph>{
    
    /** 
-    * This is the strategy used to perform the reference handling.
+    * This is the contract that specifies the attributes to use.
     */
-   private Syntax syntax;
+   private Contract contract;
            
    /**
     * Constructor for the <code>ReadState</code> object. This is used
@@ -48,10 +48,10 @@ final class ReadState extends WeakHashMap<Object, ReadGraph>{
     * document. The specified strategy is used to acquire the names
     * of the special attributes used during the serialization.
     * 
-    * @param syntax this is name scheme used by the cycle strategy 
+    * @param contract this is name scheme used by the cycle strategy 
     */
-   public ReadState(Syntax syntax) {
-      this.syntax = syntax;
+   public ReadState(Contract contract) {
+      this.contract = contract;
    }
 
    /**
@@ -68,7 +68,7 @@ final class ReadState extends WeakHashMap<Object, ReadGraph>{
       ReadGraph read = get(map);
       
       if(read == null) {
-         read = new ReadGraph(syntax);
+         read = new ReadGraph(contract);
          put(map, read);
       }
       return read;
