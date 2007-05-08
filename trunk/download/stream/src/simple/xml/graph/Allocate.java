@@ -33,7 +33,7 @@ import java.util.Map;
  * 
  * @author Niall Gallagher
  */
-class Allocate implements Type {
+final class Allocate implements Type {
    
    /**
     * This is used to create an instance of the specified type.
