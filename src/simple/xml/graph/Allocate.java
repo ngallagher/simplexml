@@ -1,5 +1,5 @@
 /*
- * CreateType.java January 2007
+ * Allocate.java January 2007
  *
  * Copyright (C) 2007, Niall Gallagher <niallg@users.sf.net>
  *

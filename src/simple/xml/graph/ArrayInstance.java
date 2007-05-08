@@ -1,5 +1,5 @@
 /*
- * ArrayType.java April 2007
+ * ArrayInstance.java April 2007
  *
  * Copyright (C) 2007, Niall Gallagher <niallg@users.sf.net>
  *

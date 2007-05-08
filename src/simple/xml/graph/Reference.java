@@ -1,5 +1,5 @@
 /*
- * ReferenceType.java May 2006
+ * Reference.java May 2006
  *
  * Copyright (C) 2006, Niall Gallagher <niallg@users.sf.net>
  *

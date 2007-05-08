@@ -1,5 +1,7 @@
 package simple.xml.load;
 
+import java.beans.Introspector;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -177,5 +179,15 @@ public class MethodScannerTest extends TestCase {
       assertTrue(list.contains(int.class));
       assertTrue(list.contains(long.class));
       assertTrue(list.contains(Collection.class));
+   }
+   
+   public String getName(Method method) {
+      String name = method.getName();
+      int size = name.length();
+      
+      if(size > 3) {
+         name = name.substring(3, size);
+      }
+      return Introspector.decapitalize(name);
    }
 }
