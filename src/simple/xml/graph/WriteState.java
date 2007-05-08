@@ -35,7 +35,7 @@ import java.util.WeakHashMap;
  * 
  * @see simple.xml.graph.WriteGraph
  */
-final class WriteState extends WeakHashMap<Object, WriteGraph> {
+class WriteState extends WeakHashMap<Object, WriteGraph> {
 
    /**
     * This is the contract that specifies the attributes to use.
