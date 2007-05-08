@@ -23,6 +23,7 @@ package simple.xml.load;
 import java.lang.reflect.Modifier;
 import simple.xml.stream.InputNode;
 import simple.xml.stream.OutputNode;
+import java.io.File;
 
 /**
  * The <code>Factory</code> object provides a base class for factories 
@@ -201,6 +202,9 @@ abstract class Factory {
       }
       if(type == Character.class) {
          return true;
+      }
+      if(type == File.class) {
+         return true;              
       }
       if(type.isPrimitive()) {
          return true;                 

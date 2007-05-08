@@ -1,5 +1,5 @@
 /*
- * ClassType.java January 2007
+ * Instance.java January 2007
  *
  * Copyright (C) 2007, Niall Gallagher <niallg@users.sf.net>
  *
