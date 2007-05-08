@@ -38,7 +38,7 @@ import java.util.HashMap;
  * 
  * @see simple.xml.graph.WriteGraph
  */
-final class ReadGraph extends HashMap {
+class ReadGraph extends HashMap {
    
    /**
     * This is used to represent the length of array object values.
@@ -150,7 +150,7 @@ final class ReadGraph extends HashMap {
       if(value == null) {        
          throw new CycleException("Invalid reference '%s' found", key);
       }
-      return new ReferenceType(value, real);
+      return new Reference(value, real);
    }
    
    /**
@@ -169,7 +169,7 @@ final class ReadGraph extends HashMap {
       if(field.isArray()) {
          return getArray(field, real, node);
       }
-      return new ClassType(real);
+      return new Instance(real);
    }
    
    /**
@@ -189,7 +189,7 @@ final class ReadGraph extends HashMap {
       Type type = getType(field, real, node);
       
       if(key != null) {
-         return new CreateType(type, this, key);
+         return new Allocate(type, this, key);
       }
       return type;      
    }
@@ -215,6 +215,6 @@ final class ReadGraph extends HashMap {
       String value = entry.getValue();
       int size = Integer.parseInt(value);
       
-      return new ArrayType(real, size);      
+      return new ArrayInstance(real, size);      
    }
 }
