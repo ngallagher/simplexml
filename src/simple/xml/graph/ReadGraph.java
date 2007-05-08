@@ -38,7 +38,7 @@ import java.util.HashMap;
  * 
  * @see simple.xml.graph.WriteGraph
  */
-class ReadGraph extends HashMap {
+final class ReadGraph extends HashMap {
    
    /**
     * This is used to represent the length of array object values.
