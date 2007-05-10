@@ -78,12 +78,7 @@ final class Scanner  {
    /**
     * This is used to store all labels that are XML text values.
     */
-   private Label text;
-   
-   /**
-    * This is the type the scanner uses to collection annotations.
-    */
-   private Class type;
+   private Label text;   
 
    /**
     * This is the optional root annotation for the scanned class.

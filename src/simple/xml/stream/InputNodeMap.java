@@ -41,7 +41,7 @@ final class InputNodeMap extends HashMap<String, InputNode> implements NodeMap {
    /**
     * This is the source node that this node map belongs to.
     */          
-   private Node source;        
+   private InputNode source;        
    
    /**
     * Constructor for the <code>InputNodeMap</code> object. This
@@ -50,7 +50,7 @@ final class InputNodeMap extends HashMap<String, InputNode> implements NodeMap {
     *
     * @param source this is the node this node map belongs to
     */ 
-   protected InputNodeMap(Node source) {
+   protected InputNodeMap(InputNode source) {
       this.source = source;            
    }        
 
@@ -63,7 +63,7 @@ final class InputNodeMap extends HashMap<String, InputNode> implements NodeMap {
     * @param source this is the node this node map belongs to
     * @param element the element to populate the node map with
     */ 
-   public InputNodeMap(Node source, StartElement element) {
+   public InputNodeMap(InputNode source, StartElement element) {
       this.source = source;           
       this.put(element);   
    }

@@ -34,7 +34,12 @@ import javax.xml.namespace.QName;
  * @author Niall Gallagher
  */ 
 class InputAttribute implements InputNode {
-
+	
+   /**
+    * This is the parent node to this attribute instance.
+    */
+   private InputNode parent;
+	   
    /**
     * Represents the source attribute if one was specified.
     */         
@@ -48,12 +53,7 @@ class InputAttribute implements InputNode {
    /**
     * Represents the value for this input attribute instance.
     */ 
-   private String value;
-   
-   /**
-    * This is the parent node to this attribute instance.
-    */
-   private Node parent;
+   private String value;  
         
    /**
     * Constructor for the <code>InputAttribute</code> object. This
@@ -63,7 +63,7 @@ class InputAttribute implements InputNode {
     * @param parent this is the parent node to this attribute
     * @param source this is the attribute that this will wrap
     */   
-   public InputAttribute(Node parent, Attribute source) {
+   public InputAttribute(InputNode parent, Attribute source) {
       this(parent, source, source.getName());
    }        
 
@@ -76,7 +76,7 @@ class InputAttribute implements InputNode {
     * @param source this is the attribute that this will wrap
     * @param name this is the name of the XML attribute
     */   
-   private InputAttribute(Node parent, Attribute source, QName name) {
+   private InputAttribute(InputNode parent, Attribute source, QName name) {
       this.name = name.getLocalPart();
       this.value = source.getValue();
       this.source = source;      
@@ -91,7 +91,7 @@ class InputAttribute implements InputNode {
     * @param name this is the name for this attribute object
     * @param value this is the value for this attribute object
     */     
-   public InputAttribute(Node parent, String name, String value) {
+   public InputAttribute(InputNode parent, String name, String value) {
 	  this.parent = parent;
       this.value = value;
       this.name = name;           
@@ -105,7 +105,7 @@ class InputAttribute implements InputNode {
     *   
     * @return this returns the parent node for this node
     */
-   public Node getParent() {
+   public InputNode getParent() {
 	   return parent;
    }
    

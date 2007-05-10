@@ -100,14 +100,14 @@ final class CompositeInlineList implements Converter {
     * 
     * @return this returns the item to attach to the object contact
     */ 
-   public Object read(InputNode node) throws Exception{
-      Type type = factory.getInstance(node);
-      Object list = type.getInstance();
+   public Object read(InputNode node) throws Exception{	  
+      Object value = factory.getInstance();
+      Collection list = (Collection) value;
       
-      if(!type.isReference()) {
-         return read(node, list);
+      if(list != null) {
+    	  return read(node, list);
       }
-      return list;
+      return null;
    }
    
    /**
@@ -118,21 +118,23 @@ final class CompositeInlineList implements Converter {
     * name of the entry element must match that root element name.
     * 
     * @param node this is the XML element that is to be deserialized
-    * @param result this is the collection that is to be populated
+    * @param list this is the collection that is to be populated
     * 
     * @return this returns the item to attach to the object contact
     */ 
-   private Object read(InputNode node, Object result) throws Exception {
-      Collection list = (Collection) result;                 
+   private Object read(InputNode node, Collection list) throws Exception {              
+      InputNode from = node.getParent();
+      String name = node.getName();
       
-      while(true) {
-         InputNode next = node.getNext();
-        
-         if(next == null) {
-            return list;
-         }
-         list.add(root.read(next, entry));
+      while(node != null) {
+    	  Object item = root.read(node, entry);
+    	  
+      	  if(item != null) {
+      		  list.add(item);
+      	  }
+    	  node = from.getNext(name);
       }
+      return list;
    }      
 
    /**
