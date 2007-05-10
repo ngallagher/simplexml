@@ -73,6 +73,16 @@ public interface InputNode extends Node {
    public NodeMap getAttributes();
    
    /**
+    * This is used to acquire the <code>Node</code> that is the
+    * parent of this node. This will return the node that is
+    * the direct parent of this node and allows for siblings to
+    * make use of nodes with their parents if required.  
+    *   
+    * @return this returns the parent node for this node
+    */
+   public InputNode getParent();
+   
+   /**
     * This returns the next child element within this element if
     * one exists. If all children have been read, or if there are
     * no child elements for this element then this returns null.
