@@ -20,8 +20,9 @@
 
 package simple.xml.load;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.lang.annotation.Annotation;
+import simple.xml.ElementInlineList;
 import simple.xml.ElementArray;
 import simple.xml.ElementList;
 import simple.xml.Attribute;
@@ -161,6 +162,9 @@ final class MethodScanner extends ContactList {
          process(method, label);
       }
       if(label instanceof ElementList) {
+         process(method, label);
+      }
+      if(label instanceof ElementInlineList) {
          process(method, label);
       }
       if(label instanceof ElementArray) {

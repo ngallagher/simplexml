@@ -56,14 +56,14 @@ final class LabelFactory {
     * 
     * @return returns the label instantiated for the field
     */
-   public static Label getInstance(Contact contact, Annotation label) {
-      try {                
-         Constructor factory = getConstructor(label);         
-         return (Label)factory.newInstance(contact, label);
-      }catch(Exception e) {
-         return null;
+   public static Label getInstance(Contact contact, Annotation label) throws Exception {               
+      Constructor factory = getConstructor(label);    
+      
+      if(!factory.isAccessible()) {
+         factory.setAccessible(true);
       }
-    } 
+      return (Label)factory.newInstance(contact, label);
+   } 
     
     /**
      * Creates a constructor that can be used to instantiate the label
