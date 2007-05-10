@@ -101,7 +101,7 @@ final class NodeReader {
     * @return this returns the next input node from the document
     */ 
    public InputNode readElement(InputNode from) throws Exception {
-      if(!stack.contains(from) && !stack.isEmpty()) {
+      if(!stack.isRelevant(from)) {    	  
          return null; 
       }
       XMLEvent event = reader.nextEvent();
@@ -120,6 +120,39 @@ final class NodeReader {
    }
    
    /**
+    * Returns the next input node from the XML document, if it is a
+    * child element of the specified input node. This essentially
+    * the same as the <code>readElement(InputNode)</code> object 
+    * except that this will not read the element if it does not have
+    * the name specified. This essentially acts as a peak function.
+    *
+    * @param from this is the input node to read with 
+    * @param name this is the name expected from the next element
+    *
+    * @return this returns the next input node from the document
+    */ 
+   public InputNode readElement(InputNode from, String name) throws Exception {
+      if(!stack.isRelevant(from)) {    	 
+    	  return null; 
+	  }
+	  XMLEvent event = reader.peek();
+	       
+	  while(event != null) {
+	     if(event.isEndElement()) {
+	        return null;
+	     } else if(event.isStartElement()) {
+	        if(isName(event, name)) {
+	           return readElement(from);
+	        }               
+	     } else {
+	         reader.nextEvent();
+	     }
+	     event = reader.peek();
+	  }
+	  return null;
+   }
+   
+   /**
     * This is used to convert the start element to an input node.
     * This will push the created input node on to the stack. The
     * input node created contains a reference to this reader. so
@@ -131,9 +164,26 @@ final class NodeReader {
     */    
    private InputNode readStart(InputNode from, XMLEvent event) throws Exception {
       StartElement start = event.asStartElement();
-      InputElement input = new InputElement(this, start);
+      InputElement input = new InputElement(from, this, start);
                
       return stack.push(input);
+   }
+
+   /**
+    * This is used to determine the name of the node specified. The
+    * name of the node is determined to be the name of the element
+    * if that element is converts to a valid StAX start element.
+    * 
+    * @param node this is the StAX node to acquire the name from
+    * @param name this is the name of the node to check against
+    * 
+    * @return true if the specified node has the given local name
+    */
+   private boolean isName(XMLEvent node, String name) {
+	   StartElement start = node.asStartElement();
+	   String local = start.getName().getLocalPart();
+	   
+	   return local.equals(name);
    }
    
    /**
@@ -177,6 +227,6 @@ final class NodeReader {
     */ 
    public void skipElement(InputNode from) throws Exception {
       while(readElement(from) != null);           
-   }
+   }  
 }
 

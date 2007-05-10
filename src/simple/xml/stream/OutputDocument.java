@@ -64,7 +64,19 @@ final class OutputDocument implements OutputNode {
       this.writer = writer;
       this.stack = stack;
    }     
-
+   
+   /**
+    * This is used to acquire the <code>Node</code> that is the
+    * parent of this node. This will return the node that is
+    * the direct parent of this node and allows for siblings to
+    * make use of nodes with their parents if required.  
+    *   
+    * @return this will always return null for this output    
+    */
+   public OutputNode getParent() {
+	   return null;
+   }
+   
    /**
     * To signify that this is the document element this method will
     * return null. Any object with a handle on an output node that

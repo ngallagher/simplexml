@@ -109,7 +109,7 @@ final class InputNodeMap extends HashMap<String, InputNode> implements NodeMap {
     * @param value this is the value to be given to the node
     */     
    private void put(Attribute event) {
-      put(new InputAttribute(event));           
+      put(new InputAttribute(source, event));           
    }
 
    /**
@@ -122,7 +122,7 @@ final class InputNodeMap extends HashMap<String, InputNode> implements NodeMap {
     * @param value this is the value to be given to the node
     */    
    public void put(String name, String value) {
-      put(new InputAttribute(name, value));
+      put(new InputAttribute(source, name, value));
    }
 
 

@@ -81,7 +81,20 @@ public interface InputNode extends Node {
     *
     * @exception Exception thrown if there was a parse error
     */ 
-   public InputNode getNext() throws Exception;   
+   public InputNode getNext() throws Exception;  
+   
+   /**
+    * This returns the next child in this element if that child
+    * has the name provided. If the next child element in this
+    * node does not have the name given then null is returned.
+    * 
+    * @param name this is the name of the next child element 
+    * 
+    * @return the next element if it has the name specified
+    * 
+    * @exception Exception thrown if there was a parse error
+    */
+   public InputNode getNext(String name) throws Exception;
 
    /**
     * This method is used to skip all child elements from this

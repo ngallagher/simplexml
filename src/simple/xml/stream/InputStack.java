@@ -96,4 +96,19 @@ final class InputStack extends LinkedList<InputNode> {
       add(value);
       return value;
    }
+   
+   /**
+    * This is used to determine if the specified node is relevant
+    * with respect to the state of the input stack. This returns
+    * true if there are no elements in the stack, which accounts
+    * for a new root node. Also this returns true if the specified
+    * node exists within the stack and is thus an active node.
+    * 
+    * @param value this is the input node value to be checked
+    * 
+    * @return returns true if the node is relevant in the stack
+    */
+   public boolean isRelevant(InputNode value) {
+	   return contains(value) || isEmpty();
+   }
 }

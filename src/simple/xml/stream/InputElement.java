@@ -49,6 +49,11 @@ class InputElement implements InputNode {
     * This is the node reader that reads from the XML document.
     */ 
    private NodeReader reader;
+   
+   /**
+    * This is the parent node for this XML input element node.
+    */
+   private InputNode parent;
  
    /**
     * Constructor for the <code>InputElement</code> object. This 
@@ -56,15 +61,29 @@ class InputElement implements InputNode {
     * an XML element. All attributes associated with the element 
     * given are extracted and exposed via the attribute node map.
     *
+    * @param parent this is the parent XML element for this 
     * @param element this is the XML element wrapped
     * @param reader this is the reader used to read XML elements
     */ 
-   public InputElement(NodeReader reader, StartElement element) throws Exception {
-      this.map = new InputNodeMap(this, element);
+   public InputElement(InputNode parent, NodeReader reader, StartElement element) {
+      this.map = new InputNodeMap(this, element);      
       this.element = element;
       this.reader = reader;           
-   }    
-
+      this.parent = parent;
+   }  
+   
+   /**
+    * This is used to acquire the <code>Node</code> that is the
+    * parent of this node. This will return the node that is
+    * the direct parent of this node and allows for siblings to
+    * make use of nodes with their parents if required.  
+    *   
+    * @return this returns the parent node for this node
+    */
+   public InputNode getParent() {
+	   return parent;
+   }
+   
    /**
     * This provides the position of this node within the document.
     * This allows the user of this node to report problems with
@@ -149,7 +168,24 @@ class InputElement implements InputNode {
    public InputNode getNext() throws Exception {
       return reader.readElement(this);
    }
-
+   
+   /**
+    * The method is used to acquire the next child attribute of this 
+    * element. If the next element from the <code>NodeReader</code> 
+    * is not a child node to the element that this represents then
+    * this will return null, also if the next element does not match
+    * the specified name then this will return null.
+    *
+    * @param name this is the name expected fromt he next element
+    *
+    * @return this returns the next child element of this node
+    *
+    * @exception Exception thrown if there is a problem reading
+    */  
+   public InputNode getNext(String name) throws Exception {
+      return reader.readElement(this, name);
+   }
+   
    /**
     * This method is used to skip all child elements from this
     * element. This allows elements to be effectively skipped such

@@ -49,16 +49,22 @@ class InputAttribute implements InputNode {
     * Represents the value for this input attribute instance.
     */ 
    private String value;
+   
+   /**
+    * This is the parent node to this attribute instance.
+    */
+   private Node parent;
         
    /**
     * Constructor for the <code>InputAttribute</code> object. This
     * is used to wrap a an attribute as an input node object. The
     * attribute can then be used in a similar manner to elements.
     *
+    * @param parent this is the parent node to this attribute
     * @param source this is the attribute that this will wrap
     */   
-   public InputAttribute(Attribute source) {
-      this(source, source.getName());
+   public InputAttribute(Node parent, Attribute source) {
+      this(parent, source, source.getName());
    }        
 
    /**
@@ -66,10 +72,11 @@ class InputAttribute implements InputNode {
     * is used to wrap a an attribute as an input node object. The
     * attribute can then be used in a similar manner to elements.
     *
+    * @param parent this is the parent node to this attribute
     * @param source this is the attribute that this will wrap
     * @param name this is the name of the XML attribute
     */   
-   private InputAttribute(Attribute source, QName name) {
+   private InputAttribute(Node parent, Attribute source, QName name) {
       this.name = name.getLocalPart();
       this.value = source.getValue();
       this.source = source;      
@@ -79,15 +86,29 @@ class InputAttribute implements InputNode {
     * Constructor for the <code>InputAttribute</code> object. This
     * is used to create an input attribute using the provided name
     * and value, all other values for this input node will be null.
-    *
+    * 
+    * @param parent this is the parent node to this attribute
     * @param name this is the name for this attribute object
     * @param value this is the value for this attribute object
     */     
-   public InputAttribute(String name, String value) {
+   public InputAttribute(Node parent, String name, String value) {
+	  this.parent = parent;
       this.value = value;
       this.name = name;           
    }
-
+   
+   /**
+    * This is used to acquire the <code>Node</code> that is the
+    * parent of this node. This will return the node that is
+    * the direct parent of this node and allows for siblings to
+    * make use of nodes with their parents if required.  
+    *   
+    * @return this returns the parent node for this node
+    */
+   public Node getParent() {
+	   return parent;
+   }
+   
    /**
     * This provides the position of this node within the document.
     * This allows the user of this node to report problems with
@@ -163,7 +184,20 @@ class InputAttribute implements InputNode {
    public InputNode getNext() {
       return null;           
    }
-
+   
+   /**
+    * Because the <code>InputAttribute</code> object represents an
+    * attribute this method will return null. An attribute is a
+    * simple name value pair an so can not contain any child nodes.
+    *
+    * @param name this is the name of the next expected element
+    *
+    * @return this always returns null for a requested child node
+    */
+   public InputNode getNext(String name) {
+      return null;           
+   }
+   
    /**
     * This method is used to skip all child elements from this
     * element. This allows elements to be effectively skipped such
