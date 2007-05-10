@@ -20,8 +20,9 @@
 
 package simple.xml.load;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.lang.annotation.Annotation;
+import simple.xml.ElementInlineList;
 import simple.xml.ElementArray;
 import simple.xml.ElementList;
 import simple.xml.Element;
@@ -94,7 +95,7 @@ final class Scanner  {
     */
    public Scanner(Class type) throws Exception {           
       this.attributes = new LabelMap(this);
-      this.elements = new LabelMap(this);
+      this.elements = new LabelMap(this);      
       this.scan(type);
    }       
 
@@ -225,7 +226,7 @@ final class Scanner  {
          }            
          scan(real, type);
          type = type.getSuperclass();
-      }
+      }      
       process(real);      
    }
 
@@ -245,7 +246,7 @@ final class Scanner  {
 
       for(int i = 0; i < method.length; i++) {
          scan(method[i]);              
-      }      
+      }     
    }
    
    /**
@@ -273,9 +274,9 @@ final class Scanner  {
     *
     * @param type this is the type of the class to be inspected
     */    
-   private void root(Class type) {
+   private void root(Class<?> type) {
       if(type.isAnnotationPresent(Root.class)) {
-          root = (Root)type.getAnnotation(Root.class);
+          root = type.getAnnotation(Root.class);
       }
    }
   
@@ -337,6 +338,9 @@ final class Scanner  {
    private void scan(Contact field, Annotation label) throws Exception {
       if(label instanceof Attribute) {
          process(field, label, attributes);
+      }
+      if(label instanceof ElementInlineList) {
+         process(field, label, elements);
       }
       if(label instanceof ElementList) {
          process(field, label, elements);

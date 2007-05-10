@@ -220,8 +220,8 @@ final class Traverser {
     * 
     * @return this returns the root annotation for the XML schema
     */   
-   private Root getRoot(Class type) throws Exception {
-      return (Root)type.getAnnotation(Root.class);
+   private Root getRoot(Class<?> type) throws Exception {
+      return type.getAnnotation(Root.class);
    }
 
    /**

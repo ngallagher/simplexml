@@ -20,9 +20,11 @@
 
 package simple.xml.load;
 
+import java.util.Collection;
+import java.lang.annotation.Annotation;
 import simple.xml.stream.OutputNode;
 import simple.xml.stream.InputNode;
-import java.util.Collection;
+import simple.xml.Root;
 
 /**
  * The <code>CompositeList</code> object is used to convert an element
@@ -127,16 +129,38 @@ final class CompositeInlineList implements Converter {
       String name = node.getName();
       
       while(node != null) {
-    	  Object item = root.read(node, entry);
-    	  
-      	  if(item != null) {
-      		  list.add(item);
-      	  }
-    	  node = from.getNext(name);
+         Object item = read(node, entry);
+         
+         if(item != null) {
+            list.add(item);
+         }   	
+    	   node = from.getNext(name);
       }
       return list;
-   }      
-
+   }     
+   
+   /**
+    * This <code>read</code> method wll read the XML element from the     
+    * provided node. This checks to ensure that the deserialized type
+    * is the same as the entry type provided. If the types are not 
+    * the same then an exception is thrown. This is done to ensure
+    * each node in the collection contain the same root annotaiton. 
+    * 
+    * @param node this is the XML element that is to be deserialized
+    * @param expect this is the type expected of the deserialized type
+    *      
+    * @return this returns the item to attach to the object contact
+    */ 
+   private Object read(InputNode node, Class expect) throws Exception {
+      Object item = root.read(node, expect);
+      Class type = item.getClass();
+      
+      if(!isCompatible(type, entry)) {
+         throw new RootException("Root name for %s must match %s", type, expect);          
+      }
+      return item;      
+   }
+   
    /**
     * This <code>write</code> method will write the specified object
     * to the given XML element as as list entries. Each entry within
@@ -154,10 +178,31 @@ final class CompositeInlineList implements Converter {
       for(Object item : list) {
          Class type = item.getClass();
 
-         if(!entry.isAssignableFrom(type)) {
-            throw new PersistenceException("Entry %s does not match %s", type, entry);                     
+         if(!isCompatible(type, entry)) {
+            throw new RootException("Root name for %s must match %s", type, entry);                     
          }
          root.write(node, item, entry);
       }
+   }
+   
+   /**
+    * This is used to determine if the two types specified have the
+    * same <code>Root</code> annotation name. Also, this requires
+    * that the types be assignable to each other, that is, that the
+    * expected type can reference a class of the specified type.
+    * 
+    * @param type this is the actual type of the deserialized item
+    * @param expect this is the expected type from the annotation
+    * 
+    * @return this returns true if the types are compatible 
+    */
+   private boolean isCompatible(Class<?> type, Class<?> expect) throws Exception {
+      Root root = expect.getAnnotation(Root.class);
+      Root real = type.getAnnotation(Root.class);
+      
+      if(!entry.isAssignableFrom(type)) {
+         throw new PersistenceException("Entry %s does not match %s", type, entry);
+      }
+      return root.name() == real.name();
    }
 }

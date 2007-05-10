@@ -21,6 +21,7 @@
 package simple.xml.load;
 
 import simple.xml.ElementInlineList;
+import simple.xml.Root;
 
 /**
  * The <code>ElementListLabel</code> represents a label that is used
@@ -54,12 +55,12 @@ final class ElementInlineListLabel implements Label {
     * Represents the type of objects this list will hold.
     */
    private Class item;
-   
-   /**
-    * This is the name of the element from the annotation.
-    */
-   private String name;
 	
+   /**
+    * This is the root annotation for the specified type.
+    */
+   private Root root;
+   
    /**
     * Constructor for the <code>ElementListLabel</code> object. This
     * creates a label object, which can be used to convert an XML 
@@ -68,13 +69,33 @@ final class ElementInlineListLabel implements Label {
     * @param field this is the field that this label represents
     * @param label the annotation that contains the schema details
     */
-   public ElementInlineListLabel(Contact contact, ElementInlineList label) {
-      this.type = contact.getType();
+   public ElementInlineListLabel(Contact contact, ElementInlineList label) throws Exception {
+      this.type = contact.getType();  
       this.item = label.type();
-      this.contact = contact;
-      this.label = label;
+      this.label = label; 
+      this.root = getRoot(item);
+      this.contact = contact;     
    }
-	
+   
+   /**
+    * This is used to acquire the <code>Root</code> annotation for the
+    * specified type. This is requires so that the inline list knows
+    * what the name of the elements it contains is. This allows the
+    * deserialization process to collect the correct elements.
+    * 
+    * @param type this is the type to acquire the root annotation for
+    * 
+    * @return this returns the root annotation for the specified type
+    */
+   private Root getRoot(Class<?> type) throws Exception {
+      Class<?> entry = item;
+      
+      if(!type.isAnnotationPresent(Root.class)) {
+         throw new RootException("Entry %s specified by %s has no root", entry, label);
+      }
+      return entry.getAnnotation(Root.class);      
+   }
+   
    /**
     * This will create a <code>Converter</code> for transforming an XML
     * element into a collection of XML serializable objects. The XML
@@ -85,9 +106,21 @@ final class ElementInlineListLabel implements Label {
     * 
     * @return this returns the converter for creating a collection 
     */
-   public Converter getConverter(Source root) {
+   public Converter getConverter(Source root) throws Exception {
       return new CompositeInlineList(root, type, item);      
-   }
+   }   
+   
+   /**
+    * This is used to acquire the name of the XML element as taken
+    * from the contact annotation. Every XML annotation must contain 
+    * a name, so that it can be identified from the XML source. This
+    * allows the class to be used as a schema for the XML document. 
+    * 
+    * @return returns the name of the annotation for the contact
+    */   
+   public String getName() {
+      return root.name();
+   }  
 
    /**
     * This acts as a convinience method used to determine the type of
@@ -114,18 +147,6 @@ final class ElementInlineListLabel implements Label {
     */
    public Contact getContact() {
       return contact;
-   }
-   
-   /**
-    * This is used to acquire the name of the XML element as taken
-    * from the contact annotation. Every XML annotation must contain 
-    * a name, so that it can be identified from the XML source. This
-    * allows the class to be used as a schema for the XML document. 
-    * 
-    * @return returns the name of the annotation for the contact
-    */   
-   public String getName() {
-      return name;
    }
    
    /**
