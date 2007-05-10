@@ -45,5 +45,15 @@ public interface Node {
     * 
     * @throws Exception if there is a problem getting the value
     */
-   public String getValue() throws Exception;   
+   public String getValue() throws Exception;  
+   
+   /**
+    * This is used to acquire the <code>Node</code> that is the
+    * parent of this node. This will return the node that is
+    * the direct parent of this node and allows for siblings to
+    * make use of nodes with their parents if required.  
+    *   
+    * @return this returns the parent node for this node
+    */
+   public Node getParent();
 }

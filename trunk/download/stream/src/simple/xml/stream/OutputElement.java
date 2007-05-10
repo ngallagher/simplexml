@@ -42,6 +42,11 @@ class OutputElement implements OutputNode {
    protected NodeWriter writer;
    
    /**
+    * This is the parent XML element to this output node.
+    */
+   private OutputNode parent;
+   
+   /**
     * Represents the value that has been set for the element.
     */ 
    private String value;
@@ -57,15 +62,29 @@ class OutputElement implements OutputNode {
     * an XML document. This requires the writer that is used to 
     * generate the actual document and the name of this node.
     *
+    * @param parent this is the parent node to this output node
     * @param writer this is the writer used to generate the file
     * @param name this is the name of the element this represents
     */ 
-   public OutputElement(NodeWriter writer, String name) {
-      this.table = new OutputNodeMap(this);           
+   public OutputElement(OutputNode parent, NodeWriter writer, String name) {
+      this.table = new OutputNodeMap(this);      
       this.writer = writer;           
+      this.parent = parent;
       this.name = name;
    }     
-
+   
+   /**
+    * This is used to acquire the <code>Node</code> that is the
+    * parent of this node. This will return the node that is
+    * the direct parent of this node and allows for siblings to
+    * make use of nodes with their parents if required.  
+    *   
+    * @return this returns the parent node for this node
+    */
+   public OutputNode getParent() {
+	   return parent;
+   }
+   
    /**
     * Returns the name of the node that this represents. This is
     * an immutable property and cannot be changed. This will be

@@ -161,5 +161,17 @@ final class OutputNodeMap extends HashMap<String, Node> implements NodeMap {
       public String getName() {
          return name;              
       }
+      
+      /**
+       * This is used to acquire the <code>Node</code> that is the
+       * parent of this node. This will return the node that is
+       * the direct parent of this node and allows for siblings to
+       * make use of nodes with their parents if required.  
+       *   
+       * @return this returns the parent node for this node
+       */
+      public Node getParent() {
+    	  return source;
+      }      
    }
 }

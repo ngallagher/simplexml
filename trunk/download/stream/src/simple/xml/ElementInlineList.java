@@ -1,5 +1,5 @@
 /*
- * ElementList.java July 2006
+ * ElementInlineList.java July 2006
  *
  * Copyright (C) 2006, Niall Gallagher <niallg@users.sf.net>
  *
@@ -24,38 +24,33 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Retention;
 
 /**
- * The <code>ElementList</code> annotation represents a field that is
- * a list of elements stored in a <code>Collection</code> object. The
- * collection object deserialized is typically of the same type as
- * the field. However, a <code>class</code> attribute can be used to
- * override the field type, however the type must be assignable.
- * <pre>
- * 
- *    &lt;list class="demo.ExampleList"&gt;
- *       &lt;element name="one"/&gt;
- *       &lt;element name="two"/&gt;
- *       &lt;element name="three"/&gt;  
- *    &lt;/list&gt;
+ * The <code>ElementInlineList</code> annotation represents a field 
+ * that is a list of elements stored in a <code>Collection</code> 
+ * object. The collection object deserialized is typically of the 
+ * same type as the field. However, if the type is not instantiable
+ * then it is given one from the Java Collections framework.
+ * <pre>  
+ *    
+ *    &lt;element name="one"/&gt;
+ *    &lt;element name="two"/&gt;
+ *    &lt;element name="three"/&gt;
+ *    &lt;element name="four"/&gt; 
  * 
  * </pre>
- * If a <code>class</code> attribute is not provided and the type of
- * the field is abstract, a suitable match is searched for from the
- * collections available from the Java collections framework.
+ * Caution must be taken when using this annotation as the type of
+ * list can not be deserialized exactly if the type is not concrete.
+ * Thus, if type is importand then the annotated field should be an
+ * instantiable type. If not a default type is used if possible. 
+ * Also the <code>CycleStrategy</code> can not maintain references
+ * to collections that are annotated as inline.
  * 
  * @author Niall Gallagher
+ * 
+ * @see simple.xml.ElementList
  */
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ElementList {
+public @interface ElementInlineList {
    
-   /**
-    * This represents the name of the XML element. Annotated fields
-    * must provide the name of the element they represent so that
-    * that can be serialized and deserialized to and from the XML.
-    * 
-    * @return the name of the XML element this represents
-    */
-   public String name();
-
    /**
     * Represents the type of object the element list contains. This
     * type is used to deserialize the XML elements from the list. 

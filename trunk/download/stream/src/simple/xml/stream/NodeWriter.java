@@ -165,7 +165,7 @@ final class NodeWriter {
     */ 
    public OutputNode writeElement(OutputNode parent, String name) throws Exception {
       if(stack.isEmpty()) {
-         return writeStart(name);       
+         return writeStart(parent, name);       
       }
       if(stack.contains(parent)) {
          OutputNode top = stack.top();
@@ -176,7 +176,7 @@ final class NodeWriter {
          while(stack.top() != parent) {
             writeEnd(stack.pop());
          }       
-         return writeStart(name);
+         return writeStart(parent, name);
       }
       return null;
    }
@@ -187,12 +187,13 @@ final class NodeWriter {
      * name before writing the start tag. Once the tag is written 
      * the node is pushed on to the head of the output node stack.
      *
+     * @param parent this is the parent node to the next output node
      * @param name this is the name of the node that is to be written
      *
      * @return this returns an output node used for writing content
      */       
-   private OutputNode writeStart(String name) throws Exception {
-      OutputNode node = new OutputElement(this, name);
+   private OutputNode writeStart(OutputNode parent, String name) throws Exception {
+      OutputNode node = new OutputElement(parent, this, name);
 
       if(name != null) {
           writer.writeStart(name);
