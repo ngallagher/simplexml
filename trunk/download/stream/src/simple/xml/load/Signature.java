@@ -8,27 +8,43 @@ final class Signature {
    
    private Label label;
    
-   private Class type;
-   
-   public Signature(Contact contact, Label label) {
-      this.type = contact.getType();
+   public Signature(Contact contact, Label label) {      
       this.contact = contact;
       this.label = label;
    }
   
-   public Class getType() {
-      return type;
+   public Class getDependant() {
+      return label.getDependant();
    }
    
    public Contact getContact() {
       return contact;
    }
    
-   public String getName() {
+   public String getName() throws Exception {
       if(label.isInline()) {
-         return getRoot();
+         return getRoot();         
       }
       return getDefault();
+   }
+   
+   private String getRoot() throws Exception {
+      Class type = getDependant();
+      Root root = getRoot(type);     
+      
+      if(root == null) {
+         throw new PersistenceException("Root required for %s in %s", type, label);        
+      }
+      String name = root.name();
+      
+      if(isEmpty(name)) {
+         throw new PersistenceException("Root requires name for %s in %s", type, label);
+      }     
+      return root.name();
+   }
+   
+   private Root getRoot(Class<?> type) {
+      return type.getAnnotation(Root.class);      
    }
    
    private String getDefault() {
@@ -38,25 +54,6 @@ final class Signature {
          return name;
       }
       return contact.getName();
-   }
-   
-   private String getRoot() {
-      Class type = label.getType();
-      Root root = getRoot(type);
-      
-      if(root == null) {
-         /* Exception */  
-      }
-      String name = root.name();
-      
-      if(isEmpty(name)) {
-         /* Exception */
-      }     
-      return root.name();
-   }
-   
-   private Root getRoot(Class<?> type) {
-      return type.getAnnotation(Root.class);      
    }
    
    /**

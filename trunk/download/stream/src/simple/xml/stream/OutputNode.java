@@ -72,6 +72,16 @@ public interface OutputNode extends Node {
    public void setAttribute(String name, String value);
    
    /**
+    * This is used to acquire the <code>Node</code> that is the
+    * parent of this node. This will return the node that is
+    * the direct parent of this node and allows for siblings to
+    * make use of nodes with their parents if required.  
+    *   
+    * @return this returns the parent node for this node
+    */
+   public OutputNode getParent();
+   
+   /**
     * This is used to create a child element within the element that
     * this object represents. When a new child is created with this
     * method then the previous child is committed to the document.
@@ -82,6 +92,8 @@ public interface OutputNode extends Node {
     */ 
    public OutputNode getChild(String name) throws Exception;        
 
+   public void remove() throws Exception;
+   
    /**
     * The <code>commit</code> method is used flush and commit any 
     * child nodes that have been created by this node. This allows

@@ -48,7 +48,29 @@ interface Label {
     *         XML elements to objects and vice versa
     */
    public Converter getConverter(Source root) throws Exception;
-
+   
+   /**
+    * This is used to acquire the name of the element or attribute
+    * that is used by the class schema. The name is determined by
+    * checking for an override within the annotation. If it contains
+    * a name then that is used, if however the annotation does not
+    * specify a name the the field or method name is used instead.
+    * 
+    * @return returns the name that is used for the XML property
+    */
+   public String getName() throws Exception;
+   
+   /**
+    * This returns the dependant type for the annotation. This type
+    * is the type other than the annotated field or method type that
+    * the label depends on. For the <code>ElementList</code> and 
+    * the <code>ElementArray</code> this is the component type that
+    * is deserialized individually and inserted into the container. 
+    * 
+    * @return this is the type that the annotation depends on
+    */
+   public Class getDependant();
+   
    /**
     * This is used to acquire the contact object for this label. The 
     * contact retrieved can be used to set any object or primitive that
@@ -71,17 +93,6 @@ interface Label {
     * @return this returns the type of the field class
     */
    public Class getType();
-   
-   /**
-    * This is used to acquire the name of the element or attribute
-    * that is used by the class schema. The name is determined by
-    * checking for an override within the annotation. If it contains
-    * a name then that is used, if however the annotation does not
-    * specify a name the the field or method name is used instead.
-    * 
-    * @return returns the name that is used for the XML property
-    */
-   public String getName();
    
    /**
     * This is used to acquire the name of the element or attribute

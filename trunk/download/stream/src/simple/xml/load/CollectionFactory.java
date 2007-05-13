@@ -61,7 +61,7 @@ final class CollectionFactory extends Factory {
 	   Class type = getConversion(field);	
 	   
 	   if(type != null) {
-		   return new ClassType(type);
+		   return type.newInstance();
 	   }
 	   return null;
    }

@@ -173,7 +173,26 @@ final class CompositeInlineList implements Converter {
     */ 
    public void write(OutputNode node, Object source) throws Exception {
       Collection list = (Collection) source;                
+      OutputNode parent = node.getParent();      
       
+      if(!node.isCommitted()) {
+         node.remove();
+      }
+      write(parent, list);
+   }
+   
+   /**
+    * This <code>write</code> method will write the specified object
+    * to the given XML element as as list entries. Each entry within
+    * the given collection must be assignable from the annotated 
+    * type specified within the <code>ElementList</code> annotation.
+    * Each entry is serialized as a root element, that is, its
+    * <code>Root</code> annotation is used to extract the name. 
+    * 
+    * @param source this is the source collection to be serialized 
+    * @param node this is the XML element container to be populated
+    */ 
+   public void write(OutputNode node, Collection list) throws Exception {  
       for(Object item : list) {
          Class type = item.getClass();
 
