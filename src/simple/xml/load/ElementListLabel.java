@@ -93,7 +93,32 @@ final class ElementListLabel implements Label {
       }
       return new CompositeList(root, type, item);      
    }
-
+   
+   /**
+    * This is used to acquire the name of the element or attribute
+    * that is used by the class schema. The name is determined by
+    * checking for an override within the annotation. If it contains
+    * a name then that is used, if however the annotation does not
+    * specify a name the the field or method name is used instead.
+    * 
+    * @return returns the name that is used for the XML property
+    */
+   public String getName() throws Exception {
+      return sign.getName();
+   }
+   
+   /**
+    * This is used to acquire the dependant type for the annotated
+    * array. This will simply return the type that the array is
+    * composed to hold. This must be a serializable type, that is,
+    * a type that is annotated with the <code>Root</code> class.
+    * 
+    * @return this returns the component type for the array
+    */
+   public Class getDependant() {
+      return item;
+   }
+   
    /**
     * This acts as a convinience method used to determine the type of
     * contact this represents. This is used when an object is written
@@ -119,19 +144,6 @@ final class ElementListLabel implements Label {
     */
    public Contact getContact() {
       return sign.getContact();
-   }
-   
-   /**
-    * This is used to acquire the name of the element or attribute
-    * that is used by the class schema. The name is determined by
-    * checking for an override within the annotation. If it contains
-    * a name then that is used, if however the annotation does not
-    * specify a name the the field or method name is used instead.
-    * 
-    * @return returns the name that is used for the XML property
-    */
-   public String getName() {
-      return sign.getName();
    }
    
    /**

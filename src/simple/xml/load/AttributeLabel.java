@@ -75,20 +75,9 @@ final class AttributeLabel implements Label {
     * 
     * @param root this is source object used for serialization
     */
-   public Converter getConverter(Source root) {
+   public Converter getConverter(Source root) throws Exception {
       return new Primitive(root, type);
    }
-   
-   /**
-    * This acts as a convinience method used to determine the type of
-    * the contact this represents. This will be a primitive type of a
-    * primitive type from the <code>java.lang</code> primitives.
-    * 
-    * @return this returns the type of the contact class
-    */  
-   public Class getType() {
-      return type;
-   }  
    
    /**
     * This is used to acquire the name of the element or attribute
@@ -99,7 +88,7 @@ final class AttributeLabel implements Label {
     * 
     * @return returns the name that is used for the XML property
     */
-   public String getName() {
+   public String getName() throws Exception {
       return sign.getName();
    }
    
@@ -127,6 +116,28 @@ final class AttributeLabel implements Label {
     */   
    public Contact getContact() {
       return sign.getContact();
+   }
+   
+   /**
+    * This acts as a convinience method used to determine the type of
+    * the contact this represents. This will be a primitive type of a
+    * primitive type from the <code>java.lang</code> primitives.
+    * 
+    * @return this returns the type of the contact class
+    */  
+   public Class getType() {
+      return type;
+   }
+   
+   /**
+    * This is used to acquire the dependant class for this label. 
+    * This returns null as there are no dependants to the attribute
+    * annotation as it can only hold primitives with no dependants.
+    * 
+    * @return this is used to return the dependant type of null
+    */
+   public Class getDependant() {
+      return null;
    }
    
    /**

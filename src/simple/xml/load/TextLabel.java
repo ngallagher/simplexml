@@ -134,6 +134,17 @@ final class TextLabel implements Label {
    }
    
    /**
+    * This is used to acquire the dependant class for this label. 
+    * This returns null as there are no dependants to the XML text
+    * annotation as it can only hold primitives with no dependants.
+    * 
+    * @return this is used to return the dependant type of null
+    */
+   public Class getDependant() {
+      return null;
+   }
+   
+   /**
     * This is used to determine whether the XML element is required. 
     * This ensures that if an XML element is missing from a document
     * that deserialization can continue. Also, in the process of

@@ -127,7 +127,7 @@ final class NodeWriter {
    public boolean isCommitted(OutputNode node) {
       return !active.contains(node);
    }
-  
+ 
    /**
     * This method is used to commit all nodes on the stack up to and
     * including the specified node. This will effectively create end 
@@ -151,7 +151,15 @@ final class NodeWriter {
          stack.pop();
       }
    } 
-
+   
+   public void remove(OutputNode node) throws Exception {
+      if(stack.top() != node) {
+         throw new NodeException("Cannot remove node");
+      }      
+      writer.reset();
+      stack.pop();
+   }
+   
    /**
     * This is used to create a new element under the specified node.
     * This will effectively commit all nodes that are open until this

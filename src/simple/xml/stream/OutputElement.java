@@ -167,6 +167,10 @@ class OutputElement implements OutputNode {
       return writer.writeElement(this, name);
    }
    
+   public void remove() throws Exception {
+      writer.remove(this);
+   }
+   
    /**
     * This will commit this element and any uncommitted elements
     * elements that are decendents of this node. For instance if

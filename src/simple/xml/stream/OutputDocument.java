@@ -157,6 +157,13 @@ final class OutputDocument implements OutputNode {
    public OutputNode getChild(String name) throws Exception {
       return writer.writeElement(this, name);
    }
+   
+   public void remove() throws Exception {
+      if(stack.isEmpty()) {
+         throw new NodeException("No root node");              
+      }           
+      stack.bottom().remove();  
+   }
 
    /**
     * This will commit this element and any uncommitted elements

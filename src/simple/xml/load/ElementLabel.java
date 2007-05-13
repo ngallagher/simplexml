@@ -79,11 +79,24 @@ final class ElementLabel implements Label {
     * 
     * @return this returns a converter for serializing XML elements
     */
-   public Converter getConverter(Source source) {
+   public Converter getConverter(Source source) throws Exception {
       if(Factory.isPrimitive(type)) {
          return new Primitive(source, type);
       }
       return new Composite(source, type);
+   }
+   
+   /**
+    * This is used to acquire the name of the element or attribute
+    * that is used by the class schema. The name is determined by
+    * checking for an override within the annotation. If it contains
+    * a name then that is used, if however the annotation does not
+    * specify a name the the field or method name is used instead.
+    * 
+    * @return returns the name that is used for the XML property
+    */
+   public String getName() throws Exception {
+      return sign.getName();
    }
    
    /**
@@ -97,19 +110,6 @@ final class ElementLabel implements Label {
     */
    public Contact getContact() {
       return sign.getContact();
-   }
-   
-   /**
-    * This is used to acquire the name of the element or attribute
-    * that is used by the class schema. The name is determined by
-    * checking for an override within the annotation. If it contains
-    * a name then that is used, if however the annotation does not
-    * specify a name the the field or method name is used instead.
-    * 
-    * @return returns the name that is used for the XML property
-    */
-   public String getName() {
-      return sign.getName();
    }
    
    /**
@@ -137,6 +137,17 @@ final class ElementLabel implements Label {
     */  
    public Class getType() {
       return type;
+   }
+   
+   /**
+    * This is used to acquire the dependant class for this label. 
+    * This returns null as there are no dependants to the element
+    * annotation as it can only hold primitives with no dependants.
+    * 
+    * @return this is used to return the dependant type of null
+    */
+   public Class getDependant() {
+      return null;
    }
    
    /**

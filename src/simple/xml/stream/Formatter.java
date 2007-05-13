@@ -20,7 +20,6 @@
 
 package simple.xml.stream;
 
-import java.io.BufferedWriter;
 import java.io.Writer;
 
 /**
@@ -60,16 +59,16 @@ final class Formatter {
     * Represents the XML escape sequence for the ampersand sign.
     */ 
    private static final char[] AND = { '&', 'a', 'm', 'p', ';'};
-
-   /**
-    * Creates the indentations that are used bu the XML file.
-    */         
-   private Indenter indenter;
    
    /**
     * Output used to write the generated XML result to.
     */ 
-   private Writer result;
+   private NodeBuffer result;
+   
+   /**
+    * Creates the indentations that are used bu the XML file.
+    */         
+   private Indenter indenter;
 
    /**
     * Represents the encoding to use in the generated prolog.
@@ -90,7 +89,7 @@ final class Formatter {
     * @param format this is the format object to use 
     */ 
    public Formatter(Writer result, Format format){
-       this.result = new BufferedWriter(result);
+       this.result = new NodeBuffer(result);
        this.indenter = new Indenter(format);
        this.encoding = format.getEncoding();      
    }
@@ -125,11 +124,11 @@ final class Formatter {
       String text = indenter.push();
 
       if(last == Tag.START) {
-         write('>');    
+         append('>');    
       }                
-      write(text);
-      write('<');
-      write(name);
+      append(text);
+      append('<');
+      append(name);
       last = Tag.START;
    }
   
@@ -201,6 +200,15 @@ final class Formatter {
       last = Tag.END;
    }
 
+   
+   public void reset() throws Exception {
+      if(last != Tag.START) {
+         throw new NodeException("Can not remove element text");
+      }
+      indenter.pop();
+      result.reset();
+   }
+
    /**
     * This is used to flush the writer when the XML if it has been
     * buffered. The flush method is used by the node writer after an
@@ -242,6 +250,39 @@ final class Formatter {
     */    
    private void write(String plain) throws Exception{
       result.write(plain);                    
+   }
+   
+   /**
+    * This is used to write a character to the output stream without
+    * any translation. This is used when writing the start tags and
+    * end tags, this is also used to write attribute names.
+    *
+    * @param ch this is the character to be written to the output
+    */ 
+   private void append(char ch) throws Exception {
+      result.append(ch);           
+   }
+
+   /**
+    * This is used to write plain text to the output stream without
+    * any translation. This is used when writing the start tags and
+    * end tags, this is also used to write attribute names.
+    *
+    * @param plain this is the text to be written to the output
+    */    
+   private void append(char[] plain) throws Exception {
+      result.append(plain);           
+   }
+
+   /**
+    * This is used to write plain text to the output stream without
+    * any translation. This is used when writing the start tags and
+    * end tags, this is also used to write attribute names.
+    *
+    * @param plain this is the text to be written to the output
+    */    
+   private void append(String plain) throws Exception{
+      result.append(plain);                    
    }
    
    /**
