@@ -44,7 +44,7 @@ final class ElementListLabel implements Label {
    /**
     * This references the contact from the source object.
     */
-   private Contact contact;
+   private Signature sign;
    
    /**
     * This is the type of collection this list will instantiate.
@@ -59,7 +59,7 @@ final class ElementListLabel implements Label {
    /**
     * This is the name of the element from the annotation.
     */
-   private String name;
+   private String name;  
 	
    /**
     * Constructor for the <code>ElementListLabel</code> object. This
@@ -70,10 +70,10 @@ final class ElementListLabel implements Label {
     * @param label the annotation that contains the schema details
     */
    public ElementListLabel(Contact contact, ElementList label) {
+      this.sign = new Signature(contact, this);
       this.type = contact.getType();
       this.item = label.type();
-      this.name = label.name();
-      this.contact = contact;
+      this.name = label.name();      
       this.label = label;
    }
 	
@@ -88,6 +88,9 @@ final class ElementListLabel implements Label {
     * @return this returns the converter for creating a collection 
     */
    public Converter getConverter(Source root) {
+      if(label.inline()) {
+         return new CompositeInlineList(root, type, item);
+      }
       return new CompositeList(root, type, item);      
    }
 
@@ -115,18 +118,32 @@ final class ElementListLabel implements Label {
     * @return returns the contact that this label is representing
     */
    public Contact getContact() {
-      return contact;
+      return sign.getContact();
    }
    
    /**
-    * This is used to acquire the name of the XML element as taken
-    * from the contact annotation. Every XML annotation must contain 
-    * a name, so that it can be identified from the XML source. This
-    * allows the class to be used as a schema for the XML document. 
+    * This is used to acquire the name of the element or attribute
+    * that is used by the class schema. The name is determined by
+    * checking for an override within the annotation. If it contains
+    * a name then that is used, if however the annotation does not
+    * specify a name the the field or method name is used instead.
+    * 
+    * @return returns the name that is used for the XML property
+    */
+   public String getName() {
+      return sign.getName();
+   }
+   
+   /**
+    * This is used to acquire the name of the element or attribute
+    * as taken from the annotation. If the element or attribute
+    * explicitly specifies a name then that name is used for the
+    * XML element or attribute used. If however no overriding name
+    * is provided then the method or field is used for the name. 
     * 
     * @return returns the name of the annotation for the contact
-    */   
-   public String getName() {
+    */
+   public String getOverride() {
       return name;
    }
    
@@ -141,6 +158,17 @@ final class ElementListLabel implements Label {
     */   
    public boolean isRequired() {
       return label.required();
+   }
+   
+   /**
+    * This is used to determine whether the list has been specified
+    * as inline. If the list is inline then no overrides are needed
+    * and the outer XML element for the list is not used.
+    * 
+    * @return this returns whether the annotation is inline
+    */
+   public boolean isInline() {
+      return label.inline();
    }
    
    /**

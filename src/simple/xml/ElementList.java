@@ -76,4 +76,15 @@ public @interface ElementList {
     * @return true if the element is required, false otherwise
     */        
    public boolean required() default true;
+   
+   /**
+    * Determines whether the element list is inlined with respect
+    * to the parent XML element. An inlined element list does not
+    * contain an enclosing element. It is simple a sequence of 
+    * elements that appear one after another within an element.
+    * As such an inline element list does not require a name. 
+    *
+    * @return this returns true if the element list is inline
+    */
+   public boolean inline() default false;
 }

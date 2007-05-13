@@ -22,7 +22,6 @@ package simple.xml.load;
 
 import java.lang.reflect.Method;
 import java.lang.annotation.Annotation;
-import simple.xml.ElementInlineList;
 import simple.xml.ElementArray;
 import simple.xml.ElementList;
 import simple.xml.Element;
@@ -338,9 +337,6 @@ final class Scanner  {
    private void scan(Contact field, Annotation label) throws Exception {
       if(label instanceof Attribute) {
          process(field, label, attributes);
-      }
-      if(label instanceof ElementInlineList) {
-         process(field, label, elements);
       }
       if(label instanceof ElementList) {
          process(field, label, elements);

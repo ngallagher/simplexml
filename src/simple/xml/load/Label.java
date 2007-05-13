@@ -73,14 +73,26 @@ interface Label {
    public Class getType();
    
    /**
-    * This is used to acquire the name of the XML attribute as taken
-    * from the field annotation. Every XML annotation must contain a
-    * name, so that it can be identified from the XML source. This
-    * allows the class to be used as a schema for the XML document. 
+    * This is used to acquire the name of the element or attribute
+    * that is used by the class schema. The name is determined by
+    * checking for an override within the annotation. If it contains
+    * a name then that is used, if however the annotation does not
+    * specify a name the the field or method name is used instead.
     * 
-    * @return returns the name of the annotation for the field
+    * @return returns the name that is used for the XML property
     */
    public String getName();
+   
+   /**
+    * This is used to acquire the name of the element or attribute
+    * as taken from the annotation. If the element or attribute
+    * explicitly specifies a name then that name is used for the
+    * XML element or attribute used. If however no overriding name
+    * is provided then the method or field is used for the name. 
+    * 
+    * @return returns the name of the annotation for the contact
+    */
+   public String getOverride();
    
    /**
     * Determines whether the XML attribute or element is required. 
@@ -92,4 +104,15 @@ interface Label {
     * @return true if the label represents a some required data
     */
    public boolean isRequired();
+   
+   /**
+    * This is used to determine whether the label represents an
+    * inline XML entity. The <code>ElementList</code> annotation
+    * and the <code>Text</code> annotation represent inline 
+    * items. This means that they contain no containing element
+    * and so can not specify overrides or special attributes.
+    * 
+    * @return this returns true if the annotaiton is inline
+    */
+   public boolean isInline();
 }

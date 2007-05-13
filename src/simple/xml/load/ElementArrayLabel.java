@@ -44,7 +44,7 @@ final class ElementArrayLabel implements Label {
    /**
     * This references the field from the source object.
     */
-   private Contact contact;
+   private Signature sign;
    
    /**
     * This is the type of array this label will represent.
@@ -70,10 +70,10 @@ final class ElementArrayLabel implements Label {
     * @param label the annotation that contains the schema details
     */
    public ElementArrayLabel(Contact contact, ElementArray label) {
-      this.type = contact.getType();      
+      this.sign = new Signature(contact, this);   
+      this.type = contact.getType();
       this.parent = label.parent();
       this.name = label.name();
-      this.contact = contact;
       this.label = label;
    }
 	
@@ -136,18 +136,32 @@ final class ElementArrayLabel implements Label {
     * @return returns the contact that this label is representing
     */   
    public Contact getContact() {
-      return contact;
+      return sign.getContact();
    }
    
    /**
-    * This is used to acquire the name of the XML element as taken
-    * from the contact annotation. Every XML annotation must contain 
-    * a name, so that it can be identified from the XML source. This
-    * allows the class to be used as a schema for the XML document. 
+    * This is used to acquire the name of the element or attribute
+    * that is used by the class schema. The name is determined by
+    * checking for an override within the annotation. If it contains
+    * a name then that is used, if however the annotation does not
+    * specify a name the the field or method name is used instead.
     * 
-    * @return returns the name of the annotation for the field
-    */    
-   public String getName() {
+    * @return returns the name that is used for the XML property
+    */
+   public String getName(){
+      return sign.getName();
+   }
+   
+   /**
+    * This is used to acquire the name of the element or attribute
+    * as taken from the annotation. If the element or attribute
+    * explicitly specifies a name then that name is used for the
+    * XML element or attribute used. If however no overriding name
+    * is provided then the method or field is used for the name. 
+    * 
+    * @return returns the name of the annotation for the contact
+    */
+   public String getOverride() {
       return name;
    }
    
@@ -162,6 +176,19 @@ final class ElementArrayLabel implements Label {
     */  
    public boolean isRequired() {
       return label.required();
+   }
+   
+   /**
+    * This method is used by the deserialization process to check
+    * to see if an annotation is inline or not. If an annotation
+    * represents an inline XML entity then the deserialization
+    * and serialization process ignores overrides and special 
+    * attributes. By default element arrays are not inline.
+    * 
+    * @return this always returns false for array labels
+    */
+   public boolean isInline() {
+      return false;
    }
    
    /**

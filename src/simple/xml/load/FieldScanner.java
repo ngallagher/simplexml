@@ -22,7 +22,6 @@ package simple.xml.load;
 
 import java.lang.reflect.Field;
 import java.lang.annotation.Annotation;
-import simple.xml.ElementInlineList;
 import simple.xml.ElementArray;
 import simple.xml.ElementList;
 import simple.xml.Attribute;
@@ -115,9 +114,6 @@ final class FieldScanner extends ContactList {
     */
    public void scan(Field field, Annotation label) {
       if(label instanceof Attribute) {
-         process(field, label);
-      }
-      if(label instanceof ElementInlineList) {
          process(field, label);
       }
       if(label instanceof ElementList) {

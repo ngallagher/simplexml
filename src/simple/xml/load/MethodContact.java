@@ -20,6 +20,7 @@
 
 package simple.xml.load;
 
+import java.beans.Introspector;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
@@ -56,6 +57,11 @@ final class MethodContact implements Contact {
    private Class type;
    
    /**
+    * This represents the name of the method for this contact.
+    */
+   private String name;
+   
+   /**
     * Constructor for the <code>MethodContact</code> object. This is
     * used to compose a point of contact that makes use of a get and
     * set method on a class. The specified methods will be invoked
@@ -81,7 +87,43 @@ final class MethodContact implements Contact {
    public Class getType() {
       return type;
    }
+   
+   /**
+    * This is used to acquire the name of the method. This returns
+    * the name of the method without the get, set or is prefix that
+    * represents the Java Bean method type. Also this decaptitalizes
+    * the resulting name. The result is used to represent the XML
+    * attribute of element within the class schema represented.
+    * 
+    *  @return this returns the name of the method represented
+    */
+   public String getName() {
+      if(name == null) {
+         name = getName(write);
+      }
+      return name;
+   }
+   
+   /**
+    * This is used to acquire the name of the method with Java Bean
+    * conventions. This will remove the prefix to the method and
+    * decapitalize the resulting name. This provides an XML element
+    * or attribute name that can be used to represent the contact. 
+    * 
+    * @param method this is the setter method from the object
+    * 
+    * @return this returns the Java Bean name of this contact
+    */
+   private String getName(Method write) {
+      String name = write.getName();
+      int size = name.length();
 
+      if(size > 3) {
+         name = name.substring(3, size);
+      }
+      return Introspector.decapitalize(name);
+   }
+   
    /**
     * This is the annotation associated with the point of contact.
     * This will be an XML annotation that describes how the contact

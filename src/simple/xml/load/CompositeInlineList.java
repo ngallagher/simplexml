@@ -21,7 +21,6 @@
 package simple.xml.load;
 
 import java.util.Collection;
-import java.lang.annotation.Annotation;
 import simple.xml.stream.OutputNode;
 import simple.xml.stream.InputNode;
 import simple.xml.Root;
@@ -197,12 +196,12 @@ final class CompositeInlineList implements Converter {
     * @return this returns true if the types are compatible 
     */
    private boolean isCompatible(Class<?> type, Class<?> expect) throws Exception {
-      Root root = expect.getAnnotation(Root.class);
+      Root require = expect.getAnnotation(Root.class);
       Root real = type.getAnnotation(Root.class);
       
       if(!entry.isAssignableFrom(type)) {
          throw new PersistenceException("Entry %s does not match %s", type, entry);
       }
-      return root.name() == real.name();
+      return require.name() == real.name();
    }
 }
