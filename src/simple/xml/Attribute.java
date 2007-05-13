@@ -43,7 +43,7 @@ public @interface Attribute {
     * 
     * @return the name of the XML attribute this represents
     */
-   public String name();
+   public String name() default "";
 
    /**
     * Determines whether the attribute is required within an XML

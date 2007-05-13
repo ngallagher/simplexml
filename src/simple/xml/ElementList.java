@@ -54,7 +54,7 @@ public @interface ElementList {
     * 
     * @return the name of the XML element this represents
     */
-   public String name();
+   public String name() default "";
 
    /**
     * Represents the type of object the element list contains. This
