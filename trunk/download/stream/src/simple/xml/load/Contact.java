@@ -53,6 +53,17 @@ interface Contact {
    public Class getType();
    
    /**
+    * This represents the name of the object contact. If the contact
+    * is a field then the name of the field is provided. If however
+    * the contact is a method then the Java Bean name of the method
+    * is provided, which will be the decapatilized name of the 
+    * method without the get, set, or is prefix to the method.
+    * 
+    * @return this returns the name of the contact represented
+    */
+   public String getName();
+   
+   /**
     * This is used to set the value on the specified object through
     * this contact. Depending on the type of contact this will set
     * the value given, typically this will be done by invoking a

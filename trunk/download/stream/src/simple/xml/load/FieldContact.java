@@ -68,6 +68,17 @@ final class FieldContact implements Contact {
    public Class getType() {
       return field.getType();
    }
+   
+   /**
+    * This is used to acquire the name of the field. This will return
+    * the name of the field wich can then be used to determine the 
+    * XML attribute or element the contact represents. 
+    * 
+    *  @return this returns the name of the field represented
+    */
+   public String getName() {
+      return field.getName();
+   }
 
    /**
     * This is the annotation associated with the point of contact.
