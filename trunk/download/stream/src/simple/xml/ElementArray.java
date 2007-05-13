@@ -55,7 +55,7 @@ public @interface ElementArray {
     * 
     * @return the name of the XML element this represents
     */
-   public String name();
+   public String name() default "";
    
    /**
     * This is used to provide a parent XML element for each of the
@@ -65,7 +65,7 @@ public @interface ElementArray {
     * 
     * @return this returns the parent XML element for each value
     */
-   public String parent();
+   public String parent() default "entry";
    
    /**
     * Determines whether the element is required within the XML

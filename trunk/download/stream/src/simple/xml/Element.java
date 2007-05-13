@@ -52,7 +52,7 @@ public @interface Element {
     * 
     * @return the name of the XML element this represents
     */
-   public String name();
+   public String name() default "";
    
    /**
     * Determines whether the element is required within the XML
