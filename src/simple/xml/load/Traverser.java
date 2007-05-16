@@ -23,7 +23,6 @@ package simple.xml.load;
 import simple.xml.stream.InputNode;
 import simple.xml.stream.OutputNode;
 import simple.xml.stream.Position;
-import simple.xml.Root;
 
 /**
  * The <code>Traverser</code> object is used to traverse the XML class
@@ -91,44 +90,18 @@ final class Traverser {
     * @throws Exception if the XML schema does not match the XML
     */ 
    private Object read(InputNode node, Object value) throws Exception {
-      Class type = value.getClass();           
-      Root label = getRoot(type);
+	  Class type = value.getClass();
+	  String root = getName(type);
+	  
+	  if(root == null) {
+		  throw new RootException("Root annotation required for %s", type);
+	  }
+      Position line = node.getPosition();      
+      String name = node.getName();      
 
-      if(label == null) {
-         throw new RootException("No root annotation defined for %s", type);              
-      }  
-      return read(node, value, label);
-   }
-
-   /**
-    * This <code>read</code> method is used to deserialize an object 
-    * from the provided XML element. The class provided acts as the
-    * XML schema definition used to control the deserialization. If
-    * the <code>Root</code> annotation for the XML schema does not 
-    * have a name this throws an exception. Also, if the annotation 
-    * name is not the same as the XML node an exception is thrown.
-    * 
-    * @param node this is the node that is to be deserialized
-    * @param value this is the XML schema object to be used
-    * @param label this is the root annotation for the schema class
-    * 
-    * @return an object deserialized from the XML element 
-    * 
-    * @throws Exception if the XML schema does not match the XML
-    */    
-   private Object read(InputNode node, Object value, Root label) throws Exception {   
-      Class type = value.getClass();
-      String expect = label.name();
-
-      if(isEmpty(expect)) {
-         throw new RootException("No name for root annotation in %s", type);
+      if(!root.equals(name)) {
+          throw new RootException("Root for %s does not match element '%s' at %s", type, name, line);              
       }
-      Position line = node.getPosition();
-      String name = node.getName();
-      
-      if(!expect.equalsIgnoreCase(name)) {
-         throw new RootException("Annotation %s does not match element '%s' at %s", label, name, line);              
-      } 
       return value;
    }
 
@@ -161,17 +134,12 @@ final class Traverser {
     */
    public void write(OutputNode node, Object source, Class expect) throws Exception {
       Class type = source.getClass();      
-      Root label = getRoot(type);
+      String root = getName(type);
 
-      if(label == null) {
-         throw new RootException("No root annotation defined for %s", type);              
+      if(root == null) {
+    	  throw new RootException("Root annotation required for %s", type);
       }
-      String name = label.name();
-
-      if(isEmpty(name)) {
-         throw new RootException("No name for root annotation in %s", type);
-      }
-      write(node, source, expect, name);
+      write(node, source, expect, root);
    }
    
    /**
@@ -220,21 +188,7 @@ final class Traverser {
     * 
     * @return this returns the root annotation for the XML schema
     */   
-   private Root getRoot(Class<?> type) throws Exception {
-      return type.getAnnotation(Root.class);
-   }
-
-   /**
-    * This method is used to determine if a root annotation value is
-    * an empty value. Rather than determining if a string is empty
-    * be comparing it to an empty string this method allows for the
-    * value an empty string represents to be changed in future.
-    * 
-    * @param value this is the value to determine if it is empty
-    * 
-    * @return true if the string value specified is an empty value
-    */
-   private boolean isEmpty(String value) {
-      return value.length() == 0;
+   protected String getName(Class type) throws Exception {
+      return root.getName(type);
    }
 }

@@ -22,7 +22,6 @@ package simple.xml;
 
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Retention;
-import java.lang.annotation.Inherited;
 
 /**
  * This <code>Root</code> annotation is used to annotate classes that
@@ -34,7 +33,6 @@ import java.lang.annotation.Inherited;
  * 
  * @author Niall Gallagher
  */
-@Inherited
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Root {
   

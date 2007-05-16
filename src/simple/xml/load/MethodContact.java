@@ -20,7 +20,6 @@
 
 package simple.xml.load;
 
-import java.beans.Introspector;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
@@ -57,6 +56,11 @@ final class MethodContact implements Contact {
    private Class type;
    
    /**
+    * This is the dependant type as taken from the read method.
+    */
+   private Class item;
+   
+   /**
     * This represents the name of the method for this contact.
     */
    private String name;
@@ -71,10 +75,12 @@ final class MethodContact implements Contact {
     * @param write this forms the get method for the object
     */ 
    public MethodContact(MethodPart read, MethodPart write) {
-      this.label = read.getAnnotation();           
+      this.label = read.getAnnotation();   
+      this.item = read.getDependant();
       this.write = write.getMethod();
       this.read = read.getMethod();
-      this.type= read.getType();
+      this.type = read.getType();   
+      this.name = read.getName();
    }
 
    /**
@@ -89,6 +95,18 @@ final class MethodContact implements Contact {
    }
    
    /**
+    * This provides the dependant class for the contact. This will
+    * actually represent a generic type for the actual type. For
+    * contacts that use a <code>Collection</code> type this will
+    * be the generic type parameter for that collection.
+    * 
+    * @return this returns the dependant type for the contact
+    */
+   public Class getDependant() {
+      return item;
+   }   
+   
+   /**
     * This is used to acquire the name of the method. This returns
     * the name of the method without the get, set or is prefix that
     * represents the Java Bean method type. Also this decaptitalizes
@@ -97,31 +115,8 @@ final class MethodContact implements Contact {
     * 
     *  @return this returns the name of the method represented
     */
-   public String getName() {
-      if(name == null) {
-         name = getName(write);
-      }
+   public String getName() {		  
       return name;
-   }
-   
-   /**
-    * This is used to acquire the name of the method with Java Bean
-    * conventions. This will remove the prefix to the method and
-    * decapitalize the resulting name. This provides an XML element
-    * or attribute name that can be used to represent the contact. 
-    * 
-    * @param method this is the setter method from the object
-    * 
-    * @return this returns the Java Bean name of this contact
-    */
-   private String getName(Method write) {
-      String name = write.getName();
-      int size = name.length();
-
-      if(size > 3) {
-         name = name.substring(3, size);
-      }
-      return Introspector.decapitalize(name);
    }
    
    /**

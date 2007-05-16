@@ -23,7 +23,6 @@ package simple.xml.load;
 import java.util.Collection;
 import simple.xml.stream.OutputNode;
 import simple.xml.stream.InputNode;
-import simple.xml.Root;
 
 /**
  * The <code>CompositeList</code> object is used to convert an element
@@ -214,13 +213,13 @@ final class CompositeInlineList implements Converter {
     * 
     * @return this returns true if the types are compatible 
     */
-   private boolean isCompatible(Class<?> type, Class<?> expect) throws Exception {
-      Root require = expect.getAnnotation(Root.class);
-      Root real = type.getAnnotation(Root.class);
+   private boolean isCompatible(Class type, Class expect) throws Exception {
+	  String require = root.getName(expect);
+	  String real = root.getName(type);
       
       if(!entry.isAssignableFrom(type)) {
          throw new PersistenceException("Entry %s does not match %s", type, entry);
       }
-      return require.name() == real.name();
+      return require == real;
    }
 }

@@ -35,12 +35,12 @@ import simple.xml.Root;
  *
  * @author Niall Gallagher
  */
-@Root(name="match")
+@Root
 public abstract class Match {
 
    /**
     * This is the pattern string that is used by the resolver.
     */ 
-   @Attribute(name="pattern")        
+   @Attribute        
    protected String pattern;        
 }

@@ -20,7 +20,6 @@
 
 package simple.xml.load;
 
-import java.lang.reflect.Field;
 import simple.xml.ElementList;
 
 /**
@@ -87,13 +86,35 @@ final class ElementListLabel implements Label {
     * 
     * @return this returns the converter for creating a collection 
     */
-   public Converter getConverter(Source root) {
+   public Converter getConverter(Source root) throws Exception {
+      Class item = getDependant();
+      
       if(label.inline()) {
          return new CompositeInlineList(root, type, item);
       }
       return new CompositeList(root, type, item);      
    }
    
+   /**
+    * This is used to acquire the dependant type for the annotated
+    * list. This will simply return the type that the collection is
+    * composed to hold. This must be a serializable type, that is,
+    * a type that is annotated with the <code>Root</code> class.
+    * 
+    * @return this returns the component type for the collection
+    */
+   public Class getDependant() throws Exception  {
+      Contact contact = getContact();
+     
+      if(item == void.class) {
+         item = contact.getDependant();
+      }        
+      if(item == null) {
+         throw new ElementException("Unable to determine type for %s", label);           
+      }     
+      return item;
+   }     
+
    /**
     * This is used to acquire the name of the element or attribute
     * that is used by the class schema. The name is determined by
@@ -105,18 +126,6 @@ final class ElementListLabel implements Label {
     */
    public String getName() throws Exception {
       return sign.getName();
-   }
-   
-   /**
-    * This is used to acquire the dependant type for the annotated
-    * array. This will simply return the type that the array is
-    * composed to hold. This must be a serializable type, that is,
-    * a type that is annotated with the <code>Root</code> class.
-    * 
-    * @return this returns the component type for the array
-    */
-   public Class getDependant() {
-      return item;
    }
    
    /**

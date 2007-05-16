@@ -201,6 +201,29 @@ final class Source {
       }
       return new Schema(schema, session);
    }
+   
+   /**
+    * This is used to acquire the name of the specified type using
+    * the <code>Root</code> annotation for the class. This will 
+    * use either the name explicitly provided by the annotation or
+    * it will use the name of the class that the annotation was
+    * placed on if there is no explicit name for the root.
+    * 
+    * @param type this is the type to acquire the root name for
+    * 
+    * @return this returns the name of the type from the root
+    * 
+    * @throws Exception if the class contains an illegal schema
+    */
+   public String getName(Class type) throws Exception {
+	   Scanner schema = cache.get(type);
+	   
+	   if(schema == null) {
+		   schema = new Scanner(type);
+		   cache.cache(type, schema);
+	   }
+	   return schema.getName();
+   }
 
    /**
     * Replaces any template variables within the provided string. 

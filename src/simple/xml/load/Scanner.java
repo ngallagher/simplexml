@@ -22,6 +22,7 @@ package simple.xml.load;
 
 import java.lang.reflect.Method;
 import java.lang.annotation.Annotation;
+import java.beans.Introspector;
 import simple.xml.ElementArray;
 import simple.xml.ElementList;
 import simple.xml.Element;
@@ -86,6 +87,11 @@ final class Scanner  {
    private Root root;
    
    /**
+    * This is the name of the class as taken from the root class.
+    */
+   private String name;
+   
+   /**
     * Constructor for the <code>Schema</code> object. This is used 
     * to scan the provided class for annotations that are used to
     * build a schema for an XML file to follow. 
@@ -135,6 +141,19 @@ final class Scanner  {
     */
    public Label getText() {
       return text;
+   }
+   
+   /**
+    * This returns the name of the class processed by this scanner.
+    * The name is either the name as specified in the last found
+    * <code>Root</code> annotation, or if a name was not specified
+    * within the discovered root then the Java Bean class name of
+    * the last class annotated with a root annotation.
+    * 
+    * @return this returns the name of the object being scanned
+    */
+   public String getName() {
+      return name;
    }
 
    /**
@@ -251,7 +270,7 @@ final class Scanner  {
    /**
     * This is used to validate the configuration of the scanned class.
     * If a <code>Text</code> annotation has been used with elements
-    * then validation will fail and an exception will be thrown.
+    * then validation will fail and an exception will be thrown. 
     * 
     * @param type this is the object type that is being scanned
     * 
@@ -274,11 +293,34 @@ final class Scanner  {
     * @param type this is the type of the class to be inspected
     */    
    private void root(Class<?> type) {
+      String real = type.getSimpleName();
+      String text = real;
+
       if(type.isAnnotationPresent(Root.class)) {
-          root = type.getAnnotation(Root.class);
+         root = type.getAnnotation(Root.class);
+         text = root.name();
+
+         if(isEmpty(text)) {
+            text = Introspector.decapitalize(real);
+         }      
+         name = text.intern();      
       }
    }
-  
+   
+   /**
+    * This method is used to determine if a root annotation value is
+    * an empty value. Rather than determining if a string is empty
+    * be comparing it to an empty string this method allows for the
+    * value an empty string represents to be changed in future.
+    * 
+    * @param value this is the value to determine if it is empty
+    * 
+    * @return true if the string value specified is an empty value
+    */
+   private boolean isEmpty(String value) {
+      return value.length() == 0;
+   }
+   
    /**
     * This is used to scan the specified object to extract the fields
     * and methods that are to be used in the serialization process.
