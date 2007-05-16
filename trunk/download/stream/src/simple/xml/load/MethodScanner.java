@@ -34,7 +34,7 @@ import java.util.HashMap;
  * The <code>MethodScanner</code> object is used to scan an object 
  * for matching get and set methods for an XML annotation. This will
  * scan for annotated methods starting with the most specialized
- * class up the class heirarchy. Thys, Annotated methods can be 
+ * class up the class heirarchy. Thus, annotated methods can be 
  * overridden in a type specialization.
  * <p>
  * The annotated methods must be either a getter or setter method
@@ -43,7 +43,7 @@ import java.util.HashMap;
  * of set and get methods for an annotation must make use of the
  * same type. For instance if the return type for the get method
  * was <code>String</code> then the set method must have a single
- * argument parameter that takes a <code>String.class</code> type.
+ * argument parameter that takes a <code>String</code> type.
  * <p>
  * For a method to be considered there must be both the get and set
  * methods. If either method is missing then the scanner fails with
@@ -53,7 +53,7 @@ import java.util.HashMap;
  * @author Niall Gallagher
  */
 final class MethodScanner extends ContactList {
-  
+                  
    /**
     * This is used to collect all the set methods from the object.
     */
@@ -79,7 +79,7 @@ final class MethodScanner extends ContactList {
     * 
     * @throws Exception thrown if there was a problem scanning
     */
-   public MethodScanner(Class type) throws Exception {
+   public MethodScanner(Class type) throws Exception {      
       this.write = new PartMap();
       this.read = new PartMap();
       this.type = type;
@@ -109,7 +109,7 @@ final class MethodScanner extends ContactList {
    
    /**
     * This is used to scan the declared methods within the specified
-    * class. Each method will be check to determine if it contains
+    * class. Each method will be checked to determine if it contains
     * an XML element and can be used as a <code>Contact</code> for
     * an entity within the object.
     * 
@@ -186,79 +186,104 @@ final class MethodScanner extends ContactList {
     * @param label this is the annotation applied to the method
     */  
    private void process(Method method, Annotation label) throws Exception {
-      MethodType type = getType(method);
+      MethodPart part = MethodPartFactory.getInstance(method, label);
+      MethodType type = part.getMethodType();     
       
       if(type == MethodType.GET) {
-         process(new ReadPart(method, label), label, read);
+         process(part, read);
+      }
+      if(type == MethodType.IS) {
+         process(part, read);
       }
       if(type == MethodType.SET) {
-         process(new WritePart(method, label), label, write);
+         process(part, write);
       }
-      if(type == MethodType.NORMAL) {
-         throw new MethodException("Annotation %s must mark a set or get method", label);
-      }
-   }  
+   } 
    
    /**
     * This is used to determine whether the specified method can be
     * inserted into the given <code>PartMap</code>. This ensures 
-    * that there can not be two of the same annotations within the
-    * same class in the heirarchy.
+    * that only the most specialized method is considered, which 
+    * enables annotated methods to be overridden in subclasses.
     * 
     * @param method this is the method part that is to be inserted
-    * @param label this is the annotation that labels the method
     * @param map this is the part map used to contain the method
     */
-   private void process(MethodPart method, Annotation label, PartMap map) {
-      if(!map.containsKey(label)) {
-         map.put(label, method);
+   private void process(MethodPart method, PartMap map) {
+      String name = method.getName();
+      
+      if(!map.containsKey(name)) {
+         map.put(name, method);
       }
    }
    
    /**
     * This method is used to pair the get methods with a matching set
-    * method. This pairs methods using the annotation, the annotation
-    * must match exactly, meaning all attributes for the annotation
-    * must be the same constants. If there is not an exact match then
-    * the get and set methods will not match.
+    * method. This pairs methods using the Java Bean method name, the
+    * names must match exactly, meaning that the case and value of
+    * the strings must be identical. Also in order for this to succeed
+    * the types for the methods and the annotation must also match.
     *  
     * @throws Exception thrown if there is a problem matching methods
     */
    private void build() throws Exception {
-      for(Annotation label : read) {
-         MethodPart part = read.get(label);
+      for(String name : read) {
+         MethodPart part = read.get(name);
          
          if(part != null) {
-            build(part, label);
+            build(part, name);
          }
       }
    }
    
    /**
     * This method is used to pair the get methods with a matching set
-    * method. This pairs methods using the annotation, the annotation
-    * must match exactly, meaning all attributes for the annotation
-    * must be the same constants. If there is not an exact match then
-    * the get and set methods will not match.
+    * method. This pairs methods using the Java Bean method name, the
+    * names must match exactly, meaning that the case and value of
+    * the strings must be identical. Also in order for this to succeed
+    * the types for the methods and the annotation must also match.
     * 
     * @param read this is a get method that has been extracted
-    * @param label this is the annotation matching the get method
+    * @param name this is the Java Bean methos name to be matched   
     *  
     * @throws Exception thrown if there is a problem matching methods
     */
-   private void build(MethodPart read, Annotation label) throws Exception {
-      MethodPart match = write.take(label);
+   private void build(MethodPart read, String name) throws Exception {      
+      MethodPart match = write.take(name);
+      Method method = read.getMethod();
       
       if(match == null) {
-         throw new MethodException("No matching set method for %s in %s", label, type);
-      }
-      Class type = match.getType();
-      
-      if(type != read.getType()) {
-         throw new MethodException("Method types do not match for %s in %s", label, type);
-      }      
-      add(new MethodContact(read, match));      
+         throw new MethodException("No matching set method for %s in %s", method, type);
+      } 
+      build(read, match);     
    }   
+   
+   /**
+    * This method is used to pair the get methods with a matching set
+    * method. This pairs methods using the Java Bean method name, the
+    * names must match exactly, meaning that the case and value of
+    * the strings must be identical. Also in order for this to succeed
+    * the types for the methods and the annotation must also match.
+    * 
+    * @param read this is a get method that has been extracted
+    * @param write this is the write method to compare details with      
+    *  
+    * @throws Exception thrown if there is a problem matching methods
+    */
+   private void build(MethodPart read, MethodPart write) throws Exception {
+      Annotation label = read.getAnnotation();
+      String name = read.getName();
+      
+      if(!write.getAnnotation().equals(label)) {
+         throw new MethodException("Annotations do not match for '%s' in %s", name, type);
+      }
+      Class type = read.getType();
+      
+      if(type != write.getType()) {
+         throw new MethodException("Method types do not match for %s in %s", name, type);
+      }
+      add(new MethodContact(read, write));
+   }
    
    /**
     * This is used to validate the object once all the get methods
@@ -269,134 +294,67 @@ final class MethodScanner extends ContactList {
     * @throws Exception thrown if there is a unmatched set method
     */
    private void validate() throws Exception {
-      for(Annotation label : write) {
-         MethodPart part = write.get(label);
+      for(String name : write) {
+         MethodPart part = write.get(name);
          
          if(part != null) {
-            throw new MethodException("No matching get method for %s, in %s", label, type);
+            validate(part, name);
          }
       }
    }
    
    /**
-    * This is used to classify a method. Methods are classified with
-    * a combination of the method name and arguments. If a method
-    * follows the Java Bean naming conventions then a method 
-    * starting with "get" or "is" that does not have parameters is a
-    * getter and a method that begins with "set" is a setter method.
+    * This is used to validate the object once all the get methods
+    * have been matched with a set method. This ensures that there
+    * is not a set method within the object that does not have a
+    * match, therefore violating the contract of a property.
     * 
-    * @param method this is the method that is to be classified
-    *
-    * @return this returns the type that the specified method is
-    */ 
-   private MethodType getType(Method method) throws Exception {
-      if(isGet(method)) {
-         return MethodType.GET;
-      }
-      if(isSet(method)) {
-         return MethodType.SET;              
-      }      
-      return MethodType.NORMAL;
-   }
-  
-   /**
-    * This is used to determine if the specified method is a get
-    * method that follows the Java Bean naming convention. In order
-    * for a method to qualify as a get method is must accept no
-    * parameters and return a type other than void, also the name
-    * of the method must begin with "get" or "is". 
-    *
-    * @param method this is the method that is to be checked
+    * @param read this is a get method that has been extracted
+    * @param name this is the Java Bean methos name to be matched 
     * 
-    * @return this returns true if the method specified is a get
-    * 
-    * @throws Exception if the naming conventions are followed but
-    *                   the method contains parameters
-    */ 
-   private boolean isGet(Method method) throws Exception {
-      String name = method.getName();
-      
-      if(!name.startsWith("get") && !name.startsWith("is")){
-         return false;
-      }
-      Class[] list = method.getParameterTypes();
-         
-      if(list.length != 0) {
-         throw new MethodException("Get method %s in %s contains parameters", name, type);
-      }
-      return true;
-   }
-   
-   /**
-    * This is used to determine if the specified method is a set
-    * method that follows the Java Bean naming convention. In order
-    * for a method to qualify as a set method it must accept a 
-    * single argument parameter and begin with the string "set".
-    *  
-    * @param method this is the method that is to be checked
-    * 
-    * @return this returns true if the method specified is a set
-    * 
-    * @throws Exception if the naming conventions are followed but
-    *                   it accepts the wrong number of parameters
+    * @throws Exception thrown if there is a unmatched set method
     */
-   private boolean isSet(Method method) throws Exception {
-      String name = method.getName();
-      
-      if(!name.startsWith("set")) {
-         return false;
-      }
-      Class[] list = method.getParameterTypes();
+   private void validate(MethodPart write, String name) throws Exception {      
+      MethodPart match = read.take(name);     
+      Method method = write.getMethod();      
          
-      if(list.length != 1) {
-         throw new MethodException("Set method %s has invalid signature in %s", name, type);         
-      }
-      return true;
+      if(match == null) {
+         throw new MethodException("No matching get method for %s in %s", method, type);
+      }      
    }
    
    /**
     * The <code>PartMap</code> is used to contain method parts using
-    * the annotation for that method part. This allows annotations
-    * to for the method parts to be iterated in a convinient manner
-    * such that the keyed method parts can be extracted easily. 
+    * the Java Bean method name for the part. This ensures that the
+    * scanned and extracted methods can be acquired using a common 
+    * name, which should be the parsed Java Bean method name.
+    * 
+    * @see simple.xml.load.MethodPart
     */
-   private class PartMap extends HashMap<Annotation, MethodPart> implements Iterable<Annotation>{
+   private class PartMap extends HashMap<String, MethodPart> implements Iterable<String>{
       
       /**
-       * This returns an iterator for <code>Annotation</code> objects
-       * which act as keys to method parts of a Java Bean property.
+       * This returns an iterator for the Java Bean method names for
+       * the <code>MethodPart</code> objects that are stored in the
+       * map. This allows names to be iterated easily in a for loop.
        * 
-       * @return this returns an iterator for the annotation keys
+       * @return this returns an iterator for the method name keys
        */
-      public Iterator<Annotation> iterator() {
+      public Iterator<String> iterator() {
          return keySet().iterator();
       }
       
       /**
        * This is used to acquire the method part for the specified
-       * annotation. This will remove the method part from this map
+       * method name. This will remove the method part from this map
        * so that it can be checked later to ensure what remains.
        * 
-       * @param label this is the annotation to get the method with
+       * @param name this is the method name to get the method with       
        * 
        * @return this returns the method part for the given key
        */
-      public MethodPart take(Annotation label) {
-         return remove(label);
+      public MethodPart take(String name) {
+         return remove(name);
       }
    }
-
-   /**
-    * This is used to classify a method. Methods are classified with
-    * a combination of the method name and arguments. If a method
-    * follows the Java Bean naming conventions then a method 
-    * starting with "get" or "is" that does not have parameters is a
-    * getter and a method that begins with "set" is a setter method.
-    */ 
-   private enum MethodType {
-      NORMAL,
-      GET,
-      SET      
-   }
-
 }

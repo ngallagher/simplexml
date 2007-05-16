@@ -52,6 +52,8 @@ interface MethodPart {
     */ 
    public Class getType();
    
+   public Class getDependant();
+   
    /**
     * This is the method for this point of contact. This is what
     * will be invoked by the serialization or deserialization 
@@ -60,4 +62,8 @@ interface MethodPart {
     * @return this returns the method associated with this
     */
    public Method getMethod();
+   
+   public MethodType getMethodType();  
+   
+   public String getName();  
 }

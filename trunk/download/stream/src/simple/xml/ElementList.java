@@ -65,7 +65,7 @@ public @interface ElementList {
     * 
     * @return the type of the element deserialized from the XML
     */
-   public Class type();
+   public Class type() default void.class;
    
    /**
     * Determines whether the element is required within the XML
@@ -82,7 +82,7 @@ public @interface ElementList {
     * to the parent XML element. An inlined element list does not
     * contain an enclosing element. It is simple a sequence of 
     * elements that appear one after another within an element.
-    * As such an inline element list does not require a name. 
+    * As such an inline element list must not have a name. 
     *
     * @return this returns true if the element list is inline
     */

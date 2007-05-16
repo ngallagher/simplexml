@@ -36,12 +36,12 @@ import simple.xml.Root;
  *
  * @author Niall Gallagher
  */ 
-@Root(name="entry")
+@Root
 public abstract class Entry {
 
    /**
     * Represents the name of the entry instance used for mappings.
     */         
-   @Attribute(name="name")
+   @Attribute
    protected String name;
 }

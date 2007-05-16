@@ -22,6 +22,7 @@ package simple.xml.load;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
 
 /**
  * The <code>WritePart</code> object represents the setter method for
@@ -41,10 +42,14 @@ final class WritePart implements MethodPart {
     */
    private Annotation label;
    
+   private MethodType type;
+   
    /**
     * This method is used to set the value during deserialization. 
     */
    private Method method;
+   
+   private String name;
    
    /**
     * Constructor for the <code>WritePart</code> object. This is
@@ -54,8 +59,10 @@ final class WritePart implements MethodPart {
     * @param method the method that is used to set the value
     * @param label this describes how to deserialize the value
     */
-   public WritePart(Method method, Annotation label) {
-      this.method = method;
+   public WritePart(MethodName method, Annotation label) {
+      this.method = method.getMethod();
+      this.name = method.getName();
+      this.type = method.getType();
       this.label = label;
    }
    
@@ -70,6 +77,37 @@ final class WritePart implements MethodPart {
       return method.getParameterTypes()[0];
    }
    
+   public Class getDependant() {
+      ParameterizedType type = getArgumentType();
+      
+      if(type != null) {
+         Object[] list = type.getActualTypeArguments();
+		  
+         if(list.length > 0) {
+            return (Class) list[0];
+         }
+      }
+      return null;
+   }   
+	   
+	private ParameterizedType getArgumentType() {
+      Object type = getArgumentType(0);
+		   
+      if(type instanceof ParameterizedType) {
+         return (ParameterizedType) type;
+      }
+      return null;
+   }
+	   
+   private Object getArgumentType(int index) {
+      Object[] list = method.getGenericParameterTypes();
+		   
+      if(list.length > index) {
+         return list[index];  
+      }
+      return null;
+   }
+   
    /**
     * This is used to acquire the annotation that was used to label
     * the method this represents. This acts as a means to match the
@@ -79,6 +117,14 @@ final class WritePart implements MethodPart {
     */
    public Annotation getAnnotation() {
       return label;
+   }
+   
+   public String getName() {
+      return name;
+   }
+   
+   public MethodType getMethodType() {
+      return type;
    }
    
    /**

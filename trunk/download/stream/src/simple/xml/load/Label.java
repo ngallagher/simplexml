@@ -69,7 +69,7 @@ interface Label {
     * 
     * @return this is the type that the annotation depends on
     */
-   public Class getDependant();
+   public Class getDependant() throws Exception;
    
    /**
     * This is used to acquire the contact object for this label. The 

@@ -53,6 +53,16 @@ interface Contact {
    public Class getType();
    
    /**
+    * This provides the dependant class for the contact. This will
+    * typically represent a generic type for the actual type. For
+    * contacts that use a <code>Collection</code> type this will
+    * be the generic type parameter for that collection.
+    * 
+    * @return this returns the dependant type for the contact
+    */
+   public Class getDependant();
+   
+   /**
     * This represents the name of the object contact. If the contact
     * is a field then the name of the field is provided. If however
     * the contact is a method then the Java Bean name of the method

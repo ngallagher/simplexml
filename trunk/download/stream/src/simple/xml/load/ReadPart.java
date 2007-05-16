@@ -22,6 +22,7 @@ package simple.xml.load;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
 
 /**
  * The <code>ReadPart</code> object represents the getter method for
@@ -41,10 +42,15 @@ final class ReadPart implements MethodPart {
     */
    private Annotation label;
    
+   
+   private MethodType type;
+   
    /**
     * This method is used to get the value during serialization. 
     */
    private Method method;
+   
+   private String name;
    
    /**
     * Constructor for the <code>ReadPart</code> object. This is
@@ -54,8 +60,10 @@ final class ReadPart implements MethodPart {
     * @param method the method that is used to get the value
     * @param label this describes how to serialize the value
     */   
-   public ReadPart(Method method, Annotation label) {
-      this.method = method;
+   public ReadPart(MethodName method, Annotation label) {      
+      this.method = method.getMethod();      
+      this.name = method.getName();
+      this.type = method.getType();
       this.label = label;
    }
    
@@ -70,6 +78,28 @@ final class ReadPart implements MethodPart {
       return method.getReturnType();
    }
    
+   public Class getDependant() {
+     ParameterizedType type = getReturnType();
+     
+     if(type != null) {
+	     Object[] list = type.getActualTypeArguments();
+	  
+	     if(list.length > 0) {
+		     return (Class) list[0];
+        }
+	  }
+	  return null;
+   }   
+   
+   private ParameterizedType getReturnType() {
+      Object type = method.getGenericReturnType();
+	   
+      if(type instanceof ParameterizedType) {
+         return (ParameterizedType) type;
+	  }
+      return null;
+   }
+   
    /**
     * This is used to acquire the annotation that was used to label
     * the method this represents. This acts as a means to match the
@@ -79,6 +109,14 @@ final class ReadPart implements MethodPart {
     */
    public Annotation getAnnotation() {
       return label;
+   }
+   
+   public String getName() {
+      return name;
+   }
+   
+   public MethodType getMethodType() {
+      return type;
    }
    
    /**
