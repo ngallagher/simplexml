@@ -25,22 +25,25 @@ import simple.xml.stream.OutputNode;
 import simple.xml.stream.InputNode;
 
 /**
- * The <code>CompositeList</code> object is used to convert an element
- * list to a collection of element entries. This in effect performs a 
- * root serialization and deserialization of entry elements for the
- * collection object. On serialization each objects type must be 
- * checked against the XML annotation entry so that it is serialized
- * in a form that can be deserialized. 
- * <pre>
- *
- *    &lt;list&gt;
- *       &lt;entry attribute="value"&gt;
- *          &lt;text&gt;example text value&lt;/text&gt;
- *       &lt;/entry&gt;
- *       &lt;entry attribute="demo"&gt;
- *          &lt;text&gt;some other example&lt;/text/&gt;
- *       &lt;/entry&gt;
- *    &lt;/list&gt;
+ * The <code>CompositeInlineList</code> object is used to convert an 
+ * group of elements in to a collection of element entries. This is
+ * used when a containing element for a list is not required. It 
+ * extracts the elements by matching elements to name of the type
+ * that the annotated field or method requires. This enables these
+ * element entries to exist as siblings to other objects within the
+ * object.  One restriction is that the <code>Root</code> annotation
+ * for each of the types within the list must be the same.
+ * <pre> 
+ *    
+ *    &lt;entry attribute="one"&gt;
+ *       &lt;text&gt;example text value&lt;/text&gt;
+ *    &lt;/entry&gt;
+ *    &lt;entry attribute="two"&gt;
+ *       &lt;text&gt;some other example&lt;/text/&gt;
+ *    &lt;/entry&gt;  
+ *    &lt;entry attribute="three"&gt;
+ *       &lt;text&gt;yet another example&lt;/text/&gt;
+ *    &lt;/entry&gt;      
  * 
  * </pre>
  * For the above XML element list the element <code>entry</code> is
@@ -74,10 +77,10 @@ final class CompositeInlineList implements Converter {
    private Class entry;
 
    /**
-    * Constructor for the <code>CompositeList</code> object. This is
-    * given the list type and entry type to be used. The list type is
-    * the <code>Collection</code> implementation that deserialized
-    * entry objects are inserted into. 
+    * Constructor for the <code>CompositeInlineList</code> object. 
+    * This is given the list type and entry type to be used. The list
+    * type is the <code>Collection</code> implementation that is used 
+    * to collect the deserialized entry objects from the XML source. 
     *
     * @param root this is the source object used for serialization
     * @param type this is the collection type for the list used

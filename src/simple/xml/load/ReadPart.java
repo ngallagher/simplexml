@@ -42,7 +42,9 @@ final class ReadPart implements MethodPart {
     */
    private Annotation label;
    
-   
+   /**
+    * This represents the method type for the read part method.
+    */
    private MethodType type;
    
    /**
@@ -50,6 +52,9 @@ final class ReadPart implements MethodPart {
     */
    private Method method;
    
+   /**
+    * This is the Java Bean name representation of the method.
+    */
    private String name;
    
    /**
@@ -68,6 +73,17 @@ final class ReadPart implements MethodPart {
    }
    
    /**
+    * This provdes the name of the method part as acquired from the
+    * method name. The name represents the Java Bean property name
+    * of the method and is used to pair getter and setter methods.
+    * 
+    * @return this returns the Java Bean name of the method part
+    */
+   public String getName() {
+      return name;
+   }
+   
+   /**
     * This is used to acquire the type for this method part. This
     * is used by the serializer to determine the schema class that
     * is used to match the XML elements to the object details.
@@ -78,6 +94,15 @@ final class ReadPart implements MethodPart {
       return method.getReturnType();
    }
    
+   /**
+    * This is used to acquire the dependant class for the method 
+    * part. The dependant type is the type that represents the 
+    * generic type of the type. This is used when collections are
+    * annotated as it allows a default entry class to be taken
+    * from the generic information provided.
+    * 
+    * @return this returns the generic dependant for the type
+    */
    public Class getDependant() {
      ParameterizedType type = getReturnType();
      
@@ -91,6 +116,13 @@ final class ReadPart implements MethodPart {
 	  return null;
    }   
    
+   /**
+    * This is used to acquire the parameterized type for the method
+    * type. This will extract a type with generic information if 
+    * the type has been declared with a generic type parameter.
+    *  
+    * @return this returns the type declared within any generics 
+    */
    private ParameterizedType getReturnType() {
       Object type = method.getGenericReturnType();
 	   
@@ -111,10 +143,14 @@ final class ReadPart implements MethodPart {
       return label;
    }
    
-   public String getName() {
-      return name;
-   }
-   
+   /**
+    * This is the method type for the method part. This is used in
+    * the scanning process to determine which type of method a
+    * instance represents, this allows set and get methods to be
+    * paired.
+    * 
+    * @return the method type that this part represents
+    */
    public MethodType getMethodType() {
       return type;
    }
@@ -132,5 +168,4 @@ final class ReadPart implements MethodPart {
       }           
       return method;
    }
-
 }
