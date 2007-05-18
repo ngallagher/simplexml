@@ -22,7 +22,6 @@ package simple.xml.load;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
 import simple.xml.ElementArray;
 import simple.xml.ElementList;
 import simple.xml.Element;

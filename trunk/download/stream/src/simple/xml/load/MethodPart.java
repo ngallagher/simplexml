@@ -33,6 +33,15 @@ import java.lang.reflect.Method;
  * @author Niall Gallagher
  */ 
 interface MethodPart {
+
+   /**
+    * This provdes the name of the method part as acquired from the
+    * method name. The name represents the Java Bean property name
+    * of the method and is used to pair getter and setter methods.
+    * 
+    * @return this returns the Java Bean name of the method part
+    */
+   public String getName(); 
    
    /**
     * This is the annotation associated with the point of contact.
@@ -52,6 +61,15 @@ interface MethodPart {
     */ 
    public Class getType();
    
+   /**
+    * This is used to acquire the dependant class for the method 
+    * part. The dependant type is the type that represents the 
+    * generic type of the type. This is used when collections are
+    * annotated as it allows a default entry class to be taken
+    * from the generic information provided.
+    * 
+    * @return this returns the generic dependant for the type
+    */
    public Class getDependant();
    
    /**
@@ -63,7 +81,13 @@ interface MethodPart {
     */
    public Method getMethod();
    
-   public MethodType getMethodType();  
-   
-   public String getName();  
+   /**
+    * This is the method type for the method part. This is used in
+    * the scanning process to determine which type of method a
+    * instance represents, this allows set and get methods to be
+    * paired.
+    * 
+    * @return the method type that this part represents
+    */
+   public MethodType getMethodType();
 }
