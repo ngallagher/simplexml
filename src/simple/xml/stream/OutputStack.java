@@ -20,6 +20,7 @@
 
 package simple.xml.stream;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Set;
 
@@ -104,5 +105,91 @@ final class OutputStack extends LinkedList<OutputNode> {
       active.add(value);
       add(value);
       return value;
+   }
+   
+   /**
+    * The <code>purge</code> method is used to purge a match from
+    * the provided position. This also ensures that the cache is
+    * cleared so that the semantics of the resolver do not change.
+    *
+    * @param index the index of the match that is to be removed
+    */ 
+   public void purge(int index) {      
+      OutputNode node = remove(index);  
+      
+      if(node != null){
+         active.remove(node);
+      }      
+   }
+   
+   /**
+    * This is returned from the <code>Resolver.iterator</code> so
+    * that matches can be iterated in insertion order. When a
+    * match is removed from this iterator then it clears the cache
+    * and removed the match from the <code>Stack</code> object.
+    * 
+    * @return returns an iterator to iterate in insertion order
+    */ 
+   public Iterator<OutputNode> iterator() {
+      return new Sequence();              
+   }
+
+   /**
+    * The is used to order the <code>Match</code> objects in the
+    * insertion order. Iterating in insertion order allows the
+    * resolver object to be serialized and deserialized to and
+    * from an XML document without disruption resolution order.
+    *
+    * @author Niall Gallagher
+    */
+   private class Sequence implements Iterator<OutputNode> {
+
+      /**
+       * The cursor used to acquire objects from the stack.
+       */               
+      private int cursor;
+
+      /**
+       * Constructor for the <code>Sequence</code> object. This is
+       * used to position the cursor at the end of the list so the
+       * first inserted match is the first returned from this.
+       */ 
+      public Sequence() {
+         this.cursor = size();                 
+      }
+
+      /**
+       * This returns the <code>Match</code> object at the cursor
+       * position. If the cursor has reached the start of the 
+       * list then this returns null instead of the first match.
+       * 
+       * @return this returns the match from the cursor position
+       */ 
+      public OutputNode next() {
+         if(hasNext()) {
+             return get(--cursor);
+         }           
+         return null;     
+      }    
+
+      /**
+       * This is used to determine if the cursor has reached the
+       * start of the list. When the cursor reaches the start of
+       * the list then this method returns false.
+       * 
+       * @return this returns true if there are more matches left
+       */ 
+      public boolean hasNext() {
+         return cursor > 0;
+      }
+
+      /**
+       * Removes the match from the cursor position. This also
+       * ensures that the cache is cleared so that resolutions
+       * made before the removal do not affect the semantics.
+       */ 
+      public void remove() {                    
+         purge(cursor);                
+      }        
    }
 }

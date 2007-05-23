@@ -25,9 +25,9 @@ import java.lang.annotation.Retention;
 
 /**
  * The <code>Element</code> annotation is used to represent a field
- * that appears as an XML element. Fields annotated with this can
- * be either primitive or compound, that is, represent an object
- * that can be serialized and deserialized. 
+ * that appears as an XML element. Fields or methods annotated with 
+ * this can be either primitive or compound, that is, represent an 
+ * object that can be serialized and deserialized. 
  * <pre>
  * 
  *    &lt;example class="demo.Example"&gt;
@@ -47,12 +47,24 @@ public @interface Element {
    
    /**
     * This represents the name of the XML element. Annotated fields
-    * must provide the name of the element they represent so that
-    * that can be serialized and deserialized to and from the XML.
+    * can optionally provide the name of the element. If no name is
+    * provided then the name of the annotated field or method will
+    * be used in its place. The name is provided if the field or
+    * method name is not suitable as an XML element name.
     * 
     * @return the name of the XML element this represents
     */
    public String name() default "";
+   
+   /**
+    * This is used to determine whether the element data is written
+    * in a CDATA block or not. If this is set to true then the text
+    * is written within a CDATA block, by default the text is output
+    * as escaped XML. Typically this is useful for primitives only.
+    * 
+    * @return true if the data is to be wrapped in a CDATA block
+    */
+   public boolean data() default false;
    
    /**
     * Determines whether the element is required within the XML

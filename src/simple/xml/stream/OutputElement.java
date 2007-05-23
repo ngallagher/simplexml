@@ -56,6 +56,8 @@ class OutputElement implements OutputNode {
     */ 
    private String name;
    
+   private Mode mode;
+   
    /**
     * Constructor for the <code>OutputElement</code> object. This is
     * used to create an output element that can create elements for
@@ -67,7 +69,8 @@ class OutputElement implements OutputNode {
     * @param name this is the name of the element this represents
     */ 
    public OutputElement(OutputNode parent, NodeWriter writer, String name) {
-      this.table = new OutputNodeMap(this);      
+      this.table = new OutputNodeMap(this);
+      this.mode = Mode.INHERIT;
       this.writer = writer;           
       this.parent = parent;
       this.name = name;
@@ -119,6 +122,10 @@ class OutputElement implements OutputNode {
       return writer.isRoot(this);
    }
    
+   public Mode getMode() {
+      return mode;
+   }
+   
    /**
     * This returns a <code>NodeMap</code> which can be used to add
     * nodes to the element before that element has been committed. 
@@ -140,6 +147,14 @@ class OutputElement implements OutputNode {
     */    
    public void setValue(String value) {
       this.value = value;
+   }
+   
+   public void setData(boolean data) {
+      if(data) {
+         mode = Mode.DATA;
+      } else {
+         mode = Mode.ESCAPE;
+      }      
    }
 
    /**

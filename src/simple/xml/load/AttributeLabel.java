@@ -154,6 +154,18 @@ final class AttributeLabel implements Label {
    }
    
    /**
+    * Because the attribute can contain only simple text values it
+    * is never required to specified as anything other than text.
+    * Therefore this will always return false as CDATA does not
+    * apply to the attribute values.
+    *
+    * @return this will always return false for XML attributes
+    */
+   public boolean isData() {
+      return false;
+   }
+   
+   /**
     * This method is used by the deserialization process to check
     * to see if an annotation is inline or not. If an annotation
     * represents an inline XML entity then the deserialization

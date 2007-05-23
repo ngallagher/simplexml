@@ -164,6 +164,18 @@ final class ElementLabel implements Label {
    }
    
    /**
+    * This is used to determine whether the annotation requires it
+    * and its children to be written as a CDATA block. This is done
+    * when a primitive or other such element requires a text value
+    * and that value needs to be encapsulated within a CDATA block.
+    * 
+    * @return this returns true if the element requires CDATA
+    */
+   public boolean isData() {
+      return label.data();
+   }
+   
+   /**
     * This method is used by the deserialization process to check
     * to see if an annotation is inline or not. If an annotation
     * represents an inline XML entity then the deserialization

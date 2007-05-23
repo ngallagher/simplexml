@@ -514,8 +514,12 @@ final class Composite implements Converter {
          OutputNode next = node.getChild(name);
          Class type = label.getType();
 
-         if(label.isInline() || !isOverridden(next, value, type)) {           
-            label.getConverter(root).write(next, value);
+         if(label.isInline() || !isOverridden(next, value, type)) {
+            Converter convert = label.getConverter(root);
+            boolean data = label.isData();
+            
+            next.setData(data);
+            convert.write(next, value);
          }
       }
    }
@@ -535,12 +539,14 @@ final class Composite implements Converter {
     */
    private void writeText(OutputNode node, Object value, Label label) throws Exception {
       if(value != null) {         
-         String text = value.toString();
+         String text = value.toString(); 
+         boolean data = label.isData();
          
          if(value instanceof Enum) {
             Enum type = (Enum) value;
             text = type.name();
          }
+         node.setData(data);
          node.setValue(text);        
       }
    }
