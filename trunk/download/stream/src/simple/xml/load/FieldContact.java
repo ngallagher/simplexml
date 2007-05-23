@@ -179,4 +179,8 @@ final class FieldContact implements Contact {
    public Object get(Object source) throws Exception {
       return field.get(source);
    }
+   
+   public String toString() {
+      return field.toGenericString();
+   }
 }

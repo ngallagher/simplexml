@@ -90,4 +90,7 @@ interface MethodPart {
     * @return the method type that this part represents
     */
    public MethodType getMethodType();
+   
+   
+   public String toString();
 }

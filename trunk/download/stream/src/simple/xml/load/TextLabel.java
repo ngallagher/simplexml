@@ -36,6 +36,11 @@ import simple.xml.Text;
 final class TextLabel implements Label {
    
    /**
+    * This represents the signature of the annotated contact.
+    */
+   private Signature sign;
+   
+   /**
     * The contact that this annotation label represents.
     */
    private Contact contact;
@@ -59,6 +64,7 @@ final class TextLabel implements Label {
     * @param label this is the annotation for the contact 
     */
    public TextLabel(Contact contact, Text label) {
+      this.sign = new Signature(contact, this);
       this.type = contact.getType();
       this.contact = contact;
       this.label = label;      
@@ -182,6 +188,6 @@ final class TextLabel implements Label {
     * @return this returns a description of the XML annotation
     */
    public String toString() {
-      return label.toString();
-   }
+      return sign.toString();
+   }  
 }

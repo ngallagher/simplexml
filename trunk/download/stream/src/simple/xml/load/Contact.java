@@ -95,4 +95,6 @@ interface Contact {
     * @return this is the value acquired from the point of contact
     */ 
    public Object get(Object source) throws Exception;
+   
+   public String toString();
 }
