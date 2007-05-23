@@ -20,6 +20,7 @@
 
 package simple.xml.load;
 
+import java.lang.annotation.Annotation;
 import java.beans.Introspector;
 import simple.xml.Root;
 
@@ -33,6 +34,11 @@ import simple.xml.Root;
  * @author Niall Gallagher
  */
 final class Signature {
+   
+   /**
+    * This is the actual annotation from the specified contact.
+    */
+   private Annotation actual;
    
    /**
     * This is the field or method contact that has been annotated.
@@ -58,7 +64,8 @@ final class Signature {
     * @param contact this is the method or field contact used
     * @param label this is the annotation on the contact object
     */
-   public Signature(Contact contact, Label label) {      
+   public Signature(Contact contact, Label label) {
+      this.actual = contact.getAnnotation();
       this.contact = contact;
       this.label = label;
    }
@@ -212,6 +219,6 @@ final class Signature {
    }
    
    public String toString() {
-      return String.format("%s on %s", label, contact);
+      return String.format("%s on %s", actual, contact);
    }
 }
