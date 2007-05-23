@@ -65,6 +65,7 @@ public class EmptyTest extends TestCase {
       try {           
          persister.read(RequiredElement.class, EMPTY_ELEMENT);      
       } catch(ValueRequiredException e) {
+         e.printStackTrace();              
          success = true;              
       }
       assertTrue(success);
@@ -76,6 +77,7 @@ public class EmptyTest extends TestCase {
       try {           
          persister.read(RequiredElement.class, BLANK_ELEMENT);     
       } catch(ValueRequiredException e) {
+         e.printStackTrace();
          success = true;              
       }
       assertTrue(success);           
@@ -87,6 +89,7 @@ public class EmptyTest extends TestCase {
       try {           
          persister.read(RequiredElement.class, EMPTY_ELEMENT);     
       } catch(ValueRequiredException e) {
+         e.printStackTrace();
          success = true;              
       }
       assertTrue(success);   

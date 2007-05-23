@@ -181,6 +181,6 @@ final class FieldContact implements Contact {
    }
    
    public String toString() {
-      return field.toGenericString();
+      return String.format("'%s'", field.toGenericString());
    }
 }
