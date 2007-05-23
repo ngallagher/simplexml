@@ -20,6 +20,7 @@
 
 package simple.xml.stream;
 
+import java.io.BufferedWriter;
 import java.io.Writer;
 
 /**
@@ -61,14 +62,19 @@ final class Formatter {
    private static final char[] AND = { '&', 'a', 'm', 'p', ';'};
    
    /**
-    * Output used to write the generated XML result to.
+    * Output buffer used to write the generated XML result to.
     */ 
-   private NodeBuffer result;
+   private StringBuilder buffer;
    
    /**
     * Creates the indentations that are used bu the XML file.
     */         
    private Indenter indenter;
+   
+   /**
+    * This is the writer that is used to write the XML document.
+    */
+   private Writer result;
 
    /**
     * Represents the encoding to use in the generated prolog.
@@ -89,8 +95,9 @@ final class Formatter {
     * @param format this is the format object to use 
     */ 
    public Formatter(Writer result, Format format){
-       this.result = new NodeBuffer(result);
+       this.result = new BufferedWriter(result);
        this.indenter = new Indenter(format);
+       this.buffer = new StringBuilder();
        this.encoding = format.getEncoding();      
    }
 
@@ -163,10 +170,26 @@ final class Formatter {
     * @throws Exception thrown if there is an I/O exception
     */ 
    public void writeText(String text) throws Exception{
+      writeText(text, Mode.ESCAPE);      
+   }
+   
+   /**
+    * This is used to write the specified text value to the writer.
+    * If the last tag written was a start tag then it is closed. 
+    *
+    * @param text this is the text to write to the output
+    *
+    * @throws Exception thrown if there is an I/O exception
+    */ 
+   public void writeText(String text, Mode mode) throws Exception{
       if(last == Tag.START) {
          write('>');
       }                
-      escape(text);                
+      if(mode == Mode.DATA) {
+         data(text);
+      } else {
+         escape(text);
+      }         
       last = Tag.TEXT;
    }
    
@@ -200,25 +223,6 @@ final class Formatter {
       last = Tag.END;
    }
 
-   
-   public void reset() throws Exception {
-      if(last != Tag.START) {
-         throw new NodeException("Can not remove element text");
-      }
-      indenter.pop();
-      result.reset();
-   }
-
-   /**
-    * This is used to flush the writer when the XML if it has been
-    * buffered. The flush method is used by the node writer after an
-    * end element has been written. Flushing ensures that buffering
-    * does not affect the result of the node writer.
-    */ 
-   public void flush() throws Exception{
-      result.flush();
-   }
-
    /**
     * This is used to write a character to the output stream without
     * any translation. This is used when writing the start tags and
@@ -226,8 +230,10 @@ final class Formatter {
     *
     * @param ch this is the character to be written to the output
     */ 
-   private void write(char ch) throws Exception {
-      result.write(ch);           
+   private void write(char ch) throws Exception {     
+      result.append(buffer);
+      result.write(ch);
+      clear();
    }
 
    /**
@@ -237,8 +243,10 @@ final class Formatter {
     *
     * @param plain this is the text to be written to the output
     */    
-   private void write(char[] plain) throws Exception {
-      result.write(plain);           
+   private void write(char[] plain) throws Exception {      
+      result.append(buffer);     
+      result.write(plain);       
+      clear();
    }
 
    /**
@@ -248,41 +256,49 @@ final class Formatter {
     *
     * @param plain this is the text to be written to the output
     */    
-   private void write(String plain) throws Exception{
-      result.write(plain);                    
+   private void write(String plain) throws Exception{      
+      result.append(buffer);
+      result.write(plain);
+      clear();
    }
    
    /**
-    * This is used to write a character to the output stream without
-    * any translation. This is used when writing the start tags and
-    * end tags, this is also used to write attribute names.
+    * This is used to buffer a character to the output stream without
+    * any translation. This is used when buffering the start tags so
+    * that they can be reset without affecting the resulting document.
     *
     * @param ch this is the character to be written to the output
     */ 
    private void append(char ch) throws Exception {
-      result.append(ch);           
+      buffer.append(ch);           
    }
 
    /**
-    * This is used to write plain text to the output stream without
-    * any translation. This is used when writing the start tags and
-    * end tags, this is also used to write attribute names.
+    * This is used to buffer characters to the output stream without
+    * any translation. This is used when buffering the start tags so
+    * that they can be reset without affecting the resulting document.
     *
-    * @param plain this is the text to be written to the output
+    * @param plain this is the array of characters to be buffered
     */    
    private void append(char[] plain) throws Exception {
-      result.append(plain);           
+      buffer.append(plain);           
    }
 
    /**
-    * This is used to write plain text to the output stream without
-    * any translation. This is used when writing the start tags and
-    * end tags, this is also used to write attribute names.
+    * This is used to buffer characters to the output stream without
+    * any translation. This is used when buffering the start tags so
+    * that they can be reset without affecting the resulting document.
     *
-    * @param plain this is the text to be written to the output
-    */    
+    * @param plain this is the string that is to be buffered
+    */     
    private void append(String plain) throws Exception{
-      result.append(plain);                    
+      buffer.append(plain);                    
+   }
+   
+   private void data(String value) throws Exception {
+      write("<![CDATA[");
+      write(value);
+      write("]]>");
    }
    
    /**
@@ -319,6 +335,42 @@ final class Formatter {
       } else {
          write(ch);                 
       }
+   }   
+   
+   /**
+    * This method is used to reset the internal buffer such that the
+    * contents are discarded. This is useful when a tag needs to be
+    * removed or deleted as its contents can be removed from the 
+    * buffer so as not to affect the resulting XML document.    
+    */
+   public void reset() throws Exception {
+      if(last != Tag.START) {
+         throw new NodeException("Can not remove element text");
+      }
+      indenter.pop();
+      clear();     
+   }
+
+   /**
+    * This is used to flush the writer when the XML if it has been
+    * buffered. The flush method is used by the node writer after an
+    * end element has been written. Flushing ensures that buffering
+    * does not affect the result of the node writer.
+    */ 
+   public void flush() throws Exception{
+      result.append(buffer);
+      result.flush();
+      clear();
+   }
+   
+   /**
+    * This method is used to clear out any buffered content so that
+    * a node can be effectively deleted from the resulting source.
+    * This simple ensures that the buffered content is not written
+    * to the resulting writer in the event of a flush.
+    */
+   public void clear() {
+      buffer.setLength(0);
    }
 
    /**
@@ -378,7 +430,7 @@ final class Formatter {
         return AND;
       }
       return null;
-  }
+  }  
    
    /**
     * This is used to enumerate the different types of tag that can

@@ -106,6 +106,16 @@ interface Label {
    public String getOverride();
    
    /**
+    * This is used to determine whether the annotation requires it
+    * and its children to be written as a CDATA block. This is done
+    * when a primitive or other such element requires a text value
+    * and that value needs to be encapsulated within a CDATA block.
+    * 
+    * @return this returns true if the element requires CDATA
+    */
+   public boolean isData();
+   
+   /**
     * Determines whether the XML attribute or element is required. 
     * This ensures that if an XML element is missing from a document
     * that deserialization can continue. Also, in the process of

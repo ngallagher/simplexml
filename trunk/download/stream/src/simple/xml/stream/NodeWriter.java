@@ -218,11 +218,31 @@ final class NodeWriter {
     * @param node this is the node that is to have an end tag
     */  
    private void writeEnd(OutputNode node) throws Exception {
+      Mode mode = node.getMode();
+  
+      for(OutputNode next : stack) {         
+         if(mode != Mode.INHERIT) {
+            break; 
+         }
+         mode = next.getMode();
+      }
+      writeEnd(node, mode);
+   }
+   
+   /**
+    * This is used to write a new end element to the resulting XML
+    * document. This will acquire the name and value of the given
+    * node, if the node has a value that is written. Finally a new
+    * end tag is written to the document and the output is flushed.
+    *
+    * @param node this is the node that is to have an end tag
+    */  
+   private void writeEnd(OutputNode node, Mode mode) throws Exception {
       String value = node.getValue();
       String name = node.getName();
 
       if(value != null) { 
-         writer.writeText(value);
+         writer.writeText(value, mode);
       }         
       writer.writeEnd(name);
       writer.flush();

@@ -24,11 +24,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Retention;
 
 /**
- * The <code>Text</code> annotation is used to represent a field 
- * that appears as text within an XML element. Fields annotated with
- * this must be primitive values. A restriction on this annotation
- * is that it can only appear once within a schema class, and it 
- * can not appear with the <code>Element</code> annotation.
+ * The <code>Text</code> annotation is used to represent a field or
+ * method that appears as text within an XML element. Methods and
+ * fields annotated with this must represent primitive values. One
+ * restriction on this annotation is that it can only appear once 
+ * within a schema class, and it can not appear with the another XML
+ * element annotations, such as the <code>Element</code> annotation. 
  * <pre>
  * 
  *    &lt;example one="value" two="value"&gt;
@@ -45,6 +46,16 @@ import java.lang.annotation.Retention;
  */ 
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Text {
+   
+   /**
+    * This is used to determine whether the text is written within 
+    * CDATA block or not. If this is set to true then the text is
+    * written within a CDATA block, by default the text is output
+    * as escaped XML. Typically this is used for large text values.
+    * 
+    * @return true if the data is to be wrapped in a CDATA block
+    */
+   public boolean data() default false;
    
    /**
     * Determines whether the text value is required within the XML

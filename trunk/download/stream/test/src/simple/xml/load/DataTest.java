@@ -64,7 +64,7 @@ public class DataTest extends ValidationTestCase {
       @Attribute(name="type")
       private String type;
 
-      @Element(name="data")
+      @Element(name="data", data=true)
       private String data;
    }
    

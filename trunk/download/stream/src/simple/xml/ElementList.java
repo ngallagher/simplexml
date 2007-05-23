@@ -24,8 +24,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Retention;
 
 /**
- * The <code>ElementList</code> annotation represents a field that is
- * a list of elements stored in a <code>Collection</code> object. The
+ * The <code>ElementList</code> annotation represents a method or
+ * field that is a <code>Collection</code> for storing elements. The
  * collection object deserialized is typically of the same type as
  * the field. However, a <code>class</code> attribute can be used to
  * override the field type, however the type must be assignable.
@@ -49,8 +49,10 @@ public @interface ElementList {
    
    /**
     * This represents the name of the XML element. Annotated fields
-    * must provide the name of the element they represent so that
-    * that can be serialized and deserialized to and from the XML.
+    * can optionally provide the name of the element. If no name is
+    * provided then the name of the annotated field or method will
+    * be used in its place. The name is provided if the field or
+    * method name is not suitable as an XML element name.
     * 
     * @return the name of the XML element this represents
     */

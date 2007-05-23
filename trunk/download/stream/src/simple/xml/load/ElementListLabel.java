@@ -169,6 +169,18 @@ final class ElementListLabel implements Label {
    }
    
    /**
+    * This is used to determine whether the annotation requires it
+    * and its children to be written as a CDATA block. This is done
+    * when a primitive or other such element requires a text value
+    * and that value needs to be encapsulated within a CDATA block.
+    * 
+    * @return currently the element list does not require CDATA
+    */
+   public boolean isData() {
+      return false;
+   }
+   
+   /**
     * This is used to determine whether the XML element is required. 
     * This ensures that if an XML element is missing from a document
     * that deserialization can continue. Also, in the process of

@@ -157,6 +157,10 @@ final class TextLabel implements Label {
       return label.required();
    }
    
+   public boolean isData() {
+      return label.data();
+   }
+   
    /**
     * This method is used by the deserialization process to check
     * to see if an annotation is inline or not. If an annotation

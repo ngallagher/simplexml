@@ -50,6 +50,8 @@ final class OutputDocument implements OutputNode {
     * Represents the value that has been set on this document.
     */ 
    private String value;
+   
+   private Mode mode;
   
    /**
     * Constructor for the <code>OutputDocument</code> object. This 
@@ -60,7 +62,8 @@ final class OutputDocument implements OutputNode {
     * @param stack this is the stack that contains the open nodes
     */ 
    public OutputDocument(NodeWriter writer, OutputStack stack) {
-      this.table = new OutputNodeMap(this);           
+      this.table = new OutputNodeMap(this);    
+      this.mode = Mode.INHERIT;
       this.writer = writer;
       this.stack = stack;
    }     
@@ -111,6 +114,10 @@ final class OutputDocument implements OutputNode {
       return true;
    }
    
+   public Mode getMode() {
+      return mode;
+   }   
+   
    /**
     * This method is used for convinience to add an attribute node 
     * to the attribute <code>NodeMap</code>. The attribute added
@@ -143,6 +150,14 @@ final class OutputDocument implements OutputNode {
     */  
    public void setValue(String value) {
       this.value = value;
+   }
+   
+   public void setData(boolean data) {
+      if(data) {
+         mode = Mode.DATA;
+      } else {
+         mode = Mode.ESCAPE;
+      }     
    }
    
    /**
