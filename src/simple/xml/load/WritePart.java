@@ -186,4 +186,8 @@ final class WritePart implements MethodPart {
       }           
       return method;
    }
+   
+   public String toString() {
+      return method.toGenericString();
+   }
 }

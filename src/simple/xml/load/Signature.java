@@ -210,4 +210,8 @@ final class Signature {
    private boolean isEmpty(String value) {
       return value.length() == 0;
    }
+   
+   public String toString() {
+      return String.format("%s on %s", label, contact);
+   }
 }

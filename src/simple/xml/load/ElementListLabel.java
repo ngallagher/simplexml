@@ -212,6 +212,6 @@ final class ElementListLabel implements Label {
     * @return this returns a description of the XML annotation
     */
    public String toString() {
-      return label.toString();
+      return sign.toString();
    }   
 }

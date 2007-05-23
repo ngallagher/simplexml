@@ -136,4 +136,6 @@ interface Label {
     * @return this returns true if the annotaiton is inline
     */
    public boolean isInline();
+   
+   public String toString();
 }

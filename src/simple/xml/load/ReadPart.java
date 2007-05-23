@@ -168,4 +168,8 @@ final class ReadPart implements MethodPart {
       }           
       return method;
    }
+   
+   public String toString() {
+      return method.toGenericString();
+   }
 }

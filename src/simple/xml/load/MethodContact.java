@@ -21,7 +21,6 @@
 package simple.xml.load;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
 
 /**
  * The <code>MethodContact</code> object is acts as a contact that
@@ -34,21 +33,21 @@ import java.lang.reflect.Method;
  * @see simple.xml.load.MethodScanner
  */ 
 final class MethodContact implements Contact {
-
-   /**
-    * This is the label that marks both the set and get methods.
-    */         
-   private Annotation label;
-        
+   
    /**
     * This is the read method which is used to get the value.
     */
-   private Method read;
+   private MethodPart read;
    
    /**
     * This is the write method which is used to set the value.
     */ 
-   private Method write;
+   private MethodPart write;
+   
+   /**
+    * This is the label that marks both the set and get methods.
+    */         
+   private Annotation label;
 
    /**
     * This is the type associated with this point of contact.
@@ -77,10 +76,10 @@ final class MethodContact implements Contact {
    public MethodContact(MethodPart read, MethodPart write) {
       this.label = read.getAnnotation();   
       this.item = read.getDependant();
-      this.write = write.getMethod();
-      this.read = read.getMethod();
       this.type = read.getType();   
       this.name = read.getName();
+      this.write = write;
+      this.read = read;
    }
 
    /**
@@ -139,7 +138,7 @@ final class MethodContact implements Contact {
     * @param value this is the value that is to be set on the object
     */    
    public void set(Object source, Object value) throws Exception{
-      write.invoke(source, value);
+      write.getMethod().invoke(source, value);
    }
    
    /**
@@ -153,6 +152,10 @@ final class MethodContact implements Contact {
     * @return this is the value that is acquired from the object
     */ 
    public Object get(Object source) throws Exception {
-      return read.invoke(source);
+      return read.getMethod().invoke(source);
+   }
+   
+   public String toString() {
+      return String.format("'%s' and '%s'", read, write);
    }
 }
