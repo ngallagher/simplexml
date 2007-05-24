@@ -47,6 +47,11 @@ final class FieldContact implements Contact {
    private Field field;
    
    /**
+    * This contains the generic string representation of the field.
+    */
+   private String message;
+   
+   /**
     * This is the name for this contact as taken from the field.
     */
    private String name;
@@ -60,6 +65,7 @@ final class FieldContact implements Contact {
     * @param label this is the annotation that is used by the field
     */ 
    public FieldContact(Field field, Annotation label) {
+      this.message = field.toGenericString();
       this.label = label;
       this.field = field;
    }
@@ -180,7 +186,15 @@ final class FieldContact implements Contact {
       return field.get(source);
    }
    
+   /**
+    * This is used to describe the contact as it exists within the
+    * owning class. It is used to provide error messages that can
+    * be used to debug issues that occur when processing a contact.
+    * The string provided is the generic field string.
+    * 
+    * @return this returns a string representation of the contact
+    */
    public String toString() {
-      return String.format("'%s'", field.toGenericString());
+      return String.format("'%s'", message);
    }
 }

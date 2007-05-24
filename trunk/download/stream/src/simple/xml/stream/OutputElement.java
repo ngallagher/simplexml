@@ -56,6 +56,9 @@ class OutputElement implements OutputNode {
     */ 
    private String name;
    
+   /**
+    * This is the output mode that this element object is using.
+    */
    private Mode mode;
    
    /**
@@ -122,6 +125,16 @@ class OutputElement implements OutputNode {
       return writer.isRoot(this);
    }
    
+   /**
+    * The <code>Mode</code> is used to indicate the output mode
+    * of this node. Three modes are possible, each determines
+    * how a value, if specified, is written to the resulting XML
+    * document. This is determined by the <code>setData</code>
+    * method which will set the output to be CDATA or escaped, 
+    * if neither is specified the mode is inherited.
+    * 
+    * @return this returns the mode of this output node object
+    */
    public Mode getMode() {
       return mode;
    }
@@ -149,6 +162,15 @@ class OutputElement implements OutputNode {
       this.value = value;
    }
    
+   /**
+    * This is used to set the output mode of this node to either
+    * be CDATA or escaped. If this is set to true the any value
+    * specified will be written in a CDATA block, if this is set
+    * to false the values is escaped. If however this method is
+    * never invoked then the mode is inherited from the parent.
+    * 
+    * @param data if true the value is written as a CDATA block
+    */
    public void setData(boolean data) {
       if(data) {
          mode = Mode.DATA;
@@ -182,6 +204,14 @@ class OutputElement implements OutputNode {
       return writer.writeElement(this, name);
    }
    
+   /**
+    * This is used to remove any uncommitted changes. Removal of an
+    * output node can only be done if it has no siblings and has
+    * not yet been committed. If the node is committed then this 
+    * will throw an exception to indicate that it cannot be removed. 
+    * 
+    * @throws Exception thrown if the node cannot be removed
+    */
    public void remove() throws Exception {
       writer.remove(this);
    }
