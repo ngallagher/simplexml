@@ -91,6 +91,13 @@ interface MethodPart {
     */
    public MethodType getMethodType();
    
-   
+   /**
+    * This is used to describe the method as it exists within the
+    * owning class. This is used to provide error messages that can
+    * be used to debug issues that occur when processing a method.
+    * This should return the method as a generic representation.  
+    * 
+    * @return this returns a string representation of the method
+    */
    public String toString();
 }

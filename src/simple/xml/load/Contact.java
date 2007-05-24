@@ -96,5 +96,12 @@ interface Contact {
     */ 
    public Object get(Object source) throws Exception;
    
+   /**
+    * This is used to describe the contact as it exists within the
+    * owning class. This is used to provide error messages that can
+    * be used to debug issues that occur when processing a contact.  
+    * 
+    * @return this returns a string representation of the contact
+    */
    public String toString();
 }

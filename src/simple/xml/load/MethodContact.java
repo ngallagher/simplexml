@@ -155,6 +155,14 @@ final class MethodContact implements Contact {
       return read.getMethod().invoke(source);
    }
    
+   /**
+    * This is used to describe the contact as it exists within the
+    * owning class. It is used to provide error messages that can
+    * be used to debug issues that occur when processing a contact.
+    * The string provided contains both the set and get methods.
+    * 
+    * @return this returns a string representation of the contact
+    */
    public String toString() {
       return String.format("'%s' and '%s'", read, write);
    }

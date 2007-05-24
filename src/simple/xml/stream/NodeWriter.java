@@ -152,6 +152,14 @@ final class NodeWriter {
       }
    } 
    
+   /**
+    * This method is used to remove the output node from the output
+    * buffer if that node has not yet been committed. This allows a
+    * node that has been created to be deleted, ensuring that it
+    * will not affect the resulting XML document structure.
+    * 
+    * @param node this is the output node that is to be removed    
+    */
    public void remove(OutputNode node) throws Exception {
       if(stack.top() != node) {
          throw new NodeException("Cannot remove node");

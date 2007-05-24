@@ -163,7 +163,8 @@ final class Formatter {
 
    /**
     * This is used to write the specified text value to the writer.
-    * If the last tag written was a start tag then it is closed. 
+    * If the last tag written was a start tag then it is closed.
+    * By default this will escape any illegal XML characters. 
     *
     * @param text this is the text to write to the output
     *
@@ -175,7 +176,8 @@ final class Formatter {
    
    /**
     * This is used to write the specified text value to the writer.
-    * If the last tag written was a start tag then it is closed. 
+    * If the last tag written was a start tag then it is closed.
+    * This will use the output mode specified. 
     *
     * @param text this is the text to write to the output
     *
@@ -278,23 +280,21 @@ final class Formatter {
     * any translation. This is used when buffering the start tags so
     * that they can be reset without affecting the resulting document.
     *
-    * @param plain this is the array of characters to be buffered
-    */    
-   private void append(char[] plain) throws Exception {
-      buffer.append(plain);           
-   }
-
-   /**
-    * This is used to buffer characters to the output stream without
-    * any translation. This is used when buffering the start tags so
-    * that they can be reset without affecting the resulting document.
-    *
     * @param plain this is the string that is to be buffered
     */     
    private void append(String plain) throws Exception{
       buffer.append(plain);                    
    }
    
+   /**
+    * This method is used to write the specified text as a CDATA block
+    * within the XML element. This is typically used when the value is
+    * large or if it must be preserved in a format that will not be
+    * affected by other XML parsers. For large text values this is 
+    * also faster than performing a character by character escaping.
+    * 
+    * @param value this is the text value to be written as CDATA
+    */
    private void data(String value) throws Exception {
       write("<![CDATA[");
       write(value);

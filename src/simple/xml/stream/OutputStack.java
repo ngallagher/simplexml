@@ -109,10 +109,10 @@ final class OutputStack extends LinkedList<OutputNode> {
    
    /**
     * The <code>purge</code> method is used to purge a match from
-    * the provided position. This also ensures that the cache is
-    * cleared so that the semantics of the resolver do not change.
+    * the provided position. This also ensures that the active set
+    * has the node removed so that it is no longer relevant.
     *
-    * @param index the index of the match that is to be removed
+    * @param index the index of the node that is to be removed
     */ 
    public void purge(int index) {      
       OutputNode node = remove(index);  
@@ -123,22 +123,22 @@ final class OutputStack extends LinkedList<OutputNode> {
    }
    
    /**
-    * This is returned from the <code>Resolver.iterator</code> so
-    * that matches can be iterated in insertion order. When a
-    * match is removed from this iterator then it clears the cache
-    * and removed the match from the <code>Stack</code> object.
+    * This is returns an <code>Iterator</code> that is used to loop
+    * through the ouptut nodes from the top down. This allows the
+    * node writer to determine what <code>Mode</code> should be used
+    * by an output node. This reverses the iteration of the list.
     * 
-    * @return returns an iterator to iterate in insertion order
+    * @return returns an iterator to iterate from the top down
     */ 
    public Iterator<OutputNode> iterator() {
       return new Sequence();              
    }
 
    /**
-    * The is used to order the <code>Match</code> objects in the
-    * insertion order. Iterating in insertion order allows the
-    * resolver object to be serialized and deserialized to and
-    * from an XML document without disruption resolution order.
+    * The is used to order the <code>OutputNode</code> objects from
+    * the top down. This is basically used to reverse the order of
+    * the linked list so that the stack can be iterated within a
+    * for each loop easily. This can also be used to remove a node.
     *
     * @author Niall Gallagher
     */
@@ -152,18 +152,18 @@ final class OutputStack extends LinkedList<OutputNode> {
       /**
        * Constructor for the <code>Sequence</code> object. This is
        * used to position the cursor at the end of the list so the
-       * first inserted match is the first returned from this.
+       * last inserted output node is the first returned from this.
        */ 
       public Sequence() {
          this.cursor = size();                 
       }
 
       /**
-       * This returns the <code>Match</code> object at the cursor
-       * position. If the cursor has reached the start of the 
-       * list then this returns null instead of the first match.
+       * Returns the <code>OutputNode</code> object at the cursor
+       * position. If the cursor has reached the start of the list 
+       * then this returns null instead of the first output node.
        * 
-       * @return this returns the match from the cursor position
+       * @return this returns the node from the cursor position
        */ 
       public OutputNode next() {
          if(hasNext()) {
@@ -177,7 +177,7 @@ final class OutputStack extends LinkedList<OutputNode> {
        * start of the list. When the cursor reaches the start of
        * the list then this method returns false.
        * 
-       * @return this returns true if there are more matches left
+       * @return this returns true if there are more nodes left
        */ 
       public boolean hasNext() {
          return cursor > 0;
@@ -185,8 +185,8 @@ final class OutputStack extends LinkedList<OutputNode> {
 
       /**
        * Removes the match from the cursor position. This also
-       * ensures that the cache is cleared so that resolutions
-       * made before the removal do not affect the semantics.
+       * ensures that the node is removed from the active set so
+       * that it is not longer considered a relevant output node.
        */ 
       public void remove() {                    
          purge(cursor);                
