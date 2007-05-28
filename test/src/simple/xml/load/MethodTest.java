@@ -8,7 +8,7 @@ import simple.xml.ValidationTestCase;
 
 public class MethodTest extends ValidationTestCase {
         
-   private static final String SOURCE =
+   private static final String SOURCE_EXPLICIT =
    "<?xml version=\"1.0\"?>\n"+
    "<test>\n"+
    "   <boolean>true</boolean>\r\n"+
@@ -18,18 +18,30 @@ public class MethodTest extends ValidationTestCase {
    "   <float>1234.56</float>  \n\r"+
    "   <long>1234567</long>\n"+
    "   <double>1234567.89</double>  \n\r"+
-   "</test>";
-   
-   @Root(name="test")
-   private static class MethodExample {
+   "</test>";      
 
-      private boolean booleanValue;            
-      private byte byteValue;
-      private short shortValue;
-      private int intValue;   
-      private float floatValue;
-      private long longValue;         
-      private double doubleValue;
+   private static final String SOURCE_IMPLICIT =
+   "<?xml version=\"1.0\"?>\n"+
+   "<implicitMethodNameExample>\n"+
+   "   <booleanValue>true</booleanValue>\r\n"+
+   "   <byteValue>16</byteValue>  \n\r"+
+   "   <shortValue>120</shortValue>  \n\r"+
+   "   <intValue>1234</intValue>\n"+
+   "   <floatValue>1234.56</floatValue>  \n\r"+
+   "   <longValue>1234567</longValue>\n"+
+   "   <doubleValue>1234567.89</doubleValue>  \n\r"+
+   "</implicitMethodNameExample>"; 
+
+   @Root(name="test")
+   private static class ExplicitMethodNameExample {
+
+      protected boolean booleanValue;            
+      protected byte byteValue;
+      protected short shortValue;
+      protected int intValue;   
+      protected float floatValue;
+      protected long longValue;         
+      protected double doubleValue;
       
       @Element(name="boolean")
       public boolean getBooleanValue() {
@@ -102,6 +114,80 @@ public class MethodTest extends ValidationTestCase {
       }           
    }
 
+   @Root
+   private static class ImplicitMethodNameExample extends ExplicitMethodNameExample {
+
+      @Element
+      public boolean getBooleanValue() {
+         return booleanValue;
+      }
+      
+      @Element
+      public void setBooleanValue(boolean booleanValue) {
+         this.booleanValue = booleanValue;
+      }
+      
+      @Element
+      public byte getByteValue() {
+         return byteValue;
+      }
+
+      @Element
+      public void setByteValue(byte byteValue) {
+         this.byteValue = byteValue;
+      }
+      
+      @Element
+      public double getDoubleValue() {
+         return doubleValue;
+      }
+      
+      @Element
+      public void setDoubleValue(double doubleValue) {
+         this.doubleValue = doubleValue;
+      }
+      
+      @Element
+      public float getFloatValue() {
+         return floatValue;
+      }
+      
+      @Element
+      public void setFloatValue(float floatValue) {
+         this.floatValue = floatValue;
+      }
+      
+      @Element
+      public int getIntValue() {
+         return intValue;
+      }
+      
+      @Element
+      public void setIntValue(int intValue) {
+         this.intValue = intValue;
+      }
+      
+      @Element
+      public long getLongValue() {
+         return longValue;
+      }
+      
+      @Element
+      public void setLongValue(long longValue) {
+         this.longValue = longValue;
+      }
+      
+      @Element
+      public short getShortValue() {
+         return shortValue;
+      }
+      
+      @Element
+      public void setShortValue(short shortValue) {
+         this.shortValue = shortValue;
+      }           
+   }
+
    private Persister persister;
 
    public void setUp() throws Exception {
@@ -109,7 +195,7 @@ public class MethodTest extends ValidationTestCase {
    }
 	
    public void testPrimitive() throws Exception {    
-      MethodExample entry = persister.read(MethodExample.class, SOURCE);
+      ExplicitMethodNameExample entry = persister.read(ExplicitMethodNameExample.class, SOURCE_EXPLICIT);
 
       assertEquals(entry.booleanValue, true);
       assertEquals(entry.byteValue, 16);
@@ -123,7 +209,7 @@ public class MethodTest extends ValidationTestCase {
       persister.write(entry, buffer);
       validate(entry, persister);
 
-      entry = persister.read(MethodExample.class, buffer.toString());
+      entry = persister.read(ExplicitMethodNameExample.class, buffer.toString());
 
       assertEquals(entry.booleanValue, true);
       assertEquals(entry.byteValue, 16);
@@ -135,4 +221,34 @@ public class MethodTest extends ValidationTestCase {
       
       validate(entry, persister);
    }
+   	
+   public void testInheritedMethodNameExample() throws Exception {   
+      ImplicitMethodNameExample entry = persister.read(ImplicitMethodNameExample.class, SOURCE_IMPLICIT);
+   
+      assertEquals(entry.booleanValue, true);
+      assertEquals(entry.byteValue, 16);
+      assertEquals(entry.shortValue, 120);
+      assertEquals(entry.intValue, 1234);
+      assertEquals(entry.floatValue, 1234.56f);
+      assertEquals(entry.longValue, 1234567l);
+      assertEquals(entry.doubleValue, 1234567.89d);
+     
+      StringWriter buffer = new StringWriter();
+      persister.write(entry, buffer);
+      validate(entry, persister);
+   
+      entry = persister.read(ImplicitMethodNameExample.class, buffer.toString());
+   
+      assertEquals(entry.booleanValue, true);
+      assertEquals(entry.byteValue, 16);
+      assertEquals(entry.shortValue, 120);
+      assertEquals(entry.intValue, 1234);
+      assertEquals(entry.floatValue, 1234.56f);
+      assertEquals(entry.longValue, 1234567l);
+      assertEquals(entry.doubleValue, 1234567.89d);
+      
+      validate(entry, persister);
+   }
+
+
 }
