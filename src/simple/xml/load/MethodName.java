@@ -47,20 +47,51 @@ final class MethodName {
     */
    private String name;
    
+   /**
+    * Constructor for the <code>MethodName</code> objects. This is
+    * used to create a method name representation of a method based
+    * on the method type and the Java Bean name of that method.
+    * 
+    * @param method this is the actual method this is representing
+    * @param type type used to determine if it is a set or get
+    * @param name this is the Java Bean property name of the method
+    */
    public MethodName(Method method, MethodType type, String name) {
       this.name = name.intern();
       this.method = method;
       this.type = type;      
    }
    
+   /**
+    * This provdes the name of the method part as acquired from the
+    * method name. The name represents the Java Bean property name
+    * of the method and is used to pair getter and setter methods.
+    * 
+    * @return this returns the Java Bean name of the method part
+    */
    public String getName() {    
       return name;
    }
    
+   /**
+    * This is the method type for the method part. This is used in
+    * the scanning process to determine which type of method a
+    * instance represents, this allows set and get methods to be
+    * paired.
+    * 
+    * @return the method type that this part represents
+    */ 
    public MethodType getType() {
       return type;
    }
    
+   /**
+    * This is the method for this point of contact. This is what
+    * will be invoked by the serialization or deserialization 
+    * process when an XML element or attribute is to be used.
+    * 
+    * @return this returns the method associated with this
+    */
    public Method getMethod() {
       return method;      
    }  

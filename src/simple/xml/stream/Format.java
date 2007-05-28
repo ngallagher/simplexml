@@ -24,22 +24,22 @@ package simple.xml.stream;
  * The <code>Format</code> object is used to provide information on 
  * how a generated XML document should be structured. The information
  * provided tells the formatter whether an XML prolog is required and
- * the number of spaces that should be used for indenting. Currently
- * each generated document has an XML version of "1.0".
+ * the number of spaces that should be used for indenting. The prolog
+ * specified will be written directly before the XML document.
  * <p>
  * Should a <code>Format</code> be created with an indent of zero or
  * less then no indentation is done, and the generated XML will be on
- * the same line. The prolog appears if the encoding specified is a
- * non null value, typically this should be "UTF-8".
+ * the same line. The prolog can contain any legal XML heading, which
+ * can domain a DTD declaration and XML comments if required.
  *
  * @author Niall Gallagher
  */ 
 public class Format {
 
    /**
-    * Represents the encoding that appears in the generated XML.
+    * Represents the prolog that appears in the generated XML.
     */         
-   private String encoding;
+   private String prolog;
          
    /**
     * Represents the indent size to use for the generated XML.
@@ -59,25 +59,37 @@ public class Format {
     * Constructor for the <code>Format</code> object. This creates an
     * object that is used to describe how the formatter should create
     * the XML document. This constructor uses the specified indent
-    * size and a null encoding, which means no prolog is generated.
+    * size and a null prolog, which means no prolog is generated.
     *
     * @param indent this is the number of spaces used in the indent
     */ 
    public Format(int indent) {
       this(indent, null);           
    }
-
+   
+   /**
+    * Constructor for the <code>Format</code> object. This creates an
+    * object that is used to describe how the formatter should create
+    * the XML document. This constructor uses the specified prolog 
+    * that is to be inserted at the start of the XML document.
+    *
+    * @param prolog this is the prolog for the generated XML document
+    */    
+   public Format(String prolog) {
+      this(3, prolog);          
+   }
+   
    /**
     * Constructor for the <code>Format</code> object. This creates an
     * object that is used to describe how the formatter should create
     * the XML document. This constructor uses the specified indent
-    * size and the encoding to use in the generated prolog.
+    * size and the text to use in the generated prolog.
     *
     * @param indent this is the number of spaces used in the indent
-    * @param encoding this is the encoding to appear in the prolog
+    * @param prolog this is the prolog for the generated XML document
     */    
-   public Format(int indent, String encoding) {
-      this.encoding = encoding;           
+   public Format(int indent, String prolog) {
+      this.prolog = prolog;           
       this.indent = indent;           
    }
    
@@ -93,13 +105,14 @@ public class Format {
    }   
 
    /**
-    * This method returns the encoding to use for the generated XML.
-    * This should typically be "UTF-8" but can be any encoding. If
-    * a null encoding was specified then no prolog is generated.
+    * This method returns the prolog that is to be used at the start
+    * of the generated XML document. This allows a DTD or a version
+    * to be specified at the start of a document. If this returns
+    * null then no prolog is written to the start of the XML document.
     *
-    * @return this returns the encoding to used for the prolog
+    * @return this returns the prolog for the start of the document    
     */ 
-   public String getEncoding() {
-      return encoding;           
+   public String getProlog() {
+      return prolog;           
    }
 }

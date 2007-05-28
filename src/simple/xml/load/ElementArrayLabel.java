@@ -57,7 +57,7 @@ final class ElementArrayLabel implements Label {
    private String parent;
    
    /**
-    * This is the name of the element from the annotation.
+    * This is the name of the element for this label instance.
     */
    private String name;
 	

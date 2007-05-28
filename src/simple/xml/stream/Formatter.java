@@ -77,9 +77,9 @@ final class Formatter {
    private Writer result;
 
    /**
-    * Represents the encoding to use in the generated prolog.
+    * Represents the prolog to insert at the start of the document.
     */ 
-   private String encoding;
+   private String prolog;
    
    /**
     * Represents the last type of content that was written.
@@ -98,22 +98,21 @@ final class Formatter {
        this.result = new BufferedWriter(result);
        this.indenter = new Indenter(format);
        this.buffer = new StringBuilder();
-       this.encoding = format.getEncoding();      
+       this.prolog = format.getProlog();      
    }
 
    /**
     * This is used to write a prolog to the specified output. This is
     * only written if the specified <code>Format</code> object has
-    * been given a non null encoding. If no encoding is specified no
+    * been given a non null prolog. If no prolog is specified then no
     * prolog is written to the generated XML.
     *
     * @throws Exception thrown if there is an I/O problem 
     */ 
    public void writeProlog() throws Exception {
-      if(encoding != null) {
-         write("<?xml version='1.0' encoding='");
-         write(encoding);
-         write("'?>\n");         
+      if(prolog != null) {
+         write(prolog.trim());         
+         write("\n");         
       }
    }
    

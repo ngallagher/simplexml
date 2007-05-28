@@ -163,6 +163,15 @@ final class TextLabel implements Label {
       return label.required();
    }
    
+   /**
+    * This is used to determine if the <code>Text</code> method or
+    * field is to have its value written as a CDATA block. This will
+    * set the output node to CDATA mode if this returns true, if it
+    * is false data will be written according to an inherited mode.
+    * By default inherited mode results in escaped XML text.
+    * 
+    * @return this returns true if the text is to be a CDATA block
+    */
    public boolean isData() {
       return label.data();
    }

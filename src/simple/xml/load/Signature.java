@@ -28,7 +28,7 @@ import simple.xml.Root;
  * The <code>Signature</code> object is used to determine the details
  * to use for an annotated field or method using both the field an
  * annotation details. This allows defaults to be picked up from the
- * method or field type if that have not been explicitly overridden
+ * method or field type if thay have not been explicitly overridden
  * in the annotation. 
  * 
  * @author Niall Gallagher
@@ -38,7 +38,7 @@ final class Signature {
    /**
     * This is the actual annotation from the specified contact.
     */
-   private Annotation actual;
+   private Annotation marker;
    
    /**
     * This is the field or method contact that has been annotated.
@@ -65,7 +65,7 @@ final class Signature {
     * @param label this is the annotation on the contact object
     */
    public Signature(Contact contact, Label label) {
-      this.actual = contact.getAnnotation();
+      this.marker = contact.getAnnotation();
       this.contact = contact;
       this.label = label;
    }
@@ -218,7 +218,16 @@ final class Signature {
       return value.length() == 0;
    }
    
+   /**
+    * This method is used to construct a string that describes the
+    * signature of an XML annotated field or method. This will use
+    * the <code>Contact</code> object and the annotation used for
+    * that contact to construct a string that has sufficient
+    * information such that it can be used in error reporting.
+    * 
+    * @return returns a string used to represent this signature 
+    */
    public String toString() {
-      return String.format("%s on %s", actual, contact);
+      return String.format("%s on %s", marker, contact);
    }
 }

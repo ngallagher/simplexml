@@ -56,7 +56,7 @@ final class ElementListLabel implements Label {
    private Class item;
    
    /**
-    * This is the name of the element from the annotation.
+    * This is the name of the element for this label instance.
     */
    private String name;  
 	
@@ -65,7 +65,7 @@ final class ElementListLabel implements Label {
     * creates a label object, which can be used to convert an XML 
     * node to a <code>Collection</code> of XML serializable objects.
     * 
-    * @param field this is the field that this label represents
+    * @param contact this is the contact that this label represents
     * @param label the annotation that contains the schema details
     */
    public ElementListLabel(Contact contact, ElementList label) {

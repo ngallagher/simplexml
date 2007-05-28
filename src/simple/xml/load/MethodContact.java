@@ -21,6 +21,7 @@
 package simple.xml.load;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 
 /**
  * The <code>MethodContact</code> object is acts as a contact that
@@ -35,19 +36,19 @@ import java.lang.annotation.Annotation;
 final class MethodContact implements Contact {
    
    /**
+    * This is the label that marks both the set and get methods.
+    */         
+   private Annotation label;
+   
+   /**
     * This is the read method which is used to get the value.
     */
-   private MethodPart read;
+   private Method read;
    
    /**
     * This is the write method which is used to set the value.
     */ 
-   private MethodPart write;
-   
-   /**
-    * This is the label that marks both the set and get methods.
-    */         
-   private Annotation label;
+   private Method write;
 
    /**
     * This is the type associated with this point of contact.
@@ -76,10 +77,11 @@ final class MethodContact implements Contact {
    public MethodContact(MethodPart read, MethodPart write) {
       this.label = read.getAnnotation();   
       this.item = read.getDependant();
+      this.write = write.getMethod();
+      this.read = read.getMethod();
       this.type = read.getType();   
       this.name = read.getName();
-      this.write = write;
-      this.read = read;
+
    }
 
    /**
@@ -138,7 +140,7 @@ final class MethodContact implements Contact {
     * @param value this is the value that is to be set on the object
     */    
    public void set(Object source, Object value) throws Exception{
-      write.getMethod().invoke(source, value);
+      write.invoke(source, value);
    }
    
    /**
@@ -152,7 +154,7 @@ final class MethodContact implements Contact {
     * @return this is the value that is acquired from the object
     */ 
    public Object get(Object source) throws Exception {
-      return read.getMethod().invoke(source);
+      return read.invoke(source);
    }
    
    /**
@@ -164,6 +166,6 @@ final class MethodContact implements Contact {
     * @return this returns a string representation of the contact
     */
    public String toString() {
-      return String.format("'%s' and '%s'", read, write);
+      return String.format("method '%s'", name);
    }
 }

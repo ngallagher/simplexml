@@ -48,7 +48,7 @@ final class AttributeLabel implements Label {
    private Class type;
    
    /**
-    * This is the name of the element from the annotation.
+    * This is the name of the element for this label instance.
     */
    private String name;
    
