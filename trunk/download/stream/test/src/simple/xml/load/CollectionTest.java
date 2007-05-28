@@ -585,6 +585,7 @@ public class CollectionTest extends ValidationTestCase {
       try {      
          EntrySortedSet set = serializer.read(EntrySortedSet.class, HASH_SET);
       } catch(InstantiationException e) {
+         e.printStackTrace();
          success = true;              
       }         
       assertTrue(success);
@@ -596,6 +597,7 @@ public class CollectionTest extends ValidationTestCase {
       try {      
          EntrySet set = serializer.read(EntrySet.class, ARRAY_LIST);
       } catch(InstantiationException e) {
+         e.printStackTrace();
          success = true;              
       }         
       assertTrue(success);
@@ -608,6 +610,7 @@ public class CollectionTest extends ValidationTestCase {
       try {      
          InvalidList set = serializer.read(InvalidList.class, LIST);
       } catch(InstantiationException e) {
+         e.printStackTrace();
          success = true;              
       }         
       assertTrue(success);
@@ -619,6 +622,7 @@ public class CollectionTest extends ValidationTestCase {
       try {      
          UnknownCollectionList set = serializer.read(UnknownCollectionList.class, LIST);
       } catch(InstantiationException e) {
+         e.printStackTrace();
          success = true;              
       }         
       assertTrue(success);
@@ -630,6 +634,7 @@ public class CollectionTest extends ValidationTestCase {
       try {      
          EntryList set = serializer.read(EntryList.class, ABSTRACT_LIST);
       } catch(InstantiationException e) {
+         e.printStackTrace();
          success = true;              
       }         
       assertTrue(success);
@@ -641,6 +646,7 @@ public class CollectionTest extends ValidationTestCase {
       try {      
          EntryList set = serializer.read(EntryList.class, NOT_A_COLLECTION);
       } catch(InstantiationException e) {
+         e.printStackTrace();
          success = true;              
       }         
       assertTrue(success);
@@ -652,6 +658,7 @@ public class CollectionTest extends ValidationTestCase {
       try {      
          EntrySet set = serializer.read(EntrySet.class, MISSING_COLLECTION);
       } catch(ClassNotFoundException e) {
+         e.printStackTrace();
          success = true;              
       }         
       assertTrue(success);           
