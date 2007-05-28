@@ -33,7 +33,7 @@ import simple.xml.filter.Filter;
  * 
  * @author Niall Gallagher
  */ 
-class TemplateFilter implements Filter {
+final class TemplateFilter implements Filter {
 
    /**
     * This is the source context object used by the persister.

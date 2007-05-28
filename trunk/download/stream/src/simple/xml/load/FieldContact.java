@@ -47,11 +47,6 @@ final class FieldContact implements Contact {
    private Field field;
    
    /**
-    * This contains the generic string representation of the field.
-    */
-   private String message;
-   
-   /**
     * This is the name for this contact as taken from the field.
     */
    private String name;
@@ -65,7 +60,6 @@ final class FieldContact implements Contact {
     * @param label this is the annotation that is used by the field
     */ 
    public FieldContact(Field field, Annotation label) {
-      this.message = field.toGenericString();
       this.label = label;
       this.field = field;
    }
@@ -91,10 +85,13 @@ final class FieldContact implements Contact {
     */
    public Class getDependant() {
       ParameterizedType type = getParameterType();
-      Object[] list = type.getActualTypeArguments();
       
-      if(list.length > 0) {
-         return (Class) list[0];
+      if(type != null) {
+         Object[] list = type.getActualTypeArguments();
+      
+         if(list.length > 0) {
+            return (Class) list[0];
+         }
       }
       return null;
    }
@@ -195,6 +192,6 @@ final class FieldContact implements Contact {
     * @return this returns a string representation of the contact
     */
    public String toString() {
-      return String.format("'%s'", message);
+      return String.format("field '%s'", getName());
    }
 }

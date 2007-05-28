@@ -51,7 +51,7 @@ final class ElementLabel implements Label {
    private Class type;
    
    /**
-    * This is the name of the element taken from the annotation.
+    * This is the name of the element for this label instance.
     */
    private String name;
    
