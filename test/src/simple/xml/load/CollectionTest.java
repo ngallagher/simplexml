@@ -185,10 +185,10 @@ public class CollectionTest extends ValidationTestCase {
    @Root(name="test")
    private static class EntrySortedSet implements Iterable<Entry> {
 
-      @ElementList(name="list", type=Entry.class)
+      @ElementList
       private SortedSet<Entry> list;           
 
-      @Attribute(name="name")
+      @Attribute
       private String name;
 
       public Iterator<Entry> iterator() {
@@ -199,10 +199,10 @@ public class CollectionTest extends ValidationTestCase {
    @Root(name="test")
    private static class EntryList implements Iterable<Entry> {
 
-      @ElementList(name="list", type=Entry.class)
+      @ElementList
       private List<Entry> list;           
 
-      @Attribute(name="name")
+      @Attribute
       private String name;
 
       public Iterator<Entry> iterator() {

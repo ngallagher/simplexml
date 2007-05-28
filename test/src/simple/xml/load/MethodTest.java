@@ -194,7 +194,7 @@ public class MethodTest extends ValidationTestCase {
       persister = new Persister();
    }
 	
-   public void testPrimitive() throws Exception {    
+   public void testExplicitMethodNameExample() throws Exception {    
       ExplicitMethodNameExample entry = persister.read(ExplicitMethodNameExample.class, SOURCE_EXPLICIT);
 
       assertEquals(entry.booleanValue, true);
@@ -222,7 +222,7 @@ public class MethodTest extends ValidationTestCase {
       validate(entry, persister);
    }
    	
-   public void testInheritedMethodNameExample() throws Exception {   
+   public void testImplicitMethodNameExample() throws Exception {   
       ImplicitMethodNameExample entry = persister.read(ImplicitMethodNameExample.class, SOURCE_IMPLICIT);
    
       assertEquals(entry.booleanValue, true);
