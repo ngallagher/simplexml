@@ -64,7 +64,7 @@ public class TextTest extends ValidationTestCase {
       @Attribute(name="version")
       private Version version;        
 
-      @Text
+      @Text(data=true)
       private String text;
    }
 
