@@ -21,8 +21,8 @@
 package simple.xml.util;
 
 import java.util.AbstractSet;
-import java.util.Iterator;
 import java.util.HashMap;
+import java.util.Iterator;
 
 /**
  * The <code>Dictionary</code> object represents a mapped set of entry
