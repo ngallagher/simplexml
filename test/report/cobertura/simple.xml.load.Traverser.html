@@ -12,7 +12,7 @@
 <div class="separator">&nbsp;</div>
 <table class="report">
 <thead><tr>  <td class="heading">Classes in this File</td>  <td class="heading"><a class="dfn" href="help.html" onclick="popupwindow('help.html'); return false;">Line Coverage</a></td>  <td class="heading"><a class="dfn" href="help.html" onclick="popupwindow('help.html'); return false;">Branch Coverage</a></td>  <td class="heading"><a class="dfn" href="help.html" onclick="popupwindow('help.html'); return false;">Complexity</a></td></tr></thead>
-  <tr><td><a href="simple.xml.load.Traverser.html">Traverser</a></td><td><table cellpadding="0px" cellspacing="0px" class="percentgraph"><tr class="percentgraph"><td align="right" class="percentgraph" width="40">93%</td><td class="percentgraph"><div class="percentgraph"><div class="greenbar" style="width:93px"><span class="text">42/45</span></div></div></td></tr></table></td><td><table cellpadding="0px" cellspacing="0px" class="percentgraph"><tr class="percentgraph"><td align="right" class="percentgraph" width="40">100%</td><td class="percentgraph"><div class="percentgraph"><div class="greenbar" style="width:100px"><span class="text">9/9</span></div></div></td></tr></table></td><td class="value"><span class="hidden">2.4;</span>2.4</td></tr>
+  <tr><td><a href="simple.xml.load.Traverser.html">Traverser</a></td><td><table cellpadding="0px" cellspacing="0px" class="percentgraph"><tr class="percentgraph"><td align="right" class="percentgraph" width="40">97%</td><td class="percentgraph"><div class="percentgraph"><div class="greenbar" style="width:96px"><span class="text">30/31</span></div></div></td></tr></table></td><td><table cellpadding="0px" cellspacing="0px" class="percentgraph"><tr class="percentgraph"><td align="right" class="percentgraph" width="40">100%</td><td class="percentgraph"><div class="percentgraph"><div class="greenbar" style="width:100px"><span class="text">4/4</span></div></div></td></tr></table></td><td class="value"><span class="hidden">1.875;</span>1.875</td></tr>
 
 </table>
 <div class="separator">&nbsp;</div>
@@ -68,404 +68,314 @@
 <tr>  <td class="numLine">&nbsp;25</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> simple.xml.stream.Position;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;26</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> simple.xml.Root;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;27</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;28</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">/**</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;29</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;28</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment"> * The &lt;code&gt;Traverser&lt;/code&gt; object is used to traverse the XML class</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;30</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;29</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment"> * schema and either serialize or deserialize an object. This is the</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;31</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;30</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment"> * root of all serialization and deserialization operations. It uses</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;32</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;31</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment"> * the &lt;code&gt;Root&lt;/code&gt; annotation to ensure that the XML schema</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;33</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;32</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment"> * matches the provided XML element. If no root element is defined the</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;34</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;33</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment"> * serialization and deserialization cannot be performed.</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;35</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;34</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment"> *</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;36</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;35</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment"> * @author Niall Gallagher</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;37</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;36</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment"> */</span> </pre></td></tr>
-<tr>  <td class="numLine">&nbsp;38</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;37</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="keyword">final</span> <span class="keyword">class</span> Traverser {</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;38</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;39</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;   <span class="comment">/**</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;40</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;   <span class="comment">/**</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;41</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * This is the root object used for the traversal performed.</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;41</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;42</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;43</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="keyword">private</span> Source root;</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;44</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;43</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        </pre></td></tr>
+<tr>  <td class="numLine">&nbsp;44</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;   <span class="comment">/**</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;45</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;   <span class="comment">/**</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;46</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * Constructor for the &lt;code&gt;Traverser&lt;/code&gt; object. This creates</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;47</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;46</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * a traverser that can be used to perform serialization or</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;48</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;47</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * or deserialization of an object. This requires a source object.</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;48</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * </span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;49</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * </span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;50</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * @param root the source object used for the traversal</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;51</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;50</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;52</td>  <td class="nbHitsCovered">&nbsp;120333</td>  <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> Traverser(Source root) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;53</td>  <td class="nbHitsCovered">&nbsp;120333</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">this</span>.root = root;           </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;54</td>  <td class="nbHitsCovered">&nbsp;120333</td>  <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;55</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLineCover">&nbsp;51</td>  <td class="nbHitsCovered">&nbsp;120354</td>  <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> Traverser(Source root) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;52</td>  <td class="nbHitsCovered">&nbsp;120354</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">this</span>.root = root;           </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;53</td>  <td class="nbHitsCovered">&nbsp;120354</td>  <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;54</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   </pre></td></tr>
+<tr>  <td class="numLine">&nbsp;55</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;   <span class="comment">/**</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;56</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;   <span class="comment">/**</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * This &lt;code&gt;read&lt;/code&gt; method is used to deserialize an object </span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;57</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * This &lt;code&gt;read&lt;/code&gt; method is used to deserialize an object </span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * from the provided XML element. The class provided acts as the</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;58</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * from the provided XML element. The class provided acts as the</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * XML schema definition used to control the deserialization. If</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;59</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * XML schema definition used to control the deserialization. If</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * the XML schema does not have a &lt;code&gt;Root&lt;/code&gt; annotation </span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;60</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * the XML schema does not have a &lt;code&gt;Root&lt;/code&gt; annotation </span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * this throws an exception. Also if the root annotation name is</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;61</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * this throws an exception. Also if the root annotation name is</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * not the same as the XML element name an exception is thrown.  </span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;62</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * not the same as the XML element name an exception is thrown.  </span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * </span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;63</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * </span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * @param node this is the node that is to be deserialized</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;64</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * @param node this is the node that is to be deserialized</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;65</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * @param type this is the XML schema class to be used</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;65</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * </span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;66</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * </span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * @return an object deserialized from the XML element </span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;67</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * @return an object deserialized from the XML element </span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * </span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;68</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * </span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;69</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * @throws Exception if the XML schema does not match the node</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;70</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;69</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;71</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;70</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> Object read(InputNode node, Class type) <span class="keyword">throws</span> Exception {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;72</td>  <td class="nbHitsCovered">&nbsp;250572</td>  <td class="src"><pre class="src">&nbsp;      Composite factory = getComposite(type);           </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;73</td>  <td class="nbHitsCovered">&nbsp;250572</td>  <td class="src"><pre class="src">&nbsp;      Object value = factory.read(node);</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;74</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLineCover">&nbsp;71</td>  <td class="nbHitsCovered">&nbsp;250589</td>  <td class="src"><pre class="src">&nbsp;      Composite factory = getComposite(type);           </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;72</td>  <td class="nbHitsCovered">&nbsp;250589</td>  <td class="src"><pre class="src">&nbsp;      Object value = factory.read(node);</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;73</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;75</td>  <td class="nbHitsCovered">&nbsp;250550</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> read(node, value);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;74</td>  <td class="nbHitsCovered">&nbsp;250566</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> read(node, value);</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;75</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;76</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;77</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;   <span class="comment">/**</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;78</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;   <span class="comment">/**</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * This &lt;code&gt;read&lt;/code&gt; method is used to deserialize an object </span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;79</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * This &lt;code&gt;read&lt;/code&gt; method is used to deserialize an object </span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * from the provided XML element. The class provided acts as the</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;80</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * from the provided XML element. The class provided acts as the</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * XML schema definition used to control the deserialization. If</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;81</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * XML schema definition used to control the deserialization. If</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;82</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * the XML schema does not have a &lt;code&gt;Root&lt;/code&gt; annotation </span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;83</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;82</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * this throws an exception. Also if the root annotation name is</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;84</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;83</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * not the same as the XML element name an exception is thrown.  </span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;84</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * </span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;85</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * </span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * @param node this is the node that is to be deserialized</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;86</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * @param node this is the node that is to be deserialized</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * @param value this is the XML schema object to be used</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;87</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * @param value this is the XML schema object to be used</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * </span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;88</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * </span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;89</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * @return an object deserialized from the XML element </span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;89</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * </span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;90</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * </span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;91</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * @throws Exception if the XML schema does not match the XML</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;92</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;91</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span> </pre></td></tr>
-<tr>  <td class="numLine">&nbsp;93</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;92</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="keyword">private</span> Object read(InputNode node, Object value) <span class="keyword">throws</span> Exception {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;94</td>  <td class="nbHitsCovered">&nbsp;250550</td>  <td class="src"><pre class="src">&nbsp;      Class type = value.getClass();           </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;95</td>  <td class="nbHitsCovered">&nbsp;250550</td>  <td class="src"><pre class="src">&nbsp;      Root label = getRoot(type);</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;96</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;97</td>  <td class="nbHitsCovered">&nbsp;250550</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(label == <span class="keyword">null</span>) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;98</td>  <td class="nbHitsCovered">&nbsp;2</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">throw</span> <span class="keyword">new</span> RootException(<span class="string">"No root annotation defined for %s"</span>, type);              </pre></td></tr>
-<tr>  <td class="numLine">&nbsp;99</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;      }  </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;100</td>  <td class="nbHitsCovered">&nbsp;250548</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> read(node, value, label);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;93</td>  <td class="nbHitsCovered">&nbsp;250566</td>  <td class="src"><pre class="src">&nbsp;          Class type = value.getClass();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;94</td>  <td class="nbHitsCovered">&nbsp;250566</td>  <td class="src"><pre class="src">&nbsp;          String root = getName(type);</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;95</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;          </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;96</td>  <td class="nbHitsCovered">&nbsp;250566</td>  <td class="src"><pre class="src">&nbsp;          <span class="keyword">if</span>(root == <span class="keyword">null</span>) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;97</td>  <td class="nbHitsCovered">&nbsp;2</td>  <td class="src"><pre class="src">&nbsp;                  <span class="keyword">throw</span> <span class="keyword">new</span> RootException(<span class="string">"Root annotation required for %s"</span>, type);</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;98</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;          }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;99</td>  <td class="nbHitsCovered">&nbsp;250564</td>  <td class="src"><pre class="src">&nbsp;      Position line = node.getPosition();      </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;100</td>  <td class="nbHitsCovered">&nbsp;250564</td>  <td class="src"><pre class="src">&nbsp;      String name = node.getName();      </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;101</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;102</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;103</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;   <span class="comment">/**</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;102</td>  <td class="nbHitsCovered">&nbsp;250564</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(!root.equals(name)) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;103</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;          <span class="keyword">throw</span> <span class="keyword">new</span> RootException(<span class="string">"Root for %s does not match element '%s' at %s"</span>, type, name, line);              </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;104</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * This &lt;code&gt;read&lt;/code&gt; method is used to deserialize an object </span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;105</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * from the provided XML element. The class provided acts as the</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;      }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;105</td>  <td class="nbHitsCovered">&nbsp;250563</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> value;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;106</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * XML schema definition used to control the deserialization. If</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;107</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * the &lt;code&gt;Root&lt;/code&gt; annotation for the XML schema does not </span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;108</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * have a name this throws an exception. Also, if the annotation </span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;   <span class="comment">/**</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;109</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * name is not the same as the XML node an exception is thrown.</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * This &lt;code&gt;write&lt;/code&gt; method is used to convert the provided</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;110</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * </span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * object to an XML element. This creates a child node from the</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;111</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * @param node this is the node that is to be deserialized</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * given &lt;code&gt;OutputNode&lt;/code&gt; object. Once this child element </span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;112</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * @param value this is the XML schema object to be used</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * is created it is populated with the fields of the source object</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;113</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * @param label this is the root annotation for the schema class</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * in accordance with the XML schema class.  </span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;114</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * </span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;115</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * @return an object deserialized from the XML element </span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * @param source this is the object to be serialized to XML</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;116</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * </span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;117</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * @throws Exception if the XML schema does not match the XML</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * @throws Exception thrown if there is a problem serializing</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;118</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span>    </pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;119</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;   <span class="keyword">private</span> Object read(InputNode node, Object value, Root label) <span class="keyword">throws</span> Exception {   </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;120</td>  <td class="nbHitsCovered">&nbsp;250548</td>  <td class="src"><pre class="src">&nbsp;      Class type = value.getClass();</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;121</td>  <td class="nbHitsCovered">&nbsp;250548</td>  <td class="src"><pre class="src">&nbsp;      String expect = label.name();</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> <span class="keyword">void</span> write(OutputNode node, Object source) <span class="keyword">throws</span> Exception {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;120</td>  <td class="nbHitsCovered">&nbsp;20094</td>  <td class="src"><pre class="src">&nbsp;      write(node, source, source.getClass());</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;121</td>  <td class="nbHitsCovered">&nbsp;20092</td>  <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;122</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;123</td>  <td class="nbHitsCovered">&nbsp;250548</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(isEmpty(expect)) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;124</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">throw</span> <span class="keyword">new</span> RootException(<span class="string">"No name for root annotation in %s"</span>, type);</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;123</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;   <span class="comment">/**</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;124</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * This &lt;code&gt;write&lt;/code&gt; method is used to convert the provided</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;125</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;      }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;126</td>  <td class="nbHitsCovered">&nbsp;250547</td>  <td class="src"><pre class="src">&nbsp;      Position line = node.getPosition();</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;127</td>  <td class="nbHitsCovered">&nbsp;250547</td>  <td class="src"><pre class="src">&nbsp;      String name = node.getName();</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * object to an XML element. This creates a child node from the</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;126</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * given &lt;code&gt;OutputNode&lt;/code&gt; object. Once this child element </span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;127</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * is created it is populated with the fields of the source object</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;128</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;      </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;129</td>  <td class="nbHitsCovered">&nbsp;250547</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(!expect.equalsIgnoreCase(name)) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;130</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;         <span class="keyword">throw</span> <span class="keyword">new</span> RootException(<span class="string">"Annotation %s does not match element '%s' at %s"</span>, label, name, line);              </span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * in accordance with the XML schema class.  </span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;129</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * </span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;130</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * @param source this is the object to be serialized to XML</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;131</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;      } </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;132</td>  <td class="nbHitsCovered">&nbsp;250547</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> value;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * @param expect this is the class that is expected to be written</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;132</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * </span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;133</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * @throws Exception thrown if there is a problem serializing</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;134</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;135</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;   <span class="comment">/**</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;136</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * This &lt;code&gt;write&lt;/code&gt; method is used to convert the provided</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;137</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * object to an XML element. This creates a child node from the</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;138</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * given &lt;code&gt;OutputNode&lt;/code&gt; object. Once this child element </span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;139</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * is created it is populated with the fields of the source object</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;140</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * in accordance with the XML schema class.  </span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;141</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * </span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;142</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * @param source this is the object to be serialized to XML</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;143</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * </span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;144</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * @throws Exception thrown if there is a problem serializing</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;145</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;146</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> <span class="keyword">void</span> write(OutputNode node, Object source) <span class="keyword">throws</span> Exception {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;147</td>  <td class="nbHitsCovered">&nbsp;20088</td>  <td class="src"><pre class="src">&nbsp;      write(node, source, source.getClass());</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;148</td>  <td class="nbHitsCovered">&nbsp;20086</td>  <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;149</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;150</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;   <span class="comment">/**</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;151</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * This &lt;code&gt;write&lt;/code&gt; method is used to convert the provided</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;152</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * object to an XML element. This creates a child node from the</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;153</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * given &lt;code&gt;OutputNode&lt;/code&gt; object. Once this child element </span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;154</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * is created it is populated with the fields of the source object</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;155</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * in accordance with the XML schema class.  </span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;156</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * </span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;157</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * @param source this is the object to be serialized to XML</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;158</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * @param expect this is the class that is expected to be written</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;159</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * </span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;160</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * @throws Exception thrown if there is a problem serializing</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;161</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;162</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> <span class="keyword">void</span> write(OutputNode node, Object source, Class expect) <span class="keyword">throws</span> Exception {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;163</td>  <td class="nbHitsCovered">&nbsp;130788</td>  <td class="src"><pre class="src">&nbsp;      Class type = source.getClass();      </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;164</td>  <td class="nbHitsCovered">&nbsp;130788</td>  <td class="src"><pre class="src">&nbsp;      Root label = getRoot(type);</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;165</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLineCover">&nbsp;136</td>  <td class="nbHitsCovered">&nbsp;130812</td>  <td class="src"><pre class="src">&nbsp;      Class type = source.getClass();      </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;137</td>  <td class="nbHitsCovered">&nbsp;130812</td>  <td class="src"><pre class="src">&nbsp;      String root = getName(type);</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;138</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;166</td>  <td class="nbHitsCovered">&nbsp;130788</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(label == <span class="keyword">null</span>) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;167</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;         <span class="keyword">throw</span> <span class="keyword">new</span> RootException(<span class="string">"No root annotation defined for %s"</span>, type);              </span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;168</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLineCover">&nbsp;139</td>  <td class="nbHitsCovered">&nbsp;130812</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(root == <span class="keyword">null</span>) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;140</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;              <span class="keyword">throw</span> <span class="keyword">new</span> RootException(<span class="string">"Root annotation required for %s"</span>, type);</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;141</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;      }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;169</td>  <td class="nbHitsCovered">&nbsp;130788</td>  <td class="src"><pre class="src">&nbsp;      String name = label.name();</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;170</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;171</td>  <td class="nbHitsCovered">&nbsp;130788</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(isEmpty(name)) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;172</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;         <span class="keyword">throw</span> <span class="keyword">new</span> RootException(<span class="string">"No name for root annotation in %s"</span>, type);</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;173</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;      }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;174</td>  <td class="nbHitsCovered">&nbsp;130788</td>  <td class="src"><pre class="src">&nbsp;      write(node, source, expect, name);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;175</td>  <td class="nbHitsCovered">&nbsp;130786</td>  <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;176</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLineCover">&nbsp;142</td>  <td class="nbHitsCovered">&nbsp;130812</td>  <td class="src"><pre class="src">&nbsp;      write(node, source, expect, root);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;143</td>  <td class="nbHitsCovered">&nbsp;130810</td>  <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;144</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   </pre></td></tr>
-<tr>  <td class="numLine">&nbsp;177</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;145</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="comment">/**</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;178</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;146</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * This &lt;code&gt;write&lt;/code&gt; method is used to convert the provided</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;179</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;147</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * object to an XML element. This creates a child node from the</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;180</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;148</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * given &lt;code&gt;OutputNode&lt;/code&gt; object. Once this child element </span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;181</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;149</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * is created it is populated with the fields of the source object</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;182</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;150</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * in accordance with the XML schema class.  </span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;183</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;151</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * </span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;184</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;152</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * @param source this is the object to be serialized to XML</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;185</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;153</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * @param expect this is the class that is expected to be written</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;186</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;154</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * @param name this is the name of the root annotation used </span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;187</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;155</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * </span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;188</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;156</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * @throws Exception thrown if there is a problem serializing</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;189</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;157</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;190</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;158</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="keyword">private</span> <span class="keyword">void</span> write(OutputNode node, Object source, Class expect, String name) <span class="keyword">throws</span> Exception {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;191</td>  <td class="nbHitsCovered">&nbsp;130788</td>  <td class="src"><pre class="src">&nbsp;      OutputNode child = node.getChild(name);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;192</td>  <td class="nbHitsCovered">&nbsp;130788</td>  <td class="src"><pre class="src">&nbsp;      Class type = source.getClass();</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;193</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLineCover">&nbsp;159</td>  <td class="nbHitsCovered">&nbsp;130812</td>  <td class="src"><pre class="src">&nbsp;      OutputNode child = node.getChild(name);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;160</td>  <td class="nbHitsCovered">&nbsp;130812</td>  <td class="src"><pre class="src">&nbsp;      Class type = source.getClass();</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;161</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;     </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;194</td>  <td class="nbHitsCovered">&nbsp;130788</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(!root.setOverride(expect, source, child)) {                               </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;195</td>  <td class="nbHitsCovered">&nbsp;110774</td>  <td class="src"><pre class="src">&nbsp;         getComposite(type).write(child, source);</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;196</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLineCover">&nbsp;162</td>  <td class="nbHitsCovered">&nbsp;130812</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(!root.setOverride(expect, source, child)) {                               </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;163</td>  <td class="nbHitsCovered">&nbsp;110798</td>  <td class="src"><pre class="src">&nbsp;         getComposite(type).write(child, source);</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;164</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;      }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;197</td>  <td class="nbHitsCovered">&nbsp;130786</td>  <td class="src"><pre class="src">&nbsp;      child.commit();  </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;198</td>  <td class="nbHitsCovered">&nbsp;130786</td>  <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;199</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLineCover">&nbsp;165</td>  <td class="nbHitsCovered">&nbsp;130810</td>  <td class="src"><pre class="src">&nbsp;      child.commit();  </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;166</td>  <td class="nbHitsCovered">&nbsp;130810</td>  <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;167</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   </pre></td></tr>
-<tr>  <td class="numLine">&nbsp;200</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;168</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="comment">/**</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;201</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;169</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * This will create a &lt;code&gt;Composite&lt;/code&gt; object using the XML </span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;202</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;170</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * schema class provided. This makes use of the source object that</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;203</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;171</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * this traverser has been given to create a composite converter. </span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;204</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;172</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * </span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;205</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;173</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * @param type this is the XML schema class to be used</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;206</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;174</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * </span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;207</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;175</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * @return a converter for the specified XML schema class</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;208</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;176</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;209</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;177</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="keyword">private</span> Composite getComposite(Class type) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;210</td>  <td class="nbHitsCovered">&nbsp;361346</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> <span class="keyword">new</span> Composite(root, type);</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;211</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLineCover">&nbsp;178</td>  <td class="nbHitsCovered">&nbsp;361387</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> <span class="keyword">new</span> Composite(root, type);</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;179</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;212</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;180</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   </pre></td></tr>
-<tr>  <td class="numLine">&nbsp;213</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;181</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="comment">/**</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;214</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;182</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * Extracts the &lt;code&gt;Root&lt;/code&gt; annotation from the provided XML</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;215</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;183</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * schema class. If no annotation exists in the provided class the</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;216</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;184</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * super class is checked and so on until the &lt;code&gt;Object&lt;/code&gt;</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;217</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;185</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * is encountered, if no annotation is found this returns null.</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;218</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;186</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    *  </span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;219</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;187</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * @param type this is the XML schema class to use</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;220</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;188</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * </span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;221</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;189</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * @return this returns the root annotation for the XML schema</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;222</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;190</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span>   </pre></td></tr>
-<tr>  <td class="numLine">&nbsp;223</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;   <span class="keyword">private</span> Root getRoot(Class type) <span class="keyword">throws</span> Exception {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;224</td>  <td class="nbHitsCovered">&nbsp;381361</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">while</span>(type != <span class="keyword">null</span>){</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;225</td>  <td class="nbHitsCovered">&nbsp;381359</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">if</span>(type.isAnnotationPresent(Root.<span class="keyword">class</span>)) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;226</td>  <td class="nbHitsCovered">&nbsp;381336</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">return</span> (Root)type.getAnnotation(Root.<span class="keyword">class</span>);</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;227</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;         }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;228</td>  <td class="nbHitsCovered">&nbsp;23</td>  <td class="src"><pre class="src">&nbsp;         type = type.getSuperclass();</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;229</td>  <td class="nbHitsCovered">&nbsp;23</td>  <td class="src"><pre class="src">&nbsp;      }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;230</td>  <td class="nbHitsCovered">&nbsp;2</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> <span class="keyword">null</span>;</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;231</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;191</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;   <span class="keyword">protected</span> String getName(Class type) <span class="keyword">throws</span> Exception {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;192</td>  <td class="nbHitsCovered">&nbsp;381408</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> root.getName(type);</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;193</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;232</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;233</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;   <span class="comment">/**</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;234</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * This method is used to determine if a root annotation value is</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;235</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * an empty value. Rather than determining if a string is empty</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;236</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * be comparing it to an empty string this method allows for the</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;237</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * value an empty string represents to be changed in future.</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;238</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * </span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;239</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * @param value this is the value to determine if it is empty</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;240</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * </span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;241</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * @return true if the string value specified is an empty value</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;242</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;243</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;   <span class="keyword">private</span> <span class="keyword">boolean</span> isEmpty(String value) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;244</td>  <td class="nbHitsCovered">&nbsp;381336</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> value.length() == 0;</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;245</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;246</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;194</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;}</pre></td></tr>
 </table>
 
-<div class="footer">Report generated by <a href="http://cobertura.sourceforge.net/" target="_top">Cobertura</a> 1.8 on 29/04/07 04:31.</div>
+<div class="footer">Report generated by <a href="http://cobertura.sourceforge.net/" target="_top">Cobertura</a> 1.8 on 28/05/07 07:26.</div>
 </body>
 </html>

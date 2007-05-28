@@ -12,8 +12,8 @@
 <div class="separator">&nbsp;</div>
 <table class="report">
 <thead><tr>  <td class="heading">Classes in this File</td>  <td class="heading"><a class="dfn" href="help.html" onclick="popupwindow('help.html'); return false;">Line Coverage</a></td>  <td class="heading"><a class="dfn" href="help.html" onclick="popupwindow('help.html'); return false;">Branch Coverage</a></td>  <td class="heading"><a class="dfn" href="help.html" onclick="popupwindow('help.html'); return false;">Complexity</a></td></tr></thead>
-  <tr><td><a href="simple.xml.load.LabelFactory.html">LabelFactory</a></td><td><table cellpadding="0px" cellspacing="0px" class="percentgraph"><tr class="percentgraph"><td align="right" class="percentgraph" width="40">72%</td><td class="percentgraph"><div class="percentgraph"><div class="greenbar" style="width:72px"><span class="text">13/18</span></div></div></td></tr></table></td><td><table cellpadding="0px" cellspacing="0px" class="percentgraph"><tr class="percentgraph"><td align="right" class="percentgraph" width="40">100%</td><td class="percentgraph"><div class="percentgraph"><div class="greenbar" style="width:100px"><span class="text">5/5</span></div></div></td></tr></table></td><td class="value"><span class="hidden">3.1666666666666665;</span>3.167</td></tr>
-  <tr><td><a href="simple.xml.load.LabelFactory.html">LabelFactory$Entry</a></td><td><table cellpadding="0px" cellspacing="0px" class="percentgraph"><tr class="percentgraph"><td align="right" class="percentgraph" width="40">100%</td><td class="percentgraph"><div class="percentgraph"><div class="greenbar" style="width:100px"><span class="text">6/6</span></div></div></td></tr></table></td><td><table cellpadding="0px" cellspacing="0px" class="percentgraph"><tr class="percentgraph"><td align="right" class="percentgraph" width="40"><a class="dfn" href="help.html" onclick="popupwindow('help.html'); return false;">N/A</a></td><td class="percentgraph"><div class="percentgraph"><div class="na" style="width:100px"><span class="text"><a class="dfn" href="help.html" onclick="popupwindow('help.html'); return false;">N/A</a></span></div></div></td></tr></table></td><td class="value"><span class="hidden">3.1666666666666665;</span>3.167</td></tr>
+  <tr><td><a href="simple.xml.load.LabelFactory.html">LabelFactory</a></td><td><table cellpadding="0px" cellspacing="0px" class="percentgraph"><tr class="percentgraph"><td align="right" class="percentgraph" width="40">83%</td><td class="percentgraph"><div class="percentgraph"><div class="greenbar" style="width:83px"><span class="text">15/18</span></div></div></td></tr></table></td><td><table cellpadding="0px" cellspacing="0px" class="percentgraph"><tr class="percentgraph"><td align="right" class="percentgraph" width="40">100%</td><td class="percentgraph"><div class="percentgraph"><div class="greenbar" style="width:100px"><span class="text">6/6</span></div></div></td></tr></table></td><td class="value"><span class="hidden">3.0;</span>3</td></tr>
+  <tr><td><a href="simple.xml.load.LabelFactory.html">LabelFactory$Entry</a></td><td><table cellpadding="0px" cellspacing="0px" class="percentgraph"><tr class="percentgraph"><td align="right" class="percentgraph" width="40">100%</td><td class="percentgraph"><div class="percentgraph"><div class="greenbar" style="width:100px"><span class="text">6/6</span></div></div></td></tr></table></td><td><table cellpadding="0px" cellspacing="0px" class="percentgraph"><tr class="percentgraph"><td align="right" class="percentgraph" width="40"><a class="dfn" href="help.html" onclick="popupwindow('help.html'); return false;">N/A</a></td><td class="percentgraph"><div class="percentgraph"><div class="na" style="width:100px"><span class="text"><a class="dfn" href="help.html" onclick="popupwindow('help.html'); return false;">N/A</a></span></div></div></td></tr></table></td><td class="value"><span class="hidden">3.0;</span>3</td></tr>
 
 </table>
 <div class="separator">&nbsp;</div>
@@ -67,281 +67,279 @@
 <tr>  <td class="numLine">&nbsp;24</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> java.lang.reflect.Constructor;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;25</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> java.lang.reflect.Field;</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;26</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> simple.xml.ElementArray;</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;27</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;26</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> simple.xml.ElementList;</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;28</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;27</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> simple.xml.Element;</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;29</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;28</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> simple.xml.Attribute;</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;30</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;29</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> simple.xml.Text;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;30</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;31</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;32</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">/**</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;33</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;32</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment"> * The &lt;code&gt;LabelFactory&lt;/code&gt; object is used to create instances of</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;34</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;33</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment"> * the &lt;code&gt;Label&lt;/code&gt; object that can be used to convert an XML</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;35</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;34</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment"> * node into a Java object. Each label created requires the contact it</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;36</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;35</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment"> * represents and the XML annotation it is marked with.  </span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;37</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;36</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment"> * &lt;p&gt;</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;38</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;37</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment"> * The &lt;code&gt;Label&lt;/code&gt; objects created by this factory a selected</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;39</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;38</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment"> * using the XML annotation type. If the annotation type is not known</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;40</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;39</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment"> * the factory will throw an exception, otherwise a label instance</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;41</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;40</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment"> * is created that will expose the properties of the annotation.</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;42</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;41</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment"> * </span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;43</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;42</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment"> * @author Niall Gallagher</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;44</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;43</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment"> */</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;45</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<span class="keyword">final</span> <span class="keyword">class</span> LabelFactory {</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;46</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLineCover">&nbsp;44</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<span class="keyword">final</span> <span class="keyword">class</span> LabelFactory {</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;45</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;47</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;46</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="comment">/**</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;48</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;47</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * Creates a &lt;code&gt;Label&lt;/code&gt; using the provided contact and XML</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;49</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;48</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * annotation. The label produced contains all information related</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;50</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;49</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * to an object member. It knows the name of the XML entity, as</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;51</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;50</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * well as whether it is required. Once created the converter can</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;52</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;51</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * transform an XML node into Java object and vice versa.</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;52</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * </span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;53</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * </span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;54</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * @param contact this is contact that the label is produced for</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;55</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;54</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * @param label represents the XML annotation for the contact</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;56</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;55</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * </span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;57</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;56</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * @return returns the label instantiated for the field</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;58</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;57</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;59</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> <span class="keyword">static</span> Label getInstance(Contact contact, Annotation label) {</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;58</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> <span class="keyword">static</span> Label getInstance(Contact contact, Annotation label) <span class="keyword">throws</span> Exception {               </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;59</td>  <td class="nbHitsCovered">&nbsp;242</td>  <td class="src"><pre class="src">&nbsp;      Constructor factory = getConstructor(label);    </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;60</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;      <span class="keyword">try</span> {                </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;61</td>  <td class="nbHitsCovered">&nbsp;230</td>  <td class="src"><pre class="src">&nbsp;         Constructor factory = getConstructor(label);         </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;62</td>  <td class="nbHitsCovered">&nbsp;230</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">return</span> (Label)factory.newInstance(contact, label);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;63</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;      }<span class="keyword">catch</span>(Exception e) {</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;64</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;         <span class="keyword">return</span> <span class="keyword">null</span>;</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;65</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;      </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;61</td>  <td class="nbHitsCovered">&nbsp;242</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(!factory.isAccessible()) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;62</td>  <td class="nbHitsCovered">&nbsp;242</td>  <td class="src"><pre class="src">&nbsp;         factory.setAccessible(<span class="keyword">true</span>);</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;63</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;      }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;64</td>  <td class="nbHitsCovered">&nbsp;242</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> (Label)factory.newInstance(contact, label);</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;65</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;   } </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;66</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    } </pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;    </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;67</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    </pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;68</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;69</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     * Creates a constructor that can be used to instantiate the label</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;70</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;69</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     * used to represent the specified annotation. The constructor</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;71</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;70</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     * created by this method takes two arguments, a contact object </span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;72</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;71</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     * and an &lt;code&gt;Annotation&lt;/code&gt; of the type specified.</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;72</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * </span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;73</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * </span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;74</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param label the XML annotation representing the label</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;74</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * </span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;75</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * </span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;76</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     * @return returns a constructor for instantiating the label </span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;76</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * </span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;77</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * </span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws Exception thrown if the annotation is not supported</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;78</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws Exception thrown if the annotation is not supported</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;79</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;80</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> <span class="keyword">static</span> Constructor getConstructor(Annotation label) <span class="keyword">throws</span> Exception {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;81</td>  <td class="nbHitsCovered">&nbsp;230</td>  <td class="src"><pre class="src">&nbsp;       <span class="keyword">return</span> getEntry(label).getConstructor();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;80</td>  <td class="nbHitsCovered">&nbsp;242</td>  <td class="src"><pre class="src">&nbsp;       <span class="keyword">return</span> getEntry(label).getConstructor();</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;81</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;82</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;    </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;83</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    </pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;84</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;85</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     * Creates an entry that is used to select the constructor for the</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;86</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;85</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     * label. Each label must implement a constructor that takes a</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;87</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;86</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     * contact and the specific XML annotation for that field. If the</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;88</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;87</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     * annotation is not know this method throws an exception.</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;88</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * </span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;89</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * </span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;90</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param label the XML annotation used to create the label</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;90</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * </span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;91</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * </span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;92</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     * @return this returns the entry used to create a suitable</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;93</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;92</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     *         constructor for the label</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;93</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * </span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;94</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * </span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;95</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws Exception thrown if the annotation is not supported</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;95</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;96</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;97</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> <span class="keyword">static</span> Entry getEntry(Annotation label) <span class="keyword">throws</span> Exception{      </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;98</td>  <td class="nbHitsCovered">&nbsp;230</td>  <td class="src"><pre class="src">&nbsp;       <span class="keyword">if</span>(label <span class="keyword">instanceof</span> Element) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;99</td>  <td class="nbHitsCovered">&nbsp;98</td>  <td class="src"><pre class="src">&nbsp;          <span class="keyword">return</span> <span class="keyword">new</span> Entry(ElementLabel.<span class="keyword">class</span>, Element.<span class="keyword">class</span>);</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;100</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLineCover">&nbsp;97</td>  <td class="nbHitsCovered">&nbsp;242</td>  <td class="src"><pre class="src">&nbsp;       <span class="keyword">if</span>(label <span class="keyword">instanceof</span> Element) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;98</td>  <td class="nbHitsCovered">&nbsp;100</td>  <td class="src"><pre class="src">&nbsp;          <span class="keyword">return</span> <span class="keyword">new</span> Entry(ElementLabel.<span class="keyword">class</span>, Element.<span class="keyword">class</span>);</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;99</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;       }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;101</td>  <td class="nbHitsCovered">&nbsp;132</td>  <td class="src"><pre class="src">&nbsp;       <span class="keyword">if</span>(label <span class="keyword">instanceof</span> ElementList) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;102</td>  <td class="nbHitsCovered">&nbsp;26</td>  <td class="src"><pre class="src">&nbsp;          <span class="keyword">return</span> <span class="keyword">new</span> Entry(ElementListLabel.<span class="keyword">class</span>, ElementList.<span class="keyword">class</span>);</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;103</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLineCover">&nbsp;100</td>  <td class="nbHitsCovered">&nbsp;142</td>  <td class="src"><pre class="src">&nbsp;       <span class="keyword">if</span>(label <span class="keyword">instanceof</span> ElementList) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;101</td>  <td class="nbHitsCovered">&nbsp;28</td>  <td class="src"><pre class="src">&nbsp;          <span class="keyword">return</span> <span class="keyword">new</span> Entry(ElementListLabel.<span class="keyword">class</span>, ElementList.<span class="keyword">class</span>);</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;102</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;       }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;104</td>  <td class="nbHitsCovered">&nbsp;106</td>  <td class="src"><pre class="src">&nbsp;       <span class="keyword">if</span>(label <span class="keyword">instanceof</span> ElementArray) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;105</td>  <td class="nbHitsCovered">&nbsp;15</td>  <td class="src"><pre class="src">&nbsp;          <span class="keyword">return</span> <span class="keyword">new</span> Entry(ElementArrayLabel.<span class="keyword">class</span>, ElementArray.<span class="keyword">class</span>);               </pre></td></tr>
-<tr>  <td class="numLine">&nbsp;106</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLineCover">&nbsp;103</td>  <td class="nbHitsCovered">&nbsp;114</td>  <td class="src"><pre class="src">&nbsp;       <span class="keyword">if</span>(label <span class="keyword">instanceof</span> ElementArray) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;104</td>  <td class="nbHitsCovered">&nbsp;15</td>  <td class="src"><pre class="src">&nbsp;          <span class="keyword">return</span> <span class="keyword">new</span> Entry(ElementArrayLabel.<span class="keyword">class</span>, ElementArray.<span class="keyword">class</span>);               </pre></td></tr>
+<tr>  <td class="numLine">&nbsp;105</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;       }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;107</td>  <td class="nbHitsCovered">&nbsp;91</td>  <td class="src"><pre class="src">&nbsp;       <span class="keyword">if</span>(label <span class="keyword">instanceof</span> Attribute) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;108</td>  <td class="nbHitsCovered">&nbsp;83</td>  <td class="src"><pre class="src">&nbsp;          <span class="keyword">return</span> <span class="keyword">new</span> Entry(AttributeLabel.<span class="keyword">class</span>, Attribute.<span class="keyword">class</span>);</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;109</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLineCover">&nbsp;106</td>  <td class="nbHitsCovered">&nbsp;99</td>  <td class="src"><pre class="src">&nbsp;       <span class="keyword">if</span>(label <span class="keyword">instanceof</span> Attribute) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;107</td>  <td class="nbHitsCovered">&nbsp;89</td>  <td class="src"><pre class="src">&nbsp;          <span class="keyword">return</span> <span class="keyword">new</span> Entry(AttributeLabel.<span class="keyword">class</span>, Attribute.<span class="keyword">class</span>);</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;108</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;       }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;110</td>  <td class="nbHitsCovered">&nbsp;8</td>  <td class="src"><pre class="src">&nbsp;       <span class="keyword">if</span>(label <span class="keyword">instanceof</span> Text) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;111</td>  <td class="nbHitsCovered">&nbsp;8</td>  <td class="src"><pre class="src">&nbsp;               <span class="keyword">return</span> <span class="keyword">new</span> Entry(TextLabel.<span class="keyword">class</span>, Text.<span class="keyword">class</span>);</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;112</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLineCover">&nbsp;109</td>  <td class="nbHitsCovered">&nbsp;10</td>  <td class="src"><pre class="src">&nbsp;       <span class="keyword">if</span>(label <span class="keyword">instanceof</span> Text) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;110</td>  <td class="nbHitsCovered">&nbsp;10</td>  <td class="src"><pre class="src">&nbsp;               <span class="keyword">return</span> <span class="keyword">new</span> Entry(TextLabel.<span class="keyword">class</span>, Text.<span class="keyword">class</span>);</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;111</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;       }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;113</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;       <span class="keyword">throw</span> <span class="keyword">new</span> PersistenceException(<span class="string">"Annotation %s not supported"</span>, label);</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;112</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;       <span class="keyword">throw</span> <span class="keyword">new</span> PersistenceException(<span class="string">"Annotation %s not supported"</span>, label);</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;113</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;114</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;115</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    </pre></td></tr>
-<tr>  <td class="numLine">&nbsp;116</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;115</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;117</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;116</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     * The &lt;code&gt;Entry&lt;code&gt; object is used to create a constructor </span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;118</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;117</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     * that can be used to instantiate the correct label for the XML</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;119</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;118</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     * annotation specified. The constructor requires two arguments</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;120</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;119</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     * a &lt;code&gt;Contact&lt;/code&gt; and the specified XML annotation.</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;121</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;120</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     * </span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;122</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;121</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     * @see java.lang.reflect.Constructor</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;123</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;122</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;124</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">class</span> Entry {</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;123</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">class</span> Entry {</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;124</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;       </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;125</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;       </pre></td></tr>
-<tr>  <td class="numLine">&nbsp;126</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;       <span class="comment">/**       </span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;127</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;126</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">        * This is the XML annotation type within the constructor.</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;127</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">        */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;128</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">        */</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;129</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;       <span class="keyword">public</span> Class argument;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;129</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;       </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;130</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;       </pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;       <span class="comment">/**</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;131</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;       <span class="comment">/**</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;132</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">        * This is the label type that is to be instantiated.</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;132</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">        */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;133</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">        */</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;134</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;       <span class="keyword">public</span> Class label;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;134</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;       </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;135</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;       </pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;       <span class="comment">/**</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;136</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;       <span class="comment">/**</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;137</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">        * Constructor for the &lt;code&gt;Entry&lt;/code&gt; object. This pairs</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;138</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;137</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">        * the label type with the XML annotation argument used within</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;139</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;138</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">        * the constructor. This allows constructor to be selected.</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;139</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">        * </span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;140</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">        * </span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;141</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">        * @param label this is the label type to be instantiated</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;142</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;141</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">        * @param argument type that is used within the constructor</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;143</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;142</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">        */</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;144</td>  <td class="nbHitsCovered">&nbsp;230</td>  <td class="src"><pre class="src">&nbsp;       <span class="keyword">public</span> Entry(Class label, Class argument) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;145</td>  <td class="nbHitsCovered">&nbsp;230</td>  <td class="src"><pre class="src">&nbsp;          <span class="keyword">this</span>.argument = argument;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;146</td>  <td class="nbHitsCovered">&nbsp;230</td>  <td class="src"><pre class="src">&nbsp;          <span class="keyword">this</span>.label = label;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;147</td>  <td class="nbHitsCovered">&nbsp;230</td>  <td class="src"><pre class="src">&nbsp;       }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;143</td>  <td class="nbHitsCovered">&nbsp;242</td>  <td class="src"><pre class="src">&nbsp;       <span class="keyword">public</span> Entry(Class label, Class argument) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;144</td>  <td class="nbHitsCovered">&nbsp;242</td>  <td class="src"><pre class="src">&nbsp;          <span class="keyword">this</span>.argument = argument;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;145</td>  <td class="nbHitsCovered">&nbsp;242</td>  <td class="src"><pre class="src">&nbsp;          <span class="keyword">this</span>.label = label;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;146</td>  <td class="nbHitsCovered">&nbsp;242</td>  <td class="src"><pre class="src">&nbsp;       }</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;147</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;       </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;148</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;       </pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;       <span class="comment">/**</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;149</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;       <span class="comment">/**</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">        * Creates the constructor used to instantiate the label for</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;150</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">        * Creates the constructor used to instantiate the label for</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">        * the XML annotation. The constructor returned will take two</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;151</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">        * the XML annotation. The constructor returned will take two</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;152</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">        * arguments, a contact and the XML annotation type. </span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;152</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">        * </span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;153</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">        * </span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">        * @return returns the constructor for the label object</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;154</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">        * @return returns the constructor for the label object</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">        */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;155</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">        */</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;156</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;       <span class="keyword">public</span> Constructor getConstructor() <span class="keyword">throws</span> Exception {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;157</td>  <td class="nbHitsCovered">&nbsp;230</td>  <td class="src"><pre class="src">&nbsp;          <span class="keyword">return</span> getConstructor(Contact.<span class="keyword">class</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;156</td>  <td class="nbHitsCovered">&nbsp;242</td>  <td class="src"><pre class="src">&nbsp;          <span class="keyword">return</span> getConstructor(Contact.<span class="keyword">class</span>);</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;157</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;       }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;158</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;       }</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;159</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;       </pre></td></tr>
-<tr>  <td class="numLine">&nbsp;160</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;159</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;       <span class="comment">/**</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;161</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;160</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">        * Creates the constructor used to instantiate the label for</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;162</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;161</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">        * the XML annotation. The constructor returned will take two</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;163</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;162</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">        * arguments, a contact and the XML annotation type.</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;163</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">        * </span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;164</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">        * </span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;165</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">        * @param type this is the XML annotation argument type used</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;166</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;165</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">        * </span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;167</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;166</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">        * @return returns the constructor for the label object</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;168</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;167</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">        */</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;169</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;168</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;       <span class="keyword">private</span> Constructor getConstructor(Class type) <span class="keyword">throws</span> Exception {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;170</td>  <td class="nbHitsCovered">&nbsp;230</td>  <td class="src"><pre class="src">&nbsp;          <span class="keyword">return</span> label.getConstructor(type, argument);</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;171</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLineCover">&nbsp;169</td>  <td class="nbHitsCovered">&nbsp;242</td>  <td class="src"><pre class="src">&nbsp;          <span class="keyword">return</span> label.getConstructor(type, argument);</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;170</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;       }</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;172</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;171</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;173</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;172</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;}</pre></td></tr>
 </table>
 
-<div class="footer">Report generated by <a href="http://cobertura.sourceforge.net/" target="_top">Cobertura</a> 1.8 on 29/04/07 04:31.</div>
+<div class="footer">Report generated by <a href="http://cobertura.sourceforge.net/" target="_top">Cobertura</a> 1.8 on 28/05/07 07:26.</div>
 </body>
 </html>

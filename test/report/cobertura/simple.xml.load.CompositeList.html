@@ -187,11 +187,11 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">    * @param entry the entry type to be stored within the list</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;85</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span>    </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;86</td>  <td class="nbHitsCovered">&nbsp;60096</td>  <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> CompositeList(Source root, Class type, Class entry) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;87</td>  <td class="nbHitsCovered">&nbsp;60096</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">this</span>.factory = <span class="keyword">new</span> CollectionFactory(root, type); </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;88</td>  <td class="nbHitsCovered">&nbsp;60096</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">this</span>.root = <span class="keyword">new</span> Traverser(root);      </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;89</td>  <td class="nbHitsCovered">&nbsp;60096</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">this</span>.entry = entry;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;90</td>  <td class="nbHitsCovered">&nbsp;60096</td>  <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;86</td>  <td class="nbHitsCovered">&nbsp;60101</td>  <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> CompositeList(Source root, Class type, Class entry) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;87</td>  <td class="nbHitsCovered">&nbsp;60101</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">this</span>.factory = <span class="keyword">new</span> CollectionFactory(root, type); </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;88</td>  <td class="nbHitsCovered">&nbsp;60101</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">this</span>.root = <span class="keyword">new</span> Traverser(root);      </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;89</td>  <td class="nbHitsCovered">&nbsp;60101</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">this</span>.entry = entry;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;90</td>  <td class="nbHitsCovered">&nbsp;60101</td>  <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;91</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;92</td>  <td class="nbHits">&nbsp;</td>
@@ -218,12 +218,12 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span> </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;103</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> Object read(InputNode node) <span class="keyword">throws</span> Exception{</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;104</td>  <td class="nbHitsCovered">&nbsp;40050</td>  <td class="src"><pre class="src">&nbsp;      Type type = factory.getInstance(node);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;105</td>  <td class="nbHitsCovered">&nbsp;40043</td>  <td class="src"><pre class="src">&nbsp;      Object list = type.getInstance();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;104</td>  <td class="nbHitsCovered">&nbsp;40052</td>  <td class="src"><pre class="src">&nbsp;      Type type = factory.getInstance(node);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;105</td>  <td class="nbHitsCovered">&nbsp;40045</td>  <td class="src"><pre class="src">&nbsp;      Object list = type.getInstance();</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;106</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;      </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;107</td>  <td class="nbHitsCovered">&nbsp;40043</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(!type.isReference()) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;108</td>  <td class="nbHitsCovered">&nbsp;40040</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">return</span> read(node, list);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;107</td>  <td class="nbHitsCovered">&nbsp;40045</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(!type.isReference()) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;108</td>  <td class="nbHitsCovered">&nbsp;40042</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">return</span> read(node, list);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;109</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;      }</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;110</td>  <td class="nbHitsCovered">&nbsp;3</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> list;</pre></td></tr>
@@ -257,20 +257,20 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span> </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;125</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="keyword">private</span> Object read(InputNode node, Object result) <span class="keyword">throws</span> Exception {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;126</td>  <td class="nbHitsCovered">&nbsp;40040</td>  <td class="src"><pre class="src">&nbsp;      Collection list = (Collection) result;                 </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;126</td>  <td class="nbHitsCovered">&nbsp;40042</td>  <td class="src"><pre class="src">&nbsp;      Collection list = (Collection) result;                 </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;127</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;      </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;128</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;      <span class="keyword">while</span>(<span class="keyword">true</span>) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;129</td>  <td class="nbHitsCovered">&nbsp;250306</td>  <td class="src"><pre class="src">&nbsp;         InputNode next = node.getNext();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;129</td>  <td class="nbHitsCovered">&nbsp;250314</td>  <td class="src"><pre class="src">&nbsp;         InputNode next = node.getNext();</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;130</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;131</td>  <td class="nbHitsCovered">&nbsp;250306</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">if</span>(next == <span class="keyword">null</span>) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;132</td>  <td class="nbHitsCovered">&nbsp;40038</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">return</span> list;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;131</td>  <td class="nbHitsCovered">&nbsp;250314</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">if</span>(next == <span class="keyword">null</span>) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;132</td>  <td class="nbHitsCovered">&nbsp;40040</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">return</span> list;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;133</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;         }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;134</td>  <td class="nbHitsCovered">&nbsp;210268</td>  <td class="src"><pre class="src">&nbsp;         list.add(root.read(next, entry));</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;135</td>  <td class="nbHitsCovered">&nbsp;210266</td>  <td class="src"><pre class="src">&nbsp;      }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;134</td>  <td class="nbHitsCovered">&nbsp;210274</td>  <td class="src"><pre class="src">&nbsp;         list.add(root.read(next, entry));</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;135</td>  <td class="nbHitsCovered">&nbsp;210272</td>  <td class="src"><pre class="src">&nbsp;      }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;136</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   }      </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;137</td>  <td class="nbHits">&nbsp;</td>
@@ -299,24 +299,24 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span> </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;149</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> <span class="keyword">void</span> write(OutputNode node, Object source) <span class="keyword">throws</span> Exception {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;150</td>  <td class="nbHitsCovered">&nbsp;20046</td>  <td class="src"><pre class="src">&nbsp;      Collection list = (Collection) source;                </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;150</td>  <td class="nbHitsCovered">&nbsp;20049</td>  <td class="src"><pre class="src">&nbsp;      Collection list = (Collection) source;                </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;151</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;      </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;152</td>  <td class="nbHitsCovered">&nbsp;20046</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">for</span>(Object item : list) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;153</td>  <td class="nbHitsCovered">&nbsp;110351</td>  <td class="src"><pre class="src">&nbsp;         Class type = item.getClass();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;152</td>  <td class="nbHitsCovered">&nbsp;20049</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">for</span>(Object item : list) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;153</td>  <td class="nbHitsCovered">&nbsp;110360</td>  <td class="src"><pre class="src">&nbsp;         Class type = item.getClass();</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;154</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;155</td>  <td class="nbHitsCovered">&nbsp;110351</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">if</span>(!entry.isAssignableFrom(type)) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;155</td>  <td class="nbHitsCovered">&nbsp;110360</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">if</span>(!entry.isAssignableFrom(type)) {</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;156</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> PersistenceException(<span class="string">"Entry %s does not match %s"</span>, type, entry);                     </span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;157</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;         }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;158</td>  <td class="nbHitsCovered">&nbsp;110351</td>  <td class="src"><pre class="src">&nbsp;         root.write(node, item, entry);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;159</td>  <td class="nbHitsCovered">&nbsp;110351</td>  <td class="src"><pre class="src">&nbsp;      }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;160</td>  <td class="nbHitsCovered">&nbsp;20046</td>  <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;158</td>  <td class="nbHitsCovered">&nbsp;110360</td>  <td class="src"><pre class="src">&nbsp;         root.write(node, item, entry);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;159</td>  <td class="nbHitsCovered">&nbsp;110360</td>  <td class="src"><pre class="src">&nbsp;      }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;160</td>  <td class="nbHitsCovered">&nbsp;20049</td>  <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;161</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;}</pre></td></tr>
 </table>
 
-<div class="footer">Report generated by <a href="http://cobertura.sourceforge.net/" target="_top">Cobertura</a> 1.8 on 29/04/07 04:31.</div>
+<div class="footer">Report generated by <a href="http://cobertura.sourceforge.net/" target="_top">Cobertura</a> 1.8 on 28/05/07 07:26.</div>
 </body>
 </html>

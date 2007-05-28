@@ -12,32 +12,32 @@ import simple.xml.Root;
 public class PrologTest extends ValidationTestCase {
 
    private static final String SOURCE =
-   "<source id='12' flag='true'>\n"+
+   "<prologExample id='12' flag='true'>\n"+
    "   <text>entry text</text>  \n\r"+
    "   <name>some name</name> \n"+
-   "</source>";
+   "</prologExample>";
 
 
-   @Root(name="source")
+   @Root
    private static class PrologExample {
 
-      @Attribute(name="id")           
+      @Attribute
       public int id;           
 
-      @Element(name="name")
+      @Element
       public String name;
            
-      @Element(name="text")
+      @Element
       public String text;  
       
-      @Attribute(name="flag")
-      public boolean bool;              
+      @Attribute
+      public boolean flag;              
    }
         
 	private Persister serializer;
 
 	public void setUp() {
-	   serializer = new Persister(new Format(4, "UTF-8"));
+	   serializer = new Persister(new Format(4, "<?xml version='1.0' encoding='UTF-8' standalone='yes'?>"));
 	}
 	
    public void testProlog() throws Exception {    
@@ -46,7 +46,7 @@ public class PrologTest extends ValidationTestCase {
       assertEquals(example.id, 12);
       assertEquals(example.text, "entry text");
       assertEquals(example.name, "some name");
-      assertTrue(example.bool);
+      assertTrue(example.flag);
 
       StringWriter buffer = new StringWriter();
       serializer.write(example, buffer);

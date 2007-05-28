@@ -168,35 +168,35 @@
 <tr>  <td class="numLine">&nbsp;75</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="comment">/**</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;76</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * This returns the next child element within this element if</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * This is used to acquire the &lt;code&gt;Node&lt;/code&gt; that is the</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;77</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * one exists. If all children have been read, or if there are</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * parent of this node. This will return the node that is</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;78</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * no child elements for this element then this returns null.</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * the direct parent of this node and allows for siblings to</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;79</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    *</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * make use of nodes with their parents if required.  </span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;80</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * @return this returns an input node for the next child</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    *   </span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;81</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    *</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * @return this returns the parent node for this node</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;82</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * @exception Exception thrown if there was a parse error</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;83</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span> </pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> InputNode getParent();</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;84</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> InputNode getNext() <span class="keyword">throws</span> Exception;   </pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;   </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;85</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;86</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="comment">/**</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;86</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * This returns the next child element within this element if</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;87</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * This method is used to skip all child elements from this</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * one exists. If all children have been read, or if there are</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;88</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * element. This allows elements to be effectively skipped such</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * no child elements for this element then this returns null.</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;89</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * that when parsing a document if an element is not required</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    *</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;90</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">    * then that element can be completely removed from the XML.</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * @return this returns an input node for the next child</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;91</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    *</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;92</td>  <td class="nbHits">&nbsp;</td>
@@ -204,11 +204,57 @@
 <tr>  <td class="numLine">&nbsp;93</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span> </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;94</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> <span class="keyword">void</span> skip() <span class="keyword">throws</span> Exception;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> InputNode getNext() <span class="keyword">throws</span> Exception;  </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;95</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;   </pre></td></tr>
+<tr>  <td class="numLine">&nbsp;96</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;   <span class="comment">/**</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;97</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * This returns the next child in this element if that child</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;98</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * has the name provided. If the next child element in this</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;99</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * node does not have the name given then null is returned.</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;100</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * </span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;101</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * @param name this is the name of the next child element </span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;102</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * </span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;103</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * @return the next element if it has the name specified</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;104</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * </span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;105</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * @exception Exception thrown if there was a parse error</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;106</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;107</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> InputNode getNext(String name) <span class="keyword">throws</span> Exception;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;108</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;109</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;   <span class="comment">/**</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;110</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * This method is used to skip all child elements from this</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;111</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * element. This allows elements to be effectively skipped such</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;112</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * that when parsing a document if an element is not required</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;113</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * then that element can be completely removed from the XML.</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;114</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    *</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;115</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    * @exception Exception thrown if there was a parse error</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;116</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span> </pre></td></tr>
+<tr>  <td class="numLine">&nbsp;117</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> <span class="keyword">void</span> skip() <span class="keyword">throws</span> Exception;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;118</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;}</pre></td></tr>
 </table>
 
-<div class="footer">Report generated by <a href="http://cobertura.sourceforge.net/" target="_top">Cobertura</a> 1.8 on 29/04/07 04:31.</div>
+<div class="footer">Report generated by <a href="http://cobertura.sourceforge.net/" target="_top">Cobertura</a> 1.8 on 28/05/07 07:26.</div>
 </body>
 </html>
