@@ -11,7 +11,7 @@ import simple.xml.ValidationTestCase;
 
 public class DefaultTest extends ValidationTestCase {
         
-   private static final String INLINE_LIST =
+   private static final String SOURCE =
    "<defaultTextList version='ONE'>\n"+
    "   <list>\r\n" +
    "      <textEntry name='a' version='ONE'>Example 1</textEntry>\r\n"+
@@ -61,7 +61,7 @@ public class DefaultTest extends ValidationTestCase {
    }
    
    public void testList() throws Exception {    
-      DefaultTextList list = persister.read(DefaultTextList.class, INLINE_LIST);
+      DefaultTextList list = persister.read(DefaultTextList.class, SOURCE);
 
       assertEquals(list.version, Version.ONE);
       assertEquals(list.get(0).version, Version.ONE);

@@ -26,7 +26,7 @@ public class InlineTest extends ValidationTestCase {
       @Element
       private String message;
 
-      @ElementList(type=TextEntry.class, inline=true)
+      @ElementList(inline=true)
       private List<TextEntry> list;
 
       @Attribute
