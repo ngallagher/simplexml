@@ -177,7 +177,27 @@ public class CollectionTest extends ValidationTestCase {
    "         <text>three</text>  \n\r"+
    "      </entry>\n"+
    "   </list>\n"+
-   "</typeFromMethodList>";  
+   "</typeFromMethodList>";
+   
+   private static final String PRIMITIVE_LIST = 
+   "<?xml version=\"1.0\"?>\n"+
+   "<primitiveCollection name='example'>\n"+
+   "   <list>\n"+   
+   "      <text>one</text>  \n\r"+
+   "      <text>two</text>  \n\r"+
+   "      <text>three</text>  \n\r"+
+   "   </list>\n"+
+   "</primitiveCollection>";
+   
+   private static final String PRIMITIVE_DEFAULT_LIST = 
+   "<?xml version=\"1.0\"?>\n"+
+   "<primitiveDefaultCollection name='example'>\n"+
+   "   <list>\n"+   
+   "      <string>one</string>  \n\r"+
+   "      <string>two</string>  \n\r"+
+   "      <string>three</string>  \n\r"+
+   "   </list>\n"+
+   "</primitiveDefaultCollection>";  
    
    @Root(name="entry")
    private static class Entry implements Comparable {
@@ -299,6 +319,34 @@ public class CollectionTest extends ValidationTestCase {
       }
 
       public Iterator<Entry> iterator() {
+         return list.iterator();  
+      }
+   }
+
+   @Root
+   private static class PrimitiveCollection implements Iterable<String> {
+
+      @ElementList(name="list", type=String.class, parent="text")
+      private List<String> list;           
+
+      @Attribute(name="name")
+      private String name;
+
+      public Iterator<String> iterator() {
+         return list.iterator();  
+      }
+   }
+   
+   @Root
+   private static class PrimitiveDefaultCollection implements Iterable<String> {
+
+      @ElementList
+      private List<String> list;           
+
+      @Attribute
+      private String name;
+
+      public Iterator<String> iterator() {
          return list.iterator();  
       }
    }
@@ -569,6 +617,54 @@ public class CollectionTest extends ValidationTestCase {
             two++;
          }
          if(entry.id == 3 && entry.text.equals("three")) {              
+            three++;
+         }
+      }         
+      assertEquals(one, 1);
+      assertEquals(two, 1);
+      assertEquals(three, 1);
+      
+      validate(list, serializer);
+   }
+   
+   public void testPrimitiveCollection() throws Exception {    
+      PrimitiveCollection list = serializer.read(PrimitiveCollection.class, PRIMITIVE_LIST);
+      int one = 0;
+      int two = 0;
+      int three = 0;
+      
+      for(String entry : list) {
+         if(entry.equals("one")) {              
+            one++;
+         }
+         if(entry.equals("two")) {              
+            two++;
+         }
+         if(entry.equals("three")) {              
+            three++;
+         }
+      }         
+      assertEquals(one, 1);
+      assertEquals(two, 1);
+      assertEquals(three, 1);
+      
+      validate(list, serializer);
+   }
+   
+   public void testPrimitiveDefaultCollection() throws Exception {    
+      PrimitiveDefaultCollection list = serializer.read(PrimitiveDefaultCollection.class, PRIMITIVE_DEFAULT_LIST);      
+      int one = 0;
+      int two = 0;
+      int three = 0;
+      
+      for(String entry : list) {
+         if(entry.equals("one")) {              
+            one++;
+         }
+         if(entry.equals("two")) {              
+            two++;
+         }
+         if(entry.equals("three")) {              
             three++;
          }
       }         

@@ -111,3 +111,4 @@ public @interface ElementList {
     */
    public boolean inline() default false;
 }
+
