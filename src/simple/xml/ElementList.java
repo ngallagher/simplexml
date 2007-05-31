@@ -57,7 +57,17 @@ public @interface ElementList {
     * @return the name of the XML element this represents
     */
    public String name() default "";
-
+   
+   /**
+    * This is used to provide a parent XML element for each of the
+    * values within the array. This esentially wraps the entity to
+    * be serialized such that there is an extra XML element present.
+    * This is used to ensure that null values can be represented.  
+    * 
+    * @return this returns the parent XML element for each value
+    */
+   public String parent() default "";
+   
    /**
     * Represents the type of object the element list contains. This
     * type is used to deserialize the XML elements from the list. 
@@ -68,6 +78,17 @@ public @interface ElementList {
     * @return the type of the element deserialized from the XML
     */
    public Class type() default void.class;
+   
+   /**
+    * This is used to determine whether the element data is written
+    * in a CDATA block or not. If this is set to true then the text
+    * is written within a CDATA block, by default the text is output
+    * as escaped XML. Typically this is useful when this annotation
+    * is applied to an array of primitives, such as strings.
+    * 
+    * @return true if entries are to be wrapped in a CDATA block
+    */
+   public boolean data() default false;
    
    /**
     * Determines whether the element is required within the XML

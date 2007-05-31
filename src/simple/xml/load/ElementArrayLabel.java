@@ -87,11 +87,13 @@ class ElementArrayLabel implements Label {
     * @return this returns the converter for creating a collection 
     */
    public Converter getConverter(Source root) throws Exception {
+      String parent = getParent();
+      
       if(!type.isArray()) {
          throw new InstantiationException("Type is not an array %s for %s", type, label);
       }
       return getConverter(root, parent);
-   }
+   }  
       
    /**
     * This will create a <code>Converter</code> for transforming an XML
@@ -104,12 +106,41 @@ class ElementArrayLabel implements Label {
     * @return this returns the converter for creating a collection 
     */      
    private Converter getConverter(Source root, String parent) throws Exception {
-      Class entry = type.getComponentType();
+      Class entry = type.getComponentType();   
       
       if(!Factory.isPrimitive(entry)) {
          return new CompositeArray(root, type, entry, parent);        
       }
       return new PrimitiveArray(root, type, entry, parent);            
+   }
+   
+   /**
+    * This is used to either provide the parent value provided within
+    * the annotation or compute a parent value. If the parent string
+    * is not provided the the parent value is calculated as the type
+    * of primitive the object is as a simplified class name.
+    * 
+    * @return this returns the name of the XML parent element used 
+    */
+   private String getParent() throws Exception {      
+      if(isEmpty(parent)) {
+         parent = sign.getParent();
+      }
+      return parent;
+   }
+   
+   /**
+    * This method is used to determine if a root annotation value is
+    * an empty value. Rather than determining if a string is empty
+    * be comparing it to an empty string this method allows for the
+    * value an empty string represents to be changed in future.
+    * 
+    * @param value this is the value to determine if it is empty
+    * 
+    * @return true if the string value specified is an empty value
+    */
+   private boolean isEmpty(String value) {
+      return value.length() == 0;
    }
    
    /**

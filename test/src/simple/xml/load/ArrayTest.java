@@ -41,7 +41,19 @@ public class ArrayTest extends ValidationTestCase {
    "      <text>entry four</text>  \n\r"+
    "      <text>entry five</text>  \n\r"+
    "   </array>\n\r"+
-   "</root>";   
+   "</root>";
+   
+   private static final String DEFAULT_PRIMITIVE =
+   "<?xml version=\"1.0\"?>\n"+
+   "<root>\n"+
+   "   <array length='5'>\n\r"+
+   "      <string>entry one</string>  \n\r"+
+   "      <string>entry two</string>  \n\r"+
+   "      <string>entry three</string>  \n\r"+
+   "      <string>entry four</string>  \n\r"+
+   "      <string>entry five</string>  \n\r"+
+   "   </array>\n\r"+
+   "</root>";  
    
    private static final String COMPOSITE =
    "<?xml version=\"1.0\"?>\n"+
@@ -62,6 +74,28 @@ public class ArrayTest extends ValidationTestCase {
    "      <entry>\r\n"+
    "         <text value='entry five'/>  \n\r"+
    "      </entry>\n  "+
+   "   </array>\n\r"+
+   "</root>";
+   
+   private static final String DEFAULT_COMPOSITE =
+   "<?xml version=\"1.0\"?>\n"+
+   "<root>\n"+
+   "   <array length='5'>\n\r"+
+   "      <object>\r\n"+
+   "         <text value='entry one'/>  \n\r"+
+   "      </object>\n  "+      
+   "      <object>\r\n"+
+   "         <text value='entry two'/>  \n\r"+
+   "      </object>\n  "+
+   "      <object>\r\n"+
+   "         <text value='entry three'/>  \n\r"+
+   "      </object>\n  "+
+   "      <object>\r\n"+
+   "         <text value='entry four'/>  \n\r"+
+   "      </object>\n  "+
+   "      <object>\r\n"+
+   "         <text value='entry five'/>  \n\r"+
+   "      </object>\n  "+
    "   </array>\n\r"+
    "</root>";
    
@@ -142,9 +176,23 @@ public class ArrayTest extends ValidationTestCase {
    }
    
    @Root(name="root")
+   private static class DefaultPrimitiveArrayExample {
+      
+      @ElementArray
+      private String[] array;
+   }
+   
+   @Root(name="root")
    private static class ParentCompositeArrayExample {
       
       @ElementArray(name="array", parent="entry")
+      private Text[] array;
+   }
+   
+   @Root(name="root")
+   private static class DefaultCompositeArrayExample {
+      
+      @ElementArray
       private Text[] array;
    }
    
@@ -252,6 +300,19 @@ public class ArrayTest extends ValidationTestCase {
       validate(example, serializer);
    }
    
+   public void testDefaultPrimitive() throws Exception {    
+      DefaultPrimitiveArrayExample example = serializer.read(DefaultPrimitiveArrayExample.class, DEFAULT_PRIMITIVE);
+      
+      assertEquals(example.array.length, 5);
+      assertEquals(example.array[0], "entry one");
+      assertEquals(example.array[1], "entry two");
+      assertEquals(example.array[2], "entry three");
+      assertEquals(example.array[3], "entry four");
+      assertEquals(example.array[4], "entry five");
+      
+      validate(example, serializer);
+   }
+   
    public void testPrimitiveNull() throws Exception {    
       PrimitiveArrayExample example = serializer.read(PrimitiveArrayExample.class, PRIMITIVE_NULL);
       
@@ -278,6 +339,19 @@ public class ArrayTest extends ValidationTestCase {
       validate(example, serializer);
    }
    
+   public void testDefaultComposite() throws Exception {    
+      DefaultCompositeArrayExample example = serializer.read(DefaultCompositeArrayExample.class, DEFAULT_COMPOSITE);
+      
+      assertEquals(example.array.length, 5);
+      assertEquals(example.array[0].value, "entry one");
+      assertEquals(example.array[1].value, "entry two");
+      assertEquals(example.array[2].value, "entry three");
+      assertEquals(example.array[3].value, "entry four");
+      assertEquals(example.array[4].value, "entry five");
+      
+      validate(example, serializer);
+   }
+  
    public void testParentCompositeNull() throws Exception {    
       ParentCompositeArrayExample example = serializer.read(ParentCompositeArrayExample.class, COMPOSITE_NULL);
       
