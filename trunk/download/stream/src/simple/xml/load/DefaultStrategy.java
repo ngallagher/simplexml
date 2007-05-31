@@ -36,7 +36,7 @@ import java.util.Map;
  * 
  * @author Niall Gallagher
  */
-final class DefaultStrategy implements Strategy {
+class DefaultStrategy implements Strategy {
 
    /**
     * This is used to specify the size of an array element instance.

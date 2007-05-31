@@ -36,7 +36,7 @@ import java.util.TreeSet;
  * 
  * @author Niall Gallagher
  */ 
-final class CollectionFactory extends Factory {
+class CollectionFactory extends Factory {
 
    /**
     * Constructor for the <code>CollectionFactory</code> object. This

@@ -33,7 +33,7 @@ import java.lang.reflect.Method;
  *
  * @see simple.xml.load.MethodScanner
  */ 
-final class MethodContact implements Contact {
+class MethodContact implements Contact {
    
    /**
     * This is the label that marks both the set and get methods.

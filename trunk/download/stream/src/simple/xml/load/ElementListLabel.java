@@ -33,7 +33,7 @@ import simple.xml.ElementList;
  * 
  *  @see simple.xml.ElementList
  */
-final class ElementListLabel implements Label {
+class ElementListLabel implements Label {
 
    /**
     * This references the annotation that the field uses.

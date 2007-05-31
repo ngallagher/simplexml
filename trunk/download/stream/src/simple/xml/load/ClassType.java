@@ -32,7 +32,7 @@ import java.lang.reflect.Constructor;
  * 
  * @see simple.xml.load.DefaultStrategy
  */
-final class ClassType implements Type {
+class ClassType implements Type {
    
    /**
     * Caches the constructors used to convert composite types.

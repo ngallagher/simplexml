@@ -33,7 +33,7 @@ import java.util.Set;
  *
  * @see simple.xml.stream.OutputNode
  */ 
-final class OutputStack extends LinkedList<OutputNode> {
+class OutputStack extends LinkedList<OutputNode> {
 
    /**
     * Represents the set of nodes that have not been committed.

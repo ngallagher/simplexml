@@ -38,7 +38,7 @@ import simple.xml.Text;
  * 
  * @author Niall Gallagher
  */
-final class FieldScanner extends ContactList {
+class FieldScanner extends ContactList {
    
    /**
     * Constructor for the <codde>FieldScanner</code> object. This is

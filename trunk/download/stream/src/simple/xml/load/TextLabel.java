@@ -33,7 +33,7 @@ import simple.xml.Text;
  * 
  *  @see simple.xml.Text
  */
-final class TextLabel implements Label {
+class TextLabel implements Label {
    
    /**
     * This represents the signature of the annotated contact.

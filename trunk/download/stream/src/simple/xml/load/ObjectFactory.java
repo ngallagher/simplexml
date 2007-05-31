@@ -20,7 +20,6 @@
 
 package simple.xml.load;
 
-import java.lang.reflect.Constructor;
 import simple.xml.stream.InputNode;
 
 /**
@@ -33,7 +32,7 @@ import simple.xml.stream.InputNode;
  *  
  * @author Niall Gallagher
  */ 
-final class ObjectFactory extends Factory {
+class ObjectFactory extends Factory {
    
    /**
     * Constructor for the <code>ObjectFactory</code> class. This is

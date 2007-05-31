@@ -35,7 +35,7 @@ import java.lang.reflect.ParameterizedType;
  * 
  * @see simple.xml.load.MethodContact
  */
-final class ReadPart implements MethodPart {
+class ReadPart implements MethodPart {
    
    /**
     * This is the annotation for the get method provided.

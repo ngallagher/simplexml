@@ -31,7 +31,7 @@ import java.util.HashMap;
  * 
  * @author Niall Gallagher
  */ 
-final class OutputNodeMap extends HashMap<String, Node> implements NodeMap {
+class OutputNodeMap extends HashMap<String, Node> implements NodeMap {
 
    /**
     * This is the source node that this node map belongs to.

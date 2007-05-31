@@ -35,7 +35,7 @@ import java.util.WeakHashMap;
  * 
  * @see simple.xml.graph.ReadGraph
  */
-final class ReadState extends WeakHashMap<Object, ReadGraph>{
+class ReadState extends WeakHashMap<Object, ReadGraph>{
    
    /** 
     * This is the contract that specifies the attributes to use.

@@ -34,7 +34,7 @@ import java.lang.reflect.Field;
  *
  * @see simple.xml.load.FieldScanner
  */ 
-final class FieldContact implements Contact {
+class FieldContact implements Contact {
    
    /**
     * This is the label that marks the field within the object.

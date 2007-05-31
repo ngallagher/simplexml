@@ -52,7 +52,7 @@ import java.util.HashMap;
  *    
  * @author Niall Gallagher
  */
-final class MethodScanner extends ContactList {
+class MethodScanner extends ContactList {
                   
    /**
     * This is used to collect all the set methods from the object.

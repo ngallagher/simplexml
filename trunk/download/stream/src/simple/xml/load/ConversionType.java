@@ -32,7 +32,7 @@ package simple.xml.load;
  * 
  * @see simple.xml.load.CollectionFactory
  */
-final class ConversionType implements Type {
+class ConversionType implements Type {
    
    /**
     * This is the new class that is used for the type conversion. 
