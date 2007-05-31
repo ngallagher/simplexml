@@ -30,7 +30,7 @@ import simple.xml.Attribute;
  * 
  * @author Niall Gallagher
  */
-final class AttributeLabel implements Label {
+class AttributeLabel implements Label {
 
    /**
     * Represents the annotation used to label the field.

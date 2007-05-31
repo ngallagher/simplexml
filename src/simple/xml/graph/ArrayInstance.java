@@ -34,7 +34,7 @@ import simple.xml.load.Type;
  * 
  * @see simple.xml.graph.Allocate
  */
-final class ArrayInstance implements Type {
+class ArrayInstance implements Type {
    
    /**
     * This is the optional field type for the array to be created. 

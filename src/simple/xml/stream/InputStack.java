@@ -31,7 +31,7 @@ import java.util.LinkedList;
  *
  * @see simple.xml.stream.InputNode
  */ 
-final class InputStack extends LinkedList<InputNode> {
+class InputStack extends LinkedList<InputNode> {
 
    /**
     * Constructor for the <code>InputStack</code> object. This is

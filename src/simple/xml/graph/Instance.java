@@ -33,7 +33,7 @@ import simple.xml.load.Type;
  * 
  * @see simple.xml.graph.Allocate
  */
-final class Instance implements Type {
+class Instance implements Type {
    
    /**
     * This is the type that this object is used to represent.

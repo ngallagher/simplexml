@@ -29,7 +29,7 @@ package simple.xml.stream;
  * 
  * @author Niall Gallagher
  */ 
-final class OutputDocument implements OutputNode {
+class OutputDocument implements OutputNode {
 
    /**
     * Represents a dummy output node map for the attributes.

@@ -36,7 +36,7 @@ import java.util.Iterator;
  *
  * @author Niall Gallagher
  */ 
-final class InputNodeMap extends HashMap<String, InputNode> implements NodeMap {
+class InputNodeMap extends HashMap<String, InputNode> implements NodeMap {
 
    /**
     * This is the source node that this node map belongs to.

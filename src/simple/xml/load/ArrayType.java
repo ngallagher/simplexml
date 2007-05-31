@@ -33,7 +33,7 @@ import java.lang.reflect.Array;
  * 
  * @see simple.xml.load.ArrayFactory
  */
-final class ArrayType implements Type {
+class ArrayType implements Type {
    
    /**
     * This is the optional field type for the array to be created. 

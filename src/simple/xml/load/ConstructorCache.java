@@ -34,7 +34,7 @@ import java.lang.reflect.Constructor;
  * 
  * @see simple.xml.load.PrimitiveFactory
  */
-final class ConstructorCache extends ConcurrentHashMap<Class, Constructor> {
+class ConstructorCache extends ConcurrentHashMap<Class, Constructor> {
    
    /**
     * Constructor for the <code>ConstructorCache</code> object. It

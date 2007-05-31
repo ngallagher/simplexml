@@ -40,7 +40,7 @@ public @interface Attribute {
     * This represents the name of the XML attribute. Annotated fields
     * or methods can optionally provide the name of the XML attribute
     * they represent. If a name is not provided then the field or 
-    * method nanme is used in its place. A name can be specified if 
+    * method name is used in its place. A name can be specified if 
     * the field or method name is not suitable for the XML attribute.
     * 
     * @return the name of the XML attribute this represents

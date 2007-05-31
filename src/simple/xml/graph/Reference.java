@@ -31,7 +31,7 @@ import simple.xml.load.Type;
  * 
  * @author Niall Gallagher
  */
-final class Reference implements Type {
+class Reference implements Type {
    
    /**
     * This is the object instance that has already be created.

@@ -31,7 +31,7 @@ import simple.xml.stream.InputNode;
  * 
  * @author Niall Gallagher
  */ 
-final class ArrayFactory extends Factory {
+class ArrayFactory extends Factory {
         
    /**
     * Constructor for the <code>ArrayFactory</code> object. This is

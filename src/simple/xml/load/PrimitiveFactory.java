@@ -33,7 +33,7 @@ import java.lang.reflect.Constructor;
  * 
  * @author Niall Gallagher
  */ 
-final class PrimitiveFactory extends Factory {
+class PrimitiveFactory extends Factory {
    
    /**
     * Caches the constructors used to convert primitive types.

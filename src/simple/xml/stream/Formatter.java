@@ -111,7 +111,7 @@ final class Formatter {
     */ 
    public void writeProlog() throws Exception {
       if(prolog != null) {
-         write(prolog.trim());         
+         write(prolog);         
          write("\n");         
       }
    }

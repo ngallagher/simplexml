@@ -41,7 +41,7 @@ import simple.xml.stream.NodeMap;
  * 
  * @author Niall Gallagher
  */
-final class WriteGraph extends IdentityHashMap<Object, String> {
+class WriteGraph extends IdentityHashMap<Object, String> {
    
    /**
     * This is used to specify the length of array instances.

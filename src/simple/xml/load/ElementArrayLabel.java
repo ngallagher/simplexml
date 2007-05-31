@@ -34,7 +34,7 @@ import simple.xml.ElementArray;
  * 
  *  @see simple.xml.ElementArray
  */
-final class ElementArrayLabel implements Label {
+class ElementArrayLabel implements Label {
 
    /**
     * This references the annotation that the field uses.

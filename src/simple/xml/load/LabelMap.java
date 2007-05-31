@@ -34,7 +34,7 @@ import java.util.Iterator;
  *
  * @see simple.xml.load.Label
  */
-final class LabelMap extends LinkedHashMap<String, Label> implements Iterable<Label> { 
+class LabelMap extends LinkedHashMap<String, Label> implements Iterable<Label> { 
    
    /**
     * This is the scanner object that represents the scanner used.

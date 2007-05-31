@@ -35,7 +35,7 @@ import java.lang.reflect.ParameterizedType;
  * 
  * @see simple.xml.load.MethodContact
  */
-final class WritePart implements MethodPart {
+class WritePart implements MethodPart {
    
    /**
     * This is the annotation for the set method provided.
