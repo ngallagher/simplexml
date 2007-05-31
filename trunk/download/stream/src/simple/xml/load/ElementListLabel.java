@@ -56,6 +56,11 @@ class ElementListLabel implements Label {
    private Class item;
    
    /**
+    * This is the name of the XML parent from the annotation.
+    */
+   private String parent;
+   
+   /**
     * This is the name of the element for this label instance.
     */
    private String name;  
@@ -71,6 +76,7 @@ class ElementListLabel implements Label {
    public ElementListLabel(Contact contact, ElementList label) {
       this.sign = new Signature(contact, this);
       this.type = contact.getType();
+      this.parent = label.parent();
       this.item = label.type();
       this.name = label.name();      
       this.label = label;
@@ -87,12 +93,79 @@ class ElementListLabel implements Label {
     * @return this returns the converter for creating a collection 
     */
    public Converter getConverter(Source root) throws Exception {
+      String parent = getParent();
+      
+      if(!label.inline()) {
+         return getConverter(root, parent);
+      }
+      return getInlineConverter(root, parent);      
+   }
+
+   /**
+    * This will create a <code>Converter</code> for transforming an XML
+    * element into a collection of XML serializable objects. The XML
+    * schema class for these objects must be present the element list
+    * annotation. 
+    * 
+    * @param root this is the source object used for serialization
+    * 
+    * @return this returns the converter for creating a collection 
+    */
+   private Converter getConverter(Source root, String parent) throws Exception {      
       Class item = getDependant();
       
-      if(label.inline()) {
+      if(!Factory.isPrimitive(item)) {
+         return new CompositeList(root, type, item);
+      }
+      return new PrimitiveList(root, type, item, parent);      
+   }
+   
+   /**
+    * This will create a <code>Converter</code> for transforming an XML
+    * element into a collection of XML serializable objects. The XML
+    * schema class for these objects must be present the element list
+    * annotation. 
+    * 
+    * @param root this is the source object used for serialization
+    * 
+    * @return this returns the converter for creating a collection 
+    */
+   private Converter getInlineConverter(Source root, String parent) throws Exception {      
+      Class item = getDependant();
+      
+      if(!Factory.isPrimitive(item)) {
          return new CompositeInlineList(root, type, item);
       }
-      return new CompositeList(root, type, item);      
+      return new PrimitiveInlineList(root, type, item, parent);      
+   }
+   
+   /**
+    * This is used to either provide the parent value provided within
+    * the annotation or compute a parent value. If the parent string
+    * is not provided the the parent value is calculated as the type
+    * of primitive the object is as a simplified class name.
+    * 
+    * @return this returns the name of the XML parent element used 
+    */
+   private String getParent() throws Exception {      
+      if(isEmpty(parent)) {
+         parent = sign.getParent();
+      }
+      return parent;
+   }
+   
+   /**
+    * This method is used to determine if a root annotation value is
+    * an empty value. Rather than determining if a string is empty
+    * be comparing it to an empty string this method allows for the
+    * value an empty string represents to be changed in future.
+    * 
+    * @param value this is the value to determine if it is empty
+    * 
+    * @return true if the string value specified is an empty value
+    */
+   private boolean isEmpty(String value) {
+      return value.length() == 0;
    }
    
    /**

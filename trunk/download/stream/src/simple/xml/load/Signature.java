@@ -92,6 +92,25 @@ final class Signature {
    public Class getDependant() throws Exception {
       return label.getDependant();
    }
+
+   /**
+    * This method is used to get the parent name of a label using 
+    * the type of the label. This ensures that if there is no
+    * parent XML element name declared by the annotation that a
+    * suitable name can be calculated from the annotated type.
+    * 
+    * @return this returns a suitable XML parent element name
+    */
+   public String getParent() throws Exception {
+      Class type = getDependant();
+
+      if(!Factory.isPrimitive(type)) {
+         type = Object.class;         
+      }           
+      String name = type.getSimpleName();
+
+      return name.toLowerCase();      
+   }
    
    /**
     * This is used to determine the name of the XML element that the

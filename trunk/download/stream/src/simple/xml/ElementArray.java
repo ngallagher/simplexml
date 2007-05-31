@@ -32,9 +32,9 @@ import java.lang.annotation.Retention;
  * <pre>
  * 
  *    &lt;array length='3'&gt;
- *       &lt;entry&gt;one&lt;/entry&gt;
- *       &lt;entry&gt;two&lt;/entry&gt;
- *       &lt;entry&gt;three&lt;/entry&gt;
+ *       &lt;string&gt;one&lt;/string&gt;
+ *       &lt;string&gt;two&lt;/string&gt;
+ *       &lt;string&gt;three&lt;/string&gt;
  *    &lt;/array&gt;
  * 
  * </pre>
@@ -67,7 +67,7 @@ public @interface ElementArray {
     * 
     * @return this returns the parent XML element for each value
     */
-   public String parent() default "entry";
+   public String parent() default "";
    
    /**
     * This is used to determine whether the element data is written
