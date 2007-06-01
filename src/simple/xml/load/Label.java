@@ -44,8 +44,7 @@ interface Label {
     * 
     * @param root this is the source object for the serialization
     * 
-    * @return this returns an object that can be used to convert
-    *         XML elements to objects and vice versa
+    * @return this returns an object that is used for conversion
     */
    public Converter getConverter(Source root) throws Exception;
    
@@ -70,6 +69,16 @@ interface Label {
     * @return this is the type that the annotation depends on
     */
    public Class getDependant() throws Exception;
+   
+   /**
+    * This is used to either provide the parent value provided within
+    * the annotation or compute a parent value. If the parent string
+    * is not provided the the parent value is calculated as the type
+    * of primitive the object is as a simplified class name.
+    * 
+    * @return this returns the name of the XML parent element used 
+    */
+   public String getParent() throws Exception;      
    
    /**
     * This is used to acquire the contact object for this label. The 

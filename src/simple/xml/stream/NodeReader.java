@@ -138,15 +138,18 @@ final class NodeReader {
 	  XMLEvent event = reader.peek();
 	       
 	  while(event != null) {
-	     if(event.isEndElement()) {
-	        return null;
+	     if(event.isEndElement()) { 
+           if(stack.top() == from) {
+              return null;
+           } else {
+              stack.pop();
+           }
 	     } else if(event.isStartElement()) {
 	        if(isName(event, name)) {
 	           return readElement(from);
 	        }               
-	     } else {
-	         reader.nextEvent();
 	     }
+	     event = reader.nextEvent();
 	     event = reader.peek();
 	  }
 	  return null;

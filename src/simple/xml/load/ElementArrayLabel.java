@@ -122,7 +122,7 @@ class ElementArrayLabel implements Label {
     * 
     * @return this returns the name of the XML parent element used 
     */
-   private String getParent() throws Exception {      
+   public String getParent() throws Exception {      
       if(isEmpty(parent)) {
          parent = sign.getParent();
       }

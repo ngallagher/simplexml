@@ -105,10 +105,27 @@ final class Signature {
       Class type = getDependant();
 
       if(!Factory.isPrimitive(type)) {
-         type = Object.class;         
-      }           
+         type = Object.class;
+      }
+      return getParent(type);
+   }
+   
+   /**
+    * This method is used to get the parent name of a label using 
+    * the type of the label. This ensures that if there is no
+    * parent XML element name declared by the annotation that a
+    * suitable name can be calculated from the annotated type.
+    * 
+    * @param type this is the type to get the 
+    * 
+    * @return this returns a suitable XML parent element name
+    */
+   private String getParent(Class type) throws Exception {          
       String name = type.getSimpleName();
-
+      
+      if(type.isPrimitive()) {
+         return name;
+      }
       return name.toLowerCase();      
    }
    
@@ -121,13 +138,33 @@ final class Signature {
     * @return this returns the name of the XML element expected
     */
    public String getName() throws Exception {
-	  if(name != null) {
-		  return name;
-	  }
-      if(label.isInline()) {
-         name = getRoot();         
+      if(name == null) {
+         Class type = getDependant();
+         
+         if(!label.isInline()) {
+            name = getDefault();        
+         } else {
+            name = getName(type);
+         }
+      }
+      return name;
+   }
+   
+   /**
+    * This is used to determine the name of the XML element that the
+    * annotated field or method represents. This will determine based
+    * on the annotation attributes and the dependant type required
+    * what the name of the XML element this represents is.
+    * 
+    * @param type this is the dependant type to acquire the name for
+    * 
+    * @return this returns the name of the XML element expected
+    */
+   private String getName(Class type) throws Exception {      
+      if(isPrimitive(type)) {
+         name = label.getParent();         
       } else {
-         name = getDefault();
+         name = getRoot();
       }
       return name;
    }
@@ -138,6 +175,8 @@ final class Signature {
     * has no containing element, thus a name cannot be used to find
     * the first element that belongs to the list. Instead the type
     * the list contains is required so the root name can be used.
+    * 
+    * @param type this is the dependant type to get the name for
     * 
     * @return this will return the root name for the list type 
     */
@@ -221,6 +260,24 @@ final class Signature {
          return name;
       }
       return contact.getName();
+   }  
+   
+   /**
+    * This method is used to determine whether the field type is a
+    * primitive type. This check is required to ensure that primitive
+    * elements do not consult the <code>Strategy</code> object for 
+    * the field class. This improves the performance of serialization
+    * and also ensures that the XML serialization is transparent.
+    * 
+    * @param type the type checked to determine if it is primitive
+    * 
+    * @return true if the type is primitive, false otherwise
+    */   
+   public boolean isPrimitive(Class type) {
+      if(type != null) {
+         return Factory.isPrimitive(type);      
+      }
+      return false;
    }
    
    /**

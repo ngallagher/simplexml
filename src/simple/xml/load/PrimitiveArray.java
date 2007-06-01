@@ -48,7 +48,7 @@ import java.lang.reflect.Array;
  * 
  * @author Niall Gallagher
  *
- * @see simple.xml.load.Traverser
+ * @see simple.xml.load.Primitive
  * @see simple.xml.ElementArray
  */ 
 final class PrimitiveArray implements Converter {
