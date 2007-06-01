@@ -140,6 +140,26 @@ class ElementListLabel implements Label {
    }
    
    /**
+    * This is used to acquire the dependant type for the annotated
+    * list. This will simply return the type that the collection is
+    * composed to hold. This must be a serializable type, that is,
+    * a type that is annotated with the <code>Root</code> class.
+    * 
+    * @return this returns the component type for the collection
+    */
+   public Class getDependant() throws Exception  {
+      Contact contact = getContact();
+     
+      if(item == void.class) {
+         item = contact.getDependant();
+      }        
+      if(item == null) {
+         throw new ElementException("Unable to determine type for %s", label);           
+      }     
+      return item;
+   }
+   
+   /**
     * This is used to either provide the parent value provided within
     * the annotation or compute a parent value. If the parent string
     * is not provided the the parent value is calculated as the type
@@ -147,7 +167,7 @@ class ElementListLabel implements Label {
     * 
     * @return this returns the name of the XML parent element used 
     */
-   private String getParent() throws Exception {      
+   public String getParent() throws Exception {      
       if(isEmpty(parent)) {
          parent = sign.getParent();
       }
@@ -168,26 +188,6 @@ class ElementListLabel implements Label {
       return value.length() == 0;
    }
    
-   /**
-    * This is used to acquire the dependant type for the annotated
-    * list. This will simply return the type that the collection is
-    * composed to hold. This must be a serializable type, that is,
-    * a type that is annotated with the <code>Root</code> class.
-    * 
-    * @return this returns the component type for the collection
-    */
-   public Class getDependant() throws Exception  {
-      Contact contact = getContact();
-     
-      if(item == void.class) {
-         item = contact.getDependant();
-      }        
-      if(item == null) {
-         throw new ElementException("Unable to determine type for %s", label);           
-      }     
-      return item;
-   }     
-
    /**
     * This is used to acquire the name of the element or attribute
     * that is used by the class schema. The name is determined by
@@ -250,7 +250,7 @@ class ElementListLabel implements Label {
     * @return currently the element list does not require CDATA
     */
    public boolean isData() {
-      return false;
+      return label.data();
    }
    
    /**

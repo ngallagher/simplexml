@@ -140,6 +140,18 @@ class TextLabel implements Label {
    }
    
    /**
+    * This is used to either provide the parent value provided within
+    * the annotation or compute a parent value. If the parent string
+    * is not provided the the parent value is calculated as the type
+    * of primitive the object is as a simplified class name.
+    * 
+    * @return this returns the name of the XML parent element used 
+    */
+   public String getParent() {
+      return null;
+   }
+   
+   /**
     * This is used to acquire the dependant class for this label. 
     * This returns null as there are no dependants to the XML text
     * annotation as it can only hold primitives with no dependants.

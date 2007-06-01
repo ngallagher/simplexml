@@ -1,5 +1,5 @@
 /*
- * CompositeInlineList.java July 2006
+ * PrimitiveInlineList.java July 2006
  *
  * Copyright (C) 2006, Niall Gallagher <niallg@users.sf.net>
  *
@@ -25,7 +25,7 @@ import simple.xml.stream.OutputNode;
 import simple.xml.stream.InputNode;
 
 /**
- * The <code>CompositeInlineList</code> object is used to convert an 
+ * The <code>PrimitiveInlineList</code> object is used to convert a
  * group of elements in to a collection of element entries. This is
  * used when a containing element for a list is not required. It 
  * extracts the elements by matching elements to name of the type
@@ -35,28 +35,21 @@ import simple.xml.stream.InputNode;
  * for each of the types within the list must be the same.
  * <pre> 
  *    
- *    &lt;entry attribute="one"&gt;
- *       &lt;text&gt;example text value&lt;/text&gt;
- *    &lt;/entry&gt;
- *    &lt;entry attribute="two"&gt;
- *       &lt;text&gt;some other example&lt;/text/&gt;
- *    &lt;/entry&gt;  
- *    &lt;entry attribute="three"&gt;
- *       &lt;text&gt;yet another example&lt;/text/&gt;
- *    &lt;/entry&gt;      
+ *    &lt;entry&gt;example one&lt;/entry&gt;
+ *    &lt;entry&gt;example two&lt;/entry&gt;
+ *    &lt;entry&gt;example three&lt;/entry&gt;
+ *    &lt;entry&gt;example four&lt;/entry&gt;      
  * 
  * </pre>
  * For the above XML element list the element <code>entry</code> is
- * contained within the list. Each entry element is thus deserialized
- * as a root element and then inserted into the list. This enables
- * lists to be composed from XML documents. For serialization the
- * reverse is done, each element taken from the collection is written
- * as a root element to the owning element to create the list. 
- * Entry objects do not need to be of the same type.
+ * used to wrap the primitive string value. This wrapping XML element 
+ * is configurable and defaults to the lower case string for the name
+ * of the class it represents. So, for example, if the primitive type
+ * is an <code>int</code> the enclosing element will be called int.
  * 
  * @author Niall Gallagher
  *
- * @see simple.xml.load.Traverser
+ * @see simple.xml.load.Primitive
  * @see simple.xml.ElementList
  */ 
 final class PrimitiveInlineList implements Converter {
@@ -70,11 +63,6 @@ final class PrimitiveInlineList implements Converter {
     * This performs the traversal used for object serialization.
     */ 
    private Primitive root;
-      
-   /**
-    * This is the entry type for elements within the list.
-    */   
-   private Class entry;
    
    /**
     * This is the name that each list element is wrapped with.
@@ -82,7 +70,7 @@ final class PrimitiveInlineList implements Converter {
    private String parent;
    
    /**
-    * Constructor for the <code>CompositeInlineList</code> object. 
+    * Constructor for the <code>PrimitiveInlineList</code> object. 
     * This is given the list type and entry type to be used. The list
     * type is the <code>Collection</code> implementation that is used 
     * to collect the deserialized entry objects from the XML source. 
@@ -101,9 +89,8 @@ final class PrimitiveInlineList implements Converter {
    /**
     * This <code>read</code> method wll read the XML element list from
     * the provided node and deserialize its children as entry types.
-    * This will each entry type is deserialized as a root type, that 
-    * is, its <code>Root</code> annotation must be present and the
-    * name of the entry element must match that root element name.
+    * This will deserialize each entry type as a primitive value. In
+    * order to do this the parent string provided forms the element.
     * 
     * @param node this is the XML element that is to be deserialized
     * 
@@ -122,9 +109,8 @@ final class PrimitiveInlineList implements Converter {
    /**
     * This <code>read</code> method wll read the XML element list from
     * the provided node and deserialize its children as entry types.
-    * This will each entry type is deserialized as a root type, that 
-    * is, its <code>Root</code> annotation must be present and the
-    * name of the entry element must match that root element name.
+    * This will deserialize each entry type as a primitive value. In
+    * order to do this the parent string provided forms the element.
     * 
     * @param node this is the XML element that is to be deserialized
     * @param list this is the collection that is to be populated
@@ -141,7 +127,7 @@ final class PrimitiveInlineList implements Converter {
          if(item != null) {
             list.add(item);
          }   	
-    	   node = from.getNext(name);
+         node = from.getNext(name);
       }
       return list;
    }     
@@ -149,10 +135,9 @@ final class PrimitiveInlineList implements Converter {
    /**
     * This <code>write</code> method will write the specified object
     * to the given XML element as as list entries. Each entry within
-    * the given collection must be assignable from the annotated 
-    * type specified within the <code>ElementList</code> annotation.
-    * Each entry is serialized as a root element, that is, its
-    * <code>Root</code> annotation is used to extract the name. 
+    * the given list must be assignable to the given primitive type.
+    * This will deserialize each entry type as a primitive value. In
+    * order to do this the parent string provided forms the element.
     * 
     * @param source this is the source collection to be serialized 
     * @param node this is the XML element container to be populated
@@ -170,13 +155,12 @@ final class PrimitiveInlineList implements Converter {
    /**
     * This <code>write</code> method will write the specified object
     * to the given XML element as as list entries. Each entry within
-    * the given collection must be assignable from the annotated 
-    * type specified within the <code>ElementList</code> annotation.
-    * Each entry is serialized as a root element, that is, its
-    * <code>Root</code> annotation is used to extract the name. 
+    * the given list must be assignable to the given primitive type.
+    * This will deserialize each entry type as a primitive value. In
+    * order to do this the parent string provided forms the element.
     * 
     * @param source this is the source collection to be serialized 
-    * @param node this is the XML element container to be populated
+    * @param list this is the collection to acquire the items from    
     */ 
    public void write(OutputNode node, Collection list) throws Exception {  
       for(Object item : list) {

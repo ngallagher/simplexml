@@ -19,7 +19,15 @@ public class InlineTest extends ValidationTestCase {
    "   <text name='b' version='TWO'>Example 2</text>\r\n"+
    "   <text name='c' version='THREE'>Example 3</text>\r\n"+
    "</test>";
-
+   
+   private static final String INLINE_PRIMITIVE_LIST =
+   "<test version='ONE'>\n"+
+   "   <message>Some example message</message>\r\n"+
+   "   <string>Example 1</string>\r\n"+
+   "   <string>Example 2</string>\r\n"+
+   "   <string>Example 3</string>\r\n"+
+   "</test>";
+   
    @Root(name="test")
    private static class InlineTextList {
       
@@ -36,7 +44,24 @@ public class InlineTest extends ValidationTestCase {
          return list.get(index);              
       }
    }
+   
+   @Root(name="test")
+   private static class InlinePrimitiveList {
+      
+      @Element
+      private String message;
 
+      @ElementList(inline=true)
+      private List<String> list;
+
+      @Attribute
+      private Version version;              
+
+      public String get(int index) {
+         return list.get(index);              
+      }
+   }
+   
    @Root(name="text")
    private static class TextEntry {
 
@@ -98,4 +123,27 @@ public class InlineTest extends ValidationTestCase {
       
       validate(list, persister);
    }
+   
+   public void testPrimitiveList() throws Exception {    
+      InlinePrimitiveList list = persister.read(InlinePrimitiveList.class, INLINE_PRIMITIVE_LIST);
+
+      assertEquals(list.version, Version.ONE);
+      assertEquals(list.message, "Some example message");
+
+      assertEquals(list.get(0), "Example 1");
+      assertEquals(list.get(1), "Example 2");
+      assertEquals(list.get(2), "Example 3");
+      
+      StringWriter buffer = new StringWriter();
+      persister.write(list, buffer);
+      validate(list, persister);
+
+      list = persister.read(InlinePrimitiveList.class, buffer.toString());
+
+      assertEquals(list.get(0), "Example 1");
+      assertEquals(list.get(1), "Example 2");
+      assertEquals(list.get(2), "Example 3");
+      
+      validate(list, persister);
+   }   
 }
