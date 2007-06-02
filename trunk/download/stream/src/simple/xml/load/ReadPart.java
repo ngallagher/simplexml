@@ -107,13 +107,13 @@ class ReadPart implements MethodPart {
      ParameterizedType type = getReturnType();
      
      if(type != null) {
-	     Object[] list = type.getActualTypeArguments();
-	  
-	     if(list.length > 0) {
-		     return (Class) list[0];
+        Object[] list = type.getActualTypeArguments();
+     
+        if(list.length > 0) {
+           return (Class) list[0];
         }
-	  }
-	  return null;
+     }
+     return null;
    }   
    
    /**
@@ -125,10 +125,10 @@ class ReadPart implements MethodPart {
     */
    private ParameterizedType getReturnType() {
       Object type = method.getGenericReturnType();
-	   
+      
       if(type instanceof ParameterizedType) {
          return (ParameterizedType) type;
-	  }
+      }
       return null;
    }
    

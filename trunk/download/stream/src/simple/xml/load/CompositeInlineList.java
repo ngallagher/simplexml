@@ -39,10 +39,10 @@ import simple.xml.stream.InputNode;
  *       &lt;text&gt;example text value&lt;/text&gt;
  *    &lt;/entry&gt;
  *    &lt;entry attribute="two"&gt;
- *       &lt;text&gt;some other example&lt;/text/&gt;
+ *       &lt;text&gt;some other example&lt;/text&gt;
  *    &lt;/entry&gt;  
  *    &lt;entry attribute="three"&gt;
- *       &lt;text&gt;yet another example&lt;/text/&gt;
+ *       &lt;text&gt;yet another example&lt;/text&gt;
  *    &lt;/entry&gt;      
  * 
  * </pre>
@@ -103,12 +103,12 @@ final class CompositeInlineList implements Converter {
     * 
     * @return this returns the item to attach to the object contact
     */ 
-   public Object read(InputNode node) throws Exception{	  
+   public Object read(InputNode node) throws Exception{     
       Object value = factory.getInstance();
       Collection list = (Collection) value;
       
       if(list != null) {
-    	  return read(node, list);
+         return read(node, list);
       }
       return null;
    }
@@ -134,8 +134,8 @@ final class CompositeInlineList implements Converter {
          
          if(item != null) {
             list.add(item);
-         }   	
-    	   node = from.getNext(name);
+         }      
+          node = from.getNext(name);
       }
       return list;
    }     
@@ -217,8 +217,8 @@ final class CompositeInlineList implements Converter {
     * @return this returns true if the types are compatible 
     */
    private boolean isCompatible(Class type, Class expect) throws Exception {
-	  String require = root.getName(expect);
-	  String real = root.getName(type);
+     String require = root.getName(expect);
+     String real = root.getName(type);
       
       if(!entry.isAssignableFrom(type)) {
          throw new PersistenceException("Entry %s does not match %s", type, entry);

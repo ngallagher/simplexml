@@ -107,7 +107,7 @@ final class LabelFactory {
           return new Entry(AttributeLabel.class, Attribute.class);
        }
        if(label instanceof Text) {
-    	   return new Entry(TextLabel.class, Text.class);
+          return new Entry(TextLabel.class, Text.class);
        }
        throw new PersistenceException("Annotation %s not supported", label);
     }

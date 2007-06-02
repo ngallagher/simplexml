@@ -216,13 +216,13 @@ final class Source {
     * @throws Exception if the class contains an illegal schema
     */
    public String getName(Class type) throws Exception {
-	   Scanner schema = cache.get(type);
-	   
-	   if(schema == null) {
-		   schema = new Scanner(type);
-		   cache.cache(type, schema);
-	   }
-	   return schema.getName();
+      Scanner schema = cache.get(type);
+      
+      if(schema == null) {
+         schema = new Scanner(type);
+         cache.cache(type, schema);
+      }
+      return schema.getName();
    }
 
    /**

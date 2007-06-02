@@ -138,12 +138,12 @@ class FieldContact implements Contact {
     * @return this returns the name of the string, internalized
     */
    private String getName(Field field) {
-	   String name = field.getName();
-	   
-	   if(name != null) {
-		   name = name.intern();
-	   }
-	   return name;
+      String name = field.getName();
+      
+      if(name != null) {
+         name = name.intern();
+      }
+      return name;
    }
 
    /**
