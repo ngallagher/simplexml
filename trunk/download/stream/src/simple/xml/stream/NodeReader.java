@@ -147,7 +147,8 @@ final class NodeReader {
 	     } else if(event.isStartElement()) {
 	        if(isName(event, name)) {
 	           return readElement(from);
-	        }               
+	        }   
+           break;
 	     }
 	     event = reader.nextEvent();
 	     event = reader.peek();
