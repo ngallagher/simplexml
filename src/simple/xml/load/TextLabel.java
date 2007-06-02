@@ -38,7 +38,7 @@ class TextLabel implements Label {
    /**
     * This represents the signature of the annotated contact.
     */
-   private Signature sign;
+   private Signature detail;
    
    /**
     * The contact that this annotation label represents.
@@ -64,7 +64,7 @@ class TextLabel implements Label {
     * @param label this is the annotation for the contact 
     */
    public TextLabel(Contact contact, Text label) {
-      this.sign = new Signature(contact, this);
+      this.detail = new Signature(contact, this);
       this.type = contact.getType();
       this.contact = contact;
       this.label = label;      
@@ -140,12 +140,12 @@ class TextLabel implements Label {
    }
    
    /**
-    * This is used to either provide the parent value provided within
-    * the annotation or compute a parent value. If the parent string
-    * is not provided the the parent value is calculated as the type
-    * of primitive the object is as a simplified class name.
+    * This is typically used to acquire the parent value as acquired
+    * from the annotation. However given that the annotation this
+    * represents does not have a parent attribute this will always
+    * provide a null value for the parent string.
     * 
-    * @return this returns the name of the XML parent element used 
+    * @return this will always return null for the parent value 
     */
    public String getParent() {
       return null;
@@ -211,6 +211,6 @@ class TextLabel implements Label {
     * @return this returns a string representation of the label
     */
    public String toString() {
-      return sign.toString();
+      return detail.toString();
    }  
 }

@@ -36,14 +36,14 @@ import simple.xml.Element;
 class ElementLabel implements Label {
    
    /**
+    * The contact that this element label represents.
+    */
+   private Signature detail;
+   
+   /**
     * References the annotation that was used by the field.
     */
    private Element label;
-   
-   /**
-    * The contact that this element label represents.
-    */
-   private Signature sign;
    
    /**
     * This is the type of the class that the field references.
@@ -64,7 +64,7 @@ class ElementLabel implements Label {
     * @param label this is the annotation for the contact 
     */
    public ElementLabel(Contact contact, Element label) {
-      this.sign = new Signature(contact, this);
+      this.detail = new Signature(contact, this);
       this.type = contact.getType();
       this.name = label.name();     
       this.label = label;      
@@ -96,7 +96,7 @@ class ElementLabel implements Label {
     * @return returns the name that is used for the XML property
     */
    public String getName() throws Exception {
-      return sign.getName();
+      return detail.getName();
    }
    
    /**
@@ -109,7 +109,7 @@ class ElementLabel implements Label {
     * @return returns the contact that this label is representing
     */
    public Contact getContact() {
-      return sign.getContact();
+      return detail.getContact();
    }
    
    /**
@@ -140,12 +140,12 @@ class ElementLabel implements Label {
    }
    
    /**
-    * This is used to either provide the parent value provided within
-    * the annotation or compute a parent value. If the parent string
-    * is not provided the the parent value is calculated as the type
-    * of primitive the object is as a simplified class name.
+    * This is typically used to acquire the parent value as acquired
+    * from the annotation. However given that the annotation this
+    * represents does not have a parent attribute this will always
+    * provide a null value for the parent string.
     * 
-    * @return this returns the name of the XML parent element used 
+    * @return this will always return null for the parent value 
     */
    public String getParent() {
       return null;
@@ -210,6 +210,6 @@ class ElementLabel implements Label {
     * @return this returns a string representation of the label
     */
    public String toString() {
-      return sign.toString();
+      return detail.toString();
    }
 }

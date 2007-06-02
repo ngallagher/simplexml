@@ -38,9 +38,9 @@ class AttributeLabel implements Label {
    private Attribute label;
 	
    /**
-    * This is the contact that this label object represents.
+    * This contains the details of the annotated contact object.
     */
-   private Signature sign;
+   private Signature detail;
    
    /**
     * This is the type that the field object references. 
@@ -62,7 +62,7 @@ class AttributeLabel implements Label {
     * @param label represents the annotation for the field
     */
    public AttributeLabel(Contact contact, Attribute label) {
-      this.sign = new Signature(contact, this);
+      this.detail = new Signature(contact, this);
       this.type = contact.getType();
       this.name = label.name();      
       this.label = label; 
@@ -89,7 +89,7 @@ class AttributeLabel implements Label {
     * @return returns the name that is used for the XML property
     */
    public String getName() throws Exception {
-      return sign.getName();
+      return detail.getName();
    }
    
    /**
@@ -115,7 +115,7 @@ class AttributeLabel implements Label {
     * @return returns the contact that this label is representing
     */   
    public Contact getContact() {
-      return sign.getContact();
+      return detail.getContact();
    }
    
    /**
@@ -130,12 +130,12 @@ class AttributeLabel implements Label {
    }
    
    /**
-    * This is used to either provide the parent value provided within
-    * the annotation or compute a parent value. If the parent string
-    * is not provided the the parent value is calculated as the type
-    * of primitive the object is as a simplified class name.
+    * This is typically used to acquire the parent value as acquired
+    * from the annotation. However given that the annotation this
+    * represents does not have a parent attribute this will always
+    * provide a null value for the parent string.
     * 
-    * @return this returns the name of the XML parent element used 
+    * @return this will always return null for the parent value 
     */
    public String getParent() {
       return null;
@@ -200,6 +200,6 @@ class AttributeLabel implements Label {
     * @return this returns a string representation of the label
     */
    public String toString() {
-      return sign.toString();
+      return detail.toString();
    }
 }

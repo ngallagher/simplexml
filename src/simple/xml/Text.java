@@ -30,6 +30,8 @@ import java.lang.annotation.Retention;
  * restriction on this annotation is that it can only appear once 
  * within a schema class, and it can not appear with the another XML
  * element annotations, such as the <code>Element</code> annotation. 
+ * It can however appear with any number of <code>Attribute</code>
+ * annotations.
  * <pre>
  * 
  *    &lt;example one="value" two="value"&gt;
