@@ -32,7 +32,7 @@ import simple.xml.ElementArray;
  * 
  * @author Niall Gallagher
  * 
- *  @see simple.xml.ElementArray
+ * @see simple.xml.ElementArray
  */
 class ElementArrayLabel implements Label {
 
@@ -42,9 +42,9 @@ class ElementArrayLabel implements Label {
    private ElementArray label;
    
    /**
-    * This references the field from the source object.
+    * This contains the details of the annotated contact object.
     */
-   private Signature sign;
+   private Signature detail;
    
    /**
     * This is the type of array this label will represent.
@@ -70,7 +70,7 @@ class ElementArrayLabel implements Label {
     * @param label the annotation that contains the schema details
     */
    public ElementArrayLabel(Contact contact, ElementArray label) {
-      this.sign = new Signature(contact, this);   
+      this.detail = new Signature(contact, this);   
       this.type = contact.getType();
       this.parent = label.parent();
       this.name = label.name();
@@ -80,7 +80,7 @@ class ElementArrayLabel implements Label {
    /**
     * This will create a <code>Converter</code> for transforming an XML
     * element into an array of XML serializable objects. The XML schema
-    * class for these objects must present the element list annotation. 
+    * class for these objects must present the element array annotation. 
     * 
     * @param root this is the source object used for serialization
     * 
@@ -98,7 +98,7 @@ class ElementArrayLabel implements Label {
    /**
     * This will create a <code>Converter</code> for transforming an XML
     * element into an array of XML serializable objects. The XML schema
-    * class for these objects must present the element list annotation. 
+    * class for these objects must present the element array annotation. 
     * 
     * @param root this is the source object used for serialization
     * @param parent this is the name of the parent XML element to use
@@ -123,24 +123,10 @@ class ElementArrayLabel implements Label {
     * @return this returns the name of the XML parent element used 
     */
    public String getParent() throws Exception {      
-      if(isEmpty(parent)) {
-         parent = sign.getParent();
+      if(detail.isEmpty(parent)) {
+         parent = detail.getParent();
       }
       return parent;
-   }
-   
-   /**
-    * This method is used to determine if a root annotation value is
-    * an empty value. Rather than determining if a string is empty
-    * be comparing it to an empty string this method allows for the
-    * value an empty string represents to be changed in future.
-    * 
-    * @param value this is the value to determine if it is empty
-    * 
-    * @return true if the string value specified is an empty value
-    */
-   private boolean isEmpty(String value) {
-      return value.length() == 0;
    }
    
    /**
@@ -153,7 +139,7 @@ class ElementArrayLabel implements Label {
     * @return returns the name that is used for the XML property
     */
    public String getName() throws Exception{
-      return sign.getName();
+      return detail.getName();
    }
    
    /**
@@ -192,7 +178,7 @@ class ElementArrayLabel implements Label {
     * @return returns the contact that this label is representing
     */   
    public Contact getContact() {
-      return sign.getContact();
+      return detail.getContact();
    }
    
    /**
@@ -256,6 +242,6 @@ class ElementArrayLabel implements Label {
     * @return this returns a string representation of the label
     */
    public String toString() {
-      return sign.toString();
+      return detail.toString();
    }   
 }

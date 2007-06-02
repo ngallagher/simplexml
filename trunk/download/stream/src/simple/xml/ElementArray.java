@@ -30,18 +30,25 @@ import java.lang.annotation.Retention;
  * must be a compatible type. However, a <code>class</code> attribute 
  * can be used to override an entry, this must be an assignable type.
  * <pre>
- * 
- *    &lt;array length='3'&gt;
- *       &lt;string&gt;one&lt;/string&gt;
- *       &lt;string&gt;two&lt;/string&gt;
- *       &lt;string&gt;three&lt;/string&gt;
+ *
+ *    &lt;array length="2"&gt;
+ *       &lt;entry&gt;
+ *          &lt;value&gt;example text value&lt;/value&gt;
+ *       &lt;/entry&gt;
+ *       &lt;entry&gt;
+ *          &lt;value&gt;some other value&lt;/value&gt;
+ *       &lt;/entry&gt;
+ *       &lt;entry/&gt;
  *    &lt;/array&gt;
  * 
  * </pre>
- * All null objects within the array are ignored on serialization.
- * The length of the array must be specified for deserialization to
- * instantiate the array before the array values are instantiated.
- * This is required to account for cyclical references in the graph.
+ * All null objects within the array are represented as an empty XML
+ * element so that they can be deserialized accurately. This ensures
+ * that the length attribute of the array is respected, as well as 
+ * the index position of all serialized entries. The length of the 
+ * array must be specified for deserialization to instantiate the 
+ * array before the array values are instantiated. This is required 
+ * to account for cyclical references in the object graph.
  * 
  * @author Niall Gallagher
  */
@@ -50,10 +57,10 @@ public @interface ElementArray {
    
    /**
     * This represents the name of the XML element. Annotated fields
-    * can optionally provide the name of the element. If no name is
-    * provided then the name of the annotated field or method will
-    * be used in its place. The name is provided if the field or
-    * method name is not suitable as an XML element name.
+    * or methods can optionally provide the name of the element. If 
+    * no name is provided then the name of the annotated field or 
+    * method will be used in its place. The name is provided if the 
+    * field or method name is not suitable as an XML element name.
     * 
     * @return the name of the XML element this represents
     */

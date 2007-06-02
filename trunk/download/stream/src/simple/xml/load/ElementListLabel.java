@@ -41,9 +41,9 @@ class ElementListLabel implements Label {
    private ElementList label;
    
    /**
-    * This references the contact from the source object.
+    * This contains the details of the annotated contact object.
     */
-   private Signature sign;
+   private Signature detail;
    
    /**
     * This is the type of collection this list will instantiate.
@@ -74,7 +74,7 @@ class ElementListLabel implements Label {
     * @param label the annotation that contains the schema details
     */
    public ElementListLabel(Contact contact, ElementList label) {
-      this.sign = new Signature(contact, this);
+      this.detail = new Signature(contact, this);
       this.type = contact.getType();
       this.parent = label.parent();
       this.item = label.type();
@@ -168,24 +168,10 @@ class ElementListLabel implements Label {
     * @return this returns the name of the XML parent element used 
     */
    public String getParent() throws Exception {      
-      if(isEmpty(parent)) {
-         parent = sign.getParent();
+      if(detail.isEmpty(parent)) {
+         parent = detail.getParent();
       }
       return parent;
-   }
-   
-   /**
-    * This method is used to determine if a root annotation value is
-    * an empty value. Rather than determining if a string is empty
-    * be comparing it to an empty string this method allows for the
-    * value an empty string represents to be changed in future.
-    * 
-    * @param value this is the value to determine if it is empty
-    * 
-    * @return true if the string value specified is an empty value
-    */
-   private boolean isEmpty(String value) {
-      return value.length() == 0;
    }
    
    /**
@@ -198,7 +184,7 @@ class ElementListLabel implements Label {
     * @return returns the name that is used for the XML property
     */
    public String getName() throws Exception {
-      return sign.getName();
+      return detail.getName();
    }
    
    /**
@@ -225,7 +211,7 @@ class ElementListLabel implements Label {
     * @return returns the contact that this label is representing
     */
    public Contact getContact() {
-      return sign.getContact();
+      return detail.getContact();
    }
    
    /**
@@ -287,6 +273,6 @@ class ElementListLabel implements Label {
     * @return this returns a string representation of the label
     */
    public String toString() {
-      return sign.toString();
+      return detail.toString();
    }   
 }

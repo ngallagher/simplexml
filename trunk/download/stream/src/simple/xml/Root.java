@@ -28,8 +28,8 @@ import java.lang.annotation.Retention;
  * need to be serialized. Also, elements within an element list, as
  * represented by the <code>ElementList</code> annotation need this
  * annotation so that the element names can be determined. All other
- * field names can be determined using the field annotation and so
- * the <code>Root</code> annotation is not needed for such objects. 
+ * field or method names can be determined using the annotation and 
+ * so the <code>Root</code> annotation is not needed for such objects. 
  * 
  * @author Niall Gallagher
  */

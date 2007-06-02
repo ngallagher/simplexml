@@ -290,7 +290,7 @@ final class Signature {
     * 
     * @return true if the string value specified is an empty value
     */
-   private boolean isEmpty(String value) {
+   public boolean isEmpty(String value) {
       return value.length() == 0;
    }
    

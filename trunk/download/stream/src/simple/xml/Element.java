@@ -25,9 +25,10 @@ import java.lang.annotation.Retention;
 
 /**
  * The <code>Element</code> annotation is used to represent a field
- * that appears as an XML element. Fields or methods annotated with 
- * this can be either primitive or compound, that is, represent an 
- * object that can be serialized and deserialized. 
+ * or method that appears as an XML element. Fields or methods that
+ * are annotated with this can be either primitive or compound, that
+ * is, represent an object that can be serialized and deserialized.
+ * Below is an example of the serialized format for a compond object. 
  * <pre>
  * 
  *    &lt;example class="demo.Example"&gt;
@@ -36,9 +37,12 @@ import java.lang.annotation.Retention;
  * 
  * </pre>
  * Each element may have any number of attributes and sub-elements
- * representing fields of the compound object it is converted to and
- * from. However, the <code>class</code> attribute is reserved by 
- * the serialization framework to represent the serialized type. 
+ * representing fields or methods of that compound object. Attribute
+ * and element names can be acquired from the annotation or, if the
+ * annotation does not explicitly declare a name, it is taken from
+ * the annotated field or method. There are exceptions in some cases,
+ * for example, the <code>class</code> attribute is reserved by the
+ * serialization framework to represent the serialized type. 
  * 
  * @author Niall Gallagher
  */ 
