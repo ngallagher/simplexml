@@ -90,17 +90,17 @@ final class Traverser {
     * @throws Exception if the XML schema does not match the XML
     */ 
    private Object read(InputNode node, Object value) throws Exception {
-	  Class type = value.getClass();
-	  String root = getName(type);
-	  
-	  if(root == null) {
-		  throw new RootException("Root annotation required for %s", type);
-	  }
+      Class type = value.getClass();
+      String root = getName(type);
+     
+      if(root == null) {
+         throw new RootException("Root annotation required for %s", type);
+      }
       Position line = node.getPosition();      
       String name = node.getName();      
 
       if(!root.equals(name)) {
-          throw new RootException("Root for %s does not match element '%s' at %s", type, name, line);              
+         throw new RootException("Root for %s does not match element '%s' at %s", type, name, line);              
       }
       return value;
    }
@@ -137,7 +137,7 @@ final class Traverser {
       String root = getName(type);
 
       if(root == null) {
-    	  throw new RootException("Root annotation required for %s", type);
+         throw new RootException("Root annotation required for %s", type);
       }
       write(node, source, expect, root);
    }

@@ -38,7 +38,7 @@ import java.util.Collection;
  *          &lt;text&gt;example text value&lt;/text&gt;
  *       &lt;/entry&gt;
  *       &lt;entry attribute="demo"&gt;
- *          &lt;text&gt;some other example&lt;/text/&gt;
+ *          &lt;text&gt;some other example&lt;/text&gt;
  *       &lt;/entry&gt;
  *    &lt;/list&gt;
  * 

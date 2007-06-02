@@ -101,7 +101,7 @@ final class NodeReader {
     * @return this returns the next input node from the document
     */ 
    public InputNode readElement(InputNode from) throws Exception {
-      if(!stack.isRelevant(from)) {    	  
+      if(!stack.isRelevant(from)) {         
          return null; 
       }
       XMLEvent event = reader.nextEvent();
@@ -132,28 +132,28 @@ final class NodeReader {
     * @return this returns the next input node from the document
     */ 
    public InputNode readElement(InputNode from, String name) throws Exception {
-      if(!stack.isRelevant(from)) {    	 
-    	  return null; 
-	  }
-	  XMLEvent event = reader.peek();
-	       
-	  while(event != null) {
-	     if(event.isEndElement()) { 
+      if(!stack.isRelevant(from)) {        
+         return null; 
+     }
+     XMLEvent event = reader.peek();
+          
+     while(event != null) {
+        if(event.isEndElement()) { 
            if(stack.top() == from) {
               return null;
            } else {
               stack.pop();
            }
-	     } else if(event.isStartElement()) {
-	        if(isName(event, name)) {
-	           return readElement(from);
-	        }   
+        } else if(event.isStartElement()) {
+           if(isName(event, name)) {
+              return readElement(from);
+           }   
            break;
-	     }
-	     event = reader.nextEvent();
-	     event = reader.peek();
-	  }
-	  return null;
+        }
+        event = reader.nextEvent();
+        event = reader.peek();
+     }
+     return null;
    }
    
    /**
@@ -184,10 +184,10 @@ final class NodeReader {
     * @return true if the specified node has the given local name
     */
    private boolean isName(XMLEvent node, String name) {
-	   StartElement start = node.asStartElement();
-	   String local = start.getName().getLocalPart();
-	   
-	   return local.equals(name);
+      StartElement start = node.asStartElement();
+      String local = start.getName().getLocalPart();
+      
+      return local.equals(name);
    }
    
    /**

@@ -97,12 +97,12 @@ final class PrimitiveInlineList implements Converter {
     * 
     * @return this returns the item to attach to the object contact
     */ 
-   public Object read(InputNode node) throws Exception{	  
+   public Object read(InputNode node) throws Exception{     
       Object value = factory.getInstance();
       Collection list = (Collection) value;
       
       if(list != null) {
-    	  return read(node, list);
+         return read(node, list);
       }
       return null;
    }
@@ -127,7 +127,7 @@ final class PrimitiveInlineList implements Converter {
          
          if(item != null) {
             list.add(item);
-         }   	
+         }      
          node = from.getNext(name);
       }
       return list;
