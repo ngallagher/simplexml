@@ -20,9 +20,10 @@
 
 package simple.xml.load;
 
-import java.util.Collection;
 import simple.xml.stream.OutputNode;
 import simple.xml.stream.InputNode;
+import simple.xml.stream.Mode;
+import java.util.Collection;
 
 /**
  * The <code>PrimitiveInlineList</code> object is used to convert a
@@ -142,14 +143,14 @@ final class PrimitiveInlineList implements Converter {
     * @param source this is the source collection to be serialized 
     * @param node this is the XML element container to be populated
     */ 
-   public void write(OutputNode node, Object source) throws Exception {
-      Collection list = (Collection) source;                
+   public void write(OutputNode node, Object source) throws Exception {               
       OutputNode parent = node.getParent();      
+      Mode mode = node.getMode();
       
       if(!node.isCommitted()) {
          node.remove();
-      }
-      write(parent, list);
+      }      
+      write(parent, source, mode);
    }
    
    /**
@@ -159,16 +160,20 @@ final class PrimitiveInlineList implements Converter {
     * This will deserialize each entry type as a primitive value. In
     * order to do this the parent string provided forms the element.
     * 
+    * @param node this is the parent output node to write values to
     * @param source this is the source collection to be serialized 
-    * @param list this is the collection to acquire the items from    
+    * @param mode this is used to determine whether to output CDATA    
     */ 
-   public void write(OutputNode node, Collection list) throws Exception {  
+   public void write(OutputNode node, Object source, Mode mode) throws Exception {
+      Collection list = (Collection) source;
+      
       for(Object item : list) {
          OutputNode child = node.getChild(parent);
          
          if(child == null) {
             break;
          }
+         child.setMode(mode);
          root.write(child, item);
       }
    } 

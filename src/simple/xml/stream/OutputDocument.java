@@ -129,7 +129,21 @@ class OutputDocument implements OutputNode {
     */
    public Mode getMode() {
       return mode;
-   }   
+   }
+   
+   /**
+    * This is used to set the output mode of this node to either
+    * be CDATA, escaped, or inherited. If the mode is set to data
+    * then any value specified will be written in a CDATA block, 
+    * if this is set to escaped values are escaped. If however 
+    * this method is set to inherited then the mode is inherited
+    * from the parent node.
+    * 
+    * @param mode this is the output mode to set the node to 
+    */
+   public void setMode(Mode mode) {
+      this.mode = mode;
+   }
    
    /**
     * This method is used for convinience to add an attribute node 

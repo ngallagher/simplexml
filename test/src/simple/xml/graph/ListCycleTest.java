@@ -40,7 +40,29 @@ public class ListCycleTest extends ValidationTestCase {
    "      </value>\r\n"+
    "   </list>\n"+
    "</root>";
-
+   
+   private static final String INLINE_LIST = 
+   "<?xml version=\"1.0\"?>\n"+
+   "<inlineListExample id='main'>\n"+
+   "   <text value='entry one'/>  \n\r"+
+   "   <text value='entry two'/>  \n\r"+
+   "   <text value='entry three'/>  \n\r"+
+   "   <text value='entry four'/>  \n\r"+
+   "   <text value='entry five'/>  \n\r"+
+   "   <example ref='main'/>\n"+
+   "</inlineListExample>";
+   
+   private static final String INLINE_PRIMITIVE_LIST = 
+   "<?xml version=\"1.0\"?>\n"+
+   "<inlinePrimitiveListExample id='main'>\n"+
+   "   <string>entry one</string>  \n\r"+
+   "   <string>entry two</string>  \n\r"+
+   "   <string>entry three</string>  \n\r"+
+   "   <string>entry four</string>  \n\r"+
+   "   <string>entry five</string>  \n\r"+
+   "   <example ref='main'/>\n"+
+   "</inlinePrimitiveListExample>"; 
+   
    @Root(name="root")
    private static class ListExample {
 
@@ -56,7 +78,27 @@ public class ListCycleTest extends ValidationTestCase {
       @Element(name="example")
       public ListExample example;
    }
-
+   
+   @Root
+   private static class InlineListExample {
+      
+      @ElementList(inline=true)           
+      public List<Entry> list;      
+      
+      @Element
+      public InlineListExample example;
+   }
+   
+   @Root
+   private static class InlinePrimitiveListExample {
+      
+      @ElementList(inline=true, data=true)           
+      public List<String> list;      
+      
+      @Element
+      public InlinePrimitiveListExample example;
+   }
+   
    @Root(name="text") 
    private static class Entry {
 
@@ -142,6 +184,64 @@ public class ListCycleTest extends ValidationTestCase {
       assertEquals(example.three.get(2).value, "harry");
    
       assertTrue(example.one == example.two);
+      assertTrue(example == example.example);
+      
+      validate(example, persister);
+   }
+   
+   public void testInlineList() throws Exception {
+      InlineListExample example = persister.read(InlineListExample.class, INLINE_LIST);
+      
+      assertEquals(example.list.size(), 5);
+      assertEquals(example.list.get(0).value, "entry one");
+      assertEquals(example.list.get(1).value, "entry two");
+      assertEquals(example.list.get(2).value, "entry three");
+      assertEquals(example.list.get(3).value, "entry four");
+      assertEquals(example.list.get(4).value, "entry five");
+   
+      assertTrue(example == example.example);
+      
+      StringWriter out = new StringWriter();
+      persister.write(example, out);
+      
+      example = persister.read(InlineListExample.class, INLINE_LIST);
+      
+      assertEquals(example.list.size(), 5);
+      assertEquals(example.list.get(0).value, "entry one");
+      assertEquals(example.list.get(1).value, "entry two");
+      assertEquals(example.list.get(2).value, "entry three");
+      assertEquals(example.list.get(3).value, "entry four");
+      assertEquals(example.list.get(4).value, "entry five");
+   
+      assertTrue(example == example.example);
+      
+      validate(example, persister);
+   }
+   
+   public void testInlinePrimitiveList() throws Exception {
+      InlinePrimitiveListExample example = persister.read(InlinePrimitiveListExample.class, INLINE_PRIMITIVE_LIST);
+      
+      assertEquals(example.list.size(), 5);
+      assertEquals(example.list.get(0), "entry one");
+      assertEquals(example.list.get(1), "entry two");
+      assertEquals(example.list.get(2), "entry three");
+      assertEquals(example.list.get(3), "entry four");
+      assertEquals(example.list.get(4), "entry five");
+   
+      assertTrue(example == example.example);
+      
+      StringWriter out = new StringWriter();
+      persister.write(example, out);
+      
+      example = persister.read(InlinePrimitiveListExample.class, INLINE_PRIMITIVE_LIST);
+      
+      assertEquals(example.list.size(), 5);
+      assertEquals(example.list.get(0), "entry one");
+      assertEquals(example.list.get(1), "entry two");
+      assertEquals(example.list.get(2), "entry three");
+      assertEquals(example.list.get(3), "entry four");
+      assertEquals(example.list.get(4), "entry five");
+   
       assertTrue(example == example.example);
       
       validate(example, persister);
