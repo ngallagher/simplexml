@@ -1,6 +1,7 @@
 package simple.xml.load;
 
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 import simple.xml.Attribute;
@@ -75,6 +76,27 @@ public class InlineTest extends ValidationTestCase {
       private String text;
    }
 
+   @Root
+   public class SimpleInlineList {
+
+      @ElementList(inline=true)           
+      private ArrayList<SimpleEntry> list = new ArrayList<SimpleEntry>();           
+   }
+
+   @Root
+   private static class SimpleEntry {
+
+      @Attribute            
+      private String content;           
+   }        
+   
+   @Root
+   public class SimplePrimitiveInlineList {
+      
+      @ElementList(inline=true)
+      private ArrayList<String> list = new ArrayList<String>();
+   }
+
    private enum Version {
            
       ONE,
@@ -146,4 +168,22 @@ public class InlineTest extends ValidationTestCase {
       
       validate(list, persister);
    }   
+
+   public void testSimpleList() throws Exception{
+      SimpleInlineList list = new SimpleInlineList();
+      SimpleEntry entry = new SimpleEntry();
+
+      entry.content = "test";
+      list.list.add(entry);
+
+      validate(list, persister);      
+   }
+   
+   public void testSimplePrimitiveList() throws Exception{
+      SimplePrimitiveInlineList list = new SimplePrimitiveInlineList();
+      
+      list.list.add("test");
+
+      validate(list, persister);      
+   }
 }
