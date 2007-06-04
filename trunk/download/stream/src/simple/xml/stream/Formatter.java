@@ -64,7 +64,7 @@ final class Formatter {
    /**
     * Output buffer used to write the generated XML result to.
     */ 
-   private StringBuilder buffer;
+   private OutputBuffer buffer;
    
    /**
     * Creates the indentations that are used bu the XML file.
@@ -97,7 +97,7 @@ final class Formatter {
    public Formatter(Writer result, Format format){
        this.result = new BufferedWriter(result);
        this.indenter = new Indenter(format);
-       this.buffer = new StringBuilder();
+       this.buffer = new OutputBuffer();
        this.prolog = format.getProlog();      
    }
 
@@ -131,7 +131,8 @@ final class Formatter {
 
       if(last == Tag.START) {
          append('>');    
-      }                
+      }        
+      flush();
       append(text);
       append('<');
       append(name);
@@ -232,9 +233,9 @@ final class Formatter {
     * @param ch this is the character to be written to the output
     */ 
    private void write(char ch) throws Exception {     
-      result.append(buffer);
-      result.write(ch);
-      clear();
+      buffer.write(result);
+      buffer.clear();
+      result.write(ch);      
    }
 
    /**
@@ -245,9 +246,9 @@ final class Formatter {
     * @param plain this is the text to be written to the output
     */    
    private void write(char[] plain) throws Exception {      
-      result.append(buffer);     
-      result.write(plain);       
-      clear();
+      buffer.write(result);
+      buffer.clear();
+      result.write(plain);  
    }
 
    /**
@@ -258,9 +259,9 @@ final class Formatter {
     * @param plain this is the text to be written to the output
     */    
    private void write(String plain) throws Exception{      
-      result.append(buffer);
-      result.write(plain);
-      clear();
+      buffer.write(result);
+      buffer.clear();
+      result.write(plain);  
    }
    
    /**
@@ -345,9 +346,10 @@ final class Formatter {
    public void reset() throws Exception {
       if(last != Tag.START) {
          throw new NodeException("Can not remove element text");
-      }
+      }      
       indenter.pop();
-      clear();     
+      buffer.clear();
+      last = Tag.TEXT;
    }
 
    /**
@@ -357,19 +359,9 @@ final class Formatter {
     * does not affect the result of the node writer.
     */ 
    public void flush() throws Exception{
-      result.append(buffer);
+      buffer.write(result);
+      buffer.clear();
       result.flush();
-      clear();
-   }
-   
-   /**
-    * This method is used to clear out any buffered content so that
-    * a node can be effectively deleted from the resulting source.
-    * This simple ensures that the buffered content is not written
-    * to the resulting writer in the event of a flush.
-    */
-   public void clear() {
-      buffer.setLength(0);
    }
 
    /**
