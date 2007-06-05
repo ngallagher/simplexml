@@ -107,7 +107,7 @@ class WritePart implements MethodPart {
       Object type = getDependantType();
       
       if(type instanceof Class) {
-         return (Class) type;
+         return (Class)type;
       }
       return null;
    }
@@ -145,7 +145,7 @@ class WritePart implements MethodPart {
       Object type = getArgumentType(0);
 		   
       if(type instanceof ParameterizedType) {
-         return (ParameterizedType) type;
+         return (ParameterizedType)type;
       }
       return null;
    }
