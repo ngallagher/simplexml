@@ -102,15 +102,33 @@ class WritePart implements MethodPart {
     * from the generic information provided.
     * 
     * @return this returns the generic dependant for the type
-    */
+    */  
    public Class getDependant() {
+      Object type = getDependantType();
+      
+      if(type instanceof Class) {
+         return (Class) type;
+      }
+      return null;
+   }
+   
+   /**
+    * This is used to acquire the dependant type for the method 
+    * part. The dependant type is the type that represents the 
+    * generic type of the type. This is used when collections are
+    * annotated as it allows a default entry class to be taken
+    * from the generic information provided.
+    * 
+    * @return this returns the generic dependant for the type
+    */  
+   private Object getDependantType() {
       ParameterizedType type = getArgumentType();
       
       if(type != null) {
          Object[] list = type.getActualTypeArguments();
 		  
          if(list.length > 0) {
-            return (Class) list[0];
+            return list[0];
          }
       }
       return null;
