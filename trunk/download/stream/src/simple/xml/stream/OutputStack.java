@@ -21,7 +21,7 @@
 package simple.xml.stream;
 
 import java.util.Iterator;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.Set;
 
 /**
@@ -33,7 +33,7 @@ import java.util.Set;
  *
  * @see simple.xml.stream.OutputNode
  */ 
-class OutputStack extends LinkedList<OutputNode> {
+class OutputStack extends ArrayList<OutputNode> {
 
    /**
     * Represents the set of nodes that have not been committed.
@@ -57,12 +57,12 @@ class OutputStack extends LinkedList<OutputNode> {
     * @return this returns the node from the top of the stack
     */    
    public OutputNode pop() {
-      OutputNode node = removeLast();
+      int size = size();
       
-      if(node != null){
-         active.remove(node);
+      if(size <= 0) {
+         return null;
       }
-      return node;
+      return purge(size - 1);
    }
    
    /**
@@ -73,10 +73,12 @@ class OutputStack extends LinkedList<OutputNode> {
     * @return this returns the node from the top of the stack
     */    
    public OutputNode top() {
-      if(isEmpty()) {
+      int size = size();
+      
+      if(size <= 0) {
          return null;              
       }           
-      return getLast();
+      return get(size - 1);
    }
 
    /**
@@ -87,10 +89,12 @@ class OutputStack extends LinkedList<OutputNode> {
     * @return this returns the node from the bottom of the stack
     */ 
    public OutputNode bottom() {
-      if(isEmpty()) {
+      int size = size();
+      
+      if(size <= 0) {
          return null;              
       }           
-      return getFirst();           
+      return get(0);           
    }
 
    /**
@@ -113,13 +117,16 @@ class OutputStack extends LinkedList<OutputNode> {
     * has the node removed so that it is no longer relevant.
     *
     * @param index the index of the node that is to be removed
+    * 
+    * @return returns the node removed from the specified index
     */ 
-   public void purge(int index) {      
+   public OutputNode purge(int index) {      
       OutputNode node = remove(index);  
       
       if(node != null){
          active.remove(node);
-      }      
+      }    
+      return node;
    }
    
    /**

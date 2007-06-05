@@ -20,7 +20,7 @@
 
 package simple.xml.stream;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 /**
  * The <code>InputStack</code> is used to keep track of the nodes 
@@ -31,7 +31,7 @@ import java.util.LinkedList;
  *
  * @see simple.xml.stream.InputNode
  */ 
-class InputStack extends LinkedList<InputNode> {
+class InputStack extends ArrayList<InputNode> {
 
    /**
     * Constructor for the <code>InputStack</code> object. This is
@@ -50,10 +50,12 @@ class InputStack extends LinkedList<InputNode> {
     * @return this returns the node from the top of the stack
     */ 
    public InputNode pop() {
-      if(isEmpty()) {
+      int size = size();
+      
+      if(size <= 0) {
          return null;               
       }           
-      return removeLast();
+      return remove(size - 1);
    }
    
    /**
@@ -64,10 +66,12 @@ class InputStack extends LinkedList<InputNode> {
     * @return this returns the node from the top of the stack
     */ 
    public InputNode top() {
-      if(isEmpty()) {
+      int size = size();
+      
+      if(size <= 0) {
          return null;              
       }           
-      return getLast();
+      return get(size - 1);
    }
    
    /**
@@ -78,10 +82,12 @@ class InputStack extends LinkedList<InputNode> {
     * @return this returns the node from the bottom of the stack
     */ 
    public InputNode bottom() {
-      if(isEmpty()) {
+      int size = size();
+      
+      if(size <= 0) {
          return null;              
       }           
-      return getFirst();           
+      return get(0);           
    }
    
    /**
