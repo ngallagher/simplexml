@@ -41,7 +41,8 @@ class InputPosition implements Position {
    /**
     * Constructor for the <code>InputPosition</code> object. This is
     * used to create a position description if the provided event 
-    * is not null. If the event is null the position given is -1.
+    * is not null. This will return -1 if the specified event does
+    * not provide any location information.    
     *
     * @param source this is the XML event to get the position of
     */ 
@@ -58,8 +59,10 @@ class InputPosition implements Position {
     * @return this returns the line number of an XML event 
     */ 
    public int getLine() {
-      if(source != null) {
-         return getLocation().getLineNumber();
+      Location line = getLocation();
+      
+      if(line != null) {
+         return line.getLineNumber();
       }   
       return -1;
    }
@@ -72,7 +75,10 @@ class InputPosition implements Position {
     * @return this returns the StAX location information
     */ 
    private Location getLocation() {
-      return source.getLocation();           
+      if(source != null) {
+         return source.getLocation();
+      }
+      return null;
    }
 
    /**
