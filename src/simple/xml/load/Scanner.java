@@ -166,6 +166,9 @@ final class Scanner  {
     * @return this returns the commit method for the schema class
     */
    public Method getCommit() {
+      if(commit != null) {
+         commit.setAccessible(true);
+      }
       return commit;           
    }
 
@@ -179,6 +182,9 @@ final class Scanner  {
     * @return this returns the validate method for the schema class
     */   
    public Method getValidate() {
+      if(validate != null) {
+         validate.setAccessible(true);
+      }
       return validate;       
    }
    
@@ -192,6 +198,9 @@ final class Scanner  {
     * @return this returns the persist method for the schema class
     */
    public Method getPersist() {
+      if(persist != null) {
+         persist.setAccessible(true);
+      }
       return persist;           
    }
 
@@ -205,6 +214,9 @@ final class Scanner  {
     * @return returns the complete method for the schema class
     */   
    public Method getComplete() {
+      if(complete != null) {
+         complete.setAccessible(true);
+      }
       return complete;           
    }
 
