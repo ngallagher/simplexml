@@ -31,6 +31,8 @@ import java.util.Set;
  * whether a child node for a given <code>OutputNode</code> can be
  * created. Each created node is pushed, and popped when ended.
  *
+ * @author Niall Gallagher
+ * 
  * @see simple.xml.stream.OutputNode
  */ 
 class OutputStack extends ArrayList<OutputNode> {
