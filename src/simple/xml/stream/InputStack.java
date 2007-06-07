@@ -29,6 +29,8 @@ import java.util.ArrayList;
  * whether a child node for a given <code>InputNode</code> can be
  * created. Each created node is pushed, and popped when ended.
  *
+ * @author Niall Gallagher
+ *
  * @see simple.xml.stream.InputNode
  */ 
 class InputStack extends ArrayList<InputNode> {
