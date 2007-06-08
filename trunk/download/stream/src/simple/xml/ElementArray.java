@@ -31,7 +31,7 @@ import java.lang.annotation.Retention;
  * can be used to override an entry, this must be an assignable type.
  * <pre>
  *
- *    &lt;array length="2"&gt;
+ *    &lt;array length="3"&gt;
  *       &lt;entry&gt;
  *          &lt;value&gt;example text value&lt;/value&gt;
  *       &lt;/entry&gt;
