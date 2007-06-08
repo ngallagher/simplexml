@@ -70,10 +70,34 @@ final class Traverser {
    public Object read(InputNode node, Class type) throws Exception {
       Composite factory = getComposite(type);           
       Object value = factory.read(node);
+      Class real = value.getClass();
 
-      return read(node, value);
+      return read(node, real, value);
    }
-
+   
+   /**
+    * This <code>read</code> method will read the contents of the XML
+    * document from the provided source and populate the object with
+    * the values deserialized. This is used as a means of injecting an
+    * object with values deserialized from an XML document. If the
+    * XML source cannot be deserialized or there is a problem building
+    * the object graph an exception is thrown. 
+    * 
+    * @param node this is the node that is to be deserialized
+    * @param value this is the value that is to be deserialized
+    * 
+    * @return an object deserialized from the XML element 
+    * 
+    * @throws Exception if the XML schema does not match the node
+    */
+   public Object read(InputNode node, Object value) throws Exception {
+      Class type = value.getClass();
+      Composite factory = getComposite(type);        
+      
+      factory.read(node, value);
+      return read(node, type, value);
+   }
+   
    /**
     * This <code>read</code> method is used to deserialize an object 
     * from the provided XML element. The class provided acts as the
@@ -89,8 +113,7 @@ final class Traverser {
     * 
     * @throws Exception if the XML schema does not match the XML
     */ 
-   private Object read(InputNode node, Object value) throws Exception {
-      Class type = value.getClass();
+   private Object read(InputNode node, Class type, Object value) throws Exception {
       String root = getName(type);
      
       if(root == null) {
