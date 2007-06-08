@@ -120,7 +120,7 @@ final class Composite implements Converter {
     * @param node the XML element contact values are deserialized from
     * @param source the object whose contacts are to be deserialized
     */
-   private void read(InputNode node, Object source) throws Exception {
+   public void read(InputNode node, Object source) throws Exception {
       Schema schema = root.getSchema(source);
       
       read(node, source, schema);
