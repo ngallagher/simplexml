@@ -1,0 +1,13 @@
+Testsuite: simple.xml.load.IndentTest
+Tests run: 2, Failures: 0, Errors: 0, Time elapsed: 0.375 sec
+------------- Standard Output ---------------
+<contact id="some id">
+     <details>
+          <title>Some Title</title>
+          <mail>email@domain.com</mail>
+          <name>Name Surname</name>
+     </details>
+</contact><contact id="some id"><details><title>Some Title</title><mail>email@domain.com</mail><name>Name Surname</name></details></contact>------------- ---------------- ---------------
+
+Testcase: testIndent took 0.359 sec
+Testcase: testNoIndent took 0.016 sec

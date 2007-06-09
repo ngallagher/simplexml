@@ -1,0 +1,47 @@
+Testsuite: simple.xml.graph.CycleTest
+Tests run: 2, Failures: 0, Errors: 0, Time elapsed: 19.266 sec
+------------- Standard Output ---------------
+<example id="0">
+   <list class="java.util.ArrayList" id="1">
+      <entry key="1" id="2">one</entry>
+      <entry key="2" id="3">two</entry>
+      <entry key="3" id="4">three</entry>
+      <entry ref="2"/>
+      <entry ref="3"/>
+      <entry key="3" id="5">three</entry>
+   </list>
+   <cycle ref="0"/>
+</example><example id="0">
+   <list class="java.util.ArrayList" id="1">
+      <entry key="1" id="2">one</entry>
+      <entry key="2" id="3">two</entry>
+      <entry key="3" id="4">three</entry>
+      <entry ref="2"/>
+      <entry ref="3"/>
+      <entry key="3" id="5">three</entry>
+   </list>
+   <cycle ref="0"/>
+</example><example id="0">
+   <list class="java.util.ArrayList" id="1">
+      <entry key="1" id="2">one</entry>
+      <entry key="2" id="3">two</entry>
+      <entry key="3" id="4">three</entry>
+      <entry ref="2"/>
+      <entry ref="3"/>
+      <entry key="3" id="5">three</entry>
+   </list>
+   <cycle ref="0"/>
+</example><example id="0">
+   <list class="java.util.ArrayList" id="1">
+      <entry key="1" id="2">one</entry>
+      <entry key="2" id="3">two</entry>
+      <entry key="3" id="4">three</entry>
+      <entry ref="2"/>
+      <entry ref="3"/>
+      <entry key="3" id="5">three</entry>
+   </list>
+   <cycle ref="0"/>
+</example>------------- ---------------- ---------------
+
+Testcase: testCycle took 0.328 sec
+Testcase: testMemory took 18.922 sec

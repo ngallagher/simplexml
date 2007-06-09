@@ -1,0 +1,32 @@
+Testsuite: simple.xml.util.ResolverTest
+Tests run: 5, Failures: 0, Errors: 0, Time elapsed: 0.422 sec
+------------- Standard Output ---------------
+<test name="example">
+   <list>
+      <match value="text/html" pattern="*.html"/>
+      <match value="image/jpeg" pattern="*.jpg"/>
+      <match value="image/jpeg" pattern="/images/*"/>
+      <match value="text/plain" pattern="/log/**"/>
+      <match value="application/octetstream" pattern="*.exe"/>
+      <match value="text/plain" pattern="**.txt"/>
+      <match value="text/html" pattern="/html/*"/>
+   </list>
+</test><test name="example">
+   <list>
+      <match value="text/html" pattern="*.html"/>
+      <match value="image/jpeg" pattern="*.jpg"/>
+      <match value="image/jpeg" pattern="/images/*"/>
+      <match value="application/octetstream" pattern="*.exe"/>
+      <match value="text/plain" pattern="**.txt"/>
+      <match value="text/html" pattern="/html/*"/>
+      <match value="application/octetstream" pattern="*"/>
+      <match value="text/html" pattern="README.*"/>
+      <match value="text/plain" pattern="README.txt"/>
+   </list>
+</test>------------- ---------------- ---------------
+
+Testcase: testResolver took 0.313 sec
+Testcase: testCache took 0.016 sec
+Testcase: testNoResolution took 0.015 sec
+Testcase: testNonGreedyMatch took 0 sec
+Testcase: testResolverCache took 0.063 sec

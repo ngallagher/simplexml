@@ -12,9 +12,9 @@ import simple.xml.filter.Filter;
 
 public class PerformanceTest extends ValidationTestCase {
 
-   public static final int ITERATIONS = 10000; 
+   public static final int ITERATIONS = 600; 
 
-   public static final int MAXIMUM = 60000;   
+   public static final int MAXIMUM = 1000;   
         
    public static final String BASIC_ENTRY =
    "<?xml version=\"1.0\"?>\n"+

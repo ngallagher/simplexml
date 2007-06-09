@@ -1,0 +1,33 @@
+Testsuite: simple.xml.load.InlineTest
+Tests run: 4, Failures: 0, Errors: 0, Time elapsed: 0.39 sec
+------------- Standard Output ---------------
+<test version="ONE">
+   <message>Some example message</message>
+   <text name="a" version="ONE">Example 1</text>
+   <text name="b" version="TWO">Example 2</text>
+   <text name="c" version="THREE">Example 3</text>
+</test><test version="ONE">
+   <message>Some example message</message>
+   <text name="a" version="ONE">Example 1</text>
+   <text name="b" version="TWO">Example 2</text>
+   <text name="c" version="THREE">Example 3</text>
+</test><test version="ONE">
+   <message>Some example message</message>
+   <string>Example 1</string>
+   <string>Example 2</string>
+   <string>Example 3</string>
+</test><test version="ONE">
+   <message>Some example message</message>
+   <string>Example 1</string>
+   <string>Example 2</string>
+   <string>Example 3</string>
+</test><simpleInlineList>
+   <simpleEntry content="test"/>
+</simpleInlineList><simplePrimitiveInlineList>
+   <string>test</string>
+</simplePrimitiveInlineList>------------- ---------------- ---------------
+
+Testcase: testList took 0.328 sec
+Testcase: testPrimitiveList took 0.016 sec
+Testcase: testSimpleList took 0.015 sec
+Testcase: testSimplePrimitiveList took 0 sec

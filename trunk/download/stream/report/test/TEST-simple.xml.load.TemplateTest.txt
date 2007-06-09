@@ -1,0 +1,17 @@
+Testsuite: simple.xml.load.TemplateTest
+Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 0.312 sec
+------------- Standard Output ---------------
+<test name="test">
+   <config class="java.util.ArrayList">
+      <var value="Niall Gallagher" name="name"/>
+      <var value="niallg@users.sf.net" name="mail"/>
+      <var value="Mr" name="title"/>
+   </config>
+   <details>
+      <title>Mr</title>
+      <mail>niallg@users.sf.net</mail>
+      <name>Niall Gallagher</name>
+   </details>
+</test>------------- ---------------- ---------------
+
+Testcase: testTemplate took 0.312 sec
