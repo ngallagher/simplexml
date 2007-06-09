@@ -1,5 +1,5 @@
 Testsuite: simple.xml.load.MethodTest
-Tests run: 2, Failures: 0, Errors: 0, Time elapsed: 0.375 sec
+Tests run: 2, Failures: 0, Errors: 0, Time elapsed: 0.265 sec
 ------------- Standard Output ---------------
 <test>
    <short>120</short>
@@ -35,5 +35,5 @@ Tests run: 2, Failures: 0, Errors: 0, Time elapsed: 0.375 sec
    <doubleValue>1234567.89</doubleValue>
 </implicitMethodNameExample>------------- ---------------- ---------------
 
-Testcase: testExplicitMethodNameExample took 0.328 sec
-Testcase: testImplicitMethodNameExample took 0.047 sec
+Testcase: testExplicitMethodNameExample took 0.25 sec
+Testcase: testImplicitMethodNameExample took 0.015 sec

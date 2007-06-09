@@ -1,39 +1,45 @@
 <?xml version="1.0"?>
 <project name="Simple" default="build" basedir=".">
 
-   <target name="layout">
+   <target name="-layout">
+      <property name="source.path" value="src"/>                
       <property name="main.source.path" value="src/main/java"/>            
       <property name="test.source.path" value="src/test/java"/>
       <property name="javadoc.path" value="doc/javadoc"/>
       <property name="build.path" value="build"/>
+      <property name="main.build.path" value="build/main"/>            
+      <property name="test.build.path" value="build/test"/>
+      <property name="instrumented.build.path" value="build/instrumented"/>
       <property name="jar.path" value="jar"/>
       <property name="lib.path" value="lib"/>
       <property name="target.path" value="target"/>
-      <property name="test.path" value="."/>
+      <property name="test.path" value="test"/>
       <property name="example.path" value="example"/>
       <property name="skel.path" value="skel"/>
       <property name="report.path" value="report"/>
+      <property name="test.report.path" value="report/test"/>
+      <property name="cobertura.report.path" value="report/cobertura"/>
       <property name="cobertura.data" value="cobertura.ser"/>
       <property file="build.properties"/>
    </target>
 
-   <target name="clean" depends="layout">
+   <target name="-clean" depends="-layout">
       <delete dir="${build.path}"/>
       <delete dir="${jar.path}"/>
    </target>
 
-   <target name="prepare" depends="clean">
+   <target name="-prepare" depends="-clean">
       <mkdir dir="${build.path}"/>
-      <mkdir dir="${build.path}/core"/>
-      <mkdir dir="${build.path}/test"/>
-      <mkdir dir="${build.path}/instrumented"/>
+      <mkdir dir="${main.build.path}"/>
+      <mkdir dir="${test.build.path}"/>
+      <mkdir dir="${instrumented.build.path}"/>
       <mkdir dir="${report.path}"/>
-      <mkdir dir="${report.path}/test"/>
-      <mkdir dir="${report.path}/cobertura"/>
+      <mkdir dir="${test.report.path}"/>
+      <mkdir dir="${cobertura.report.path}"/>
       <mkdir dir="${jar.path}"/>
    </target>
 
-   <target name="setup" depends="prepare">
+   <target name="-setup" depends="-prepare">
       <taskdef resource="tasks.properties">
          <classpath> 
             <fileset dir="${lib.path}">
@@ -43,8 +49,8 @@
       </taskdef>
    </target>
 
-   <target name="compile" depends="setup">
-      <javac srcdir="${main.source.path}" destdir="${build.path}/core" debug="true" debuglevel="lines,vars,source" encoding="UTF-8">
+   <target name="-compile" depends="-setup">
+      <javac srcdir="${main.source.path}" destdir="${main.build.path}" debug="true" debuglevel="lines,vars,source" encoding="UTF-8">
          <classpath>
             <fileset dir="${lib.path}">
                <include name="**/*.jar"/>
@@ -56,42 +62,42 @@
             <exclude name="**/*.java"/>
          </fileset>
       </copy>
-      <javac srcdir="${test.source.path}" destdir="${build.path}/test" debug="true" debuglevel="lines,vars,source" encoding="UTF-8">
+      <javac srcdir="${test.source.path}" destdir="${test.build.path}" debug="true" debuglevel="lines,vars,source" encoding="UTF-8">
          <classpath>
             <fileset dir="${lib.path}">
                <include name="**/*.jar"/>
             </fileset>
-            <pathelement path="${build.path}/core"/>
+            <pathelement path="${main.build.path}"/>
          </classpath>
       </javac>
    </target>
 
-   <target name="build" depends="compile">
-      <jar jarfile="${jar.path}/simple-xml-${version}.jar" basedir="${build.path}/core"/>
+   <target name="build" depends="-compile" description="Compile and build project archive">
+      <jar jarfile="${jar.path}/simple-xml-${version}.jar" basedir="${main.build.path}"/>
       <delete dir="${build.path}"/>
    </target>
 
-   <target name="instrument" depends="compile">
-      <cobertura-instrument todir="${build.path}/instrumented" datafile="${build.path}/${cobertura.data}">
-         <fileset dir="${build.path}/core">
+   <target name="-instrument" depends="-compile">
+      <cobertura-instrument todir="${instrumented.build.path}" datafile="${build.path}/${cobertura.data}">
+         <fileset dir="${main.build.path}">
             <include name="**/*.class"/>
          </fileset>
       </cobertura-instrument>
    </target>
 
-   <target name="coverage" depends="instrument">
+   <target name="-coverage" depends="-instrument">
       <junit printsummary="yes" haltonfailure="yes" fork="yes">
 	      <sysproperty key="net.sourceforge.cobertura.datafile"  file="${build.path}/${cobertura.data}" />
-         <classpath location="${build.path}/instrumented"/>
-         <classpath location="${build.path}/test"/>
-         <classpath location="${build.path}/core"/>
+         <classpath location="${instrumented.build.path}"/>
+         <classpath location="${test.build.path}"/>
+         <classpath location="${main.build.path}"/>
          <classpath>
             <fileset dir="${lib.path}">
                <include name="**/*.jar"/>
             </fileset>
          </classpath>
          <formatter type="plain"/>
-         <batchtest fork="yes" todir="${report.path}/test">
+         <batchtest fork="yes" todir="${test.report.path}">
             <fileset dir="${build.path}/test">
                <include name="**/*Test.class"/>
                <exclude name="**/*TestSuite.class"/>
@@ -100,9 +106,9 @@
       </junit>
    </target>
 
-   <target name="report" depends="coverage">
-      <mkdir dir="${report.path}/cobertura"/>
-      <cobertura-report destdir="${report.path}/cobertura" datafile="${build.path}/${cobertura.data}">
+   <target name="report" depends="-coverage" description="Generate a coverage report with project unit tests">
+      <mkdir dir="${cobertura.report.path}"/>
+      <cobertura-report destdir="${cobertura.report.path}" datafile="${build.path}/${cobertura.data}">
          <fileset dir="${main.source.path}">
             <include name="**/*.java" />
             <exclude name="**/*Test.java" />
@@ -112,18 +118,18 @@
       <delete dir="${build.path}"/>
    </target>
 
-   <target name="test" depends="compile">
+   <target name="test" depends="-compile" description="Compile project and run unit tests">
       <junit showoutput="true" printsummary="yes" haltonfailure="yes">
-         <classpath location="${build.path}/core"/>
-         <classpath location="${build.path}/test"/>
+         <classpath location="${main.build.path}"/>
+         <classpath location="${test.build.path}"/>
          <classpath>
             <fileset dir="${lib.path}">
                <include name="**/*.jar"/>
             </fileset>
          </classpath>
          <formatter type="plain"/>
-         <batchtest fork="yes" todir="${report.path}/test">
-            <fileset dir="${build.path}/test">
+         <batchtest fork="yes" todir="${test.report.path}">
+            <fileset dir="${test.build.path}">
                <include name="**/*Test.class"/>
                <exclude name="**/*TestSuite.class"/>
             </fileset>
@@ -132,19 +138,19 @@
       <delete dir="${build.path}"/>
    </target>
 
-   <target name="test-woodstox" depends="build">
+   <target name="test-woodstox" depends="-compile" description="Compile project and run unit tests with woodstox">
       <junit showoutput="true" printsummary="yes" haltonfailure="yes">
 	      <sysproperty key="javax.xml.stream.XMLInputFactory"  value="com.ctc.wstx.stax.WstxInputFactory"/>
-         <classpath location="${build.path}/core"/>
-         <classpath location="${build.path}/test"/>
+         <classpath location="${main.build.path}"/>
+         <classpath location="${test.build.path}"/>
          <classpath>
             <fileset dir="${lib.path}">
                <include name="**/*.jar"/>
             </fileset>
          </classpath>
          <formatter type="plain"/>
-         <batchtest fork="yes" todir="${report.path}/test">
-            <fileset dir="${build.path}/test">
+         <batchtest fork="yes" todir="${test.report.path}">
+            <fileset dir="${test.build.path}">
                <include name="**/*Test.class"/>
                <exclude name="**/*TestSuite.class"/>
             </fileset>
@@ -153,16 +159,16 @@
       <delete dir="${build.path}"/>
    </target>
 
-   <target name="profile" depends="build">       
+   <target name="profile" depends="-compile" description="Target for netbeans profiler">       
       <ant antfile="build.xml" dir="${example.path}" target="profile" inheritall="false"/>
       <delete dir="${build.path}"/>
    </target>
 
-   <target name="package" depends="test">
+   <target name="package" depends="test" description="Build and test project for a new release">
       <mkdir dir="${target.path}/${build.path}"/>
       <mkdir dir="${target.path}/${build.path}/simple-xml-${version}"/>
       <copy todir="${target.path}/${build.path}/simple-xml-${version}/${source.path}">
-         <fileset dir="${source.path}"> 
+         <fileset dir="${main.source.path}"> 
             <exclude name="**/*.class"/>
          </fileset>
       </copy>
@@ -176,7 +182,7 @@
          <fileset dir="${skel.path}/${lib.path}"/>
       </copy>
       <copy todir="${target.path}/${build.path}/simple-xml-${version}/${test.path}/${source.path}">
-         <fileset dir="${test.path}/${source.path}"/>
+         <fileset dir="${test.source.path}"/>
       </copy>
       <copy todir="${target.path}/${build.path}/simple-xml-${version}">
          <fileset file="${skel.path}/build.xml"/>
@@ -185,7 +191,7 @@
          </filterset>
       </copy>
       <mkdir dir="${target.path}/${version}"/>
-      <ant antfile="build.xml" dir="${test.path}" target="report" inheritall="false"/>
+      <antcall target="report" inheritall="false"/>
       <ant antfile="build.xml" dir="${target.path}/${build.path}/simple-xml-${version}" target="all" inheritall="false"/>
       <ant antfile="build.xml" dir="${target.path}/${build.path}/simple-xml-${version}/${test.path}" target="test" inheritall="false"/>
       <tar tarfile="${target.path}/${version}/simple-xml-${version}.tar" basedir="${target.path}/${build.path}"/>
@@ -204,7 +210,7 @@
       <delete dir="${build.path}"/>
    </target>
 
-   <target name="javadoc" depends="layout">
+   <target name="javadoc" depends="-layout" description="Generate source documentation">
       <mkdir dir="${javadoc.path}"/>
       <javadoc sourcepath="${source.path}" packagenames="simple.*" destdir="${javadoc.path}" private="false">
          <classpath>

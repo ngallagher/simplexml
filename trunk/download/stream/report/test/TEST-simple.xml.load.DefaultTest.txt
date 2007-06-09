@@ -1,5 +1,5 @@
 Testsuite: simple.xml.load.DefaultTest
-Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 0.344 sec
+Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 0.25 sec
 ------------- Standard Output ---------------
 <defaultTextList version="ONE">
    <list class="java.util.ArrayList">
@@ -15,4 +15,4 @@ Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 0.344 sec
    </list>
 </defaultTextList>------------- ---------------- ---------------
 
-Testcase: testList took 0.328 sec
+Testcase: testList took 0.25 sec

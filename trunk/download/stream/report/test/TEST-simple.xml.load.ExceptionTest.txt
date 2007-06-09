@@ -1,12 +1,12 @@
 Testsuite: simple.xml.load.ExceptionTest
-Tests run: 9, Failures: 0, Errors: 0, Time elapsed: 0.297 sec
+Tests run: 9, Failures: 0, Errors: 0, Time elapsed: 0.234 sec
 
-Testcase: testValid took 0.235 sec
+Testcase: testValid took 0.203 sec
 Testcase: testNoAttribute took 0 sec
 Testcase: testNoElement took 0 sec
 Testcase: testExtraAttribute took 0 sec
 Testcase: testExtraElement took 0 sec
-Testcase: testMissingRoot took 0.016 sec
+Testcase: testMissingRoot took 0 sec
 Testcase: testListEntryWithNoRoot took 0 sec
-Testcase: testMissingElement took 0.016 sec
+Testcase: testMissingElement took 0.015 sec
 Testcase: testMissingAttribute took 0 sec

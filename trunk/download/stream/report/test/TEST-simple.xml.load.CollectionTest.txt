@@ -1,5 +1,5 @@
 Testsuite: simple.xml.load.CollectionTest
-Tests run: 19, Failures: 0, Errors: 0, Time elapsed: 0.563 sec
+Tests run: 19, Failures: 0, Errors: 0, Time elapsed: 0.469 sec
 ------------- Standard Output ---------------
 <test name="example">
    <list class="java.util.TreeSet">
@@ -27,11 +27,11 @@ Tests run: 19, Failures: 0, Errors: 0, Time elapsed: 0.563 sec
    </list>
 </test><test name="example">
    <list class="java.util.HashSet">
-      <entry id="3">
-         <text>three</text>
-      </entry>
       <entry id="2">
          <text>two</text>
+      </entry>
+      <entry id="3">
+         <text>three</text>
       </entry>
       <entry id="1">
          <text>one</text>
@@ -101,13 +101,13 @@ Tests run: 19, Failures: 0, Errors: 0, Time elapsed: 0.563 sec
 ------------- Standard Error -----------------
 <test name="example">
    <list class="java.util.HashSet">
+      <entry id="3">
+         <text>three</text>
+      </entry>
       <extended-entry class="simple.xml.load.CollectionTest$ExtendedEntry" id="2">
          <description>this is the second one</description>
          <text>two</text>
       </extended-entry>
-      <entry id="3">
-         <text>three</text>
-      </entry>
       <extended-entry class="simple.xml.load.CollectionTest$ExtendedEntry" id="1">
          <description>this is an extended entry</description>
          <text>one</text>
@@ -115,13 +115,13 @@ Tests run: 19, Failures: 0, Errors: 0, Time elapsed: 0.563 sec
    </list>
 </test><test name="example">
    <list class="java.util.HashSet">
-      <extended-entry class="simple.xml.load.CollectionTest$ExtendedEntry" id="1">
-         <description>this is an extended entry</description>
-         <text>one</text>
-      </extended-entry>
       <extended-entry class="simple.xml.load.CollectionTest$ExtendedEntry" id="2">
          <description>this is the second one</description>
          <text>two</text>
+      </extended-entry>
+      <extended-entry class="simple.xml.load.CollectionTest$ExtendedEntry" id="1">
+         <description>this is an extended entry</description>
+         <text>one</text>
       </extended-entry>
       <entry id="3">
          <text>three</text>
@@ -366,22 +366,22 @@ java.lang.ClassNotFoundException: example.MyCollection
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
 ------------- ---------------- ---------------
 
-Testcase: testSet took 0.25 sec
-Testcase: testSortedSet took 0.063 sec
-Testcase: testList took 0.015 sec
-Testcase: testHashSet took 0.016 sec
-Testcase: testTreeSet took 0.016 sec
-Testcase: testArrayList took 0.015 sec
-Testcase: testSortedSetToSet took 0 sec
-Testcase: testExtendedEntry took 0.016 sec
+Testcase: testSet took 0.188 sec
+Testcase: testSortedSet took 0.062 sec
+Testcase: testList took 0 sec
+Testcase: testHashSet took 0 sec
+Testcase: testTreeSet took 0.015 sec
+Testcase: testArrayList took 0.016 sec
+Testcase: testSortedSetToSet took 0.015 sec
+Testcase: testExtendedEntry took 0 sec
 Testcase: testTypeFromFieldList took 0.015 sec
-Testcase: testTypeFromMethodList took 0.032 sec
-Testcase: testPrimitiveCollection took 0.016 sec
+Testcase: testTypeFromMethodList took 0.016 sec
+Testcase: testPrimitiveCollection took 0 sec
 Testcase: testPrimitiveDefaultCollection took 0.015 sec
-Testcase: testSetToSortedSet took 0 sec
+Testcase: testSetToSortedSet took 0.016 sec
 Testcase: testListToSet took 0 sec
 Testcase: testInvalidList took 0.016 sec
 Testcase: testUnknownCollectionList took 0 sec
-Testcase: testAbstractList took 0 sec
+Testcase: testAbstractList took 0.015 sec
 Testcase: testNotACollection took 0 sec
 Testcase: testMissingCollection took 0.016 sec
