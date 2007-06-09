@@ -14,7 +14,7 @@ import simple.xml.load.Persister;
 
 public class CycleTest extends ValidationTestCase {
    
-   private static final int ITERATIONS = 10000;
+   private static final int ITERATIONS = 1000;
 	
    @Root(name="example")
    public static class CycleExample { 

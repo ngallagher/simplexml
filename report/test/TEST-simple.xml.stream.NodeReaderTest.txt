@@ -1,0 +1,6 @@
+Testsuite: simple.xml.stream.NodeReaderTest
+Tests run: 3, Failures: 0, Errors: 0, Time elapsed: 0.171 sec
+
+Testcase: testSmallSource took 0.171 sec
+Testcase: testLargeSource took 0 sec
+Testcase: testSkip took 0 sec

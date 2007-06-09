@@ -1,0 +1,18 @@
+Testsuite: simple.xml.util.DictionaryTest
+Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 0.313 sec
+------------- Standard Output ---------------
+<test name="example">
+   <list>
+      <property name="3">
+         <text>three</text>
+      </property>
+      <property name="2">
+         <text>two</text>
+      </property>
+      <property name="1">
+         <text>one</text>
+      </property>
+   </list>
+</test>------------- ---------------- ---------------
+
+Testcase: testDictionary took 0.313 sec
