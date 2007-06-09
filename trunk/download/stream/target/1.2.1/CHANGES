@@ -1,3 +1,0 @@
-Added a strategy to handle cycles in the serialized object graph
-Change made to the serialization of arrays so it includes a length
-Update to the strategy so that it can override all object writing
