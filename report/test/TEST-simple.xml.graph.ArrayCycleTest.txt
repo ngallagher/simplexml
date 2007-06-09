@@ -1,5 +1,5 @@
 Testsuite: simple.xml.graph.ArrayCycleTest
-Tests run: 3, Failures: 0, Errors: 0, Time elapsed: 0.531 sec
+Tests run: 3, Failures: 0, Errors: 0, Time elapsed: 0.39 sec
 ------------- Standard Output ---------------
 <root id="0">
    <one length="5" id="1">
@@ -70,6 +70,6 @@ Tests run: 3, Failures: 0, Errors: 0, Time elapsed: 0.531 sec
    </list>
 </value>------------- ---------------- ---------------
 
-Testcase: testCycle took 0.422 sec
-Testcase: testNestedExample took 0.046 sec
-Testcase: testPromotion took 0.016 sec
+Testcase: testCycle took 0.313 sec
+Testcase: testNestedExample took 0.032 sec
+Testcase: testPromotion took 0.015 sec

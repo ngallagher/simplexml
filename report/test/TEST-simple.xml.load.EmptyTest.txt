@@ -1,5 +1,5 @@
 Testsuite: simple.xml.load.EmptyTest
-Tests run: 7, Failures: 0, Errors: 0, Time elapsed: 0.297 sec
+Tests run: 7, Failures: 0, Errors: 0, Time elapsed: 0.25 sec
 ------------- Standard Error -----------------
 simple.xml.load.ValueRequiredException: Empty value for @simple.xml.Element(required=true, data=false, name=empty) on field 'empty' in class simple.xml.load.EmptyTest$RequiredElement at line 3
 	at simple.xml.load.Composite.read(Composite.java:313)
@@ -119,10 +119,10 @@ simple.xml.load.ValueRequiredException: Empty value for @simple.xml.Element(requ
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
 ------------- ---------------- ---------------
 
-Testcase: testRequiredEmpty took 0.25 sec
-Testcase: testRequiredEmptyMethod took 0.016 sec
+Testcase: testRequiredEmpty took 0.188 sec
+Testcase: testRequiredEmptyMethod took 0.015 sec
 Testcase: testRequiredBlank took 0 sec
 Testcase: testOptionalEmpty took 0 sec
-Testcase: testOptionalBlank took 0.016 sec
-Testcase: testRequiredEmptyAttribute took 0 sec
+Testcase: testOptionalBlank took 0 sec
+Testcase: testRequiredEmptyAttribute took 0.031 sec
 Testcase: testOptionalEmptyAttribute took 0 sec

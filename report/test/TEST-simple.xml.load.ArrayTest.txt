@@ -1,5 +1,5 @@
 Testsuite: simple.xml.load.ArrayTest
-Tests run: 11, Failures: 0, Errors: 0, Time elapsed: 0.797 sec
+Tests run: 11, Failures: 0, Errors: 0, Time elapsed: 0.89 sec
 ------------- Standard Output ---------------
 <root>
    <array length="100">
@@ -604,14 +604,14 @@ Tests run: 11, Failures: 0, Errors: 0, Time elapsed: 0.797 sec
    </array>
 </root>------------- ---------------- ---------------
 
-Testcase: testExample took 0.265 sec
+Testcase: testExample took 0.187 sec
 Testcase: testBadExample took 0.016 sec
-Testcase: testWriteArray took 0.359 sec
+Testcase: testWriteArray took 0.265 sec
 Testcase: testPrimitive took 0.016 sec
-Testcase: testDefaultPrimitive took 0 sec
-Testcase: testPrimitiveNull took 0.016 sec
-Testcase: testParentComposite took 0.031 sec
-Testcase: testDefaultComposite took 0.031 sec
+Testcase: testDefaultPrimitive took 0.031 sec
+Testcase: testPrimitiveNull took 0.015 sec
+Testcase: testParentComposite took 0.016 sec
+Testcase: testDefaultComposite took 0.015 sec
 Testcase: testParentCompositeNull took 0.016 sec
-Testcase: testCharacter took 0 sec
-Testcase: testDifferentArray took 0.016 sec
+Testcase: testCharacter took 0.016 sec
+Testcase: testDifferentArray took 0.015 sec

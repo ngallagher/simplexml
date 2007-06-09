@@ -1,5 +1,5 @@
 Testsuite: simple.xml.load.TextTest
-Tests run: 7, Failures: 0, Errors: 0, Time elapsed: 0.391 sec
+Tests run: 7, Failures: 0, Errors: 0, Time elapsed: 0.328 sec
 ------------- Standard Output ---------------
 <test>
    <array length="3">
@@ -39,10 +39,10 @@ Tests run: 7, Failures: 0, Errors: 0, Time elapsed: 0.391 sec
    
 ]]></text><text name="a" version="ONE"/><text name="a" version="ONE"/>------------- ---------------- ---------------
 
-Testcase: testText took 0.329 sec
-Testcase: testData took 0.015 sec
-Testcase: testDuplicate took 0 sec
-Testcase: testIllegalElement took 0.031 sec
+Testcase: testText took 0.266 sec
+Testcase: testData took 0.031 sec
+Testcase: testDuplicate took 0.015 sec
+Testcase: testIllegalElement took 0 sec
 Testcase: testEmpty took 0 sec
 Testcase: testOptional took 0.016 sec
 Testcase: testNonPrimitive took 0 sec
