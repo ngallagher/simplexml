@@ -1,0 +1,6 @@
+Added a new annotation which has support for free text with attributes 
+Enhanced the element array annotation so that it can not support primitives
+Enahnced the core serialization process so that bean methods can be used
+Support for loose mappings has been introduced with a new root attribute
+Further unit test has been added to ensure that scanning resolves correctly
+Change made so that the element and attribute mappings are case sensitive

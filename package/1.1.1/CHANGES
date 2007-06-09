@@ -1,0 +1,3 @@
+Added position information to exceptions thrown from schema matching
+Improved the resolver cache so that it removes old cache entries better
+Added further unit testing to the resolver object to test resolutions
