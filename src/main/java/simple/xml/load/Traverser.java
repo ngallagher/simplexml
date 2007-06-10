@@ -93,9 +93,9 @@ final class Traverser {
    public Object read(InputNode node, Object value) throws Exception {
       Class type = value.getClass();
       Composite factory = getComposite(type);        
+      Object real = factory.read(node, value);
       
-      factory.read(node, value);
-      return read(node, type, value);
+      return read(node, type, real);
    }
    
    /**

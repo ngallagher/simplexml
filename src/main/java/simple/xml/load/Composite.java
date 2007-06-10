@@ -66,6 +66,11 @@ final class Composite implements Converter {
     * This is the source object for the instance of serialization.
     */
    private Source root;
+   
+   /**
+    * This is the type that this composite produces instances of.
+    */
+   private Class type;
         
    /**
     * Constructor for the <code>Composite</code> object. This creates 
@@ -79,6 +84,7 @@ final class Composite implements Converter {
    public Composite(Source root, Class type) {
       this.factory = new ObjectFactory(root, type);           
       this.root = root;
+      this.type = type;
    }
 
    /**
@@ -101,7 +107,7 @@ final class Composite implements Converter {
       Object source = type.getInstance();
       
       if(!type.isReference()) {         
-         read(node, source);
+         return read(node, source);
       }
       return source;
    }
@@ -119,13 +125,43 @@ final class Composite implements Converter {
     * 
     * @param node the XML element contact values are deserialized from
     * @param source the object whose contacts are to be deserialized
+    * 
+    * @return this returns the fully deserialized object graph 
     */
-   public void read(InputNode node, Object source) throws Exception {
+   public Object read(InputNode node, Object source) throws Exception {
       Schema schema = root.getSchema(source);
       
       read(node, source, schema);
       schema.validate(source);
       schema.commit(source);
+      
+      return replace(node, source, schema);
+   }
+   
+   /**
+    * The <code>replace</code> method is used to determine if there is
+    * a replacement method which can be used to substitute the object
+    * deserialized. The replace method is used when an object wishes 
+    * to provide a substitute within the deserialized object graph.
+    * 
+    * @param node the XML element object provided as a replacement
+    * @param source this is the source object that is deserialized
+    * @param schema this object visits the objects contacts
+    * 
+    * @return this returns a replacement for the deserialized object
+    */
+   private Object replace(InputNode node, Object source, Schema schema) throws Exception {
+      Position line = node.getPosition();
+      
+      if(schema.isReplace()) {
+         source = schema.replace(source);
+      }
+      Class real = source.getClass();
+      
+      if(!type.isAssignableFrom(real)) {
+         throw new PersistenceException("Type %s does not match %s at %s", real, type, line);                     
+      }
+      return source;
    }
    
    /**
