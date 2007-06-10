@@ -67,6 +67,11 @@ final class Schema {
    private Method complete;
    
    /**
+    * This is the pointer to the schema class replace method.
+    */
+   private Method replace;
+   
+   /**
     * This is used to represent a text value within the schema.
     */
    private Label text;
@@ -90,6 +95,7 @@ final class Schema {
       this.elements = schema.getElements();
       this.validate = schema.getValidate();      
       this.complete = schema.getComplete();
+      this.replace = schema.getReplace();
       this.commit = schema.getCommit();      
       this.persist = schema.getPersist();
       this.text = schema.getText();
@@ -132,6 +138,26 @@ final class Schema {
    }
    
    /**
+    * This is used to replace the deserialized object with another
+    * instance, perhaps of a different type. This is useful when an
+    * XML schema class acts as a reference to another XML document
+    * which needs to be loaded externally to create an object of
+    * a different type.
+    * 
+    * @param source the source object to invoke the method on
+    * 
+    * @return this returns the object that acts as the replacement
+    * 
+    * @throws Exception if the replacement method cannot complete
+    */
+   public Object replace(Object source) throws Exception {
+      if(replace != null) {
+         return invoke(source, replace);
+      }
+      return null;
+   }
+   
+   /**
     * This method is used to invoke the provided objects commit method
     * during the deserialization process. The commit method must be
     * marked with the <code>Commit</code> annotation so that when the
@@ -143,12 +169,8 @@ final class Schema {
     * @throws Exception thrown if the commit process cannot complete
     */
    public void commit(Object source) throws Exception {
-      if(commit != null) {           
-         if(isContextual(commit)) {              
-            commit.invoke(source, table);           
-         } else {
-            commit.invoke(source);                 
-         }
+      if(commit != null) { 
+         invoke(source, commit);
       }      
    }
 
@@ -165,11 +187,7 @@ final class Schema {
     */
    public void validate(Object source) throws Exception {
       if(validate != null) {   
-         if(isContextual(validate)) {         
-            validate.invoke(source, table);           
-         } else {
-            validate.invoke(source);                 
-         }            
+         invoke(source, validate);
       }         
    }
    
@@ -186,11 +204,7 @@ final class Schema {
     */
    public void persist(Object source) throws Exception {
       if(persist != null) {           
-         if(isContextual(persist)) {              
-            persist.invoke(source, table);           
-         } else {
-            persist.invoke(source);                 
-         }            
+         invoke(source, persist);           
       }         
    }
    
@@ -206,13 +220,42 @@ final class Schema {
     * @throws Exception thrown if the object cannot complete
     */
    public void complete(Object source) throws Exception {
-      if(complete != null) {           
-         if(isContextual(complete)) {              
-            complete.invoke(source, table);           
-         } else {
-            complete.invoke(source);                 
-         }            
-      }         
+      if(complete != null) {
+         invoke(source, complete);
+      }
+   }
+
+   /**
+    * This method is used to invoke the specified method. If it has 
+    * a single parameter that takes a <code>Map</code> then the
+    * provided method will be invoked with the session map. If it
+    * takes no parameters then it is invoked and the return value
+    * is returned from the method.
+    * 
+    * @param source this is the method to invoke the method on
+    * @param method this is the method that is to be invoked
+    * 
+    * @return this is the return value from the specified method
+    * 
+    * @throws Exception thrown if the method cannot be invoked
+    */
+   private Object invoke(Object source, Method method) throws Exception {                
+      if(isContextual(method)) {              
+         return method.invoke(source, table);           
+      }
+      return method.invoke(source);                    
+   }
+   
+   /**
+    * This is used to determine if the replace method has even been
+    * defined. This is required as it is perfectly leagal for the
+    * replace method to return null. Also if the method does not
+    * return a valid object the replace method is considered invalid. 
+    * 
+    * @return this returns true if the schema has a replace method
+    */
+   public boolean isReplace() {
+      return replace != null;      
    }
 
    /**

@@ -75,6 +75,11 @@ final class Scanner  {
     * This method acts as a pointer to the types complete process.
     */
    private Method complete;   
+   
+   /**
+    * This method is used as a pointer to the replacement method.
+    */
+   private Method replace;
 
    /**
     * This is used to store all labels that are XML text values.
@@ -218,6 +223,22 @@ final class Scanner  {
          complete.setAccessible(true);
       }
       return complete;           
+   }
+   
+   /**
+    * This method is used to retrieve the schema class replacement
+    * method. The replacement method is used to substitute an object
+    * that has been deserialized with another object. This allows
+    * a seamless delegation mechanism to be implemented. This is
+    * marked with the <code>Replace</code> annotation. 
+    * 
+    * @return returns the replace method for the schema class
+    */
+   public Method getReplace() {
+      if(replace != null) {
+         complete.setAccessible(true);
+      }
+      return replace;
    }
 
    /**
@@ -469,9 +490,28 @@ final class Scanner  {
       }
       if(complete == null) {      
          complete(method);
-      }        
+      }    
+      if(replace == null) {
+         replace(method);              
+      }    
    }
+   
+   /**
+    * This method is used to check the provided method to determine
+    * if it contains the <code>Replace</code> annotation. If the
+    * method contains the required annotation it is stored so that
+    * it can be invoked during the deserialization process.
+    *
+    * @param method this is the method checked for the annotation
+    */ 
+   private void replace(Method method) {
+      Annotation mark = method.getAnnotation(Replace.class);
 
+      if(mark != null) {
+         replace = method;                    
+      }      
+   }
+   
    /**
     * This method is used to check the provided method to determine
     * if it contains the <code>Commit</code> annotation. If the
