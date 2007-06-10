@@ -37,6 +37,14 @@
       <version>1.2.0</version>
     </dependency>
   </dependencies>
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>cobertura-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </reporting>
   <build>
     <plugins>
       <plugin>
@@ -46,6 +54,24 @@
               <source>1.5</source>
               <target>1.5</target>
          </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>cobertura-maven-plugin</artifactId>
+        <configuration>
+          <instrumentation>
+            <include>simple/**/*Test.class</include>
+            <include>simple/**/*TestCase.class</include>
+          </instrumentation>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+               <goal>clean</goal>
+               <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
