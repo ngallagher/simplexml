@@ -1,5 +1,5 @@
 /*
- * Replace.java June 2007
+ * Resolve.java June 2007
  *
  * Copyright (C) 2007, Niall Gallagher <niallg@users.sf.net>
  *
@@ -24,20 +24,22 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Retention;
 
 /**
- * The <code>Replace</code> method is used to replace an object that
- * is about to be serialized to an XML document. This is used to so
- * that an object can provide a substitute to itself. Scenarios such
- * as serializing an object to an external file or location can be
- * accommodated using a write replacement method.
+ * The <code>Resolve</code> method is used to resolve an object that
+ * has been deserialized from the XML document. This is used when the
+ * deserialized object whats to provide a substitute to itself within
+ * the object graph. This is particularly useful when an object is
+ * used to reference an external XML document, as it allows that XML
+ * document to be deserialized in to a new object instance.
  * <p>
- * This is similar to the <code>writeReplace</code> method used within
- * Java Object Serialization in that it is used to plug a replacement
- * in to the resulting stream during the serialization process. Care
- * should be taken to provide a suitable type from the repacement so
- * that the object can be deserialized at a later time.
+ * This is similar to the <code>readResolve</code> method used within
+ * Java Object Serialization in that it is used to create a object to 
+ * plug in to the object graph after it has been fully deserialized.
+ * Care should be taken when using this annotation as the object that
+ * is returned from the resolve method must match the field type such
+ * that the resolved object is an assignable substitute.
  * 
  * @author Niall Gallagher
  */
 @Retention(RetentionPolicy.RUNTIME)
-@interface Replace {  
+@interface Resolve {  
 }
