@@ -20,7 +20,6 @@
 
 package simple.xml.load;
 
-import java.lang.reflect.Method;
 import java.util.Map;
 
 /**
@@ -45,31 +44,11 @@ final class Schema {
     * Contains a mpa of all elements present within the schema.
     */
    private LabelMap elements;
-
-   /**
-    * This is the pointer to the schema class commit method.
-    */
-   private Method commit;
-
-   /**
-    * This is the pointer to the schema class validation method.
-    */
-   private Method validate;
-
-   /**
-    * This is the pointer to the schema class persist method.
-    */
-   private Method persist;
-
-   /**
-    * This is the pointer to the schema class complete method.
-    */
-   private Method complete;
    
    /**
     * This is the pointer to the schema class replace method.
     */
-   private Method replace;
+   private Conduit conduit;
    
    /**
     * This is used to represent a text value within the schema.
@@ -93,11 +72,7 @@ final class Schema {
    public Schema(Scanner schema, Session session) {      
       this.attributes = schema.getAttributes();
       this.elements = schema.getElements();
-      this.validate = schema.getValidate();      
-      this.complete = schema.getComplete();
-      this.replace = schema.getReplace();
-      this.commit = schema.getCommit();      
-      this.persist = schema.getPersist();
+      this.conduit = schema.getConduit();
       this.text = schema.getText();
       this.table = session.getMap();
    }
@@ -151,10 +126,11 @@ final class Schema {
     * @throws Exception if the replacement method cannot complete
     */
    public Object replace(Object source) throws Exception {
-      if(replace != null) {
-         return invoke(source, replace);
-      }
-      return null;
+      return conduit.replace(source, table);
+   }
+   
+   public Object resolve(Object source) throws Exception {
+      return conduit.replace(source, table);
    }
    
    /**
@@ -169,9 +145,7 @@ final class Schema {
     * @throws Exception thrown if the commit process cannot complete
     */
    public void commit(Object source) throws Exception {
-      if(commit != null) { 
-         invoke(source, commit);
-      }      
+      conduit.commit(source, table);   
    }
 
    /**
@@ -186,9 +160,7 @@ final class Schema {
     * @throws Exception thrown if the validation process failed
     */
    public void validate(Object source) throws Exception {
-      if(validate != null) {   
-         invoke(source, validate);
-      }         
+      conduit.validate(source, table);        
    }
    
    /**
@@ -203,9 +175,7 @@ final class Schema {
     * @throws Exception thrown if the object cannot be persisted
     */
    public void persist(Object source) throws Exception {
-      if(persist != null) {           
-         invoke(source, persist);           
-      }         
+      conduit.persist(source, table);        
    }
    
    /**
@@ -220,59 +190,6 @@ final class Schema {
     * @throws Exception thrown if the object cannot complete
     */
    public void complete(Object source) throws Exception {
-      if(complete != null) {
-         invoke(source, complete);
-      }
-   }
-
-   /**
-    * This method is used to invoke the specified method. If it has 
-    * a single parameter that takes a <code>Map</code> then the
-    * provided method will be invoked with the session map. If it
-    * takes no parameters then it is invoked and the return value
-    * is returned from the method.
-    * 
-    * @param source this is the method to invoke the method on
-    * @param method this is the method that is to be invoked
-    * 
-    * @return this is the return value from the specified method
-    * 
-    * @throws Exception thrown if the method cannot be invoked
-    */
-   private Object invoke(Object source, Method method) throws Exception {                
-      if(isContextual(method)) {              
-         return method.invoke(source, table);           
-      }
-      return method.invoke(source);                    
-   }
-   
-   /**
-    * This is used to determine if the replace method has even been
-    * defined. This is required as it is perfectly leagal for the
-    * replace method to return null. Also if the method does not
-    * return a valid object the replace method is considered invalid. 
-    * 
-    * @return this returns true if the schema has a replace method
-    */
-   public boolean isReplace() {
-      return replace != null;      
-   }
-
-   /**
-    * This is used to determine whether the annotated method takes a
-    * contextual object. If the method takes a <code>Map</code> then
-    * this returns true, otherwise it returns false.
-    *
-    * @param method this is the method to check the parameters of
-    *
-    * @return this returns true if the method takes a map object
-    */ 
-   private boolean isContextual(Method method) throws Exception {
-      Class[] list = method.getParameterTypes();
-
-      if(list.length == 1) {
-         return Map.class.equals(list[0]);                 
-      }      
-      return false;
+      conduit.complete(source, table);
    }
 }

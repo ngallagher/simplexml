@@ -80,6 +80,11 @@ final class Scanner  {
     * This method is used as a pointer to the replacement method.
     */
    private Method replace;
+   
+   /**
+    * This method is used as a pointer to the resolution method.
+    */
+   private Method resolve;
 
    /**
     * This is used to store all labels that are XML text values.
@@ -171,10 +176,11 @@ final class Scanner  {
     * @return this returns the commit method for the schema class
     */
    public Method getCommit() {
-      if(commit != null) {
-         commit.setAccessible(true);
-      }
       return commit;           
+   }
+   
+   public Conduit getConduit() {
+      return new Conduit(this);
    }
 
    /**
@@ -187,9 +193,6 @@ final class Scanner  {
     * @return this returns the validate method for the schema class
     */   
    public Method getValidate() {
-      if(validate != null) {
-         validate.setAccessible(true);
-      }
       return validate;       
    }
    
@@ -203,9 +206,6 @@ final class Scanner  {
     * @return this returns the persist method for the schema class
     */
    public Method getPersist() {
-      if(persist != null) {
-         persist.setAccessible(true);
-      }
       return persist;           
    }
 
@@ -219,9 +219,6 @@ final class Scanner  {
     * @return returns the complete method for the schema class
     */   
    public Method getComplete() {
-      if(complete != null) {
-         complete.setAccessible(true);
-      }
       return complete;           
    }
    
@@ -235,10 +232,20 @@ final class Scanner  {
     * @return returns the replace method for the schema class
     */
    public Method getReplace() {
-      if(replace != null) {
-         complete.setAccessible(true);
-      }
       return replace;
+   }
+   
+   /**
+    * This method is used to retrieve the schema class replacement
+    * method. The replacement method is used to substitute an object
+    * that has been deserialized with another object. This allows
+    * a seamless delegation mechanism to be implemented. This is
+    * marked with the <code>Replace</code> annotation. 
+    * 
+    * @return returns the replace method for the schema class
+    */
+   public Method getResolve() {
+      return resolve;
    }
 
    /**
@@ -296,7 +303,12 @@ final class Scanner  {
       Method[] method = type.getDeclaredMethods();
 
       for(int i = 0; i < method.length; i++) {
-         scan(method[i]);              
+         Method next = method[i];
+         
+         if(!next.isAccessible()) {
+            next.setAccessible(true);
+         }
+         scan(next);              
       }     
    }
    
@@ -393,7 +405,7 @@ final class Scanner  {
    public void method(Class type) throws Exception {
       ContactList list = new MethodScanner(type);
       
-      for(Contact contact : list) {           
+      for(Contact contact : list) {
          scan(contact, contact.getAnnotation());
       }
    }
@@ -525,7 +537,7 @@ final class Scanner  {
 
       if(mark != null) {
          commit = method;                    
-      }      
+      }    
    }
    
    /**
@@ -541,7 +553,7 @@ final class Scanner  {
 
       if(mark != null) {
          validate = method;                    
-      }      
+      }         
    }
    
    /**
