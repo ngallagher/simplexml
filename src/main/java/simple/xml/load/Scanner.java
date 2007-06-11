@@ -179,6 +179,14 @@ class Scanner  {
       return commit;           
    }
    
+   /**
+    * This method is used to return the <code>Conduit</code> for this
+    * class. The conduit is a means to deliver invocations to the
+    * object for the persister callback methods. It aggregates all of
+    * the persister callback methods in to a single object.
+    * 
+    * @return this returns a conduit used for delivering callbacks
+    */
    public Conduit getConduit() {
       return new Conduit(this);
    }
@@ -505,7 +513,10 @@ class Scanner  {
       }    
       if(replace == null) {
          replace(method);              
-      }    
+      }   
+      if(resolve == null) {
+         resolve(method);              
+      }  
    }
    
    /**
@@ -521,6 +532,22 @@ class Scanner  {
 
       if(mark != null) {
          replace = method;                    
+      }      
+   }
+   
+   /**
+    * This method is used to check the provided method to determine
+    * if it contains the <code>Resolve</code> annotation. If the
+    * method contains the required annotation it is stored so that
+    * it can be invoked during the deserialization process.
+    *
+    * @param method this is the method checked for the annotation
+    */ 
+   private void resolve(Method method) {
+      Annotation mark = method.getAnnotation(Resolve.class);
+
+      if(mark != null) {
+         resolve = method;                    
       }      
    }
    

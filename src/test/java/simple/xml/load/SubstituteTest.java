@@ -10,18 +10,31 @@ import simple.xml.ValidationTestCase;
 
 public class SubstituteTest extends ValidationTestCase {
 
-   private static final String SOURCE =
+   private static final String REPLACE_SOURCE =
    "<?xml version=\"1.0\"?>\n"+
    "<substituteExample>\n"+
    "   <substitute class='simple.xml.load.SubstituteTest$SimpleSubstitute'>some example text</substitute>  \n\r"+
    "</substituteExample>";
-
+   
+   private static final String RESOLVE_SOURCE =
+      "<?xml version=\"1.0\"?>\n"+
+      "<substituteExample>\n"+
+      "   <substitute class='simple.xml.load.SubstituteTest$YetAnotherSubstitute'>some example text</substitute>  \n\r"+
+      "</substituteExample>";
 
    @Root
    private static class SubstituteExample {
 
       @Element   
-      public Substitute substitute;                   
+      public Substitute substitute;
+      
+      public SubstituteExample() {
+         super();         
+      }
+      
+      public SubstituteExample(Substitute substitute) {
+         this.substitute = substitute;
+      }
    }
 
    @Root
@@ -40,7 +53,7 @@ public class SubstituteTest extends ValidationTestCase {
       
       @Persist
       public void persist() {
-         throw new IllegalStateException("Simple substitute should never be written");
+         throw new IllegalStateException("Simple substitute should never be written only read");
       }
    }
    
@@ -57,11 +70,6 @@ public class SubstituteTest extends ValidationTestCase {
          this.text = text;
          this.name = name;
       }
-      
-      @Persist
-      public void persist() {
-         System.out.println("persist");
-      }
    }
    
    private static class YetAnotherSubstitute extends Substitute {
@@ -70,27 +78,37 @@ public class SubstituteTest extends ValidationTestCase {
          super();
       }
       
+      @Validate
+      public void validate() {
+         return;
+      }
+      
       @Resolve
       public Substitute resolve() {
-         return new LargeSubstitute("John Doe", "Sesame Street", "Metropilis");
-      }
+         return new LargeSubstitute(text, "John Doe", "Sesame Street", "Metropilis");
+      }      
    }
    
    private static class LargeSubstitute extends Substitute {
       
-      @Element
+      @Attribute
       private String name;
       
-      @Element 
+      @Attribute 
       private String street;
       
-      @Element
-      private String city;     
+      @Attribute
+      private String city;
       
-      public LargeSubstitute(String name, String street, String city) {
-         this.city = city;
+      public LargeSubstitute() {
+         super();
+      }
+      
+      public LargeSubstitute(String text, String name, String street, String city) {
+         this.name = name;
          this.street = street;
          this.city = city;
+         this.text = text;
       }
    }
         
@@ -100,8 +118,8 @@ public class SubstituteTest extends ValidationTestCase {
       serializer = new Persister();
    }
    
-   public void testFirst() throws Exception {    
-      SubstituteExample example = serializer.read(SubstituteExample.class, SOURCE);
+   public void testReplace() throws Exception {    
+      SubstituteExample example = serializer.read(SubstituteExample.class, REPLACE_SOURCE);
       
       assertEquals(example.substitute.getClass(), SimpleSubstitute.class);
       assertEquals(example.substitute.text, "some example text");
@@ -116,7 +134,28 @@ public class SubstituteTest extends ValidationTestCase {
       
       assertEquals(example.substitute.getClass(), OtherSubstitute.class);
       assertEquals(example.substitute.text, "some example text");
+           
+      validate(example, serializer);
+   }
+   
+   
+   public void testResolve() throws Exception {    
+      SubstituteExample example = serializer.read(SubstituteExample.class, RESOLVE_SOURCE);
       
+      assertEquals(example.substitute.getClass(), LargeSubstitute.class);
+      assertEquals(example.substitute.text, "some example text");
+      
+      validate(example, serializer);
+      
+      StringWriter out = new StringWriter();
+      serializer.write(example, out);
+      String text = out.toString();      
+      
+      example = serializer.read(SubstituteExample.class, text);
+      
+      assertEquals(example.substitute.getClass(), LargeSubstitute.class);
+      assertEquals(example.substitute.text, "some example text");
+           
       validate(example, serializer);
    }
 }
