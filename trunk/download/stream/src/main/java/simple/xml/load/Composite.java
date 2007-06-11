@@ -135,7 +135,7 @@ class Composite implements Converter {
       schema.validate(source);
       schema.commit(source);
       
-      return resolve(node, source, schema);
+      return readResolve(node, source, schema);
    }
    
    /**
@@ -143,6 +143,8 @@ class Composite implements Converter {
     * a replacement method which can be used to substitute the object
     * deserialized. The replace method is used when an object wishes 
     * to provide a substitute within the deserialized object graph.
+    * This acts as an equivelant to the Java Object Serialization
+    * <code>readResolve</code> method for the object deserialization.
     * 
     * @param node the XML element object provided as a replacement
     * @param source this is the source object that is deserialized
@@ -150,7 +152,7 @@ class Composite implements Converter {
     * 
     * @return this returns a replacement for the deserialized object
     */
-   private Object resolve(InputNode node, Object source, Schema schema) throws Exception {
+   private Object readResolve(InputNode node, Object source, Schema schema) throws Exception {
       Position line = node.getPosition();
       Object value = schema.resolve(source);
       
@@ -474,7 +476,7 @@ class Composite implements Converter {
          if(value == null && label.isRequired()) {
             throw new ElementException("Value for %s is null", label);
          }
-         Object replace = replace(value);
+         Object replace = writeReplace(value);
          
          if(replace != null) {
             writeElement(node, replace, label);            
@@ -486,6 +488,8 @@ class Composite implements Converter {
     * before it is serialized. This is used so that an object can give
     * a substitute to be written to the XML document in the event that
     * the actual object is not suitable or desired for serialization. 
+    * This acts as an equivelant to the Java Object Serialization
+    * <code>writeReplace</code> method for the object serialization.
     * 
     * @param source this is the source object to be serialized
     * @param node this is the XML element to write attributes to
@@ -495,11 +499,13 @@ class Composite implements Converter {
     * 
     * @throws Exception if the replacement object is not suitable
     */
-   private Object replace(Object source) throws Exception {
+   private Object writeReplace(Object source) throws Exception {
       Schema schema = root.getSchema(source);
       Object value = schema.replace(source);
       
-      return value;/*if(value == source){
+      return value;
+      /*
+      if(value == source){
          return source;
       }
       Class real = value.getClass();
