@@ -40,7 +40,7 @@ import simple.xml.filter.Filter;
  * 
  * @author Niall Gallagher
  */ 
-final class TemplateEngine {
+class TemplateEngine {
   
    /**
     * This is used to store the text that are to be processed.

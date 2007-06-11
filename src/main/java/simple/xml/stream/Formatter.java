@@ -34,7 +34,7 @@ import java.io.Writer;
  *
  * @see simple.xml.stream.Indenter
  */ 
-final class Formatter {
+class Formatter {
 
    /**
     * Represents the XML escape sequence for the less than sign.

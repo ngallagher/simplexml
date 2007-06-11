@@ -34,7 +34,7 @@ package simple.xml.stream;
  *
  * @author Niall Gallagher
  */ 
-final class Indenter {
+class Indenter {
 
    /**
     * Provides a quick string cache that caches using by index.

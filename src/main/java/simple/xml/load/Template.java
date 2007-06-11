@@ -29,7 +29,7 @@ package simple.xml.load;
  *
  * @author Niall Gallagher
  */
-final class Template {      
+class Template {      
 
    /** 
     * This is used to quicken <code>toString</code>.

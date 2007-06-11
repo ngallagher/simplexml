@@ -37,7 +37,7 @@ import java.io.Writer;
  *
  * @author Niall Gallagher
  */  
-final class NodeWriter {
+class NodeWriter {
 
    /**
     * Represents the stack of output nodes that are not yet ended.

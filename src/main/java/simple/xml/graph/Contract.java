@@ -30,7 +30,7 @@ package simple.xml.graph;
  * 
  * @see simple.xml.graph.CycleStrategy
  */
-final class Contract {
+class Contract {
              
    /**
     * This is used to specify the length of array instances.

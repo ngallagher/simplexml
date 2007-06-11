@@ -56,7 +56,7 @@ import java.util.Collection;
  * @see simple.xml.load.Traverser
  * @see simple.xml.ElementList
  */ 
-final class CompositeList implements Converter {
+class CompositeList implements Converter {
 
    /**
     * This factory is used to create a suitable collection list.

@@ -33,7 +33,7 @@ import java.io.Writer;
  *
  * @author Niall Gallagher
  */
-final class OutputBuffer {      
+class OutputBuffer {      
 
    /** 
     * The characters that this buffer has accumulated.

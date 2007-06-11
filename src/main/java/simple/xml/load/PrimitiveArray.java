@@ -51,7 +51,7 @@ import java.lang.reflect.Array;
  * @see simple.xml.load.Primitive
  * @see simple.xml.ElementArray
  */ 
-final class PrimitiveArray implements Converter {
+class PrimitiveArray implements Converter {
 
    /**
     * This factory is used to create an array for the contact.
