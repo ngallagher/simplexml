@@ -86,7 +86,7 @@ public class SubstituteTest extends ValidationTestCase {
       @Resolve
       public Substitute resolve() {
          return new LargeSubstitute(text, "John Doe", "Sesame Street", "Metropilis");
-      }      
+      }
    }
    
    private static class LargeSubstitute extends Substitute {
