@@ -34,7 +34,7 @@ import simple.xml.stream.Position;
  *
  * @author Niall Gallagher
  */ 
-final class Traverser {
+class Traverser {
 
    /**
     * This is the root object used for the traversal performed.

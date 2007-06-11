@@ -55,7 +55,7 @@ import java.lang.reflect.Array;
  * @see simple.xml.load.Traverser
  * @see simple.xml.ElementArray
  */ 
-final class CompositeArray implements Converter {
+class CompositeArray implements Converter {
 
    /**
     * This factory is used to create an array for the contact.

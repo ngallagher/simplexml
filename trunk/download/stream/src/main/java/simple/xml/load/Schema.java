@@ -33,7 +33,7 @@ import java.util.Map;
  * 
  * @author Niall Gallagher
  */ 
-final class Schema {
+class Schema {
 
    /**
     * Contains a map of all attributes present within the schema.
@@ -113,11 +113,10 @@ final class Schema {
    }
    
    /**
-    * This is used to replace the deserialized object with another
+    * This is used to replace the serialized object with another
     * instance, perhaps of a different type. This is useful when an
-    * XML schema class acts as a reference to another XML document
-    * which needs to be loaded externally to create an object of
-    * a different type.
+    * XML schema class wishes the insert another object into the
+    * stream during the serialization process.
     * 
     * @param source the source object to invoke the method on
     * 
@@ -129,6 +128,19 @@ final class Schema {
       return conduit.replace(source, table);
    }
    
+   /**
+    * This is used to resolve the deserialized object with another
+    * instance, perhaps of a different type. This is useful when an
+    * XML schema class acts as a reference to another XML document
+    * which needs to be loaded externally to create an object of
+    * a different type, or just to substitute the instance.
+    * 
+    * @param source the source object to invoke the method on
+    * 
+    * @return this returns the object that acts as the substitute
+    * 
+    * @throws Exception if the replacement method cannot complete
+    */
    public Object resolve(Object source) throws Exception {
       return conduit.replace(source, table);
    }

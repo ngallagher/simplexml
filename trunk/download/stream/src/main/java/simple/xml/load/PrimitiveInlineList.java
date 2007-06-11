@@ -53,7 +53,7 @@ import java.util.Collection;
  * @see simple.xml.load.Primitive
  * @see simple.xml.ElementList
  */ 
-final class PrimitiveInlineList implements Converter {
+class PrimitiveInlineList implements Converter {
 
    /**
     * This factory is used to create a suitable collection list.

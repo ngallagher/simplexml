@@ -22,7 +22,6 @@ package simple.xml.load;
 
 import simple.xml.stream.InputNode;
 import simple.xml.stream.OutputNode;
-import simple.xml.stream.Position;
 
 /**
  * The <code>Primitive</code> object is used to provide serialization
@@ -52,7 +51,7 @@ import simple.xml.stream.Position;
  *
  * @see simple.xml.filter.Filter
  */ 
-final class Primitive implements Converter {
+class Primitive implements Converter {
 
    /**
     * This is used to convert the string values to primitives.

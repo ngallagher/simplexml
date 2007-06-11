@@ -23,7 +23,17 @@ package simple.xml.load;
 import java.lang.reflect.Method;
 import java.util.Map;
 
-final class Conduit {
+/**
+ * The <code>Conduit</code> acts as a means for the schema to invoke
+ * the callback methods on an object. This ensures that the correct
+ * method is invoked within the schema class. If the annotated method
+ * accepts a map then this will provide that map to the method. This
+ * also ensures that if specific annotation is not present in the 
+ * class that no action is taken on a persister callback. 
+ * 
+ * @author Niall Gallagher
+ */
+class Conduit {
    
    /**
     * This is the pointer to the schema class commit method.
@@ -56,13 +66,13 @@ final class Conduit {
    private Method resolve;
    
    /**
-    * Constructor for the <code>Schema</code> object. This is used 
-    * to wrap the element and attribute XML annotations scanned from
-    * a class schema. The schema tracks all fields visited so that
-    * a converter can determine if all fields have been serialized.
+    * Constructor for the <code>conduit</code> object. This is used 
+    * to wrap the schema class such that callbacks from the persister
+    * can be dealt with in a seamless manner. This ensures that the
+    * correct method and arguments are provided to the methods.
+    * element and attribute XML annotations scanned from
     * 
-    * @param schema this contains all labels scanned from the class
-    * @param session this is the session map for the persister
+    * @param schema this is the scanner that contains the methods
     */
    public Conduit(Scanner schema) {     
       this.validate = schema.getValidate();      
@@ -81,6 +91,7 @@ final class Conduit {
     * a different type.
     * 
     * @param source the source object to invoke the method on
+    * @param map this is the session map used by the persister
     * 
     * @return this returns the object that acts as the replacement
     * 
@@ -101,6 +112,7 @@ final class Conduit {
     * a different type.
     * 
     * @param source the source object to invoke the method on
+    * @param map this is the session map used by the persister 
     * 
     * @return this returns the object that acts as the replacement
     * 
@@ -121,6 +133,7 @@ final class Conduit {
     * method so that the object can build further data structures.
     * 
     * @param source this is the object that has just been deserialized
+    * @param map this is the session map used by the persister 
     * 
     * @throws Exception thrown if the commit process cannot complete
     */
@@ -138,6 +151,7 @@ final class Conduit {
     * invoke that method so that object can validate its field values.
     * 
     * @param source this is the object that has just been deserialized
+    * @param map this is the session map used by the persister 
     * 
     * @throws Exception thrown if the validation process failed
     */
@@ -155,6 +169,7 @@ final class Conduit {
     * method must be marked with the <code>Persist</code> annotation.
     * 
     * @param source the object that is about to be serialized
+    * @param map this is the session map used by the persister
     * 
     * @throws Exception thrown if the object cannot be persisted
     */
@@ -172,6 +187,7 @@ final class Conduit {
     * This is marked with the <code>Complete</code> annotation.
     * 
     * @param source this is the object that has been serialized
+    * @param map this is the session map used by the persister
     * 
     * @throws Exception thrown if the object cannot complete
     */
@@ -190,6 +206,7 @@ final class Conduit {
     * 
     * @param source this is the method to invoke the method on
     * @param method this is the method that is to be invoked
+    * @param map this is the session map used by the persister
     * 
     * @return this is the return value from the specified method
     * 

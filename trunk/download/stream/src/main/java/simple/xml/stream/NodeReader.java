@@ -39,7 +39,7 @@ import javax.xml.stream.XMLEventReader;
  *
  * @author Niall Gallagher
  */ 
-final class NodeReader {
+class NodeReader {
 
    /**
     * Represents the XML event reader used to read all elements.

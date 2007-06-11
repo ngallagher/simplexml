@@ -59,7 +59,7 @@ import simple.xml.stream.InputNode;
  * @see simple.xml.load.Traverser
  * @see simple.xml.ElementList
  */ 
-final class CompositeInlineList implements Converter {
+class CompositeInlineList implements Converter {
 
    /**
     * This factory is used to create a suitable collection list.

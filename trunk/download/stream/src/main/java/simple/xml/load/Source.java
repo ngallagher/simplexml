@@ -50,7 +50,7 @@ import java.util.Map;
  * 
  * @see simple.xml.filter.Filter
  */ 
-final class Source {
+class Source {
 
    /**
     * This is used to cache all schemas built to represent a class.

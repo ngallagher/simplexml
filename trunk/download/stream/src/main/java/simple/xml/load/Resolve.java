@@ -41,5 +41,5 @@ import java.lang.annotation.Retention;
  * @author Niall Gallagher
  */
 @Retention(RetentionPolicy.RUNTIME)
-@interface Resolve {  
+public @interface Resolve {  
 }

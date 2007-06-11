@@ -44,7 +44,7 @@ import simple.xml.Text;
  * 
  * @see simple.xml.load.Schema
  */ 
-final class Scanner  {
+class Scanner  {
   
    /**
     * This is used to store all labels that are XML attributes.

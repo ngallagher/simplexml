@@ -55,7 +55,7 @@ import simple.xml.stream.Position;
  * 
  * @author Niall Gallagher
  */
-final class Composite implements Converter {
+class Composite implements Converter {
   
    /**
     * This factory creates instances of the deserialized object.

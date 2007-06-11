@@ -33,7 +33,7 @@ import simple.xml.Root;
  * 
  * @author Niall Gallagher
  */
-final class Signature {
+class Signature {
    
    /**
     * This is the actual annotation from the specified contact.

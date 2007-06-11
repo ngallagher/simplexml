@@ -30,7 +30,7 @@ import java.lang.reflect.Method;
  * 
  * @author Niall Gallagher
  */
-final class MethodName {
+class MethodName {
    
    /**
     * This is the type of method this method name represents.

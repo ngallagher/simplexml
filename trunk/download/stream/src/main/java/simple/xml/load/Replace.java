@@ -39,5 +39,5 @@ import java.lang.annotation.Retention;
  * @author Niall Gallagher
  */
 @Retention(RetentionPolicy.RUNTIME)
-@interface Replace {  
+public @interface Replace {  
 }
