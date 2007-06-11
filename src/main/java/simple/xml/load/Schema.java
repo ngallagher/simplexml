@@ -142,7 +142,7 @@ class Schema {
     * @throws Exception if the replacement method cannot complete
     */
    public Object resolve(Object source) throws Exception {
-      return conduit.replace(source, table);
+      return conduit.resolve(source, table);
    }
    
    /**
