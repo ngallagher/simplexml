@@ -393,42 +393,13 @@ class Composite implements Converter {
     */
    public void write(OutputNode node, Object source) throws Exception {
       Schema schema = root.getSchema(source);
-      Object value = replace(node, source, schema);
       
       try {         
-         schema.persist(value); 
-         write(node, value, schema);
+         schema.persist(source); 
+         write(node, source, schema);
       } finally {
-         schema.complete(value);
+         schema.complete(source);
       }
-   }
-   
-   /**
-    * The <code>replace</code> method is used to replace an object
-    * before it is serialized. This is used so that an object can give
-    * a substitute to be written to the XML document in the event that
-    * the actual object is not suitable or desired for serialization. 
-    * 
-    * @param source this is the source object to be serialized
-    * @param node this is the XML element to write attributes to
-    * @param schema this is used to track the referenced attributes
-    * 
-    * @return this returns the object to use as a replacement value
-    * 
-    * @throws Exception if the replacement object is not suitable
-    */
-   private Object replace(OutputNode node, Object source, Schema schema) throws Exception {      
-      Object value = schema.replace(source);
-      
-      if(value == source){
-         return source;
-      }
-      Class real = value.getClass();
-      
-      if(!type.isAssignableFrom(real)) {
-         throw new ElementException("Type %s does not match %s at %s", real, type);                     
-      }
-      return value;
    }
    
    /**
@@ -503,8 +474,40 @@ class Composite implements Converter {
          if(value == null && label.isRequired()) {
             throw new ElementException("Value for %s is null", label);
          }
-         writeElement(node, value, label);
+         Object replace = replace(value);
+         
+         if(replace != null) {
+            writeElement(node, replace, label);            
+         }
       }         
+   }
+   /**
+    * The <code>replace</code> method is used to replace an object
+    * before it is serialized. This is used so that an object can give
+    * a substitute to be written to the XML document in the event that
+    * the actual object is not suitable or desired for serialization. 
+    * 
+    * @param source this is the source object to be serialized
+    * @param node this is the XML element to write attributes to
+    * @param schema this is used to track the referenced attributes
+    * 
+    * @return this returns the object to use as a replacement value
+    * 
+    * @throws Exception if the replacement object is not suitable
+    */
+   private Object replace(Object source) throws Exception {
+      Schema schema = root.getSchema(source);
+      Object value = schema.replace(source);
+      
+      return value;/*if(value == source){
+         return source;
+      }
+      Class real = value.getClass();
+      
+      if(!type.isAssignableFrom(real)) {
+         throw new ElementException("Type %s does not match %s", real, type);                     
+      }
+      return value;*/
    }
    
    /**
@@ -578,7 +581,7 @@ class Composite implements Converter {
       if(value != null) {
          String name = label.getName();
          OutputNode next = node.getChild(name);
-         Class type = label.getType();
+         Class type = label.getType();         
 
          if(label.isInline() || !isOverridden(next, value, type)) {
             Converter convert = label.getConverter(root);
@@ -616,6 +619,7 @@ class Composite implements Converter {
          node.setValue(text);        
       }
    }
+   
    
    /**
     * This is used to determine whether the specified value has been
