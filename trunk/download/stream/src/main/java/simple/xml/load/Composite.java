@@ -504,16 +504,6 @@ class Composite implements Converter {
       Object value = schema.replace(source);
       
       return value;
-      /*
-      if(value == source){
-         return source;
-      }
-      Class real = value.getClass();
-      
-      if(!type.isAssignableFrom(real)) {
-         throw new ElementException("Type %s does not match %s", real, type);                     
-      }
-      return value;*/
    }
    
    /**
