@@ -1,5 +1,6 @@
 package simple.xml.load;
 
+import java.io.StringWriter;
 import java.util.Collection;
 
 import simple.xml.Attribute;
@@ -25,6 +26,12 @@ public class EmptyTest extends ValidationTestCase {
    private static final String EMPTY_ATTRIBUTE =
    "<?xml version=\"1.0\"?>\n"+
    "<test attribute=''/>\n";
+   
+   private static final String DEFAULT_ATTRIBUTE =
+   "<?xml version=\"1.0\"?>\n"+
+   "<test name='John Doe' address='NULL'>\n"+
+   "  <description>Some description</description>\r\n"+
+   "</test>";
 
    @Root(name="test")
    private static class RequiredElement {
@@ -75,6 +82,19 @@ public class EmptyTest extends ValidationTestCase {
 
       @Attribute(name="attribute", required=false)            
       private String attribute;
+   }
+   
+   @Root(name="test")
+   private static class DefaultedAttribute {
+      
+      @Attribute(empty="NULL")
+      private String name;
+      
+      @Attribute(empty="NULL")
+      private String address;
+      
+      @Element
+      private String description;
    }
 
    private Persister persister;
@@ -160,5 +180,26 @@ public class EmptyTest extends ValidationTestCase {
       OptionalAttribute entry = persister.read(OptionalAttribute.class, EMPTY_ATTRIBUTE);
 
       assertEquals(entry.attribute, "");      
-   }   
+   }
+   
+   public void testDefaultedAttribute() throws Exception {
+      DefaultedAttribute entry = persister.read(DefaultedAttribute.class, DEFAULT_ATTRIBUTE);
+
+      assertEquals(entry.name, "John Doe");
+      assertEquals(entry.address, null);
+      assertEquals(entry.description, "Some description");
+      
+      validate(entry, persister);
+      
+      entry.name = null;
+      
+      StringWriter out = new StringWriter();
+      persister.write(entry, out);
+      String result = out.toString();
+      
+      assertTrue(result.indexOf("John Doe") == -1);
+      assertTrue(result.indexOf("NULL") != -1);
+      
+      validate(entry, persister);
+   } 
 }
