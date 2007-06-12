@@ -83,7 +83,7 @@ class PrimitiveInlineList implements Converter {
     */    
    public PrimitiveInlineList(Source root, Class type, Class entry, String parent) {
       this.factory = new CollectionFactory(root, type); 
-      this.root = new Primitive(root, entry);          
+      this.root = new Primitive(root, entry, null);          
       this.parent = parent;
    }
 

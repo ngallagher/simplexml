@@ -220,6 +220,18 @@ class ElementArrayLabel implements Label {
    }
    
    /**
+    * This is used to provide a configured empty value used when the
+    * annotated value is null. This ensures that XML can be created
+    * with required details regardless of whether values are null or
+    * not. It also provides a means for sensible default values.
+    * 
+    * @return this returns the string to use for default values
+    */
+   public String getEmpty() {
+      return null;
+   }
+   
+   /**
     * This method is used by the deserialization process to check
     * to see if an annotation is inline or not. If an annotation
     * represents an inline XML entity then the deserialization

@@ -53,6 +53,11 @@ class AttributeLabel implements Label {
    private String name;
    
    /**
+    * This is the default value to use if the real value is null.
+    */
+   private String empty;
+   
+   /**
     * Constructor for the <code>AttributeLabel</code> object. This 
     * is used to create a label that can convert from an object to an
     * XML attribute and vice versa. This requires the annotation and
@@ -64,6 +69,7 @@ class AttributeLabel implements Label {
    public AttributeLabel(Contact contact, Attribute label) {
       this.detail = new Signature(contact, this);
       this.type = contact.getType();
+      this.empty = label.empty();
       this.name = label.name();      
       this.label = label; 
    }   
@@ -76,7 +82,27 @@ class AttributeLabel implements Label {
     * @param root this is source object used for serialization
     */
    public Converter getConverter(Source root) throws Exception {
-      return new Primitive(root, type);
+      String ignore = getEmpty();
+      
+      if(!Factory.isPrimitive(type)) {
+         throw new AttributeException("Cannot use %s to represent %s", label, type);
+      }
+      return new Primitive(root, type, ignore);
+   }
+   
+   /**
+    * This is used to provide a configured empty value used when the
+    * annotated value is null. This ensures that XML can be created
+    * with required details regardless of whether values are null or
+    * not. It also provides a means for sensible default values.
+    * 
+    * @return this returns the string to use for default values
+    */
+   public String getEmpty() {
+      if(detail.isEmpty(empty)) {
+         return null;
+      }
+      return empty;
    }
    
    /**

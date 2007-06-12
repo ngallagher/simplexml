@@ -81,7 +81,7 @@ class PrimitiveArray implements Converter {
     */    
    public PrimitiveArray(Source root, Class field, Class entry, String parent) {
       this.factory = new ArrayFactory(root, field); 
-      this.root = new Primitive(root, entry);          
+      this.root = new Primitive(root, entry, null);          
       this.parent = parent;
    }
 

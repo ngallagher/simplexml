@@ -264,6 +264,18 @@ class ElementListLabel implements Label {
    }
    
    /**
+    * This is used to provide a configured empty value used when the
+    * annotated value is null. This ensures that XML can be created
+    * with required details regardless of whether values are null or
+    * not. It also provides a means for sensible default values.
+    * 
+    * @return this returns the string to use for default values
+    */
+   public String getEmpty() {
+      return null;
+   }
+   
+   /**
     * This is used to describe the annotation and method or field
     * that this label represents. This is used to provide error
     * messages that can be used to debug issues that occur when

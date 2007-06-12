@@ -445,6 +445,9 @@ class Composite implements Converter {
          Contact contact = label.getContact();         
          Object value = contact.get(source);
          
+         if(value == null) {
+            value = label.getEmpty();
+         }
          if(value == null && label.isRequired()) {
             throw new AttributeException("Value for %s is null", label);
          }
@@ -527,7 +530,10 @@ class Composite implements Converter {
       if(label != null) {
          Contact contact = label.getContact();
          Object value = contact.get(source);
-                 
+          
+         if(value == null) {
+            value = label.getEmpty();
+         }
          if(value == null && label.isRequired()) {
             throw new TextException("Value for %s is null", label);
          }

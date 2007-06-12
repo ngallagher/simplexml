@@ -62,6 +62,11 @@ class Primitive implements Converter {
     * The source object is used to perform text value filtering.
     */ 
    private Source root;
+   
+   /**
+    * This the value used to represent a null primitive value.
+    */
+   private String empty;
 
    /**
     * Constructor for the <code>Primitive</code> object. This is used
@@ -71,9 +76,11 @@ class Primitive implements Converter {
     *
     * @param root the source object used for the serialization
     * @param type this is the type of primitive this represents
+    * @param empty this is the value used to represent a null value
     */ 
-   public Primitive(Source root, Class type) {
-      this.factory = new PrimitiveFactory(root, type);           
+   public Primitive(Source root, Class type, String empty) {
+      this.factory = new PrimitiveFactory(root, type);   
+      this.empty = empty;
       this.root = root;           
    }
 
@@ -93,7 +100,10 @@ class Primitive implements Converter {
       
       if(value == null) {
          return null;
-      } 
+      }
+      if(empty != null && value.equals(empty)) {
+         return null;         
+      }
       String text = root.getProperty(value);
       return factory.getInstance(text);
    }      
