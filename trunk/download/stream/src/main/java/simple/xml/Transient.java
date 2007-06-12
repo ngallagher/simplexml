@@ -29,7 +29,7 @@ import java.lang.annotation.Retention;
  * field as being transient, which indicates that it does not take
  * part in serialization or deserialization. This is used only as
  * a means to illustrate to the reader of your class that this has
- * not impact on the XML representation of the object. Fields or
+ * no impact on the XML representation of the object. Fields or
  * methods annotated with this will be ignored, as will those that
  * contain no XML annotations. 
  * 
