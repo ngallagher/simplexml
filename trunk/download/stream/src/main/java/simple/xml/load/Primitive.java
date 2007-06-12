@@ -102,7 +102,7 @@ class Primitive implements Converter {
          return null;
       }
       if(empty != null && value.equals(empty)) {
-         return null;         
+         return empty;         
       }
       String text = root.getProperty(value);
       return factory.getInstance(text);

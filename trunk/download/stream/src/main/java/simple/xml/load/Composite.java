@@ -351,8 +351,8 @@ class Composite implements Converter {
          if(label.isRequired()) {              
             throw new ValueRequiredException("Empty value for %s in %s at %s", label, type, line);
          }
-      } else {         
-         contact.set(source, object);
+      } else if(object != label.getEmpty()) {
+         contact.set(source, object);      
       }         
    }
    
