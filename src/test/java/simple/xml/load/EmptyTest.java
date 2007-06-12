@@ -1,13 +1,14 @@
 package simple.xml.load;
 
-import java.io.StringWriter;
+import java.util.Collection;
 
-import junit.framework.TestCase;
-import simple.xml.Element;
 import simple.xml.Attribute;
+import simple.xml.Element;
+import simple.xml.ElementList;
 import simple.xml.Root;
+import simple.xml.ValidationTestCase;
 
-public class EmptyTest extends TestCase {
+public class EmptyTest extends ValidationTestCase {
         
    private static final String EMPTY_ELEMENT =
    "<?xml version=\"1.0\"?>\n"+
@@ -38,6 +39,13 @@ public class EmptyTest extends TestCase {
       @Element(name="empty", required=false)
       private String empty;
    }    
+   
+   @Root(name="test")
+   private static class EmptyCollection {
+      
+      @ElementList(required=false)
+      private Collection<String> empty;
+   }
    
    @Root(name="test")
    private static class RequiredMethodElement {
@@ -127,8 +135,21 @@ public class EmptyTest extends TestCase {
       OptionalElement element = persister.read(OptionalElement.class, BLANK_ELEMENT);     
 
       assertNull(element.empty);
-   }     
+   }
+   
+   public void testEmptyCollection() throws Exception {    
+      EmptyCollection element = persister.read(EmptyCollection.class, BLANK_ELEMENT);     
 
+      assertNotNull(element.empty);   
+      assertEquals(element.empty.size(), 0);
+      
+      validate(element, persister);
+      
+      element.empty = null;
+      
+      validate(element, persister);
+   } 
+   
    public void testRequiredEmptyAttribute() throws Exception {
       RequiredAttribute entry = persister.read(RequiredAttribute.class, EMPTY_ATTRIBUTE);
 
