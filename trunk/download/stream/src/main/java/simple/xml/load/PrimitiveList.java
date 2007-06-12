@@ -82,7 +82,7 @@ final class PrimitiveList implements Converter {
     */    
    public PrimitiveList(Source root, Class type, Class entry, String parent) {
       this.factory = new CollectionFactory(root, type); 
-      this.root = new Primitive(root, entry);          
+      this.root = new Primitive(root, entry, null);          
       this.parent = parent;
    }
 

@@ -50,6 +50,17 @@ import java.lang.annotation.Retention;
 public @interface Text {
    
    /**
+    * This is used to provide a default value for the text data if
+    * the annotated field or method is null. This ensures the the
+    * serialzation process writes the text data with a value even
+    * if the value is null, and allows deserialization to determine
+    * whether the value within the object was null or not.
+    * 
+    * @return this returns the default attribute value to use
+    */
+   public String empty() default "";
+   
+   /**
     * This is used to determine whether the text is written within 
     * CDATA block or not. If this is set to true then the text is
     * written within a CDATA block, by default the text is output

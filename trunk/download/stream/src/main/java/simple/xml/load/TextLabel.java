@@ -56,6 +56,11 @@ class TextLabel implements Label {
    private Class type;
    
    /**
+    * This is the default value to use if the real value is null.
+    */
+   private String empty;
+   
+   /**
     * Constructor for the <code>TextLabel</code> object. This is
     * used to create a label that can convert a XML node into a 
     * primitive value from an XML element text value.
@@ -66,6 +71,7 @@ class TextLabel implements Label {
    public TextLabel(Contact contact, Text label) {
       this.detail = new Signature(contact, this);
       this.type = contact.getType();
+      this.empty = label.empty();
       this.contact = contact;
       this.label = label;      
    }
@@ -80,10 +86,27 @@ class TextLabel implements Label {
     * @return this returns a converter for serializing XML elements
     */
    public Converter getConverter(Source source) throws Exception {
+      String ignore = getEmpty();
+      
       if(!Factory.isPrimitive(type)) {
          throw new TextException("Cannot use %s to represent %s", label, type);
       }
-      return new Primitive(source, type);
+      return new Primitive(source, type, ignore);
+   }
+   
+   /**
+    * This is used to provide a configured empty value used when the
+    * annotated value is null. This ensures that XML can be created
+    * with required details regardless of whether values are null or
+    * not. It also provides a means for sensible default values.
+    * 
+    * @return this returns the string to use for default values
+    */
+   public String getEmpty() {
+      if(detail.isEmpty(empty)) {
+         return null;
+      }
+      return empty;
    }
    
    /**
