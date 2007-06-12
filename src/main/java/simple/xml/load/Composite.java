@@ -154,17 +154,17 @@ class Composite implements Converter {
     */
    private Object readResolve(InputNode node, Object source, Schema schema) throws Exception {
       Position line = node.getPosition();
-      Object value = schema.resolve(source);
+
+      if(source != null) {
+         Object value = schema.resolve(source);
+         Class real = value.getClass();
       
-      if(value == source){
-         return source;
+         if(!type.isAssignableFrom(real)) {
+            throw new ElementException("Type %s does not match %s at %s", real, type, line);              
+         }
+         return value;
       }
-      Class real = value.getClass();
-      
-      if(!type.isAssignableFrom(real)) {
-         throw new ElementException("Type %s does not match %s at %s", real, type, line);                     
-      }
-      return value;
+      return source;
    }
    
    /**
@@ -499,12 +499,14 @@ class Composite implements Converter {
     * 
     * @throws Exception if the replacement object is not suitable
     */
-   private Object writeReplace(Object source) throws Exception {
-      Schema schema = root.getSchema(source);
-      Object value = schema.replace(source);
-      
-      return value;
+   private Object writeReplace(Object source) throws Exception {      
+      if(source != null) {
+          Schema schema = root.getSchema(source);
+          return schema.replace(source);
+      }
+      return source;
    }
+   
    
    /**
     * This write method is used to write the text contact from the 
