@@ -272,7 +272,13 @@ public class Persister implements Serializer {
     * @throws Exception if the object cannot be fully deserialized
     */
    public <T> T read(Class<? extends T> type, File source) throws Exception {
-      return (T)read(type, new FileInputStream(source));           
+      InputStream file = new FileInputStream(source);
+      
+      try {
+         return (T)read(type, file);
+      } finally {
+         file.close();          
+      }
    }
    
    /**
@@ -420,7 +426,13 @@ public class Persister implements Serializer {
     * @throws Exception if the object cannot be fully deserialized
     */
    public <T> T read(T value, File source) throws Exception{
-      return (T)read(value, new FileInputStream(source));           
+      InputStream file = new FileInputStream(source);
+      
+      try {
+         return (T)read(value, file);
+      }finally {
+         file.close();           
+      }
    }
 
    /**
@@ -610,7 +622,13 @@ public class Persister implements Serializer {
     * @throws Exception if the schema for the object is not valid
     */  
    public void write(Object source, File out) throws Exception {
-      write(source, new FileOutputStream(out));
+      OutputStream file = new FileOutputStream(out);
+      
+      try {
+         write(source, file);
+      }finally {
+         file.close();
+      }
    }
    
    /**
