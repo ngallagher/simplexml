@@ -58,17 +58,17 @@ class PrimitiveInlineList implements Converter {
    /**
     * This factory is used to create a suitable collection list.
     */         
-   private CollectionFactory factory;
+   private final CollectionFactory factory;
 
    /**
     * This performs the traversal used for object serialization.
     */ 
-   private Primitive root;
+   private final Primitive root;
    
    /**
     * This is the name that each list element is wrapped with.
     */
-   private String parent;
+   private final String parent;
    
    /**
     * Constructor for the <code>PrimitiveInlineList</code> object. 

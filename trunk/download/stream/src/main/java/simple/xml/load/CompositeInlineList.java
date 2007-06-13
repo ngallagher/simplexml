@@ -64,17 +64,17 @@ class CompositeInlineList implements Converter {
    /**
     * This factory is used to create a suitable collection list.
     */         
-   private CollectionFactory factory;
+   private final CollectionFactory factory;
 
    /**
     * This performs the traversal used for object serialization.
     */ 
-   private Traverser root;
+   private final Traverser root;
       
    /**
     * This is the entry type for elements within the list.
     */   
-   private Class entry;
+   private final Class entry;
 
    /**
     * Constructor for the <code>CompositeInlineList</code> object. 

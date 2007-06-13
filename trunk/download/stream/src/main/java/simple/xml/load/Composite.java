@@ -60,17 +60,17 @@ class Composite implements Converter {
    /**
     * This factory creates instances of the deserialized object.
     */
-   private ObjectFactory factory;
+   private final ObjectFactory factory;
 
    /**
     * This is the source object for the instance of serialization.
     */
-   private Source root;
+   private final Source root;
    
    /**
     * This is the type that this composite produces instances of.
     */
-   private Class type;
+   private final Class type;
         
    /**
     * Constructor for the <code>Composite</code> object. This creates 

@@ -44,12 +44,12 @@ class NodeReader {
    /**
     * Represents the XML event reader used to read all elements.
     */ 
-   private XMLEventReader reader;     
+   private final XMLEventReader reader;     
    
    /**
     * This stack enables the reader to keep track of elements.
     */ 
-   private InputStack stack;
+   private final InputStack stack;
    
    /**
     * Constructor for the <code>NodeReader</code> object. This is used

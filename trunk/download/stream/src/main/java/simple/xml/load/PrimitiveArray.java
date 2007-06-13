@@ -56,17 +56,17 @@ class PrimitiveArray implements Converter {
    /**
     * This factory is used to create an array for the contact.
     */
-   private ArrayFactory factory;
+   private final ArrayFactory factory;
 
    /**
     * This performs the serialization of the primitive element.
     */ 
-   private Primitive root;
+   private final Primitive root;
       
    /**
     * This is the name that each array element is wrapped with.
     */
-   private String parent;
+   private final String parent;
 
    /**
     * Constructor for the <code>PrimitiveArray</code> object. This is

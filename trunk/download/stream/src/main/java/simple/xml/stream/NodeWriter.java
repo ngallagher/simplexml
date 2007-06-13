@@ -42,17 +42,17 @@ class NodeWriter {
    /**
     * Represents the stack of output nodes that are not yet ended.
     */          
-   private OutputStack stack;
+   private final OutputStack stack;
    
    /**
     * Formatter used to indent the XML elements and escape text.
     */ 
-   private Formatter writer;
+   private final Formatter writer;
    
    /**
     * Contains the set of as yet uncommitted elements blocks.
     */ 
-   private Set active;
+   private final Set active;
 
    /**
     * Constructor for the <code>NodeWriter</code> object. This will
