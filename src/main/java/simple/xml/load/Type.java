@@ -63,11 +63,11 @@ public interface Type {
     * is defined by this object. If for some reason the type can
     * not be instantiated an exception is thrown from this.
     * 
-    * @param convert a suggestion to convert the internal value
+    * @param type a suggestion to convert the internal value
     * 
     * @return an instance of the type this object represents
     */
-   public Object getInstance(Class convert) throws Exception;
+   public Object getInstance(Class type) throws Exception;
    
    /**
     * This is the type of the object instance that will be created

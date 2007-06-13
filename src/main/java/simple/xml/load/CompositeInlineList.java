@@ -135,7 +135,7 @@ class CompositeInlineList implements Converter {
          if(item != null) {
             list.add(item);
          }      
-          node = from.getNext(name);
+         node = from.getNext(name);
       }
       return list;
    }     

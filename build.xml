@@ -212,7 +212,7 @@
 
    <target name="javadoc" depends="-layout" description="Generate source documentation">
       <mkdir dir="${javadoc.path}"/>
-      <javadoc sourcepath="${source.path}" packagenames="simple.*" destdir="${javadoc.path}" private="false">
+      <javadoc sourcepath="${main.source.path}" packagenames="simple.*" destdir="${javadoc.path}" private="false">
          <classpath>
             <fileset dir="${lib.path}">
                <include name="**/*.jar"/>

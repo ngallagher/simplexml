@@ -72,11 +72,11 @@ class Reference implements Type {
     * taken from the created object graph. This enables any cycles
     * in the graph to be reestablished from the persisted XML.
     * 
-    * @param convert this is ignored as this is a reference type
+    * @param type this is ignored as this is a reference type
     * 
     * @return this returns a reference to the created instance
     */
-   public Object getInstance(Class convert) throws Exception {     
+   public Object getInstance(Class type) throws Exception {     
       return value;      
    }
    
