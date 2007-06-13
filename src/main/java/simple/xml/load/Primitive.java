@@ -56,17 +56,17 @@ class Primitive implements Converter {
    /**
     * This is used to convert the string values to primitives.
     */         
-   private PrimitiveFactory factory;
+   private final PrimitiveFactory factory;
         
    /**
     * The source object is used to perform text value filtering.
     */ 
-   private Source root;
+   private final Source root;
    
    /**
     * This the value used to represent a null primitive value.
     */
-   private String empty;
+   private final String empty;
 
    /**
     * Constructor for the <code>Primitive</code> object. This is used

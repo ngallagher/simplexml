@@ -52,22 +52,22 @@ import java.util.Collection;
  * @see simple.xml.load.Primitive
  * @see simple.xml.ElementList
  */ 
-final class PrimitiveList implements Converter {
+class PrimitiveList implements Converter {
 
    /**
     * This factory is used to create a suitable collection list.
     */         
-   private CollectionFactory factory;
+   private final CollectionFactory factory;
 
    /**
     * This performs the serialization of the primitive element.
     */ 
-   private Primitive root;
+   private final Primitive root;
       
    /**
     * This is the name that each array element is wrapped with.
     */
-   private String parent;
+   private final String parent;
 
    /**
     * Constructor for the <code>PrimitiveList</code> object. This is

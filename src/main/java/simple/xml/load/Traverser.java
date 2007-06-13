@@ -39,7 +39,7 @@ class Traverser {
    /**
     * This is the root object used for the traversal performed.
     */
-   private Source root;
+   private final Source root;
         
    /**
     * Constructor for the <code>Traverser</code> object. This creates

@@ -50,7 +50,7 @@ final class Session implements Map {
    /**
     * This is the internal map that provides storage for pairs.
     */         
-   private Map map;        
+   private final Map map;        
 
    /**
     * Constructor for the <code>Session</code> object. This is 

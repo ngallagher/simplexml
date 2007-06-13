@@ -66,17 +66,17 @@ public class Persister implements Serializer {
    /**
     * This is the strategy object used to load and resolve classes.
     */ 
-   private Strategy strategy;
+   private final Strategy strategy;
    
    /**
     * This filter is used to replace variables within templates.
     */
-   private Filter filter;
+   private final Filter filter;
 
    /**
     * This object is used to format the the generated XML document.
     */ 
-   private Format format;
+   private final Format format;
 
    /**
     * Constructor for the <code>Persister</code> object. This is used
