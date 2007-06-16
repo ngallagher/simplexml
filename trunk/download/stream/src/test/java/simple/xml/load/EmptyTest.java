@@ -197,8 +197,9 @@ public class EmptyTest extends ValidationTestCase {
       persister.write(entry, out);
       String result = out.toString();
       
-      assertTrue(result.indexOf("John Doe") == -1);
-      assertTrue(result.indexOf("NULL") != -1);
+      assertXpathExists("/test[@name='NULL']", result);
+      assertXpathExists("/test[@address='NULL']", result);
+      assertXpathEvaluatesTo("Some description", "/test/description", result);
       
       validate(entry, persister);
    } 
