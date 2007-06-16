@@ -76,9 +76,19 @@ public class DefaultTest extends ValidationTestCase {
       
       StringWriter buffer = new StringWriter();
       persister.write(list, buffer);
+      String text = buffer.toString();
+      
+      assertXpathExists("/defaultTextList/list[@class='java.util.ArrayList']", text);
+      assertXpathExists("/defaultTextList/list/textEntry[@name='a']", text);
+      assertXpathExists("/defaultTextList/list/textEntry[@name='b']", text);
+      assertXpathExists("/defaultTextList/list/textEntry[@name='c']", text);      
+      assertXpathEvaluatesTo("Example 1", "/defaultTextList/list/textEntry[1]", text);
+      assertXpathEvaluatesTo("Example 2", "/defaultTextList/list/textEntry[2]", text);
+      assertXpathEvaluatesTo("Example 3", "/defaultTextList/list/textEntry[3]", text);      
+      
       validate(list, persister);
 
-      list = persister.read(DefaultTextList.class, buffer.toString());
+      list = persister.read(DefaultTextList.class, text);
 
       assertEquals(list.version, Version.ONE);
       assertEquals(list.get(0).version, Version.ONE);
@@ -91,6 +101,19 @@ public class DefaultTest extends ValidationTestCase {
       assertEquals(list.get(2).name, "c");
       assertEquals(list.get(2).text, "Example 3");
       
-      validate(list, persister);
+      buffer = new StringWriter();
+      persister.write(list, buffer);      
+      String copy = buffer.toString();
+      
+      assertXpathExists("/defaultTextList/list[@class='java.util.ArrayList']", copy);
+      assertXpathExists("/defaultTextList/list/textEntry[@name='a']", copy);
+      assertXpathExists("/defaultTextList/list/textEntry[@name='b']", copy);
+      assertXpathExists("/defaultTextList/list/textEntry[@name='c']", copy);      
+      assertXpathEvaluatesTo("Example 1", "/defaultTextList/list/textEntry[1]", copy);
+      assertXpathEvaluatesTo("Example 2", "/defaultTextList/list/textEntry[2]", copy);
+      assertXpathEvaluatesTo("Example 3", "/defaultTextList/list/textEntry[3]", copy);
+      assertXMLEqual(text, copy);
+      
+      validate(list, persister);     
    }
 }

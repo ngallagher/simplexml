@@ -253,8 +253,12 @@ public class ArrayTest extends ValidationTestCase {
 
       StringWriter writer = new StringWriter();
       serializer.write(example, writer);
-
       String content = writer.toString();
+      
+      assertXpathExists("/root/array[@length='100']", content);
+      assertXpathExists("/root/array/entry[1]/text[@value='index 0']", content);
+      assertXpathExists("/root/array/entry[100]/text[@value='index 99']", content);      
+      
       ArrayExample deserialized = serializer.read(ArrayExample.class, content);
 
       assertEquals(deserialized.array.length, example.array.length);
@@ -272,8 +276,14 @@ public class ArrayTest extends ValidationTestCase {
 
       StringWriter oddOnly = new StringWriter();
       serializer.write(example, oddOnly);
-
       content = oddOnly.toString();
+      
+      assertXpathExists("/root/array[@length='100']", content);
+      assertXpathNotExists("/root/array/entry[1]/text[@value='index 0']", content);
+      assertXpathExists("/root/array/entry[2]/text[@value='index 1']", content);
+      assertXpathNotExists("/root/array/entry[3]/text[@value='index 2']", content);
+      assertXpathExists("/root/array/entry[100]/text[@value='index 99']", content);
+      
       deserialized = serializer.read(ArrayExample.class, content);
       
       for(int i = 0, j = 0; i < example.array.length; i++) {

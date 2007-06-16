@@ -16,12 +16,12 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import junit.framework.TestCase;
+import org.custommonkey.xmlunit.XMLTestCase;
 
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
-public class ValidationTestCase extends TestCase {
+public class ValidationTestCase extends XMLTestCase {
 
    private static TransformerFactory transformerFactory;
   

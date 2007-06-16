@@ -17,10 +17,10 @@ public class SubstituteTest extends ValidationTestCase {
    "</substituteExample>";
    
    private static final String RESOLVE_SOURCE =
-      "<?xml version=\"1.0\"?>\n"+
-      "<substituteExample>\n"+
-      "   <substitute class='simple.xml.load.SubstituteTest$YetAnotherSubstitute'>some example text</substitute>  \n\r"+
-      "</substituteExample>";
+   "<?xml version=\"1.0\"?>\n"+
+   "<substituteExample>\n"+
+   "   <substitute class='simple.xml.load.SubstituteTest$YetAnotherSubstitute'>some example text</substitute>  \n\r"+
+   "</substituteExample>";
 
    @Root
    private static class SubstituteExample {
@@ -128,7 +128,7 @@ public class SubstituteTest extends ValidationTestCase {
       
       StringWriter out = new StringWriter();
       serializer.write(example, out);
-      String text = out.toString();      
+      String text = out.toString();     
       
       example = serializer.read(SubstituteExample.class, text);
       
