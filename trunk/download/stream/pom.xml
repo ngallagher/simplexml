@@ -36,6 +36,11 @@
       <artifactId>stax</artifactId>
       <version>1.2.0</version>
     </dependency>
+    <dependency>
+      <groupId>xmlunit</groupId>
+      <artifactId>xmlunit</artifactId>
+      <version>1.0</version>
+    </dependency>
   </dependencies>
   <reporting>
     <plugins>

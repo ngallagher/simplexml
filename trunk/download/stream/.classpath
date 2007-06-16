@@ -38,7 +38,7 @@
 	<classpathentry kind="lib" path="lib/log4j-1.2.9.jar"/>
 	<classpathentry kind="lib" path="lib/stax-api-1.0.1.jar"/>
 	<classpathentry kind="lib" path="lib/wstx-asl-3.2.1.jar"/>
-	<classpathentry kind="lib" path="lib/xmlunit-1.1beta2.jar"/>
 	<classpathentry kind="lib" path="lib/easymock.jar"/>
+	<classpathentry kind="lib" path="lib/xmlunit-1.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
