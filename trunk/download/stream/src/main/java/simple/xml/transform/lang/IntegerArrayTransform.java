@@ -8,7 +8,7 @@ public class IntegerArrayTransform implements Transform<Integer[]> {
 
    private final StringArrayTransform split;
 
-   private final Transform single;
+   private final IntegerTransform single;
 
    public IntegerArrayTransform() {
       this.split = new StringArrayTransform();           
