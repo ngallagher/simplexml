@@ -41,6 +41,17 @@ public interface InputNode extends Node {
     * @return true if this is the root node within the document
     */
    public boolean isRoot();
+
+   /**
+    * This is used to determine if this node is an element. This
+    * allows users of the framework to make a distinction between
+    * nodes that represent attributes and nodes that represent
+    * elements. This is particularly useful given that attribute
+    * nodes do not maintain a node map of attributes.
+    *
+    * @return this returns true if the node is an element node
+    */ 
+   public boolean isElement();
    
    /**
     * This provides the position of this node within the document.

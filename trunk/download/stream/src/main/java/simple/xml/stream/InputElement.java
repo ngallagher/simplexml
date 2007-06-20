@@ -118,7 +118,20 @@ class InputElement implements InputNode {
    public boolean isRoot() {
       return reader.isRoot(this);
    }
-   
+
+   /**
+    * This is used to determine if this node is an element. This
+    * allows users of the framework to make a distinction between
+    * nodes that represent attributes and nodes that represent
+    * elements. This is particularly useful given that attribute
+    * nodes do not maintain a node map of attributes.
+    *
+    * @return this returns true as this instance is an element
+    */ 
+   public boolean isElement() {
+      return true;           
+   } 
+
    /**
     * Provides an attribute from the element represented. If an
     * attribute for the specified name does not exist within the

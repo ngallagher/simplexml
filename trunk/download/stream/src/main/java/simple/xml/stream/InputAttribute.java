@@ -151,7 +151,19 @@ class InputAttribute implements InputNode {
    public boolean isRoot() {
       return false;
    }
-   
+
+   /**
+    * This is used to determine if this node is an element. This
+    * node instance can not be an element so this method returns
+    * false. Returning null tells the users of this node that any
+    * attributes added to the node map will be permenantly lost.
+    *
+    * @return this returns false as this is an attribute node
+    */ 
+   public boolean isElement() {
+      return false;           
+   } 
+
    /**
     * Because the <code>InputAttribute</code> object represents an
     * attribute this method will return null. If nodes are added 
