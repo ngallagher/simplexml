@@ -102,6 +102,25 @@ class Allocate implements Type {
    }
    
    /**
+    * This method is used acquire the value from the type and if
+    * possible replace the value for the type. If the value can
+    * not be replaced then an exception should be thrown. This 
+    * is used to allow primitives to be inserted into a graph.
+    * 
+    * @param replace this is the value to insert as the type
+    * 
+    * @return an instance of the type this object represents
+    */
+   public Object getInstance(Object replace) throws Exception {
+      Object value = type.getInstance(replace);
+      
+      if(value != null) {
+         map.put(key, value);
+      }
+      return value;      
+   }
+   
+   /**
     * This is the type of the object instance that will be created
     * by the <code>getInstance</code> method. This allows the 
     * deserialization process to perform checks against the field.

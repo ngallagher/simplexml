@@ -1,6 +1,6 @@
 
 
-package simple.xml.transform;
+package simple.xml.transform.lang;
 
 import simple.xml.transform.Transform;
 
@@ -28,7 +28,7 @@ public class IntegerArrayTransform implements Transform<Integer[]> {
       Integer[] list = new Integer[text.length];
 
       for(int i = 0; i < text.length; i++) {
-         list[i] = single.read(entry);
+         list[i] = single.read(text[i]);
       }
       return list;
    }
@@ -37,7 +37,9 @@ public class IntegerArrayTransform implements Transform<Integer[]> {
       String[] text = new String[list.length];           
 
       for(int i = 0; i < text.length; i++) {
-         text[i] = single.read(list[i]);
+         if(list[i] != null) {
+             text[i] = single.write(list[i]);
+         }
       }
       return split.write(text);
    }

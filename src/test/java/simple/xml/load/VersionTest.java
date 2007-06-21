@@ -147,7 +147,11 @@ public class VersionTest extends TestCase {
 		   }
 		   return method.newInstance();   
 	   }   
-
+       
+       public Object getInstance(Object value) throws Exception {
+          return value;
+       }
+       
        public boolean isReference() {
           return false;
        }

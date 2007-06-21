@@ -81,6 +81,20 @@ class Reference implements Type {
    }
    
    /**
+    * This method is used acquire the value from the type and if
+    * possible replace the value for the type. If the value can
+    * not be replaced then an exception should be thrown. This 
+    * is used to allow primitives to be inserted into a graph.
+    * 
+    * @param value this is the value to insert as the type
+    * 
+    * @return an instance of the type this object represents
+    */
+   public Object getInstance(Object value) throws Exception {
+      return value;
+   }
+   
+   /**
     * This returns the type for the object that this references.
     * This will basically return the <code>getClass</code> class
     * from the referenced instance. This is used to ensure that

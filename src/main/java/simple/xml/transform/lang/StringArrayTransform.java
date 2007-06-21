@@ -1,6 +1,6 @@
 
 
-package simple.xml.transform;
+package simple.xml.transform.lang;
 
 import simple.xml.transform.Transform;
 import java.util.regex.Pattern;
@@ -15,7 +15,7 @@ public class StringArrayTransform implements Transform<String[]> {
       this(",");           
    }        
 
-   public StirngArrayTransform(String token) {
+   public StringArrayTransform(String token) {
       this.pattern = Pattern.compile(token);           
       this.token = token;           
    }
