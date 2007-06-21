@@ -45,7 +45,7 @@ public class CycleTest extends ValidationTestCase {
       @Attribute(name="key")
       private String name;
       
-      @Text
+      @Element(name="value")
       private String value;
       
       protected Entry() {

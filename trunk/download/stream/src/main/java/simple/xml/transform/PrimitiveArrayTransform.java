@@ -4,7 +4,7 @@ package simple.xml.transform;
 import simple.xml.transform.lang.StringArrayTransform;
 import java.lang.reflect.Array;
 
-public class PrimitiveArrayTransform extends Transform {           
+public class PrimitiveArrayTransform implements Transform {           
 
    private final StringArrayTransform split;        
 
@@ -32,7 +32,7 @@ public class PrimitiveArrayTransform extends Transform {
          Object item = delegate.read(list[i]);
 
          if(item != null) {
-            Array.set(item, i);                 
+            Array.set(array, i, item);                 
          }         
       }
       return array;
@@ -48,10 +48,10 @@ public class PrimitiveArrayTransform extends Transform {
       String[] list = new String[length];
 
       for(int i = 0; i < length; i++) {
-         Object entry = Array.get(i);
+         Object entry = Array.get(value, i);
 
          if(entry != null) {
-            list[i] = delegate.write(value);                             
+            list[i] = delegate.write(entry);                             
          }         
       }      
       return split.write(list);

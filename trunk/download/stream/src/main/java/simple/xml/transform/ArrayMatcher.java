@@ -1,27 +1,38 @@
-
-
 package simple.xml.transform;
 
-public class ArrayMatcher {
+class ArrayMatcher extends PackageMatcher {
 
-
+   private final Matcher primary;
+   
+   public ArrayMatcher(Matcher primary) {
+      this.primary = primary;
+   }
+   
    public Transform match(Class type) throws Exception {
       Class entry = type.getComponentType();
-   
+      
       if(entry.isPrimitive()) {
-         matchPrimitive(type, entry);              
-      }      
-      return match(type, entry);
-   }        
-
-   private Transform matchPrimitive(Class type, Class entry) {
-      Class promote = promoteType(entry);
-      Transform delegate = match(promote);
-
-      return new PrimitiveArrayTransform(delegate, entry);
+         return matchPrimitive(entry);
+      }
+      return matchArray(entry);
    }
-
-   private Transform match(Class type, Class entry) {
-      // resolve the name here and load it           
+   
+   private Transform matchPrimitive(Class entry) throws Exception {
+      Transform transform = primary.match(entry);
+      
+      if(transform == null) {
+         throw new IllegalStateException("Transformer not found");
+      }
+      return new PrimitiveArrayTransform(transform, entry);
+   }
+   
+   private Transform matchArray(Class entry) throws Exception {
+      Class type = getArrayClass(entry);
+      
+      try {
+         return (Transform)type.newInstance();
+      }catch (Exception e) {
+         throw new TransformRequiredException("No transform found for %s", entry);
+      }
    }
 }

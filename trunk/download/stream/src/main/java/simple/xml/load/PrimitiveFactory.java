@@ -22,6 +22,8 @@ package simple.xml.load;
 
 import java.lang.reflect.Constructor;
 
+import simple.xml.stream.InputNode;
+
 /**
  * The <code>PrimitiveFactory</code> object is used to create objects
  * that are primitive types. This creates primitives and enumerated
@@ -58,7 +60,26 @@ class PrimitiveFactory extends Factory {
    public PrimitiveFactory(Source root, Class field) {
       super(root, field);           
    }
-        
+   
+   /**
+    * This method will instantiate an object of the field type, or if
+    * the <code>Strategy</code> object can resolve a class from the
+    * XML element then this is used instead. If the resulting type is
+    * abstract or an interface then this method throws an exception.
+    * 
+    * @param node this is the node to check for the override
+    * 
+    * @return this returns an instance of the resulting type
+    */         
+   public Type getInstance(InputNode node) throws Exception {
+      Type type = getOverride(node);
+    
+      if(type == null) { 
+         return new ClassType(field);         
+      }
+      return type;      
+   }     
+   
    /**
     * This will instantiate an object of the field type using the
     * provided string. Typically this string is parsed into the type

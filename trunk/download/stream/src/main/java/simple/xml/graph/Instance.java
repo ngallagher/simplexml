@@ -78,7 +78,21 @@ class Instance implements Type {
          method.setAccessible(true);              
       }
       return method.newInstance();   
-   } 
+   }
+   
+   /**
+    * This method is used acquire the value from the type and if
+    * possible replace the value for the type. If the value can
+    * not be replaced then an exception should be thrown. This 
+    * is used to allow primitives to be inserted into a graph.
+    * 
+    * @param value this is the value to insert as the type
+    * 
+    * @return an instance of the type this object represents
+    */
+   public Object getInstance(Object value) throws Exception {
+      return value;
+   }
    
    /**
     * This is the type of the object instance that will be created

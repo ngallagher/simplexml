@@ -2,7 +2,7 @@
 
 package simple.xml.transform;
 
-public class CharacterArrayTransform extends Transform<char[]> {
+public class CharacterArrayTransform implements Transform<char[]> {
 
    public char[] read(String value) throws Exception {
       return value.toCharArray();           

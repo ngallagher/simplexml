@@ -90,7 +90,7 @@ public class ArrayCycleTest extends ValidationTestCase {
    "</value>\n";
 
    @Root(name="root")
-   private static class ArrayExample {
+   private static class ArrayCycleExample {
 
       @ElementArray(name="one", parent="entry")           
       public Entry[] one;      
@@ -102,7 +102,7 @@ public class ArrayCycleTest extends ValidationTestCase {
       public Entry[] three;
       
       @Element(name="example")
-      public ArrayExample example;
+      public ArrayCycleExample example;
    }
 
    @Root(name="text") 
@@ -121,7 +121,7 @@ public class ArrayCycleTest extends ValidationTestCase {
    }   
    
    @Root(name="root")
-   private static class NestedArrayExample {
+   private static class NestedArrayCycleExample {
       
       @ElementArray(name="array", parent="entry")
       public Value[] array;
@@ -156,7 +156,7 @@ public class ArrayCycleTest extends ValidationTestCase {
    }
    
    public void testCycle() throws Exception {
-      ArrayExample example = persister.read(ArrayExample.class, SOURCE);
+      ArrayCycleExample example = persister.read(ArrayCycleExample.class, SOURCE);
       
       assertEquals(example.one.length, 5);
       assertEquals(example.one[0].value, "entry one");
@@ -183,7 +183,7 @@ public class ArrayCycleTest extends ValidationTestCase {
       StringWriter out = new StringWriter();
       persister.write(example, out);
       
-      example = persister.read(ArrayExample.class, SOURCE);
+      example = persister.read(ArrayCycleExample.class, SOURCE);
       
       assertEquals(example.one.length, 5);
       assertEquals(example.one[0].value, "entry one");
@@ -211,7 +211,7 @@ public class ArrayCycleTest extends ValidationTestCase {
    }
    
    public void testNestedExample() throws Exception {
-      NestedArrayExample root = persister.read(NestedArrayExample.class, NESTED);
+      NestedArrayCycleExample root = persister.read(NestedArrayCycleExample.class, NESTED);
       
       assertEquals(root.array.length, 2);
       assertTrue(root.array[0].list == root.array);
@@ -235,7 +235,7 @@ public class ArrayCycleTest extends ValidationTestCase {
       persister.write(root, out);
       
       // Ensure references survive serialization
-      root = persister.read(NestedArrayExample.class, out.toString());
+      root = persister.read(NestedArrayCycleExample.class, out.toString());
       
       assertEquals(root.array.length, 2);
       assertTrue(root.array[0].list == root.array);

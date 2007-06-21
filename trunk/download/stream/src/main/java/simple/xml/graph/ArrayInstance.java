@@ -87,6 +87,20 @@ class ArrayInstance implements Type {
    }
    
    /**
+    * This method is used acquire the value from the type and if
+    * possible replace the value for the type. If the value can
+    * not be replaced then an exception should be thrown. This 
+    * is used to allow primitives to be inserted into a graph.
+    * 
+    * @param value this is the value to insert as the type
+    * 
+    * @return an instance of the type this object represents
+    */
+   public Object getInstance(Object value) throws Exception {
+      return value;
+   }
+   
+   /**
     * This will return the component type for the array instance 
     * that is produced by this object. Depending on the constructor 
     * used this will either delegate to the <code>Type</code> object 
