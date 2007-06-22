@@ -17,22 +17,21 @@ class ArrayMatcher extends PackageMatcher {
       return matchArray(entry);
    }
    
-   private Transform matchPrimitive(Class entry) throws Exception {
+   private Transform matchPrimitive(Class entry) throws Exception {            
       Transform transform = primary.match(entry);
-      
+
+      if(entry == char.class) {
+         return new CharacterArrayTransform();
+      }      
       if(transform == null) {
-         throw new IllegalStateException("Transformer not found");
+         throw new TransformRequiredException("Transform for %s not found", entry);
       }
       return new PrimitiveArrayTransform(transform, entry);
    }
    
    private Transform matchArray(Class entry) throws Exception {
-      Class type = getArrayClass(entry);
+      Class type = getArrayClass(entry);      
       
-      try {
-         return (Transform)type.newInstance();
-      }catch (Exception e) {
-         throw new TransformRequiredException("No transform found for %s", entry);
-      }
+      return (Transform)type.newInstance();
    }
 }
