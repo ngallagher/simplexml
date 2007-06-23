@@ -15,11 +15,11 @@ class ArrayTransform {
       this.entry = entry;
    }
    
-   public Object read(String value, Transform single) throws Exception {
+   public <T> T read(String value, Transform single) throws Exception {
       String[] list = split.read(value);      
       int length = list.length;
 
-      return read(list, single, length);
+      return (T)read(list, single, length);
    }
    
    private Object read(String[] list, Transform single, int length) throws Exception {
