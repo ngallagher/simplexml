@@ -1,5 +1,5 @@
 /*
- * FloatTransform.java May 2007
+ * FileTransform.java May 2007
  *
  * Copyright (C) 2007, Niall Gallagher <niallg@users.sf.net>
  *
@@ -18,13 +18,14 @@
  * Boston, MA  02111-1307  USA
  */
 
-package simple.xml.transform.lang;
+package simple.xml.transform.io;
 
 import simple.xml.transform.Transform;
+import java.io.File;
 
 /**
- * The <code>FloatTransform</code> object is used to transform float
- * values to an from string representations, which will be inserted
+ * The <code>FileTransform</code> object is used to transform file
+ * paths to an from string representations, which will be inserted
  * in the the generated XML document as the value place holder. The
  * value must be readable and writable in the same format. Fields
  * and methods annotated with the XML attribute annotation will use
@@ -32,7 +33,7 @@ import simple.xml.transform.Transform;
  * <pre>
  * 
  *    &#64;Attribute
- *    private Float number;
+ *    private File file;
  *    
  * </pre>
  * As well as the XML attribute values using transforms, fields and
@@ -43,7 +44,7 @@ import simple.xml.transform.Transform;
  * 
  * @author Niall Gallagher
  */
-public class FloatTransform implements Transform<Float> {
+public class FileTransform implements Transform<File> {
    
    /**
     * This method is used to convert the string value given to an
@@ -51,12 +52,12 @@ public class FloatTransform implements Transform<Float> {
     * being deserialized from the XML document and the value for
     * the string representation is required.
     * 
-    * @param value this is the string representation of the value
+    * @param path this is the string representation of the path
     * 
     * @return this returns an appropriate instanced to be used
     */
-   public Float read(String value) {
-      return new Float(value);
+   public File read(String path) {
+      return new File(path);
    }
    
    /**
@@ -65,11 +66,11 @@ public class FloatTransform implements Transform<Float> {
     * there is a need to convert a field value in to a string so 
     * that that value can be written as a valid XML entity.
     * 
-    * @param value this is the value to be converted to a string
+    * @param path this is the value to be converted to a string
     * 
     * @return this is the string representation of the given value
     */
-   public String write(Float value) {
-      return value.toString();
+   public String write(File path) {
+      return path.getPath();
    }
 }

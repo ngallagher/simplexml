@@ -70,9 +70,6 @@ public class LongTransform implements Transform<Long> {
     * @return this is the string representation of the given value
     */
    public String write(Long value) {
-      if(value != null) {
-          return value.toString();
-      }
-      return null;
+      return value.toString();
    }
 }
