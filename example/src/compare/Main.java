@@ -4,7 +4,8 @@ package compare;
 import java.io.File;
 import java.io.FileNotFoundException;
 
-import simple.xml.load.Persister;
+import org.simpleframework.xml.load.Persister;
+
 
 public class Main {
 

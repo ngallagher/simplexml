@@ -1,4 +1,4 @@
-package simple.xml.graph;
+package org.simpleframework.xml.graph;
 
 import java.io.StringWriter;
 import java.util.List;
@@ -10,7 +10,7 @@ import org.simpleframework.xml.Root;
 import org.simpleframework.xml.graph.CycleStrategy;
 import org.simpleframework.xml.load.Persister;
 
-import simple.xml.ValidationTestCase;
+import org.simpleframework.xml.ValidationTestCase;
 
 public class ListCycleTest extends ValidationTestCase {
    

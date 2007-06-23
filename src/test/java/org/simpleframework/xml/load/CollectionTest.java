@@ -1,4 +1,4 @@
-package simple.xml.load;
+package org.simpleframework.xml.load;
 
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ import org.simpleframework.xml.load.InstantiationException;
 import org.simpleframework.xml.load.Persister;
 
 import junit.framework.TestCase;
-import simple.xml.ValidationTestCase;
+import org.simpleframework.xml.ValidationTestCase;
 
 public class CollectionTest extends ValidationTestCase {
         
@@ -87,7 +87,7 @@ public class CollectionTest extends ValidationTestCase {
    private static final String ABSTRACT_LIST = 
    "<?xml version=\"1.0\"?>\n"+
    "<test name='example'>\n"+
-   "   <list class='simple.xml.load.CollectionTest$AbstractList'>\n"+   
+   "   <list class='org.simpleframework.xml.load.CollectionTest$AbstractList'>\n"+   
    "      <entry id='1'>\n"+
    "         <text>one</text>  \n\r"+
    "      </entry>\n\r"+
@@ -136,11 +136,11 @@ public class CollectionTest extends ValidationTestCase {
    "<?xml version=\"1.0\"?>\n"+
    "<test name='example'>\n"+
    "   <list>\n"+   
-   "      <extended-entry id='1' class='simple.xml.load.CollectionTest$ExtendedEntry'>\n"+
+   "      <extended-entry id='1' class='org.simpleframework.xml.load.CollectionTest$ExtendedEntry'>\n"+
    "         <text>one</text>  \n\r"+
    "         <description>this is an extended entry</description>\n\r"+
    "      </extended-entry>\n\r"+
-   "      <extended-entry id='2' class='simple.xml.load.CollectionTest$ExtendedEntry'>\n"+
+   "      <extended-entry id='2' class='org.simpleframework.xml.load.CollectionTest$ExtendedEntry'>\n"+
    "         <text>two</text>  \n\r"+
    "         <description>this is the second one</description>\n"+
    "      </extended-entry>\n"+

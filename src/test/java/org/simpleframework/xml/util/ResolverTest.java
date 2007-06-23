@@ -1,4 +1,4 @@
-package simple.xml.util;
+package org.simpleframework.xml.util;
 
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ import org.simpleframework.xml.load.Persister;
 import org.simpleframework.xml.util.Match;
 import org.simpleframework.xml.util.Resolver;
 
-import simple.xml.ValidationTestCase;
+import org.simpleframework.xml.ValidationTestCase;
 
 public class ResolverTest extends ValidationTestCase {
         

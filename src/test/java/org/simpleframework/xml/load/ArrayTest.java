@@ -1,4 +1,4 @@
-package simple.xml.load;
+package org.simpleframework.xml.load;
 
 import java.io.StringWriter;
 
@@ -8,7 +8,7 @@ import org.simpleframework.xml.Root;
 import org.simpleframework.xml.load.InstantiationException;
 import org.simpleframework.xml.load.Persister;
 
-import simple.xml.ValidationTestCase;
+import org.simpleframework.xml.ValidationTestCase;
 
 public class ArrayTest extends ValidationTestCase {
 

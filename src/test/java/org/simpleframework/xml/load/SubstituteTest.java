@@ -1,4 +1,4 @@
-package simple.xml.load;
+package org.simpleframework.xml.load;
 
 import java.io.StringWriter;
 
@@ -8,20 +8,20 @@ import org.simpleframework.xml.Root;
 import org.simpleframework.xml.Text;
 import org.simpleframework.xml.load.Persister;
 
-import simple.xml.ValidationTestCase;
+import org.simpleframework.xml.ValidationTestCase;
 
 public class SubstituteTest extends ValidationTestCase {
 
    private static final String REPLACE_SOURCE =
    "<?xml version=\"1.0\"?>\n"+
    "<substituteExample>\n"+
-   "   <substitute class='simple.xml.load.SubstituteTest$SimpleSubstitute'>some example text</substitute>  \n\r"+
+   "   <substitute class='org.simpleframework.xml.load.SubstituteTest$SimpleSubstitute'>some example text</substitute>  \n\r"+
    "</substituteExample>";
    
    private static final String RESOLVE_SOURCE =
    "<?xml version=\"1.0\"?>\n"+
    "<substituteExample>\n"+
-   "   <substitute class='simple.xml.load.SubstituteTest$YetAnotherSubstitute'>some example text</substitute>  \n\r"+
+   "   <substitute class='org.simpleframework.xml.load.SubstituteTest$YetAnotherSubstitute'>some example text</substitute>  \n\r"+
    "</substituteExample>";
 
    @Root

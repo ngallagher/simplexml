@@ -1,4 +1,4 @@
-package simple.xml.load;
+package org.simpleframework.xml.load;
 
 import java.io.StringWriter;
 import java.util.Collection;
@@ -10,7 +10,7 @@ import org.simpleframework.xml.Root;
 import org.simpleframework.xml.load.Persister;
 import org.simpleframework.xml.load.ValueRequiredException;
 
-import simple.xml.ValidationTestCase;
+import org.simpleframework.xml.ValidationTestCase;
 
 public class EmptyTest extends ValidationTestCase {
         

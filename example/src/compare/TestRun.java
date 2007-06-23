@@ -9,9 +9,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import simple.xml.Attribute;
-import simple.xml.Element;
-import simple.xml.Root;
+import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.Element;
+import org.simpleframework.xml.Root;
+
 
 @Root(name="test")
 public class TestRun {

@@ -1,4 +1,4 @@
-package simple.xml;
+package org.simpleframework.xml;
 
 import java.io.File;
 import java.io.FileOutputStream;

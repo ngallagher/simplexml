@@ -1,4 +1,4 @@
-package simple.xml.graph;
+package org.simpleframework.xml.graph;
 
 import java.io.StringWriter;
 
@@ -9,7 +9,7 @@ import org.simpleframework.xml.Root;
 import org.simpleframework.xml.graph.CycleStrategy;
 import org.simpleframework.xml.load.Persister;
 
-import simple.xml.ValidationTestCase;
+import org.simpleframework.xml.ValidationTestCase;
 
 public class ArrayCycleTest extends ValidationTestCase {
    
@@ -61,7 +61,7 @@ public class ArrayCycleTest extends ValidationTestCase {
    "         <value id='text'>\n"+
    "            <list length='3' id='foo'>\n"+  // Value.list : Value[]
    "               <entry>\n"+
-   "                  <value name='blah' class='simple.xml.graph.ArrayCycleTest$TextValue'>\n"+ // Value.list[0] : Value 
+   "                  <value name='blah' class='org.simpleframework.xml.graph.ArrayCycleTest$TextValue'>\n"+ // Value.list[0] : Value 
    "                    <text>Some text</text>\n"+  // TextExample.text : String
    "                    <list ref='foo'/>\n"+ // TextExample.list : Value[]
    "                  </value>\n"+
@@ -70,7 +70,7 @@ public class ArrayCycleTest extends ValidationTestCase {
    "                  <value ref='text'/>\n"+ // Value.list[1] : Value
    "               </entry>\n"+
    "               <entry>\n"+
-   "                  <value class='simple.xml.graph.ArrayCycleTest$ElementValue'>\n"+ // Value.list[2] : Value
+   "                  <value class='org.simpleframework.xml.graph.ArrayCycleTest$ElementValue'>\n"+ // Value.list[2] : Value
    "                     <element><![CDATA[Example element text]]></element>\n"+ // ElementExample.element : String
    "                  </value>\n"+
    "               </entry>\n"+
@@ -82,9 +82,9 @@ public class ArrayCycleTest extends ValidationTestCase {
    
    private static final String PROMOTE =
    "<value>\n"+
-   "   <list length='1' class='simple.xml.graph.ArrayCycleTest$ElementValue'>\n"+
+   "   <list length='1' class='org.simpleframework.xml.graph.ArrayCycleTest$ElementValue'>\n"+
    "      <entry>\n"+
-   "         <value class='simple.xml.graph.ArrayCycleTest$ElementValue'>\n"+
+   "         <value class='org.simpleframework.xml.graph.ArrayCycleTest$ElementValue'>\n"+
    "            <element>Example text</element>\n"+
    "         </value>\n"+
    "      </entry>\n"+

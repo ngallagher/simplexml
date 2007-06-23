@@ -1,4 +1,4 @@
-package simple.xml.load;
+package org.simpleframework.xml.load;
 
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;

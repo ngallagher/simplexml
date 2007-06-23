@@ -1,4 +1,4 @@
-package simple.xml.transform.lang;
+package org.simpleframework.xml.transform.lang;
 
 import org.simpleframework.xml.transform.lang.StringArrayTransform;
 

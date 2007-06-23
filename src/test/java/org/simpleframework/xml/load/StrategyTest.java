@@ -1,4 +1,4 @@
-package simple.xml.load;
+package org.simpleframework.xml.load;
 
 import junit.framework.TestCase;
 
@@ -22,7 +22,7 @@ public class StrategyTest extends TestCase {
 
    private static final String ELEMENT =
    "<?xml version=\"1.0\"?>\n"+
-   "<root key='attribute-example-key' example-attribute='simple.xml.load.StrategyTest$ExampleExample'>\n"+
+   "<root key='attribute-example-key' example-attribute='org.simpleframework.xml.load.StrategyTest$ExampleExample'>\n"+
    "   <text>attribute-example-text</text>  \n\r"+
    "</root>";
 

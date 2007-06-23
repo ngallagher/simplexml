@@ -1,5 +1,5 @@
 
-package simple.xml.stream;
+package org.simpleframework.xml.stream;
 
 import junit.framework.TestCase;
 import java.io.StringReader;

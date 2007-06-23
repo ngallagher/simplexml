@@ -1,4 +1,4 @@
-package simple.xml.load;
+package org.simpleframework.xml.load;
 
 import java.io.StringWriter;
 import java.util.List;
@@ -12,7 +12,7 @@ import org.simpleframework.xml.load.Persister;
 import org.simpleframework.xml.load.TextException;
 import org.simpleframework.xml.load.ValueRequiredException;
 
-import simple.xml.ValidationTestCase;
+import org.simpleframework.xml.ValidationTestCase;
 
 public class TextTest extends ValidationTestCase {
         

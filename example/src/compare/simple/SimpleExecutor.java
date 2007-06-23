@@ -1,7 +1,7 @@
 
 package compare.simple;
 
-import simple.xml.load.Persister;
+import org.simpleframework.xml.load.Persister;
 
 import compare.Duration;
 import compare.Executor;

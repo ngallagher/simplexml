@@ -1,8 +1,8 @@
-package simple.xml.load;
+package org.simpleframework.xml.load;
 
 import java.io.StringReader;
 
-import simple.xml.ValidationTestCase;
+import org.simpleframework.xml.ValidationTestCase;
 import java.io.StringWriter;
 import java.util.List;
 import java.util.Map;
