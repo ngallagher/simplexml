@@ -5,22 +5,22 @@ import java.util.Date;
 
 public class DateTransform implements Transform<Date> {
    
-   private final DateTaskPool pool;
+   private DateFormatter transform;
    
    public DateTransform() {
       this("yyyy-MM-dd HH:mm:ss.S z");
    }
    
    public DateTransform(String format) {
-      this.pool = new DateTaskPool(format);      
+      this.transform = new DateFormatter(format);      
    }
    
    public Date read(String value) throws Exception {
-      return pool.borrow().read(value);
+      return transform.read(value);
    }
    
    public String write(Date value) throws Exception {
-      return pool.borrow().write(value);
+      return transform.write(value);
    }
 
 }
