@@ -1,8 +1,8 @@
 package compare.simple;
 
-import simple.xml.Attribute;
-import simple.xml.Element;
-import simple.xml.Root;
+import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.Element;
+import org.simpleframework.xml.Root;
 
 
 @Root(name="root")

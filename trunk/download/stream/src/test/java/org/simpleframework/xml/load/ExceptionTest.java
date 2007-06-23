@@ -1,4 +1,4 @@
-package simple.xml.load;
+package org.simpleframework.xml.load;
 
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -131,14 +131,14 @@ public class ExceptionTest extends TestCase {
    "<?xml version=\"1.0\"?>\n"+
    "<root>\n"+
    "   <list class='java.util.Vector'>\n"+   
-   "      <entry id='12' value='some value' class='simple.xml.load.ExceptionTest$RootListEntry'>\n"+
+   "      <entry id='12' value='some value' class='org.simpleframework.xml.load.ExceptionTest$RootListEntry'>\n"+
    "         <text>some example text</text>  \n\r"+
    "      </entry>\n\r"+
-   "      <entry id='34' class='simple.xml.load.ExceptionTest$NoRootListEntry'>\n"+
+   "      <entry id='34' class='org.simpleframework.xml.load.ExceptionTest$NoRootListEntry'>\n"+
    "         <value>this is the value</value>\n"+
    "         <text>other example</text>  \n\r"+
    "      </entry>\n"+
-   "      <entry id='56' class='simple.xml.load.ExceptionTest$NoRootListEntry'>\n"+
+   "      <entry id='56' class='org.simpleframework.xml.load.ExceptionTest$NoRootListEntry'>\n"+
    "         <value>this is some other value</value>\n"+
    "         <text>final example</text>  \n\r"+
    "      </entry>\n"+

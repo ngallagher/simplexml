@@ -1,4 +1,4 @@
-package simple.xml.load;
+package org.simpleframework.xml.load;
 
 import junit.framework.TestCase;
 import java.util.Map;

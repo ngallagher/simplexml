@@ -1,4 +1,4 @@
-package simple.xml.load;
+package org.simpleframework.xml.load;
 
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -11,7 +11,7 @@ import org.simpleframework.xml.Root;
 import org.simpleframework.xml.Text;
 import org.simpleframework.xml.load.Persister;
 
-import simple.xml.ValidationTestCase;
+import org.simpleframework.xml.ValidationTestCase;
 
 public class InlineTest extends ValidationTestCase {
         

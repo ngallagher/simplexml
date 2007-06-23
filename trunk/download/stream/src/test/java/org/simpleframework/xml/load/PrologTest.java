@@ -1,4 +1,4 @@
-package simple.xml.load;
+package org.simpleframework.xml.load;
 
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -9,7 +9,7 @@ import org.simpleframework.xml.Root;
 import org.simpleframework.xml.load.Persister;
 import org.simpleframework.xml.stream.Format;
 
-import simple.xml.ValidationTestCase;
+import org.simpleframework.xml.ValidationTestCase;
 
 public class PrologTest extends ValidationTestCase {
 

@@ -5,9 +5,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Map;
 
-import simple.xml.Attribute;
-import simple.xml.Root;
-import simple.xml.load.Validate;
+import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.Root;
+import org.simpleframework.xml.load.Validate;
+
 
 @Root(name="context")
 public class TestContext {

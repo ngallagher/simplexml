@@ -1,4 +1,4 @@
-package simple.xml.transform.util;
+package org.simpleframework.xml.transform.util;
 
 import java.util.Locale;
 

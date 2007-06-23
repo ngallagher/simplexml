@@ -1,6 +1,6 @@
-package simple.xml.stream;
+package org.simpleframework.xml.stream;
 
-import simple.xml.ValidationTestCase;
+import org.simpleframework.xml.ValidationTestCase;
 import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 

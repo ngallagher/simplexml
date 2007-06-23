@@ -1,16 +1,16 @@
-package simple.xml.load;
+package org.simpleframework.xml.load;
 
 import java.io.FileOutputStream;
 import java.io.StringWriter;
 import java.util.List;
 
-import simple.xml.util.Entry;
-import simple.xml.util.Dictionary;
-import simple.xml.ValidationTestCase;
-import simple.xml.ElementList;
-import simple.xml.Attribute;
-import simple.xml.Element;
-import simple.xml.Root;
+import org.simpleframework.xml.util.Entry;
+import org.simpleframework.xml.util.Dictionary;
+import org.simpleframework.xml.ValidationTestCase;
+import org.simpleframework.xml.ElementList;
+import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.Element;
+import org.simpleframework.xml.Root;
 
 public class UnicodeTest extends ValidationTestCase {
 

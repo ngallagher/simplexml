@@ -1,4 +1,4 @@
-package simple.xml.load;
+package org.simpleframework.xml.load;
 
 import java.io.StringWriter;
 
@@ -10,7 +10,7 @@ import org.simpleframework.xml.load.Persister;
 import org.simpleframework.xml.util.Dictionary;
 import org.simpleframework.xml.util.Entry;
 
-import simple.xml.ValidationTestCase;
+import org.simpleframework.xml.ValidationTestCase;
 
 public class DataTest extends ValidationTestCase {
 

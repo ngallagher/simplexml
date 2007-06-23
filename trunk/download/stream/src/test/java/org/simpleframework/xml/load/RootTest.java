@@ -1,11 +1,11 @@
-package simple.xml.load;
+package org.simpleframework.xml.load;
 
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.load.Persister;
 
-import simple.xml.ValidationTestCase;
+import org.simpleframework.xml.ValidationTestCase;
 
 public class RootTest extends ValidationTestCase {
       

@@ -1,12 +1,12 @@
-package simple.xml.load;
+package org.simpleframework.xml.load;
 
 import junit.framework.TestCase;
-import simple.xml.stream.Node;
-import simple.xml.stream.NodeMap;
-import simple.xml.Serializer;
-import simple.xml.Attribute;
-import simple.xml.Element;
-import simple.xml.Root;
+import org.simpleframework.xml.stream.Node;
+import org.simpleframework.xml.stream.NodeMap;
+import org.simpleframework.xml.Serializer;
+import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.Element;
+import org.simpleframework.xml.Root;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;

@@ -2,9 +2,10 @@ package compare;
 
 import java.util.Collection;
 
-import simple.xml.Element;
-import simple.xml.ElementList;
-import simple.xml.Root;
+import org.simpleframework.xml.Element;
+import org.simpleframework.xml.ElementList;
+import org.simpleframework.xml.Root;
+
 
 @Root(name="execute")
 public class TestExecution {

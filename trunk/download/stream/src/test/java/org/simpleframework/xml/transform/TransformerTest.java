@@ -1,4 +1,4 @@
-package simple.xml.transform;
+package org.simpleframework.xml.transform;
 
 import org.simpleframework.xml.transform.Transformer;
 
