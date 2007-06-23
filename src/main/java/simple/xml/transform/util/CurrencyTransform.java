@@ -24,7 +24,7 @@ import simple.xml.transform.Transform;
 import java.util.Currency;
 
 /**
- * The <code>CurrencyTransform</code> object is used to transform short
+ * The <code>CurrencyTransform</code> is used to transform currency
  * values to an from string representations, which will be inserted
  * in the the generated XML document as the value place holder. The
  * value must be readable and writable in the same format. Fields

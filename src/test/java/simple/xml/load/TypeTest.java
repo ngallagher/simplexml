@@ -1,11 +1,10 @@
 package simple.xml.load;
 
-import java.io.FileOutputStream;
 import java.io.StringWriter;
 
-import simple.xml.ValidationTestCase;
 import simple.xml.Element;
 import simple.xml.Root;
+import simple.xml.ValidationTestCase;
 
 public class TypeTest extends ValidationTestCase {
         
