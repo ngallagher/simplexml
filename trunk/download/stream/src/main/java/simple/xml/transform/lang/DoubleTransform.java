@@ -32,7 +32,7 @@ import simple.xml.transform.Transform;
  * <pre>
  * 
  *    &#64;Attribute
- *    private Double number;
+ *    private Double value;
  *    
  * </pre>
  * As well as the XML attribute values using transforms, fields and

@@ -49,6 +49,11 @@ import java.util.Date;
 public class DateTransform implements Transform<Date> {
    
    /**
+    * This is the format for the dates that are produced by this.
+    */
+   private static final String FORMAT = "yyyy-MM-dd HH:mm:ss.S z";
+   
+   /**
     * This is the date formatter used to parse and format dates.
     */
    private final DateFormat format;
@@ -60,7 +65,7 @@ public class DateTransform implements Transform<Date> {
     * date values like <code>2007-05-02 12:22:10.000 GMT</code>.
     */
    public DateTransform() {
-      this("yyyy-MM-dd HH:mm:ss.S z");
+      this(FORMAT);
    }
    
    /**

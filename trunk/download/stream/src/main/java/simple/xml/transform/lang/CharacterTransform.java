@@ -33,7 +33,7 @@ import simple.xml.transform.Transform;
  * <pre>
  * 
  *    &#64;Attribute
- *    private Character ch;
+ *    private Character value;
  *    
  * </pre>
  * As well as the XML attribute values using transforms, fields and

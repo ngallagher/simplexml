@@ -85,7 +85,7 @@ class Primitive implements Converter {
    }
 
    /**
-    * This <code>read</code> methos will extract the text value from
+    * This <code>read</code> method will extract the text value from
     * the node and replace any template variables before converting
     * it to a primitive value. This uses the <code>Source</code>
     * object used for this instance of serialization to replace all
@@ -102,6 +102,17 @@ class Primitive implements Converter {
       return readPrimitive(node);
    }  
    
+   /**
+    * This <code>read</code> method will extract the text value from
+    * the node and replace any template variables before converting
+    * it to a primitive value. This uses the <code>Source</code>
+    * object used for this instance of serialization to replace all
+    * template variables with values from the source filter.
+    *
+    * @param node this is the node to be converted to a primitive
+    *
+    * @return this returns the primitive that has been deserialized
+    */ 
    private Object readElement(InputNode node) throws Exception {
       Type type = factory.getInstance(node);
       
@@ -111,6 +122,17 @@ class Primitive implements Converter {
       return type.getInstance();
    }
    
+   /**
+    * This <code>read</code> methos will extract the text value from
+    * the node and replace any template variables before converting
+    * it to a primitive value. This uses the <code>Source</code>
+    * object used for this instance of serialization to replace all
+    * template variables with values from the source filter.
+    *
+    * @param node this is the node to be converted to a primitive
+    *
+    * @return this returns the primitive that has been deserialized
+    */ 
    private Object readElement(InputNode node, Type type) throws Exception {
       Object value = readPrimitive(node);
       
@@ -173,9 +195,9 @@ class Primitive implements Converter {
     * 
     * @return this returns the text value for the primitive object 
     */ 
-   private String getText(Object source, Class type) {
+   private String getText(Object source, Class type) throws Exception {
       if(!type.isEnum()) {
-         return String.valueOf(source);              
+         return factory.getValue(source, type);              
       }           
       Enum value = (Enum)source;
       return value.name();

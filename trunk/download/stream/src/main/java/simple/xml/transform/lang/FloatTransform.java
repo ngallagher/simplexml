@@ -32,7 +32,7 @@ import simple.xml.transform.Transform;
  * <pre>
  * 
  *    &#64;Attribute
- *    private Float number;
+ *    private Float value;
  *    
  * </pre>
  * As well as the XML attribute values using transforms, fields and
