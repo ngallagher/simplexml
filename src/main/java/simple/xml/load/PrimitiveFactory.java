@@ -132,4 +132,20 @@ class PrimitiveFactory extends Factory {
    private Object getPrimitive(String text) throws Exception {
       return transform.read(text, field);
    }
+   
+   /**
+    * This is used to acquire a text value for the specified object.
+    * This will convert the object to a string using the transformer
+    * so that it can be deserialized from the generate XML document.
+    * 
+    * @param value this is the object instance to get the value of
+    * @param type this is the type of the object instance
+    * 
+    * @return this returns a string representation of the object
+    * 
+    * @throws Exception if the object could not be transformed
+    */
+   public String getValue(Object value, Class type) throws Exception {
+      return transform.write(value, type);
+   }
 }
