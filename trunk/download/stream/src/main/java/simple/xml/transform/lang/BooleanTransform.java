@@ -70,9 +70,6 @@ public class BooleanTransform implements Transform<Boolean> {
     * @return this is the string representation of the given value
     */
    public String write(Boolean value) {
-      if(value != null) {
-          return value.toString();
-      }
-      return null;
+      return value.toString();
    }
 }
