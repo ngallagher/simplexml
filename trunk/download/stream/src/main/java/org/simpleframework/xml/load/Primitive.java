@@ -177,11 +177,31 @@ class Primitive implements Converter {
     * @param source this is the object to be serialized
     * @param node this is the XML element to have its text set
     */  
-   public void write(OutputNode node, Object source) throws Exception {      
-      String text = factory.getText(source);
+   public void write(OutputNode node, Object source) throws Exception {
+      Class type = source.getClass();
+   
+      if(!isOverridden(node, source, type)) {
+         String text = factory.getText(source);
     
-      if(text != null) {
-         node.setValue(text);
+         if(text != null) {
+            node.setValue(text);
+         }
       }
+   }
+   
+   /**
+    * This is used to determine whether the specified value has been
+    * overrideen by the strategy. If the item has been overridden
+    * then no more serialization is require for that value, this is
+    * effectivly telling the serialization process to stop writing.
+    * 
+    * @param node the node that a potential override is written to
+    * @param value this is the object instance to be serialized
+    * @param type this is the type of the object to be serialized
+    * 
+    * @return returns true if the strategy overrides the object
+    */
+   private boolean isOverridden(OutputNode node, Object value, Class type) throws Exception{
+      return factory.setOverride(type, value, node);
    }
 }
