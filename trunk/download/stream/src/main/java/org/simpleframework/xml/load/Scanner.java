@@ -257,6 +257,27 @@ class Scanner  {
    }
 
    /**
+    * This is used to determine whether the scanned class represents
+    * a primitive type. A primitive type is a type that contains no
+    * XML annotations and so cannot be serialized with an XML form.
+    * Instead primitives a serialized using transformations.
+    * 
+    * @return this returns true if no XML annotations were found
+    */
+   public boolean isPrimitive() {
+      if(!elements.isEmpty()) {
+         return false;
+      }
+      if(!attributes.isEmpty()) {
+         return false;
+      }
+      if(text != null) {
+         return false;
+      }
+      return root == null;
+   }
+   
+   /**
     * This method is used to determine whether strict mappings are
     * required. Strict mapping means that all labels in the class
     * schema must match the XML elements and attributes in the

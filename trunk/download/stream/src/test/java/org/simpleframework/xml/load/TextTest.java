@@ -8,11 +8,8 @@ import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementArray;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.Text;
-import org.simpleframework.xml.load.Persister;
-import org.simpleframework.xml.load.TextException;
-import org.simpleframework.xml.load.ValueRequiredException;
-
 import org.simpleframework.xml.ValidationTestCase;
+import org.simpleframework.xml.transform.TransformRequiredException;
 
 public class TextTest extends ValidationTestCase {
         
@@ -232,7 +229,8 @@ public class TextTest extends ValidationTestCase {
       
       try {
          persister.read(NonPrimitiveTextEntry.class, DATA_TEXT);                       
-      } catch(TextException e) {
+      } catch(TransformRequiredException e) {
+         e.printStackTrace();
          success = true;              
       }              
       assertTrue(success);

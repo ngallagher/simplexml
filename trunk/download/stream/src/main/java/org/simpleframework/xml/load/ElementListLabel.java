@@ -114,7 +114,7 @@ class ElementListLabel implements Label {
    private Converter getConverter(Source root, String parent) throws Exception {      
       Class item = getDependant();
       
-      if(!Factory.isPrimitive(item)) {
+      if(!root.isPrimitive(item)) {
          return new CompositeList(root, type, item);
       }
       return new PrimitiveList(root, type, item, parent);      
@@ -133,7 +133,7 @@ class ElementListLabel implements Label {
    private Converter getInlineConverter(Source root, String parent) throws Exception {      
       Class item = getDependant();
       
-      if(!Factory.isPrimitive(item)) {
+      if(!root.isPrimitive(item)) {
          return new CompositeInlineList(root, type, item);
       }
       return new PrimitiveInlineList(root, type, item, parent);      

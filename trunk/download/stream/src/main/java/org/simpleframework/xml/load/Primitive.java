@@ -163,7 +163,7 @@ class Primitive implements Converter {
          return empty;         
       }
       String text = root.getProperty(value);
-      return factory.getInstance(text);
+      return factory.getPrimitive(text);
    }  
 
    /**
@@ -177,29 +177,11 @@ class Primitive implements Converter {
     * @param source this is the object to be serialized
     * @param node this is the XML element to have its text set
     */  
-   public void write(OutputNode node, Object source) throws Exception {
-      Class type = source.getClass();
-      String text = getText(source, type);
-      
-      node.setValue(text);      
-   }
-
-   /**
-    * This method is used to convert the provided object to a text
-    * value so that it can be written to an XML element. This will
-    * check the object type to convert enumerations using the
-    * <code>Enum.name</code> and primitives to their string values.
-    * 
-    * @param source this is the primitive object to be converted
-    * @param type the type of the object, checks for enumerations
-    * 
-    * @return this returns the text value for the primitive object 
-    */ 
-   private String getText(Object source, Class type) throws Exception {
-      if(!type.isEnum()) {
-         return factory.getValue(source, type);              
-      }           
-      Enum value = (Enum)source;
-      return value.name();
+   public void write(OutputNode node, Object source) throws Exception {      
+      String text = factory.getText(source);
+    
+      if(text != null) {
+         node.setValue(text);
+      }
    }
 }

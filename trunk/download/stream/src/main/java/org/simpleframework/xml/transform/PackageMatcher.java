@@ -93,7 +93,7 @@ abstract class PackageMatcher implements Matcher {
       try {  
          return Class.forName(name);
       } catch(Exception e) {
-         throw new TransformRequiredException(e, "Transform %s is required for %s", type);
+         throw new TransformRequiredException(e, "Transform %s is required for %s", name, type);
       }
       
    }
