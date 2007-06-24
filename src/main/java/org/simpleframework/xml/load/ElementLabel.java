@@ -75,15 +75,15 @@ class ElementLabel implements Label {
     * an object and vice versa. The converter created will handles
     * only XML elements and requires the source object to be provided. 
     * 
-    * @param source this is the source object used for serialization
+    * @param root this is the source object used for serialization
     * 
     * @return this returns a converter for serializing XML elements
     */
-   public Converter getConverter(Source source) throws Exception {
-      if(Factory.isPrimitive(type)) {
-         return new Primitive(source, type, null);
+   public Converter getConverter(Source root) throws Exception {
+      if(root.isPrimitive(type)) {
+         return new Primitive(root, type, null);
       }
-      return new Composite(source, type);
+      return new Composite(root, type);
    }
    
    /**

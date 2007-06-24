@@ -171,6 +171,19 @@ public class ArrayTest extends ValidationTestCase {
       }
    }
    
+   @Root(name="text")
+   private static class ExtendedText  extends Text {
+      
+      public ExtendedText() {
+         super();
+      }
+      
+      public ExtendedText(String value) {
+         super(value);
+      }
+      
+   }
+   
    @Root(name="root")
    private static class PrimitiveArrayExample {
       
@@ -210,10 +223,10 @@ public class ArrayTest extends ValidationTestCase {
    private static class DifferentArrayExample {
       
       @ElementArray(name="array", parent="entry")
-      private Object[] array;
+      private Text[] array;
       
       public DifferentArrayExample() {
-         this.array = new Text[] { new Text("one"), null, null, new Text("two"), null, new Text("three") };
+         this.array = new Text[] { new ExtendedText("one"), null, null, new ExtendedText("two"), null, new ExtendedText("three") };
       }            
    }
    

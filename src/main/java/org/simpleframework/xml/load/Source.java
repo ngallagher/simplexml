@@ -191,11 +191,10 @@ class Source {
     * @throws Exception if the class contains an illegal schema 
     */   
    public Schema getSchema(Class type) throws Exception {
-      Scanner schema = cache.get(type);
+      Scanner schema = getScanner(type);
       
       if(schema == null) {
-         schema = new Scanner(type);             
-         cache.cache(type, schema);
+         throw new PersistenceException("Invalid schema class %s", type);
       }
       return new Schema(schema, session);
    }
@@ -214,13 +213,44 @@ class Source {
     * @throws Exception if the class contains an illegal schema
     */
    public String getName(Class type) throws Exception {
+      return getScanner(type).getName();
+   }
+   
+   /**
+    * This is used to determine whether the scanned class represents
+    * a primitive type. A primitive type is a type that contains no
+    * XML annotations and so cannot be serialized with an XML form.
+    * Instead primitives a serialized using transformations.
+    *
+    * @param type this is the type to determine if it is primitive
+    * 
+    * @return this returns true if no XML annotations were found
+    */
+   public boolean isPrimitive(Class type) throws Exception {
+      return getScanner(type).isPrimitive();
+   }
+   
+   /**
+    * This creates a <code>Scanner</code> object that can be used to
+    * examine the fields within the XML class schema. The scanner
+    * maintains information when a field from within the scanner is
+    * visited, this allows the serialization and deserialization
+    * process to determine if all required XML annotations are used.
+    * 
+    * @param type the schema class the scanner is created for
+    * 
+    * @return a scanner that can maintains information on the type
+    * 
+    * @throws Exception if the class contains an illegal schema 
+    */ 
+   private Scanner getScanner(Class type) throws Exception {
       Scanner schema = cache.get(type);
       
       if(schema == null) {
-         schema = new Scanner(type);
+         schema = new Scanner(type);             
          cache.cache(type, schema);
       }
-      return schema.getName();
+      return schema;
    }
 
    /**

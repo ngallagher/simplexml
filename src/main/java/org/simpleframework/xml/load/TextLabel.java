@@ -81,17 +81,17 @@ class TextLabel implements Label {
     * an object and vice versa. The converter created will handles
     * only XML text and requires the source object to be provided. 
     * 
-    * @param source this is the source object used for serialization
+    * @param root this is the source object used for serialization
     * 
     * @return this returns a converter for serializing XML elements
     */
-   public Converter getConverter(Source source) throws Exception {
+   public Converter getConverter(Source root) throws Exception {
       String ignore = getEmpty();
       
-      if(!Factory.isPrimitive(type)) {
+      if(!root.isPrimitive(type)) {
          throw new TextException("Cannot use %s to represent %s", label, type);
       }
-      return new Primitive(source, type, ignore);
+      return new Primitive(root, type, ignore);
    }
    
    /**

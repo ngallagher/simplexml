@@ -555,14 +555,10 @@ class Composite implements Converter {
     * @throws Exception thrown if there is a serialization problem
     */
    private void writeAttribute(OutputNode node, Object value, Label label) throws Exception {
-      if(value != null) {
+      if(value != null) {         
          String name = label.getName();
-         String text = value.toString();
-         
-         if(value instanceof Enum) {
-            Enum type = (Enum) value;
-            text = type.name();
-         }
+         String text = factory.getText(value);
+        
          node.setAttribute(name, text);
       }
    }
@@ -604,7 +600,7 @@ class Composite implements Converter {
     * object provided is not an enumerated type. If the object is an
     * enumerated type then the <code>Enum.name</code> method is used.
     * 
-    * @param value this is the value toset as the XML element text
+    * @param value this is the value to set as the XML element text
     * @param node this is the XML element to write the text value to
     * @param label the label that contains the contact details
     * 
@@ -612,18 +608,13 @@ class Composite implements Converter {
     */
    private void writeText(OutputNode node, Object value, Label label) throws Exception {
       if(value != null) {         
-         String text = value.toString(); 
+         String text = factory.getText(value); 
          boolean data = label.isData();
          
-         if(value instanceof Enum) {
-            Enum type = (Enum) value;
-            text = type.name();
-         }
          node.setData(data);
          node.setValue(text);        
       }
-   }
-   
+   }   
    
    /**
     * This is used to determine whether the specified value has been
