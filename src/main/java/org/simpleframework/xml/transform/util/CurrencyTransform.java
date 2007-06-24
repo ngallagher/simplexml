@@ -20,9 +20,8 @@
 
 package org.simpleframework.xml.transform.util;
 
-import java.util.Currency;
-
 import org.simpleframework.xml.transform.Transform;
+import java.util.Currency;
 
 /**
  * The <code>CurrencyTransform</code> is used to transform currency

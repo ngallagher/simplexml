@@ -20,9 +20,8 @@
 
 package org.simpleframework.xml.transform.util;
 
-import java.util.TimeZone;
-
 import org.simpleframework.xml.transform.Transform;
+import java.util.TimeZone;
 
 /**
  * The <code>TimeZoneTransform</code> is used to transform time zone

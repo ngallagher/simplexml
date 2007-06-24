@@ -18,7 +18,6 @@
  * Boston, MA  02111-1307  USA
  */
 
-
 package org.simpleframework.xml.stream;
 
 import javax.xml.stream.events.StartElement;
