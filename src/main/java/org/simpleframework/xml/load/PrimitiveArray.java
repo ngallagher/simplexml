@@ -67,7 +67,12 @@ class PrimitiveArray implements Converter {
     * This is the name that each array element is wrapped with.
     */
    private final String parent;
-
+   
+   /**
+    * This is the type of object that will be held in the list.
+    */
+   private final Class entry;
+   
    /**
     * Constructor for the <code>PrimitiveArray</code> object. This is
     * given the array type for the contact that is to be converted. An
@@ -83,6 +88,7 @@ class PrimitiveArray implements Converter {
       this.factory = new ArrayFactory(root, field); 
       this.root = new Primitive(root, entry, null);          
       this.parent = parent;
+      this.entry = entry;
    }
 
    /**
@@ -163,10 +169,28 @@ class PrimitiveArray implements Converter {
     * @param index this is the position in the array to set the item
     */ 
    private void write(OutputNode node, Object source, int index) throws Exception {   
-      Object item = Array.get(source, index);
-         
-      if(item != null) {
-         root.write(node, item);
+      Object item = Array.get(source, index);         
+      
+      if(item != null) {         
+         if(!isOverridden(node, item, entry)) {
+            root.write(node, item);
+         }
       }      
+   }
+   
+   /**
+    * This is used to determine whether the specified value has been
+    * overrideen by the strategy. If the item has been overridden
+    * then no more serialization is require for that value, this is
+    * effectivly telling the serialization process to stop writing.
+    * 
+    * @param node the node that a potential override is written to
+    * @param value this is the object instance to be serialized
+    * @param type this is the type of the object to be serialized
+    * 
+    * @return returns true if the strategy overrides the object
+    */
+   private boolean isOverridden(OutputNode node, Object value, Class type) throws Exception{
+      return factory.setOverride(type, value, node);
    }
 }

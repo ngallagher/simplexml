@@ -71,6 +71,11 @@ class PrimitiveInlineList implements Converter {
    private final String parent;
    
    /**
+    * This is the type of object that will be held in the list.
+    */
+   private final Class entry;
+   
+   /**
     * Constructor for the <code>PrimitiveInlineList</code> object. 
     * This is given the list type and entry type to be used. The list
     * type is the <code>Collection</code> implementation that is used 
@@ -85,6 +90,7 @@ class PrimitiveInlineList implements Converter {
       this.factory = new CollectionFactory(root, type); 
       this.root = new Primitive(root, entry, null);          
       this.parent = parent;
+      this.entry = entry;
    }
 
    /**
@@ -170,11 +176,26 @@ class PrimitiveInlineList implements Converter {
       for(Object item : list) {
          OutputNode child = node.getChild(parent);
          
-         if(child == null) {
-            break;
+         if(!isOverridden(child, item, entry)) { 
+            child.setMode(mode);
+            root.write(child, item);
          }
-         child.setMode(mode);
-         root.write(child, item);
       }
    } 
+   
+   /**
+    * This is used to determine whether the specified value has been
+    * overrideen by the strategy. If the item has been overridden
+    * then no more serialization is require for that value, this is
+    * effectivly telling the serialization process to stop writing.
+    * 
+    * @param node the node that a potential override is written to
+    * @param value this is the object instance to be serialized
+    * @param type this is the type of the object to be serialized
+    * 
+    * @return returns true if the strategy overrides the object
+    */
+   private boolean isOverridden(OutputNode node, Object value, Class type) throws Exception{
+      return factory.setOverride(type, value, node);
+   }
 }
