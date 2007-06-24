@@ -59,7 +59,7 @@ public class CharacterArrayTransform implements Transform<Character[]> {
       int length = value.length();
       
       if(length > 0) {
-         read(value, length);
+         return read(value, length);
       }
       return new Character[]{};
    }

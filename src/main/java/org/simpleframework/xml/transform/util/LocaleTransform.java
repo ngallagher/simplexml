@@ -20,11 +20,10 @@
 
 package org.simpleframework.xml.transform.util;
 
-import java.util.regex.Pattern;
-import java.util.Locale;
-
 import org.simpleframework.xml.transform.InvalidFormatException;
 import org.simpleframework.xml.transform.Transform;
+import java.util.regex.Pattern;
+import java.util.Locale;
 
 /**
  * The <code>LocaleTransform</code> is used to transform locale
@@ -70,7 +69,7 @@ public class LocaleTransform implements Transform<Locale>{
     * being deserialized from the XML document and the value for
     * the string representation is required.
     * 
-    * @param date the string representation of the date value 
+    * @param locale the string representation of the date value 
     * 
     * @return this returns an appropriate instanced to be used
     */
@@ -89,7 +88,7 @@ public class LocaleTransform implements Transform<Locale>{
     * being deserialized from the XML document and the value for
     * the string representation is required.
     * 
-    * @param date the string representation of the date value 
+    * @param locale the string representation of the date value 
     * 
     * @return this returns an appropriate instanced to be used
     */
@@ -110,7 +109,7 @@ public class LocaleTransform implements Transform<Locale>{
     * there is a need to convert a field value in to a string so 
     * that that value can be written as a valid XML entity.
     * 
-    * @param date this is the value to be converted to a string
+    * @param locale this is the value to be converted to a string
     * 
     * @return this is the string representation of the given date
     */

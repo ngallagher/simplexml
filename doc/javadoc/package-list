@@ -1,0 +1,13 @@
+org.simpleframework.xml
+org.simpleframework.xml.filter
+org.simpleframework.xml.graph
+org.simpleframework.xml.load
+org.simpleframework.xml.stream
+org.simpleframework.xml.transform
+org.simpleframework.xml.transform.io
+org.simpleframework.xml.transform.lang
+org.simpleframework.xml.transform.math
+org.simpleframework.xml.transform.net
+org.simpleframework.xml.transform.sql
+org.simpleframework.xml.transform.util
+org.simpleframework.xml.util

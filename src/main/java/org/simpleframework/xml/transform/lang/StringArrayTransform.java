@@ -123,7 +123,7 @@ public class StringArrayTransform implements Transform<String[]> {
     * there is a need to convert a field value in to a string so 
     * that that value can be written as a valid XML entity.
     * 
-    * @param value this is the value to be converted to a string
+    * @param list this is the value to be converted to a string
     * 
     * @return this is the string representation of the given value
     */
@@ -137,7 +137,7 @@ public class StringArrayTransform implements Transform<String[]> {
     * there is a need to convert a field value in to a string so 
     * that that value can be written as a valid XML entity.
     * 
-    * @param value this is the value to be converted to a string
+    * @param list this is the value to be converted to a string
     * @param token this is the token used to join the strings
     * 
     * @return this is the string representation of the given value

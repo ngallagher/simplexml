@@ -32,7 +32,7 @@ package org.simpleframework.xml.transform;
  *    &#64;Element
  *    private String[] value;
  *    
- * <pre>
+ * </pre>
  * For example taking the above value the array of strings needs to 
  * be converted in to a single string value that can be inserted in 
  * to the element in such a way that in can be read later. In this
@@ -51,6 +51,8 @@ package org.simpleframework.xml.transform;
  * values annotated with the <code>Attribute</code> annotation.
  * 
  * @author Niall Gallagher
+ * 
+ * @see org.simpleframework.xml.transform.Transform
  */
 public class Transformer {
 

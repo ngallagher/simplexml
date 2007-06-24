@@ -41,7 +41,7 @@ package org.simpleframework.xml.transform;
  * 
  * @author Niall Gallagher
  */
-public class CharacterArrayTransform implements Transform<char[]> {
+class CharacterArrayTransform implements Transform<char[]> {
    
    /**
     * This method is used to convert the string value given to an
