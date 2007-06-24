@@ -20,8 +20,10 @@
 
 package org.simpleframework.xml.load;
 
-import java.lang.annotation.Annotation;
+import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.ParameterizedType;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 
 /**
@@ -90,7 +92,27 @@ class FieldContact implements Contact {
          Object[] list = type.getActualTypeArguments();
       
          if(list.length > 0) {
-            return (Class) list[0];
+            return getClass(list[0]);
+         }
+      }
+      return null;
+   }
+   
+   public static Class<?> getClass(Object type) {
+      if(type instanceof Class) {
+         return (Class) type;
+      }
+      /*
+       if (type instanceof ParameterizedType) {
+         return getClass(((ParameterizedType) type).getRawType());
+       }
+       */
+      if(type instanceof GenericArrayType) {
+         Object inner = ((GenericArrayType) type).getGenericComponentType();
+         Class entry = getClass(inner);
+         
+         if(entry != null ) {
+            return Array.newInstance(entry, 0).getClass();
          }
       }
       return null;
