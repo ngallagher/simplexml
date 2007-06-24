@@ -45,10 +45,22 @@ import org.simpleframework.xml.transform.Transform;
  */
 public class DoubleArrayTransform implements Transform<Double[]> {
 
+   /**
+    * Used to create and populate the array using another transform. 
+    */
    private final ArrayTransform array;
    
+   /**
+    * Acts as the transform used to transform each array entry.
+    */
    private final Transform single;
    
+   /**
+    * Constructor for transform object. This creates a transform 
+    * for creating an array which can then be written and read to
+    * and from an XML document. This splits the array values using
+    * a comma separated list of string entry values.
+    */
    public DoubleArrayTransform() {
       this.array = new ArrayTransform(Double.class);          
       this.single = new DoubleTransform();
