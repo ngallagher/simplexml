@@ -26,7 +26,7 @@ import org.simpleframework.xml.transform.Transform;
 
 /**
  * The <code>TimeZoneTransform</code> is used to transform time zone
- * values to an from string representations, which will be inserted
+ * values to and from string representations, which will be inserted
  * in the the generated XML document as the value place holder. The
  * value must be readable and writable in the same format. Fields
  * and methods annotated with the XML attribute annotation will use
