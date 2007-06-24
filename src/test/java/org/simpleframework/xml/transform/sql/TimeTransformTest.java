@@ -1,10 +1,14 @@
 package org.simpleframework.xml.transform.sql;
 
 import java.sql.Time;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
+import org.simpleframework.xml.ElementArray;
+import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.ValidationTestCase;
 import org.simpleframework.xml.load.Persister;
@@ -23,6 +27,12 @@ public class TimeTransformTest extends ValidationTestCase {
       @Element
       private Time time;
       
+      @ElementList
+      private Collection<Time> list;
+      
+      @ElementArray
+      private Time[] array;
+      
       public TimeExample() {
          super();
       }
@@ -31,6 +41,11 @@ public class TimeTransformTest extends ValidationTestCase {
          this.attribute = new Time(time);
          this.element = new Time(time);
          this.time = new Time(time);
+         this.list = new ArrayList<Time>();
+         this.list.add(new Time(time));
+         this.list.add(new Time(time));
+         this.array = new Time[1];
+         this.array[0] = new Time(time);
       }   
    }
    
