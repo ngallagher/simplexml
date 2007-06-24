@@ -20,6 +20,8 @@
 
 package org.simpleframework.xml.load;
 
+import java.lang.reflect.Array;
+import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.ParameterizedType;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -104,31 +106,33 @@ class ReadPart implements MethodPart {
     * @return this returns the generic dependant for the type
     */
    public Class getDependant() {
-     Object type = getDependantType();
-     
-     if(type instanceof Class) {
-        return (Class)type;
-     }
-     return null;
-   }  
-   
-   /**
-    * This is used to acquire the dependant type for the method 
-    * part. The dependant type is the type that represents the 
-    * generic type of the type. This is used when collections are
-    * annotated as it allows a default entry class to be taken
-    * from the generic information provided.
-    * 
-    * @return this returns the generic dependant for the type
-    */
-   private Object getDependantType() {
       ParameterizedType type = getReturnType();
       
       if(type != null) {
          Object[] list = type.getActualTypeArguments();
       
          if(list.length > 0) {
-            return list[0];
+            return getClass(list[0]);
+         }
+      }
+      return null;
+   }
+   
+   public static Class<?> getClass(Object type) {
+      if(type instanceof Class) {
+         return (Class) type;
+      }
+      /*
+      if (type instanceof ParameterizedType) {
+        return getClass(((ParameterizedType) type).getRawType());
+      }
+      */
+      if(type instanceof GenericArrayType) {
+         Object inner = ((GenericArrayType) type).getGenericComponentType();
+         Class entry = getClass(inner);
+         
+         if(entry != null ) {
+            return Array.newInstance(entry, 0).getClass();
          }
       }
       return null;
