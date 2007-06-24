@@ -20,12 +20,13 @@
 
 package org.simpleframework.xml.transform.sql;
 
+import org.simpleframework.xml.transform.Transform;
+import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 import java.sql.Time;
 
-import org.simpleframework.xml.transform.Transform;
-
 /**
- * The <code>TimeTransform</code> is used to transform time
+ * The <code>TimeTransform</code> is used to transform SQL time
  * values to and from string representations, which will be inserted
  * in the the generated XML document as the value place holder. The
  * value must be readable and writable in the same format. Fields
@@ -48,17 +49,66 @@ import org.simpleframework.xml.transform.Transform;
 public class TimeTransform implements Transform<Time> {
    
    /**
+    * This is the format for the dates that are produced by this.
+    */
+   private static final String FORMAT = "yyyy-MM-dd HH:mm:ss.S z";
+   
+   /**
+    * This is the date formatter used to parse and format dates.
+    */
+   private final DateFormat format;
+   
+   /**
+    * Constructor for the <code>DateTransform</code> object. This is
+    * used to create a transform using a default date format pattern.
+    * The format chosen for the default date format contains produces
+    * date values like <code>2007-05-02 12:22:10.000 GMT</code>.
+    */
+   public TimeTransform() {
+      this(FORMAT);
+   }
+   
+   /**
+    * Constructor for the <code>TimeTransform</code> object. This is
+    * used to create a transform using a specified date format. The
+    * format should typically contain enough information to create
+    * the date using a different locale or time zone between read and
+    * write operations.
+    * 
+    * @param format this is the date format that is to be used
+    */
+   public TimeTransform(String format) {
+      this.format = new SimpleDateFormat(format);      
+   }
+   
+   /**
     * This method is used to convert the string value given to an
     * appropriate representation. This is used when an object is
     * being deserialized from the XML document and the value for
     * the string representation is required.
     * 
-    * @param time the string representation of the SQL time
+    * @param date the string representation of the date value 
     * 
     * @return this returns an appropriate instanced to be used
     */
-   public Time read(String time) {
-      return Time.valueOf(time);
+   public synchronized Time read(String date) throws Exception {      
+      long time = readTime(date);
+      
+      return new Time(time);
+   }
+   
+   /**
+    * This method is used to convert the string value given to an
+    * appropriate representation. This is used when an object is
+    * being deserialized from the XML document and the value for
+    * the string representation is required.
+    * 
+    * @param date the string representation of the date value 
+    * 
+    * @return this returns the time in milliseconds from the date
+    */
+   private synchronized long readTime(String date) throws Exception {
+      return format.parse(date).getTime();
    }
    
    /**
@@ -67,11 +117,11 @@ public class TimeTransform implements Transform<Time> {
     * there is a need to convert a field value in to a string so 
     * that that value can be written as a valid XML entity.
     * 
-    * @param time this is the value to be converted to a string
+    * @param date this is the value to be converted to a string
     * 
-    * @return this is the string representation of the given value
+    * @return this is the string representation of the given date
     */
-   public String write(Time time) {
-      return time.toString();
+   public synchronized String write(Time date) throws Exception {      
+      return format.format(date);     
    }
 }

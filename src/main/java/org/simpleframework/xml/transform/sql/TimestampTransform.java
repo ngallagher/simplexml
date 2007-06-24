@@ -20,9 +20,8 @@
 
 package org.simpleframework.xml.transform.sql;
 
-import java.sql.Timestamp;
-
 import org.simpleframework.xml.transform.Transform;
+import java.sql.Timestamp;
 
 /**
  * The <code>TimestampTransform</code> is used to transform time
