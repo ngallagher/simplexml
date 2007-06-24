@@ -91,8 +91,8 @@ public class GregorianCalendarTransform implements Transform<GregorianCalendar> 
     * 
     * @return this returns an appropriate instanced to be used
     */  
-   public GregorianCalendar read(String value) throws Exception {
-      return read(transform.read(value));      
+   public GregorianCalendar read(String date) throws Exception {
+      return read(transform.read(date));      
    }
    
    /**
@@ -105,11 +105,11 @@ public class GregorianCalendarTransform implements Transform<GregorianCalendar> 
     * 
     * @return this returns an appropriate instanced to be used
     */  
-   private GregorianCalendar read(Date value) throws Exception {
+   private GregorianCalendar read(Date date) throws Exception {
       GregorianCalendar calendar = new GregorianCalendar();
       
-      if(value != null) {
-         calendar.setTime(value);
+      if(date != null) {
+         calendar.setTime(date);
       }
       return calendar;
    }
@@ -124,7 +124,7 @@ public class GregorianCalendarTransform implements Transform<GregorianCalendar> 
     * 
     * @return this is the string representation of the given date
     */
-   public String write(GregorianCalendar value) throws Exception {
-      return transform.write(value.getTime());
+   public String write(GregorianCalendar date) throws Exception {
+      return transform.write(date.getTime());
    }
 }
