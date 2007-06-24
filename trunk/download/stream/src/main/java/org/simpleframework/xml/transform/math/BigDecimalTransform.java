@@ -20,9 +20,8 @@
 
 package org.simpleframework.xml.transform.math;
 
-import java.math.BigDecimal;
-
 import org.simpleframework.xml.transform.Transform;
+import java.math.BigDecimal;
 
 /**
  * The <code>BigDecimalTransform</code> is used to transform decimal

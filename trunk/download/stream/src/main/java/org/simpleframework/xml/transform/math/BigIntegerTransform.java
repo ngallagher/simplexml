@@ -20,9 +20,8 @@
 
 package org.simpleframework.xml.transform.math;
 
-import java.math.BigInteger;
-
 import org.simpleframework.xml.transform.Transform;
+import java.math.BigInteger;
 
 /**
  * The <code>BigIntegerTransform</code> is used to transform integer

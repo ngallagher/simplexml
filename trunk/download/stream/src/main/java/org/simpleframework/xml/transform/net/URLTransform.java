@@ -20,9 +20,8 @@
 
 package org.simpleframework.xml.transform.net;
 
-import java.net.URL;
-
 import org.simpleframework.xml.transform.Transform;
+import java.net.URL;
 
 /**
  * The <code>URLTransform</code> object is used to transform short
