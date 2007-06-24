@@ -1,5 +1,5 @@
 /*
- * ByteArrayTransform.java May 2007
+ * BooleanArrayTransform.java May 2007
  *
  * Copyright (C) 2007, Niall Gallagher <niallg@users.sf.net>
  *
@@ -23,8 +23,8 @@ package org.simpleframework.xml.transform.lang;
 import org.simpleframework.xml.transform.Transform;
 
 /**
- * The <code>ByteArrayTransform</code> is used to transform array
- * values to an from string representations, which will be inserted
+ * The <code>BooleanArrayTransform</code> is used to transform array
+ * values to and from string representations, which will be inserted
  * in the the generated XML document as the value place holder. The
  * value must be readable and writable in the same format. Fields
  * and methods annotated with the XML attribute annotation will use
@@ -32,7 +32,7 @@ import org.simpleframework.xml.transform.Transform;
  * <pre>
  * 
  *    &#64;Attribute
- *    private Byte[] array;
+ *    private Boolean[] array;
  *    
  * </pre>
  * As well as the XML attribute values using transforms, fields and

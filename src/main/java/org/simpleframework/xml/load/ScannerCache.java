@@ -23,7 +23,7 @@ package org.simpleframework.xml.load;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * The <code>SchemaCache</code> is used to cache schema objects. It 
+ * The <code>ScannerCache</code> is used to cache schema objects. It 
  * is used so the overhead of reflectively interrogating each class 
  * is not required each time an instance of that class is serialized 
  * or deserialized. This acts as a typedef for the generic type.
@@ -33,7 +33,7 @@ import java.util.concurrent.ConcurrentHashMap;
 class ScannerCache extends ConcurrentHashMap<Class, Scanner> {
 
    /**
-    * Constructor for the <code>SchemaCache</code> object. This is
+    * Constructor for the <code>ScannerCache</code> object. This is
     * a concurrent hash map that maps class types to the XML schema
     * objects they represent. To ensure the cache can be used by
     * multiple threads this extends the concurrent hash map.

@@ -20,9 +20,8 @@
 
 package org.simpleframework.xml.transform;
 
-import java.lang.reflect.Array;
-
 import org.simpleframework.xml.transform.lang.StringArrayTransform;
+import java.lang.reflect.Array;
 
 /**
  * The <code>PrimitiveArrayTransform</code> is used to transform 
@@ -47,12 +46,30 @@ import org.simpleframework.xml.transform.lang.StringArrayTransform;
  */
 class PrimitiveArrayTransform implements Transform {           
 
+   /**
+    * This transform is used to split the comma separated values. 
+    */
    private final StringArrayTransform split;        
 
+   /**
+    * This is the transform that performs the individual transform.
+    */
    private final Transform delegate;
 
+   /**
+    * This is the entry type for the primitive array to be created.
+    */
    private final Class entry;
 
+   /**
+    * Constructor for the <code>PrimitiveArrayTransform</code> object.
+    * This is used to create a transform that will create primitive
+    * arrays and populate the values of the array with values from a
+    * comma separated list of individula values for the entry type.
+    * 
+    * @param delegate this is used to perform individual transforms
+    * @param entry this is the entry component type for the array
+    */
    public PrimitiveArrayTransform(Transform delegate, Class entry) {
       this.split = new StringArrayTransform();
       this.delegate = delegate;
