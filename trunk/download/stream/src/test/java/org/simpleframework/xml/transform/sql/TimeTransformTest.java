@@ -16,7 +16,7 @@ import org.simpleframework.xml.load.Persister;
 public class TimeTransformTest extends ValidationTestCase {
    
    @Root
-   public class TimeExample {
+   public static class TimeExample {
       
       @Attribute     
       private Date attribute;

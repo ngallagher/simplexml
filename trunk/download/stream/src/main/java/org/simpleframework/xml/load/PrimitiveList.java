@@ -152,7 +152,7 @@ class PrimitiveList implements Converter {
       for(Object item : list) {
          OutputNode child = node.getChild(parent);
          
-         if(!isOverridden(child, item, entry)) { 
+         if(!isOverridden(child, item)) { 
             root.write(child, item);
          } 
       }
@@ -166,11 +166,10 @@ class PrimitiveList implements Converter {
     * 
     * @param node the node that a potential override is written to
     * @param value this is the object instance to be serialized
-    * @param type this is the type of the object to be serialized
     * 
     * @return returns true if the strategy overrides the object
     */
-   private boolean isOverridden(OutputNode node, Object value, Class type) throws Exception{
-      return factory.setOverride(type, value, node);
+   private boolean isOverridden(OutputNode node, Object value) throws Exception{
+      return factory.setOverride(entry, value, node);
    }
 }
