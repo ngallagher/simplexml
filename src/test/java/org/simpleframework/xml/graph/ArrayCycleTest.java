@@ -237,7 +237,6 @@ public class ArrayCycleTest extends ValidationTestCase {
       persister.write(root, out);
       
       // Ensure references survive serialization
-      System.err.println(">>"+out+"<<");
       root = persister.read(NestedArrayCycleExample.class, out.toString());
       
       assertEquals(root.array.length, 2);
