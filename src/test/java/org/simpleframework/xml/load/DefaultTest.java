@@ -1,14 +1,13 @@
 package org.simpleframework.xml.load;
 
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.Text;
-import org.simpleframework.xml.load.Persister;
-
 import org.simpleframework.xml.ValidationTestCase;
 
 public class DefaultTest extends ValidationTestCase {
@@ -48,7 +47,7 @@ public class DefaultTest extends ValidationTestCase {
       @Text
       private String text;
    }
-
+   
    private enum Version {
            
       ONE,
