@@ -172,7 +172,7 @@ class PrimitiveArray implements Converter {
       Object item = Array.get(source, index);         
       
       if(item != null) {         
-         if(!isOverridden(node, item, entry)) {
+         if(!isOverridden(node, item)) {
             root.write(node, item);
          }
       }      
@@ -186,11 +186,10 @@ class PrimitiveArray implements Converter {
     * 
     * @param node the node that a potential override is written to
     * @param value this is the object instance to be serialized
-    * @param type this is the type of the object to be serialized
     * 
     * @return returns true if the strategy overrides the object
     */
-   private boolean isOverridden(OutputNode node, Object value, Class type) throws Exception{
-      return factory.setOverride(type, value, node);
+   private boolean isOverridden(OutputNode node, Object value) throws Exception{
+      return factory.setOverride(entry, value, node);
    }
 }

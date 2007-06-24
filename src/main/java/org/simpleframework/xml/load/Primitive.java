@@ -162,8 +162,28 @@ class Primitive implements Converter {
       if(empty != null && value.equals(empty)) {
          return empty;         
       }
+      return readPrimitive(node, value);
+   }
+   
+   /**
+    * This <code>read</code> methos will extract the text value from
+    * the node and replace any template variables before converting
+    * it to a primitive value. This uses the <code>Source</code>
+    * object used for this instance of serialization to replace all
+    * template variables with values from the source filter.
+    *
+    * @param node this is the node to be converted to a primitive
+    * @param value this is the value to be processed as a template
+    *
+    * @return this returns the primitive that has been deserialized
+    */ 
+   private Object readPrimitive(InputNode node, String value) throws Exception {
       String text = root.getProperty(value);
-      return factory.getPrimitive(text);
+      
+      if(text != null) {
+         return factory.getPrimitive(text);
+      }
+      return null;
    }  
 
    /**
@@ -178,30 +198,10 @@ class Primitive implements Converter {
     * @param node this is the XML element to have its text set
     */  
    public void write(OutputNode node, Object source) throws Exception {
-      Class type = source.getClass();
-   
-      if(!isOverridden(node, source, type)) {
-         String text = factory.getText(source);
+      String text = factory.getText(source);
     
-         if(text != null) {
-            node.setValue(text);
-         }
-      }
-   }
-   
-   /**
-    * This is used to determine whether the specified value has been
-    * overrideen by the strategy. If the item has been overridden
-    * then no more serialization is require for that value, this is
-    * effectivly telling the serialization process to stop writing.
-    * 
-    * @param node the node that a potential override is written to
-    * @param value this is the object instance to be serialized
-    * @param type this is the type of the object to be serialized
-    * 
-    * @return returns true if the strategy overrides the object
-    */
-   private boolean isOverridden(OutputNode node, Object value, Class type) throws Exception{
-      return factory.setOverride(type, value, node);
+      if(text != null) {
+         node.setValue(text);
+      }  
    }
 }

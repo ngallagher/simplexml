@@ -1,7 +1,8 @@
 package org.simpleframework.xml.transform.lang;
 
+import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
@@ -14,7 +15,7 @@ import org.simpleframework.xml.load.Persister;
 public class StringArrayTransformTest extends ValidationTestCase {
    
    @Root
-   public class StringArrayExample {
+   public static class StringArrayExample {
       
       @Attribute     
       private String[] attribute;
@@ -23,7 +24,7 @@ public class StringArrayTransformTest extends ValidationTestCase {
       private String[] element;
       
       @ElementList
-      private Collection<String[]> list;
+      private List<String[]> list;
       
       @ElementArray
       private String[][] array;
@@ -80,6 +81,46 @@ public class StringArrayTransformTest extends ValidationTestCase {
       String[] list = new String[] { "one", "two", "three", "four"};
       Persister persister = new Persister();
       StringArrayExample example = new StringArrayExample(list);
+      StringWriter out = new StringWriter();
+      
+      assertEquals(example.attribute[0], "one");
+      assertEquals(example.attribute[1], "two");
+      assertEquals(example.attribute[2], "three");
+      assertEquals(example.attribute[3], "four");
+      assertEquals(example.element[0], "one");
+      assertEquals(example.element[1], "two");
+      assertEquals(example.element[2], "three");
+      assertEquals(example.element[3], "four");      
+      assertEquals(example.list.get(0)[0], "one");
+      assertEquals(example.list.get(0)[1], "two");
+      assertEquals(example.list.get(0)[2], "three");
+      assertEquals(example.list.get(0)[3], "four");
+      assertEquals(example.array[0][0], "one");
+      assertEquals(example.array[0][1], "two");
+      assertEquals(example.array[0][2], "three");
+      assertEquals(example.array[0][3], "four");
+      
+      persister.write(example, out);
+      String text = out.toString();
+      
+      example = persister.read(StringArrayExample.class, text);
+      
+      assertEquals(example.attribute[0], "one");
+      assertEquals(example.attribute[1], "two");
+      assertEquals(example.attribute[2], "three");
+      assertEquals(example.attribute[3], "four");
+      assertEquals(example.element[0], "one");
+      assertEquals(example.element[1], "two");
+      assertEquals(example.element[2], "three");
+      assertEquals(example.element[3], "four");      
+      assertEquals(example.list.get(0)[0], "one");
+      assertEquals(example.list.get(0)[1], "two");
+      assertEquals(example.list.get(0)[2], "three");
+      assertEquals(example.list.get(0)[3], "four");
+      assertEquals(example.array[0][0], "one");
+      assertEquals(example.array[0][1], "two");
+      assertEquals(example.array[0][2], "three");
+      assertEquals(example.array[0][3], "four");
       
       validate(example, persister);      
    }

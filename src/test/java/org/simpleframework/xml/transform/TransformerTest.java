@@ -329,23 +329,5 @@ public class TransformerTest extends TestCase {
       assertEquals(array[10], new Character('d'));   
       
       assertEquals(text, "hello world");      
-   }  
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
+   }     
 }
