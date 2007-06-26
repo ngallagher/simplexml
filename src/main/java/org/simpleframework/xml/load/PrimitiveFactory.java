@@ -20,6 +20,7 @@
 
 package org.simpleframework.xml.load;
 
+import org.simpleframework.xml.transform.Transformer;
 import org.simpleframework.xml.stream.InputNode;
 
 /**
@@ -35,8 +36,19 @@ import org.simpleframework.xml.stream.InputNode;
  * 
  * @see org.simpleframework.xml.transform.Transformer
  */ 
-class PrimitiveFactory extends Factory {  
-        
+class PrimitiveFactory extends Factory {
+   
+   /**
+    * Caches the constructors used to transform primitive types.
+    * 
+    * @see org.simpleframework.xml.load.Primitive
+    */
+   private static Transformer transform;
+
+   static {
+      transform = new Transformer();           
+   } 
+   
    /**
     * Constructor for the <code>PrimitiveFactory</code> object. This
     * is provided the field type that is to be instantiated. This
@@ -68,5 +80,96 @@ class PrimitiveFactory extends Factory {
          return new ClassType(field);         
       }
       return type;      
-   }     
+   }    
+   
+   
+   /**
+    * This will instantiate an object of the field type using the
+    * provided string. Typically this string is transformed in to the
+    * type using a <code>Transform</code> object. However, if the
+    * values is an enumeration then its value is created using the
+    * <code>Enum.valueOf</code> method. Also string values typically
+    * do not require conversion of any form and are just returned.
+    * 
+    * @param text this is the value to be transformed to an object
+    * 
+    * @return this returns an instance of the field type
+    */         
+   public Object getPrimitive(String text) throws Exception {
+      if(field == String.class) {
+         return text;              
+      }    
+      if(field.isEnum()) {
+         return getEnumeration(text);              
+      }           
+      return getPrimitive(text, field);
+   }
+   
+   /**
+    * This will instantiate an object of the field type using the
+    * provided string. Typically this string is transformed in to the
+    * type using a <code>Transform</code> object. However, if the
+    * values is an enumeration then its value is created using the
+    * <code>Enum.valueOf</code> method. Also string values typically
+    * do not require conversion of any form and are just returned.
+    * 
+    * @param text this is the value to be transformed to an object
+    * 
+    * @return this returns an instance of the field type
+    */         
+   private Object getPrimitive(String text, Class type) throws Exception {        
+      return transform.read(text, type);
+   } 
+   
+   /**
+    * This will construct the enumerated type from the provided text
+    * value. This uses <code>Enum.valueOf</code> to determine the 
+    * enumerated type value that is to be instantiated.
+    * 
+    * @param text this is the enumerated type value to be created
+    * 
+    * @return this returns an instance of the enumerated type 
+    * 
+    * @throws Exception thrown if there was a problem instantiating
+    */
+   private Object getEnumeration(String text) throws Exception {
+      return Enum.valueOf(field, text);
+   }
+   
+   /**
+    * This is used to acquire a text value for the specified object.
+    * This will convert the object to a string using the transformer
+    * so that it can be deserialized from the generate XML document.
+    * 
+    * @param source this is the object instance to get the value of
+    * 
+    * @return this returns a string representation of the object
+    * 
+    * @throws Exception if the object could not be transformed
+    */
+   public String getText(Object source) throws Exception {
+      Class type = source.getClass();      
+
+      return getText(source, type);
+   }
+   
+   /**
+    * This is used to acquire a text value for the specified object.
+    * This will convert the object to a string using the transformer
+    * so that it can be deserialized from the generate XML document.
+    * 
+    * @param source this is the object instance to get the value of
+    * @param type this is the type of the object instance
+    * 
+    * @return this returns a string representation of the object
+    * 
+    * @throws Exception if the object could not be transformed
+    */
+   private String getText(Object source, Class type) throws Exception {
+      if(type.isEnum()) {
+         Enum value = (Enum)source;
+         return value.name();
+      }
+      return transform.write(source, type);
+   }
 }
