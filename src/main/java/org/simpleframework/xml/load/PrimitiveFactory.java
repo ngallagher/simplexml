@@ -119,8 +119,7 @@ class PrimitiveFactory extends Factory {
       Class type = source.getClass();      
 
       if(type.isEnum()) {
-         Enum value = (Enum)source;
-         return value.name();
+         return ((Enum)source).name();
       }
       return transform.write(source, type);     
    }
