@@ -107,7 +107,6 @@ final class MethodPartFactory {
     * not comply with the naming conventions then null is returned.
     * 
     * @param method this is the method to acquire the type for
-    * @param label this is the annotation associated with the method
     * 
     * @return this is the method name object for the method    
     */

@@ -24,7 +24,6 @@ import org.simpleframework.xml.transform.Transformer;
 import org.simpleframework.xml.stream.InputNode;
 import org.simpleframework.xml.stream.OutputNode;
 import java.lang.reflect.Modifier;
-import java.io.File;
 
 /**
  * The <code>Factory</code> object provides a base class for factories 
@@ -139,13 +138,13 @@ abstract class Factory {
    
    /**
     * This will instantiate an object of the field type using the
-    * provided string. Typically this string is parsed into the type
-    * provided. This is done by reflectively creating one of the 
-    * <code>java.lang</code> primitive types using the provided
-    * string. If the type is an enumerated type then it is created
-    * using the <code>Enum.valueOf</code> method.
+    * provided string. Typically this string is transformed in to the
+    * type using a <code>Transform</code> object. However, if the
+    * values is an enumeration then its value is created using the
+    * <code>Enum.valueOf</code> method. Also string values typically
+    * do not require conversion of any form and are just returned.
     * 
-    * @param text this is the value to be converted
+    * @param text this is the value to be transformed to an object
     * 
     * @return this returns an instance of the field type
     */         
@@ -161,13 +160,13 @@ abstract class Factory {
    
    /**
     * This will instantiate an object of the field type using the
-    * provided string. Typically this string is parsed into the type
-    * provided. This is done by reflectively creating one of the 
-    * <code>java.lang</code> primitive types using the provided
-    * string. If the type is an enumerated type then it is created
-    * using the <code>Enum.valueOf</code> method.
+    * provided string. Typically this string is transformed in to the
+    * type using a <code>Transform</code> object. However, if the
+    * values is an enumeration then its value is created using the
+    * <code>Enum.valueOf</code> method. Also string values typically
+    * do not require conversion of any form and are just returned.
     * 
-    * @param text this is the value to be converted
+    * @param text this is the value to be transformed to an object
     * 
     * @return this returns an instance of the field type
     */         
@@ -302,9 +301,6 @@ abstract class Factory {
       }
       if(type == Character.class) {
          return true;
-      }
-      if(type == File.class) {
-         return true;              
       }
       if(type.isPrimitive()) {
          return true;                 

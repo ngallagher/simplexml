@@ -174,11 +174,13 @@ class PrimitiveInlineList implements Converter {
       Collection list = (Collection) source;
       
       for(Object item : list) {
-         OutputNode child = node.getChild(parent);
+         if(item != null) {
+            OutputNode child = node.getChild(parent);
          
-         if(!isOverridden(child, item)) { 
-            child.setMode(mode);
-            root.write(child, item);
+            if(!isOverridden(child, item)) { 
+               child.setMode(mode);
+               root.write(child, item);
+            }
          }
       }
    } 

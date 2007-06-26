@@ -20,9 +20,6 @@
 
 package org.simpleframework.xml.load;
 
-import java.lang.reflect.Array;
-import java.lang.reflect.GenericArrayType;
-import java.lang.reflect.ParameterizedType;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
@@ -106,70 +103,7 @@ class WritePart implements MethodPart {
     * @return this returns the generic dependant for the type
     */  
    public Class getDependant() {
-      ParameterizedType type = getArgumentType();
-      
-      if(type != null) {
-         Object[] list = type.getActualTypeArguments();
-		  
-         if(list.length > 0) {
-            return getClass(list[0]);
-         }
-      }
-      return null;
-   }
-   
-   public static Class<?> getClass(Object type) {
-      if(type instanceof Class) {
-         return (Class) type;
-      }
-      /*
-      if (type instanceof ParameterizedType) {
-        return getClass(((ParameterizedType) type).getRawType());
-      }
-      */
-      if(type instanceof GenericArrayType) {
-         Object inner = ((GenericArrayType) type).getGenericComponentType();
-         Class entry = getClass(inner);
-         
-         if(entry != null ) {
-            return Array.newInstance(entry, 0).getClass();
-         }
-      }
-      return null;
-   }
-   
-   /**
-    * This is used to acquire the parameterized type for the method
-    * type. This will extract a type with generic information if 
-    * the type has been declared with a generic type parameter.
-    *  
-    * @return this returns the type declared within any generics 
-    */   
-	private ParameterizedType getArgumentType() {
-      Object type = getArgumentType(0);
-		   
-      if(type instanceof ParameterizedType) {
-         return (ParameterizedType)type;
-      }
-      return null;
-   }
-	   
-   /**
-    * This is used to acquire the parameterized type for the method
-    * type. This will extract a type with generic information if 
-    * the type has been declared with a generic type parameter.
-    *  
-    * @param index this is the index of the generic type to get
-    *  
-    * @return this returns the type declared within any generics 
-    */ 
-   private Object getArgumentType(int index) {
-      Object[] list = method.getGenericParameterTypes();
-		   
-      if(list.length > index) {
-         return list[index];  
-      }
-      return null;
+      return Reflector.getParameterDependant(method, 0);
    }
    
    /**
@@ -200,7 +134,7 @@ class WritePart implements MethodPart {
     * the Java Bean method on the object. If the method represented
     * by this is inaccessible then this will set it as accessible.
     * 
-    * @retun returns the method used to interace with the object
+    * @return returns the method used to interace with the object
     */
    public Method getMethod() {
       if(!method.isAccessible()) {

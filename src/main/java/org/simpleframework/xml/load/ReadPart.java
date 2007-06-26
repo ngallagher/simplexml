@@ -20,9 +20,6 @@
 
 package org.simpleframework.xml.load;
 
-import java.lang.reflect.Array;
-import java.lang.reflect.GenericArrayType;
-import java.lang.reflect.ParameterizedType;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
@@ -106,52 +103,7 @@ class ReadPart implements MethodPart {
     * @return this returns the generic dependant for the type
     */
    public Class getDependant() {
-      ParameterizedType type = getReturnType();
-      
-      if(type != null) {
-         Object[] list = type.getActualTypeArguments();
-      
-         if(list.length > 0) {
-            return getClass(list[0]);
-         }
-      }
-      return null;
-   }
-   
-   public static Class<?> getClass(Object type) {
-      if(type instanceof Class) {
-         return (Class) type;
-      }
-      /*
-      if (type instanceof ParameterizedType) {
-        return getClass(((ParameterizedType) type).getRawType());
-      }
-      */
-      if(type instanceof GenericArrayType) {
-         Object inner = ((GenericArrayType) type).getGenericComponentType();
-         Class entry = getClass(inner);
-         
-         if(entry != null ) {
-            return Array.newInstance(entry, 0).getClass();
-         }
-      }
-      return null;
-   }
-   
-   /**
-    * This is used to acquire the parameterized type for the method
-    * type. This will extract a type with generic information if 
-    * the type has been declared with a generic type parameter.
-    *  
-    * @return this returns the type declared within any generics 
-    */
-   private ParameterizedType getReturnType() {
-      Object type = method.getGenericReturnType();
-      
-      if(type instanceof ParameterizedType) {
-         return (ParameterizedType)type;
-      }
-      return null;
+      return Reflector.getReturnDependant(method);
    }
    
    /**
@@ -182,7 +134,7 @@ class ReadPart implements MethodPart {
     * the Java Bean method on the object. If the method represented
     * by this is inaccessible then this will set it as accessible.
     * 
-    * @retun returns the method used to interace with the object
+    * @return returns the method used to interace with the object
     */
    public Method getMethod() {
       if(!method.isAccessible()) {

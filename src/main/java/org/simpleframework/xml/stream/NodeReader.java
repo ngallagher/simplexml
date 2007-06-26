@@ -162,7 +162,8 @@ class NodeReader {
     * input node created contains a reference to this reader. so
     * that it can be used to read child elements and values.
     * 
-    * @param start this is the start element to be wrapped
+    * @param from this is the parent element for the start event
+    * @param event this is the start element to be wrapped
     *
     * @return this returns an input node for the given element
     */    

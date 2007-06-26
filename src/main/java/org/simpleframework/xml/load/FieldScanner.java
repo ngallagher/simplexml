@@ -93,7 +93,7 @@ class FieldScanner extends ContactList {
     * annotations. If the annotation is one of the XML annotations
     * then the field is considered for acceptance as a contact.
     * 
-    * @param method the field to be scanned for XML annotations
+    * @param field the field to be scanned for XML annotations
     */
    public void scan(Field field) {
       Annotation[] list = field.getDeclaredAnnotations();

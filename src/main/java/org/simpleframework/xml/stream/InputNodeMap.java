@@ -104,8 +104,7 @@ class InputNodeMap extends HashMap<String, InputNode> implements NodeMap {
     * node by wrapping it in an <code>InputAttribute</code> object.
     * Once the node is inserted it can be acquired by its name.
     *
-    * @param name this is the name of the node to be created
-    * @param value this is the value to be given to the node
+    * @param event this is the attribute to add to this node map
     */     
    private void put(Attribute event) {
       put(new InputAttribute(source, event));           
@@ -131,8 +130,7 @@ class InputNodeMap extends HashMap<String, InputNode> implements NodeMap {
     * to represent the attribute as another input node. Once the 
     * node is inserted it can be acquired using the attribute name.
     *
-    * @param name this is the name of the node to be created
-    * @param value this is the value to be given to the node
+    * @param input this is the attribute to add to the node map
     */    
    private void put(InputAttribute input) {
       put(input.getName(), input);

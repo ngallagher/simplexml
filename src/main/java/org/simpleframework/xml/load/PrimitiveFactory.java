@@ -26,19 +26,22 @@ import org.simpleframework.xml.stream.InputNode;
  * The <code>PrimitiveFactory</code> object is used to create objects
  * that are primitive types. This creates primitives and enumerated
  * types when given a string value. The string value is parsed using
- * the string constructors from the <code>java.lang</code> primitive
- * types like <code>Integer</code>. The field type is used to 
- * determine the resulting object instance that will be assigned as
- * the field value. 
+ * a matched <code>Transform</code> implementation. The transform is
+ * then used to convert the object instance to an from a suitable XML
+ * representation. Only enumerated types are not transformed using 
+ * a transform, instead they use <code>Enum.name</code>. 
  * 
  * @author Niall Gallagher
+ * 
+ * @see org.simpleframework.xml.transform.Transformer
  */ 
 class PrimitiveFactory extends Factory {  
         
    /**
     * Constructor for the <code>PrimitiveFactory</code> object. This
     * is provided the field type that is to be instantiated. This
-    * must be either a <code>java.lang</code> primitive type object
+    * must be a type that contains a <code>Transform</code> object,
+    * typically this ia a <code>java.lang</code> primitive object
     * or one of the primitive types such as <code>int</code>. Also
     * this can be given a class for an enumerated type. 
     * 

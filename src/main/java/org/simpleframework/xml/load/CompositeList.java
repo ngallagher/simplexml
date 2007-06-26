@@ -150,12 +150,14 @@ class CompositeList implements Converter {
       Collection list = (Collection) source;                
       
       for(Object item : list) {
-         Class type = item.getClass();
+         if(item != null) {
+            Class type = item.getClass();
 
-         if(!entry.isAssignableFrom(type)) {
-            throw new PersistenceException("Entry %s does not match %s", type, entry);                     
+            if(!entry.isAssignableFrom(type)) {
+               throw new PersistenceException("Entry %s does not match %s", type, entry);                     
+            }
+            root.write(node, item, entry);
          }
-         root.write(node, item, entry);
       }
    }
 }

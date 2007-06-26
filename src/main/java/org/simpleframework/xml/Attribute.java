@@ -27,11 +27,14 @@ import java.lang.annotation.Retention;
  * The <code>Attribute</code> annotation represents a serializable XML
  * attribute within an XML element. An object annotated with this is
  * typically a primitive or enumerated type. Conversion from the 
- * attribute to primitive type is done with the types single argument
- * constructor, that takes a string. For example an <code>int</code>
- * is converted with the <code>Integer(String)</code> constructor.
+ * attribute to primitive type is done with a <code>Transform</code>
+ * object. If a suitable transform can be found then this will convert
+ * the attribute string value to an object instance, which can be 
+ * assigned to the annotated field, or passed to the annotated method.
  * 
  * @author Niall Gallagher
+ * 
+ * @see org.simpleframework.xml.transform.Transformer
  */ 
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Attribute {

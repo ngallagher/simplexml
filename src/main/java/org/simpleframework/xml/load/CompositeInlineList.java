@@ -191,17 +191,19 @@ class CompositeInlineList implements Converter {
     * Each entry is serialized as a root element, that is, its
     * <code>Root</code> annotation is used to extract the name. 
     * 
-    * @param source this is the source collection to be serialized 
+    * @param list this is the source collection to be serialized 
     * @param node this is the XML element container to be populated
     */ 
    public void write(OutputNode node, Collection list) throws Exception {  
       for(Object item : list) {
-         Class type = item.getClass();
+         if(item != null) {
+            Class type = item.getClass();
 
-         if(!isCompatible(type, entry)) {
-            throw new RootException("Root name for %s must match %s", type, entry);                     
+            if(!isCompatible(type, entry)) {
+               throw new RootException("Root name for %s must match %s", type, entry);                     
+            }
+            root.write(node, item, entry);
          }
-         root.write(node, item, entry);
       }
    }
    

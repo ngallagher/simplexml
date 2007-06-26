@@ -10,6 +10,7 @@ import org.simpleframework.xml.ElementArray;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.ValidationTestCase;
+import org.simpleframework.xml.graph.CycleStrategy;
 import org.simpleframework.xml.load.Persister;
 import org.simpleframework.xml.transform.lang.IntegerTransform;
 
@@ -18,10 +19,10 @@ public class PrimitiveArrayTransformTest extends ValidationTestCase {
    @Root
    public static class IntegerArrayExample {
       
-      @Attribute     
+      @Attribute(required=false)     
       private int[] attribute;
       
-      @Element
+      @Element(required=false)
       private int[] element;
       
       @ElementList
@@ -29,6 +30,15 @@ public class PrimitiveArrayTransformTest extends ValidationTestCase {
       
       @ElementArray
       private int[][] array;
+      
+      @Element
+      private NonPrimitive test;
+      
+      @ElementList
+      private List<NonPrimitive> testList;
+      
+      @ElementArray
+      private NonPrimitive[] testArray;
       
       public IntegerArrayExample() {
          super();
@@ -42,7 +52,19 @@ public class PrimitiveArrayTransformTest extends ValidationTestCase {
          this.list.add(list);
          this.array = new int[1][];
          this.array[0] = list;
+         this.testList = new ArrayList<NonPrimitive>();
+         this.testList.add(null);
+         this.testList.add(null);
+         this.test = new NonPrimitive();
+         this.testArray = new NonPrimitive[1];
       }   
+   }
+   
+   @Root
+   private static class NonPrimitive {
+      
+      @Attribute
+      private String value = "text";
    }
    
    public void testRead() throws Exception {    
@@ -106,7 +128,7 @@ public class PrimitiveArrayTransformTest extends ValidationTestCase {
       String text = out.toString();
       
       example = persister.read(IntegerArrayExample.class, text);
-      
+            
       assertEquals(example.attribute[0], 1);
       assertEquals(example.attribute[1], 2);
       assertEquals(example.attribute[2], 3);
@@ -125,5 +147,77 @@ public class PrimitiveArrayTransformTest extends ValidationTestCase {
       assertEquals(example.array[0][3], 4);
       
       validate(example, persister);      
+      
+      example = new IntegerArrayExample(null);
+      out = new StringWriter();
+      persister.write(example, out);
+      text = out.toString();
+      
+      validate(example, persister);
+      
+      example = persister.read(IntegerArrayExample.class, text);
+      
+      assertEquals(example.attribute, null);
+      assertEquals(example.element, null);     
+      assertEquals(example.list.size(), 0);
+      assertEquals(example.array[0], null);
+   }
+   
+   public void testCyclicPersistence() throws Exception {
+      int[] list = new int[] { 1, 2, 3, 4 };
+      CycleStrategy strategy = new CycleStrategy();
+      Persister persister = new Persister(strategy);
+      IntegerArrayExample example = new IntegerArrayExample(list);
+      StringWriter out = new StringWriter();
+      
+      assertEquals(example.attribute[0], 1);
+      assertEquals(example.attribute[1], 2);
+      assertEquals(example.attribute[2], 3);
+      assertEquals(example.attribute[3], 4);
+      assertEquals(example.element[0], 1);
+      assertEquals(example.element[1], 2);
+      assertEquals(example.element[2], 3);
+      assertEquals(example.element[3], 4);      
+      assertEquals(example.list.get(0)[0], 1);
+      assertEquals(example.list.get(0)[1], 2);
+      assertEquals(example.list.get(0)[2], 3);
+      assertEquals(example.list.get(0)[3], 4);
+      assertEquals(example.array[0][0], 1);
+      assertEquals(example.array[0][1], 2);
+      assertEquals(example.array[0][2], 3);
+      assertEquals(example.array[0][3], 4);
+      
+      persister.write(example, out);
+      String text = out.toString();
+      
+      assertXpathExists("/integerArrayExample[@id='0']", text);
+      assertXpathExists("/integerArrayExample/element[@id='1']", text);
+      assertXpathExists("/integerArrayExample/list[@id='2']", text);
+      assertXpathExists("/integerArrayExample/array[@id='3']", text);
+      
+      assertXpathExists("/integerArrayExample/list/object[@reference='1']", text);
+      assertXpathExists("/integerArrayExample/array/object[@reference='1']", text);
+      
+      assertXpathEvaluatesTo("1, 2, 3, 4", "/integerArrayExample/element", text);
+      
+      validate(example, persister);
+      
+      example = new IntegerArrayExample(null);
+      out = new StringWriter();
+      persister.write(example, out);
+      text = out.toString();
+      
+      validate(example, persister);
+      
+      example = persister.read(IntegerArrayExample.class, text);
+      
+      assertEquals(example.attribute, null);
+      assertEquals(example.element, null);     
+      assertEquals(example.list.size(), 0);
+      assertEquals(example.array[0], null);
+      
+      assertXpathExists("/integerArrayExample[@id='0']", text);
+      assertXpathExists("/integerArrayExample/list[@id='1']", text);
+      assertXpathExists("/integerArrayExample/array[@id='2']", text);
    }
 }

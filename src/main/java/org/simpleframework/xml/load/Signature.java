@@ -175,9 +175,7 @@ class Signature {
     * has no containing element, thus a name cannot be used to find
     * the first element that belongs to the list. Instead the type
     * the list contains is required so the root name can be used.
-    * 
-    * @param type this is the dependant type to get the name for
-    * 
+    *
     * @return this will return the root name for the list type 
     */
    private String getRoot() throws Exception {

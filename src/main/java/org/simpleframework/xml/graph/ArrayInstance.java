@@ -118,10 +118,9 @@ class ArrayInstance implements Type {
     * type that is substituted during the deserialization process 
     * and so constitutes an object that does not need initialization.
     * 
-    * @retunr this returns true if the type is a reference type
+    * @return this returns true if the type is a reference type
     */
    public boolean isReference() {
       return false;
-   }
-   
+   }   
 }
