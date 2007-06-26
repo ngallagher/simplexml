@@ -125,7 +125,7 @@ class CollectionFactory extends Factory {
     * @param type this is the type that is to be converted
     * 
     * @return a collection that is assignable to the provided type
-    */
+    */   
    public Class getConversion(Class type) throws Exception {
       if(type.isAssignableFrom(ArrayList.class)) {
          return ArrayList.class;

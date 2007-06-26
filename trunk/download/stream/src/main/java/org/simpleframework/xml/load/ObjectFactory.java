@@ -32,7 +32,7 @@ import org.simpleframework.xml.stream.InputNode;
  *  
  * @author Niall Gallagher
  */ 
-class ObjectFactory extends Factory {
+class ObjectFactory extends PrimitiveFactory {
    
    /**
     * Constructor for the <code>ObjectFactory</code> class. This is
@@ -57,7 +57,8 @@ class ObjectFactory extends Factory {
     * @param node this is the node to check for the override
     * 
     * @return this returns an instance of the resulting type
-    */         
+    */       
+   @Override
    public Type getInstance(InputNode node) throws Exception {
       Type type = getOverride(node);
     
