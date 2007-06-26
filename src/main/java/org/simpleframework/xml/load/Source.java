@@ -260,8 +260,7 @@ class Source {
     * used specified mappings. If a template variable does not have
     * a mapping from the <code>Filter</code> is is left unchanged.  
     * 
-    * @param text this is text that will have template variables
-    *        replaced with filter mappings 
+    * @param text this is processed by the template engine object
     * 
     * @return this returns the text will all variables replaced
     */

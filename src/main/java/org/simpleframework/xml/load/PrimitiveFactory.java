@@ -94,7 +94,7 @@ class PrimitiveFactory extends Factory {
     * 
     * @return this returns an instance of the field type
     */         
-   public Object getPrimitive(String text) throws Exception {
+   public Object getInstance(String text) throws Exception {
       if(field == String.class) {
          return text;              
       }    
@@ -108,6 +108,9 @@ class PrimitiveFactory extends Factory {
     * This is used to acquire a text value for the specified object.
     * This will convert the object to a string using the transformer
     * so that it can be deserialized from the generate XML document.
+    * However if the type is an <code>Enum</code> type then the text
+    * value is taken from <code>Enum.name</code> so it can later be
+    * deserialized easily using the enumeration class and name.
     * 
     * @param source this is the object instance to get the value of
     * 
@@ -119,7 +122,8 @@ class PrimitiveFactory extends Factory {
       Class type = source.getClass();      
 
       if(type.isEnum()) {
-         return ((Enum)source).name();
+         Enum value = (Enum)source;
+         return value.name();
       }
       return transform.write(source, type);     
    }
