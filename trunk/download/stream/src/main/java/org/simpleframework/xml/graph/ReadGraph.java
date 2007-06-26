@@ -208,13 +208,12 @@ class ReadGraph extends HashMap {
     */  
    private Type getArray(Class field, Class real, NodeMap node) throws Exception {
       Node entry = node.remove(length);
+      int size = 0;
       
-      if(entry == null) {
-         throw new ElementException("Array %s requires a '%s' attribute", field, length);
-      }
-      String value = entry.getValue();
-      int size = Integer.parseInt(value);
-      
+      if(entry != null) {
+         String value = entry.getValue();
+         size = Integer.parseInt(value);
+      }      
       return new ArrayInstance(real, size);      
    }
 }

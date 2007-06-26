@@ -81,7 +81,7 @@ class ArrayTransform {
     * being deserialized from the XML document and the value for
     * the string representation is required.
     * 
-    * @param value this is the string representation of the value
+    * @param list this is the string representation of the value
     * @param single this is used to perform individual transforms
     * @param length this is the number of entries in the array 
     * 

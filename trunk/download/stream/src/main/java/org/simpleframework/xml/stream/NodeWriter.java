@@ -261,7 +261,7 @@ class NodeWriter {
     * the output. This will iterate over each node entered on to
     * the node. Once written the node is considered inactive.
     *
-    * @param this is the node to have is attributes written
+    * @param node this is the node to have is attributes written
     */ 
    private void writeAttributes(OutputNode node) throws Exception {
       NodeMap map = node.getAttributes();

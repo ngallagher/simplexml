@@ -64,7 +64,7 @@ abstract class PackageMatcher implements Matcher {
     * matched with this matcher, the fully qualified class name for
     * the type is appended with "ArrayTransform" for the transform. 
     * 
-    * @param type this is the type to acquire the transform class
+    * @param entry this is the type to acquire the transform class
     *  
     * @return this returns the class for the required transform  
     * 
@@ -104,14 +104,14 @@ abstract class PackageMatcher implements Matcher {
     * the type is appended with specified suffix for the transform.
     * Also for Java types the package is replaced for the class. 
     * 
+    * @param suffix this is appended to the name of the class 
     * @param type this is the type to acquire the transform class
-    * @param suffix this is appended to the name of the class
     *  
     * @return this returns the class for the required transform  
     * 
     * @throws Exception thrown if a transform could not be loaded
     */
-   protected String getConversion(String text, Class type) {
+   protected String getConversion(String suffix, Class type) {
       String name = type.getName();
       
       if(name.startsWith("javax")) {
@@ -120,6 +120,6 @@ abstract class PackageMatcher implements Matcher {
       if(name.startsWith("java")) {
          name = name.replace("java", PACKAGE);
       }
-      return String.format(text, name); 
+      return String.format(suffix, name); 
    }
 }

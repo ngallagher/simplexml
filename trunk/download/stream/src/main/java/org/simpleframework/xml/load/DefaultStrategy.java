@@ -90,7 +90,7 @@ class DefaultStrategy implements Strategy {
     * If no such attribute exists on the element this returns null.
     * 
     * @param field this is the type of the XML element expected
-    * @param root this is the element used to resolve an override
+    * @param node this is the element used to resolve an override
     * @param map this is used to maintain contextual information
     * 
     * @return returns the class that should be used for the object
@@ -144,13 +144,12 @@ class DefaultStrategy implements Strategy {
     */   
    private Type getArray(Class type, NodeMap node) throws Exception {      
       Node entry = node.remove(length);
+      int size = 0;
       
-      if(entry == null) {
-         throw new ElementException("Array %s requires a '%s' attribute", type, length);
-      }
-      String value = entry.getValue();
-      int size = Integer.parseInt(value);
-      
+      if(entry != null) {
+         String value = entry.getValue();
+         size = Integer.parseInt(value);
+      }      
       return new ArrayType(type, size);
    }
    
@@ -192,7 +191,7 @@ class DefaultStrategy implements Strategy {
     *  
     * @param field this is the declared class for the field used
     * @param value this is the instance variable being serialized
-    * @param root this is the element used to represent the value
+    * @param node this is the element used to represent the value
     * @param map this is used to maintain contextual information
     * 
     * @return this returns true if serialization is complete

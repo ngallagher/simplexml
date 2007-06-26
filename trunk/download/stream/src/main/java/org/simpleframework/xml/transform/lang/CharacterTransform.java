@@ -26,10 +26,10 @@ import org.simpleframework.xml.transform.Transform;
 /**
  * The <code>CharacterTransform</code> object transforms character
  * values to and from string representations, which will be inserted
- * in the the generated XML document as the value place holder. The
+ * in the generated XML document as the value place holder. The
  * value must be readable and writable in the same format. Fields
  * and methods annotated with the XML attribute annotation will use
- * this to persist and retrieve the value to an from the XML source.
+ * this to persist and retrieve the value to and from the XML source.
  * <pre>
  * 
  *    &#64;Attribute

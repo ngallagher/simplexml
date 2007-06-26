@@ -73,7 +73,7 @@ class ConversionType implements Type {
     * the object or constructor does not have public access then this
     * will ensure the constructor is accessible and can be used.
     * 
-    * @param type this is used to ensure the object is accessible
+    * @param convert this is used to ensure the object is accessible
     *
     * @return this returns an instance of the specifiec class type
     */ 
@@ -112,10 +112,9 @@ class ConversionType implements Type {
     * type that is substituted during the deserialization process 
     * and so constitutes an object that does not need initialization.
     * 
-    * @retunr this returns true if the type is a reference type
+    * @return this returns true if the type is a reference type
     */
    public boolean isReference() {
       return type.isReference();
-   }
-   
+   }   
 }

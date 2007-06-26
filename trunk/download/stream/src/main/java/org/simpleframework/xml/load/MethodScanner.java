@@ -309,7 +309,7 @@ class MethodScanner extends ContactList {
     * is not a set method within the object that does not have a
     * match, therefore violating the contract of a property.
     * 
-    * @param read this is a get method that has been extracted
+    * @param write this is a get method that has been extracted
     * @param name this is the Java Bean methos name to be matched 
     * 
     * @throws Exception thrown if there is a unmatched set method

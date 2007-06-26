@@ -26,10 +26,10 @@ import java.lang.reflect.Array;
 /**
  * The <code>PrimitiveArrayTransform</code> is used to transform 
  * arrays to and from string representations, which will be inserted
- * in the the generated XML document as the value place holder. The
+ * in the generated XML document as the value place holder. The
  * value must be readable and writable in the same format. Fields
  * and methods annotated with the XML attribute annotation will use
- * this to persist and retrieve the value to an from the XML source.
+ * this to persist and retrieve the value to and from the XML source.
  * <pre>
  * 
  *    &#64;Attribute
@@ -99,7 +99,8 @@ class PrimitiveArrayTransform implements Transform {
     * being deserialized from the XML document and the value for
     * the string representation is required.
     * 
-    * @param value this is the string representation of the value
+    * @param list this is the string representation of the value
+    * @param length this is the number of string values to use
     * 
     * @return this returns an appropriate instanced to be used
     */

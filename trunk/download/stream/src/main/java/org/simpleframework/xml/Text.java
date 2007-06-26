@@ -26,11 +26,15 @@ import java.lang.annotation.Retention;
 /**
  * The <code>Text</code> annotation is used to represent a field or
  * method that appears as text within an XML element. Methods and
- * fields annotated with this must represent primitive values. One
- * restriction on this annotation is that it can only appear once 
- * within a schema class, and it can not appear with the another XML
+ * fields annotated with this must represent primitive values, which
+ * means that the type is converted to and from an XML representation
+ * using a <code>Transform</code> object. For example, the primitive 
+ * types typically annotated could be strings, integers, or dates.  
+ * <p>
+ * One restriction on this annotation is that it can only appear once 
+ * within a schema class, and it can not appear with the another XML 
  * element annotations, such as the <code>Element</code> annotation. 
- * It can however appear with any number of <code>Attribute</code>
+ * It can however appear with any number of <code>Attribute</code> 
  * annotations.
  * <pre>
  * 
@@ -45,6 +49,8 @@ import java.lang.annotation.Retention;
  * which is wrapped in a surrounding XML element.
  * 
  * @author Niall Gallagher
+ * 
+ * @see org.simpleframework.xml.transform.Transformer
  */ 
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Text {

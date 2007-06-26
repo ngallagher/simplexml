@@ -28,7 +28,14 @@ import java.lang.annotation.Retention;
  * or method that appears as an XML element. Fields or methods that
  * are annotated with this can be either primitive or compound, that
  * is, represent an object that can be serialized and deserialized.
- * Below is an example of the serialized format for a compond object. 
+ * Below is an example of the serialized format for a compond object.
+ * <p>
+ * If this annotates a type that contains no XML annotations then
+ * this will look for a suitable <code>Transform</code> for the type
+ * using the <code>Transformer</code>. For instance, all primitives 
+ * and primitive arrays that are annotated with this will make use 
+ * of a transform in order to convert its value to and from suitable 
+ * XML representations.
  * <pre>
  * 
  *    &lt;example class="demo.Example"&gt;

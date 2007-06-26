@@ -362,7 +362,7 @@ public class Persister implements Serializer {
     * object graph deserialized is returned.
     * 
     * @param type this is the XML schema class to be deserialized
-    * @param source the document the object is deserialized from
+    * @param node the document the object is deserialized from
     * @param filter this is the filter used by the templating engine
     * 
     * @return the object deserialized from the XML document given
@@ -521,7 +521,7 @@ public class Persister implements Serializer {
     * the object graph an exception is thrown.
     * 
     * @param value this is the object to deserialize the XML in to
-    * @param source this provides the source of the XML document
+    * @param node this provides the source of the XML document
     * @param filter this is the filter used by the templating engine
     * 
     * @return the same instance provided is returned when finished 

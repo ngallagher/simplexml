@@ -26,10 +26,10 @@ import java.io.File;
 /**
  * The <code>FileTransform</code> object is used to transform file
  * paths to and from string representations, which will be inserted
- * in the the generated XML document as the value place holder. The
+ * in the generated XML document as the value place holder. The
  * value must be readable and writable in the same format. Fields
  * and methods annotated with the XML attribute annotation will use
- * this to persist and retrieve the value to an from the XML source.
+ * this to persist and retrieve the value to and from the XML source.
  * <pre>
  * 
  *    &#64;Attribute
@@ -45,7 +45,7 @@ import java.io.File;
  * @author Niall Gallagher
  */
 public class FileTransform implements Transform<File> {
-   
+               
    /**
     * This method is used to convert the string value given to an
     * appropriate representation. This is used when an object is

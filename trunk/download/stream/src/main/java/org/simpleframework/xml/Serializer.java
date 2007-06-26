@@ -37,8 +37,8 @@ import java.io.File;
  * An implementation of the <code>Serializer</code> interface is free
  * to use any desired XML parsing framework. If a framework other 
  * than the Java streaming API for XML is required then it should be
- * wrapped within the classes of the <code>org.simpleframework.xml.stream</code>
- * framework, which offers a framework neutral facade.
+ * wrapped within the <code>org.simpleframework.xml.stream</code> API,
+ * which offers a framework neutral facade.
  * 
  * @author Niall Gallagher
  */

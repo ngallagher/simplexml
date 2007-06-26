@@ -150,11 +150,13 @@ class PrimitiveList implements Converter {
       Collection list = (Collection) source;                
       
       for(Object item : list) {
-         OutputNode child = node.getChild(parent);
-         
-         if(!isOverridden(child, item)) { 
-            root.write(child, item);
-         } 
+         if(item != null) {
+            OutputNode child = node.getChild(parent);         
+
+            if(!isOverridden(child, item)) { 
+               root.write(child, item);
+            }
+         }
       }
    }
    

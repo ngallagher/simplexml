@@ -212,7 +212,7 @@ class CompositeArray implements Converter {
     * Each array entry is serialized as a root element, that is, its
     * <code>Root</code> annotation is used to extract the name. 
     * 
-    * @param source this is the source object array to be serialized 
+    * @param item this is the object array element to be serialized 
     * @param node this is the XML element container to be populated
     * @param entry this is the type of the object that is expected
     */ 

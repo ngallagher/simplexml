@@ -274,8 +274,6 @@ public class Resolver<M extends Match> extends AbstractSet<M> {
        * Constructor for the <code>Cache</code> object. This is a
        * constructor that creates the linked hash map such that 
        * it will purge the entries that are oldest within the map.
-       *
-       * @param capacity this is the capacity of the cache object
        */ 
       public Cache() {      
          super(MAX_ENTRIES, INITIAL_CAPACITY, false);              

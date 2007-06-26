@@ -53,7 +53,7 @@ class Source {
    /**
     * This is used to cache all schemas built to represent a class.
     * 
-    * @see simple.Scanner
+    * @see org.simpleframework.xml.load.Scanner
     */
    private static ScannerCache cache;
 
