@@ -99,7 +99,7 @@ class Primitive implements Converter {
       if(node.isElement()) {
          return readElement(node);
       }
-      return readPrimitive(node);
+      return readTemplate(node);
    }  
    
    /**
@@ -134,7 +134,7 @@ class Primitive implements Converter {
     * @return this returns the primitive that has been deserialized
     */ 
    private Object readElement(InputNode node, Type type) throws Exception {
-      Object value = readPrimitive(node);
+      Object value = readTemplate(node);
       
       if(value != null) {
          return type.getInstance(value);
@@ -153,7 +153,7 @@ class Primitive implements Converter {
     *
     * @return this returns the primitive that has been deserialized
     */ 
-   private Object readPrimitive(InputNode node) throws Exception{
+   private Object readTemplate(InputNode node) throws Exception{
       String value = node.getValue();
       
       if(value == null) {
@@ -162,7 +162,7 @@ class Primitive implements Converter {
       if(empty != null && value.equals(empty)) {
          return empty;         
       }
-      return readPrimitive(node, value);
+      return readTemplate(value);
    }
    
    /**
@@ -172,16 +172,15 @@ class Primitive implements Converter {
     * object used for this instance of serialization to replace all
     * template variables with values from the source filter.
     *
-    * @param node this is the node to be converted to a primitive
     * @param value this is the value to be processed as a template
     *
     * @return this returns the primitive that has been deserialized
     */ 
-   private Object readPrimitive(InputNode node, String value) throws Exception {
+   private Object readTemplate(String value) throws Exception {
       String text = root.getProperty(value);
       
       if(text != null) {
-         return factory.getPrimitive(text);
+         return factory.getInstance(text);
       }
       return null;
    }  
