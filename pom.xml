@@ -1,8 +1,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>org.simpleframework</groupId>
-  <artifactId>simple-xml</artifactId>
+  <groupId>framework</groupId>
+  <artifactId>simpl</artifactId>
   <packaging>jar</packaging>
   <version>1.4</version>
   <name>Simple XML</name>
@@ -30,16 +30,19 @@
       <groupId>stax</groupId>
       <artifactId>stax-api</artifactId>
       <version>1.0.1</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
-      <groupId>stax</groupId>
-      <artifactId>stax</artifactId>
-      <version>1.2.0</version>
+      <groupId>org.simpleframework</groupId>
+      <artifactId>simple-xml</artifactId>
+      <version>1.4</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>xmlunit</groupId>
       <artifactId>xmlunit</artifactId>
       <version>1.0</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
   <reporting>
