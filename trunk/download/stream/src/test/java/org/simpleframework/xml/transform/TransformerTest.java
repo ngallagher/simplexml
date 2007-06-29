@@ -36,6 +36,18 @@ public class TransformerTest extends TestCase {
       assertEquals(text, "c");
    }
    
+   public void testInvalidCharacter() throws Exception {
+      boolean success = false;
+      
+      try {
+         transformer.read("too long", Character.class);
+      }catch(InvalidFormatException e) {
+         e.printStackTrace();
+         success = true;
+      }
+      assertTrue(success);
+   }
+   
    public void testFloat() throws Exception {
       Object value = transformer.read("1.12", Float.class);      
       String text = transformer.write(value, Float.class);
@@ -220,6 +232,23 @@ public class TransformerTest extends TestCase {
       assertEquals(array[3], new Integer(4));
       assertEquals(array[4], new Integer(5));
       assertEquals(text, "1, 2, 3, 4, 5");
+   }
+   
+   public void testBooleanArray() throws Exception {
+      Object value = transformer.read("true, false, false, false, true", Boolean[].class); 
+      String text = transformer.write(value, Boolean[].class);
+      
+      assertTrue(value instanceof Boolean[]);
+
+      Boolean[] array = (Boolean[])value;
+
+      assertEquals(array.length, 5);
+      assertEquals(array[0], Boolean.TRUE);
+      assertEquals(array[1], Boolean.FALSE);
+      assertEquals(array[2], Boolean.FALSE);
+      assertEquals(array[3], Boolean.FALSE);
+      assertEquals(array[4], Boolean.TRUE);
+      assertEquals(text, "true, false, false, false, true");
    }
    
    public void testLongArray() throws Exception {

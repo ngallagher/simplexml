@@ -58,7 +58,7 @@ public class CharacterTransform implements Transform<Character> {
     */
    public Character read(String value) throws Exception {
       if(value.length() != 1) {
-         throw new InvalidFormatException("Cannot convert %s to a character", value);
+         throw new InvalidFormatException("Cannot convert '%s' to a character", value);
       }
       return value.charAt(0);     
    }
