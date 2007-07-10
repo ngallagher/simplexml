@@ -1,17 +1,13 @@
 package org.simpleframework.xml.transform;
 
-import org.simpleframework.xml.transform.DefaultMatcher;
-import org.simpleframework.xml.transform.Matcher;
-import org.simpleframework.xml.transform.Transform;
-
 import junit.framework.TestCase;
 
-public class DefaultMatcherTest extends TestCase {
+public class TypeMatcherTest extends TestCase {
    
    private Matcher matcher;
    
    public void setUp() {
-      this.matcher = new DefaultMatcher();
+      this.matcher = new TypeMatcher(new EmptyMatcher());
    }
 
    public void testInteger() throws Exception {     
@@ -87,7 +83,7 @@ public class DefaultMatcherTest extends TestCase {
    }
    
    public void testPrimitiveIntegerArray() throws Exception {
-      Matcher matcher = new DefaultMatcher();
+      Matcher matcher = new TypeMatcher(new EmptyMatcher());
       Transform transform = matcher.match(int[].class);
       Object value = transform.read("1, 2, 3, 4, 5");
       

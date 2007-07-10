@@ -29,7 +29,7 @@ import java.io.Writer;
  * start and end tags, as well as attributes and values to the given
  * writer. The output is written directly to the stream with and
  * indentation for each element appropriate to its position in the
- * document heirarchy. If the indent is set to zero then no indent
+ * document hierarchy. If the indent is set to zero then no indent
  * is performed and all XML will appear on the same line.
  *
  * @see org.simpleframework.xml.stream.Indenter
