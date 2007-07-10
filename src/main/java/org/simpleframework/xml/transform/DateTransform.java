@@ -45,7 +45,7 @@ import java.util.Date;
  * 
  * @author Niall Gallagher
  */
-class DateTransform<T extends Date> implements Transform<Date> {
+class DateTransform implements Transform<Date> {
    
    /**
     * This is the format for the dates that are produced by this.
@@ -73,7 +73,7 @@ class DateTransform<T extends Date> implements Transform<Date> {
     * The format chosen for the default date format contains produces
     * date values like <code>2007-05-02 12:22:10.000 GMT</code>.
     */
-   public DateTransform(Class<T> type) throws Exception {
+   public DateTransform(Class type) throws Exception {
       this(type, FORMAT);
    }
    

@@ -53,7 +53,7 @@ public class TimeTransformTest extends ValidationTestCase {
    public void testTime() throws Exception {
       long now = System.currentTimeMillis();
       Time date = new Time(now);
-      DateTransform<Time> format = new DateTransform<Time>(Time.class);
+      DateTransform format = new DateTransform(Time.class);
       String value = format.write(date);
       Date copy = format.read(value);
       
