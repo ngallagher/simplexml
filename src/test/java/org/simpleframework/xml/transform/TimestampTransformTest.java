@@ -18,5 +18,6 @@ public class TimestampTransformTest extends TestCase {
       
       assertEquals(date, copy);  
       assertEquals(copy.getTime(), now);
+      assertTrue(copy instanceof Timestamp);
    }
 }
