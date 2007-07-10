@@ -47,7 +47,7 @@ package org.simpleframework.xml.transform;
  * above array could be annotated with <code>ElementList</code> just
  * as easily, in which case each entry would have its own element.
  * The choice of which annotation to use is up to the developer. A
- * more obvious benifit to transformations like this can be seen for
+ * more obvious benefit to transformations like this can be seen for
  * values annotated with the <code>Attribute</code> annotation.
  * 
  * @author Niall Gallagher
