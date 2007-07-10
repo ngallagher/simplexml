@@ -12,7 +12,7 @@ public class TimestampTransformTest extends TestCase {
    public void testTimestamp() throws Exception {
       long now = System.currentTimeMillis();
       Timestamp date = new Timestamp(now);
-      DateTransform<Timestamp> format = new DateTransform<Timestamp>(Timestamp.class);
+      DateTransform format = new DateTransform(Timestamp.class);
       String value = format.write(date);
       Date copy = format.read(value);
       
