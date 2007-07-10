@@ -72,7 +72,7 @@ class DateFactory<T extends Date> {
     * 
     * @return this returns an instance of the required date type
     */
-   public Date getInstance(Date date) throws Exception {
+   public T getInstance(Date date) throws Exception {
       long time = date.getTime();
       
       return factory.newInstance(time);
