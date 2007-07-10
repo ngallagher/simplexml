@@ -12,7 +12,6 @@ import org.simpleframework.xml.Root;
 import org.simpleframework.xml.ValidationTestCase;
 import org.simpleframework.xml.graph.CycleStrategy;
 import org.simpleframework.xml.load.Persister;
-import org.simpleframework.xml.transform.lang.IntegerTransform;
 
 public class PrimitiveArrayTransformTest extends ValidationTestCase {
    
@@ -68,7 +67,7 @@ public class PrimitiveArrayTransformTest extends ValidationTestCase {
    }
    
    public void testRead() throws Exception {    
-      PrimitiveArrayTransform transform = new PrimitiveArrayTransform(new IntegerTransform(), int.class);
+      ArrayTransform transform = new ArrayTransform(new IntegerTransform(), int.class);
       int[] list = (int[])transform.read("1,2,3,4");     
  
       assertEquals(1, list[0]);
@@ -91,7 +90,7 @@ public class PrimitiveArrayTransformTest extends ValidationTestCase {
    }
 
    public void testWrite() throws Exception {
-      PrimitiveArrayTransform transform = new PrimitiveArrayTransform(new IntegerTransform(), int.class);
+      ArrayTransform transform = new ArrayTransform(new IntegerTransform(), int.class);
       String value = transform.write(new int[] { 1, 2, 3, 4});
 
       assertEquals(value, "1, 2, 3, 4");

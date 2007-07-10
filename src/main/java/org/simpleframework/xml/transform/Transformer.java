@@ -73,7 +73,7 @@ public class Transformer {
     * this will match transforms by convention.
     */
    public Transformer() {
-      this(new DefaultMatcher());
+      this(new EmptyMatcher());
    }
    
    /**
@@ -84,9 +84,10 @@ public class Transformer {
     * 
     * @param matcher this is used to match types to transforms
     */
-   private Transformer(Matcher matcher) {      
+   private Transformer(Matcher matcher) {  
+      this.matcher = new TypeMatcher(matcher);
       this.cache = new TransformCache();
-      this.matcher = matcher;
+
    }
    
    /**

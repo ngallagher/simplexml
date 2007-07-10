@@ -31,7 +31,7 @@ package org.simpleframework.xml.transform;
  * 
  * @author Niall Gallagher
  */
-class ArrayMatcher extends PackageMatcher {
+class ArrayMatcher implements Matcher {
 
    /**
     * This is the primary matcher that can resolve transforms.
@@ -64,8 +64,11 @@ class ArrayMatcher extends PackageMatcher {
    public Transform match(Class type) throws Exception {
       Class entry = type.getComponentType();
       
-      if(entry.isPrimitive()) {
-         return matchPrimitive(entry);
+      if(entry == char.class) {
+         return new CharacterArrayTransform(entry);
+      } 
+      if(entry == Character.class) {
+         return new CharacterArrayTransform(entry);
       }
       return matchArray(entry);
    }
@@ -81,32 +84,12 @@ class ArrayMatcher extends PackageMatcher {
     * 
     * @throws Exception thrown if a transform can not be matched
     */
-   private Transform matchPrimitive(Class entry) throws Exception {            
+   private Transform matchArray(Class entry) throws Exception {            
       Transform transform = primary.match(entry);
-
-      if(entry == char.class) {
-         return new CharacterArrayTransform();
-      }      
+     
       if(transform == null) {
-         throw new TransformRequiredException("Transform for %s not found", entry);
+         throw new TransformException("Transform for '%s' not found", entry);
       }
-      return new PrimitiveArrayTransform(transform, entry);
-   }
-   
-   /**
-    * This is used to match a <code>Transform</code> based on the
-    * array component type of an object to be transformed. This will
-    * attempt to match the transform using the fully qualified class
-    * name of the array component type. If a trasform can not be
-    * found then this method will throw an exception.
-    * 
-    * @param entry this is the array component type to be matched
-    * 
-    * @throws Exception thrown if a transform can not be matched
-    */
-   private Transform matchArray(Class entry) throws Exception {
-      Class type = getArrayClass(entry);      
-      
-      return (Transform)type.newInstance();
+      return new ArrayTransform(transform, entry);
    }
 }

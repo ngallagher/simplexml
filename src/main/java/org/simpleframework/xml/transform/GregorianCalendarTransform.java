@@ -1,5 +1,5 @@
 /*
- * CharacterArrayTransform.java May 2007
+ * GregorialCalendarTransform.java May 2007
  *
  * Copyright (C) 2007, Niall Gallagher <niallg@users.sf.net>
  *
@@ -20,10 +20,11 @@
 
 package org.simpleframework.xml.transform;
 
-import java.lang.reflect.Array;
+import java.util.GregorianCalendar;
+import java.util.Date;
 
 /**
- * The <code>CharacterArrayTransform</code> is used to transform text
+ * The <code>DateTransform</code> is used to transform calendar
  * values to and from string representations, which will be inserted
  * in the generated XML document as the value place holder. The
  * value must be readable and writable in the same format. Fields
@@ -32,7 +33,7 @@ import java.lang.reflect.Array;
  * <pre>
  * 
  *    &#64;Attribute
- *    private char[] text;
+ *    private GregorianCalendar date;
  *    
  * </pre>
  * As well as the XML attribute values using transforms, fields and
@@ -43,41 +44,34 @@ import java.lang.reflect.Array;
  * 
  * @author Niall Gallagher
  */
-class CharacterArrayTransform implements Transform {     
-
-   /**
-    * This is the entry type for the primitive array to be created.
-    */
-   private final Class entry;
-
-   /**
-    * Constructor for the <code>PrimitiveArrayTransform</code> object.
-    * This is used to create a transform that will create primitive
-    * arrays and populate the values of the array with values from a
-    * comma separated list of individula values for the entry type.
-    * 
-    * @param delegate this is used to perform individual transforms
-    * @param entry this is the entry component type for the array
-    */
-   public CharacterArrayTransform(Class entry) {
-      this.entry = entry;
-   }       
+class GregorianCalendarTransform implements Transform<GregorianCalendar> {
    
    /**
-    * This method is used to convert the string value given to an
-    * appropriate representation. This is used when an object is
-    * being deserialized from the XML document and the value for
-    * the string representation is required.
-    * 
-    * @param value this is the string representation of the value
-    * 
-    * @return this returns an appropriate instanced to be used
+    * This is the date transform used to parse and format dates.
+    */  
+   private DateTransform transform;
+   
+   /**
+    * Constructor for the <code>GregorianCalendarTransform</code> 
+    * object. This is used to create a transform using a default 
+    * date format pattern. The format chosen for the default date 
+    * uses <code>2007-05-02 12:22:10.000 GMT</code> like dates.
     */
-   public Object read(String value) throws Exception {
-      char[] list = value.toCharArray();      
-      int length = list.length;
-
-      return read(list, length);
+   public GregorianCalendarTransform() throws Exception {
+      this(Date.class);
+   }
+   
+   /**
+    * Constructor for the <code>GregorianCalendarTransform</code> 
+    * object. This is used to create a transform using a default 
+    * date format pattern. The format should typically contain 
+    * enough information to create the date using a different 
+    * locale or time zone between read and write operations.
+    * 
+    * @param format this is the date format that is to be used
+    */
+   public GregorianCalendarTransform(Class type) throws Exception {
+      this.transform = new DateTransform(type);      
    }
    
    /**
@@ -86,18 +80,31 @@ class CharacterArrayTransform implements Transform {
     * being deserialized from the XML document and the value for
     * the string representation is required.
     * 
-    * @param list this is the string representation of the value
-    * @param length this is the number of string values to use
+    * @param date the string representation of the date value 
     * 
     * @return this returns an appropriate instanced to be used
-    */
-   private Object read(char[] list, int length) throws Exception {
-      Object array = Array.newInstance(entry, length);
-
-      for(int i = 0; i < length; i++) {
-         Array.set(array, i, list[i]);                
+    */  
+   public GregorianCalendar read(String date) throws Exception {
+      return read(transform.read(date));      
+   }
+   
+   /**
+    * This method is used to convert the string value given to an
+    * appropriate representation. This is used when an object is
+    * being deserialized from the XML document and the value for
+    * the string representation is required.
+    * 
+    * @param date the string representation of the date value 
+    * 
+    * @return this returns an appropriate instanced to be used
+    */  
+   private GregorianCalendar read(Date date) throws Exception {
+      GregorianCalendar calendar = new GregorianCalendar();
+      
+      if(date != null) {
+         calendar.setTime(date);
       }
-      return array;
+      return calendar;
    }
    
    /**
@@ -106,36 +113,11 @@ class CharacterArrayTransform implements Transform {
     * there is a need to convert a field value in to a string so 
     * that that value can be written as a valid XML entity.
     * 
-    * @param value this is the value to be converted to a string
+    * @param date this is the value to be converted to a string
     * 
-    * @return this is the string representation of the given value
+    * @return this is the string representation of the given date
     */
-   public String write(Object value) throws Exception {
-      int length = Array.getLength(value);
-
-      return write(value, length);      
-   }
-   
-   /**
-    * This method is used to convert the provided value into an XML
-    * usable format. This is used in the serialization process when
-    * there is a need to convert a field value in to a string so 
-    * that that value can be written as a valid XML entity.
-    * 
-    * @param value this is the value to be converted to a string
-    * 
-    * @return this is the string representation of the given value
-    */
-   private String write(Object value, int length) throws Exception {
-      StringBuilder text = new StringBuilder(length);
-
-      for(int i = 0; i < length; i++) {
-         Object entry = Array.get(value, i);         
-
-         if(entry != null) {
-            text.append(entry);                             
-         }         
-      }      
-      return text.toString();
+   public String write(GregorianCalendar date) throws Exception {
+      return transform.write(date.getTime());
    }
 }
