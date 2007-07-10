@@ -220,7 +220,7 @@ public class CycleStrategy implements Strategy {
     * 
     * @param field the type of the field or method in the object
     * @param value this is the actual object that is to be written
-    * @param node tihs is the XML element attribute map to use
+    * @param node this is the XML element attribute map to use
     * @param map this is the session map used for the serialization
     * 
     * @return returns true if the object has been fully serialized

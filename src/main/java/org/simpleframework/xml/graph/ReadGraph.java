@@ -20,7 +20,6 @@
 
 package org.simpleframework.xml.graph;
 
-import org.simpleframework.xml.load.ElementException;
 import org.simpleframework.xml.stream.NodeMap;
 import org.simpleframework.xml.stream.Node;
 import org.simpleframework.xml.load.Type;
@@ -56,7 +55,7 @@ class ReadGraph extends HashMap {
    private String mark;
    
    /**
-    * Thsi is the attribute used to refer to an existing instance.
+    * This is the attribute used to refer to an existing instance.
     */
    private String refer;
    

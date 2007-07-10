@@ -77,7 +77,7 @@ public @interface ElementList {
    
    /**
     * This is used to provide a parent XML element for each of the
-    * values within the array. This esentially wraps the entity to
+    * values within the array. This essentially wraps the entity to
     * be serialized such that there is an extra XML element present.
     * Typically this is only used to represent a list of primitives.  
     * 

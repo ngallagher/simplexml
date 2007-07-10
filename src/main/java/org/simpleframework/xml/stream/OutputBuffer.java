@@ -54,7 +54,7 @@ class OutputBuffer {
     * The buffer will not overflow with repeated uses of the 
     * <code>append</code>, it uses an <code>ensureCapacity</code>
     * method which will allow the buffer to dynamically grow in 
-    * size to accomodate more characters.
+    * size to accommodate more characters.
     *
     * @param ch the character to be appended to the buffer
     */
@@ -67,7 +67,7 @@ class OutputBuffer {
     * The buffer will not overflow with repeated uses of the 
     * <code>append</code>, it uses an <code>ensureCapacity</code> 
     * method which will allow the buffer to dynamically grow in 
-    * size to accomodate large string objects.
+    * size to accommodate large string objects.
     *
     * @param value the string to be appended to this output buffer
     */  
@@ -80,7 +80,7 @@ class OutputBuffer {
     * The buffer will not overflow with repeated uses of the 
     * <code>append</code>, it uses an <code>ensureCapacity</code> 
     * method which will allow the buffer to dynamically grow in 
-    * size to accomodate large character arrays.
+    * size to accommodate large character arrays.
     *
     * @param value the character array to be appended to this
     * @param off the read offset for the array to begin reading
@@ -95,7 +95,7 @@ class OutputBuffer {
     * The buffer will not overflow with repeated uses of the 
     * <code>append</code>, it uses an <code>ensureCapacity</code>
     * method which will allow the buffer to dynamically grow in 
-    * size to accomodate large string objects.
+    * size to accommodate large string objects.
     *
     * @param value the string to be appended to the output buffer
     * @param off the offset to begin reading from the string
