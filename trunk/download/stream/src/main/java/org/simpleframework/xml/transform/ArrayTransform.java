@@ -1,5 +1,5 @@
 /*
- * CharacterArrayTransform.java May 2007
+ * PrimitiveArrayTransform.java May 2007
  *
  * Copyright (C) 2007, Niall Gallagher <niallg@users.sf.net>
  *
@@ -20,11 +20,12 @@
 
 package org.simpleframework.xml.transform;
 
+import org.simpleframework.xml.transform.StringArrayTransform;
 import java.lang.reflect.Array;
 
 /**
- * The <code>CharacterArrayTransform</code> is used to transform text
- * values to and from string representations, which will be inserted
+ * The <code>PrimitiveArrayTransform</code> is used to transform 
+ * arrays to and from string representations, which will be inserted
  * in the generated XML document as the value place holder. The
  * value must be readable and writable in the same format. Fields
  * and methods annotated with the XML attribute annotation will use
@@ -32,7 +33,7 @@ import java.lang.reflect.Array;
  * <pre>
  * 
  *    &#64;Attribute
- *    private char[] text;
+ *    private int[] text;
  *    
  * </pre>
  * As well as the XML attribute values using transforms, fields and
@@ -43,7 +44,17 @@ import java.lang.reflect.Array;
  * 
  * @author Niall Gallagher
  */
-class CharacterArrayTransform implements Transform {     
+class ArrayTransform implements Transform {           
+
+   /**
+    * This transform is used to split the comma separated values. 
+    */
+   private final StringArrayTransform split;        
+
+   /**
+    * This is the transform that performs the individual transform.
+    */
+   private final Transform delegate;
 
    /**
     * This is the entry type for the primitive array to be created.
@@ -59,7 +70,9 @@ class CharacterArrayTransform implements Transform {
     * @param delegate this is used to perform individual transforms
     * @param entry this is the entry component type for the array
     */
-   public CharacterArrayTransform(Class entry) {
+   public ArrayTransform(Transform delegate, Class entry) {
+      this.split = new StringArrayTransform();
+      this.delegate = delegate;
       this.entry = entry;
    }       
    
@@ -74,7 +87,7 @@ class CharacterArrayTransform implements Transform {
     * @return this returns an appropriate instanced to be used
     */
    public Object read(String value) throws Exception {
-      char[] list = value.toCharArray();      
+      String[] list = split.read(value);      
       int length = list.length;
 
       return read(list, length);
@@ -91,11 +104,15 @@ class CharacterArrayTransform implements Transform {
     * 
     * @return this returns an appropriate instanced to be used
     */
-   private Object read(char[] list, int length) throws Exception {
+   private Object read(String[] list, int length) throws Exception {
       Object array = Array.newInstance(entry, length);
 
       for(int i = 0; i < length; i++) {
-         Array.set(array, i, list[i]);                
+         Object item = delegate.read(list[i]);
+
+         if(item != null) {
+            Array.set(array, i, item);                 
+         }         
       }
       return array;
    }
@@ -127,15 +144,15 @@ class CharacterArrayTransform implements Transform {
     * @return this is the string representation of the given value
     */
    private String write(Object value, int length) throws Exception {
-      StringBuilder text = new StringBuilder(length);
+      String[] list = new String[length];
 
       for(int i = 0; i < length; i++) {
-         Object entry = Array.get(value, i);         
+         Object entry = Array.get(value, i);
 
          if(entry != null) {
-            text.append(entry);                             
+            list[i] = delegate.write(entry);                             
          }         
       }      
-      return text.toString();
+      return split.write(list);
    }
 }

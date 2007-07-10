@@ -1,5 +1,5 @@
 /*
- * CharacterArrayTransform.java May 2007
+ * StringArrayTransform.java May 2007
  *
  * Copyright (C) 2007, Niall Gallagher <niallg@users.sf.net>
  *
@@ -20,11 +20,12 @@
 
 package org.simpleframework.xml.transform;
 
-import java.lang.reflect.Array;
+import org.simpleframework.xml.transform.Transform;
+import java.util.regex.Pattern;
 
 /**
- * The <code>CharacterArrayTransform</code> is used to transform text
- * values to and from string representations, which will be inserted
+ * The <code>StringArrayTransform</code>  is used to transform string
+ * arrays to and from string representations, which will be inserted
  * in the generated XML document as the value place holder. The
  * value must be readable and writable in the same format. Fields
  * and methods annotated with the XML attribute annotation will use
@@ -32,7 +33,7 @@ import java.lang.reflect.Array;
  * <pre>
  * 
  *    &#64;Attribute
- *    private char[] text;
+ *    private String[] array;
  *    
  * </pre>
  * As well as the XML attribute values using transforms, fields and
@@ -43,25 +44,40 @@ import java.lang.reflect.Array;
  * 
  * @author Niall Gallagher
  */
-class CharacterArrayTransform implements Transform {     
+class StringArrayTransform implements Transform<String[]> {
 
    /**
-    * This is the entry type for the primitive array to be created.
+    * Represents the pattern used to split the string values.
     */
-   private final Class entry;
+   private final Pattern pattern;        
 
    /**
-    * Constructor for the <code>PrimitiveArrayTransform</code> object.
-    * This is used to create a transform that will create primitive
-    * arrays and populate the values of the array with values from a
-    * comma separated list of individula values for the entry type.
+    * This is the token used to split the string into an array.
+    */
+   private final String token;        
+
+   /**
+    * Constructor for the <code>StringArrayTransform</code> object.
+    * This will create a transform that will split an array using a
+    * comma as the delimeter. In order to perform the split in a
+    * reasonably performant manner the pattern used is compiled.
+    */
+   public StringArrayTransform() {
+      this(",");           
+   }        
+  
+   /**
+    * Constructor for the <code>StringArrayTransform</code> object.
+    * This will create a transform that will split an array using a
+    * specified regular expression pattern. To keep the performance
+    * of the transform reasonable the pattern used is compiled.
     * 
-    * @param delegate this is used to perform individual transforms
-    * @param entry this is the entry component type for the array
+    * @param token the pattern used to split the string values
     */
-   public CharacterArrayTransform(Class entry) {
-      this.entry = entry;
-   }       
+   public StringArrayTransform(String token) {
+      this.pattern = Pattern.compile(token);           
+      this.token = token;           
+   }
    
    /**
     * This method is used to convert the string value given to an
@@ -73,11 +89,8 @@ class CharacterArrayTransform implements Transform {
     * 
     * @return this returns an appropriate instanced to be used
     */
-   public Object read(String value) throws Exception {
-      char[] list = value.toCharArray();      
-      int length = list.length;
-
-      return read(list, length);
+   public String[] read(String value) {
+      return read(value, token);           
    }
    
    /**
@@ -86,18 +99,22 @@ class CharacterArrayTransform implements Transform {
     * being deserialized from the XML document and the value for
     * the string representation is required.
     * 
-    * @param list this is the string representation of the value
-    * @param length this is the number of string values to use
+    * @param value this is the string representation of the value
+    * @param token this is the token used to split the string
     * 
     * @return this returns an appropriate instanced to be used
     */
-   private Object read(char[] list, int length) throws Exception {
-      Object array = Array.newInstance(entry, length);
+   private String[] read(String value, String token) {
+      String[] list = pattern.split(value);
 
-      for(int i = 0; i < length; i++) {
-         Array.set(array, i, list[i]);                
+      for(int i = 0; i < list.length; i++) {
+         String text = list[i];
+
+         if(text != null) {              
+            list[i] = text.trim();
+         }
       }
-      return array;
+      return list;
    }
    
    /**
@@ -106,14 +123,12 @@ class CharacterArrayTransform implements Transform {
     * there is a need to convert a field value in to a string so 
     * that that value can be written as a valid XML entity.
     * 
-    * @param value this is the value to be converted to a string
+    * @param list this is the value to be converted to a string
     * 
     * @return this is the string representation of the given value
     */
-   public String write(Object value) throws Exception {
-      int length = Array.getLength(value);
-
-      return write(value, length);      
+   public String write(String[] list) {
+      return write(list, token);
    }
    
    /**
@@ -122,20 +137,25 @@ class CharacterArrayTransform implements Transform {
     * there is a need to convert a field value in to a string so 
     * that that value can be written as a valid XML entity.
     * 
-    * @param value this is the value to be converted to a string
+    * @param list this is the value to be converted to a string
+    * @param token this is the token used to join the strings
     * 
     * @return this is the string representation of the given value
     */
-   private String write(Object value, int length) throws Exception {
-      StringBuilder text = new StringBuilder(length);
+   private String write(String[] list, String token) {                 
+      StringBuilder text = new StringBuilder();           
 
-      for(int i = 0; i < length; i++) {
-         Object entry = Array.get(value, i);         
+      for(int i = 0; i < list.length; i++) {
+         String item = list[i];
 
-         if(entry != null) {
-            text.append(entry);                             
-         }         
-      }      
+         if(item != null) { 
+            if(text.length() > 0) {
+               text.append(token);
+               text.append(' ');
+            }
+            text.append(item);
+         }
+      }   
       return text.toString();
    }
 }

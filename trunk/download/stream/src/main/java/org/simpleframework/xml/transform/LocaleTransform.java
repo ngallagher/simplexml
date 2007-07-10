@@ -1,5 +1,5 @@
 /*
- * CharacterArrayTransform.java May 2007
+ * LocaleTransform.java May 2007
  *
  * Copyright (C) 2007, Niall Gallagher <niallg@users.sf.net>
  *
@@ -20,10 +20,11 @@
 
 package org.simpleframework.xml.transform;
 
-import java.lang.reflect.Array;
+import java.util.regex.Pattern;
+import java.util.Locale;
 
 /**
- * The <code>CharacterArrayTransform</code> is used to transform text
+ * The <code>LocaleTransform</code> is used to transform locale
  * values to and from string representations, which will be inserted
  * in the generated XML document as the value place holder. The
  * value must be readable and writable in the same format. Fields
@@ -32,7 +33,7 @@ import java.lang.reflect.Array;
  * <pre>
  * 
  *    &#64;Attribute
- *    private char[] text;
+ *    private Locale locale;
  *    
  * </pre>
  * As well as the XML attribute values using transforms, fields and
@@ -43,41 +44,21 @@ import java.lang.reflect.Array;
  * 
  * @author Niall Gallagher
  */
-class CharacterArrayTransform implements Transform {     
+class LocaleTransform implements Transform<Locale>{
 
    /**
-    * This is the entry type for the primitive array to be created.
+    * This is the pattern used to split the parts of the locale.
     */
-   private final Class entry;
-
-   /**
-    * Constructor for the <code>PrimitiveArrayTransform</code> object.
-    * This is used to create a transform that will create primitive
-    * arrays and populate the values of the array with values from a
-    * comma separated list of individula values for the entry type.
-    * 
-    * @param delegate this is used to perform individual transforms
-    * @param entry this is the entry component type for the array
-    */
-   public CharacterArrayTransform(Class entry) {
-      this.entry = entry;
-   }       
+   private final Pattern pattern;
    
    /**
-    * This method is used to convert the string value given to an
-    * appropriate representation. This is used when an object is
-    * being deserialized from the XML document and the value for
-    * the string representation is required.
-    * 
-    * @param value this is the string representation of the value
-    * 
-    * @return this returns an appropriate instanced to be used
+    * Constructor for the <code>LocaleTransform</code> object. This
+    * is used to create a transform that will convert locales to and
+    * from string representations. The representations use the Java
+    * locale representation of language, country, and varient.
     */
-   public Object read(String value) throws Exception {
-      char[] list = value.toCharArray();      
-      int length = list.length;
-
-      return read(list, length);
+   public LocaleTransform() {
+      this.pattern = Pattern.compile("_");
    }
    
    /**
@@ -86,18 +67,38 @@ class CharacterArrayTransform implements Transform {
     * being deserialized from the XML document and the value for
     * the string representation is required.
     * 
-    * @param list this is the string representation of the value
-    * @param length this is the number of string values to use
+    * @param locale the string representation of the date value 
     * 
     * @return this returns an appropriate instanced to be used
     */
-   private Object read(char[] list, int length) throws Exception {
-      Object array = Array.newInstance(entry, length);
-
-      for(int i = 0; i < length; i++) {
-         Array.set(array, i, list[i]);                
+   public Locale read(String locale) throws Exception {
+      String[] list = pattern.split(locale);
+      
+      if(list.length < 1) {
+         throw new InvalidFormatException("Invalid locale %s", locale);
       }
-      return array;
+      return read(list);
+   }
+   
+   /**
+    * This method is used to convert the string value given to an
+    * appropriate representation. This is used when an object is
+    * being deserialized from the XML document and the value for
+    * the string representation is required.
+    * 
+    * @param locale the string representation of the date value 
+    * 
+    * @return this returns an appropriate instanced to be used
+    */
+   private Locale read(String[] locale)  throws Exception {
+      String[] list = new String[] {"", "", ""};
+      
+      for(int i = 0; i < list.length; i++) {
+         if(i < locale.length) {         
+            list[i] = locale[i];
+         }
+      }
+      return new Locale(list[0], list[1], list[2]);
    }
    
    /**
@@ -106,36 +107,11 @@ class CharacterArrayTransform implements Transform {
     * there is a need to convert a field value in to a string so 
     * that that value can be written as a valid XML entity.
     * 
-    * @param value this is the value to be converted to a string
+    * @param locale this is the value to be converted to a string
     * 
-    * @return this is the string representation of the given value
+    * @return this is the string representation of the given date
     */
-   public String write(Object value) throws Exception {
-      int length = Array.getLength(value);
-
-      return write(value, length);      
-   }
-   
-   /**
-    * This method is used to convert the provided value into an XML
-    * usable format. This is used in the serialization process when
-    * there is a need to convert a field value in to a string so 
-    * that that value can be written as a valid XML entity.
-    * 
-    * @param value this is the value to be converted to a string
-    * 
-    * @return this is the string representation of the given value
-    */
-   private String write(Object value, int length) throws Exception {
-      StringBuilder text = new StringBuilder(length);
-
-      for(int i = 0; i < length; i++) {
-         Object entry = Array.get(value, i);         
-
-         if(entry != null) {
-            text.append(entry);                             
-         }         
-      }      
-      return text.toString();
+   public String write(Locale locale) {
+      return locale.toString();
    }
 }

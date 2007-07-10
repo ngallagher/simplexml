@@ -9,7 +9,7 @@ import org.simpleframework.xml.ElementArray;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.Text;
 import org.simpleframework.xml.ValidationTestCase;
-import org.simpleframework.xml.transform.TransformRequiredException;
+import org.simpleframework.xml.transform.TransformException;
 
 public class TextTest extends ValidationTestCase {
         
@@ -229,7 +229,7 @@ public class TextTest extends ValidationTestCase {
       
       try {
          persister.read(NonPrimitiveTextEntry.class, DATA_TEXT);                       
-      } catch(TransformRequiredException e) {
+      } catch(TransformException e) {
          e.printStackTrace();
          success = true;              
       }              
