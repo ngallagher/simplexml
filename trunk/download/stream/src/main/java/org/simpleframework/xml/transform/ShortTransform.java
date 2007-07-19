@@ -55,7 +55,7 @@ class ShortTransform implements Transform<Short> {
     * @return this returns an appropriate instanced to be used
     */
    public Short read(String value) {
-      return new Short(value);
+      return Short.valueOf(value);
    }
    
    /**

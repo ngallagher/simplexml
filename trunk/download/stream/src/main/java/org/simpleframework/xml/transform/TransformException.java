@@ -1,5 +1,5 @@
 /*
- * TransformRequiredException.java May 2007
+ * TransformException.java May 2007
  *
  * Copyright (C) 2007, Niall Gallagher <niallg@users.sf.net>
  *
@@ -23,18 +23,17 @@ package org.simpleframework.xml.transform;
 import org.simpleframework.xml.load.PersistenceException;
 
 /**
- * The <code>TransformRequiredException</code> is thrown when there 
- * is a format exception. This exception this will be thrown from the
- * <code>Transformer</code> should serialization or deserialization
- * of an object fail. Error messages provided to this exception are
- * formatted similar to the <code>PrintStream.printf</code> method.
+ * The <code>TransformException</code> is thrown if a problem occurs
+ * during the transformation of an object. This can be thrown either
+ * because a transform could not be found for a specific type or
+ * because the format of the text value had an invalid structure.
  * 
  * @author Niall Gallagher
  */
 public class TransformException extends PersistenceException {
    
    /**
-    * Constructor for the <code>TransformRequiredException</code> object. 
+    * Constructor for the <code>TransformException</code> object. 
     * This constructor takes a format string an a variable number of 
     * object arguments, which can be inserted into the format string. 
     * 
@@ -46,7 +45,7 @@ public class TransformException extends PersistenceException {
    }       
 
    /**
-    * Constructor for the <code>TransformRequiredException</code> object. 
+    * Constructor for the <code>TransformException</code> object. 
     * This constructor takes a format string an a variable number of 
     * object arguments, which can be inserted into the format string. 
     * 

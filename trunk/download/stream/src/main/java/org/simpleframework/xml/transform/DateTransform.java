@@ -45,7 +45,7 @@ import java.util.Date;
  * 
  * @author Niall Gallagher
  */
-class DateTransform implements Transform<Date> {
+class DateTransform<T extends Date> implements Transform<T> {
    
    /**
     * This is the format for the dates that are produced by this.
@@ -55,17 +55,12 @@ class DateTransform implements Transform<Date> {
    /**
     * This represents the constructor used for creating the date.
     */
-   private final DateFactory factory;
+   private final DateFactory<T> factory;
    
    /**
     * This is the date formatter used to parse and format dates.
     */
-   private final DateFormat format;  
-   
-   /**
-    * This is the type that this transform was created to transform.
-    */
-   private final Class type;
+   private final DateFormat format; 
    
    /**
     * Constructor for the <code>DateTransform</code> object. This is
@@ -73,7 +68,7 @@ class DateTransform implements Transform<Date> {
     * The format chosen for the default date format contains produces
     * date values like <code>2007-05-02 12:22:10.000 GMT</code>.
     */
-   public DateTransform(Class type) throws Exception {
+   public DateTransform(Class<T> type) throws Exception {
       this(type, FORMAT);
    }
    
@@ -86,10 +81,9 @@ class DateTransform implements Transform<Date> {
     * 
     * @param format this is the date format that is to be used
     */
-   public DateTransform(Class type, String format) throws Exception {
+   public DateTransform(Class<T> type, String format) throws Exception {
       this.format = new SimpleDateFormat(format);
-      this.factory = new DateFactory(type);
-      this.type = type;
+      this.factory = new DateFactory<T>(type);
    }
    
    /**
@@ -102,13 +96,11 @@ class DateTransform implements Transform<Date> {
     * 
     * @return this returns an appropriate instanced to be used
     */
-   public synchronized Date read(String text) throws Exception {      
+   public synchronized T read(String text) throws Exception {      
       Date date = format.parse(text);
+      Long time = date.getTime();
       
-      if(type == Date.class) {
-         return date;
-      }
-      return factory.getInstance(date);
+      return factory.getInstance(time);
    }
    
    /**
@@ -121,7 +113,7 @@ class DateTransform implements Transform<Date> {
     * 
     * @return this is the string representation of the given date
     */
-   public synchronized String write(Date date) throws Exception {      
+   public synchronized String write(T date) throws Exception {      
       return format.format(date);     
    }
 }

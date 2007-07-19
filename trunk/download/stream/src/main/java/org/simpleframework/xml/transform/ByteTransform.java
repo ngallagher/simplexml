@@ -55,7 +55,7 @@ class ByteTransform implements Transform<Byte> {
     * @return this returns an appropriate instanced to be used
     */
    public Byte read(String value) {
-      return new Byte(value);
+      return Byte.valueOf(value);
    }
    
    /**

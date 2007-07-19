@@ -42,9 +42,19 @@ import java.net.URL;
  *  
  * @author Niall Gallagher
  *
- * @see org.simpleframework.xml.transform.TypeMatcher
+ * @see org.simpleframework.xml.transform.DefaultMatcher
  */
 class PackageMatcher implements Matcher {
+   
+   /**
+    * Constructor for the <code>PackageMatcher</code> object. The
+    * package matcher is used to resolve a transform instance to
+    * convert object types to an from strings. If a match cannot
+    * be found with this matcher then an exception is thrown.
+    */
+   public PackageMatcher() {
+      super();
+   }
    
    /**
     * This method attempts to perform a resolution of the transform

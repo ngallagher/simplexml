@@ -23,8 +23,9 @@ package org.simpleframework.xml.transform;
 /**
  * The <code>Matcher</code> is used to match a type with a transform
  * such that a string value can be read or written as that type. If
- * there is no match this will throw an exception indicating that no
- * transform could be matched for the specified type.
+ * there is no match this will typically return a null to indicate
+ * that another matcher should be delegated to. If there is an error
+ * in performing the match an exception is thrown.
  * 
  * @author Niall Gallagher
  * 
@@ -34,8 +35,8 @@ interface Matcher {
 
    /**
     * This is used to match a <code>Transform</code> using the type
-    * specified. If no transform can be acquired then an exception
-    * is thrown indicating that no transform could be found.
+    * specified. If no transform can be acquired then this returns
+    * a null value indicating that no transform could be found.
     * 
     * @param type this is the type to acquire the transform for
     * 

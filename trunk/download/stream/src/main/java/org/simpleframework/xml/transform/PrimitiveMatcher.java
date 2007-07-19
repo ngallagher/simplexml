@@ -28,9 +28,19 @@ package org.simpleframework.xml.transform;
  * 
  * @author Niall Gallagher
  * 
- * @see org.simpleframework.xml.transform.TypeMatcher
+ * @see org.simpleframework.xml.transform.DefaultMatcher
  */
 class PrimitiveMatcher implements Matcher { 
+   
+   /**
+    * Constructor for the <code>PrimitiveMatcher</code> object. The
+    * primitive matcher is used to resolve a transform instance to
+    * convert primitive types to an from strings. If a match is not
+    * found with this matcher then an exception is thrown.
+    */
+   public PrimitiveMatcher() {
+      super();
+   }
    
    /**
     * This method is used to match the specified type to primitive
