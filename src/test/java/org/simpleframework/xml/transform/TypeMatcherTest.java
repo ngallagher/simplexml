@@ -7,7 +7,7 @@ public class TypeMatcherTest extends TestCase {
    private Matcher matcher;
    
    public void setUp() {
-      this.matcher = new TypeMatcher(new EmptyMatcher());
+      this.matcher = new DefaultMatcher(new EmptyMatcher());
    }
 
    public void testInteger() throws Exception {     
@@ -83,7 +83,7 @@ public class TypeMatcherTest extends TestCase {
    }
    
    public void testPrimitiveIntegerArray() throws Exception {
-      Matcher matcher = new TypeMatcher(new EmptyMatcher());
+      Matcher matcher = new DefaultMatcher(new EmptyMatcher());
       Transform transform = matcher.match(int[].class);
       Object value = transform.read("1, 2, 3, 4, 5");
       

@@ -55,7 +55,7 @@ class IntegerTransform implements Transform<Integer> {
     * @return this returns an appropriate instanced to be used
     */
    public Integer read(String value) {
-      return new Integer(value);
+      return Integer.valueOf(value);
    }
    
    /**

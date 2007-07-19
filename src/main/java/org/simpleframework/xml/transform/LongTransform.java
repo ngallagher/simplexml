@@ -55,7 +55,7 @@ class LongTransform implements Transform<Long> {
     * @return this returns an appropriate instanced to be used
     */
    public Long read(String value) {
-      return new Long(value);
+      return Long.valueOf(value);
    }
    
    /**

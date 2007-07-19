@@ -85,7 +85,7 @@ public class Transformer {
     * @param matcher this is used to match types to transforms
     */
    private Transformer(Matcher matcher) {  
-      this.matcher = new TypeMatcher(matcher);
+      this.matcher = new DefaultMatcher(matcher);
       this.cache = new TransformCache();
 
    }

@@ -55,7 +55,7 @@ class FloatTransform implements Transform<Float> {
     * @return this returns an appropriate instanced to be used
     */
    public Float read(String value) {
-      return new Float(value);
+      return Float.valueOf(value);
    }
    
    /**

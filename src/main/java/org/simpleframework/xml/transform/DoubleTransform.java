@@ -55,7 +55,7 @@ class DoubleTransform implements Transform<Double> {
     * @return this returns an appropriate instanced to be used
     */
    public Double read(String value) {
-      return new Double(value);
+      return Double.valueOf(value);
    }
    
    /**

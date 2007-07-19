@@ -72,6 +72,9 @@ class ArrayMatcher implements Matcher {
       if(entry == Character.class) {
          return new CharacterArrayTransform(entry);
       }
+      if(entry == String.class) {
+         return new StringArrayTransform();
+      }
       return matchArray(entry);
    }
    

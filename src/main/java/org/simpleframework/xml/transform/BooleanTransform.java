@@ -55,7 +55,7 @@ class BooleanTransform implements Transform<Boolean> {
     * @return this returns an appropriate instanced to be used
     */
    public Boolean read(String value) {
-      return new Boolean(value);
+      return Boolean.valueOf(value);
    }
 
    /**
