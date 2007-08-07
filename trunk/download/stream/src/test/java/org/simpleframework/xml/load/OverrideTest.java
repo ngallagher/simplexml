@@ -37,15 +37,35 @@ public class OverrideTest extends TestCase {
    "<entry id='12'>\n"+
    "   <text>entry text</text>  \n\r"+
    "</entry>";
+
+   private static final String INTERFACE = 
+   "<entry id='12' class='org.simpleframework.xml.load.OverrideTest$Entry'>\n"+
+   "   <text>entry text</text>  \n\r"+
+   "</entry>";
+
+   private static interface EntryInterface {
+
+      public int getId();
+
+      public String getText();
+   }
    
    @Root(name="entry")
-   private static class Entry {
+   private static class Entry implements EntryInterface {
 
       @Attribute(name="id")           
       private int id;           
            
       @Element(name="text")
       private String text;           
+
+      public int getId() {
+         return id;
+      }
+
+      public String getText() {
+         return text;
+      }
    }
 
    @Root(name="root")
@@ -73,6 +93,13 @@ public class OverrideTest extends TestCase {
       
       assertEquals(entry.id, 12);
       assertEquals(entry.text, "entry text");
+   }
+
+   public void testInterface() throws Exception {
+      EntryInterface entry = serializer.read(EntryInterface.class, new StringReader(INTERFACE));
+
+      assertEquals(entry.getId(), 12);
+      assertEquals(entry.getText(), "entry text");
    }
    
    public void testList() throws Exception {
