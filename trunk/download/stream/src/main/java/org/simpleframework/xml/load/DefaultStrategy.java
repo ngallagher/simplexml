@@ -247,3 +247,47 @@ class DefaultStrategy implements Strategy {
       return field.getComponentType();
    }
 }
+
+
+class SystemClassLoader extends ClassLoader {
+   
+   public SystemClassLoader() {
+      super();
+   }
+   
+   public Class loadClass(String type) throws ClassNotFoundException {
+      return getClassLoader().loadClass(type);
+   }
+   
+   private static ClassLoader getClassLoader() {
+      return Object.class.getClassLoader();
+   }
+}
+
+class CallerClassLoader extends ClassLoader {
+
+    public CallerClassLoader() {
+        super();
+    }
+
+    public Class loadClass(String type) throws ClassNotFoundException {
+       return Class.forName(type);
+    }
+}
+
+class ContextClassLoader extends ClassLoader {
+
+   public ContextClassLoader() {
+      super();
+   }
+
+   public Class loadClass(String type) throws ClassNotFoundException {
+      return getClassLoader().loadClass(type);
+   }
+
+   private static ClassLoader getClassLoader() {
+      return Thread.currentThread().getContextClassLoader();
+   }
+}
+
+
