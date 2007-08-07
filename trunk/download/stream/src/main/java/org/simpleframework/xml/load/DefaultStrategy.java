@@ -236,7 +236,7 @@ class DefaultStrategy implements Strategy {
     * @param value this is the actual value for the array to set
     * @param node this is the map of attributes for the element
     * 
-    * @return returns thr array component type that is set
+    * @return returns the array component type that is set
     */
    private Class setArray(Class field, Object value, NodeMap node){
       int size = Array.getLength(value);
@@ -247,47 +247,3 @@ class DefaultStrategy implements Strategy {
       return field.getComponentType();
    }
 }
-
-
-class SystemClassLoader extends ClassLoader {
-   
-   public SystemClassLoader() {
-      super();
-   }
-   
-   public Class loadClass(String type) throws ClassNotFoundException {
-      return getClassLoader().loadClass(type);
-   }
-   
-   private static ClassLoader getClassLoader() {
-      return Object.class.getClassLoader();
-   }
-}
-
-class CallerClassLoader extends ClassLoader {
-
-    public CallerClassLoader() {
-        super();
-    }
-
-    public Class loadClass(String type) throws ClassNotFoundException {
-       return Class.forName(type);
-    }
-}
-
-class ContextClassLoader extends ClassLoader {
-
-   public ContextClassLoader() {
-      super();
-   }
-
-   public Class loadClass(String type) throws ClassNotFoundException {
-      return getClassLoader().loadClass(type);
-   }
-
-   private static ClassLoader getClassLoader() {
-      return Thread.currentThread().getContextClassLoader();
-   }
-}
-
-

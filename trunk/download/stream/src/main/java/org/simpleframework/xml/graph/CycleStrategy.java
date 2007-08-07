@@ -105,7 +105,7 @@ public class CycleStrategy implements Strategy {
    
    /**
     * Constructor for the <code>CycleStrategy</code> object. This is
-    * used to create a strategy with the sepcified attributes, which
+    * used to create a strategy with the specified attributes, which
     * will be added to serialized XML elements. These attributes 
     * are used to serialize the objects in such a way the cycles in
     * the object graph can be deserialized and used fully. 
@@ -119,7 +119,7 @@ public class CycleStrategy implements Strategy {
    
    /**
     * Constructor for the <code>CycleStrategy</code> object. This is
-    * used to create a strategy with the sepcified attributes, which
+    * used to create a strategy with the specified attributes, which
     * will be added to serialized XML elements. These attributes 
     * are used to serialize the objects in such a way the cycles in
     * the object graph can be deserialized and used fully. 
@@ -134,7 +134,7 @@ public class CycleStrategy implements Strategy {
    
    /**
     * Constructor for the <code>CycleStrategy</code> object. This is
-    * used to create a strategy with the sepcified attributes, which
+    * used to create a strategy with the specified attributes, which
     * will be added to serialized XML elements. These attributes 
     * are used to serialize the objects in such a way the cycles in
     * the object graph can be deserialized and used fully. 

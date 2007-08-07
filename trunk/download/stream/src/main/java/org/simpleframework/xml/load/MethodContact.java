@@ -81,7 +81,6 @@ class MethodContact implements Contact {
       this.read = read.getMethod();
       this.type = read.getType();   
       this.name = read.getName();
-
    }
 
    /**
