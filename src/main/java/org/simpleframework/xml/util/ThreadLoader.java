@@ -20,6 +20,10 @@
 
 package org.simpleframework.xml.util;
 
+/**
+ * 
+ * @author Niall Gallagher
+ */
 class ThreadLoader implements Loader {
 
    public ThreadLoader() {

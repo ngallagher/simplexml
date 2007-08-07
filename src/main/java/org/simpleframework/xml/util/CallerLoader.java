@@ -20,7 +20,10 @@
 
 package org.simpleframework.xml.util;
 
-
+/**
+ * 
+ * @author Niall Gallagher
+ */
 class CallerLoader implements Loader {
 
     public CallerLoader() {

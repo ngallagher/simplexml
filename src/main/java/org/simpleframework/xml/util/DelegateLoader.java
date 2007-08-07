@@ -20,13 +20,22 @@
 
 package org.simpleframework.xml.util;
 
+/**
+ * This delegates to the class loaders available to the caller. The
+ * sequence taken delegates from the system class loader to the thread 
+ * context class loader. Delegation to the various class loaders that
+ * are available to the caller ensures that the deserialization can
+ * be performed even if the  
+ * 
+ * @author Niall Gallagher
+ */
 public class DelegateLoader implements Loader {
    
-   private Loader system;
+   private final Loader system;
    
-   private Loader caller;
+   private final Loader caller;
    
-   private Loader thread;
+   private final Loader thread;
    
    public DelegateLoader() {
       this.system = new SystemLoader();
@@ -42,10 +51,11 @@ public class DelegateLoader implements Loader {
       for(Loader loader : list) {
          try {
             return loader.loadClass(type);
-         }catch(ClassNotFoundException e) {            
+         }catch(ClassNotFoundException cause) {
+            continue;
          }
-      }
-      throw new ClassNotFoundException();      
+      }            
+      throw new ClassNotFoundException(type);
    }
 }
 
