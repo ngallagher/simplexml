@@ -45,7 +45,8 @@ import java.io.File;
  * of a serializer. This implements the <code>Serializer</code> interface
  * and enables objects to be persisted and loaded from various sources. 
  * This implementation makes use of <code>Filter</code> objects to
- * replace template variables within the source XML document.
+ * replace template variables within the source XML document. It is fully
+ * thread safe and can be shared by multiple threads without concerns.
  * <p>
  * Deserialization is performed by passing an XML schema class into one
  * of the <code>read</code> methods along with the source of an XML stream.
