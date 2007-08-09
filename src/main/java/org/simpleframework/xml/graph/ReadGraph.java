@@ -40,6 +40,11 @@ import java.util.HashMap;
 class ReadGraph extends HashMap {
    
    /**
+    * This is the class loader that is used to load the types used.
+    */
+   private ClassLoader loader;
+   
+   /**
     * This is used to represent the length of array object values.
     */
    private String length;
@@ -65,13 +70,15 @@ class ReadGraph extends HashMap {
     * document. The specified strategy is used to acquire the names
     * of the special attributes used during the serialization.
     * 
-    * @param contract this is the name scheme used by the strategy 
+    * @param contract this is the name scheme used by the strategy
+    * @param loader this is the class loader to used for the graph 
     */
-   public ReadGraph(Contract contract) {
+   public ReadGraph(Contract contract, ClassLoader loader) {      
       this.refer = contract.getReference();
       this.mark = contract.getIdentity();
       this.length = contract.getLength();
       this.label = contract.getLabel();
+      this.loader = loader;
    }
    
    /**
@@ -94,7 +101,7 @@ class ReadGraph extends HashMap {
       }
       if(entry != null) {      
          String name = entry.getValue();
-         type = Class.forName(name);
+         type = loader.loadClass(name);
       }  
       return getInstance(field, type, node); 
    }
