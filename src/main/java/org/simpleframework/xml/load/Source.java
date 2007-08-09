@@ -244,7 +244,7 @@ class Source {
     * @throws Exception if the class contains an illegal schema 
     */ 
    private Scanner getScanner(Class type) throws Exception {
-      Scanner schema = cache.get(type);
+      Scanner schema = cache.fetch(type);
       
       if(schema == null) {
          schema = new Scanner(type);             

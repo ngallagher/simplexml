@@ -20,7 +20,7 @@
 
 package org.simpleframework.xml.graph;
 
-import java.util.WeakHashMap;
+import org.simpleframework.xml.util.WeakCache;
 
 /**
  * The <code>ReadState</code> object is used to store all graphs that
@@ -35,7 +35,7 @@ import java.util.WeakHashMap;
  * 
  * @see org.simpleframework.xml.graph.ReadGraph
  */
-class ReadState extends WeakHashMap<Object, ReadGraph>{
+class ReadState extends WeakCache<Object, ReadGraph>{
    
    /** 
     * This is the contract that specifies the attributes to use.
@@ -65,12 +65,31 @@ class ReadState extends WeakHashMap<Object, ReadGraph>{
     * @return returns a graph used for reading the XML document
     */
    public ReadGraph find(Object map) throws Exception {
+      ReadGraph read = fetch(map);
+      
+      if(read != null) {
+         return read;
+      }
+      return create(map);
+   }
+   
+   /**
+    * This will acquire the graph using the specified session map. If
+    * a graph does not already exist mapped to the given session then
+    * one will be created and stored with the key provided. Once the
+    * specified key is garbage collected then so is the graph object.
+    * 
+    * @param map this is typically the persistence session map used 
+    * 
+    * @return returns a graph used for reading the XML document
+    */
+   private ReadGraph create(Object map) throws Exception {
       ClassLoader loader = getClassLoader();
       
       if(loader == null) {
          loader = getCallerClassLoader();
       }
-      return find(map, loader);
+      return create(map, loader);
    }
    
    /**
@@ -84,12 +103,12 @@ class ReadState extends WeakHashMap<Object, ReadGraph>{
     * 
     * @return returns a graph used for reading the XML document
     */
-   public ReadGraph find(Object map, ClassLoader loader) throws Exception {
-      ReadGraph read = get(map);
+   private ReadGraph create(Object map, ClassLoader loader) throws Exception {
+      ReadGraph read = fetch(map);
       
       if(read == null) {
          read = new ReadGraph(contract, loader);
-         put(map, read);
+         cache(map, read);
       }
       return read;
    }   

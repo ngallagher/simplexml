@@ -20,7 +20,7 @@
 
 package org.simpleframework.xml.graph;
 
-import java.util.WeakHashMap;
+import org.simpleframework.xml.util.WeakCache;
 
 /**
  * The <code>WriteState</code> object is used to store all graphs that
@@ -35,7 +35,7 @@ import java.util.WeakHashMap;
  * 
  * @see org.simpleframework.xml.graph.WriteGraph
  */
-class WriteState extends WeakHashMap<Object, WriteGraph> {
+class WriteState extends WeakCache<Object, WriteGraph> {
 
    /**
     * This is the contract that specifies the attributes to use.
@@ -65,11 +65,11 @@ class WriteState extends WeakHashMap<Object, WriteGraph> {
     * @return returns a graph used for writing the XML document
     */
    public WriteGraph find(Object map) {
-      WriteGraph write = get(map);
+      WriteGraph write = fetch(map);
       
       if(write == null) {
          write = new WriteGraph(contract);
-         put(map, write);
+         cache(map, write);
       }
       return write;
    }

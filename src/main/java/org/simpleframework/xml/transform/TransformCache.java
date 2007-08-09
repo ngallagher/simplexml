@@ -20,7 +20,7 @@
 
 package org.simpleframework.xml.transform;
 
-import java.util.concurrent.ConcurrentHashMap;
+import org.simpleframework.xml.util.WeakCache;
 
 /**
  * The <code>TransformCache</code> is used to cache transform objects. 
@@ -30,30 +30,15 @@ import java.util.concurrent.ConcurrentHashMap;
  * 
  * @author Niall Gallagher
  */
-class TransformCache extends ConcurrentHashMap<Class, Transform>{
+class TransformCache extends WeakCache<Class, Transform>{
    
    /**
     * Constructor for the <code>TransformCache</code> object. This is
     * a concurrent hash table that maps class types to the transform
-    * objects they represent. To ensure that the cache can be used by
-    * multiple threads this extends the concurrent hash map.
+    * objects they represent. To enable reloading of classes by the
+    * system this will drop the transform if the class in unloaded.
     */
    public TransformCache() {
       super();
-   }
-   
-   /**
-    * This method will cache the provided transform object with the
-    * provided class object. Once cached the transform object can be
-    * reused to transform string values to object instances that are
-    * assignable to the specified type.
-    *
-    * @param type this is the class the transform is mapped to
-    * @param transform this is the transform object that is cached
-    *
-    * @return this is the scanner instance that has been cached
-    */ 
-   public Transform cache(Class type, Transform transform) {
-      return put(type, transform);
    }
 }

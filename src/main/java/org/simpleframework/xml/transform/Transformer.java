@@ -102,7 +102,7 @@ public class Transformer {
     * @return this returns an appropriate instanced to be used
     */
    public Object read(String value, Class type) throws Exception {
-      Transform transform = cache.get(type);
+      Transform transform = cache.fetch(type);
       
       if(transform == null) {
          transform = matcher.match(type);
@@ -123,7 +123,7 @@ public class Transformer {
     * @return this is the string representation of the given value
     */
    public String write(Object value, Class type) throws Exception {
-      Transform transform = cache.get(type);
+      Transform transform = cache.fetch(type);
       
       if(transform == null) {
          transform = matcher.match(type);
