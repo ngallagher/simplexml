@@ -1,5 +1,5 @@
 /*
- * SchemaCache.java July 2006
+ * ScannerCache.java July 2006
  *
  * Copyright (C) 2006, Niall Gallagher <niallg@users.sf.net>
  *

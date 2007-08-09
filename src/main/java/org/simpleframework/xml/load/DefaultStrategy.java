@@ -177,7 +177,7 @@ class DefaultStrategy implements Strategy {
       }
       if(entry != null) {
          String name = entry.getValue();
-         type = Class.forName(name);
+         type = getClass(name);
       }    
       return type;
    }     
@@ -287,15 +287,7 @@ class DefaultStrategy implements Strategy {
     * 
     * @return this returns the loader used by the calling thread
     */
-   private ClassLoader getThreadClassLoader() throws Exception {
-      return getThread().getContextClassLoader();
-   }
-
-   /**
-    * 
-    * @return
-    */
-   private Thread getThread() {
-      return Thread.currentThread();
+   private static ClassLoader getThreadClassLoader() throws Exception {
+      return Thread.currentThread().getContextClassLoader();
    }
 }

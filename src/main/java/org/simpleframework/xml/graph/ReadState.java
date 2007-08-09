@@ -33,7 +33,7 @@ import org.simpleframework.xml.util.WeakCache;
  * 
  * @author Niall Gallagher
  * 
- * @see org.simpleframework.xml.graph.ReadGraph
+ * @see org.simpleframework.xml.util.WeakCache
  */
 class ReadState extends WeakCache<Object, ReadGraph>{
    
@@ -112,18 +112,6 @@ class ReadState extends WeakCache<Object, ReadGraph>{
       }
       return read;
    }   
-
-   /**
-    * This is used to acquire the thread context class loader. This
-    * is the default class loader used by the cycle strategy. When
-    * using the thread context class loader the caller can switch the
-    * class loader in use, which allows class loading customization.
-    * 
-    * @return this returns the loader used by the calling thread
-    */
-   private ClassLoader getClassLoader() {
-      return Thread.currentThread().getContextClassLoader();
-   }
    
    /**
     * This is used to acquire the caller class loader for this object.
@@ -135,5 +123,17 @@ class ReadState extends WeakCache<Object, ReadGraph>{
     */
    private ClassLoader getCallerClassLoader() {
       return getClass().getClassLoader();
+   }
+   
+   /**
+    * This is used to acquire the thread context class loader. This
+    * is the default class loader used by the cycle strategy. When
+    * using the thread context class loader the caller can switch the
+    * class loader in use, which allows class loading customization.
+    * 
+    * @return this returns the loader used by the calling thread
+    */
+   private static ClassLoader getClassLoader() {
+      return Thread.currentThread().getContextClassLoader();
    }
 }
