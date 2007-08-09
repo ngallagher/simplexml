@@ -20,7 +20,7 @@
 
 package org.simpleframework.xml.load;
 
-import java.util.concurrent.ConcurrentHashMap;
+import org.simpleframework.xml.util.WeakCache;
 import java.lang.reflect.Constructor;
 
 /**
@@ -34,29 +34,15 @@ import java.lang.reflect.Constructor;
  * 
  * @see org.simpleframework.xml.load.PrimitiveFactory
  */
-class ConstructorCache extends ConcurrentHashMap<Class, Constructor> {
+class ConstructorCache extends WeakCache<Class, Constructor> {
    
    /**
     * Constructor for the <code>ConstructorCache</code> object. It
     * is used to create a typed hash table that can be used to map
     * the constructors used to convert strings to primitive types.
+    * If the class is unloaded then the cached constructor is lost.
     */
    public ConstructorCache() {
       super();           
-   }
-   
-   /**
-    * This method is used to cache the <code>Constructor</code> with
-    * the type that constructor represents. The cached constructor
-    * can then be looked up via its type when a primitive needs to 
-    * be converted from a string to a suitable type for a field. 
-    * 
-    * @param type the type to cache the constructor under
-    * @param method this is the constructor that is to be cached
-    * 
-    * @return the previous constructor stored in the cache
-    */
-   public Constructor cache(Class type, Constructor method) {
-      return put(type, method);
    }
 }

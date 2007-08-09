@@ -82,7 +82,7 @@ class ClassType implements Type {
     * @return this returns an instance of the specifiec class type
     */ 
    public Object getInstance(Class type) throws Exception {
-      Constructor method = cache.get(type);
+      Constructor method = cache.fetch(type);
       
       if(method == null) {
          method = type.getDeclaredConstructor();      

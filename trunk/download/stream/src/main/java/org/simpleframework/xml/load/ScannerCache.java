@@ -20,7 +20,7 @@
 
 package org.simpleframework.xml.load;
 
-import java.util.concurrent.ConcurrentHashMap;
+import org.simpleframework.xml.util.WeakCache;
 
 /**
  * The <code>ScannerCache</code> is used to cache schema objects. It 
@@ -30,30 +30,15 @@ import java.util.concurrent.ConcurrentHashMap;
  * 
  * @author Niall Gallagher
  */
-class ScannerCache extends ConcurrentHashMap<Class, Scanner> {
+class ScannerCache extends WeakCache<Class, Scanner> {
 
    /**
     * Constructor for the <code>ScannerCache</code> object. This is
     * a concurrent hash map that maps class types to the XML schema
-    * objects they represent. To ensure the cache can be used by
-    * multiple threads this extends the concurrent hash map.
+    * objects they represent. To enable reloading of classes by the
+    * system this will drop the scanner if the class in unloaded.
     */
    public ScannerCache() {
       super();
-   }
-
-   /**
-    * This method will cache the provided scanner object using the
-    * provided class object. Once cached the scanner object can be
-    * used to create <code>Schema</code> objects that are required
-    * for the serialization and deserialization process.
-    *
-    * @param type this is the class the scanner is mapped to
-    * @param schema this is the scanner object that is cached
-    *
-    * @return this is the scanner instance that has been cached
-    */ 
-   public Scanner cache(Class type, Scanner schema) {
-      return put(type, schema);
    }
 }
