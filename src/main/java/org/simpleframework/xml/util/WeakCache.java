@@ -138,7 +138,7 @@ public class WeakCache<K, V> implements Cache<K, V> {
       private int size;
       
       /**
-       * Constructor for the <code>SegmentList</code> obejct. This
+       * Constructor for the <code>SegmentList</code> object. This
        * is used to create a list of weak hash maps that can be
        * acquired using the hash code of a given key. 
        * 
@@ -185,7 +185,7 @@ public class WeakCache<K, V> implements Cache<K, V> {
       }
       
       /**
-       * This method peforms the translation of the key hash code
+       * This method performs the translation of the key hash code
        * to the segment index within the list. Translation is done
        * by acquiring the modulus of the hash and the list size.
        * 
