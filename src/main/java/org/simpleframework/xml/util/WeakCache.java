@@ -32,8 +32,6 @@ import java.util.List;
  * maps in a way that lowers contention for the locks used. 
  * 
  * @author Niall Gallagher
- * 
- * @see java.util.concurrent.ConcurrentHashMap
  */
 public class WeakCache<K, V> implements Cache<K, V> {
    
