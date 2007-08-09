@@ -259,7 +259,7 @@ class DefaultStrategy implements Strategy {
     * @return this returns the class that has been loaded by this
     */
    private Class getClass(String type) throws Exception {
-      ClassLoader loader = getThreadClassLoader();
+      ClassLoader loader = getClassLoader();
       
       if(loader == null) {
          loader = getCallerClassLoader();
@@ -287,7 +287,7 @@ class DefaultStrategy implements Strategy {
     * 
     * @return this returns the loader used by the calling thread
     */
-   private static ClassLoader getThreadClassLoader() throws Exception {
+   private static ClassLoader getClassLoader() throws Exception {
       return Thread.currentThread().getContextClassLoader();
    }
 }
