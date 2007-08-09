@@ -246,4 +246,56 @@ class DefaultStrategy implements Strategy {
       }
       return field.getComponentType();
    }
+   
+   /**
+    * This method is used to acquire the class of the specified name.
+    * Loading is performed by the thread context class loader as this
+    * will ensure that the class loading strategy can be changed as
+    * requirements dictate. Typically the thread context class loader
+    * can handle all serialization requirements.
+    * 
+    * @param name this is the name of the class that is to be loaded
+    * 
+    * @return this returns the class that has been loaded by this
+    */
+   private Class getClass(String type) throws Exception {
+      ClassLoader loader = getThreadClassLoader();
+      
+      if(loader == null) {
+         loader = getCallerClassLoader();
+      }
+      return loader.loadClass(type);      
+   }
+   
+   /**
+    * This is used to acquire the caller class loader for this object.
+    * Typically this is only used if the thread context class loader
+    * is set to null. This ensures that there is at least some class
+    * loader available to the strategy to load the class.
+    * 
+    * @return this returns the loader that loaded this class     
+    */
+   private ClassLoader getCallerClassLoader() throws Exception {
+      return getClass().getClassLoader();
+   }
+
+   /**
+    * This is used to acquire the thread context class loader. This
+    * is the default class loader used by the cycle strategy. When
+    * using the thread context class loader the caller can switch the
+    * class loader in use, which allows class loading customization.
+    * 
+    * @return this returns the loader used by the calling thread
+    */
+   private ClassLoader getThreadClassLoader() throws Exception {
+      return getThread().getContextClassLoader();
+   }
+
+   /**
+    * 
+    * @return
+    */
+   private Thread getThread() {
+      return Thread.currentThread();
+   }
 }
