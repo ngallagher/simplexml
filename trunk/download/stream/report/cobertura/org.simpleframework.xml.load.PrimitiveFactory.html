@@ -139,8 +139,8 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;62</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> PrimitiveFactory(Source root, Class field) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;63</td>  <td class="nbHitsCovered">&nbsp;103301</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">super</span>(root, field);           </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;64</td>  <td class="nbHitsCovered">&nbsp;103301</td>  <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;63</td>  <td class="nbHitsCovered">&nbsp;103304</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">super</span>(root, field);           </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;64</td>  <td class="nbHitsCovered">&nbsp;103304</td>  <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;65</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;66</td>  <td class="nbHits">&nbsp;</td>
@@ -165,11 +165,11 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span>         </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;76</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> Type getInstance(InputNode node) <span class="keyword">throws</span> Exception {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;77</td>  <td class="nbHitsCovered">&nbsp;29742</td>  <td class="src"><pre class="src">&nbsp;      Type type = getOverride(node);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;77</td>  <td class="nbHitsCovered">&nbsp;29743</td>  <td class="src"><pre class="src">&nbsp;      Type type = getOverride(node);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;78</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;79</td>  <td class="nbHitsCovered">&nbsp;29742</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(type == <span class="keyword">null</span>) { </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;80</td>  <td class="nbHitsCovered">&nbsp;25693</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">return</span> <span class="keyword">new</span> ClassType(field);         </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;79</td>  <td class="nbHitsCovered">&nbsp;29743</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(type == <span class="keyword">null</span>) { </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;80</td>  <td class="nbHitsCovered">&nbsp;25694</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">return</span> <span class="keyword">new</span> ClassType(field);         </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;81</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;      }</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;82</td>  <td class="nbHitsCovered">&nbsp;4049</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> type;      </pre></td></tr>
@@ -203,15 +203,15 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">    */</span>         </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;97</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   <span class="keyword">public</span> Object getInstance(String text) <span class="keyword">throws</span> Exception {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;98</td>  <td class="nbHitsCovered">&nbsp;51537</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(field == String.<span class="keyword">class</span>) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;99</td>  <td class="nbHitsCovered">&nbsp;47708</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">return</span> text;              </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;98</td>  <td class="nbHitsCovered">&nbsp;51539</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(field == String.<span class="keyword">class</span>) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;99</td>  <td class="nbHitsCovered">&nbsp;47709</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">return</span> text;              </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;100</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;      }    </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;101</td>  <td class="nbHitsCovered">&nbsp;3829</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(field.isEnum()) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;101</td>  <td class="nbHitsCovered">&nbsp;3830</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">if</span>(field.isEnum()) {</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;102</td>  <td class="nbHitsCovered">&nbsp;31</td>  <td class="src"><pre class="src">&nbsp;         <span class="keyword">return</span> Enum.valueOf(field, text);              </pre></td></tr>
 <tr>  <td class="numLine">&nbsp;103</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;      }           </pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;104</td>  <td class="nbHitsCovered">&nbsp;3798</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> transform.read(text, field);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;104</td>  <td class="nbHitsCovered">&nbsp;3799</td>  <td class="src"><pre class="src">&nbsp;      <span class="keyword">return</span> transform.read(text, field);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;105</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;   }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;106</td>  <td class="nbHits">&nbsp;</td>
@@ -261,6 +261,6 @@
   <td class="src"><pre class="src">&nbsp;}</pre></td></tr>
 </table>
 
-<div class="footer">Report generated by <a href="http://cobertura.sourceforge.net/" target="_top">Cobertura</a> 1.8 on 19/07/07 17:25.</div>
+<div class="footer">Report generated by <a href="http://cobertura.sourceforge.net/" target="_top">Cobertura</a> 1.8 on 09/08/07 20:46.</div>
 </body>
 </html>
