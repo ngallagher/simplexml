@@ -686,4 +686,12 @@ public class Persister implements Serializer {
    public void write(Object source, Writer out) throws Exception {
       write(source, NodeBuilder.write(out, format));
    }
+   
+   public void write(Object source, Object clone) throws Exception {
+      write(source, clone, new Source(strategy, filter));
+   }
+   
+   private void write(Object source, Object clone, Source root) throws Exception {
+      new Cloner(root).write(source, clone);
+   }
 }
