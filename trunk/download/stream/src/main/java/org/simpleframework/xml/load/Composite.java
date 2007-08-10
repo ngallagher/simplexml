@@ -103,7 +103,7 @@ class Composite implements Converter {
     * @return this returns the fully deserialized object graph
     */
    public Object read(InputNode node) throws Exception {
-      Type type = factory.getInstance(node);
+      Type type = factory.getInstance(node); // Here we get information regarding whether the type has been inherited!!!!!!!
       Object source = type.getInstance();
       
       if(!type.isReference()) {         
@@ -373,8 +373,13 @@ class Composite implements Converter {
       Position line = node.getPosition();
       Class type = source.getClass();
       
+      // XXX: This is primarily used for inheritance, it checks to see if
+      // XXX: the required label is null, if it is then there is a problem
       for(Label label : map) {
-         if(label.isRequired()) {
+         Contact field = label.getContact(); // extra line for inheritance
+         Object value = field.get(source); // extra line for inheritance
+
+         if(label.isRequired() && value == null) {
             throw new ValueRequiredException("Unable to satisfy %s for %s at %s", label, type, line);
          }
       }      
