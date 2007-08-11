@@ -59,6 +59,11 @@ class Schema {
     * This is the table used to maintain attributes by the source.
     */ 
    private Map table;
+   
+   /**
+    * This determines whether the schema needs to be validated.
+    */
+   private boolean valid;
 
    /**
     * Constructor for the <code>Schema</code> object. This is used 
@@ -69,12 +74,39 @@ class Schema {
     * @param schema this contains all labels scanned from the class
     * @param session this is the session map for the persister
     */
-   public Schema(Scanner schema, Session session) {      
+   public Schema(Scanner schema, Session session) {
+      this(schema, session, false);
+   }
+   
+   /**
+    * Constructor for the <code>Schema</code> object. This is used 
+    * to wrap the element and attribute XML annotations scanned from
+    * a class schema. The schema tracks all fields visited so that
+    * a converter can determine if all fields have been serialized.
+    * 
+    * @param schema this contains all labels scanned from the class
+    * @param session this is the session map for the persister
+    * @param valid this determines whether the schema is valid
+    */
+   public Schema(Scanner schema, Session session, boolean valid) {      
       this.attributes = schema.getAttributes();
       this.elements = schema.getElements();
       this.conduit = schema.getConduit();
       this.text = schema.getText();
       this.table = session.getMap();
+      this.valid = valid;
+   }
+   
+   /**
+    * This is used to determine whether the schema is already valid.
+    * If the schema is valid then validation is not performed and
+    * the XML entities do not need to match the class annotations.
+    * This is typically the case when an object is already populated.
+    * 
+    * @return this returns true if the schema is already valid
+    */
+   public boolean isValid() {
+      return valid;
    }
    
    /**

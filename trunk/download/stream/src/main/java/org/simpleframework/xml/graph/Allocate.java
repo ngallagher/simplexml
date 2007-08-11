@@ -132,6 +132,18 @@ class Allocate implements Type {
    }
    
    /**
+    * This is used to determine whether the type needs validation
+    * when it is deserialized. Typically an object is considered
+    * valid if it has already had its fields populated. When true
+    * not all annotated XML fields need an XML entity.
+    * 
+    * @return this returns true if the object is already valid
+    */ 
+   public boolean isValid() {
+      return false;
+   }
+   
+   /**
     * This method always returns false for the default type. This
     * is because by default all elements encountered within the 
     * XML are to be deserialized based on there XML annotations.
