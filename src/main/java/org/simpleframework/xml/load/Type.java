@@ -38,7 +38,17 @@ package org.simpleframework.xml.load;
  * @see org.simpleframework.xml.load.Strategy
  */
 public interface Type {
-   
+
+   /**
+    * This is used to determine whether the type needs validation
+    * when it is deserialized. Typically an object is considered
+    * valid if it has already had its fields populated. When true
+    * not all annotated XML fields need an XML entity.
+    * 
+    * @return this returns true if the object is already valid
+    */ 
+   public boolean isValid();
+
    /**
     * This is used to determine if the type is a reference type.
     * A reference type is a type that does not require any XML

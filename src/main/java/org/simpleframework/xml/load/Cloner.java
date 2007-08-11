@@ -5,14 +5,15 @@ package org.simpleframework.xml.load;
 // to ensure that all validation concerns are dealt with!!
 //
 // Also this simplifies the whole process in the lond run
-public class Cloner {
+public class Cloner /* similar to Converter */ { // should be called Clone
    
    private final Source root;
    
    public Cloner(Source root) {
       this.root = root;
    }
-   
+
+   // Perhaps this should be in the traverser   
    public void write(Object source, Object clone) throws Exception {
       Schema schema = root.getSchema(source);
       
