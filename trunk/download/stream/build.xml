@@ -21,6 +21,7 @@
       <property name="cobertura.report.path" value="report/cobertura"/>
       <property name="cobertura.data" value="cobertura.ser"/>
       <property file="build.properties"/>
+      <property file="ssh.properties"/>
    </target>
 
    <target name="-clean" depends="-layout">
