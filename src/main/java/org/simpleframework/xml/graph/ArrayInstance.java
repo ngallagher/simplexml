@@ -113,18 +113,6 @@ class ArrayInstance implements Type {
    }
    
    /**
-    * This is used to determine whether the type needs validation
-    * when it is deserialized. Typically an object is considered
-    * valid if it has already had its fields populated. When true
-    * not all annotated XML fields need an XML entity.
-    * 
-    * @return this returns true if the object is already valid
-    */ 
-   public boolean isValid() {
-      return false;
-   }
-   
-   /**
     * This will return true if the <code>Type</code> object provided
     * is a reference type. Typically a reference type refers to a 
     * type that is substituted during the deserialization process 
