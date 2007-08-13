@@ -2,10 +2,12 @@
 <project name="Simple" default="build" basedir=".">
 
    <target name="-layout">
+      <property name="root.path" value="."/>
       <property name="source.path" value="src"/>                
       <property name="main.source.path" value="src/main/java"/>            
       <property name="test.source.path" value="src/test/java"/>
       <property name="javadoc.path" value="doc/javadoc"/>
+      <property name="doc.path" value="doc"/>
       <property name="build.path" value="build"/>
       <property name="main.build.path" value="build/main"/>            
       <property name="test.build.path" value="build/test"/>
@@ -212,7 +214,18 @@
    </target>
 
    <target name="release" depends="-layout">
-      <scp file="build.xml" todir="niallg:6nodaysf@simple.sourceforge.net:~/" trust="yes"/>
+      <tar tarfile="release.tar">
+         <tarfileset dir="${root.path}">
+            <include name="${javadoc.path}/**/*"/>            
+            <include name="${report.path}/**/*"/>    
+            <include name="${package.path}/${version}/**/*"/>    
+         </tarfileset>
+      </tar>       
+      <gzip zipfile="release.tar.gz" src="release.tar"/>
+      <scp file="release.tar.gz" todir="${login}:${password}@simple.sourceforge.net:${home}" trust="yes"/>
+      <sshexec host="simple.sourceforge.net" username="${login}" password="${password}" command="tar -xzvf ${home}/release.tar.gz" trust="yes"/>        
+      <delete file="release.tar.gz"/>      
+      <delete file="release.tar"/>
    </target>
 
    <target name="javadoc" depends="-layout" description="Generate source documentation">
