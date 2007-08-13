@@ -223,7 +223,7 @@
       </tar>       
       <gzip zipfile="release.tar.gz" src="release.tar"/>
       <scp file="release.tar.gz" todir="${login}:${password}@simple.sourceforge.net:${home}" trust="yes"/>
-      <sshexec host="simple.sourceforge.net" username="${login}" password="${password}" command="tar -xzvf ${home}/release.tar.gz" trust="yes"/>        
+      <sshexec host="simple.sourceforge.net" username="${login}" password="${password}" command="tar -xzvf ${home}/release.tar.gz -C ${home}" trust="yes"/>
       <delete file="release.tar.gz"/>      
       <delete file="release.tar"/>
    </target>
