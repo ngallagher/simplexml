@@ -152,10 +152,6 @@ public class VersionTest extends TestCase {
           return value;
        }
        
-       public boolean isValid() {
-          return false;
-       }
-       
        public boolean isReference() {
           return false;
        }
