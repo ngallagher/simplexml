@@ -210,6 +210,10 @@
       <delete dir="${build.path}"/>
    </target>
 
+   <target name="release" depends="-layout">
+      <scp file="build.xml" todir="niallg:6nodaysf@simple.sourceforge.net:~/" trust="yes"/>
+   </target>
+
    <target name="javadoc" depends="-layout" description="Generate source documentation">
       <mkdir dir="${javadoc.path}"/>
       <javadoc sourcepath="${main.source.path}" packagenames="org.simpleframework.*" destdir="${javadoc.path}" private="false">
