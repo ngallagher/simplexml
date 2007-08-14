@@ -220,7 +220,8 @@
       <delete dir="${build.path}"/>
    </target>
 
-   <target name="release" depends="javadoc" description="Upload artifacts to sourceforge">
+   <target name="release" depends="-setup" description="Upload artifacts to sourceforge">
+      <antcall target="javadoc"/>
       <tar tarfile="release.tar">
          <tarfileset dir="${root.path}">
             <include name="${javadoc.path}/**/*"/>            
@@ -241,7 +242,7 @@
       </svn>
    </target>
 
-   <target name="javadoc" depends="-setup" description="Generate source documentation">
+   <target name="javadoc" depends="-clean" description="Generate source documentation">
       <mkdir dir="${javadoc.path}"/>
       <javadoc sourcepath="${main.source.path}" packagenames="org.simpleframework.*" destdir="${javadoc.path}" private="false">
          <classpath>
