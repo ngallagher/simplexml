@@ -53,7 +53,7 @@
    </target>
 
    <target name="-compile" depends="-setup">
-      <javac srcdir="${main.source.path}" destdir="${main.build.path}" debug="true" debuglevel="lines,vars,source" encoding="UTF-8">
+      <javac srcdir="${main.source.path}" destdir="${main.build.path}" debug="true" debuglevel="lines,vars,source" source="1.5" encoding="UTF-8">
          <classpath>
             <fileset dir="${lib.path}">
                <include name="**/*.jar"/>
@@ -65,7 +65,7 @@
             <exclude name="**/*.java"/>
          </fileset>
       </copy>
-      <javac srcdir="${test.source.path}" destdir="${test.build.path}" debug="true" debuglevel="lines,vars,source" encoding="UTF-8">
+      <javac srcdir="${test.source.path}" destdir="${test.build.path}" debug="true" debuglevel="lines,vars,source" source="1.5" encoding="UTF-8">
          <classpath>
             <fileset dir="${lib.path}">
                <include name="**/*.jar"/>
@@ -213,7 +213,7 @@
       <delete dir="${build.path}"/>
    </target>
 
-   <target name="release" depends="-layout">
+   <target name="release" depends="javadoc" description="Upload artifacts to sourceforge">
       <tar tarfile="release.tar">
          <tarfileset dir="${root.path}">
             <include name="${javadoc.path}/**/*"/>            
@@ -226,9 +226,12 @@
       <sshexec host="simple.sourceforge.net" username="${login}" password="${password}" command="tar -xzvf ${home}/release.tar.gz -C ${home}" trust="yes"/>
       <delete file="release.tar.gz"/>      
       <delete file="release.tar"/>
+      <ftp server="upload.sourceforge.net" remotedir="incoming" userid="anonymous" password="niallg@users.sf.net" depends="yes">
+         <fileset dir="${package.path}/${version}/simple-xml-${version}.tar.gz"/>
+      </ftp>
    </target>
 
-   <target name="javadoc" depends="-layout" description="Generate source documentation">
+   <target name="javadoc" depends="-clean" description="Generate source documentation">
       <mkdir dir="${javadoc.path}"/>
       <javadoc sourcepath="${main.source.path}" packagenames="org.simpleframework.*" destdir="${javadoc.path}" private="false">
          <classpath>
