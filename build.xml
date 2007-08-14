@@ -50,6 +50,13 @@
             </fileset>
          </classpath>
       </taskdef>
+      <taskdef name="svn" classname="org.tigris.subversion.svnant.SvnTask">
+         <classpath> 
+            <fileset dir="${lib.path}">
+               <include name="**/*.jar"/>
+            </fileset>
+         </classpath>
+      </taskdef>       
    </target>
 
    <target name="-compile" depends="-setup">
@@ -226,12 +233,15 @@
       <sshexec host="simple.sourceforge.net" username="${login}" password="${password}" command="tar -xzvf ${home}/release.tar.gz -C ${home}" trust="yes"/>
       <delete file="release.tar.gz"/>      
       <delete file="release.tar"/>
-      <ftp server="upload.sourceforge.net" remotedir="incoming" userid="anonymous" password="niallg@users.sf.net" depends="yes">
-         <fileset dir="${package.path}/${version}/simple-xml-${version}.tar.gz"/>
-      </ftp>
+      <!--ftp server="upload.sourceforge.net" remotedir="incoming" userid="anonymous" password="niallg@users.sf.net" depends="yes">
+         <fileset file="${package.path}/${version}/simple-xml-${version}.tar.gz"/>
+      </ftp-->
+      <svn javahl="false">
+         <commit message="Release ${version}" dir="${root.path}"/>               
+      </svn>
    </target>
 
-   <target name="javadoc" depends="-clean" description="Generate source documentation">
+   <target name="javadoc" depends="-setup" description="Generate source documentation">
       <mkdir dir="${javadoc.path}"/>
       <javadoc sourcepath="${main.source.path}" packagenames="org.simpleframework.*" destdir="${javadoc.path}" private="false">
          <classpath>
