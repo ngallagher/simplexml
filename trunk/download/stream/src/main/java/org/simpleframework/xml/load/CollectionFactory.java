@@ -58,12 +58,15 @@ class CollectionFactory extends Factory {
     * @return a type which is used to instantiate the collection     
     */
    public Object getInstance() throws Exception {
-      Class type = getConversion(field);   
-      
-      if(type != null) {
-         return type.newInstance();
+      Class type = field;
+
+      if(!isInstantiable(type)) {
+         type = getConversion(field);   
       }
-      return null;
+      if(!isCollection(type)) {
+         throw new InstantiationException("Type is not a collection %s", field);
+      }
+      return type.newInstance();
    }
    
    /**
