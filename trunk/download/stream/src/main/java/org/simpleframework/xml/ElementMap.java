@@ -34,7 +34,7 @@ import java.lang.annotation.Retention;
  *    &lt;map class="java.util.HashMap"&gt;
  *       &lt;entry key="one"&gt;value one&lt;/entry&gt;
  *       &lt;entry key="two"&gt;value two&lt;/entry&gt;
- *       &lt;entry key="three"&gt;&value three&lt;/entry&gt;  
+ *       &lt;entry key="three"&gt;value three&lt;/entry&gt;  
  *    &lt;/map&gt;
  * 
  * </pre>
