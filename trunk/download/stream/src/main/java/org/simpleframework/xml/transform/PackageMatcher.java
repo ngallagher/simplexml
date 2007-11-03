@@ -85,6 +85,9 @@ class PackageMatcher implements Matcher {
       if(name.startsWith("java.sql")) {
          return matchSQL(type);   
       }     
+      if(name.startsWith("java.math")) {
+         return matchMath(type);
+      }
       throw new TransformException("Transform of %s not supported", type);
    }
    

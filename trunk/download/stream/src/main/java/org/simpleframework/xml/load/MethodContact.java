@@ -49,16 +49,21 @@ class MethodContact implements Contact {
     * This is the write method which is used to set the value.
     */ 
    private Method write;
-
+   
    /**
-    * This is the type associated with this point of contact.
-    */ 
-   private Class type;
+    * This is the dependant types as taken from the read method.
+    */
+   private Class[] items;
    
    /**
     * This is the dependant type as taken from the read method.
     */
    private Class item;
+   
+   /**
+    * This is the type associated with this point of contact.
+    */ 
+   private Class type; 
    
    /**
     * This represents the name of the method for this contact.
@@ -76,6 +81,7 @@ class MethodContact implements Contact {
     */ 
    public MethodContact(MethodPart read, MethodPart write) {
       this.label = read.getAnnotation();   
+      this.items = read.getDependants();
       this.item = read.getDependant();
       this.write = write.getMethod();
       this.read = read.getMethod();
@@ -104,7 +110,19 @@ class MethodContact implements Contact {
     */
    public Class getDependant() {
       return item;
-   }   
+   }
+   
+   /**
+    * This provides the dependant classes for the contact. This will
+    * typically represent a generic types for the actual type. For
+    * contacts that use a <code>Map</code> type this will be the 
+    * generic type parameter for that map type declaration.
+    * 
+    * @return this returns the dependant type for the contact
+    */
+   public Class[] getDependants() {
+      return items;
+   } 
    
    /**
     * This is used to acquire the name of the method. This returns
