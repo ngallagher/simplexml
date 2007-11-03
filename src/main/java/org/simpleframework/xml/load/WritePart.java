@@ -107,6 +107,19 @@ class WritePart implements MethodPart {
    }
    
    /**
+    * This is used to acquire the dependant classes for the method 
+    * part. The dependant types are the types that represents the 
+    * generic types of the type. This is used when collections are
+    * annotated as it allows a default entry classes to be taken
+    * from the generic information provided.
+    * 
+    * @return this returns the generic dependants for the type
+    */  
+   public Class[] getDependants() {
+      return Reflector.getParameterDependants(method, 0);
+   }
+   
+   /**
     * This is used to acquire the annotation that was used to label
     * the method this represents. This acts as a means to match the
     * set method with the get method using an annotation comparison.

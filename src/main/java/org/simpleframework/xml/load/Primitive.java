@@ -67,7 +67,20 @@ class Primitive implements Converter {
     * This the value used to represent a null primitive value.
     */
    private final String empty;
-
+   
+   /**
+    * Constructor for the <code>Primitive</code> object. This is used
+    * to convert an XML node to a primitive object and vice versa. To
+    * perform deserialization the primitive object requires the source
+    * object used for the instance of serialization to peformed.
+    *
+    * @param root the source object used for the serialization
+    * @param type this is the type of primitive this represents
+    */ 
+   public Primitive(Source root, Class type) {
+      this(root, type, null);          
+   }
+   
    /**
     * Constructor for the <code>Primitive</code> object. This is used
     * to convert an XML node to a primitive object and vice versa. To

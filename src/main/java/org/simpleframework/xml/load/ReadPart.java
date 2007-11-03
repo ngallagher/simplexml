@@ -107,6 +107,19 @@ class ReadPart implements MethodPart {
    }
    
    /**
+    * This is used to acquire the dependant classes for the method 
+    * part. The dependant types are the types that represent the 
+    * generic types of the type. This is used when collections are 
+    * annotated as it allows a default entry class to be taken
+    * from the generic information provided.
+    * 
+    * @return this returns the generic dependant for the type
+    */
+   public Class[] getDependants() {
+      return Reflector.getReturnDependants(method);
+   }
+   
+   /**
     * This is used to acquire the annotation that was used to label
     * the method this represents. This acts as a means to match the
     * set method with the get method using an annotation comparison.

@@ -24,6 +24,7 @@ import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementArray;
 import org.simpleframework.xml.ElementList;
+import org.simpleframework.xml.ElementMap;
 import org.simpleframework.xml.Text;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -164,6 +165,9 @@ class MethodScanner extends ContactList {
          process(method, label);
       }
       if(label instanceof ElementArray) {
+         process(method, label);
+      }
+      if(label instanceof ElementMap) {
          process(method, label);
       }
       if(label instanceof Element) {

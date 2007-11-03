@@ -20,7 +20,6 @@
 
 package org.simpleframework.xml.load;
 
-import java.lang.reflect.ParameterizedType;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
@@ -85,6 +84,18 @@ class FieldContact implements Contact {
     */
    public Class getDependant() {
       return Reflector.getDependant(field);
+   }
+   
+   /**
+    * This provides the dependant classes for the contact. This will
+    * typically represent a generic types for the actual type. For
+    * contacts that use a <code>Map</code> type this will be the 
+    * generic type parameter for that map type declaration.
+    * 
+    * @return this returns the dependant type for the contact
+    */
+   public Class[] getDependants() {
+      return Reflector.getDependants(field);
    }
    
    /**

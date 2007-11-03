@@ -73,6 +73,17 @@ interface MethodPart {
    public Class getDependant();
    
    /**
+    * This is used to acquire the dependant classes for the method 
+    * part. The dependant types are the types that represent the 
+    * generic types of the type. This is used when collections are 
+    * annotated as it allows a default entry class to be taken
+    * from the generic information provided.
+    * 
+    * @return this returns the generic dependant for the type
+    */
+   public Class[] getDependants();
+   
+   /**
     * This is the method for this point of contact. This is what
     * will be invoked by the serialization or deserialization 
     * process when an XML element or attribute is to be used.

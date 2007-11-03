@@ -24,6 +24,7 @@ import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementArray;
 import org.simpleframework.xml.ElementList;
+import org.simpleframework.xml.ElementMap;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.Text;
 import java.lang.annotation.Annotation;
@@ -458,6 +459,9 @@ class Scanner  {
          process(field, label, elements);
       }
       if(label instanceof ElementArray) {
+         process(field, label, elements);
+      }
+      if(label instanceof ElementMap) {
          process(field, label, elements);
       }
       if(label instanceof Element) {

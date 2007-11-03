@@ -51,7 +51,7 @@ class CollectionFactory extends Factory {
    
    /**
     * Creates a collection that is determined from the field type. 
-    * This is used for the <code>ElementInlineList</code> to get a
+    * This is used for the <code>ElementList</code> to get a
     * collection that does not have any overrides. This must be
     * done as the inline list does not contain an outer element.
     * 
@@ -103,8 +103,6 @@ class CollectionFactory extends Factory {
     * @param type the type used to instantiate the collection
     * 
     * @return this returns a compatible collection instance 
-    * 
-    * @throws Exception if the collection cannot be instantiated
     */
    public Type getInstance(Type type) throws Exception {
       Class real = type.getType();

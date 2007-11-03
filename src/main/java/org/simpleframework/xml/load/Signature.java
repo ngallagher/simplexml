@@ -28,12 +28,17 @@ import java.beans.Introspector;
  * The <code>Signature</code> object is used to determine the details
  * to use for an annotated field or method using both the field an
  * annotation details. This allows defaults to be picked up from the
- * method or field type if thay have not been explicitly overridden
+ * method or field type if that have not been explicitly overridden
  * in the annotation. 
  * 
  * @author Niall Gallagher
  */
 class Signature {
+   
+   /**
+    * This is the name of the default name for a composite object.
+    */
+   private static final String DEFAULT_NAME = "element";
    
    /**
     * This is the actual annotation from the specified contact.
@@ -105,7 +110,7 @@ class Signature {
       Class type = getDependant();
 
       if(!Factory.isPrimitive(type)) {
-         type = Object.class;
+         return DEFAULT_NAME;  // default needed to represent possible composite null
       }
       return getParent(type);
    }

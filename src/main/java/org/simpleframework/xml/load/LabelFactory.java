@@ -24,6 +24,7 @@ import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementArray;
 import org.simpleframework.xml.ElementList;
+import org.simpleframework.xml.ElementMap;
 import org.simpleframework.xml.Text;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
@@ -102,6 +103,9 @@ final class LabelFactory {
        }
        if(label instanceof ElementArray) {
           return new Entry(ElementArrayLabel.class, ElementArray.class);               
+       }
+       if(label instanceof ElementMap) {
+          return new Entry(ElementMapLabel.class, ElementMap.class);
        }
        if(label instanceof Attribute) {
           return new Entry(AttributeLabel.class, Attribute.class);
