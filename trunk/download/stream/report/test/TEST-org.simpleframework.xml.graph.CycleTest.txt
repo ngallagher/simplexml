@@ -1,0 +1,80 @@
+Testsuite: org.simpleframework.xml.graph.CycleTest
+Tests run: 3, Failures: 0, Errors: 0, Time elapsed: 3.953 sec
+------------- Standard Output ---------------
+<example id="0">
+   <list class="java.util.ArrayList" id="1">
+      <entry key="1" id="2">
+         <value id="3">one</value>
+      </entry>
+      <entry key="2" id="4">
+         <value id="5">two</value>
+      </entry>
+      <entry key="3" id="6">
+         <value id="7">three</value>
+      </entry>
+      <entry ref="2"/>
+      <entry ref="4"/>
+      <entry key="3" id="8">
+         <value ref="7"/>
+      </entry>
+   </list>
+   <cycle ref="0"/>
+</example><example id="0">
+   <list class="java.util.ArrayList" id="1">
+      <entry key="1" id="2">
+         <value id="3">one</value>
+      </entry>
+      <entry key="2" id="4">
+         <value id="5">two</value>
+      </entry>
+      <entry key="3" id="6">
+         <value id="7">three</value>
+      </entry>
+      <entry ref="2"/>
+      <entry ref="4"/>
+      <entry key="3" id="8">
+         <value ref="7"/>
+      </entry>
+   </list>
+   <cycle ref="0"/>
+</example><example id="0">
+   <list class="java.util.ArrayList" id="1">
+      <entry key="1" id="2">
+         <value id="3">one</value>
+      </entry>
+      <entry key="2" id="4">
+         <value id="5">two</value>
+      </entry>
+      <entry key="3" id="6">
+         <value id="7">three</value>
+      </entry>
+      <entry ref="2"/>
+      <entry ref="4"/>
+      <entry key="3" id="8">
+         <value ref="7"/>
+      </entry>
+   </list>
+   <cycle ref="0"/>
+</example><example id="0">
+   <list class="java.util.ArrayList" id="1">
+      <entry key="1" id="2">
+         <value id="3">one</value>
+      </entry>
+      <entry key="2" id="4">
+         <value id="5">two</value>
+      </entry>
+      <entry key="3" id="6">
+         <value id="7">three</value>
+      </entry>
+      <entry ref="2"/>
+      <entry ref="4"/>
+      <entry key="3" id="8">
+         <value ref="7"/>
+      </entry>
+   </list>
+   <cycle ref="0"/>
+</example>------------- ---------------- ---------------
+
+Testcase: testCycle took 0.516 sec
+Testcase: testMemory took 3.421 sec
+Testcase: testDirectory took 0 sec

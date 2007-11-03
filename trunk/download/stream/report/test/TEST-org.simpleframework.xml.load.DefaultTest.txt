@@ -1,0 +1,19 @@
+Testsuite: org.simpleframework.xml.load.DefaultTest
+Tests run: 2, Failures: 0, Errors: 0, Time elapsed: 1.032 sec
+------------- Standard Output ---------------
+<defaultTextList version="ONE">
+   <list class="java.util.ArrayList">
+      <textEntry name="a" version="ONE">Example 1</textEntry>
+      <textEntry name="b" version="TWO">Example 2</textEntry>
+      <textEntry name="c" version="THREE">Example 3</textEntry>
+   </list>
+</defaultTextList><defaultTextList version="ONE">
+   <list class="java.util.ArrayList">
+      <textEntry name="a" version="ONE">Example 1</textEntry>
+      <textEntry name="b" version="TWO">Example 2</textEntry>
+      <textEntry name="c" version="THREE">Example 3</textEntry>
+   </list>
+</defaultTextList>------------- ---------------- ---------------
+
+Testcase: testList took 1.016 sec
+Testcase: testDirectory took 0 sec

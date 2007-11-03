@@ -1,0 +1,45 @@
+Testsuite: org.simpleframework.xml.graph.ListCycleTest
+Tests run: 5, Failures: 0, Errors: 0, Time elapsed: 0.625 sec
+------------- Standard Output ---------------
+<root id="0">
+   <one class="java.util.ArrayList" id="1">
+      <text value="entry one" id="2"/>
+      <text value="entry two" id="3"/>
+      <text value="entry three" id="4"/>
+      <text value="entry four" id="5"/>
+      <text value="entry five" id="6"/>
+   </one>
+   <two ref="1" class="java.util.ArrayList"/>
+   <three class="java.util.ArrayList" id="7">
+      <text value="tom" id="8"/>
+      <text value="dick" id="9"/>
+      <text value="harry" id="10"/>
+   </three>
+   <example ref="0"/>
+</root><inlineListExample id="0">
+   <text value="entry one" id="1"/>
+   <text value="entry two" id="2"/>
+   <text value="entry three" id="3"/>
+   <text value="entry four" id="4"/>
+   <text value="entry five" id="5"/>
+   <example ref="0"/>
+</inlineListExample><inlinePrimitiveListExample id="0">
+   <string id="1"><![CDATA[entry one]]></string>
+   <string id="2"><![CDATA[entry two]]></string>
+   <string id="3"><![CDATA[entry three]]></string>
+   <string id="4"><![CDATA[entry four]]></string>
+   <string id="5"><![CDATA[entry five]]></string>
+   <example ref="0"/>
+</inlinePrimitiveListExample><root id="0">
+   <list class="java.util.ArrayList" id="1">
+      <value id="2">
+         <list ref="1" class="java.util.ArrayList"/>
+      </value>
+   </list>
+</root>------------- ---------------- ---------------
+
+Testcase: testCycle took 0.516 sec
+Testcase: testInlineList took 0.032 sec
+Testcase: testInlinePrimitiveList took 0.031 sec
+Testcase: testNestedExample took 0.031 sec
+Testcase: testDirectory took 0 sec

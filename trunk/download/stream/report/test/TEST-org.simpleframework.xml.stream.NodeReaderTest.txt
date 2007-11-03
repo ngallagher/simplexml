@@ -1,0 +1,6 @@
+Testsuite: org.simpleframework.xml.stream.NodeReaderTest
+Tests run: 3, Failures: 0, Errors: 0, Time elapsed: 0.187 sec
+
+Testcase: testSmallSource took 0.172 sec
+Testcase: testLargeSource took 0 sec
+Testcase: testSkip took 0 sec
