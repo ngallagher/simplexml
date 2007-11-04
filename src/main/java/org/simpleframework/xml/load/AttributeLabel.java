@@ -156,14 +156,14 @@ class AttributeLabel implements Label {
    }
    
    /**
-    * This is typically used to acquire the parent value as acquired
+    * This is typically used to acquire the entry value as acquired
     * from the annotation. However given that the annotation this
-    * represents does not have a parent attribute this will always
-    * provide a null value for the parent string.
+    * represents does not have a entry attribute this will always
+    * provide a null value for the entry string.
     * 
-    * @return this will always return null for the parent value 
+    * @return this will always return null for the entry value 
     */
-   public String getParent() {
+   public String getEntry() {
       return null;
    }
    

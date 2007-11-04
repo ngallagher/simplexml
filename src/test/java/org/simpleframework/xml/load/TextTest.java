@@ -52,7 +52,7 @@ public class TextTest extends ValidationTestCase {
    @Root(name="test")
    private static class TextList {
 
-      @ElementArray(name="array", parent="entry")
+      @ElementArray(name="array", entry="entry")
       private TextEntry[] array;
    }
 

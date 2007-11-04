@@ -76,14 +76,14 @@ public @interface ElementList {
    public String name() default "";
    
    /**
-    * This is used to provide a parent XML element for each of the
+    * This is used to provide a entry XML element for each of the
     * values within the array. This essentially wraps the entity to
     * be serialized such that there is an extra XML element present.
     * Typically this is only used to represent a list of primitives.  
     * 
-    * @return this returns the parent XML element for each value
+    * @return this returns the entry XML element for each value
     */
-   public String parent() default "";
+   public String entry() default "";
    
    /**
     * Represents the type of object the element list contains. This

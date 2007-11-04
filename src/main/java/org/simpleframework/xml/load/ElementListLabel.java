@@ -56,9 +56,9 @@ class ElementListLabel implements Label {
    private Class item;
    
    /**
-    * This is the name of the XML parent from the annotation.
+    * This is the name of the XML entry from the annotation.
     */
-   private String parent;
+   private String entry;
    
    /**
     * This is the name of the element for this label instance.
@@ -76,7 +76,7 @@ class ElementListLabel implements Label {
    public ElementListLabel(Contact contact, ElementList label) {
       this.detail = new Signature(contact, this);
       this.type = contact.getType();
-      this.parent = label.parent();
+      this.entry = label.entry();
       this.item = label.type();
       this.name = label.name();      
       this.label = label;
@@ -93,12 +93,12 @@ class ElementListLabel implements Label {
     * @return this returns the converter for creating a collection 
     */
    public Converter getConverter(Source root) throws Exception {
-      String parent = getParent();
+      String entry = getEntry();
       
       if(!label.inline()) {
-         return getConverter(root, parent);
+         return getConverter(root, entry);
       }
-      return getInlineConverter(root, parent);      
+      return getInlineConverter(root, entry);      
    }
 
    /**
@@ -108,16 +108,17 @@ class ElementListLabel implements Label {
     * annotation. 
     * 
     * @param root this is the source object used for serialization
+    * @param name this is the name of the XML entry element to use
     * 
     * @return this returns the converter for creating a collection 
     */
-   private Converter getConverter(Source root, String parent) throws Exception {      
+   private Converter getConverter(Source root, String name) throws Exception {      
       Class item = getDependant();
       
       if(!root.isPrimitive(item)) {
          return new CompositeList(root, type, item);
       }
-      return new PrimitiveList(root, type, item, parent);      
+      return new PrimitiveList(root, type, item, name);      
    }
    
    /**
@@ -130,13 +131,13 @@ class ElementListLabel implements Label {
     * 
     * @return this returns the converter for creating a collection 
     */
-   private Converter getInlineConverter(Source root, String parent) throws Exception {      
+   private Converter getInlineConverter(Source root, String name) throws Exception {      
       Class item = getDependant();
       
       if(!root.isPrimitive(item)) {
          return new CompositeInlineList(root, type, item);
       }
-      return new PrimitiveInlineList(root, type, item, parent);      
+      return new PrimitiveInlineList(root, type, item, name);      
    }
    
    /**
@@ -160,18 +161,18 @@ class ElementListLabel implements Label {
    }
    
    /**
-    * This is used to either provide the parent value provided within
-    * the annotation or compute a parent value. If the parent string
-    * is not provided the the parent value is calculated as the type
+    * This is used to either provide the entry value provided within
+    * the annotation or compute a entry value. If the entry string
+    * is not provided the the entry value is calculated as the type
     * of primitive the object is as a simplified class name.
     * 
-    * @return this returns the name of the XML parent element used 
+    * @return this returns the name of the XML entry element used 
     */
-   public String getParent() throws Exception {      
-      if(detail.isEmpty(parent)) {
-         parent = detail.getParent();
+   public String getEntry() throws Exception {      
+      if(detail.isEmpty(entry)) {
+         entry = detail.getEntry();
       }
-      return parent;
+      return entry;
    }
    
    /**
