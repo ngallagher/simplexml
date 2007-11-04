@@ -94,13 +94,13 @@ public class ArrayCycleTest extends ValidationTestCase {
    @Root(name="root")
    private static class ArrayCycleExample {
 
-      @ElementArray(name="one", parent="entry")           
+      @ElementArray(name="one", entry="entry")           
       public Entry[] one;      
       
-      @ElementArray(name="two", parent="entry")           
+      @ElementArray(name="two", entry="entry")           
       public Entry[] two;
       
-      @ElementArray(name="three", parent="entry")           
+      @ElementArray(name="three", entry="entry")           
       public Entry[] three;
       
       @Element(name="example")
@@ -125,14 +125,14 @@ public class ArrayCycleTest extends ValidationTestCase {
    @Root(name="root")
    private static class NestedArrayCycleExample {
       
-      @ElementArray(name="array", parent="entry")
+      @ElementArray(name="array", entry="entry")
       public Value[] array;
    }
    
    @Root(name="value")
    private static class Value {
       
-      @ElementArray(name="list", parent="entry", required=false)
+      @ElementArray(name="list", entry="entry", required=false)
       private Value[] list;
    }
    

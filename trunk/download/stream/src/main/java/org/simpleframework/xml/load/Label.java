@@ -71,14 +71,14 @@ interface Label {
    public Class getDependant() throws Exception;
    
    /**
-    * This is used to either provide the parent value provided within
-    * the annotation or compute a parent value. If the parent string
-    * is not provided the the parent value is calculated as the type
+    * This is used to either provide the entry value provided within
+    * the annotation or compute a entry value. If the entry string
+    * is not provided the the entry value is calculated as the type
     * of primitive the object is as a simplified class name.
     * 
-    * @return this returns the name of the XML parent element used 
+    * @return this returns the name of the XML entry element used 
     */
-   public String getParent() throws Exception;  
+   public String getEntry() throws Exception;  
    
    /**
     * This is used to provide a configured empty value used when the

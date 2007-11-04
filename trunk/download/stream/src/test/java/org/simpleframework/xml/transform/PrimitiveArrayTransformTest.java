@@ -194,8 +194,8 @@ public class PrimitiveArrayTransformTest extends ValidationTestCase {
       assertXpathExists("/integerArrayExample/list[@id='2']", text);
       assertXpathExists("/integerArrayExample/array[@id='3']", text);
       
-      assertXpathExists("/integerArrayExample/list/element[@reference='1']", text);
-      assertXpathExists("/integerArrayExample/array/element[@reference='1']", text);
+      assertXpathExists("/integerArrayExample/list/entry[@reference='1']", text);
+      assertXpathExists("/integerArrayExample/array/entry[@reference='1']", text);
       
       assertXpathEvaluatesTo("1, 2, 3, 4", "/integerArrayExample/element", text);
       

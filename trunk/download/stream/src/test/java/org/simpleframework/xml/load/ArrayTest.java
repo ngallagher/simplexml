@@ -145,14 +145,14 @@ public class ArrayTest extends ValidationTestCase {
    @Root(name="root")
    private static class ArrayExample {
 
-      @ElementArray(name="array", parent="entry")           
+      @ElementArray(name="array", entry="entry")           
       public Text[] array;
    }
 
    @Root(name="root")
    private static class BadArrayExample {
  
-      @ElementArray(name="array", parent="entry")
+      @ElementArray(name="array", entry="entry")
       public Text array;
    }   
 
@@ -187,7 +187,7 @@ public class ArrayTest extends ValidationTestCase {
    @Root(name="root")
    private static class PrimitiveArrayExample {
       
-      @ElementArray(name="array", parent="text")
+      @ElementArray(name="array", entry="text")
       private String[] array;
    }
    
@@ -201,7 +201,7 @@ public class ArrayTest extends ValidationTestCase {
    @Root(name="root")
    private static class ParentCompositeArrayExample {
       
-      @ElementArray(name="array", parent="entry")
+      @ElementArray(name="array", entry="entry")
       private Text[] array;
    }
    
@@ -215,14 +215,14 @@ public class ArrayTest extends ValidationTestCase {
    @Root(name="root")
    private static class CharacterArrayExample {
       
-      @ElementArray(name="array", parent="char")
+      @ElementArray(name="array", entry="char")
       private char[] array;
    }
    
    @Root(name="root")
    private static class DifferentArrayExample {
       
-      @ElementArray(name="array", parent="entry")
+      @ElementArray(name="array", entry="entry")
       private Text[] array;
       
       public DifferentArrayExample() {

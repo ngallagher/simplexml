@@ -329,7 +329,7 @@ public class CollectionTest extends ValidationTestCase {
    @Root
    private static class PrimitiveCollection implements Iterable<String> {
 
-      @ElementList(name="list", type=String.class, parent="text")
+      @ElementList(name="list", type=String.class, entry="text")
       private List<String> list;           
 
       @Attribute(name="name")

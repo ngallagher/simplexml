@@ -51,7 +51,7 @@ public class StrictTest extends ValidationTestCase {
    @Root(name="root", strict=false)
    private static class StrictExample {
 
-      @ElementArray(name="list", parent="item")
+      @ElementArray(name="list", entry="item")
       private StrictEntry[] list;
 
       @Element(name="object")

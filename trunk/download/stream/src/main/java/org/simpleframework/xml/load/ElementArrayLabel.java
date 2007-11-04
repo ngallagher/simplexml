@@ -27,7 +27,7 @@ import org.simpleframework.xml.ElementArray;
  * to represent an XML element array in a class schema. This element 
  * array label can be used to convert an XML node into an array of
  * composite or primitive objects. If the array is of primitive types
- * then the <code>parent</code> attribute must be specified so that 
+ * then the <code>entry</code> attribute must be specified so that 
  * the primitive values can be serialized in a structured manner.
  * 
  * @author Niall Gallagher
@@ -52,9 +52,9 @@ class ElementArrayLabel implements Label {
    private Class type;
    
    /**
-    * This is the name of the XML parent from the annotation.
+    * This is the name of the XML entry from the annotation.
     */
-   private String parent;
+   private String entry;
    
    /**
     * This is the name of the element for this label instance.
@@ -72,7 +72,7 @@ class ElementArrayLabel implements Label {
    public ElementArrayLabel(Contact contact, ElementArray label) {
       this.detail = new Signature(contact, this);   
       this.type = contact.getType();
-      this.parent = label.parent();
+      this.entry = label.entry();
       this.name = label.name();
       this.label = label;
    }
@@ -87,12 +87,12 @@ class ElementArrayLabel implements Label {
     * @return this returns the converter for creating a collection 
     */
    public Converter getConverter(Source root) throws Exception {
-      String parent = getParent();
+      String entry = getEntry();
       
       if(!type.isArray()) {
          throw new InstantiationException("Type is not an array %s for %s", type, label);
       }
-      return getConverter(root, parent);
+      return getConverter(root, entry);
    }  
       
    /**
@@ -101,32 +101,32 @@ class ElementArrayLabel implements Label {
     * class for these objects must present the element array annotation. 
     * 
     * @param root this is the source object used for serialization
-    * @param parent this is the name of the parent XML element to use
+    * @param name this is the name of the entry XML element to use
     * 
     * @return this returns the converter for creating a collection 
     */      
-   private Converter getConverter(Source root, String parent) throws Exception {
+   private Converter getConverter(Source root, String name) throws Exception {
       Class entry = type.getComponentType();   
       
       if(!root.isPrimitive(entry)) { 
-         return new CompositeArray(root, type, entry, parent);        
+         return new CompositeArray(root, type, entry, name);        
       }
-      return new PrimitiveArray(root, type, entry, parent);            
+      return new PrimitiveArray(root, type, entry, name);            
    }
    
    /**
-    * This is used to either provide the parent value provided within
-    * the annotation or compute a parent value. If the parent string
-    * is not provided the the parent value is calculated as the type
+    * This is used to either provide the entry value provided within
+    * the annotation or compute a entry value. If the entry string
+    * is not provided the the entry value is calculated as the type
     * of primitive the object is as a simplified class name.
     * 
-    * @return this returns the name of the XML parent element used 
+    * @return this returns the name of the XML entry element used 
     */
-   public String getParent() throws Exception {      
-      if(detail.isEmpty(parent)) {
-         parent = detail.getParent();
+   public String getEntry() throws Exception {      
+      if(detail.isEmpty(entry)) {
+         entry = detail.getEntry();
       }
-      return parent;
+      return entry;
    }
    
    /**
