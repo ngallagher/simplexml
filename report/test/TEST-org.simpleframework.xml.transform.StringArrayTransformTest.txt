@@ -1,18 +1,18 @@
 Testsuite: org.simpleframework.xml.transform.StringArrayTransformTest
-Tests run: 4, Failures: 0, Errors: 0, Time elapsed: 0.5 sec
+Tests run: 4, Failures: 0, Errors: 0, Time elapsed: 0.484 sec
 ------------- Standard Output ---------------
 <stringArrayExample attribute="one, two, three, four">
    <element length="4">one, two, three, four</element>
    <list class="java.util.ArrayList">
-      <element length="4">one, two, three, four</element>
-      <element length="4">one, two, three, four</element>
+      <entry length="4">one, two, three, four</entry>
+      <entry length="4">one, two, three, four</entry>
    </list>
    <array length="1">
-      <element length="4">one, two, three, four</element>
+      <entry length="4">one, two, three, four</entry>
    </array>
 </stringArrayExample>------------- ---------------- ---------------
 
 Testcase: testRead took 0.031 sec
 Testcase: testWrite took 0 sec
-Testcase: testPersistence took 0.453 sec
+Testcase: testPersistence took 0.438 sec
 Testcase: testDirectory took 0 sec

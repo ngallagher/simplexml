@@ -1,7 +1,7 @@
 Testsuite: org.simpleframework.xml.load.ExtendTest
-Tests run: 4, Failures: 0, Errors: 0, Time elapsed: 0.406 sec
+Tests run: 4, Failures: 0, Errors: 0, Time elapsed: 0.407 sec
 
-Testcase: testFirst took 0.391 sec
-Testcase: testSecond took 0 sec
-Testcase: testThird took 0.015 sec
-Testcase: testFailure took 0 sec
+Testcase: testFirst took 0.359 sec
+Testcase: testSecond took 0.016 sec
+Testcase: testThird took 0 sec
+Testcase: testFailure took 0.016 sec

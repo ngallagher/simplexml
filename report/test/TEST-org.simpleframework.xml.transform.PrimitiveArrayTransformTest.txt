@@ -1,58 +1,58 @@
 Testsuite: org.simpleframework.xml.transform.PrimitiveArrayTransformTest
-Tests run: 5, Failures: 0, Errors: 0, Time elapsed: 1.125 sec
+Tests run: 5, Failures: 0, Errors: 0, Time elapsed: 1 sec
 ------------- Standard Output ---------------
 <integerArrayExample attribute="1, 2, 3, 4">
    <element length="4">1, 2, 3, 4</element>
    <list class="java.util.ArrayList">
-      <element length="4">1, 2, 3, 4</element>
-      <element length="4">1, 2, 3, 4</element>
+      <entry length="4">1, 2, 3, 4</entry>
+      <entry length="4">1, 2, 3, 4</entry>
    </list>
    <array length="1">
-      <element length="4">1, 2, 3, 4</element>
+      <entry length="4">1, 2, 3, 4</entry>
    </array>
    <test value="text"/>
    <testList class="java.util.ArrayList"/>
    <testArray length="1">
-      <element/>
+      <entry/>
    </testArray>
 </integerArrayExample><integerArrayExample>
    <list class="java.util.ArrayList"/>
    <array length="1">
-      <element/>
+      <entry/>
    </array>
    <test value="text"/>
    <testList class="java.util.ArrayList"/>
    <testArray length="1">
-      <element/>
+      <entry/>
    </testArray>
 </integerArrayExample><integerArrayExample attribute="1, 2, 3, 4" id="0">
    <element length="4" id="1">1, 2, 3, 4</element>
    <list class="java.util.ArrayList" id="2">
-      <element reference="1"/>
-      <element reference="1"/>
+      <entry reference="1"/>
+      <entry reference="1"/>
    </list>
    <array length="1" id="3">
-      <element reference="1"/>
+      <entry reference="1"/>
    </array>
    <test value="text" id="4"/>
    <testList class="java.util.ArrayList" id="5"/>
    <testArray length="1" id="6">
-      <element/>
+      <entry/>
    </testArray>
 </integerArrayExample><integerArrayExample id="0">
    <list class="java.util.ArrayList" id="1"/>
    <array length="1" id="2">
-      <element/>
+      <entry/>
    </array>
    <test value="text" id="3"/>
    <testList class="java.util.ArrayList" id="4"/>
    <testArray length="1" id="5">
-      <element/>
+      <entry/>
    </testArray>
 </integerArrayExample>------------- ---------------- ---------------
 
 Testcase: testRead took 0.031 sec
 Testcase: testWrite took 0 sec
-Testcase: testPersistence took 0.516 sec
-Testcase: testCyclicPersistence took 0.547 sec
+Testcase: testPersistence took 0.485 sec
+Testcase: testCyclicPersistence took 0.468 sec
 Testcase: testDirectory took 0 sec
