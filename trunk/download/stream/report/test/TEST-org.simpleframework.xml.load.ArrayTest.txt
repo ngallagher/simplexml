@@ -551,21 +551,21 @@ Tests run: 12, Failures: 0, Errors: 0, Time elapsed: 1.438 sec
    </array>
 </root><root>
    <array length="5">
-      <element>
+      <entry>
          <text value="entry one"/>
-      </element>
-      <element>
+      </entry>
+      <entry>
          <text value="entry two"/>
-      </element>
-      <element>
+      </entry>
+      <entry>
          <text value="entry three"/>
-      </element>
-      <element>
+      </entry>
+      <entry>
          <text value="entry four"/>
-      </element>
-      <element>
+      </entry>
+      <entry>
          <text value="entry five"/>
-      </element>
+      </entry>
    </array>
 </root><root>
    <array length="5">
@@ -604,15 +604,15 @@ Tests run: 12, Failures: 0, Errors: 0, Time elapsed: 1.438 sec
    </array>
 </root>------------- ---------------- ---------------
 
-Testcase: testExample took 0.391 sec
+Testcase: testExample took 0.438 sec
 Testcase: testBadExample took 0 sec
-Testcase: testWriteArray took 0.844 sec
-Testcase: testPrimitive took 0.031 sec
+Testcase: testWriteArray took 0.828 sec
+Testcase: testPrimitive took 0.016 sec
 Testcase: testDefaultPrimitive took 0.016 sec
 Testcase: testPrimitiveNull took 0.015 sec
 Testcase: testParentComposite took 0.016 sec
-Testcase: testDefaultComposite took 0.031 sec
-Testcase: testParentCompositeNull took 0.016 sec
-Testcase: testCharacter took 0.015 sec
+Testcase: testDefaultComposite took 0.016 sec
+Testcase: testParentCompositeNull took 0 sec
+Testcase: testCharacter took 0.016 sec
 Testcase: testDifferentArray took 0.016 sec
 Testcase: testDirectory took 0 sec

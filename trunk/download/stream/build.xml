@@ -221,8 +221,8 @@
    </target>
 
    <target name="release" depends="-setup" description="Upload artifacts to sourceforge">
-      <available file="${package.path}/${version}/CHANGES" property="changes.exist"/>
-      <fail unless="${changes.exist}" message="CHANGES file must be provided to release"/>
+      <!--available file="${package.path}/${version}/CHANGES" property="changes.exist"/>
+      <fail unless="${changes.exist}" message="${package.path}/${version}/CHANGES file must be provided to release"/-->
       <antcall target="javadoc"/>
       <tar tarfile="release.tar">
          <tarfileset dir="${root.path}">
