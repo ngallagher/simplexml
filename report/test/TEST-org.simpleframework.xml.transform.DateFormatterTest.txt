@@ -1,7 +1,7 @@
 Testsuite: org.simpleframework.xml.transform.DateFormatterTest
-Tests run: 2, Failures: 0, Errors: 0, Time elapsed: 0.343 sec
+Tests run: 2, Failures: 0, Errors: 0, Time elapsed: 0.328 sec
 ------------- Standard Error -----------------
-pool: 173, new: 1406, synchronized: 250------------- ---------------- ---------------
+pool: 187, new: 1341, synchronized: 256------------- ---------------- ---------------
 
-Testcase: testFormatter took 0.062 sec
+Testcase: testFormatter took 0.031 sec
 Testcase: testPerformance took 0.281 sec

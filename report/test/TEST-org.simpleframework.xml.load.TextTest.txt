@@ -1,5 +1,5 @@
 Testsuite: org.simpleframework.xml.load.TextTest
-Tests run: 8, Failures: 0, Errors: 0, Time elapsed: 0.594 sec
+Tests run: 8, Failures: 0, Errors: 0, Time elapsed: 0.625 sec
 ------------- Standard Output ---------------
 <test>
    <array length="3">
@@ -51,11 +51,11 @@ org.simpleframework.xml.transform.TransformException: Transform of interface jav
 	at org.simpleframework.xml.load.Primitive.readElement(Primitive.java:150)
 	at org.simpleframework.xml.load.Primitive.readElement(Primitive.java:133)
 	at org.simpleframework.xml.load.Primitive.read(Primitive.java:113)
-	at org.simpleframework.xml.load.Composite.read(Composite.java:345)
-	at org.simpleframework.xml.load.Composite.readText(Composite.java:266)
-	at org.simpleframework.xml.load.Composite.read(Composite.java:186)
-	at org.simpleframework.xml.load.Composite.read(Composite.java:134)
-	at org.simpleframework.xml.load.Composite.read(Composite.java:110)
+	at org.simpleframework.xml.load.Composite.read(Composite.java:355)
+	at org.simpleframework.xml.load.Composite.readText(Composite.java:272)
+	at org.simpleframework.xml.load.Composite.read(Composite.java:192)
+	at org.simpleframework.xml.load.Composite.read(Composite.java:140)
+	at org.simpleframework.xml.load.Composite.read(Composite.java:116)
 	at org.simpleframework.xml.load.Traverser.read(Traverser.java:72)
 	at org.simpleframework.xml.load.Persister.read(Persister.java:392)
 	at org.simpleframework.xml.load.Persister.read(Persister.java:374)
@@ -80,11 +80,11 @@ org.simpleframework.xml.transform.TransformException: Transform of interface jav
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
 ------------- ---------------- ---------------
 
-Testcase: testText took 0.484 sec
-Testcase: testData took 0.032 sec
+Testcase: testText took 0.516 sec
+Testcase: testData took 0.047 sec
 Testcase: testDuplicate took 0 sec
 Testcase: testIllegalElement took 0.015 sec
 Testcase: testEmpty took 0 sec
-Testcase: testOptional took 0.032 sec
-Testcase: testNonPrimitive took 0.015 sec
+Testcase: testOptional took 0.031 sec
+Testcase: testNonPrimitive took 0.016 sec
 Testcase: testDirectory took 0 sec

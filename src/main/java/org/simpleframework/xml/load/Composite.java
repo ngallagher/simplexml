@@ -68,6 +68,11 @@ class Composite implements Converter {
    private final Source root;
    
    /**
+    * This is used to store objects so that they can be read again.
+    */
+   private final Store store;
+   
+   /**
     * This is the type that this composite produces instances of.
     */
    private final Class type;
@@ -82,7 +87,8 @@ class Composite implements Converter {
     * @param type this is the XML schema class to use
     */
    public Composite(Source root, Class type) {
-      this.factory = new ObjectFactory(root, type);           
+      this.factory = new ObjectFactory(root, type);  
+      this.store = new Store(root);
       this.root = root;
       this.type = type;
    }
@@ -312,10 +318,14 @@ class Composite implements Converter {
    private void readElement(InputNode node, Object source, LabelMap map) throws Exception {
       Position line = node.getPosition();
       String name = node.getName();
-      Label label = map.take(name);
-      
+      Label label = map.take(name);      
+
       if(label == null) {
-         if(map.isStrict()) {              
+         Converter repeat = store.get(name);
+         
+         if(repeat != null) {
+            repeat.read(node);
+         } else if(map.isStrict()) {              
             throw new ElementException("Element '%s' does not exist at %s", name, line);
          } else {
             node.skip();                 
@@ -339,12 +349,12 @@ class Composite implements Converter {
     * 
     * @throws Exception thrown if the contact could not be deserialized
     */
-   private void read(InputNode node, Object source, Label label) throws Exception {      
+   private void read(InputNode node, Object source, Label label) throws Exception {    
       Converter reader = label.getConverter(root);
       Contact contact = label.getContact();      
       Object object = reader.read(node);
     
-      if(object == null) { 
+      if(object == null) {     
          Position line = node.getPosition();
          Class type = source.getClass();
          
@@ -352,7 +362,8 @@ class Composite implements Converter {
             throw new ValueRequiredException("Empty value for %s in %s at %s", label, type, line);
          }
       } else if(object != label.getEmpty()) {
-         contact.set(source, object);      
+         contact.set(source, object); 
+         store.save(label, object);
       }         
    }
    

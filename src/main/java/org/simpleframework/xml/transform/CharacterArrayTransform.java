@@ -54,7 +54,7 @@ class CharacterArrayTransform implements Transform {
     * Constructor for the <code>PrimitiveArrayTransform</code> object.
     * This is used to create a transform that will create primitive
     * arrays and populate the values of the array with values from a
-    * comma separated list of individula values for the entry type.
+    * comma separated list of individual values for the entry type.
     * 
     * @param delegate this is used to perform individual transforms
     * @param entry this is the entry component type for the array
@@ -77,6 +77,9 @@ class CharacterArrayTransform implements Transform {
       char[] list = value.toCharArray();      
       int length = list.length;
 
+      if(entry == char.class) {
+         return list;
+      }
       return read(list, length);
    }
    
@@ -113,6 +116,10 @@ class CharacterArrayTransform implements Transform {
    public String write(Object value) throws Exception {
       int length = Array.getLength(value);
 
+      if(entry == char.class) {
+         char[] array = (char[])value;
+         return new String(array);
+      }
       return write(value, length);      
    }
    

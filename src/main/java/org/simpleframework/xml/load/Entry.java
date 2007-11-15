@@ -28,7 +28,7 @@ import java.beans.Introspector;
  * the serialization and deserialization of a map. Values taken from
  * the <code>ElementMap</code> annotation provide a means to specify
  * how to read and write the map as an XML element. Key and value
- * objects can be written as composite or primitive values. Primitve
+ * objects can be written as composite or primitive values. Primitive
  * key values can be written as attributes of the resulting entry
  * and value objects can be written inline if desired.
  * 

@@ -25,16 +25,16 @@ import java.lang.annotation.Retention;
 
 /**
  * The <code>ElementList</code> annotation represents a method or
- * field that is a <code>Collection</code> for storing elements. The
+ * field that is a <code>Collection</code> for storing entries. The
  * collection object deserialized is typically of the same type as
  * the field. However, a <code>class</code> attribute can be used to
  * override the field type, however the type must be assignable.
  * <pre>
  * 
  *    &lt;list class="java.util.ArrayList"&gt;
- *       &lt;element name="one"/&gt;
- *       &lt;element name="two"/&gt;
- *       &lt;element name="three"/&gt;  
+ *       &lt;entry name="one"/&gt;
+ *       &lt;entry name="two"/&gt;
+ *       &lt;entry name="three"/&gt;  
  *    &lt;/list&gt;
  * 
  * </pre>
@@ -45,9 +45,9 @@ import java.lang.annotation.Retention;
  * An inline list contains no parent or containing element.
  * <pre>
  *
- *    &lt;element name="one"/&gt;
- *    &lt;element name="two"/&gt;
- *    &lt;element name="three"/&gt;  
+ *    &lt;entry name="one"/&gt;
+ *    &lt;entry name="two"/&gt;
+ *    &lt;entry name="three"/&gt;  
  * 
  * </pre>
  * The above XML is an example of the output for an inline list of
@@ -55,7 +55,7 @@ import java.lang.annotation.Retention;
  * not be given a name. Instead the name is acquired from the name of
  * the entry type. For example if the <code>type</code> attribute of
  * this was set to an object <code>example.Entry</code> then the name 
- * of the element list would be taken as the root name of the object
+ * of the entry list would be taken as the root name of the object
  * as taken from the <code>Root</code> annotation for that object.
  * 
  * @author Niall Gallagher

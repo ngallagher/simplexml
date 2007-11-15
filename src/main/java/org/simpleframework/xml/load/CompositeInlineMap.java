@@ -53,7 +53,7 @@ import java.util.Map;
  * 
  * @see org.simpleframework.xml.load.Entry
  */
-class CompositeInlineMap implements Converter {
+class CompositeInlineMap implements Repeater {
       
    /**
     * The factory used to create suitable map object instances.
@@ -119,6 +119,28 @@ class CompositeInlineMap implements Converter {
          return read(node, table);
       }
       return null;
+   }
+   
+   /**
+    * This <code>read</code> method will read the XML element map from
+    * the provided node and deserialize its children as entry types.
+    * Each entry type must contain a key and value so that the entry 
+    * can be inserted in to the map as a pair. If either the key or 
+    * value is composite it is read as a root object, which means its
+    * <code>Root</code> annotation must be present and the name of the
+    * object element must match that root element name.
+    * 
+    * @param node this is the XML element that is to be deserialized
+    * 
+    * @return this returns the item to attach to the object contact
+    */
+   public Object read(InputNode node, Object value) throws Exception {
+      Map map = (Map) value;
+      
+      if(map != null) {
+         return read(node, map);
+      }
+      return read(node);
    }
    
    /**
