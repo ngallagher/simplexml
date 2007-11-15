@@ -53,7 +53,7 @@ import java.util.Collection;
  * @see org.simpleframework.xml.load.Primitive
  * @see org.simpleframework.xml.ElementList
  */ 
-class PrimitiveInlineList implements Converter {
+class PrimitiveInlineList implements Repeater {
 
    /**
     * This factory is used to create a suitable collection list.
@@ -111,6 +111,25 @@ class PrimitiveInlineList implements Converter {
          return read(node, list);
       }
       return null;
+   }
+   
+   /**
+    * This <code>read</code> method wll read the XML element list from
+    * the provided node and deserialize its children as entry types.
+    * This will deserialize each entry type as a primitive value. In
+    * order to do this the parent string provided forms the element.
+    * 
+    * @param node this is the XML element that is to be deserialized
+    * 
+    * @return this returns the item to attach to the object contact
+    */ 
+   public Object read(InputNode node, Object value) throws Exception {
+      Collection list = (Collection) value;
+      
+      if(list != null) {
+         return read(node, list);
+      }
+      return read(node);
    }
    
    /**

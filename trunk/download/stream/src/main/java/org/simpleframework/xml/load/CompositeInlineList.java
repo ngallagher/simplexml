@@ -59,7 +59,7 @@ import java.util.Collection;
  * @see org.simpleframework.xml.load.Traverser
  * @see org.simpleframework.xml.ElementList
  */ 
-class CompositeInlineList implements Converter {
+class CompositeInlineList implements Repeater {
 
    /**
     * This factory is used to create a suitable collection list.
@@ -111,6 +111,26 @@ class CompositeInlineList implements Converter {
          return read(node, list);
       }
       return null;
+   }
+   
+   /**
+    * This <code>read</code> method wll read the XML element list from
+    * the provided node and deserialize its children as entry types.
+    * This will each entry type is deserialized as a root type, that 
+    * is, its <code>Root</code> annotation must be present and the
+    * name of the entry element must match that root element name.
+    * 
+    * @param node this is the XML element that is to be deserialized
+    * 
+    * @return this returns the item to attach to the object contact
+    */ 
+   public Object read(InputNode node, Object value) throws Exception {
+      Collection list = (Collection) value;
+      
+      if(list != null) {
+         return read(node, list);
+      }
+      return read(node);
    }
    
    /**
