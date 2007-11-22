@@ -1,0 +1,40 @@
+1) Ensure that the entry= attribute on an ElementList can be used to 
+   override the name of composite lists, not just primitive lists as is
+   currently the case. XML like so is just not useful
+
+   <entry>
+      <composite a="b">
+         <string>text</string>
+      </composite>
+   </entry>
+
+   This also means that entry= can be used instead of creating a new
+   type just to have the @Root annotation provide the name, which is
+   pretty lame when you are using inline lists. However, this behaviour
+   will remain, only an entry= will override the root annotation if needed.
+
+2) Add extra date operations to the DateTransform using a DateType
+
+3) Speed up the processing of the StringArrayTransform
+
+4) Addition of an @Order element is required such that order can be 
+   provided to the serialization on an object. This is not really supported
+   very well in the current implementation when inheritance is used.
+
+   public @interface Order {
+
+      public String[] attributes() default {};
+
+      public String[] elements() default {};   
+   }
+
+   For example, the following could be used with an object.
+
+   @Root
+   @Order(elements={"name", "address", "date"})
+   public class Details extends Person {
+
+      @Element(name="name")
+      private String title;
+   }
+
