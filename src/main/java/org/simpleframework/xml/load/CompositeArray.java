@@ -107,12 +107,13 @@ class CompositeArray implements Converter {
     * @return this returns the item to attach to the object contact
     */ 
    public Object read(InputNode node) throws Exception{
-      Type value = factory.getInstance(node);
+      Type type = factory.getInstance(node);
+      Object list = type.getInstance();
       
-      if(!value.isReference()) {
-         return read(node, value);         
+      if(!type.isReference()) {
+         return read(node, list);         
       }
-      return value.getInstance();
+      return list;
    }
 
    /**
@@ -127,9 +128,7 @@ class CompositeArray implements Converter {
     * 
     * @return this returns the item to attach to the object contact
     */  
-   private Object read(InputNode node, Type type) throws Exception{
-      Object list = type.getInstance();      
-      
+   private Object read(InputNode node, Object list) throws Exception{
       for(int i = 0; true; i++) {
          InputNode next = node.getNext();
         
