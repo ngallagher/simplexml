@@ -74,11 +74,6 @@ class CompositeInlineMap implements Repeater {
     * The entry object contains the details on how to write the map.
     */
    private final Entry entry;
-   
-   /**
-    * This is the name of the elements of the inline map entries.
-    */
-   private final String name;
     
    /**
     * Constructor for the <code>CompositeMap</code> object. This will
@@ -94,7 +89,6 @@ class CompositeInlineMap implements Repeater {
       this.factory = new MapFactory(root, type);
       this.value = entry.getValue(root);
       this.key = entry.getKey(root);
-      this.name = entry.getEntry();
       this.entry = entry;
    }
 
