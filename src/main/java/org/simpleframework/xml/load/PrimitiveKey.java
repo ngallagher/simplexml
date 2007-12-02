@@ -65,11 +65,6 @@ class PrimitiveKey implements Converter {
    private final Entry entry; 
    
    /**
-    * Provides this converter with a context to the serialization.
-    */
-   private final Source root;
-   
-   /**
     * Represents the primitive type the key is serialized to and from.
     */
    private final Class type;
@@ -87,7 +82,6 @@ class PrimitiveKey implements Converter {
       this.factory = new PrimitiveFactory(root, type);
       this.primitive = new Primitive(root, type);      
       this.entry = entry;
-      this.root = root;
       this.type = type;
    }
    

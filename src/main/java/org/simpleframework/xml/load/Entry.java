@@ -21,7 +21,6 @@
 package org.simpleframework.xml.load;
 
 import org.simpleframework.xml.ElementMap;
-import java.beans.Introspector;
 
 /**
  * The <code>Entry</code> object is used to provide configuration for
