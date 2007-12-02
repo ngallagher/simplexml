@@ -1,5 +1,5 @@
 Testsuite: org.simpleframework.xml.load.CollectionTest
-Tests run: 21, Failures: 0, Errors: 0, Time elapsed: 0.89 sec
+Tests run: 21, Failures: 0, Errors: 0, Time elapsed: 0.906 sec
 ------------- Standard Output ---------------
 <test name="example">
    <list class="java.util.TreeSet">
@@ -27,14 +27,14 @@ Tests run: 21, Failures: 0, Errors: 0, Time elapsed: 0.89 sec
    </list>
 </test><test name="example">
    <list class="java.util.HashSet">
-      <entry id="1">
-         <text>one</text>
-      </entry>
       <entry id="3">
          <text>three</text>
       </entry>
       <entry id="2">
          <text>two</text>
+      </entry>
+      <entry id="1">
+         <text>one</text>
       </entry>
    </list>
 </test><test name="example">
@@ -113,12 +113,12 @@ Tests run: 21, Failures: 0, Errors: 0, Time elapsed: 0.89 sec
 ------------- Standard Error -----------------
 <test name="example">
    <list class="java.util.HashSet">
-      <entry id="3">
-         <text>three</text>
-      </entry>
       <entry class="org.simpleframework.xml.load.CollectionTest$ExtendedEntry" id="2">
          <description>this is the second one</description>
          <text>two</text>
+      </entry>
+      <entry id="3">
+         <text>three</text>
       </entry>
       <entry class="org.simpleframework.xml.load.CollectionTest$ExtendedEntry" id="1">
          <description>this is an extended entry</description>
@@ -127,9 +127,6 @@ Tests run: 21, Failures: 0, Errors: 0, Time elapsed: 0.89 sec
    </list>
 </test><test name="example">
    <list class="java.util.HashSet">
-      <entry id="3">
-         <text>three</text>
-      </entry>
       <entry class="org.simpleframework.xml.load.CollectionTest$ExtendedEntry" id="1">
          <description>this is an extended entry</description>
          <text>one</text>
@@ -137,6 +134,9 @@ Tests run: 21, Failures: 0, Errors: 0, Time elapsed: 0.89 sec
       <entry class="org.simpleframework.xml.load.CollectionTest$ExtendedEntry" id="2">
          <description>this is the second one</description>
          <text>two</text>
+      </entry>
+      <entry id="3">
+         <text>three</text>
       </entry>
    </list>
 </test>org.simpleframework.xml.load.InstantiationException: Type class java.util.HashSet is not compatible with interface java.util.SortedSet
@@ -376,24 +376,24 @@ java.lang.ClassNotFoundException: example.MyCollection
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
 ------------- ---------------- ---------------
 
-Testcase: testSet took 0.469 sec
+Testcase: testSet took 0.391 sec
 Testcase: testSortedSet took 0.078 sec
-Testcase: testList took 0.016 sec
+Testcase: testList took 0.015 sec
 Testcase: testHashSet took 0.016 sec
 Testcase: testTreeSet took 0.016 sec
-Testcase: testArrayList took 0.015 sec
+Testcase: testArrayList took 0.016 sec
 Testcase: testSortedSetToSet took 0 sec
-Testcase: testExtendedEntry took 0.032 sec
-Testcase: testTypeFromFieldList took 0.015 sec
+Testcase: testExtendedEntry took 0.015 sec
+Testcase: testTypeFromFieldList took 0.031 sec
 Testcase: testTypeFromMethodList took 0.047 sec
-Testcase: testPrimitiveCollection took 0.015 sec
-Testcase: testCompositeCollection took 0.016 sec
+Testcase: testPrimitiveCollection took 0.031 sec
+Testcase: testCompositeCollection took 0.032 sec
 Testcase: testPrimitiveDefaultCollection took 0.015 sec
-Testcase: testSetToSortedSet took 0.016 sec
-Testcase: testListToSet took 0 sec
-Testcase: testInvalidList took 0 sec
-Testcase: testUnknownCollectionList took 0.015 sec
-Testcase: testAbstractList took 0 sec
-Testcase: testNotACollection took 0.016 sec
-Testcase: testMissingCollection took 0 sec
+Testcase: testSetToSortedSet took 0.063 sec
+Testcase: testListToSet took 0.015 sec
+Testcase: testInvalidList took 0.016 sec
+Testcase: testUnknownCollectionList took 0 sec
+Testcase: testAbstractList took 0.015 sec
+Testcase: testNotACollection took 0 sec
+Testcase: testMissingCollection took 0.016 sec
 Testcase: testDirectory took 0 sec

@@ -1,7 +1,7 @@
 Testsuite: org.simpleframework.xml.load.PerformanceTest
-Tests run: 5, Failures: 0, Errors: 0, Time elapsed: 1.547 sec
+Tests run: 5, Failures: 0, Errors: 0, Time elapsed: 10.391 sec
 ------------- Standard Output ---------------
-<root flag="true" number="1234">
+<root number="1234" flag="true">
    <constant>{no.override}</constant>
    <name>{example.name}</name>
    <path>{example.path}</path>
@@ -40,7 +40,7 @@ Tests run: 5, Failures: 0, Errors: 0, Time elapsed: 1.547 sec
          <value>value.5</value>
       </entry>
    </list>
-</root><root flag="true" number="1234">
+</root><root number="1234" flag="true">
    <constant>{no.override}</constant>
    <name>{example.name}</name>
    <path>{example.path}</path>
@@ -79,7 +79,7 @@ Tests run: 5, Failures: 0, Errors: 0, Time elapsed: 1.547 sec
          <value>value.5</value>
       </entry>
    </list>
-</root><root flag="true" number="1234">
+</root><root number="1234" flag="true">
    <constant>{no.override}</constant>
    <name>{example.name}</name>
    <path>{example.path}</path>
@@ -118,7 +118,7 @@ Tests run: 5, Failures: 0, Errors: 0, Time elapsed: 1.547 sec
          <value>value.5</value>
       </entry>
    </list>
-</root><root flag="true" number="1234">
+</root><root number="1234" flag="true">
    <constant>some constant</constant>
    <name>some name</name>
    <path>/some/path</path>
@@ -157,7 +157,7 @@ Tests run: 5, Failures: 0, Errors: 0, Time elapsed: 1.547 sec
          <value>value.5</value>
       </entry>
    </list>
-</root><root flag="true" number="1234">
+</root><root number="1234" flag="true">
    <constant>some constant</constant>
    <name>some name</name>
    <path>/some/path</path>
@@ -196,7 +196,7 @@ Tests run: 5, Failures: 0, Errors: 0, Time elapsed: 1.547 sec
          <value>value.5</value>
       </entry>
    </list>
-</root><root flag="true" number="1234">
+</root><root number="1234" flag="true">
    <constant>some constant</constant>
    <name>some name</name>
    <path>/some/path</path>
@@ -235,7 +235,7 @@ Tests run: 5, Failures: 0, Errors: 0, Time elapsed: 1.547 sec
          <value>value.5</value>
       </entry>
    </list>
-</root><root flag="true" number="1234">
+</root><root number="1234" flag="true">
    <constant>${no.override}</constant>
    <name>${example.name}</name>
    <path>${example.path}</path>
@@ -274,7 +274,7 @@ Tests run: 5, Failures: 0, Errors: 0, Time elapsed: 1.547 sec
          <value>value.5</value>
       </entry>
    </list>
-</root><root flag="true" number="1234">
+</root><root number="1234" flag="true">
    <constant>${no.override}</constant>
    <name>${example.name}</name>
    <path>${example.path}</path>
@@ -313,7 +313,7 @@ Tests run: 5, Failures: 0, Errors: 0, Time elapsed: 1.547 sec
          <value>value.5</value>
       </entry>
    </list>
-</root><root flag="true" number="1234">
+</root><root number="1234" flag="true">
    <constant>${no.override}</constant>
    <name>${example.name}</name>
    <path>${example.path}</path>
@@ -352,7 +352,7 @@ Tests run: 5, Failures: 0, Errors: 0, Time elapsed: 1.547 sec
          <value>value.5</value>
       </entry>
    </list>
-</root><root flag="true" number="1234">
+</root><root number="1234" flag="true">
    <constant>&gt;&gt;&lt;&lt;</constant>
    <name>{example.name}</name>
    <path>{example.path}</path>
@@ -387,7 +387,7 @@ Tests run: 5, Failures: 0, Errors: 0, Time elapsed: 1.547 sec
          <value>value.5</value>
       </entry>
    </list>
-</root><root flag="true" number="1234">
+</root><root number="1234" flag="true">
    <constant>&gt;&gt;&lt;&lt;</constant>
    <name>{example.name}</name>
    <path>{example.path}</path>
@@ -422,7 +422,7 @@ Tests run: 5, Failures: 0, Errors: 0, Time elapsed: 1.547 sec
          <value>value.5</value>
       </entry>
    </list>
-</root><root flag="true" number="1234">
+</root><root number="1234" flag="true">
    <constant>&gt;&gt;&lt;&lt;</constant>
    <name>{example.name}</name>
    <path>{example.path}</path>
@@ -459,14 +459,14 @@ Tests run: 5, Failures: 0, Errors: 0, Time elapsed: 1.547 sec
    </list>
 </root>------------- ---------------- ---------------
 ------------- Standard Error -----------------
-Took '359' ms to process 600 documents
-Took '203' ms to process 600 documents with templates
-Took '171' ms to process 600 documents with an empty filter
-Took '172' ms to write 600 documents
+Took '2625' ms to process 10000 documents
+Took '2437' ms to process 10000 documents with templates
+Took '2375' ms to process 10000 documents with an empty filter
+Took '2156' ms to write 10000 documents
 ------------- ---------------- ---------------
 
-Testcase: testBasicDocument took 0.844 sec
-Testcase: testTemplateDocument took 0.234 sec
-Testcase: testEmptyFilter took 0.203 sec
-Testcase: testBasicWrite took 0.219 sec
+Testcase: testBasicDocument took 3.141 sec
+Testcase: testTemplateDocument took 2.5 sec
+Testcase: testEmptyFilter took 2.438 sec
+Testcase: testBasicWrite took 2.281 sec
 Testcase: testDirectory took 0 sec

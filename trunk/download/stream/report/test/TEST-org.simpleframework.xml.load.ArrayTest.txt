@@ -1,5 +1,5 @@
 Testsuite: org.simpleframework.xml.load.ArrayTest
-Tests run: 12, Failures: 0, Errors: 0, Time elapsed: 1.218 sec
+Tests run: 12, Failures: 0, Errors: 0, Time elapsed: 1.234 sec
 ------------- Standard Output ---------------
 <root>
    <array length="100">
@@ -265,24 +265,24 @@ Tests run: 12, Failures: 0, Errors: 0, Time elapsed: 1.218 sec
    </array>
 </root><root>
    <array length="6">
-      <entry value="one" class="org.simpleframework.xml.load.ArrayTest$ExtendedText"/>
+      <entry class="org.simpleframework.xml.load.ArrayTest$ExtendedText" value="one"/>
       <entry/>
       <entry/>
-      <entry value="two" class="org.simpleframework.xml.load.ArrayTest$ExtendedText"/>
+      <entry class="org.simpleframework.xml.load.ArrayTest$ExtendedText" value="two"/>
       <entry/>
-      <entry value="three" class="org.simpleframework.xml.load.ArrayTest$ExtendedText"/>
+      <entry class="org.simpleframework.xml.load.ArrayTest$ExtendedText" value="three"/>
    </array>
 </root>------------- ---------------- ---------------
 
 Testcase: testExample took 0.375 sec
-Testcase: testBadExample took 0.015 sec
-Testcase: testWriteArray took 0.688 sec
+Testcase: testBadExample took 0 sec
+Testcase: testWriteArray took 0.687 sec
 Testcase: testPrimitive took 0.015 sec
 Testcase: testDefaultPrimitive took 0.016 sec
 Testcase: testPrimitiveNull took 0.016 sec
 Testcase: testParentComposite took 0.015 sec
 Testcase: testDefaultComposite took 0.016 sec
-Testcase: testParentCompositeNull took 0.015 sec
+Testcase: testParentCompositeNull took 0.016 sec
 Testcase: testCharacter took 0.016 sec
 Testcase: testDifferentArray took 0.015 sec
 Testcase: testDirectory took 0 sec

@@ -20,9 +20,9 @@
 
 package org.simpleframework.xml.stream;
 
-import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.Attribute;
-import java.util.HashMap;
+import javax.xml.stream.events.StartElement;
+import java.util.LinkedHashMap;
 import java.util.Iterator;
 
 /**
@@ -35,7 +35,7 @@ import java.util.Iterator;
  *
  * @author Niall Gallagher
  */ 
-class InputNodeMap extends HashMap<String, InputNode> implements NodeMap {
+class InputNodeMap extends LinkedHashMap<String, InputNode> implements NodeMap {
 
    /**
     * This is the source node that this node map belongs to.

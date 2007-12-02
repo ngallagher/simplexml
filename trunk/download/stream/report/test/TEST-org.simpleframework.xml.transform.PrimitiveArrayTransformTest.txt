@@ -1,5 +1,5 @@
 Testsuite: org.simpleframework.xml.transform.PrimitiveArrayTransformTest
-Tests run: 5, Failures: 0, Errors: 0, Time elapsed: 0.953 sec
+Tests run: 5, Failures: 0, Errors: 0, Time elapsed: 1 sec
 ------------- Standard Output ---------------
 <integerArrayExample attribute="1, 2, 3, 4">
    <element length="4">1, 2, 3, 4</element>
@@ -40,7 +40,7 @@ Tests run: 5, Failures: 0, Errors: 0, Time elapsed: 0.953 sec
    <testArray length="1">
       <nonPrimitive/>
    </testArray>
-</integerArrayExample><integerArrayExample attribute="1, 2, 3, 4" id="0">
+</integerArrayExample><integerArrayExample id="0" attribute="1, 2, 3, 4">
    <element length="4" id="1">1, 2, 3, 4</element>
    <list class="java.util.ArrayList" id="2">
       <int reference="1"/>
@@ -49,7 +49,7 @@ Tests run: 5, Failures: 0, Errors: 0, Time elapsed: 0.953 sec
    <array length="1" id="3">
       <int reference="1"/>
    </array>
-   <test value="text" id="4"/>
+   <test id="4" value="text"/>
    <testList class="java.util.ArrayList" id="5"/>
    <testArray length="1" id="6">
       <nonPrimitive/>
@@ -59,15 +59,15 @@ Tests run: 5, Failures: 0, Errors: 0, Time elapsed: 0.953 sec
    <array length="1" id="2">
       <int/>
    </array>
-   <test value="text" id="3"/>
+   <test id="3" value="text"/>
    <testList class="java.util.ArrayList" id="4"/>
    <testArray length="1" id="5">
       <nonPrimitive/>
    </testArray>
 </integerArrayExample>------------- ---------------- ---------------
 
-Testcase: testRead took 0 sec
+Testcase: testRead took 0.015 sec
 Testcase: testWrite took 0 sec
-Testcase: testPersistence took 0.469 sec
-Testcase: testCyclicPersistence took 0.453 sec
+Testcase: testPersistence took 0.516 sec
+Testcase: testCyclicPersistence took 0.469 sec
 Testcase: testDirectory took 0 sec

@@ -20,8 +20,8 @@
 
 package org.simpleframework.xml.stream;
 
+import java.util.LinkedHashMap;
 import java.util.Iterator;
-import java.util.HashMap;
 
 /**
  * The <code>OutputNodeMap</code> is used to collect attribute nodes
@@ -31,7 +31,7 @@ import java.util.HashMap;
  * 
  * @author Niall Gallagher
  */ 
-class OutputNodeMap extends HashMap<String, Node> implements NodeMap {
+class OutputNodeMap extends LinkedHashMap<String, Node> implements NodeMap {
 
    /**
     * This is the source node that this node map belongs to.
