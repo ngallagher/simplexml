@@ -27,7 +27,7 @@ import java.lang.annotation.Retention;
  * The <code>Order</code> annotation is used to specify the order of
  * appearance of XML elements and attributes. When used it ensures 
  * that on serialization the XML generated is predictable. By default
- * serialization of fields is done in appearance order. 
+ * serialization of fields is done in declaration order. 
  * 
  * @author Niall Gallagher
  */
@@ -36,21 +36,21 @@ public @interface Order {
 
    /**
     * Specifies the appearance order of the XML elements within the
-    * generated document. This overrides the default order used 
-    * which is the order of appearance within the class. If an 
-    * element is not specified then its order will be appearance
-    * order directly after the last specified element.
+    * generated document. This overrides the default order used, 
+    * which is the declaration order within the class. If an element 
+    * is not specified within this array then its order will be the
+    * appearance order directly after the last specified element.
     * 
     * @return an ordered array of elements representing order
     */
    public String[] elements() default {};
    
    /**
-    * Specifies the appearance order of the attributes within the
-    * generated document. This overrides the default order used 
-    * which is the order of appearance within the class. If an 
-    * attribute is not specified then its order will be appearance
-    * order directly after the last specified attribute.
+    * Specifies the appearance order of the XML attributes within 
+    * the generated document. This overrides the default order used, 
+    * which is the declaration order within the class. If an attribute 
+    * is not specified within this array then its order will be the
+    * appearance order directly after the last specified attribute.
     * 
     * @return an ordered array of attributes representing order
     */
