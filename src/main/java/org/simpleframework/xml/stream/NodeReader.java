@@ -220,8 +220,31 @@ class NodeReader {
          reader.nextEvent();         
       }         
       return null;
-   }     
+   }  
    
+   /**
+    * This is used to determine if this input node is empty. An
+    * empty node is one with no attributes or children. This can
+    * be used to determine if a given node represents an empty
+    * entity, with which no extra data can be extracted.
+    * 
+    * @param from this is the input node to read the value from
+    * 
+    * @return this returns true if the node is an empty element
+    * 
+    * @throws Exception thrown if there was a parse error
+    */
+   public boolean isEmpty(InputNode from) throws Exception {
+      if(stack.top() == from) {         
+         XMLEvent event = reader.peek();
+
+         if(event.isEndElement()) {
+            return true;
+         }
+      }
+      return false;
+   }
+
    /**
     * This method is used to skip an element within the XML document.
     * This will simply read each element from the document until

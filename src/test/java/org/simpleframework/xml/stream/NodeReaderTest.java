@@ -40,6 +40,37 @@ public class NodeReaderTest extends TestCase {
     "   </object>\n" +
     "</root>";
    
+   public static final String EMPTY_SOURCE =
+   "<root>\r\n" +
+   "   <empty/>\r\n" +
+   "   <notEmpty name='foo'/>\r\n" +
+   "   <empty></empty>\r\n" +
+   "</root>";
+   
+   public void testEmptySource() throws Exception {
+      InputNode event = NodeBuilder.read(new StringReader(EMPTY_SOURCE));
+
+      assertTrue(event.isRoot());
+      assertFalse(event.isEmpty());
+      assertEquals("root", event.getName());
+      
+      InputNode child  = event.getNext();
+      
+      assertTrue(child.isEmpty());
+      assertEquals("empty", child.getName());
+      
+      child = event.getNext();
+      
+      assertFalse(child.isEmpty());
+      assertEquals("notEmpty", child.getName());
+      assertEquals("foo", child.getAttribute("name").getValue());   
+      
+      child = event.getNext();
+      
+      assertTrue(child.isEmpty());
+      assertEquals("empty", child.getName());
+   }
+   
    public void testSmallSource() throws Exception {
       InputNode event = NodeBuilder.read(new StringReader(SMALL_SOURCE));
 

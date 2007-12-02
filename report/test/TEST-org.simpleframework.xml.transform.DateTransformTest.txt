@@ -1,27 +1,27 @@
 Testsuite: org.simpleframework.xml.transform.DateTransformTest
-Tests run: 4, Failures: 0, Errors: 0, Time elapsed: 0.844 sec
+Tests run: 4, Failures: 0, Errors: 0, Time elapsed: 0.796 sec
 ------------- Standard Output ---------------
-<dateExample attribute="2007-11-15 21:15:30.893 GMT">
+<dateExample attribute="2007-12-02 16:10:54.406 GMT">
    <array length="1">
-      <entry>2007-11-15 21:15:30.893 GMT</entry>
+      <date>2007-12-02 16:10:54.406 GMT</date>
    </array>
-   <element>2007-11-15 21:15:30.893 GMT</element>
+   <element>2007-12-02 16:10:54.406 GMT</element>
    <list class="java.util.ArrayList">
-      <entry>2007-11-15 21:15:30.893 GMT</entry>
-      <entry>2007-11-15 21:15:30.893 GMT</entry>
+      <date>2007-12-02 16:10:54.406 GMT</date>
+      <date>2007-12-02 16:10:54.406 GMT</date>
    </list>
-</dateExample><dateExample attribute="2007-11-15 21:15:31.362 GMT" id="0">
+</dateExample><dateExample attribute="2007-12-02 16:10:54.859 GMT" id="0">
    <array length="1" id="1">
-      <entry id="2">2007-11-15 21:15:31.362 GMT</entry>
+      <date id="2">2007-12-02 16:10:54.859 GMT</date>
    </array>
    <element reference="2"/>
    <list class="java.util.ArrayList" id="3">
-      <entry reference="2"/>
-      <entry reference="2"/>
+      <date reference="2"/>
+      <date reference="2"/>
    </list>
 </dateExample>------------- ---------------- ---------------
 
-Testcase: testDate took 0.047 sec
-Testcase: testPersistence took 0.469 sec
+Testcase: testDate took 0.031 sec
+Testcase: testPersistence took 0.453 sec
 Testcase: testCyclicPersistence took 0.312 sec
 Testcase: testDirectory took 0 sec

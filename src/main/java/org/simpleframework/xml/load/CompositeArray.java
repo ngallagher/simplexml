@@ -117,7 +117,7 @@ class CompositeArray implements Converter {
    }
 
    /**
-    * This <code>read</code> method wll read the XML element list from
+    * This <code>read</code> method will read the XML element list from
     * the provided node and deserialize its children as entry types.
     * This ensures each entry type is deserialized as a root type, that 
     * is, its <code>Root</code> annotation must be present and the
@@ -134,9 +134,6 @@ class CompositeArray implements Converter {
         
          if(next == null) {
             return list;
-         }
-         if(parent != null) {
-            next = next.getNext();
          }
          read(next, list, i);
       } 
@@ -155,7 +152,7 @@ class CompositeArray implements Converter {
    private void read(InputNode node, Object list, int index) throws Exception {
       Object value = null;     
       
-      if(node != null) {
+      if(!node.isEmpty()) {
          value = root.read(node, entry);
       }
       Array.set(list, index, value);      
@@ -175,52 +172,10 @@ class CompositeArray implements Converter {
       int size = Array.getLength(source);                
       
       for(int i = 0; i < size; i++) {   
-         OutputNode child = node.getChild(parent);
-         
-         if(child == null) {
-            break;
-         }
-         write(child, source, i);          
-      }
-   }
-   
-   /**
-    * This <code>write</code> method will write the specified object
-    * to the given XML element as as array entries. Each entry within
-    * the given array must be assignable to the array component type.
-    * Each array entry is serialized as a root element, that is, its
-    * <code>Root</code> annotation is used to extract the name. 
-    * 
-    * @param source this is the source object array to be serialized 
-    * @param node this is the XML element container to be populated
-    * @param index this is the position in the array the value is in
-    */ 
-   private void write(OutputNode node, Object source, int index) throws Exception {
-      Object item = Array.get(source, index);      
+         Object item = Array.get(source, i);      
       
-      if(item != null) {
-         write(node, item, entry);
-      }    
-      node.commit();
-   }
-   
-   /**
-    * This <code>write</code> method will write the specified object
-    * to the given XML element as as array entries. Each entry within
-    * the given array must be assignable to the array component type.
-    * Each array entry is serialized as a root element, that is, its
-    * <code>Root</code> annotation is used to extract the name. 
-    * 
-    * @param item this is the object array element to be serialized 
-    * @param node this is the XML element container to be populated
-    * @param entry this is the type of the object that is expected
-    */ 
-   private void write(OutputNode node, Object item, Class entry) throws Exception {      
-      Class type = item.getClass();
-
-      if(!entry.isAssignableFrom(type)) {
-         throw new PersistenceException("Entry %s does not match %s", type, entry);                     
+         root.write(node, item, entry, parent);   
       }
-      root.write(node, item, entry);      
+      node.commit();
    }
 }

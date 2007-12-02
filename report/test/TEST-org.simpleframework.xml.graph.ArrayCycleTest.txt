@@ -1,76 +1,48 @@
 Testsuite: org.simpleframework.xml.graph.ArrayCycleTest
-Tests run: 4, Failures: 0, Errors: 0, Time elapsed: 0.812 sec
+Tests run: 4, Failures: 0, Errors: 0, Time elapsed: 0.781 sec
 ------------- Standard Output ---------------
 <root id="0">
    <one length="5" id="1">
-      <entry>
-         <text value="entry one" id="2"/>
-      </entry>
-      <entry>
-         <text value="entry two" id="3"/>
-      </entry>
-      <entry>
-         <text value="entry three" id="4"/>
-      </entry>
-      <entry>
-         <text value="entry four" id="5"/>
-      </entry>
-      <entry>
-         <text value="entry five" id="6"/>
-      </entry>
+      <entry value="entry one" id="2"/>
+      <entry value="entry two" id="3"/>
+      <entry value="entry three" id="4"/>
+      <entry value="entry four" id="5"/>
+      <entry value="entry five" id="6"/>
    </one>
    <two ref="1"/>
    <three length="3" id="7">
-      <entry>
-         <text value="tom" id="8"/>
-      </entry>
-      <entry>
-         <text value="dick" id="9"/>
-      </entry>
-      <entry>
-         <text value="harry" id="10"/>
-      </entry>
+      <entry value="tom" id="8"/>
+      <entry value="dick" id="9"/>
+      <entry value="harry" id="10"/>
    </three>
    <example ref="0"/>
 </root><root id="0">
    <array length="2" id="1">
-      <entry>
-         <value id="2">
-            <list ref="1"/>
-         </value>
+      <entry id="2">
+         <list ref="1"/>
       </entry>
-      <entry>
-         <value id="3">
-            <list length="3" id="4">
-               <entry>
-                  <value class="org.simpleframework.xml.graph.ArrayCycleTest$TextValue" name="blah" id="5">
-                     <text id="6">Some text</text>
-                     <list ref="4"/>
-                  </value>
-               </entry>
-               <entry>
-                  <value ref="3"/>
-               </entry>
-               <entry>
-                  <value class="org.simpleframework.xml.graph.ArrayCycleTest$ElementValue" id="7">
-                     <element id="8">Example element text</element>
-                  </value>
-               </entry>
-            </list>
-         </value>
+      <entry id="3">
+         <list length="3" id="4">
+            <entry class="org.simpleframework.xml.graph.ArrayCycleTest$TextValue" name="blah" id="5">
+               <text id="6">Some text</text>
+               <list ref="4"/>
+            </entry>
+            <entry ref="3"/>
+            <entry class="org.simpleframework.xml.graph.ArrayCycleTest$ElementValue" id="7">
+               <element id="8">Example element text</element>
+            </entry>
+         </list>
       </entry>
    </array>
 </root><value id="0">
    <list class="org.simpleframework.xml.graph.ArrayCycleTest$ElementValue" length="1" id="1">
-      <entry>
-         <value class="org.simpleframework.xml.graph.ArrayCycleTest$ElementValue" id="2">
-            <element id="3">Example text</element>
-         </value>
+      <entry class="org.simpleframework.xml.graph.ArrayCycleTest$ElementValue" id="2">
+         <element id="3">Example text</element>
       </entry>
    </list>
 </value>------------- ---------------- ---------------
 
-Testcase: testCycle took 0.719 sec
-Testcase: testNestedExample took 0.047 sec
-Testcase: testPromotion took 0.031 sec
+Testcase: testCycle took 0.703 sec
+Testcase: testNestedExample took 0.031 sec
+Testcase: testPromotion took 0.015 sec
 Testcase: testDirectory took 0 sec

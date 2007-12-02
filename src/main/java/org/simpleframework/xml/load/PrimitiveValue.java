@@ -103,7 +103,7 @@ class PrimitiveValue implements Converter {
     * @return this returns the value deserialized from the node
     */ 
    public Object read(InputNode node) throws Exception {
-      String name = entry.getName(type);
+      String name = Factory.getName(type);
       
       if(entry.isInline()) {
          return primitive.read(node);
@@ -142,7 +142,7 @@ class PrimitiveValue implements Converter {
     * @param item this is the item that is to be written
     */
    public void write(OutputNode node, Object item) throws Exception {
-      String name = entry.getName(type);
+      String name = Factory.getName(type);
       
       if(!entry.isInline()) {
          node = node.getChild(name);        

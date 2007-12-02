@@ -16,21 +16,11 @@ public class ArrayTest extends ValidationTestCase {
    "<?xml version=\"1.0\"?>\n"+
    "<root>\n"+
    "   <array length='5'>\n\r"+
-   "      <entry>\n"+
-   "         <text value='entry one'/>  \n\r"+
-   "      </entry>\n"+
-   "      <entry>\n"+
-   "         <text value='entry two'/>  \n\r"+
-   "      </entry>\n"+
-   "      <entry>\n"+
-   "         <text value='entry three'/>  \n\r"+
-   "      </entry>\n"+
-   "      <entry>\n"+
-   "         <text value='entry four'/>  \n\r"+
-   "      </entry>\n"+
-   "      <entry>\n"+
-   "         <text value='entry five'/>  \n\r"+
-   "      </entry>\n"+
+   "      <entry value='entry one'/>  \n\r"+
+   "      <entry value='entry two'/>  \n\r"+
+   "      <entry value='entry three'/>  \n\r"+
+   "      <entry value='entry four'/>  \n\r"+
+   "      <entry value='entry five'/>  \n\r"+
    "   </array>\n\r"+
    "</root>";
    
@@ -62,21 +52,11 @@ public class ArrayTest extends ValidationTestCase {
    "<?xml version=\"1.0\"?>\n"+
    "<root>\n"+
    "   <array length='5'>\n\r"+
-   "      <entry>\r\n"+
-   "         <text value='entry one'/>  \n\r"+
-   "      </entry>\n  "+      
-   "      <entry>\r\n"+
-   "         <text value='entry two'/>  \n\r"+
-   "      </entry>\n  "+
-   "      <entry>\r\n"+
-   "         <text value='entry three'/>  \n\r"+
-   "      </entry>\n  "+
-   "      <entry>\r\n"+
-   "         <text value='entry four'/>  \n\r"+
-   "      </entry>\n  "+
-   "      <entry>\r\n"+
-   "         <text value='entry five'/>  \n\r"+
-   "      </entry>\n  "+
+   "      <text value='entry one'/>  \n\r"+
+   "      <text value='entry two'/>  \n\r"+
+   "      <text value='entry three'/>  \n\r"+
+   "      <text value='entry four'/>  \n\r"+
+   "      <text value='entry five'/>  \n\r"+
    "   </array>\n\r"+
    "</root>";
    
@@ -84,21 +64,11 @@ public class ArrayTest extends ValidationTestCase {
    "<?xml version=\"1.0\"?>\n"+
    "<root>\n"+
    "   <array length='5'>\n\r"+
-   "      <object>\r\n"+
-   "         <text value='entry one'/>  \n\r"+
-   "      </object>\n  "+      
-   "      <object>\r\n"+
-   "         <text value='entry two'/>  \n\r"+
-   "      </object>\n  "+
-   "      <object>\r\n"+
-   "         <text value='entry three'/>  \n\r"+
-   "      </object>\n  "+
-   "      <object>\r\n"+
-   "         <text value='entry four'/>  \n\r"+
-   "      </object>\n  "+
-   "      <object>\r\n"+
-   "         <text value='entry five'/>  \n\r"+
-   "      </object>\n  "+
+   "      <text value='entry one'/>  \n\r"+
+   "      <text value='entry two'/>  \n\r"+
+   "      <text value='entry three'/>  \n\r"+
+   "      <text value='entry four'/>  \n\r"+
+   "      <text value='entry five'/>  \n\r"+
    "   </array>\n\r"+
    "</root>";
    
@@ -119,14 +89,10 @@ public class ArrayTest extends ValidationTestCase {
    "<root>\n"+
    "   <array length='5'>\n\r"+
    "      <entry/>\r\n"+     
-   "      <entry>\r\n"+
-   "         <text value='entry two'/>  \n\r"+
-   "      </entry>\n  "+
+   "      <entry value='entry two'/>  \n\r"+
    "      <entry/>\r\n"+
    "      <entry/>\r\n"+
-   "      <entry>\r\n"+
-   "         <text value='entry five'/>  \n\r"+
-   "      </entry>\n  "+
+   "      <entry value='entry five'/>  \n\r"+
    "   </array>\n\r"+
    "</root>"; 
    
@@ -272,8 +238,8 @@ public class ArrayTest extends ValidationTestCase {
       String content = writer.toString();
       
       assertXpathExists("/root/array[@length='100']", content);
-      assertXpathExists("/root/array/entry[1]/text[@value='index 0']", content);
-      assertXpathExists("/root/array/entry[100]/text[@value='index 99']", content);      
+      assertXpathExists("/root/array/entry[1][@value='index 0']", content);
+      assertXpathExists("/root/array/entry[100][@value='index 99']", content);      
       
       ArrayExample deserialized = serializer.read(ArrayExample.class, content);
 
@@ -295,10 +261,10 @@ public class ArrayTest extends ValidationTestCase {
       content = oddOnly.toString();
       
       assertXpathExists("/root/array[@length='100']", content);
-      assertXpathNotExists("/root/array/entry[1]/text[@value='index 0']", content);
-      assertXpathExists("/root/array/entry[2]/text[@value='index 1']", content);
-      assertXpathNotExists("/root/array/entry[3]/text[@value='index 2']", content);
-      assertXpathExists("/root/array/entry[100]/text[@value='index 99']", content);
+      assertXpathNotExists("/root/array/entry[1][@value='index 0']", content);
+      assertXpathExists("/root/array/entry[2][@value='index 1']", content);
+      assertXpathNotExists("/root/array/entry[3][@value='index 2']", content);
+      assertXpathExists("/root/array/entry[100][@value='index 99']", content);
       
       deserialized = serializer.read(ArrayExample.class, content);
       

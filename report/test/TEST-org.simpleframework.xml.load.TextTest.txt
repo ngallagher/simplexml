@@ -1,29 +1,17 @@
 Testsuite: org.simpleframework.xml.load.TextTest
-Tests run: 8, Failures: 0, Errors: 0, Time elapsed: 0.625 sec
+Tests run: 8, Failures: 0, Errors: 0, Time elapsed: 0.562 sec
 ------------- Standard Output ---------------
 <test>
    <array length="3">
-      <entry>
-         <text name="a" version="ONE"><![CDATA[Example 1]]></text>
-      </entry>
-      <entry>
-         <text name="b" version="TWO"><![CDATA[Example 2]]></text>
-      </entry>
-      <entry>
-         <text name="c" version="THREE"><![CDATA[Example 3]]></text>
-      </entry>
+      <entry name="a" version="ONE"><![CDATA[Example 1]]></entry>
+      <entry name="b" version="TWO"><![CDATA[Example 2]]></entry>
+      <entry name="c" version="THREE"><![CDATA[Example 3]]></entry>
    </array>
 </test><test>
    <array length="3">
-      <entry>
-         <text name="a" version="ONE"><![CDATA[Example 1]]></text>
-      </entry>
-      <entry>
-         <text name="b" version="TWO"><![CDATA[Example 2]]></text>
-      </entry>
-      <entry>
-         <text name="c" version="THREE"><![CDATA[Example 3]]></text>
-      </entry>
+      <entry name="a" version="ONE"><![CDATA[Example 1]]></entry>
+      <entry name="b" version="TWO"><![CDATA[Example 2]]></entry>
+      <entry name="c" version="THREE"><![CDATA[Example 3]]></entry>
    </array>
 </test><text name="a" version="ONE"><![CDATA[
     
@@ -56,13 +44,13 @@ org.simpleframework.xml.transform.TransformException: Transform of interface jav
 	at org.simpleframework.xml.load.Composite.read(Composite.java:192)
 	at org.simpleframework.xml.load.Composite.read(Composite.java:140)
 	at org.simpleframework.xml.load.Composite.read(Composite.java:116)
-	at org.simpleframework.xml.load.Traverser.read(Traverser.java:72)
+	at org.simpleframework.xml.load.Traverser.read(Traverser.java:71)
 	at org.simpleframework.xml.load.Persister.read(Persister.java:392)
 	at org.simpleframework.xml.load.Persister.read(Persister.java:374)
 	at org.simpleframework.xml.load.Persister.read(Persister.java:355)
 	at org.simpleframework.xml.load.Persister.read(Persister.java:337)
 	at org.simpleframework.xml.load.Persister.read(Persister.java:258)
-	at org.simpleframework.xml.load.TextTest.testNonPrimitive(TextTest.java:231)
+	at org.simpleframework.xml.load.TextTest.testNonPrimitive(TextTest.java:225)
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
@@ -80,11 +68,11 @@ org.simpleframework.xml.transform.TransformException: Transform of interface jav
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
 ------------- ---------------- ---------------
 
-Testcase: testText took 0.516 sec
-Testcase: testData took 0.047 sec
+Testcase: testText took 0.469 sec
+Testcase: testData took 0.031 sec
 Testcase: testDuplicate took 0 sec
-Testcase: testIllegalElement took 0.015 sec
+Testcase: testIllegalElement took 0.016 sec
 Testcase: testEmpty took 0 sec
 Testcase: testOptional took 0.031 sec
-Testcase: testNonPrimitive took 0.016 sec
+Testcase: testNonPrimitive took 0.015 sec
 Testcase: testDirectory took 0 sec

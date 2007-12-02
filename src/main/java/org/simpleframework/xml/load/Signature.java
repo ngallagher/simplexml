@@ -20,8 +20,8 @@
 
 package org.simpleframework.xml.load;
 
-import org.simpleframework.xml.Root;
 import java.lang.annotation.Annotation;
+import org.simpleframework.xml.Root;
 import java.beans.Introspector;
 
 /**
@@ -34,11 +34,6 @@ import java.beans.Introspector;
  * @author Niall Gallagher
  */
 class Signature {
-   
-   /**
-    * This is the name of the default name for a composite object.
-    */
-   private static final String DEFAULT_NAME = "entry";
    
    /**
     * This is the actual annotation from the specified contact.
@@ -54,11 +49,6 @@ class Signature {
     * This is the label used to expose the annotation details.
     */
    private Label label;
-   
-   /**
-    * This is the name as taken from the contact or annotation.
-    */
-   private String name;
    
    /**
     * Constructor for the <code>Signature</code> object. This is 
@@ -107,95 +97,34 @@ class Signature {
     * @return this returns a suitable XML entry element name
     */
    public String getEntry() throws Exception {
-      Class type = getDependant();
-
-      if(!Factory.isPrimitive(type)) {
-         return DEFAULT_NAME;  // default needed to represent possible composite null
-      }
-      return getEntry(type);
-   }
-   
-   /**
-    * This method is used to get the entry name of a label using 
-    * the type of the label. This ensures that if there is no
-    * entry XML element name declared by the annotation that a
-    * suitable name can be calculated from the annotated type.
-    * 
-    * @param type this is the type to get the 
-    * 
-    * @return this returns a suitable XML entry element name
-    */
-   private String getEntry(Class type) throws Exception {          
-      String name = type.getSimpleName();
+      Class type = getDependant();   
       
-      if(type.isPrimitive()) {
-         return name;
+      if(type.isArray()) {
+         type = type.getComponentType();
       }
-      return name.toLowerCase();      
+      return getName(type); 
    }
    
    /**
-    * This is used to determine the name of the XML element that the
-    * annotated field or method represents. This will determine based
-    * on the annotation attributes and the dependant type required
-    * what the name of the XML element this represents is. 
+    * This is used to acquire the name of the specified type using
+    * the <code>Root</code> annotation for the class. This will 
+    * use either the name explicitly provided by the annotation or
+    * it will use the name of the class that the annotation was
+    * placed on if there is no explicit name for the root.
     * 
-    * @return this returns the name of the XML element expected
+    * @param type this is the type to acquire the root name for
+    * 
+    * @return this returns the name of the type from the root
+    * 
+    * @throws Exception if the class contains an illegal schema
     */
-   public String getName() throws Exception {
+   public String getName(Class type) throws Exception {
+      String name = getRoot(type);
+      
       if(name == null) {
-         Class type = getDependant();
-         
-         if(!label.isInline()) {
-            name = getDefault();        
-         } else {
-            name = getName(type);
-         }
+         name = type.getSimpleName();
       }
-      return name;
-   }
-   
-   /**
-    * This is used to determine the name of the XML element that the
-    * annotated field or method represents. This will determine based
-    * on the annotation attributes and the dependant type required
-    * what the name of the XML element this represents is.
-    * 
-    * @param type this is the dependant type to acquire the name for
-    * 
-    * @return this returns the name of the XML element expected
-    */
-   private String getName(Class type) throws Exception {      
-      if(isPrimitive(type)) {
-         name = label.getEntry();         
-      } else {
-         name = getRoot();
-      }
-      return name;
-   }
-   
-   /**
-    * This is used to acquire the name of the XML element for a list
-    * that has been declared inline. An inline list is a list that
-    * has no containing element, thus a name cannot be used to find
-    * the first element that belongs to the list. Instead the type
-    * the list contains is required so the root name can be used.
-    *
-    * @return this will return the root name for the list type 
-    */
-   private String getRoot() throws Exception {
-      String name = label.getOverride();
-	  
-      if(!isEmpty(name)) {
-         throw new ElementException("Inline element %s can not have name", label);
-      }
-      Class type = getDependant();
-      String root = getRoot(type);     
-      
-      if(root == null) {
-         throw new RootException("Root required for %s in %s", type, label);        
-      }   
-      return root;
+      return Introspector.decapitalize(name);
    }
    
    /**
@@ -209,17 +138,17 @@ class Signature {
     * @return the root name for the specified type if it exists
     */
    private String getRoot(Class type) { 
-	   Class real = type;
-	      
-	   while(type != null) {
-	      String name = getRoot(real, type);
-	      
-	      if(name != null) {
-	    	  return name.intern();
-	      }
+      Class real = type;
+         
+      while(type != null) {
+         String name = getRoot(real, type);
+         
+         if(name != null) {
+           return name.intern();
+         }
          type = type.getSuperclass();
-	   }
-	   return null;     
+      }
+      return null;     
    }
    
    /**
@@ -235,7 +164,7 @@ class Signature {
     */
    private String getRoot(Class<?> real, Class<?> type) {
       String name = type.getSimpleName();
-	   
+      
       if(type.isAnnotationPresent(Root.class)) {
           Root root = type.getAnnotation(Root.class);
           String text = root.name();
@@ -249,6 +178,23 @@ class Signature {
    }
    
    /**
+    * This is used to determine the name of the XML element that the
+    * annotated field or method represents. This will determine based
+    * on the annotation attributes and the dependent type required
+    * what the name of the XML element this represents is. 
+    * 
+    * @return this returns the name of the XML element expected
+    */
+   public String getName() throws Exception {
+      String entry = label.getEntry(); 
+         
+      if(!label.isInline()) {
+         return getDefault();
+      }
+      return entry;
+   }
+   
+   /**
     * This is used to acquire the name for an element by firstly
     * checking for an override in the annotation. If one exists
     * then this is returned if not then the name of the field
@@ -256,9 +202,9 @@ class Signature {
     * 
     * @return this returns the XML element name to be used
     */
-   private String getDefault() {
+   private String getDefault() throws Exception {
       String name = label.getOverride();
-      
+
       if(!isEmpty(name)) {
          return name;
       }
@@ -276,7 +222,7 @@ class Signature {
     * 
     * @return true if the type is primitive, false otherwise
     */   
-   public boolean isPrimitive(Class type) {
+   public boolean isPrimitive(Class type) throws Exception {
       if(type != null) {
          return Factory.isPrimitive(type);      
       }
@@ -294,7 +240,10 @@ class Signature {
     * @return true if the string value specified is an empty value
     */
    public boolean isEmpty(String value) {
-      return value.length() == 0;
+      if(value != null) {
+         return value.length() == 0;
+      }
+      return true;      
    }
    
    /**

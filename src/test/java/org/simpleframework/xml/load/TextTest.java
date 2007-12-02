@@ -16,15 +16,9 @@ public class TextTest extends ValidationTestCase {
    private static final String TEXT_LIST =
    "<test>\n"+
    "   <array length='3'>\n"+
-   "     <entry>\n"+
-   "        <text name='a' version='ONE'>Example 1</text>\r\n"+
-   "     </entry>\n"+
-   "     <entry>\n"+
-   "        <text name='b' version='TWO'>Example 2</text>\r\n"+
-   "     </entry>\n"+
-   "     <entry>\n"+
-   "        <text name='c' version='THREE'>Example 3</text>\r\n"+
-   "     </entry>\n"+
+   "     <entry name='a' version='ONE'>Example 1</entry>\r\n"+
+   "     <entry name='b' version='TWO'>Example 2</entry>\r\n"+
+   "     <entry name='c' version='THREE'>Example 3</entry>\r\n"+
    "   </array>\n\r"+
    "</test>";
 

@@ -1,5 +1,5 @@
 Testsuite: org.simpleframework.xml.load.EmptyTest
-Tests run: 10, Failures: 0, Errors: 0, Time elapsed: 0.828 sec
+Tests run: 10, Failures: 0, Errors: 0, Time elapsed: 0.765 sec
 ------------- Standard Output ---------------
 <test>
    <empty class="java.util.ArrayList"/>
@@ -16,7 +16,7 @@ org.simpleframework.xml.load.ValueRequiredException: Empty value for @org.simple
 	at org.simpleframework.xml.load.Composite.read(Composite.java:194)
 	at org.simpleframework.xml.load.Composite.read(Composite.java:140)
 	at org.simpleframework.xml.load.Composite.read(Composite.java:116)
-	at org.simpleframework.xml.load.Traverser.read(Traverser.java:72)
+	at org.simpleframework.xml.load.Traverser.read(Traverser.java:71)
 	at org.simpleframework.xml.load.Persister.read(Persister.java:392)
 	at org.simpleframework.xml.load.Persister.read(Persister.java:374)
 	at org.simpleframework.xml.load.Persister.read(Persister.java:355)
@@ -45,7 +45,7 @@ org.simpleframework.xml.load.ValueRequiredException: Empty value for @org.simple
 	at org.simpleframework.xml.load.Composite.read(Composite.java:194)
 	at org.simpleframework.xml.load.Composite.read(Composite.java:140)
 	at org.simpleframework.xml.load.Composite.read(Composite.java:116)
-	at org.simpleframework.xml.load.Traverser.read(Traverser.java:72)
+	at org.simpleframework.xml.load.Traverser.read(Traverser.java:71)
 	at org.simpleframework.xml.load.Persister.read(Persister.java:392)
 	at org.simpleframework.xml.load.Persister.read(Persister.java:374)
 	at org.simpleframework.xml.load.Persister.read(Persister.java:355)
@@ -74,7 +74,7 @@ org.simpleframework.xml.load.ValueRequiredException: Empty value for @org.simple
 	at org.simpleframework.xml.load.Composite.read(Composite.java:194)
 	at org.simpleframework.xml.load.Composite.read(Composite.java:140)
 	at org.simpleframework.xml.load.Composite.read(Composite.java:116)
-	at org.simpleframework.xml.load.Traverser.read(Traverser.java:72)
+	at org.simpleframework.xml.load.Traverser.read(Traverser.java:71)
 	at org.simpleframework.xml.load.Persister.read(Persister.java:392)
 	at org.simpleframework.xml.load.Persister.read(Persister.java:374)
 	at org.simpleframework.xml.load.Persister.read(Persister.java:355)
@@ -103,7 +103,7 @@ org.simpleframework.xml.load.ValueRequiredException: Empty value for @org.simple
 	at org.simpleframework.xml.load.Composite.read(Composite.java:194)
 	at org.simpleframework.xml.load.Composite.read(Composite.java:140)
 	at org.simpleframework.xml.load.Composite.read(Composite.java:116)
-	at org.simpleframework.xml.load.Traverser.read(Traverser.java:72)
+	at org.simpleframework.xml.load.Traverser.read(Traverser.java:71)
 	at org.simpleframework.xml.load.Persister.read(Persister.java:392)
 	at org.simpleframework.xml.load.Persister.read(Persister.java:374)
 	at org.simpleframework.xml.load.Persister.read(Persister.java:355)
@@ -127,13 +127,13 @@ org.simpleframework.xml.load.ValueRequiredException: Empty value for @org.simple
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
 ------------- ---------------- ---------------
 
-Testcase: testRequiredEmpty took 0.406 sec
-Testcase: testRequiredEmptyMethod took 0.016 sec
-Testcase: testRequiredBlank took 0.016 sec
+Testcase: testRequiredEmpty took 0.343 sec
+Testcase: testRequiredEmptyMethod took 0.032 sec
+Testcase: testRequiredBlank took 0 sec
 Testcase: testOptionalEmpty took 0 sec
-Testcase: testOptionalBlank took 0.015 sec
+Testcase: testOptionalBlank took 0 sec
 Testcase: testEmptyCollection took 0.11 sec
 Testcase: testRequiredEmptyAttribute took 0.015 sec
 Testcase: testOptionalEmptyAttribute took 0 sec
-Testcase: testDefaultedAttribute took 0.234 sec
-Testcase: testDirectory took 0 sec
+Testcase: testDefaultedAttribute took 0.235 sec
+Testcase: testDirectory took 0.015 sec

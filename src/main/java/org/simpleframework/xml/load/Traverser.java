@@ -22,7 +22,6 @@ package org.simpleframework.xml.load;
 
 import org.simpleframework.xml.stream.InputNode;
 import org.simpleframework.xml.stream.OutputNode;
-import org.simpleframework.xml.stream.Position;
 
 /**
  * The <code>Traverser</code> object is used to traverse the XML class
@@ -119,12 +118,6 @@ class Traverser {
       if(root == null) {
          throw new RootException("Root annotation required for %s", type);
       }
-      Position line = node.getPosition();      
-      String name = node.getName();      
-
-      if(!root.equals(name)) {
-         throw new RootException("Root for %s does not match element '%s' at %s", type, name, line);              
-      }
       return value;
    }
 
@@ -178,14 +171,17 @@ class Traverser {
     * 
     * @throws Exception thrown if there is a problem serializing
     */
-   private void write(OutputNode node, Object source, Class expect, String name) throws Exception {
+   public void write(OutputNode node, Object source, Class expect, String name) throws Exception {
       OutputNode child = node.getChild(name);
-      Class type = source.getClass();
+      
+      if(source != null) {
+         Class type = source.getClass();
      
-      if(!root.setOverride(expect, source, child)) {                               
-         getComposite(type).write(child, source);
-      }
-      child.commit();  
+         if(!root.setOverride(expect, source, child)) {                               
+            getComposite(type).write(child, source);         
+         }
+      }         
+      child.commit();      
    }
    
    /**
@@ -212,6 +208,6 @@ class Traverser {
     * @return this returns the root annotation for the XML schema
     */   
    protected String getName(Class type) throws Exception {
-      return root.getName(type);
+      return Factory.getName(type);
    }
 }

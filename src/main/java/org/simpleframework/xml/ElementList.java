@@ -76,10 +76,10 @@ public @interface ElementList {
    public String name() default "";
    
    /**
-    * This is used to provide a entry XML element for each of the
-    * values within the array. This essentially wraps the entity to
-    * be serialized such that there is an extra XML element present.
-    * Typically this is only used to represent a list of primitives.  
+    * This is used to provide a name of the XML element representing
+    * the entry within the list. An entry name is optional and is
+    * used when the name needs to be overridden. This also ensures
+    * that entry, regardless of type has the same root name.   
     * 
     * @return this returns the entry XML element for each value
     */

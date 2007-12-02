@@ -1,14 +1,8 @@
 package org.simpleframework.xml.load;
 
-import java.io.FileOutputStream;
-import java.io.StringWriter;
-
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementArray;
 import org.simpleframework.xml.Root;
-import org.simpleframework.xml.load.Persister;
-import org.simpleframework.xml.load.RootException;
-
 import org.simpleframework.xml.ValidationTestCase;
 
 public class StrictTest extends ValidationTestCase {
@@ -16,21 +10,15 @@ public class StrictTest extends ValidationTestCase {
    private static final String SOURCE =
     "<root version='2.1' id='234'>\n" +
     "   <list length='3' type='sorted'>\n" +
-    "      <item>\n"+
-    "         <entry name='1'>\n" +
-    "            <value>value 1</value>\n" +
-    "         </entry>\n" +
-    "      </item>\n"+
-    "      <item>\n"+
-    "         <entry name='2'>\n" +
-    "            <value>value 2</value>\n" +
-    "         </entry>\n" +
-    "      </item>\n"+
-    "      <item>\n"+
-    "         <entry name='3'>\n" +
-    "            <value>value 3</value>\n" +
-    "         </entry>\n" +
-    "      </item>\n"+
+    "      <item name='1'>\n" +
+    "         <value>value 1</value>\n" +
+    "      </item>\n" +
+    "      <item name='2'>\n" +
+    "         <value>value 2</value>\n" +
+    "      </item>\n" +
+    "      <item name='3'>\n" +
+    "         <value>value 3</value>\n" +
+    "      </item>\n" +
     "   </list>\n" +
     "   <object name='name'>\n" +
     "      <integer>123</integer>\n" +
@@ -67,7 +55,7 @@ public class StrictTest extends ValidationTestCase {
 
    @Root(strict=false)
    private static class StrictObject {
-
+   
       @Element(name="integer")
       private int integer;
    }  
@@ -94,16 +82,16 @@ public class StrictTest extends ValidationTestCase {
       validate(example, persister);
    }
 
-   public void testUnnamedStrict() throws Exception {    
-      boolean success = false; 
-      
-      try {      
-         persister.read(StrictObject.class, SIMPLE);
-      } catch(RootException e) {
-         success = true;              
-      }
-      assertTrue(success);
-   }
+   //public void testUnnamedStrict() throws Exception {    
+   //   boolean success = false; 
+   //   
+   //   try {      
+   //      persister.read(StrictObject.class, SIMPLE);
+   //   } catch(RootException e) {
+   //      success = true;              
+   //   }
+   //   assertTrue(success);
+   //}
 
    public void testNamedStrict() throws Exception {    
       StrictObject object = persister.read(NamedStrictObject.class, SIMPLE);
