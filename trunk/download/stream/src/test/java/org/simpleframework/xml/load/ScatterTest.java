@@ -10,6 +10,8 @@ import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.Text;
 import org.simpleframework.xml.ValidationTestCase;
+import org.simpleframework.xml.util.Dictionary;
+import org.simpleframework.xml.util.Entry;
 
 public class ScatterTest extends ValidationTestCase {
    
@@ -31,6 +33,16 @@ public class ScatterTest extends ValidationTestCase {
    "   <string>Example 2</string>\r\n"+
    "   <string>Example 3</string>\r\n"+
    "</test>";
+   
+   private static final String INLINE_NAMED_LIST =
+   "<test version='ONE'>\n"+
+   "   <include name='1' file='1.txt'/>\r\n"+
+   "   <exclude name='2' file='2.txt'/>\r\n"+
+   "   <exclude name='3' file='3.txt'/>\r\n"+  
+   "   <include name='4' file='4.txt'/>\r\n"+
+   "   <exclude name='5' file='5.txt'/>\r\n"+
+   "</test>";  
+   
    
    @Root(name="test")
    private static class InlineTextList {
@@ -106,7 +118,45 @@ public class ScatterTest extends ValidationTestCase {
       @ElementList(inline=true)
       private ArrayList<String> list = new ArrayList<String>();
    }
+   
+   @Root(name="test")
+   private static class InlineNamedList {
 
+      @ElementList(inline=true, entry="include")
+      private Dictionary<FileMatch> includeList;
+      
+      @ElementList(inline=true, entry="exclude")
+      private Dictionary<FileMatch> excludeList;
+
+      @Attribute
+      private Version version;
+      
+      public String getInclude(String name) {
+         FileMatch match = includeList.get(name);
+         
+         if(match != null) {
+            return match.file;
+         }
+         return null;
+      }
+      
+      public String getExclude(String name) {
+         FileMatch match = excludeList.get(name);
+         
+         if(match != null) {
+            return match.file;
+         }
+         return null;
+      }
+   }
+   
+   @Root
+   private static class FileMatch extends Entry {
+      
+      @Attribute
+      private String file;      
+   }
+   
    private enum Version {
            
       ONE,
@@ -180,8 +230,26 @@ public class ScatterTest extends ValidationTestCase {
       assertEquals(list.get(2), "Example 3");
       
       validate(list, persister);
-   }   
+   }  
+   
+   public void testInlineNamedList() throws Exception {    
+      InlineNamedList list = persister.read(InlineNamedList.class, INLINE_NAMED_LIST);
 
+      assertEquals(list.getInclude("1"), "1.txt");
+      assertEquals(list.getInclude("2"), null);
+      assertEquals(list.getInclude("3"), null);
+      assertEquals(list.getInclude("4"), "4.txt");
+      assertEquals(list.getInclude("5"), null);
+      
+      assertEquals(list.getExclude("1"), null);
+      assertEquals(list.getExclude("2"), "2.txt");
+      assertEquals(list.getExclude("3"), "3.txt");
+      assertEquals(list.getExclude("4"), null);
+      assertEquals(list.getExclude("5"), "5.txt");
+      
+      validate(list, persister);
+   }  
+   
    public void testSimpleList() throws Exception{
       SimpleInlineList list = new SimpleInlineList();
       SimpleEntry entry = new SimpleEntry();

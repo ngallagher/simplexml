@@ -88,7 +88,7 @@ class TextLabel implements Label {
    public Converter getConverter(Source root) throws Exception {
       String ignore = getEmpty();
       
-      if(!root.isPrimitive(type)) {
+      if(!Factory.isPrimitive(type)) {
          throw new TextException("Cannot use %s to represent %s", label, type);
       }
       return new Primitive(root, type, ignore);

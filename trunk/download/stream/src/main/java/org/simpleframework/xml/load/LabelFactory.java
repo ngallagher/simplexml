@@ -56,14 +56,35 @@ final class LabelFactory {
     * 
     * @return returns the label instantiated for the field
     */
-   public static Label getInstance(Contact contact, Annotation label) throws Exception {               
+   public static Label getInstance(Contact contact, Annotation label) throws Exception {
+      Label value = getLabel(contact, label);
+      
+      if(value == null) {
+         return value;
+      }      
+      return new CacheLabel(value);
+   } 
+   
+   /**
+    * Creates a <code>Label</code> using the provided contact and XML
+    * annotation. The label produced contains all information related
+    * to an object member. It knows the name of the XML entity, as
+    * well as whether it is required. Once created the converter can
+    * transform an XML node into Java object and vice versa.
+    * 
+    * @param contact this is contact that the label is produced for
+    * @param label represents the XML annotation for the contact
+    * 
+    * @return returns the label instantiated for the field
+    */
+   private static Label getLabel(Contact contact, Annotation label) throws Exception {      
       Constructor factory = getConstructor(label);    
       
       if(!factory.isAccessible()) {
          factory.setAccessible(true);
       }
       return (Label)factory.newInstance(contact, label);
-   } 
+   }
     
     /**
      * Creates a constructor that can be used to instantiate the label

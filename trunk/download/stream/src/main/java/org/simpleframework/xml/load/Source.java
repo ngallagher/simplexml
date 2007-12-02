@@ -51,17 +51,6 @@ import org.simpleframework.xml.stream.OutputNode;
 class Source {
 
    /**
-    * This is used to cache all schemas built to represent a class.
-    * 
-    * @see org.simpleframework.xml.load.Scanner
-    */
-   private static ScannerCache cache;
-
-   static {
-      cache = new ScannerCache();           
-   }
-   
-   /**
     * This is used to replace variables within the XML source.
     */
    private TemplateEngine engine;
@@ -97,7 +86,63 @@ class Source {
       this.session = new Session();
       this.strategy = strategy;
    }   
+   
+   /**
+    * This creates a <code>Scanner</code> object that can be used to
+    * examine the fields within the XML class schema. The scanner
+    * maintains information when a field from within the scanner is
+    * visited, this allows the serialization and deserialization
+    * process to determine if all required XML annotations are used.
+    * 
+    * @param type the schema class the scanner is created for
+    * 
+    * @return a scanner that can maintains information on the type
+    * 
+    * @throws Exception if the class contains an illegal schema 
+    */ 
+   private Scanner getScanner(Class type) throws Exception {
+      return ScannerFactory.getInstance(type);
+   }
+   
+   /**
+    * This creates a <code>Schema</code> object that can be used to
+    * examine the fields within the XML class schema. The schema
+    * maintains information when a field from within the schema is
+    * visited, this allows the serialization and deserialization
+    * process to determine if all required XML annotations are used.
+    * 
+    * @param source the source object the schema is created for
+    * 
+    * @return a new schema that can track visits within the schema
+    * 
+    * @throws Exception if the class contains an illegal schema  
+    */
+   public Schema getSchema(Object source) throws Exception {
+      return getSchema(source.getClass());           
+   }
 
+   /**
+    * This creates a <code>Schema</code> object that can be used to
+    * examine the fields within the XML class schema. The schema
+    * maintains information when a field from within the schema is
+    * visited, this allows the serialization and deserialization
+    * process to determine if all required XML annotations are used.
+    * 
+    * @param type the schema class the schema is created for
+    * 
+    * @return a new schema that can track visits within the schema
+    * 
+    * @throws Exception if the class contains an illegal schema 
+    */   
+   public Schema getSchema(Class type) throws Exception {
+      Scanner schema = getScanner(type);
+      
+      if(schema == null) {
+         throw new PersistenceException("Invalid schema class %s", type);
+      }
+      return new Schema(schema, session);
+   }
+   
    /**
     * This is used to acquire the attribute mapped to the specified
     * key. In order for this to return a value it must have been
@@ -158,99 +203,6 @@ class Source {
          return strategy.setRoot(type, value, map, session);              
       }           
       return strategy.setElement(type, value, map, session);
-   }
-   
-   /**
-    * This creates a <code>Schema</code> object that can be used to
-    * examine the fields within the XML class schema. The schema
-    * maintains information when a field from within the schema is
-    * visited, this allows the serialization and deserialization
-    * process to determine if all required XML annotations are used.
-    * 
-    * @param source the source object the schema is created for
-    * 
-    * @return a new schema that can track visits within the schema
-    * 
-    * @throws Exception if the class contains an illegal schema  
-    */
-   public Schema getSchema(Object source) throws Exception {
-      return getSchema(source.getClass());           
-   }
-
-   /**
-    * This creates a <code>Schema</code> object that can be used to
-    * examine the fields within the XML class schema. The schema
-    * maintains information when a field from within the schema is
-    * visited, this allows the serialization and deserialization
-    * process to determine if all required XML annotations are used.
-    * 
-    * @param type the schema class the schema is created for
-    * 
-    * @return a new schema that can track visits within the schema
-    * 
-    * @throws Exception if the class contains an illegal schema 
-    */   
-   public Schema getSchema(Class type) throws Exception {
-      Scanner schema = getScanner(type);
-      
-      if(schema == null) {
-         throw new PersistenceException("Invalid schema class %s", type);
-      }
-      return new Schema(schema, session);
-   }
-   
-   /**
-    * This is used to acquire the name of the specified type using
-    * the <code>Root</code> annotation for the class. This will 
-    * use either the name explicitly provided by the annotation or
-    * it will use the name of the class that the annotation was
-    * placed on if there is no explicit name for the root.
-    * 
-    * @param type this is the type to acquire the root name for
-    * 
-    * @return this returns the name of the type from the root
-    * 
-    * @throws Exception if the class contains an illegal schema
-    */
-   public String getName(Class type) throws Exception {
-      return getScanner(type).getName();
-   }
-   
-   /**
-    * This is used to determine whether the scanned class represents
-    * a primitive type. A primitive type is a type that contains no
-    * XML annotations and so cannot be serialized with an XML form.
-    * Instead primitives a serialized using transformations.
-    *
-    * @param type this is the type to determine if it is primitive
-    * 
-    * @return this returns true if no XML annotations were found
-    */
-   public boolean isPrimitive(Class type) throws Exception {
-      return getScanner(type).isPrimitive();
-   }
-   
-   /**
-    * This creates a <code>Scanner</code> object that can be used to
-    * examine the fields within the XML class schema. The scanner
-    * maintains information when a field from within the scanner is
-    * visited, this allows the serialization and deserialization
-    * process to determine if all required XML annotations are used.
-    * 
-    * @param type the schema class the scanner is created for
-    * 
-    * @return a scanner that can maintains information on the type
-    * 
-    * @throws Exception if the class contains an illegal schema 
-    */ 
-   private Scanner getScanner(Class type) throws Exception {
-      Scanner schema = cache.fetch(type);
-      
-      if(schema == null) {
-         schema = new Scanner(type);             
-         cache.cache(type, schema);
-      }
-      return schema;
    }
 
    /**

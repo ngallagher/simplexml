@@ -155,14 +155,6 @@ public class ExceptionTest extends TestCase {
       private String text;           
    }
 
-   private static class NoRootEntry {
-
-      @Attribute(name="id", required=false)           
-      private int id;           
-           
-      @Element(name="text", required=true)
-      private String text;            
-   }
 
    @Root(name="root")
    private static class EntryList {
@@ -177,12 +169,6 @@ public class ExceptionTest extends TestCase {
       private String text;
    }
 
-   private static class ExtendedEntryList extends EntryList {
-
-      @ElementList(name="error-list", type=NoRootEntry.class, required=true)
-      private List list;              
-   }
-   
    private static class ListEntry {
 
       @Attribute(name="id", required=false)
@@ -267,28 +253,6 @@ public class ExceptionTest extends TestCase {
       }catch(ElementException e) {
          success = true;              
       }      
-      assertTrue(success);
-   }
-
-   public void testMissingRoot() throws Exception {
-      boolean success = false;
-
-      try {
-         serializer.read(ExtendedEntryList.class, MISSING_ROOT);
-      } catch(RootException e) {
-         success = true;               
-      }
-      assertTrue(success);
-   }
-
-   public void testListEntryWithNoRoot() throws Exception {
-      boolean success = false;
-
-      try {
-         serializer.read(ListEntryList.class, LIST_ENTRY_WITH_NO_ROOT);
-      } catch(RootException e) {
-         success = true;               
-      }
       assertTrue(success);
    }
    

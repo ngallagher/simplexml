@@ -1,0 +1,44 @@
+Testsuite: org.simpleframework.xml.load.CollectionEntryTest
+Tests run: 5, Failures: 0, Errors: 0, Time elapsed: 0.516 sec
+------------- Standard Output ---------------
+<exampleCollection>
+   <list class="java.util.ArrayList">
+      <substitute id="1">
+         <text>one</text>
+      </substitute>
+      <substitute id="2">
+         <text>two</text>
+      </substitute>
+      <substitute id="3">
+         <text>three</text>
+      </substitute>
+   </list>
+</exampleCollection><exampleInlineCollection>
+   <substitute id="1">
+      <text>one</text>
+   </substitute>
+   <substitute id="2">
+      <text>two</text>
+   </substitute>
+   <substitute id="3">
+      <text>three</text>
+   </substitute>
+</exampleInlineCollection><examplePrimitiveInlineCollection>
+   <substitute>a</substitute>
+   <substitute>b</substitute>
+   <substitute>c</substitute>
+   <substitute>d</substitute>
+</examplePrimitiveInlineCollection><examplePrimitiveCollection>
+   <list class="java.util.ArrayList">
+      <substitute>a</substitute>
+      <substitute>b</substitute>
+      <substitute>c</substitute>
+      <substitute>d</substitute>
+   </list>
+</examplePrimitiveCollection>------------- ---------------- ---------------
+
+Testcase: testExampleCollection took 0.438 sec
+Testcase: testExampleInlineCollection took 0.031 sec
+Testcase: testExamplePrimitiveInlineCollection took 0.015 sec
+Testcase: testExamplePrimitiveCollection took 0.032 sec
+Testcase: testDirectory took 0 sec

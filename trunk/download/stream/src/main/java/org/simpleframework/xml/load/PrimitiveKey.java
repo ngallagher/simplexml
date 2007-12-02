@@ -105,7 +105,7 @@ class PrimitiveKey implements Converter {
       String name = entry.getKey();
            
       if(name == null) {
-         name = entry.getName(type);
+         name = Factory.getName(type);
       }
       if(!entry.isAttribute()) {         
          return readElement(node, name);
@@ -184,7 +184,7 @@ class PrimitiveKey implements Converter {
       String name = entry.getKey();
       
       if(name == null) {
-         name = entry.getName(type);
+         name = Factory.getName(type);
       }    
       OutputNode child = node.getChild(name);  
       

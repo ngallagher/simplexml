@@ -102,7 +102,7 @@ public class DateTransformTest extends ValidationTestCase {
       
       assertXpathExists("/dateExample[@id='0']", text);
       assertXpathExists("/dateExample/array[@id='1']", text);
-      assertXpathExists("/dateExample/array/entry[@id='2']", text);
+      assertXpathExists("/dateExample/array/date[@id='2']", text);
       assertXpathExists("/dateExample/element[@reference='2']", text);
       assertXpathExists("/dateExample/list[@id='3']", text);
       

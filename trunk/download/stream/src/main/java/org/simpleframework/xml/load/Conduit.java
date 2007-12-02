@@ -38,32 +38,32 @@ class Conduit {
    /**
     * This is the pointer to the schema class commit method.
     */
-   private Method commit;
+   private final Method commit;
 
    /**
     * This is the pointer to the schema class validation method.
     */
-   private Method validate;
+   private final Method validate;
 
    /**
     * This is the pointer to the schema class persist method.
     */
-   private Method persist;
+   private final Method persist;
 
    /**
     * This is the pointer to the schema class complete method.
     */
-   private Method complete;
+   private final Method complete;
    
    /**
     * This is the pointer to the schema class replace method.
     */
-   private Method replace;
+   private final Method replace;
    
    /**
     * This is the pointer to the schema class resolve method.
     */
-   private Method resolve;
+   private final Method resolve;
    
    /**
     * Constructor for the <code>conduit</code> object. This is used 

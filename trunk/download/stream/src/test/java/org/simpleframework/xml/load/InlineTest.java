@@ -98,6 +98,13 @@ public class InlineTest extends ValidationTestCase {
       @ElementList(inline=true)
       private ArrayList<String> list = new ArrayList<String>();
    }
+   
+   @Root
+   public class SimpleNameInlineList {
+      
+      @ElementList(inline=true, entry="item")           
+      private ArrayList<SimpleEntry> list = new ArrayList<SimpleEntry>(); 
+   }
 
    private enum Version {
            
@@ -173,11 +180,25 @@ public class InlineTest extends ValidationTestCase {
 
    public void testSimpleList() throws Exception{
       SimpleInlineList list = new SimpleInlineList();
-      SimpleEntry entry = new SimpleEntry();
-
-      entry.content = "test";
-      list.list.add(entry);
-
+      
+      for(int i = 0; i < 10; i++) {
+         SimpleEntry entry = new SimpleEntry();
+         
+         entry.content = String.format("test %s", i);
+         list.list.add(entry);
+      }
+      validate(list, persister);      
+   }
+   
+   public void testSimpleNameList() throws Exception{
+      SimpleNameInlineList list = new SimpleNameInlineList();
+      
+      for(int i = 0; i < 10; i++) {
+         SimpleEntry entry = new SimpleEntry();
+         
+         entry.content = String.format("test %s", i);
+         list.list.add(entry);
+      }
       validate(list, persister);      
    }
    

@@ -1,5 +1,5 @@
 /*
- * Store.java July 2007
+ * History.java July 2007
  *
  * Copyright (C) 2006, Niall Gallagher <niallg@users.sf.net>
  *
@@ -25,7 +25,7 @@ import org.simpleframework.xml.stream.OutputNode;
 import java.util.HashMap;
 
 /**
- * The <code>Store</code> object is used to store labels that have 
+ * The <code>History</code> object is used to store labels that have 
  * been read from an XML class schema. This allows certain elements
  * to be declared within an XML document several times, such that
  * it can be repeatedly read. Repeat reads are typically only used
@@ -37,7 +37,7 @@ import java.util.HashMap;
  * 
  * @see org.simpleframework.xml.load.Converter
  */
-class Store extends HashMap<String, Converter>{
+class History extends HashMap<String, Converter>{
    
    /**
     * This is the source deserialization context for the store.
@@ -45,20 +45,21 @@ class Store extends HashMap<String, Converter>{
    private Source root;
    
    /**
-    * Constructor for the <code>Store</code> object. This creates an
+    * Constructor for the <code>History</code> object. This creates an
     * object that is used for storing converters via its label name.
     * All stored converters can then be used to repeat reads on a
     * given object, which is typically an inline list or map.
     *  
     * @param root this is the deserialization context for the store
     */
-   public Store(Source root) {
+   public History(Source root) {
       this.root = root;
    }
    
    /**
     * This is used to save the label and object for a given element.
-    * Storing the original deserialized object ensures that should
+    * Storing the original deserialized 
+    * object ensures that should
     * there be an additional element with the same name as the label
     * that those XML elements could be read in to the object again.
     * 

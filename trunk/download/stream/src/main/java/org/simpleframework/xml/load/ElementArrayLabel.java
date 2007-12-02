@@ -108,7 +108,7 @@ class ElementArrayLabel implements Label {
    private Converter getConverter(Source root, String name) throws Exception {
       Class entry = type.getComponentType();   
       
-      if(!root.isPrimitive(entry)) { 
+      if(!Factory.isPrimitive(entry)) { 
          return new CompositeArray(root, type, entry, name);        
       }
       return new PrimitiveArray(root, type, entry, name);            

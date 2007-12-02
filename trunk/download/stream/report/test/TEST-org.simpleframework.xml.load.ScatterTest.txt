@@ -1,5 +1,5 @@
 Testsuite: org.simpleframework.xml.load.ScatterTest
-Tests run: 5, Failures: 0, Errors: 0, Time elapsed: 0.594 sec
+Tests run: 6, Failures: 0, Errors: 0, Time elapsed: 0.594 sec
 ------------- Standard Output ---------------
 <test version="ONE">
    <message>Some example message</message>
@@ -27,14 +27,21 @@ Tests run: 5, Failures: 0, Errors: 0, Time elapsed: 0.594 sec
    <string>Example 1</string>
    <string>Example 2</string>
    <string>Example 3</string>
+</test><test version="ONE">
+   <include file="4.txt" name="4"/>
+   <include file="1.txt" name="1"/>
+   <exclude file="3.txt" name="3"/>
+   <exclude file="5.txt" name="5"/>
+   <exclude file="2.txt" name="2"/>
 </test><simpleInlineList>
    <simpleEntry content="test"/>
 </simpleInlineList><simplePrimitiveInlineList>
    <string>test</string>
 </simplePrimitiveInlineList>------------- ---------------- ---------------
 
-Testcase: testList took 0.531 sec
-Testcase: testPrimitiveList took 0.032 sec
-Testcase: testSimpleList took 0.015 sec
-Testcase: testSimplePrimitiveList took 0.016 sec
+Testcase: testList took 0.484 sec
+Testcase: testPrimitiveList took 0.031 sec
+Testcase: testInlineNamedList took 0.016 sec
+Testcase: testSimpleList took 0.016 sec
+Testcase: testSimplePrimitiveList took 0 sec
 Testcase: testDirectory took 0 sec

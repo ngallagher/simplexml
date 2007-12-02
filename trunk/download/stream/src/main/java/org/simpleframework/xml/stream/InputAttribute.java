@@ -219,4 +219,16 @@ class InputAttribute implements InputNode {
    public void skip() {
       return;           
    }
+   
+   /**
+    * This is used to determine if this input node is empty. An
+    * empty node is one with no attributes or children. This can
+    * be used to determine if a given node represents an empty
+    * entity, with which no extra data can be extracted.
+    * 
+    * @return this will always return false as it has a value
+    */
+   public boolean isEmpty() {
+      return false;
+   }
 }

@@ -126,4 +126,16 @@ public interface InputNode extends Node {
     * @exception Exception thrown if there was a parse error
     */ 
    public void skip() throws Exception;
+   
+   /**
+    * This is used to determine if this input node is empty. An
+    * empty node is one with no attributes or children. This can
+    * be used to determine if a given node represents an empty
+    * entity, with which no extra data can be extracted.
+    * 
+    * @return this returns true if the node is an empty element
+    * 
+    * @throws Exception thrown if there was a parse error
+    */
+   public boolean isEmpty() throws Exception;
 }

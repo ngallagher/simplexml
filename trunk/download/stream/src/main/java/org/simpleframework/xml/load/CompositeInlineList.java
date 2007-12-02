@@ -77,6 +77,11 @@ class CompositeInlineList implements Repeater {
    private final Class entry;
 
    /**
+    * This represents the name of the entry elements to write.
+    */
+   private final String name;
+
+   /**
     * Constructor for the <code>CompositeInlineList</code> object. 
     * This is given the list type and entry type to be used. The list
     * type is the <code>Collection</code> implementation that is used 
@@ -86,10 +91,11 @@ class CompositeInlineList implements Repeater {
     * @param type this is the collection type for the list used
     * @param entry the entry type to be stored within the list
     */    
-   public CompositeInlineList(Source root, Class type, Class entry) {
+   public CompositeInlineList(Source root, Class type, Class entry, String name) {
       this.factory = new CollectionFactory(root, type); 
       this.root = new Traverser(root);      
       this.entry = entry;
+      this.name = name;
    }
 
    /**
@@ -176,8 +182,8 @@ class CompositeInlineList implements Repeater {
       Object item = root.read(node, expect);
       Class type = item.getClass();
       
-      if(!isCompatible(type, entry)) {
-         throw new RootException("Root name for %s must match %s", type, expect);          
+      if(!entry.isAssignableFrom(type)) {
+         throw new PersistenceException("Entry %s does not match %s", type, entry);
       }
       return item;      
    }
@@ -219,32 +225,11 @@ class CompositeInlineList implements Repeater {
          if(item != null) {
             Class type = item.getClass();
 
-            if(!isCompatible(type, entry)) {
-               throw new RootException("Root name for %s must match %s", type, entry);                     
+            if(!entry.isAssignableFrom(type)) {
+               throw new PersistenceException("Entry %s does not match %s", type, entry);
             }
-            root.write(node, item, entry);
+            root.write(node, item, entry, name);
          }
       }
-   }
-   
-   /**
-    * This is used to determine if the two types specified have the
-    * same <code>Root</code> annotation name. Also, this requires
-    * that the types be assignable to each other, that is, that the
-    * expected type can reference a class of the specified type.
-    * 
-    * @param type this is the actual type of the deserialized item
-    * @param expect this is the expected type from the annotation
-    * 
-    * @return this returns true if the types are compatible 
-    */
-   private boolean isCompatible(Class type, Class expect) throws Exception {
-     String require = root.getName(expect);
-     String real = root.getName(type);
-      
-      if(!entry.isAssignableFrom(type)) {
-         throw new PersistenceException("Entry %s does not match %s", type, entry);
-      }
-      return require == real;
    }
 }

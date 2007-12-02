@@ -72,6 +72,11 @@ class CompositeList implements Converter {
     * This is the entry type for elements within the list.
     */   
    private final Class entry;
+   
+   /**
+    * This represents the name of the entry elements to write.
+    */
+   private final String name;
 
    /**
     * Constructor for the <code>CompositeList</code> object. This is
@@ -83,10 +88,11 @@ class CompositeList implements Converter {
     * @param type this is the collection type for the list used
     * @param entry the entry type to be stored within the list
     */    
-   public CompositeList(Source root, Class type, Class entry) {
+   public CompositeList(Source root, Class type, Class entry, String name) {
       this.factory = new CollectionFactory(root, type); 
       this.root = new Traverser(root);      
       this.entry = entry;
+      this.name = name;
    }
 
    /**
@@ -156,7 +162,7 @@ class CompositeList implements Converter {
             if(!entry.isAssignableFrom(type)) {
                throw new PersistenceException("Entry %s does not match %s", type, entry);                     
             }
-            root.write(node, item, entry);
+            root.write(node, item, entry, name);
          }
       }
    }

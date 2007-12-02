@@ -1,0 +1,56 @@
+Testsuite: org.simpleframework.xml.load.NullArrayEntryTest
+Tests run: 3, Failures: 0, Errors: 0, Time elapsed: 0.468 sec
+------------- Standard Output ---------------
+<exampleArray>
+   <list length="5">
+      <substitute id="1">
+         <text>a</text>
+      </substitute>
+      <substitute id="2">
+         <text>b</text>
+      </substitute>
+      <substitute/>
+      <substitute/>
+      <substitute id="5">
+         <text>e</text>
+      </substitute>
+   </list>
+</exampleArray><exampleArray>
+   <list length="5">
+      <substitute id="1">
+         <text>a</text>
+      </substitute>
+      <substitute id="2">
+         <text>b</text>
+      </substitute>
+      <substitute/>
+      <substitute/>
+      <substitute id="5">
+         <text>e</text>
+      </substitute>
+   </list>
+</exampleArray><examplePrimitiveArray>
+   <list length="7">
+      <substitute>a</substitute>
+      <substitute>b</substitute>
+      <substitute/>
+      <substitute/>
+      <substitute>e</substitute>
+      <substitute/>
+      <substitute>f</substitute>
+   </list>
+</examplePrimitiveArray><examplePrimitiveArray>
+   <list length="7">
+      <substitute>a</substitute>
+      <substitute>b</substitute>
+      <substitute/>
+      <substitute/>
+      <substitute>e</substitute>
+      <substitute/>
+      <substitute>f</substitute>
+   </list>
+</examplePrimitiveArray>------------- ---------------- ---------------
+
+Testcase: testExampleArray took 0.422 sec
+Testcase: testExamplePrimitiveArray took 0.016 sec
+Testcase: testDirectory took 0 sec

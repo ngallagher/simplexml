@@ -192,6 +192,24 @@ public class CollectionTest extends ValidationTestCase {
    "   </list>\n"+
    "</primitiveCollection>";
    
+   
+   private static final String COMPOSITE_LIST = 
+   "<?xml version=\"1.0\"?>\n"+
+   "<compositeCollection name='example'>\n"+
+   "   <list>\n"+
+   "      <entry id='1'>\n"+
+   "         <text>one</text>  \n\r"+
+   "      </entry>\n\r"+
+   "      <entry id='2'>\n"+
+   "         <text>two</text>  \n\r"+
+   "      </entry>\n\r"+
+   "      <entry id='3'>\n"+
+   "         <text>three</text>  \n\r"+
+   "      </entry>\n\r"+
+   "   </list>\n"+
+   "</compositeCollection>";
+   
+   
    private static final String PRIMITIVE_DEFAULT_LIST = 
    "<?xml version=\"1.0\"?>\n"+
    "<primitiveDefaultCollection name='example'>\n"+
@@ -339,6 +357,21 @@ public class CollectionTest extends ValidationTestCase {
          return list.iterator();  
       }
    }
+   
+   @Root
+   private static class CompositeCollection implements Iterable<Entry> {
+
+      @ElementList(name="list", entry="text")
+      private List<Entry> list;           
+
+      @Attribute(name="name")
+      private String name;
+
+      public Iterator<Entry> iterator() {
+         return list.iterator();  
+      }
+   }
+   
    
    @Root
    private static class PrimitiveDefaultCollection implements Iterable<String> {
@@ -644,6 +677,32 @@ public class CollectionTest extends ValidationTestCase {
             two++;
          }
          if(entry.equals("three")) {              
+            three++;
+         }
+      }         
+      assertEquals(one, 1);
+      assertEquals(two, 1);
+      assertEquals(three, 1);
+      
+      validate(list, serializer);
+   }
+   
+   // XXX This test needs to inline the entry= attribute so that
+   // XXX we can use it to name the inserted entries
+   public void testCompositeCollection() throws Exception {    
+      CompositeCollection list = serializer.read(CompositeCollection.class, COMPOSITE_LIST);
+      int one = 0;
+      int two = 0;
+      int three = 0;
+      
+      for(Entry entry : list) {
+         if(entry.id == 1 && entry.text.equals("one")) {              
+            one++;
+         }
+         if(entry.id == 2 && entry.text.equals("two")) {              
+            two++;
+         }
+         if(entry.id == 3 && entry.text.equals("three")) {              
             three++;
          }
       }         

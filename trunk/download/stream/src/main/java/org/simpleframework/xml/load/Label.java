@@ -152,7 +152,7 @@ interface Label {
     * items. This means that they contain no containing element
     * and so can not specify overrides or special attributes.
     * 
-    * @return this returns true if the annotaiton is inline
+    * @return this returns true if the annotation is inline
     */
    public boolean isInline();
    

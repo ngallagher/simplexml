@@ -135,7 +135,7 @@ class Entry {
    public Converter getKey(Source root) throws Exception {
       Class type = getKeyType();
 
-      if(root.isPrimitive(type)) {        
+      if(Factory.isPrimitive(type)) {        
          return new PrimitiveKey(root, this, type);
       }
       return new CompositeKey(root, this, type);
@@ -189,7 +189,7 @@ class Entry {
    public Converter getValue(Source root) throws Exception {
       Class value = getValueType();
           
-      if(root.isPrimitive(value)) {
+      if(Factory.isPrimitive(value)) {
          return new PrimitiveValue(root, this, value);
       }
       return new CompositeValue(root, this, value);
@@ -289,25 +289,6 @@ class Entry {
    } 
    
    /**
-    * To ensure that the value and key objects always have an element
-    * or attribute name this method allows default names to be used.
-    * This will basically take the object type can convert it to a
-    * string, which can then be used for consistent serialization.
-    * 
-    * @param type this is the type to get the default name from
-    * 
-    * @return this returns the name of XML element or attribute
-    */
-   public String getName(Class type) {
-      String name = type.getSimpleName();
-      
-      if(type.isPrimitive()) {
-         return name;
-      }
-      return Introspector.decapitalize(name); 
-   }
-   
-   /**
     * This method is used to determine if a root annotation value is
     * an empty value. Rather than determining if a string is empty
     * be comparing it to an empty string this method allows for the
@@ -320,5 +301,4 @@ class Entry {
    private boolean isEmpty(String value) {
       return value.length() == 0;
    }  
-   // TODO provide a to string with extra details
 }

@@ -102,6 +102,7 @@ public class StringArrayTransformTest extends ValidationTestCase {
       
       persister.write(example, out);
       String text = out.toString();
+      System.err.println(text);
       
       example = persister.read(StringArrayExample.class, text);
       

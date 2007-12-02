@@ -70,7 +70,7 @@ class Composite implements Converter {
    /**
     * This is used to store objects so that they can be read again.
     */
-   private final Store store;
+   private final History store;
    
    /**
     * This is the type that this composite produces instances of.
@@ -88,7 +88,7 @@ class Composite implements Converter {
     */
    public Composite(Source root, Class type) {
       this.factory = new ObjectFactory(root, type);  
-      this.store = new Store(root);
+      this.store = new History(root);
       this.root = root;
       this.type = type;
    }

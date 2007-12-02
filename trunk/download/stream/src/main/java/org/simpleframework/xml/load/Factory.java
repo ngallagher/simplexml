@@ -23,6 +23,7 @@ package org.simpleframework.xml.load;
 import org.simpleframework.xml.stream.InputNode;
 import org.simpleframework.xml.stream.OutputNode;
 import java.lang.reflect.Modifier;
+import java.beans.Introspector;
 
 /**
  * The <code>Factory</code> object provides a base class for factories 
@@ -125,6 +126,82 @@ abstract class Factory {
    }
    
    /**
+    * This creates a <code>Scanner</code> object that can be used to
+    * examine the fields within the XML class schema. The scanner
+    * maintains information when a field from within the scanner is
+    * visited, this allows the serialization and deserialization
+    * process to determine if all required XML annotations are used.
+    * 
+    * @param type the schema class the scanner is created for
+    * 
+    * @return a scanner that can maintains information on the type
+    * 
+    * @throws Exception if the class contains an illegal schema 
+    */ 
+   private static Scanner getScanner(Class type) throws Exception {
+      return ScannerFactory.getInstance(type);
+   }
+   
+   /**
+    * This is used to acquire the name of the specified type using
+    * the <code>Root</code> annotation for the class. This will 
+    * use either the name explicitly provided by the annotation or
+    * it will use the name of the class that the annotation was
+    * placed on if there is no explicit name for the root.
+    * 
+    * @param type this is the type to acquire the root name for
+    * 
+    * @return this returns the name of the type from the root
+    * 
+    * @throws Exception if the class contains an illegal schema
+    */
+   public static String getName(Class type) throws Exception {
+      Scanner schema = getScanner(type);
+      String name = schema.getName();
+      
+      if(name != null) {
+         return name;
+      }
+      return getClassName(type);
+   }
+   
+   /**
+    * This returns the name of the class specified. If there is a root
+    * annotation on the type, then this is ignored in favour of the 
+    * actual class name. This is typically used when the type is a
+    * primitive or if there is no <code>Root</code> annotation present. 
+    * 
+    * @param type this is the type to acquire the root name for
+    * 
+    * @return this returns the name of the type from the root
+    */
+   public static String getClassName(Class type) throws Exception {
+      if(type.isArray()) {
+         type = type.getComponentType();
+      }      
+      String name = type.getSimpleName();
+      
+      if(type.isPrimitive()) {
+         return name;
+      }
+      return Introspector.decapitalize(name);
+   }
+   
+   /**
+    * This is used to determine whether the scanned class represents
+    * a primitive type. A primitive type is a type that contains no
+    * XML annotations and so cannot be serialized with an XML form.
+    * Instead primitives a serialized using transformations.
+    *
+    * @param type this is the type to determine if it is primitive
+    * 
+    * @return this returns true if no XML annotations were found
+    */
+   public static boolean isPrimitive(Class type) throws Exception {
+      return getScanner(type).isPrimitive();
+   }
+   
+   /**
     * This is used to determine whether the provided base class can be
     * assigned from the issued type. For an override to be compatible
     * with the field type an instance of the override type must be 
@@ -160,49 +237,4 @@ abstract class Factory {
       }              
       return !Modifier.isInterface(modifiers);
    }      
-   
-   /**
-    * This method is used to determine whether the field type is a
-    * primitive type. This check is required to ensure that primitive
-    * elements do not consult the <code>Strategy</code> object for 
-    * the field class. This improves the performance of serialization
-    * and also ensures that the XML serialization is transparent.
-    * 
-    * @param type the type checked to determine if it is primitive
-    * 
-    * @return true if the type is primitive, false otherwise
-    */   
-   public static boolean isPrimitive(Class type) {
-      if(type == String.class) {
-         return true;              
-      }
-      if(type == Boolean.class) {
-         return true;              
-      }
-      if(type == Integer.class) {
-         return true;              
-      }      
-      if(type == Float.class) {
-         return true;               
-      }
-      if(type == Long.class) {
-         return true;              
-      }
-      if(type == Double.class) {
-         return true;              
-      }
-      if(type == Byte.class) {
-         return true;              
-      }
-      if(type == Short.class) {
-         return true;              
-      }
-      if(type == Character.class) {
-         return true;
-      }
-      if(type.isPrimitive()) {
-         return true;                 
-      }
-      return type.isEnum();
-   }
 }           
