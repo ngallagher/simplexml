@@ -1,5 +1,5 @@
 Testsuite: org.simpleframework.xml.graph.PrimitiveCycleTest
-Tests run: 3, Failures: 0, Errors: 0, Time elapsed: 1.469 sec
+Tests run: 3, Failures: 0, Errors: 0, Time elapsed: 15.656 sec
 ------------- Standard Output ---------------
 <test id="0">
    <primitive id="1">
@@ -40,6 +40,6 @@ Tests run: 3, Failures: 0, Errors: 0, Time elapsed: 1.469 sec
    <c id="2">1</c>
 </integerReferenceExample>------------- ---------------- ---------------
 
-Testcase: testPrimitive took 1.016 sec
-Testcase: testPrimitiveReference took 0.437 sec
+Testcase: testPrimitive took 15.156 sec
+Testcase: testPrimitiveReference took 0.453 sec
 Testcase: testDirectory took 0 sec

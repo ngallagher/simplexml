@@ -25,6 +25,7 @@ import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementArray;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.ElementMap;
+import org.simpleframework.xml.Order;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.Text;
 import java.lang.annotation.Annotation;
@@ -90,7 +91,12 @@ class Scanner  {
    /**
     * This is used to store all labels that are XML text values.
     */
-   private Label text;   
+   private Label text;
+   
+   /**
+    * This is the optional order annotation for the scanned class.
+    */
+   private Order order;
 
    /**
     * This is the optional root annotation for the scanned class.
@@ -311,7 +317,10 @@ class Scanner  {
       while(type != null) {
          if(root == null) {              
             root(type);
-         }            
+         }     
+         if(order == null) {
+            order(type);
+         }
          scan(real, type);
          type = type.getSuperclass();
       }      
@@ -379,6 +388,27 @@ class Scanner  {
             text = Introspector.decapitalize(real);
          }      
          name = text.intern();      
+      }
+   }
+   
+   /**
+    * This is used to acquire the optional order annotation to provide
+    * order to the elements and attributes for the generated XML. This
+    * acts as an override to the order provided by the declaration of
+    * the types within the object.  
+    * 
+    * @param type this is the type to be scanned for the order
+    */
+   private void order(Class<?> type) {
+      if(type.isAnnotationPresent(Order.class)) {
+         order = type.getAnnotation(Order.class);
+         
+         for(String name : order.elements()) {
+            elements.put(name, null);            
+         }
+         for(String name : order.attributes()) {
+            attributes.put(name, null);
+         }
       }
    }
    
@@ -509,7 +539,7 @@ class Scanner  {
       Label label = LabelFactory.getInstance(field, type);
       String name = label.getName();
       
-      if(map.containsKey(name)) {
+      if(map.get(name) != null) {
          throw new PersistenceException("Annotation of name '%s' declared twice", name);
       }
       map.put(name, label);      

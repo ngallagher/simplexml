@@ -1,27 +1,27 @@
 Testsuite: org.simpleframework.xml.graph.ListCycleTest
-Tests run: 5, Failures: 0, Errors: 0, Time elapsed: 0.578 sec
+Tests run: 5, Failures: 0, Errors: 0, Time elapsed: 0.594 sec
 ------------- Standard Output ---------------
 <root id="0">
    <one class="java.util.ArrayList" id="1">
-      <text value="entry one" id="2"/>
-      <text value="entry two" id="3"/>
-      <text value="entry three" id="4"/>
-      <text value="entry four" id="5"/>
-      <text value="entry five" id="6"/>
+      <text id="2" value="entry one"/>
+      <text id="3" value="entry two"/>
+      <text id="4" value="entry three"/>
+      <text id="5" value="entry four"/>
+      <text id="6" value="entry five"/>
    </one>
-   <two ref="1" class="java.util.ArrayList"/>
+   <two class="java.util.ArrayList" ref="1"/>
    <three class="java.util.ArrayList" id="7">
-      <text value="tom" id="8"/>
-      <text value="dick" id="9"/>
-      <text value="harry" id="10"/>
+      <text id="8" value="tom"/>
+      <text id="9" value="dick"/>
+      <text id="10" value="harry"/>
    </three>
    <example ref="0"/>
 </root><inlineListExample id="0">
-   <text value="entry one" id="1"/>
-   <text value="entry two" id="2"/>
-   <text value="entry three" id="3"/>
-   <text value="entry four" id="4"/>
-   <text value="entry five" id="5"/>
+   <text id="1" value="entry one"/>
+   <text id="2" value="entry two"/>
+   <text id="3" value="entry three"/>
+   <text id="4" value="entry four"/>
+   <text id="5" value="entry five"/>
    <example ref="0"/>
 </inlineListExample><inlinePrimitiveListExample id="0">
    <string id="1"><![CDATA[entry one]]></string>
@@ -33,13 +33,13 @@ Tests run: 5, Failures: 0, Errors: 0, Time elapsed: 0.578 sec
 </inlinePrimitiveListExample><root id="0">
    <list class="java.util.ArrayList" id="1">
       <value id="2">
-         <list ref="1" class="java.util.ArrayList"/>
+         <list class="java.util.ArrayList" ref="1"/>
       </value>
    </list>
 </root>------------- ---------------- ---------------
 
-Testcase: testCycle took 0.469 sec
-Testcase: testInlineList took 0.031 sec
-Testcase: testInlinePrimitiveList took 0.031 sec
-Testcase: testNestedExample took 0.016 sec
+Testcase: testCycle took 0.485 sec
+Testcase: testInlineList took 0.047 sec
+Testcase: testInlinePrimitiveList took 0.032 sec
+Testcase: testNestedExample took 0.015 sec
 Testcase: testDirectory took 0 sec

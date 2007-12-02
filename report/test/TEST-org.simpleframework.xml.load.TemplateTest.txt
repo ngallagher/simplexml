@@ -1,11 +1,11 @@
 Testsuite: org.simpleframework.xml.load.TemplateTest
-Tests run: 2, Failures: 0, Errors: 0, Time elapsed: 0.437 sec
+Tests run: 2, Failures: 0, Errors: 0, Time elapsed: 0.453 sec
 ------------- Standard Output ---------------
 <test name="test">
    <config class="java.util.ArrayList">
-      <var value="Niall Gallagher" name="name"/>
-      <var value="niallg@users.sf.net" name="mail"/>
-      <var value="Mr" name="title"/>
+      <var name="name" value="Niall Gallagher"/>
+      <var name="mail" value="niallg@users.sf.net"/>
+      <var name="title" value="Mr"/>
    </config>
    <details>
       <title>Mr</title>
@@ -14,5 +14,5 @@ Tests run: 2, Failures: 0, Errors: 0, Time elapsed: 0.437 sec
    </details>
 </test>------------- ---------------- ---------------
 
-Testcase: testTemplate took 0.437 sec
+Testcase: testTemplate took 0.438 sec
 Testcase: testDirectory took 0 sec

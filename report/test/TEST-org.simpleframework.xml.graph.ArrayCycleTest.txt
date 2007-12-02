@@ -1,19 +1,19 @@
 Testsuite: org.simpleframework.xml.graph.ArrayCycleTest
-Tests run: 4, Failures: 0, Errors: 0, Time elapsed: 0.781 sec
+Tests run: 4, Failures: 0, Errors: 0, Time elapsed: 1.063 sec
 ------------- Standard Output ---------------
 <root id="0">
    <one length="5" id="1">
-      <entry value="entry one" id="2"/>
-      <entry value="entry two" id="3"/>
-      <entry value="entry three" id="4"/>
-      <entry value="entry four" id="5"/>
-      <entry value="entry five" id="6"/>
+      <entry id="2" value="entry one"/>
+      <entry id="3" value="entry two"/>
+      <entry id="4" value="entry three"/>
+      <entry id="5" value="entry four"/>
+      <entry id="6" value="entry five"/>
    </one>
    <two ref="1"/>
    <three length="3" id="7">
-      <entry value="tom" id="8"/>
-      <entry value="dick" id="9"/>
-      <entry value="harry" id="10"/>
+      <entry id="8" value="tom"/>
+      <entry id="9" value="dick"/>
+      <entry id="10" value="harry"/>
    </three>
    <example ref="0"/>
 </root><root id="0">
@@ -23,7 +23,7 @@ Tests run: 4, Failures: 0, Errors: 0, Time elapsed: 0.781 sec
       </entry>
       <entry id="3">
          <list length="3" id="4">
-            <entry class="org.simpleframework.xml.graph.ArrayCycleTest$TextValue" name="blah" id="5">
+            <entry class="org.simpleframework.xml.graph.ArrayCycleTest$TextValue" id="5" name="blah">
                <text id="6">Some text</text>
                <list ref="4"/>
             </entry>
@@ -35,14 +35,14 @@ Tests run: 4, Failures: 0, Errors: 0, Time elapsed: 0.781 sec
       </entry>
    </array>
 </root><value id="0">
-   <list class="org.simpleframework.xml.graph.ArrayCycleTest$ElementValue" length="1" id="1">
+   <list length="1" class="org.simpleframework.xml.graph.ArrayCycleTest$ElementValue" id="1">
       <entry class="org.simpleframework.xml.graph.ArrayCycleTest$ElementValue" id="2">
          <element id="3">Example text</element>
       </entry>
    </list>
 </value>------------- ---------------- ---------------
 
-Testcase: testCycle took 0.703 sec
+Testcase: testCycle took 0.984 sec
 Testcase: testNestedExample took 0.031 sec
-Testcase: testPromotion took 0.015 sec
+Testcase: testPromotion took 0.032 sec
 Testcase: testDirectory took 0 sec
