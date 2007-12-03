@@ -20,8 +20,6 @@
 
 package org.simpleframework.xml.transform;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -48,30 +46,10 @@ import java.util.Date;
 class DateTransform<T extends Date> implements Transform<T> {
    
    /**
-    * This is the format for the dates that are produced by this.
-    */
-   private static final String FORMAT = "yyyy-MM-dd HH:mm:ss.S z";
-   
-   /**
     * This represents the constructor used for creating the date.
     */
    private final DateFactory<T> factory;
-   
-   /**
-    * This is the date formatter used to parse and format dates.
-    */
-   private final DateFormat format; 
-   
-   /**
-    * Constructor for the <code>DateTransform</code> object. This is
-    * used to create a transform using a default date format pattern.
-    * The format chosen for the default date format contains produces
-    * date values like <code>2007-05-02 12:22:10.000 GMT</code>.
-    */
-   public DateTransform(Class<T> type) throws Exception {
-      this(type, FORMAT);
-   }
-   
+
    /**
     * Constructor for the <code>DateTransform</code> object. This is
     * used to create a transform using a specified date format. The
@@ -81,8 +59,7 @@ class DateTransform<T extends Date> implements Transform<T> {
     * 
     * @param format this is the date format that is to be used
     */
-   public DateTransform(Class<T> type, String format) throws Exception {
-      this.format = new SimpleDateFormat(format);
+   public DateTransform(Class<T> type) throws Exception {
       this.factory = new DateFactory<T>(type);
    }
    
@@ -97,7 +74,7 @@ class DateTransform<T extends Date> implements Transform<T> {
     * @return this returns an appropriate instanced to be used
     */
    public synchronized T read(String text) throws Exception {      
-      Date date = format.parse(text);
+      Date date = DateType.getDate(text);
       Long time = date.getTime();
       
       return factory.getInstance(time);
@@ -113,7 +90,7 @@ class DateTransform<T extends Date> implements Transform<T> {
     * 
     * @return this is the string representation of the given date
     */
-   public synchronized String write(T date) throws Exception {      
-      return format.format(date);     
+   public synchronized String write(T date) throws Exception {
+      return DateType.getText(date);     
    }
 }

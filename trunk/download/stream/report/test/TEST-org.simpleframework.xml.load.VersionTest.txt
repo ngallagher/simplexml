@@ -1,5 +1,5 @@
 Testsuite: org.simpleframework.xml.load.VersionTest
-Tests run: 2, Failures: 0, Errors: 0, Time elapsed: 0.39 sec
+Tests run: 2, Failures: 0, Errors: 0, Time elapsed: 1.11 sec
 
-Testcase: testVersion1 took 0.375 sec
-Testcase: testVersion2 took 0 sec
+Testcase: testVersion1 took 1.063 sec
+Testcase: testVersion2 took 0.016 sec
