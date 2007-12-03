@@ -1,7 +1,7 @@
 /*
- * Order.java July 2006
+ * Order.java November 2007
  *
- * Copyright (C) 2006, Niall Gallagher <niallg@users.sf.net>
+ * Copyright (C) 2007, Niall Gallagher <niallg@users.sf.net>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
