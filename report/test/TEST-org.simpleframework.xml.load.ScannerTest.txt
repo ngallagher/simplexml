@@ -1,8 +1,8 @@
 Testsuite: org.simpleframework.xml.load.ScannerTest
-Tests run: 5, Failures: 0, Errors: 0, Time elapsed: 0.188 sec
+Tests run: 5, Failures: 0, Errors: 0, Time elapsed: 0.469 sec
 
-Testcase: testExample took 0.109 sec
-Testcase: testMixedExample took 0.032 sec
-Testcase: testDuplicateAttribute took 0.015 sec
-Testcase: testNonMatchingElement took 0 sec
+Testcase: testExample took 0.328 sec
+Testcase: testMixedExample took 0.078 sec
+Testcase: testDuplicateAttribute took 0.016 sec
+Testcase: testNonMatchingElement took 0.015 sec
 Testcase: testIllegalTextExample took 0.016 sec

@@ -1,4 +1,4 @@
 Testsuite: org.simpleframework.xml.transform.TimestampTransformTest
-Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 0.031 sec
+Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 0.11 sec
 
-Testcase: testTimestamp took 0.031 sec
+Testcase: testTimestamp took 0.094 sec

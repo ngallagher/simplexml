@@ -1,5 +1,5 @@
 Testsuite: org.simpleframework.xml.load.TextTest
-Tests run: 8, Failures: 0, Errors: 0, Time elapsed: 0.609 sec
+Tests run: 8, Failures: 0, Errors: 0, Time elapsed: 1.438 sec
 ------------- Standard Output ---------------
 <test>
    <array length="3">
@@ -68,11 +68,11 @@ org.simpleframework.xml.transform.TransformException: Transform of interface jav
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
 ------------- ---------------- ---------------
 
-Testcase: testText took 0.484 sec
-Testcase: testData took 0.015 sec
-Testcase: testDuplicate took 0.016 sec
-Testcase: testIllegalElement took 0 sec
-Testcase: testEmpty took 0.015 sec
-Testcase: testOptional took 0.047 sec
-Testcase: testNonPrimitive took 0.016 sec
-Testcase: testDirectory took 0 sec
+Testcase: testText took 1.188 sec
+Testcase: testData took 0.062 sec
+Testcase: testDuplicate took 0 sec
+Testcase: testIllegalElement took 0.016 sec
+Testcase: testEmpty took 0.016 sec
+Testcase: testOptional took 0.062 sec
+Testcase: testNonPrimitive took 0.031 sec
+Testcase: testDirectory took 0.016 sec

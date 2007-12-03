@@ -51,8 +51,6 @@ package org.simpleframework.xml.transform;
  * values annotated with the <code>Attribute</code> annotation.
  * 
  * @author Niall Gallagher
- * 
- * @see org.simpleframework.xml.transform.Transform
  */
 public class Transformer {
 

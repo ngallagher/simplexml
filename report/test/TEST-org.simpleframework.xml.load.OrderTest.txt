@@ -1,17 +1,18 @@
 Testsuite: org.simpleframework.xml.load.OrderTest
-Tests run: 2, Failures: 0, Errors: 0, Time elapsed: 0.297 sec
+Tests run: 3, Failures: 0, Errors: 0, Time elapsed: 0.922 sec
 ------------- Standard Output ---------------
-<example a="1" b="2" c="3.0">
+<orderExample one="2" two="3.0" three="1">
    <first>first</first>
    <second>second</second>
    <third>third</third>
    <fourth>fourth</fourth>
-</example><example a="10" b="20" c="30.0">
+</orderExample><orderExample one="20" two="30.0" three="10">
    <first>1st</first>
    <second>2nd</second>
    <third>3rd</third>
    <fourth>4th</fourth>
-</example>------------- ---------------- ---------------
+</orderExample>------------- ---------------- ---------------
 
 Testcase: testLinkedHashMapOrder took 0 sec
-Testcase: testSerializationOrder took 0.297 sec
+Testcase: testSerializationOrder took 0.891 sec
+Testcase: testDirectory took 0 sec

@@ -40,7 +40,7 @@ package org.simpleframework.xml.transform;
  * 
  * @author Niall Gallagher
  */
-public interface Transform<T> {
+interface Transform<T> {
    
    /**
     * This method is used to convert the string value given to an
