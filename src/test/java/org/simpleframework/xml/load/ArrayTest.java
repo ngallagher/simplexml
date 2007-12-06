@@ -36,6 +36,30 @@ public class ArrayTest extends ValidationTestCase {
    "   </array>\n\r"+
    "</root>";
    
+   private static final String PRIMITIVE_INT =
+   "<?xml version=\"1.0\"?>\n"+
+   "<root>\n"+
+   "   <array length='5'>\n\r"+
+   "      <text>1</text>  \n\r"+
+   "      <text>2</text>  \n\r"+
+   "      <text>3</text>  \n\r"+
+   "      <text>4</text>  \n\r"+
+   "      <text>5</text>  \n\r"+
+   "   </array>\n\r"+
+   "</root>";
+   
+   private static final String PRIMITIVE_MULTIDIMENSIONAL_INT =
+   "<?xml version=\"1.0\"?>\n"+
+   "<root>\n"+
+   "   <array length='5'>\n\r"+
+   "      <text> 1,2,3, 4, 5, 6</text>  \n\r"+
+   "      <text>2, 4, 6, 8, 10, 12</text>  \n\r"+
+   "      <text>3, 6 ,9,12, 15, 18</text>  \n\r"+
+   "      <text>4, 8, 12, 16, 20, 24</text>  \n\r"+
+   "      <text>5, 10,15,20,25,30</text>  \n\r"+
+   "   </array>\n\r"+
+   "</root>";
+   
    private static final String DEFAULT_PRIMITIVE =
    "<?xml version=\"1.0\"?>\n"+
    "<root>\n"+
@@ -155,6 +179,20 @@ public class ArrayTest extends ValidationTestCase {
       
       @ElementArray(name="array", entry="text")
       private String[] array;
+   }
+   
+   @Root(name="root")
+   private static class PrimitiveIntegerArrayExample {
+      
+      @ElementArray(name="array", entry="text")
+      private int[] array;
+   }
+   
+   @Root(name="root")
+   private static class PrimitiveMultidimensionalIntegerArrayExample {
+      
+      @ElementArray(name="array", entry="text")
+      private int[][] array;
    }
    
    @Root(name="root")
@@ -288,6 +326,61 @@ public class ArrayTest extends ValidationTestCase {
       assertEquals(example.array[2], "entry three");
       assertEquals(example.array[3], "entry four");
       assertEquals(example.array[4], "entry five");
+      
+      validate(example, serializer);
+   }
+   
+   public void testPrimitiveInteger() throws Exception {    
+      PrimitiveIntegerArrayExample example = serializer.read(PrimitiveIntegerArrayExample.class, PRIMITIVE_INT);
+      
+      assertEquals(example.array.length, 5);
+      assertEquals(example.array[0], 1);
+      assertEquals(example.array[1], 2);
+      assertEquals(example.array[2], 3);
+      assertEquals(example.array[3], 4);
+      assertEquals(example.array[4], 5);
+      
+      validate(example, serializer);
+   }
+   
+   public void testPrimitiveMultidimensionalInteger() throws Exception {    
+      PrimitiveMultidimensionalIntegerArrayExample example = serializer.read(PrimitiveMultidimensionalIntegerArrayExample.class, PRIMITIVE_MULTIDIMENSIONAL_INT);
+      
+      assertEquals(example.array.length, 5);
+      assertEquals(example.array[0][0], 1);
+      assertEquals(example.array[0][1], 2);
+      assertEquals(example.array[0][2], 3);
+      assertEquals(example.array[0][3], 4);
+      assertEquals(example.array[0][4], 5);
+      assertEquals(example.array[0][5], 6);
+      
+      assertEquals(example.array[1][0], 2);
+      assertEquals(example.array[1][1], 4);
+      assertEquals(example.array[1][2], 6);
+      assertEquals(example.array[1][3], 8);
+      assertEquals(example.array[1][4], 10);
+      assertEquals(example.array[1][5], 12);
+      
+      assertEquals(example.array[2][0], 3);
+      assertEquals(example.array[2][1], 6);
+      assertEquals(example.array[2][2], 9);
+      assertEquals(example.array[2][3], 12);
+      assertEquals(example.array[2][4], 15);
+      assertEquals(example.array[2][5], 18);
+      
+      assertEquals(example.array[3][0], 4);
+      assertEquals(example.array[3][1], 8);
+      assertEquals(example.array[3][2], 12);
+      assertEquals(example.array[3][3], 16);
+      assertEquals(example.array[3][4], 20);      
+      assertEquals(example.array[3][5], 24);
+      
+      assertEquals(example.array[4][0], 5);
+      assertEquals(example.array[4][1], 10);
+      assertEquals(example.array[4][2], 15);
+      assertEquals(example.array[4][3], 20);
+      assertEquals(example.array[4][4], 25);
+      assertEquals(example.array[4][5], 30);
       
       validate(example, serializer);
    }
