@@ -1,5 +1,5 @@
 Testsuite: org.simpleframework.xml.graph.ListCycleTest
-Tests run: 5, Failures: 0, Errors: 0, Time elapsed: 2.672 sec
+Tests run: 5, Failures: 0, Errors: 0, Time elapsed: 0.688 sec
 ------------- Standard Output ---------------
 <root id="0">
    <one class="java.util.ArrayList" id="1">
@@ -38,8 +38,8 @@ Tests run: 5, Failures: 0, Errors: 0, Time elapsed: 2.672 sec
    </list>
 </root>------------- ---------------- ---------------
 
-Testcase: testCycle took 2.375 sec
-Testcase: testInlineList took 0.156 sec
-Testcase: testInlinePrimitiveList took 0.078 sec
-Testcase: testNestedExample took 0.047 sec
+Testcase: testCycle took 0.547 sec
+Testcase: testInlineList took 0.047 sec
+Testcase: testInlinePrimitiveList took 0.031 sec
+Testcase: testNestedExample took 0.016 sec
 Testcase: testDirectory took 0 sec

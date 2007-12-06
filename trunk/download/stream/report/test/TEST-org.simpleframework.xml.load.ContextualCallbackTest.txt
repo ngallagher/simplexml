@@ -1,9 +1,9 @@
 Testsuite: org.simpleframework.xml.load.ContextualCallbackTest
-Tests run: 2, Failures: 0, Errors: 0, Time elapsed: 1.063 sec
+Tests run: 2, Failures: 0, Errors: 0, Time elapsed: 0.453 sec
 ------------- Standard Output ---------------
 <root number="9999" flag="false">
    <value>default</value>
 </root>------------- ---------------- ---------------
 
-Testcase: testReadCallbacks took 0.968 sec
-Testcase: testWriteCallbacks took 0.079 sec
+Testcase: testReadCallbacks took 0.39 sec
+Testcase: testWriteCallbacks took 0.031 sec

@@ -1,5 +1,5 @@
 Testsuite: org.simpleframework.xml.load.PrologTest
-Tests run: 2, Failures: 0, Errors: 0, Time elapsed: 1.172 sec
+Tests run: 2, Failures: 0, Errors: 0, Time elapsed: 0.703 sec
 ------------- Standard Output ---------------
 <?xml version='1.0' encoding='UTF-8' standalone='yes'?>
 <prologExample id="12" flag="true">
@@ -7,5 +7,5 @@ Tests run: 2, Failures: 0, Errors: 0, Time elapsed: 1.172 sec
     <text>entry text</text>
 </prologExample>------------- ---------------- ---------------
 
-Testcase: testProlog took 1.141 sec
+Testcase: testProlog took 0.688 sec
 Testcase: testDirectory took 0 sec

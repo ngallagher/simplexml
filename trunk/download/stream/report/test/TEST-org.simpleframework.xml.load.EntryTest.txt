@@ -1,4 +1,4 @@
 Testsuite: org.simpleframework.xml.load.EntryTest
-Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 0.14 sec
+Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 0.063 sec
 
-Testcase: testEntry took 0.125 sec
+Testcase: testEntry took 0.063 sec
