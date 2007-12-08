@@ -1,0 +1,129 @@
+<a name='array'></a><b>Reading an array of elements</b>
+<p>
+As well as being able to deserialize elements in to a collection arrays can also be serialized and deserialized.
+However, unlike the <code>@ElementList</code> annotation the <a href="/download/stream/doc/javadoc/org/simpleframework/xml/ElementArray.html">ElementArray</a>
+annotation can also deserialize primitive values such as <code>int</code> arrays, <code>char</code> arrays, and
+so on. Below is an example object with an array of integer values and a parallel array of string values.
+</p>
+<pre>
+@Root
+public class AddressBook {
+
+   @ElementArray
+   private Address[] addresses;   
+
+   @ElementArray
+   private String[] names;        
+
+   @ElementArray
+   private int[] ages;   
+
+   public Address[] getAddresses() {
+      return addresses;           
+   }
+
+   public String[] getNames() {
+      return names;           
+   }
+
+   public int[] getAges() {
+      return ages;           
+   }
+}
+
+@Root
+public class Address {
+
+   @Element(required=false)
+   private String house;        
+
+   @Element
+   private String street;  
+
+   @Element
+   private String city;
+
+   public String getHouse() {
+      return house;           
+   }
+
+   public String getStreet() {
+      return street;           
+   }
+
+   public String getCity() {
+      return city;           
+   }     
+}
+</pre>
+<p>
+For the above object both primitive arrays require an entry attribute, this is because primitives can not be
+annotated with the  <a href="/download/stream/doc/javadoc/org/simpleframework/xml/Root.html">Root</a> annotation. 
+The entry attribute tells the persister than an extra XML element is required to wrap the entry. This 
+entry element can also be applied to serializable objects that have the <code>Root</code> annotation,
+however it is typically only used for primitive arrays. The following XML is an example of what is 
+produced by the above objects.
+</p>
+<pre>
+&lt;addressBook&gt;
+   &lt;addresses length='3'&gt;
+      &lt;address&gt;
+         &lt;house&gt;House 33&lt;/house&gt;
+         &lt;street&gt;Sesame Street&lt;/street&gt;
+         &lt;city&gt;City&lt;/city&gt;
+      &lt;/address&gt;
+      &lt;address&gt;
+         &lt;street&gt;Some Street&lt;/street&gt;
+         &lt;city&gt;The City&lt;/city&gt;
+      &lt;/address&gt;
+      &lt;address&gt;
+         &lt;house&gt;Another House&lt;/house&gt;
+         &lt;street&gt;My Street&lt;/street&gt;
+         &lt;city&gt;Same City&lt;/city&gt;
+      &lt;/address&gt;
+   &lt;/addresses&gt;
+   &lt;names length='3'&gt;
+      &lt;string&gt;Jonny Walker&lt;/string&gt;
+      &lt;string&gt;Jack Daniels&lt;/string&gt;
+      &lt;string&gt;Jim Beam&lt;/string&gt;
+   &lt;/names&gt;
+   &lt;ages length='3'&gt;
+      &lt;int&gt;30&lt;/int&gt;
+      &lt;int&gt;42&lt;/int&gt;
+      &lt;int&gt;31&lt;/int&gt;
+   &lt;/ages&gt;
+&lt;/properties&gt;
+</pre>
+<p>
+Looking at the above XML it can be seen that each entity within an array index is named the same as its type. So 
+a string is wrapped in a 'string' element and an int is wrapped in an 'int' element. This is done
+because the default name for the  <a href="/download/stream/doc/javadoc/org/simpleframework/xml/ElementArray.html">ElementArray</a>
+annotation is its type name, unless the <a href="/download/stream/doc/javadoc/org/simpleframework/xml/Root.html">Root</a> annotation
+is used with a name. This can be overridden by providing an explicit entry name for the array. For example take the simple object
+below which contains an array of names as string objects.
+</p>
+<pre>
+@Root
+public class NameList {
+
+   @ElementArray(entry="name")
+   private String[] names;        
+
+   public String[] getNames() {
+      return names;           
+   }
+}
+</pre>
+<p>
+For the above XML the following document is a valid representation. Notice how each of the names within the XML
+document is wrapped in a 'name' element. This element name is taken from the annotation provided.
+</p>
+<pre>
+&lt;nameList&gt;
+   &lt;names length='3'&gt;
+      &lt;name&gt;Jonny Walker&lt;/name&gt;
+      &lt;name&gt;Jack Daniels&lt;/name&gt;
+      &lt;name&gt;Jim Beam&lt;/name&gt;
+   &lt;/names&gt;
+&lt;/nameList&gt;
+</pre>

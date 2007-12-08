@@ -1,0 +1,117 @@
+<a name='cycles'></a><b>Resolving object reference cycles</b>
+<p>
+When there are cycles in your object graph this can lead to recursive serialization. However it
+is possible to resolve these references using a stock strategy. The 
+<a href="/download/stream/doc/javadoc/org/simpleframework/xml/graph/CycleStrategy.html">CycleStrategy</a> maintains
+the object graph during serialization and deserialization such that cyclical references can be traced
+and resolved. For example take the following object relationships.
+</p>
+<pre>
+@Root
+public class Parent {
+
+   private Collection&lt;Child&gt; children;
+
+   private String name;
+
+   @Attribute
+   public String getName() {
+      return name;                   
+   }
+
+   @Attribute
+   public void setName(String name) {
+      this.name = name;           
+   }
+
+   @Element
+   public void setChildren(Collection&lt;Child&gt; children) {
+      this.children = children;           
+   }
+    
+   @Element   
+   public Collection&lt;Child&gt; getChildren() {
+      return children;           
+   }        
+
+   public void addChild(Child child) {
+      children.add(child);           
+   }
+}
+
+@Root
+public class Child {
+
+   private Parent parent;
+
+   private String name;
+
+   public Child() {
+      super();           
+   }
+
+   public Child(Parent parent) {
+      this.parent = parent;           
+   }
+
+   @Attribute
+   public String getName() {
+      return name;           
+   }
+
+   @Attribute
+   public void setName(String name) {
+      this.name = name;           
+   }
+
+   @Element
+   public Parent getParent() {
+      return parent;
+   }
+
+   @Element
+   public void setParent(Parent parent) {
+      this.parent = parent;
+   }
+}
+</pre>
+<p>
+In the above code snippet the cyclic relation ship between the parent and child can be seen. A parent can have
+multiple children and a child can have a reference to its parent. This can cause problems for some XML binding
+and serialization frameworks. However this form of object relationship can be handled seamlessly using the 
+<a href="/download/stream/doc/javadoc/org/simpleframework/xml/graph/CycleStrategy.html">CycleStrategy</a> object. Below is an 
+example of what a resulting XML document might look like.
+</p>
+<pre>
+&lt;parent name=&quot;john&quot; id=&quot;1&quot;&gt;
+   &lt;children&gt;
+      &lt;child id="2" name=&quot;tom&quot;&gt;
+         &lt;parent ref=&quot;1&quot;/&gt;
+      &lt;/child&gt;
+      &lt;child id="3" name=&quot;dick&quot;&gt;
+         &lt;parent ref=&quot;1&quot;/&gt;
+      &lt;/child&gt;
+      &lt;child id="4" name=&quot;harry&quot;&gt;
+         &lt;parent ref=&quot;1&quot;/&gt;
+      &lt;/child&gt;
+   &lt;/children&gt;
+&lt;/parent&gt;
+</pre>
+<p>
+As can be seen there are two extra attributes present, the id attribute and the ref attribute. These references
+are inserted into the serialized XML document when the object is persisted. They allow object relationships and
+references to be recreated during deserialization. To further clarify take the following code snippet which shows
+how to create a persister that can handle such references.
+</p>
+<pre>
+Strategy strategy = new CyclicStrategy("id", "ref");
+Serializer serializer = new Persister(strategy);
+File source = new File("example.xml");
+Parent parent = serializer.read(Parent.class, source);
+</pre>
+<p>
+The strategy is created by specifying the identity attribute as id and the refering attribute as ref. For convinience
+these attributes have reasonable defaults and the no argument constructor can be used to create the strategy. Although
+the example shown here is very simple the cycle strategy is capable of serializing and deserializing large and complex
+relationships.
+</p>

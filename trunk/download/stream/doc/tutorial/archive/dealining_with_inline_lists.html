@@ -1,0 +1,116 @@
+<a name='inline'></a><b>Dealing with an inline list of elements</b>
+<p>
+When dealing with third party XML or with XML that contains a grouping of related elements a common format involves
+the elements to exist in a sequence with no wrapping parent element. In order to accomodate such structures the
+element list annotation can be configured to ignore the parent element for the list. For example take the following
+XML document.
+</p>
+<pre>
+&lt;propertyList&gt;
+   &lt;name&gt;example&lt;/name&gt;
+   &lt;entry key="one"&gt;
+      &lt;value&gt;first value&lt;/value&gt;
+   &lt;/entry&gt;
+   &lt;entry key="two"&gt;
+      &lt;value&gt;second value&lt;/value&gt;
+   &lt;/entry&gt;
+   &lt;entry key="three"&gt;
+      &lt;value&gt;third value&lt;/value&gt;
+   &lt;/entry&gt;
+&lt;/propertyList&gt;
+</pre>
+<p>
+In the above XML document there is a sequence of entry elements, however unlike the previous example these are not
+enclosed within a parent element. In order to achieve this the inline attribute of the 
+<a href="/download/stream/doc/javadoc/org/simpleframework/xml/ElementList.html">ElementList</a> annotation can be set to true. 
+The following code snippet demonstrates how to use the inline attribute to process the above XML document.
+</p>
+<pre>
+@Root
+public class PropertyList {
+
+   @ElementList(inline=true)
+   private List&lt;Entry&gt; list;
+
+   @Element
+   private String name;
+
+   public String getName() {
+      return name;
+   }
+
+   public List getProperties() {
+      return list;
+   }
+}
+</pre>
+<p>
+There are a number of conditions for the use of the inline element list. Firstly, each element within the inline
+list must be placed one after another. They cannot be dispersed in between other elements. Also, each entry
+type within the list must have the same root name, to clarify take the following example.
+</p>
+<pre>
+package example.demo;
+
+@Root
+public class Entry {
+
+    @Attribute
+    protected String key;
+
+    @Element
+    protected String value;
+
+    public String getKey() {
+       return key;
+    }
+}
+
+public class ValidEntry extends Entry {
+
+   public String getValue() {
+      return value;
+   }
+}
+
+@Root
+public class InvalidEntry extends Entry {
+
+   public String getValue() {
+      return value;
+   }
+}
+
+@Root(name="entry")
+public class FixedEntry extends InvalidEntry {
+}
+</pre>
+<p>
+All of the above types extend the same base type, and so all are candidates for use with the <code>PropertyList</code>
+described earlier. However, although all types could be successfully deserialized and serialized using a list
+which is not inline, only some can be serialized with an inline list. For instance the type <code>InvalidEntry</code>
+could not be serialized as it will be serialized with a different name from all the other entrie implementations.
+The <code>InvalidEntry</code> object has a <a href="/download/stream/doc/javadoc/org/simpleframework/xml/Root.html">Root</a> annotation
+which means that its XML element name will be "invalidEntry". In order to be used with the inline list all objects must
+have the same XML element name of "entry". By extending the <code>InvalidEntry</code> type and explicitly specifying the
+name to be "entry" the <code>FixedEntry</code> subclass can be used without any issues. For example take the following
+XML document, which could represent a mixture of entry types.
+</p>
+<pre>
+&lt;propertyList&gt;
+   &lt;name&gt;example&lt;/name&gt;
+   &lt;entry key="one" class="example.demo.ValidEntry"&gt;
+      &lt;value&gt;first value&lt;/value&gt;
+   &lt;/entry&gt;
+   &lt;entry key="two" class="example.demo.FixedEntry"&gt;
+      &lt;value&gt;second value&lt;/value&gt;
+   &lt;/entry&gt;
+   &lt;entry key="three" class="example.demo.Entry"&gt;
+      &lt;value&gt;third value&lt;/value&gt;
+   &lt;/entry&gt;
+&lt;/propertyList&gt;
+</pre>
+<p>
+All of the above entry elements within the inline list contain the same XML element name. Also each type is specified
+as a subclass implementation of the root <code>Entry</code> object. 
+</p>
