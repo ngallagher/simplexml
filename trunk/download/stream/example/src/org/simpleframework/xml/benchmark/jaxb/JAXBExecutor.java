@@ -1,13 +1,15 @@
 
-package compare.jaxb;
+package org.simpleframework.xml.benchmark.jaxb;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
-import compare.Duration;
-import compare.Executor;
-import compare.TestRun;
+import org.simpleframework.xml.benchmark.Duration;
+import org.simpleframework.xml.benchmark.Executor;
+import org.simpleframework.xml.benchmark.TestRun;
+
+
 
 public class JAXBExecutor implements Executor {
    

@@ -1,4 +1,4 @@
-package compare.simple;
+package org.simpleframework.xml.benchmark.simple;
 
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;

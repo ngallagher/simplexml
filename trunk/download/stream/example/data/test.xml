@@ -1,17 +1,41 @@
 <execute>
    <context identifier="ROOT_PATH" rootPath="e:\workspace\xml\example\data"/>
    <list>
-      <test id="JAXB Test">
-         <executorClass>compare.jaxb.JAXBExecutor</executorClass>
-         <schemaClass>compare.jaxb.JAXBClass</schemaClass>
+      <test id="JAXB Test 1">
+         <executorClass>org.simpleframework.xml.benchmark.jaxb.JAXBExecutor</executorClass>
+         <schemaClass>org.simpleframework.xml.benchmark.jaxb.JAXBClass</schemaClass>
          <sourceFile>${ROOT_PATH}\example.xml</sourceFile>
-         <iterations>1000</iterations>
+         <iterations>10000</iterations>
       </test>
-      <test id="Simple Test">
-         <executorClass>compare.simple.SimpleExecutor</executorClass>
-         <schemaClass>compare.simple.SimpleClass</schemaClass>
+      <test id="Simple Test 1">
+         <executorClass>org.simpleframework.xml.benchmark.simple.SimpleExecutor</executorClass>
+         <schemaClass>org.simpleframework.xml.benchmark.simple.SimpleClass</schemaClass>
          <sourceFile>${ROOT_PATH}\example.xml</sourceFile>
-         <iterations>1000</iterations>
+         <iterations>10000</iterations>
+      </test>
+      <test id="JAXB Test 2">
+         <executorClass>org.simpleframework.xml.benchmark.jaxb.JAXBExecutor</executorClass>
+         <schemaClass>org.simpleframework.xml.benchmark.jaxb.JAXBClass</schemaClass>
+         <sourceFile>${ROOT_PATH}\example.xml</sourceFile>
+         <iterations>10000</iterations>
+      </test>
+      <test id="Simple Test 2">
+         <executorClass>org.simpleframework.xml.benchmark.simple.SimpleExecutor</executorClass>
+         <schemaClass>org.simpleframework.xml.benchmark.simple.SimpleClass</schemaClass>
+         <sourceFile>${ROOT_PATH}\example.xml</sourceFile>
+         <iterations>10000</iterations>
+      </test>
+      <test id="JAXB Test 3">
+         <executorClass>org.simpleframework.xml.benchmark.jaxb.JAXBExecutor</executorClass>
+         <schemaClass>org.simpleframework.xml.benchmark.jaxb.JAXBClass</schemaClass>
+         <sourceFile>${ROOT_PATH}\example.xml</sourceFile>
+         <iterations>10000</iterations>
+      </test>
+      <test id="Simple Test 3">
+         <executorClass>org.simpleframework.xml.benchmark.simple.SimpleExecutor</executorClass>
+         <schemaClass>org.simpleframework.xml.benchmark.simple.SimpleClass</schemaClass>
+         <sourceFile>${ROOT_PATH}\example.xml</sourceFile>
+         <iterations>10000</iterations>
       </test>
    </list>
 </execute>

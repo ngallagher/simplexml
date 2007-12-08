@@ -1,5 +1,5 @@
 
-package compare;
+package org.simpleframework.xml.benchmark;
 
 
 public interface Executor {

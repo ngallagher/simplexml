@@ -1,5 +1,5 @@
 
-package compare;
+package org.simpleframework.xml.benchmark;
 
 import java.io.File;
 import java.io.FileNotFoundException;

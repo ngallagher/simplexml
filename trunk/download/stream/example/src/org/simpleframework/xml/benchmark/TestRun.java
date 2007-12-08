@@ -1,4 +1,4 @@
-package compare;
+package org.simpleframework.xml.benchmark;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
