@@ -7,6 +7,7 @@
       <property name="main.source.path" value="src/main/java"/>            
       <property name="test.source.path" value="src/test/java"/>
       <property name="javadoc.path" value="doc/javadoc"/>
+      <property name="tutorial.path" value="doc/tutorial"/>
       <property name="doc.path" value="doc"/>
       <property name="build.path" value="build"/>
       <property name="main.build.path" value="build/main"/>            
@@ -56,7 +57,7 @@
                <include name="**/*.jar"/>
             </fileset>
          </classpath>
-      </taskdef>       
+      </taskdef>
    </target>
 
    <target name="-compile" depends="-setup">
@@ -254,6 +255,19 @@
          </classpath>  
       </javadoc>
       <delete dir="${build.path}"/>
+   </target>          
+
+   <target name="tutorial" depends="-setup" description="Upload tutorial to sourceforge">
+      <tar tarfile="tutorial.tar">
+         <tarfileset dir="${root.path}">
+            <include name="${tutorial.path}/**/*"/>            
+         </tarfileset>
+      </tar>       
+      <gzip zipfile="tutorial.tar.gz" src="tutorial.tar"/>
+      <scp file="tutorial.tar.gz" todir="${login}:${password}@simple.sourceforge.net:${home}" trust="yes"/>
+      <sshexec host="simple.sourceforge.net" username="${login}" password="${password}" command="tar -xzvf ${home}/tutorial.tar.gz -C ${home}" trust="yes"/>
+      <delete file="tutorial.tar.gz"/>      
+      <delete file="tutorial.tar"/>
    </target>
 
 </project>
