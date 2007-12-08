@@ -1,4 +1,4 @@
-package compare;
+package org.simpleframework.xml.benchmark;
 
 public class Duration {
 	

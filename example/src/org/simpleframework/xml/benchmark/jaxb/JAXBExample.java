@@ -1,4 +1,4 @@
-package compare.jaxb;
+package org.simpleframework.xml.benchmark.jaxb;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;

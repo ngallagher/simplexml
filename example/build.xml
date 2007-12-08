@@ -19,24 +19,14 @@
    </target>
 
    <target name="build" depends="prepare">
-      <javac srcdir="${parent.path}/${source.path}" destdir="${build.path}" debug="true" debuglevel="lines,vars,source" encoding="UTF-8">
-         <classpath>
-            <fileset dir="${lib.path}">
-               <include name="**/*.jar"/>
-            </fileset>
-         </classpath>
-      </javac>
-      <copy todir="${build.path}">
-         <fileset dir="${parent.path}/${source.path}">
-            <exclude name="**/*.java"/>
-         </fileset>
-      </copy>
       <javac srcdir="${source.path}" destdir="${build.path}" debug="true" debuglevel="lines,vars,source" encoding="UTF-8">
          <classpath>
             <fileset dir="${lib.path}">
                <include name="**/*.jar"/>
             </fileset>
-            <pathelement path="${build.path}"/>
+            <fileset dir="${parent.path}/${jar.path}">
+               <include name="**/*.jar"/>
+            </fileset>       
          </classpath>
       </javac>
    </target>
@@ -48,6 +38,9 @@
             <fileset dir="${lib.path}">
                <include name="**/*.jar"/>
             </fileset>
+            <fileset dir="${parent.path}/${jar.path}">
+               <include name="**/*.jar"/>
+            </fileset> 
             <pathelement path="${build.path}"/>
          </classpath>
       </java>           
@@ -60,7 +53,10 @@
          <classpath>
             <fileset dir="${lib.path}">
                <include name="**/*.jar"/>
-            </fileset>
+           </fileset>
+            <fileset dir="${parent.path}/${jar.path}">
+               <include name="**/*.jar"/>
+            </fileset> 
             <pathelement path="${build.path}"/>
          </classpath>
       </java>           
@@ -72,7 +68,10 @@
          <classpath>
             <fileset dir="${lib.path}">
                <include name="**/*.jar"/>
-            </fileset>
+           </fileset>
+            <fileset dir="${parent.path}/${jar.path}">
+               <include name="**/*.jar"/>
+            </fileset> 
             <pathelement path="${build.path}"/>
          </classpath> 
       </nbprofiledirect> 
@@ -82,7 +81,10 @@
          <classpath>
             <fileset dir="${lib.path}">
                <include name="**/*.jar"/>
-            </fileset>
+           </fileset>
+            <fileset dir="${parent.path}/${jar.path}">
+               <include name="**/*.jar"/>
+            </fileset> 
             <pathelement path="${build.path}"/>
          </classpath>
       </java>           
