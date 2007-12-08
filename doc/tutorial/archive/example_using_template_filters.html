@@ -1,0 +1,78 @@
+<a name='template'></a><b>Example using template filters</b>
+<p>
+Another very powerful feature with this XML serialization framework is the ability to use templating
+when deserializing an XML document. This allows values within elements and attributes to use template variables
+that can be replaced using a <a href="/download/stream/doc/javadoc/org/simpleframework/xml/filter/Filter.html">Filter</a> object.
+The simplest filter object is the map filter, which allows the user to place a Java map within the filter
+object exposing the key value pairs to the templating system. The template system can now use the filter
+to find replacement values for template variables within the XML document. To clarify take the following
+example.
+</p>
+<pre>
+@Root
+public class Layout {
+
+   @Element
+   private String path;
+
+   @Element
+   private String user;
+
+   @Attribute
+   private int id;
+
+   public String getPath() {
+      return path;
+   }
+
+   public String getUser() {
+      return user;
+   }
+
+   public int getId() {
+      return id;
+   }
+}   
+</pre>
+<p>
+The above object has declared two elements and an attribute to be deserialized from an XML document. These
+values are typically static values within the XML source. However using a template variable syntax the 
+deserialization process will attempt to substitute the keys with values from the filter. Take the XML 
+document below with two template variables declared ${home.path} and ${user.name}.
+</p>
+<pre>
+&lt;layout id="123"&gt;
+   &lt;path&gt;${home.path}&lt;/path&gt;
+   &lt;user&gt;${user.name}&lt;/user&gt;
+&lt;/layout&gt; 
+</pre>
+To ensure that these values can be replaced with user specified mappings a map filter can be used. Below
+is an example of how to create a persister that can be given user specified key value pairs. Here the
+above XML source is deserialized from a file and the annotated fields are given filter mappings if there
+is a mapping specified. 
+<pre>
+Map map = new HashMap();
+
+map.put("home.path", "/home/john.doe");
+map.put("user.name", "john.doe");
+
+Filter filter = new MapFilter(map);
+Serializer serializer = new Persister(filter);
+File source = new File("layout.xml");
+Layout layout = serializer.read(Layout.class, source);
+
+assert layout.getPath().equals("/home/john.doe");
+assert layout.getUser().equals("john.doe");
+</pre>
+<p>
+As well as the map filter there are several stock filters which can be used to substitute template
+variables with OS environment variables and JVM system properties. Also several template variables can
+exist within the values. For example take the following XML document, which could be used in the 
+above example given that the mappings for ${first.name} and ${second.name} were added to the map filter.
+</p>
+<pre>
+&lt;layout id="123"&gt;
+   &lt;path&gt;/home/${first.name}.${second.name}&lt;/path&gt;
+   &lt;user&gt;${first.name}.${second.name}&lt;/user&gt;
+&lt;/layout&gt; 
+</pre>

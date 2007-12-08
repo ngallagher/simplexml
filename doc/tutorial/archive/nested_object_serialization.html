@@ -1,0 +1,87 @@
+<a name='nested'></a><b>Nested object serialization</b>
+<p>
+As well as simple object serialization, nested object serialization is possible. This is where a serializable object can contain
+any number of serializable objects, to any depth. Take the example shown in the code snippet below. This shows several objects
+that are linked together to form a single serializable entity. Here the root configuration object contains a server object, which
+in turn contains a security information object.
+</p>
+<pre>
+@Root
+public class Configuration {
+
+   @Element
+   private Server server;
+
+   @Attribute
+   private int id;
+
+   public int getIdentity() {
+      return id;
+   }
+
+   public Server getServer() {
+      return server;           
+   }
+}
+
+public class Server {
+
+   @Attribute
+   private int port;
+
+   @Element
+   private String host;
+
+   @Element
+   private Security security;
+
+   public int getPort() {
+      return port;           
+   }
+
+   public String getHost() {
+      return host;           
+   }
+
+   public Security getSecurity() {
+      return security;           
+   }
+}
+
+public class Security {
+
+   @Attribute
+   private boolean ssl;
+
+   @Element
+   private String keyStore;
+
+   public boolean isSSL() {
+      return ssl;           
+   }
+
+   public String getKeyStore() {
+      return keyStore;           
+   }
+}
+</pre>
+<p>
+In order to create an initialized configuration object an XML document can be used. This XML document needs to 
+match the XML annotations for the object graph. So taking the above class schema the XML document would look
+like the following example.
+</p>
+<pre>
+&lt;configuration id="1234"&gt;
+   &lt;server port="80"&gt;
+      &lt;host&gt;www.domain.com&lt;/host&gt;
+      &lt;security ssl="true"&gt;
+         &lt;keyStore&gt;example keystore&lt;/keyStore&gt;
+      &lt;/security&gt;
+   &lt;/server&gt;
+&lt;/configuration&gt;
+</pre>
+<p>
+How the mapping is done can be seen by examining the XML document elements and attributes and comparing these
+to the annotations within the schema classes. The mapping is quite simple and can be picked up and understood 
+in several minutes.
+</p>
