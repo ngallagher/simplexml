@@ -1,5 +1,5 @@
 Testsuite: org.simpleframework.xml.load.NullArrayEntryTest
-Tests run: 3, Failures: 0, Errors: 0, Time elapsed: 0.5 sec
+Tests run: 3, Failures: 0, Errors: 0, Time elapsed: 2.016 sec
 ------------- Standard Output ---------------
 <exampleArray>
    <list length="5">
@@ -51,6 +51,6 @@ Tests run: 3, Failures: 0, Errors: 0, Time elapsed: 0.5 sec
    </list>
 </examplePrimitiveArray>------------- ---------------- ---------------
 
-Testcase: testExampleArray took 0.485 sec
-Testcase: testExamplePrimitiveArray took 0.015 sec
+Testcase: testExampleArray took 1.797 sec
+Testcase: testExamplePrimitiveArray took 0.14 sec
 Testcase: testDirectory took 0 sec
