@@ -3,6 +3,7 @@
 	<classpathentry kind="src" path="src/main/java"/>
 	<classpathentry kind="src" path="src/test/java"/>
 	<classpathentry kind="src" path="example/src"/>
+	<classpathentry kind="src" path="src/benchmark/java"/>
 	<classpathentry kind="lib" path="lib/stax-1.2.0.jar"/>
 	<classpathentry kind="lib" path="skel/lib/stax-1.2.0.jar"/>
 	<classpathentry kind="lib" path="skel/lib/stax-api-1.0.1.jar"/>
@@ -17,8 +18,8 @@
 	<classpathentry kind="lib" path="example/lib/istack-commons-runtime.jar"/>
 	<classpathentry kind="lib" path="example/lib/istack-commons-tools.jar"/>
 	<classpathentry kind="lib" path="example/lib/jaxb1-impl.jar"/>
-	<classpathentry kind="lib" path="example/lib/jaxb-api.jar" sourcepath="/jaxb/src"/>
-	<classpathentry kind="lib" path="example/lib/jaxb-impl.jar" sourcepath="/jaxb/src"/>
+	<classpathentry kind="lib" path="example/lib/jaxb-api.jar" sourcepath="E:/workspace/jaxb/src"/>
+	<classpathentry kind="lib" path="example/lib/jaxb-impl.jar" sourcepath="E:/workspace/jaxb/src"/>
 	<classpathentry kind="lib" path="example/lib/jaxb-xjc.jar"/>
 	<classpathentry kind="lib" path="example/lib/jsr173_1.0_api.jar"/>
 	<classpathentry kind="lib" path="example/lib/msv.jar"/>

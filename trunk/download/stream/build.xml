@@ -6,12 +6,14 @@
       <property name="source.path" value="src"/>                
       <property name="main.source.path" value="src/main/java"/>            
       <property name="test.source.path" value="src/test/java"/>
+      <property name="benchmark.source.path" value="src/benchmark/java"/>
       <property name="javadoc.path" value="doc/javadoc"/>
       <property name="tutorial.path" value="doc/tutorial"/>
       <property name="doc.path" value="doc"/>
       <property name="build.path" value="build"/>
       <property name="main.build.path" value="build/main"/>            
       <property name="test.build.path" value="build/test"/>
+      <property name="benchmark.build.path" value="build/benchmark"/>
       <property name="instrumented.build.path" value="build/instrumented"/>
       <property name="jar.path" value="jar"/>
       <property name="lib.path" value="lib"/>
@@ -27,15 +29,16 @@
       <property file="ssh.properties"/>
    </target>
 
-   <target name="-clean" depends="-layout">
+   <target name="clean" depends="-layout">
       <delete dir="${build.path}"/>
       <delete dir="${jar.path}"/>
    </target>
 
-   <target name="-prepare" depends="-clean">
+   <target name="-prepare" depends="clean">
       <mkdir dir="${build.path}"/>
       <mkdir dir="${main.build.path}"/>
       <mkdir dir="${test.build.path}"/>
+      <mkdir dir="${benchmark.build.path}"/>
       <mkdir dir="${instrumented.build.path}"/>
       <mkdir dir="${report.path}"/>
       <mkdir dir="${test.report.path}"/>
@@ -74,6 +77,14 @@
          </fileset>
       </copy>
       <javac srcdir="${test.source.path}" destdir="${test.build.path}" debug="true" debuglevel="lines,vars,source" source="1.5" encoding="UTF-8">
+         <classpath>
+            <fileset dir="${lib.path}">
+               <include name="**/*.jar"/>
+            </fileset>
+            <pathelement path="${main.build.path}"/>
+         </classpath>
+      </javac>
+      <javac srcdir="${benchmark.source.path}" destdir="${benchmark.build.path}" debug="true" debuglevel="lines,vars,source" source="1.5" encoding="UTF-8">
          <classpath>
             <fileset dir="${lib.path}">
                <include name="**/*.jar"/>
@@ -175,6 +186,18 @@
       <delete dir="${build.path}"/>
    </target>
 
+   <target name="benchmark" depends="-compile" description="Benchmark the current version">
+      <java classname="org.simpleframework.xml.benchmark.Benchmark">
+         <classpath location="${main.build.path}"/>
+         <classpath location="${benchmark.build.path}"/>
+         <classpath>
+         <fileset dir="${lib.path}">
+            <include name="**/*.jar"/>
+         </fileset>
+      </java>
+      <delete dir="${build.path}"/>
+   </target>
+
    <target name="package" depends="test" description="Build and test project for a new release">
       <mkdir dir="${package.path}/${build.path}"/>
       <mkdir dir="${package.path}/${build.path}/simple-xml-${version}"/>
@@ -245,7 +268,7 @@
       </svn>
    </target>
 
-   <target name="javadoc" depends="-clean" description="Generate source documentation">
+   <target name="javadoc" depends="clean" description="Generate source documentation">
       <mkdir dir="${javadoc.path}"/>
       <javadoc sourcepath="${main.source.path}" packagenames="org.simpleframework.*" destdir="${javadoc.path}" private="false">
          <classpath>

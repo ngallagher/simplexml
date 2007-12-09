@@ -148,7 +148,7 @@ class ElementListLabel implements Label {
     * 
     * @return this returns the component type for the collection
     */
-   public Class getDependant() throws Exception  {
+   public Class getDependant() throws Exception  {      
       Contact contact = getContact();
      
       if(item == void.class) {
