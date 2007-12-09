@@ -159,9 +159,8 @@ class Composite implements Converter {
     * @return this returns a replacement for the deserialized object
     */
    private Object readResolve(InputNode node, Object source, Schema schema) throws Exception {
-      Position line = node.getPosition();
-
       if(source != null) {
+         Position line = node.getPosition();
          Object value = schema.resolve(source);
          Class real = value.getClass();
       
@@ -288,12 +287,13 @@ class Composite implements Converter {
     * @throws Exception thrown if the the label object does not exist
     */
    private void readAttribute(InputNode node, Object source, LabelMap map) throws Exception {
-      Position line = node.getPosition();
       String name = node.getName();
       Label label = map.take(name);
       
       if(label == null) {
-         if(map.isStrict()) {              
+         if(map.isStrict()) {  
+            Position line = node.getPosition();
+            
             throw new AttributeException("Attribute '%s' does not exist at %s", name, line);
          }            
       } else {
@@ -316,11 +316,11 @@ class Composite implements Converter {
     * @throws Exception thrown if the the label object does not exist
     */
    private void readElement(InputNode node, Object source, LabelMap map) throws Exception {
-      Position line = node.getPosition();
       String name = node.getName();
       Label label = map.take(name);      
 
       if(label == null) {
+         Position line = node.getPosition();
          Converter repeat = store.get(name);
          
          if(repeat != null) {
@@ -380,12 +380,12 @@ class Composite implements Converter {
     * 
     * @throws Exception thrown if an XML property was not declared
     */
-   private void validate(InputNode node, LabelMap map, Object source) throws Exception {
-      Position line = node.getPosition();
-      Class type = source.getClass();      
-
+   private void validate(InputNode node, LabelMap map, Object source) throws Exception {     
       for(Label label : map) {
          if(label.isRequired()) {
+            Position line = node.getPosition();
+            Class type = source.getClass(); 
+            
             throw new ValueRequiredException("Unable to satisfy %s for %s at %s", label, type, line);
          }
       }      

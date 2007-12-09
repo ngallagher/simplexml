@@ -109,6 +109,11 @@ class Scanner  {
    private String name;
    
    /**
+    * This is used to specify whether the type is a primitive class.
+    */
+   private boolean primitive;
+   
+   /**
     * Constructor for the <code>Schema</code> object. This is used 
     * to scan the provided class for annotations that are used to
     * build a schema for an XML file to follow. 
@@ -272,6 +277,18 @@ class Scanner  {
     * @return this returns true if no XML annotations were found
     */
    public boolean isPrimitive() {
+      return primitive;
+   }
+   
+   /**
+    * This is used to determine whether the scanned class represents
+    * a primitive type. A primitive type is a type that contains no
+    * XML annotations and so cannot be serialized with an XML form.
+    * Instead primitives a serialized using transformations.
+    * 
+    * @return this returns true if no XML annotations were found
+    */
+   private boolean isEmpty() {
       if(!elements.isEmpty()) {
          return false;
       }
@@ -365,6 +382,8 @@ class Scanner  {
          if(!elements.isEmpty()) {
             throw new TextException("Elements used with %s in %s", text, type);
          }
+      } else {
+         primitive = isEmpty();
       }
    } 
 

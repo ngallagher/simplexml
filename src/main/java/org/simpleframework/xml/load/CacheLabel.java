@@ -32,6 +32,11 @@ package org.simpleframework.xml.load;
 class CacheLabel implements Label {
 
    /**
+    * This is the contact used to set and get the value for the node.
+    */
+   private final Contact contact;
+   
+   /**
     * This is used to represent the dependent class to be used.
     */
    private final Class depend;
@@ -89,7 +94,8 @@ class CacheLabel implements Label {
     * 
     * @param label this is the label to acquire the details from  
     */
-   public CacheLabel(Label label) throws Exception {      
+   public CacheLabel(Label label) throws Exception {  
+      this.contact = label.getContact();
       this.depend = label.getDependant();
       this.required = label.isRequired();
       this.override = label.getOverride();
@@ -112,7 +118,7 @@ class CacheLabel implements Label {
     * @return returns the field that this label is representing
     */
    public Contact getContact() {
-      return label.getContact();
+      return contact;
    }
    
    /**
