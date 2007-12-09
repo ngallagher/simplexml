@@ -1,5 +1,5 @@
 Testsuite: org.simpleframework.xml.load.ArrayTest
-Tests run: 12, Failures: 0, Errors: 0, Time elapsed: 1.563 sec
+Tests run: 14, Failures: 0, Errors: 0, Time elapsed: 3.11 sec
 ------------- Standard Output ---------------
 <root>
    <array length="100">
@@ -217,6 +217,22 @@ Tests run: 12, Failures: 0, Errors: 0, Time elapsed: 1.563 sec
    </array>
 </root><root>
    <array length="5">
+      <text>1</text>
+      <text>2</text>
+      <text>3</text>
+      <text>4</text>
+      <text>5</text>
+   </array>
+</root><root>
+   <array length="5">
+      <text length="6">1, 2, 3, 4, 5, 6</text>
+      <text length="6">2, 4, 6, 8, 10, 12</text>
+      <text length="6">3, 6, 9, 12, 15, 18</text>
+      <text length="6">4, 8, 12, 16, 20, 24</text>
+      <text length="6">5, 10, 15, 20, 25, 30</text>
+   </array>
+</root><root>
+   <array length="5">
       <string>entry one</string>
       <string>entry two</string>
       <string>entry three</string>
@@ -274,15 +290,17 @@ Tests run: 12, Failures: 0, Errors: 0, Time elapsed: 1.563 sec
    </array>
 </root>------------- ---------------- ---------------
 
-Testcase: testExample took 0.562 sec
-Testcase: testBadExample took 0.016 sec
-Testcase: testWriteArray took 0.797 sec
-Testcase: testPrimitive took 0.015 sec
-Testcase: testDefaultPrimitive took 0.016 sec
-Testcase: testPrimitiveNull took 0.015 sec
-Testcase: testParentComposite took 0.016 sec
+Testcase: testExample took 0.969 sec
+Testcase: testBadExample took 0.015 sec
+Testcase: testWriteArray took 1.703 sec
+Testcase: testPrimitive took 0.047 sec
+Testcase: testPrimitiveInteger took 0.031 sec
+Testcase: testPrimitiveMultidimensionalInteger took 0.047 sec
+Testcase: testDefaultPrimitive took 0.031 sec
+Testcase: testPrimitiveNull took 0.016 sec
+Testcase: testParentComposite took 0.031 sec
 Testcase: testDefaultComposite took 0.031 sec
-Testcase: testParentCompositeNull took 0.016 sec
-Testcase: testCharacter took 0.016 sec
-Testcase: testDifferentArray took 0.016 sec
+Testcase: testParentCompositeNull took 0.015 sec
+Testcase: testCharacter took 0.031 sec
+Testcase: testDifferentArray took 0.032 sec
 Testcase: testDirectory took 0 sec

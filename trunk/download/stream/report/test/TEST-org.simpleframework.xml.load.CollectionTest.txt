@@ -1,5 +1,5 @@
 Testsuite: org.simpleframework.xml.load.CollectionTest
-Tests run: 21, Failures: 0, Errors: 0, Time elapsed: 1.047 sec
+Tests run: 21, Failures: 0, Errors: 0, Time elapsed: 5.672 sec
 ------------- Standard Output ---------------
 <test name="example">
    <list class="java.util.TreeSet">
@@ -27,11 +27,11 @@ Tests run: 21, Failures: 0, Errors: 0, Time elapsed: 1.047 sec
    </list>
 </test><test name="example">
    <list class="java.util.HashSet">
-      <entry id="2">
-         <text>two</text>
-      </entry>
       <entry id="1">
          <text>one</text>
+      </entry>
+      <entry id="2">
+         <text>two</text>
       </entry>
       <entry id="3">
          <text>three</text>
@@ -116,27 +116,27 @@ Tests run: 21, Failures: 0, Errors: 0, Time elapsed: 1.047 sec
       <entry id="3">
          <text>three</text>
       </entry>
+      <entry class="org.simpleframework.xml.load.CollectionTest$ExtendedEntry" id="1">
+         <description>this is an extended entry</description>
+         <text>one</text>
+      </entry>
       <entry class="org.simpleframework.xml.load.CollectionTest$ExtendedEntry" id="2">
          <description>this is the second one</description>
          <text>two</text>
       </entry>
-      <entry class="org.simpleframework.xml.load.CollectionTest$ExtendedEntry" id="1">
-         <description>this is an extended entry</description>
-         <text>one</text>
-      </entry>
    </list>
 </test><test name="example">
    <list class="java.util.HashSet">
-      <entry class="org.simpleframework.xml.load.CollectionTest$ExtendedEntry" id="1">
-         <description>this is an extended entry</description>
-         <text>one</text>
-      </entry>
       <entry id="3">
          <text>three</text>
       </entry>
       <entry class="org.simpleframework.xml.load.CollectionTest$ExtendedEntry" id="2">
          <description>this is the second one</description>
          <text>two</text>
+      </entry>
+      <entry class="org.simpleframework.xml.load.CollectionTest$ExtendedEntry" id="1">
+         <description>this is an extended entry</description>
+         <text>one</text>
       </entry>
    </list>
 </test>org.simpleframework.xml.load.InstantiationException: Type class java.util.HashSet is not compatible with interface java.util.SortedSet
@@ -145,8 +145,8 @@ Tests run: 21, Failures: 0, Errors: 0, Time elapsed: 1.047 sec
 	at org.simpleframework.xml.load.CompositeList.read(CompositeList.java:110)
 	at org.simpleframework.xml.load.Composite.read(Composite.java:355)
 	at org.simpleframework.xml.load.Composite.readElement(Composite.java:334)
-	at org.simpleframework.xml.load.Composite.readElements(Composite.java:250)
-	at org.simpleframework.xml.load.Composite.read(Composite.java:194)
+	at org.simpleframework.xml.load.Composite.readElements(Composite.java:249)
+	at org.simpleframework.xml.load.Composite.read(Composite.java:193)
 	at org.simpleframework.xml.load.Composite.read(Composite.java:140)
 	at org.simpleframework.xml.load.Composite.read(Composite.java:116)
 	at org.simpleframework.xml.load.Traverser.read(Traverser.java:71)
@@ -177,8 +177,8 @@ org.simpleframework.xml.load.InstantiationException: Type class java.util.ArrayL
 	at org.simpleframework.xml.load.CompositeList.read(CompositeList.java:110)
 	at org.simpleframework.xml.load.Composite.read(Composite.java:355)
 	at org.simpleframework.xml.load.Composite.readElement(Composite.java:334)
-	at org.simpleframework.xml.load.Composite.readElements(Composite.java:250)
-	at org.simpleframework.xml.load.Composite.read(Composite.java:194)
+	at org.simpleframework.xml.load.Composite.readElements(Composite.java:249)
+	at org.simpleframework.xml.load.Composite.read(Composite.java:193)
 	at org.simpleframework.xml.load.Composite.read(Composite.java:140)
 	at org.simpleframework.xml.load.Composite.read(Composite.java:116)
 	at org.simpleframework.xml.load.Traverser.read(Traverser.java:71)
@@ -208,8 +208,8 @@ org.simpleframework.xml.load.InstantiationException: Type is not a collection cl
 	at org.simpleframework.xml.load.CompositeList.read(CompositeList.java:110)
 	at org.simpleframework.xml.load.Composite.read(Composite.java:355)
 	at org.simpleframework.xml.load.Composite.readElement(Composite.java:334)
-	at org.simpleframework.xml.load.Composite.readElements(Composite.java:250)
-	at org.simpleframework.xml.load.Composite.read(Composite.java:194)
+	at org.simpleframework.xml.load.Composite.readElements(Composite.java:249)
+	at org.simpleframework.xml.load.Composite.read(Composite.java:193)
 	at org.simpleframework.xml.load.Composite.read(Composite.java:140)
 	at org.simpleframework.xml.load.Composite.read(Composite.java:116)
 	at org.simpleframework.xml.load.Traverser.read(Traverser.java:71)
@@ -240,8 +240,8 @@ org.simpleframework.xml.load.InstantiationException: Cannot instantiate class or
 	at org.simpleframework.xml.load.CompositeList.read(CompositeList.java:110)
 	at org.simpleframework.xml.load.Composite.read(Composite.java:355)
 	at org.simpleframework.xml.load.Composite.readElement(Composite.java:334)
-	at org.simpleframework.xml.load.Composite.readElements(Composite.java:250)
-	at org.simpleframework.xml.load.Composite.read(Composite.java:194)
+	at org.simpleframework.xml.load.Composite.readElements(Composite.java:249)
+	at org.simpleframework.xml.load.Composite.read(Composite.java:193)
 	at org.simpleframework.xml.load.Composite.read(Composite.java:140)
 	at org.simpleframework.xml.load.Composite.read(Composite.java:116)
 	at org.simpleframework.xml.load.Traverser.read(Traverser.java:71)
@@ -273,8 +273,8 @@ org.simpleframework.xml.load.InstantiationException: Cannot instantiate class or
 	at org.simpleframework.xml.load.CompositeList.read(CompositeList.java:110)
 	at org.simpleframework.xml.load.Composite.read(Composite.java:355)
 	at org.simpleframework.xml.load.Composite.readElement(Composite.java:334)
-	at org.simpleframework.xml.load.Composite.readElements(Composite.java:250)
-	at org.simpleframework.xml.load.Composite.read(Composite.java:194)
+	at org.simpleframework.xml.load.Composite.readElements(Composite.java:249)
+	at org.simpleframework.xml.load.Composite.read(Composite.java:193)
 	at org.simpleframework.xml.load.Composite.read(Composite.java:140)
 	at org.simpleframework.xml.load.Composite.read(Composite.java:116)
 	at org.simpleframework.xml.load.Traverser.read(Traverser.java:71)
@@ -305,8 +305,8 @@ org.simpleframework.xml.load.InstantiationException: Type class java.util.Hashta
 	at org.simpleframework.xml.load.CompositeList.read(CompositeList.java:110)
 	at org.simpleframework.xml.load.Composite.read(Composite.java:355)
 	at org.simpleframework.xml.load.Composite.readElement(Composite.java:334)
-	at org.simpleframework.xml.load.Composite.readElements(Composite.java:250)
-	at org.simpleframework.xml.load.Composite.read(Composite.java:194)
+	at org.simpleframework.xml.load.Composite.readElements(Composite.java:249)
+	at org.simpleframework.xml.load.Composite.read(Composite.java:193)
 	at org.simpleframework.xml.load.Composite.read(Composite.java:140)
 	at org.simpleframework.xml.load.Composite.read(Composite.java:116)
 	at org.simpleframework.xml.load.Traverser.read(Traverser.java:71)
@@ -348,8 +348,8 @@ java.lang.ClassNotFoundException: example.MyCollection
 	at org.simpleframework.xml.load.CompositeList.read(CompositeList.java:110)
 	at org.simpleframework.xml.load.Composite.read(Composite.java:355)
 	at org.simpleframework.xml.load.Composite.readElement(Composite.java:334)
-	at org.simpleframework.xml.load.Composite.readElements(Composite.java:250)
-	at org.simpleframework.xml.load.Composite.read(Composite.java:194)
+	at org.simpleframework.xml.load.Composite.readElements(Composite.java:249)
+	at org.simpleframework.xml.load.Composite.read(Composite.java:193)
 	at org.simpleframework.xml.load.Composite.read(Composite.java:140)
 	at org.simpleframework.xml.load.Composite.read(Composite.java:116)
 	at org.simpleframework.xml.load.Traverser.read(Traverser.java:71)
@@ -376,24 +376,24 @@ java.lang.ClassNotFoundException: example.MyCollection
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
 ------------- ---------------- ---------------
 
-Testcase: testSet took 0.469 sec
-Testcase: testSortedSet took 0.109 sec
-Testcase: testList took 0.016 sec
-Testcase: testHashSet took 0.031 sec
-Testcase: testTreeSet took 0.016 sec
+Testcase: testSet took 3.797 sec
+Testcase: testSortedSet took 0.672 sec
+Testcase: testList took 0.11 sec
+Testcase: testHashSet took 0.047 sec
+Testcase: testTreeSet took 0.063 sec
 Testcase: testArrayList took 0.031 sec
-Testcase: testSortedSetToSet took 0 sec
-Testcase: testExtendedEntry took 0.031 sec
-Testcase: testTypeFromFieldList took 0.032 sec
-Testcase: testTypeFromMethodList took 0.094 sec
-Testcase: testPrimitiveCollection took 0.031 sec
-Testcase: testCompositeCollection took 0.047 sec
+Testcase: testSortedSetToSet took 0.016 sec
+Testcase: testExtendedEntry took 0.032 sec
+Testcase: testTypeFromFieldList took 0.078 sec
+Testcase: testTypeFromMethodList took 0.141 sec
+Testcase: testPrimitiveCollection took 0.078 sec
+Testcase: testCompositeCollection took 0.078 sec
 Testcase: testPrimitiveDefaultCollection took 0.031 sec
 Testcase: testSetToSortedSet took 0.016 sec
-Testcase: testListToSet took 0 sec
+Testcase: testListToSet took 0.016 sec
 Testcase: testInvalidList took 0.016 sec
-Testcase: testUnknownCollectionList took 0 sec
-Testcase: testAbstractList took 0 sec
-Testcase: testNotACollection took 0 sec
-Testcase: testMissingCollection took 0 sec
+Testcase: testUnknownCollectionList took 0.015 sec
+Testcase: testAbstractList took 0.032 sec
+Testcase: testNotACollection took 0.016 sec
+Testcase: testMissingCollection took 0.016 sec
 Testcase: testDirectory took 0 sec

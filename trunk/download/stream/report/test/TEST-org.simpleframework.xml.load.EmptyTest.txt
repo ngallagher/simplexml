@@ -1,5 +1,5 @@
 Testsuite: org.simpleframework.xml.load.EmptyTest
-Tests run: 10, Failures: 0, Errors: 0, Time elapsed: 0.797 sec
+Tests run: 10, Failures: 0, Errors: 0, Time elapsed: 2.203 sec
 ------------- Standard Output ---------------
 <test>
    <empty class="java.util.ArrayList"/>
@@ -12,8 +12,8 @@ Tests run: 10, Failures: 0, Errors: 0, Time elapsed: 0.797 sec
 org.simpleframework.xml.load.ValueRequiredException: Empty value for @org.simpleframework.xml.Element(required=true, data=false, name=empty) on field 'empty' in class org.simpleframework.xml.load.EmptyTest$RequiredElement at line 3
 	at org.simpleframework.xml.load.Composite.read(Composite.java:362)
 	at org.simpleframework.xml.load.Composite.readElement(Composite.java:334)
-	at org.simpleframework.xml.load.Composite.readElements(Composite.java:250)
-	at org.simpleframework.xml.load.Composite.read(Composite.java:194)
+	at org.simpleframework.xml.load.Composite.readElements(Composite.java:249)
+	at org.simpleframework.xml.load.Composite.read(Composite.java:193)
 	at org.simpleframework.xml.load.Composite.read(Composite.java:140)
 	at org.simpleframework.xml.load.Composite.read(Composite.java:116)
 	at org.simpleframework.xml.load.Traverser.read(Traverser.java:71)
@@ -41,8 +41,8 @@ org.simpleframework.xml.load.ValueRequiredException: Empty value for @org.simple
 org.simpleframework.xml.load.ValueRequiredException: Empty value for @org.simpleframework.xml.Element(required=true, data=false, name=) on method 'empty' in class org.simpleframework.xml.load.EmptyTest$RequiredMethodElement at line 3
 	at org.simpleframework.xml.load.Composite.read(Composite.java:362)
 	at org.simpleframework.xml.load.Composite.readElement(Composite.java:334)
-	at org.simpleframework.xml.load.Composite.readElements(Composite.java:250)
-	at org.simpleframework.xml.load.Composite.read(Composite.java:194)
+	at org.simpleframework.xml.load.Composite.readElements(Composite.java:249)
+	at org.simpleframework.xml.load.Composite.read(Composite.java:193)
 	at org.simpleframework.xml.load.Composite.read(Composite.java:140)
 	at org.simpleframework.xml.load.Composite.read(Composite.java:116)
 	at org.simpleframework.xml.load.Traverser.read(Traverser.java:71)
@@ -70,8 +70,8 @@ org.simpleframework.xml.load.ValueRequiredException: Empty value for @org.simple
 org.simpleframework.xml.load.ValueRequiredException: Empty value for @org.simpleframework.xml.Element(required=true, data=false, name=empty) on field 'empty' in class org.simpleframework.xml.load.EmptyTest$RequiredElement at line 3
 	at org.simpleframework.xml.load.Composite.read(Composite.java:362)
 	at org.simpleframework.xml.load.Composite.readElement(Composite.java:334)
-	at org.simpleframework.xml.load.Composite.readElements(Composite.java:250)
-	at org.simpleframework.xml.load.Composite.read(Composite.java:194)
+	at org.simpleframework.xml.load.Composite.readElements(Composite.java:249)
+	at org.simpleframework.xml.load.Composite.read(Composite.java:193)
 	at org.simpleframework.xml.load.Composite.read(Composite.java:140)
 	at org.simpleframework.xml.load.Composite.read(Composite.java:116)
 	at org.simpleframework.xml.load.Traverser.read(Traverser.java:71)
@@ -99,8 +99,8 @@ org.simpleframework.xml.load.ValueRequiredException: Empty value for @org.simple
 org.simpleframework.xml.load.ValueRequiredException: Empty value for @org.simpleframework.xml.Element(required=true, data=false, name=empty) on field 'empty' in class org.simpleframework.xml.load.EmptyTest$RequiredElement at line 3
 	at org.simpleframework.xml.load.Composite.read(Composite.java:362)
 	at org.simpleframework.xml.load.Composite.readElement(Composite.java:334)
-	at org.simpleframework.xml.load.Composite.readElements(Composite.java:250)
-	at org.simpleframework.xml.load.Composite.read(Composite.java:194)
+	at org.simpleframework.xml.load.Composite.readElements(Composite.java:249)
+	at org.simpleframework.xml.load.Composite.read(Composite.java:193)
 	at org.simpleframework.xml.load.Composite.read(Composite.java:140)
 	at org.simpleframework.xml.load.Composite.read(Composite.java:116)
 	at org.simpleframework.xml.load.Traverser.read(Traverser.java:71)
@@ -127,13 +127,13 @@ org.simpleframework.xml.load.ValueRequiredException: Empty value for @org.simple
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
 ------------- ---------------- ---------------
 
-Testcase: testRequiredEmpty took 0.359 sec
-Testcase: testRequiredEmptyMethod took 0.016 sec
-Testcase: testRequiredBlank took 0.015 sec
-Testcase: testOptionalEmpty took 0 sec
+Testcase: testRequiredEmpty took 0.937 sec
+Testcase: testRequiredEmptyMethod took 0.125 sec
+Testcase: testRequiredBlank took 0.016 sec
+Testcase: testOptionalEmpty took 0.015 sec
 Testcase: testOptionalBlank took 0 sec
-Testcase: testEmptyCollection took 0.125 sec
-Testcase: testRequiredEmptyAttribute took 0.016 sec
+Testcase: testEmptyCollection took 0.25 sec
+Testcase: testRequiredEmptyAttribute took 0.047 sec
 Testcase: testOptionalEmptyAttribute took 0 sec
-Testcase: testDefaultedAttribute took 0.234 sec
+Testcase: testDefaultedAttribute took 0.594 sec
 Testcase: testDirectory took 0 sec

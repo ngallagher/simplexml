@@ -1,5 +1,5 @@
 Testsuite: org.simpleframework.xml.util.DictionaryTest
-Tests run: 2, Failures: 0, Errors: 0, Time elapsed: 0.578 sec
+Tests run: 2, Failures: 0, Errors: 0, Time elapsed: 1.078 sec
 ------------- Standard Output ---------------
 <test name="example">
    <list>
@@ -15,5 +15,5 @@ Tests run: 2, Failures: 0, Errors: 0, Time elapsed: 0.578 sec
    </list>
 </test>------------- ---------------- ---------------
 
-Testcase: testDictionary took 0.562 sec
+Testcase: testDictionary took 1.047 sec
 Testcase: testDirectory took 0 sec

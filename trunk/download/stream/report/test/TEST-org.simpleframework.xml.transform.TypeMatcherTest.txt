@@ -1,13 +1,13 @@
 Testsuite: org.simpleframework.xml.transform.TypeMatcherTest
-Tests run: 10, Failures: 0, Errors: 0, Time elapsed: 0.156 sec
+Tests run: 10, Failures: 0, Errors: 0, Time elapsed: 0.14 sec
 
-Testcase: testInteger took 0.094 sec
+Testcase: testInteger took 0.031 sec
 Testcase: testString took 0 sec
 Testcase: testCharacter took 0.016 sec
 Testcase: testFloat took 0 sec
 Testcase: testDouble took 0 sec
-Testcase: testBoolean took 0.015 sec
+Testcase: testBoolean took 0 sec
 Testcase: testLong took 0 sec
 Testcase: testShort took 0 sec
-Testcase: testIntegerArray took 0.016 sec
+Testcase: testIntegerArray took 0 sec
 Testcase: testPrimitiveIntegerArray took 0 sec

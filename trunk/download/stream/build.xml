@@ -187,13 +187,17 @@
    </target>
 
    <target name="benchmark" depends="-compile" description="Benchmark the current version">
-      <java classname="org.simpleframework.xml.benchmark.Benchmark">
+      <java classname="org.simpleframework.xml.benchmark.Benchmark" fork="yes">
          <classpath location="${main.build.path}"/>
          <classpath location="${benchmark.build.path}"/>
          <classpath>
-         <fileset dir="${lib.path}">
-            <include name="**/*.jar"/>
-         </fileset>
+            <fileset dir="${lib.path}">
+               <include name="**/*.jar"/>
+            </fileset>
+            <pathelement path="${main.build.path}"/>
+            <pathelement path="${benchmark.build.path}"/>
+         </classpath>
+         <arg value="${root.path}/data/test.xml"/>
       </java>
       <delete dir="${build.path}"/>
    </target>
