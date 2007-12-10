@@ -109,11 +109,19 @@ public class ScannerTest extends TestCase {
       assertTrue(scanner.isStrict());
       
       for(Label label : scanner.getElements()) {
+         assertTrue(label.getName() == intern(label.getName()));
+         assertTrue(label.getEntry() == intern(label.getEntry()));
+         assertTrue(label.getEmpty() == intern(label.getEmpty()));
+         
          types.add(label.getType());
       }
       assertTrue(types.contains(Collection.class));      
       
       for(Label label : scanner.getAttributes()) {
+         assertTrue(label.getName() == intern(label.getName()));
+         assertTrue(label.getEntry() == intern(label.getEntry()));
+         assertTrue(label.getEmpty() == intern(label.getEmpty()));
+         
          types.add(label.getType());
       }
       assertTrue(types.contains(int.class));
@@ -130,6 +138,10 @@ public class ScannerTest extends TestCase {
       assertFalse(scanner.isStrict());
       
       for(Label label : scanner.getElements()) {
+         assertTrue(label.getName() == intern(label.getName()));
+         assertTrue(label.getEntry() == intern(label.getEntry()));
+         assertTrue(label.getEmpty() == intern(label.getEmpty()));
+         
          types.add(label.getType());
       }
       assertTrue(types.contains(Collection.class));
@@ -137,6 +149,10 @@ public class ScannerTest extends TestCase {
       assertTrue(types.contains(String.class));
       
       for(Label label : scanner.getAttributes()) {
+         assertTrue(label.getName() == intern(label.getName()));
+         assertTrue(label.getEntry() == intern(label.getEntry()));
+         assertTrue(label.getEmpty() == intern(label.getEmpty()));
+         
          types.add(label.getType());
       }
       assertTrue(types.contains(int.class));
@@ -174,5 +190,12 @@ public class ScannerTest extends TestCase {
          success = true;
       }
       assertTrue(success);
+   }
+   
+   private static String intern(String text) {
+      if(text != null) {
+         return text.intern();
+      }
+      return null;
    }
 }

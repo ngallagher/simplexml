@@ -58,8 +58,7 @@ class History extends HashMap<String, Converter>{
    
    /**
     * This is used to save the label and object for a given element.
-    * Storing the original deserialized 
-    * object ensures that should
+    * Storing the original deserialized object ensures that should
     * there be an additional element with the same name as the label
     * that those XML elements could be read in to the object again.
     * 
@@ -67,11 +66,13 @@ class History extends HashMap<String, Converter>{
     * @param value this is the value that was originally read
     */
    public void save(Label label, Object value) throws Exception {
-      Converter convert = label.getConverter(root);
-      String name = label.getName();
+      if(label.isInline()) {
+         Converter convert = label.getConverter(root);
+         String name = label.getName();
       
-      if(convert instanceof Repeater) {
-         put(name, new Adapter(convert, value));
+         if(convert instanceof Repeater) {
+            put(name, new Adapter(convert, value));
+         }
       }
    }
 
