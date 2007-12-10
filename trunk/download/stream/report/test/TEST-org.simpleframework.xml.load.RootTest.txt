@@ -1,5 +1,5 @@
 Testsuite: org.simpleframework.xml.load.RootTest
-Tests run: 2, Failures: 0, Errors: 0, Time elapsed: 1.344 sec
+Tests run: 2, Failures: 0, Errors: 0, Time elapsed: 1.219 sec
 ------------- Standard Output ---------------
 <rootExample version="1">
    <text>Some text example</text>
@@ -13,5 +13,5 @@ Tests run: 2, Failures: 0, Errors: 0, Time elapsed: 1.344 sec
    <text>Some text example</text>
 </explicitOverride>------------- ---------------- ---------------
 
-Testcase: testRoot took 1.297 sec
+Testcase: testRoot took 1.188 sec
 Testcase: testDirectory took 0 sec
