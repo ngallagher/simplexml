@@ -497,6 +497,7 @@ class Composite implements Converter {
          }
       }         
    }
+   
    /**
     * The <code>replace</code> method is used to replace an object
     * before it is serialized. This is used so that an object can give

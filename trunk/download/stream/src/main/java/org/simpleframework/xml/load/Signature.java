@@ -102,7 +102,12 @@ class Signature {
       if(type.isArray()) {
          type = type.getComponentType();
       }
-      return getName(type); 
+      String name = getName(type);
+      
+      if(name == null) {
+         return null;
+      }
+      return name.intern();
    }
    
    /**
@@ -118,10 +123,12 @@ class Signature {
     * 
     * @throws Exception if the class contains an illegal schema
     */
-   public String getName(Class type) throws Exception {
+   private String getName(Class type) throws Exception {
       String name = getRoot(type);
       
-      if(name == null) {
+      if(name != null) {
+         return name;
+      } else {
          name = type.getSimpleName();
       }
       return Introspector.decapitalize(name);
@@ -144,7 +151,7 @@ class Signature {
          String name = getRoot(real, type);
          
          if(name != null) {
-           return name.intern();
+           return name;
          }
          type = type.getSuperclass();
       }
@@ -166,13 +173,13 @@ class Signature {
       String name = type.getSimpleName();
       
       if(type.isAnnotationPresent(Root.class)) {
-          Root root = type.getAnnotation(Root.class);
-          String text = root.name();
+         Root root = type.getAnnotation(Root.class);
+         String text = root.name();
           
-          if(!isEmpty(text)) {
-             return text;
-          }
-          return Introspector.decapitalize(name);
+         if(!isEmpty(text)) {
+            return text;
+         }
+         return Introspector.decapitalize(name);
       }
       return null;
    }
@@ -189,9 +196,9 @@ class Signature {
       String entry = label.getEntry(); 
          
       if(!label.isInline()) {
-         return getDefault();
+         entry = getDefault();
       }
-      return entry;
+      return entry.intern();
    }
    
    /**
