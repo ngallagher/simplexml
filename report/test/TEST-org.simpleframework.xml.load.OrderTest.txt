@@ -1,5 +1,5 @@
 Testsuite: org.simpleframework.xml.load.OrderTest
-Tests run: 3, Failures: 0, Errors: 0, Time elapsed: 1.063 sec
+Tests run: 3, Failures: 0, Errors: 0, Time elapsed: 0.844 sec
 ------------- Standard Output ---------------
 <orderExample one="2" two="3.0" three="1">
    <first>first</first>
@@ -13,6 +13,6 @@ Tests run: 3, Failures: 0, Errors: 0, Time elapsed: 1.063 sec
    <fourth>4th</fourth>
 </orderExample>------------- ---------------- ---------------
 
-Testcase: testLinkedHashMapOrder took 0 sec
-Testcase: testSerializationOrder took 1.016 sec
+Testcase: testLinkedHashMapOrder took 0.015 sec
+Testcase: testSerializationOrder took 0.797 sec
 Testcase: testDirectory took 0 sec
