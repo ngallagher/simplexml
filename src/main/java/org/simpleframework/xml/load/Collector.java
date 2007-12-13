@@ -1,5 +1,5 @@
 /*
- * Collector.java July 2007
+ * Collector.java December 2007
  *
  * Copyright (C) 2007, Niall Gallagher <niallg@users.sf.net>
  *
