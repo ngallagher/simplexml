@@ -9,6 +9,7 @@ import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.Text;
+import org.simpleframework.xml.Transient;
 import org.simpleframework.xml.ValidationTestCase;
 import org.simpleframework.xml.util.Dictionary;
 import org.simpleframework.xml.util.Entry;
@@ -48,14 +49,14 @@ public class ScatterTest extends ValidationTestCase {
    private static class InlineTextList {
       
       @Element
-      private String message;        
-
-      @ElementList(inline=true)
-      private List<TextEntry> list;
+      private String message;    
       
       @ElementList(inline=true)
-      private List<Double> numbers;
+      private List<Double> numbers;      
 
+      @Transient
+      private List<TextEntry> list;
+      
       @Attribute
       private Version version;
       
@@ -63,6 +64,16 @@ public class ScatterTest extends ValidationTestCase {
          return numbers;
       }
 
+      @ElementList(inline=true)
+      public void setList(List<TextEntry> list) {
+         this.list = new ArrayList<TextEntry>(list); // ensure only set when fully read
+      }
+      
+      @ElementList(inline=true)
+      public List<TextEntry> getList() {
+         return list;
+      }
+      
       public TextEntry get(int index) {
          return list.get(index);              
       }

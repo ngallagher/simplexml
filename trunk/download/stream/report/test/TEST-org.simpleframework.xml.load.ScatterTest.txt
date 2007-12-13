@@ -1,22 +1,22 @@
 Testsuite: org.simpleframework.xml.load.ScatterTest
-Tests run: 6, Failures: 0, Errors: 0, Time elapsed: 1.422 sec
+Tests run: 6, Failures: 0, Errors: 0, Time elapsed: 0.812 sec
 ------------- Standard Output ---------------
 <test version="ONE">
    <message>Some example message</message>
-   <text name="a" version="ONE">Example 1</text>
-   <text name="b" version="TWO">Example 2</text>
-   <text name="c" version="THREE">Example 3</text>
    <double>1.0</double>
    <double>2.0</double>
    <double>3.0</double>
+   <text name="a" version="ONE">Example 1</text>
+   <text name="b" version="TWO">Example 2</text>
+   <text name="c" version="THREE">Example 3</text>
 </test><test version="ONE">
    <message>Some example message</message>
-   <text name="a" version="ONE">Example 1</text>
-   <text name="b" version="TWO">Example 2</text>
-   <text name="c" version="THREE">Example 3</text>
    <double>1.0</double>
    <double>2.0</double>
    <double>3.0</double>
+   <text name="a" version="ONE">Example 1</text>
+   <text name="b" version="TWO">Example 2</text>
+   <text name="c" version="THREE">Example 3</text>
 </test><test version="ONE">
    <message>Some example message</message>
    <string>Example 1</string>
@@ -39,9 +39,9 @@ Tests run: 6, Failures: 0, Errors: 0, Time elapsed: 1.422 sec
    <string>test</string>
 </simplePrimitiveInlineList>------------- ---------------- ---------------
 
-Testcase: testList took 1.219 sec
-Testcase: testPrimitiveList took 0.062 sec
-Testcase: testInlineNamedList took 0.063 sec
-Testcase: testSimpleList took 0.031 sec
-Testcase: testSimplePrimitiveList took 0.031 sec
+Testcase: testList took 0.688 sec
+Testcase: testPrimitiveList took 0.031 sec
+Testcase: testInlineNamedList took 0.015 sec
+Testcase: testSimpleList took 0.016 sec
+Testcase: testSimplePrimitiveList took 0.015 sec
 Testcase: testDirectory took 0 sec

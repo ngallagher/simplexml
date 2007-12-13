@@ -1,4 +1,4 @@
 Testsuite: org.simpleframework.xml.transform.TimeZoneTransformTest
-Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 0.125 sec
+Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 0.078 sec
 
-Testcase: testTimeZone took 0.109 sec
+Testcase: testTimeZone took 0.078 sec
