@@ -87,13 +87,12 @@ class Pointer implements Label {
          Position line = node.getPosition();
          String name = node.getName();         
          
-         if(!Repeater.class.isInstance(reader)) { 
-            throw new PersistenceException("Element '%s' declared twice at %s", name, line);
+         if(reader instanceof Repeater) {
+            Repeater repeat = (Repeater) reader;
+            
+            return repeat.read(node, value);
          }
-         Repeater repeat = (Repeater) reader;
-         
-         return repeat.read(node, value);         
-         
+         throw new PersistenceException("Element '%s' declared twice at %s", name, line);
       }
       
       public void write(OutputNode node, Object value) throws Exception {
