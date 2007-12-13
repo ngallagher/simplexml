@@ -192,7 +192,7 @@ public class WeakCache<K, V> implements Cache<K, V> {
        * @return the index of the segment within the list 
        */
       private int segment(K key) {
-         return key.hashCode() % size;
+         return Math.abs(key.hashCode() % size);
       }
    }
    

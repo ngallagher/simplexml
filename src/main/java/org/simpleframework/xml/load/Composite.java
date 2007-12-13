@@ -70,12 +70,13 @@ class Composite implements Converter {
    /**
     * This is used to store objects so that they can be read again.
     */
-   private final History store;
+   //private final History store;
    
    /**
     * This is the type that this composite produces instances of.
     */
    private final Class type;
+   Collector collector;
         
    /**
     * Constructor for the <code>Composite</code> object. This creates 
@@ -88,7 +89,8 @@ class Composite implements Converter {
     */
    public Composite(Source root, Class type) {
       this.factory = new ObjectFactory(root, type);  
-      this.store = new History(root);
+      //this.store = new History(root);
+      this.collector = new Collector(root);
       this.root = root;
       this.type = type;
    }
@@ -138,6 +140,7 @@ class Composite implements Converter {
       Schema schema = root.getSchema(source);
       
       read(node, source, schema);
+      collector.commit(source);
       schema.validate(source);
       schema.commit(source);
       
@@ -287,13 +290,12 @@ class Composite implements Converter {
     * @throws Exception thrown if the the label object does not exist
     */
    private void readAttribute(InputNode node, Object source, LabelMap map) throws Exception {
+      Position line = node.getPosition();
       String name = node.getName();
       Label label = map.take(name);
       
       if(label == null) {
-         if(map.isStrict()) {  
-            Position line = node.getPosition();
-            
+         if(map.isStrict()) {              
             throw new AttributeException("Attribute '%s' does not exist at %s", name, line);
          }            
       } else {
@@ -320,12 +322,12 @@ class Composite implements Converter {
       Label label = map.take(name);      
 
       if(label == null) {
+         label = collector.get(name);
+      }
+      if(label == null) {
          Position line = node.getPosition();
-         Converter repeat = store.get(name);
          
-         if(repeat != null) {
-            repeat.read(node);
-         } else if(map.isStrict()) {              
+         if(map.isStrict()) {              
             throw new ElementException("Element '%s' does not exist at %s", name, line);
          } else {
             node.skip();                 
@@ -350,8 +352,7 @@ class Composite implements Converter {
     * @throws Exception thrown if the contact could not be deserialized
     */
    private void read(InputNode node, Object source, Label label) throws Exception {    
-      Converter reader = label.getConverter(root);
-      Contact contact = label.getContact();      
+      Converter reader = label.getConverter(root);      
       Object object = reader.read(node);
     
       if(object == null) {     
@@ -361,9 +362,10 @@ class Composite implements Converter {
          if(label.isRequired()) {              
             throw new ValueRequiredException("Empty value for %s in %s at %s", label, type, line);
          }
-      } else if(object != label.getEmpty()) {
-         contact.set(source, object); 
-         store.save(label, object);
+      } else {
+         if(object != label.getEmpty()) {      
+            collector.put(label, object);
+         }
       }         
    }
    
@@ -381,11 +383,11 @@ class Composite implements Converter {
     * @throws Exception thrown if an XML property was not declared
     */
    private void validate(InputNode node, LabelMap map, Object source) throws Exception {     
+      Position line = node.getPosition();
+      Class type = source.getClass();
+
       for(Label label : map) {
          if(label.isRequired()) {
-            Position line = node.getPosition();
-            Class type = source.getClass(); 
-            
             throw new ValueRequiredException("Unable to satisfy %s for %s at %s", label, type, line);
          }
       }      
