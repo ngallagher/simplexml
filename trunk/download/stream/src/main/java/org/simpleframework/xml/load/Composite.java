@@ -61,22 +61,21 @@ class Composite implements Converter {
     * This factory creates instances of the deserialized object.
     */
    private final ObjectFactory factory;
-
+   
+   /**
+    * This is used to store objects so that they can be read again.
+    */
+   private final Collector store;
+   
    /**
     * This is the source object for the instance of serialization.
     */
    private final Source root;
    
    /**
-    * This is used to store objects so that they can be read again.
-    */
-   //private final History store;
-   
-   /**
     * This is the type that this composite produces instances of.
     */
    private final Class type;
-   Collector collector;
         
    /**
     * Constructor for the <code>Composite</code> object. This creates 
@@ -89,8 +88,7 @@ class Composite implements Converter {
     */
    public Composite(Source root, Class type) {
       this.factory = new ObjectFactory(root, type);  
-      //this.store = new History(root);
-      this.collector = new Collector(root);
+      this.store = new Collector();
       this.root = root;
       this.type = type;
    }
@@ -140,7 +138,7 @@ class Composite implements Converter {
       Schema schema = root.getSchema(source);
       
       read(node, source, schema);
-      collector.commit(source);
+      store.commit(source);
       schema.validate(source);
       schema.commit(source);
       
@@ -322,7 +320,7 @@ class Composite implements Converter {
       Label label = map.take(name);      
 
       if(label == null) {
-         label = collector.get(name);
+         label = store.get(name);
       }
       if(label == null) {
          Position line = node.getPosition();
@@ -364,7 +362,7 @@ class Composite implements Converter {
          }
       } else {
          if(object != label.getEmpty()) {      
-            collector.put(label, object);
+            store.put(label, object);
          }
       }         
    }
