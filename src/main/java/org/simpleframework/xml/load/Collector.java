@@ -31,6 +31,8 @@ import java.util.HashMap;
  * objects methods and fields. 
  * 
  * @author Niall Gallagher
+ * 
+ * @see org.simpleframework.xml.load.Composite
  */
 class Collector extends HashMap<String, Pointer> {
    
