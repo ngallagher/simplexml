@@ -1,8 +1,8 @@
 Testsuite: org.simpleframework.xml.load.StrategyTest
-Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 0.953 sec
+Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 0.578 sec
 ------------- Standard Error -----------------
 <root key="attribute-example-key">
    <text>attribute-example-text</text>
 </root>------------- ---------------- ---------------
 
-Testcase: testExampleStrategy took 0.937 sec
+Testcase: testExampleStrategy took 0.562 sec

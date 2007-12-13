@@ -1,0 +1,33 @@
+Testsuite: org.simpleframework.xml.load.CaseTest
+Tests run: 2, Failures: 0, Errors: 0, Time elapsed: 0.563 sec
+------------- Standard Output ---------------
+<Example Version="1.0" Name="example" URL="http://domain.com/">
+   <List class="java.util.ArrayList">
+      <ListEntry id="1">
+         <Text>one</Text>
+      </ListEntry>
+      <ListEntry id="2">
+         <Text>two</Text>
+      </ListEntry>
+      <ListEntry id="3">
+         <Text>three</Text>
+      </ListEntry>
+   </List>
+   <URLList class="java.util.ArrayList">
+      <URLEntry>http://a.com/</URLEntry>
+      <URLEntry>http://b.com/</URLEntry>
+      <URLEntry>http://c.com/</URLEntry>
+   </URLList>
+   <TextEntry id="4">
+      <Text>example 4</Text>
+   </TextEntry>
+   <TextEntry id="5">
+      <Text>example 5</Text>
+   </TextEntry>
+   <TextEntry id="6">
+      <Text>example 6</Text>
+   </TextEntry>
+</Example>------------- ---------------- ---------------
+
+Testcase: testCase took 0.547 sec
+Testcase: testDirectory took 0 sec
