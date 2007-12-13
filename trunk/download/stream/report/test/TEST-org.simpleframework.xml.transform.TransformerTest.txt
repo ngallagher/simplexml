@@ -1,5 +1,5 @@
 Testsuite: org.simpleframework.xml.transform.TransformerTest
-Tests run: 24, Failures: 0, Errors: 0, Time elapsed: 0.157 sec
+Tests run: 24, Failures: 0, Errors: 0, Time elapsed: 0.188 sec
 ------------- Standard Error -----------------
 org.simpleframework.xml.transform.InvalidFormatException: Cannot convert 'too long' to a character
 	at org.simpleframework.xml.transform.CharacterTransform.read(CharacterTransform.java:59)
@@ -24,21 +24,21 @@ org.simpleframework.xml.transform.InvalidFormatException: Cannot convert 'too lo
 ------------- ---------------- ---------------
 
 Testcase: testInteger took 0.047 sec
-Testcase: testString took 0 sec
+Testcase: testString took 0.016 sec
 Testcase: testCharacter took 0 sec
-Testcase: testInvalidCharacter took 0 sec
-Testcase: testFloat took 0.015 sec
-Testcase: testDouble took 0 sec
+Testcase: testInvalidCharacter took 0.016 sec
+Testcase: testFloat took 0 sec
+Testcase: testDouble took 0.015 sec
 Testcase: testBoolean took 0 sec
 Testcase: testLong took 0 sec
-Testcase: testShort took 0.016 sec
+Testcase: testShort took 0 sec
 Testcase: testPrimitiveIntegerArray took 0 sec
 Testcase: testPrimitiveLongArray took 0 sec
 Testcase: testPrimitiveShortArray took 0 sec
-Testcase: testPrimitiveByteArray took 0 sec
+Testcase: testPrimitiveByteArray took 0.015 sec
 Testcase: testPrimitiveFloatArray took 0 sec
 Testcase: testPrimitiveDoubleArray took 0 sec
-Testcase: testPrimitiveCharacterArray took 0 sec
+Testcase: testPrimitiveCharacterArray took 0.032 sec
 Testcase: testIntegerArray took 0 sec
 Testcase: testBooleanArray took 0 sec
 Testcase: testLongArray took 0 sec

@@ -1,5 +1,5 @@
 Testsuite: org.simpleframework.xml.load.CaseTest
-Tests run: 2, Failures: 0, Errors: 0, Time elapsed: 0.563 sec
+Tests run: 2, Failures: 0, Errors: 0, Time elapsed: 0.562 sec
 ------------- Standard Output ---------------
 <Example Version="1.0" Name="example" URL="http://domain.com/">
    <List class="java.util.ArrayList">

@@ -1,5 +1,5 @@
 Testsuite: org.simpleframework.xml.load.CollectionTest
-Tests run: 21, Failures: 0, Errors: 0, Time elapsed: 0.875 sec
+Tests run: 21, Failures: 0, Errors: 0, Time elapsed: 0.906 sec
 ------------- Standard Output ---------------
 <test name="example">
    <list class="java.util.TreeSet">
@@ -376,24 +376,24 @@ java.lang.ClassNotFoundException: example.MyCollection
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
 ------------- ---------------- ---------------
 
-Testcase: testSet took 0.469 sec
+Testcase: testSet took 0.407 sec
 Testcase: testSortedSet took 0.093 sec
 Testcase: testList took 0.032 sec
 Testcase: testHashSet took 0.015 sec
-Testcase: testTreeSet took 0.031 sec
+Testcase: testTreeSet took 0.015 sec
 Testcase: testArrayList took 0.016 sec
 Testcase: testSortedSetToSet took 0 sec
-Testcase: testExtendedEntry took 0.031 sec
+Testcase: testExtendedEntry took 0.015 sec
 Testcase: testTypeFromFieldList took 0.032 sec
 Testcase: testTypeFromMethodList took 0.062 sec
 Testcase: testPrimitiveCollection took 0.016 sec
-Testcase: testCompositeCollection took 0.031 sec
-Testcase: testPrimitiveDefaultCollection took 0.016 sec
+Testcase: testCompositeCollection took 0.093 sec
+Testcase: testPrimitiveDefaultCollection took 0 sec
 Testcase: testSetToSortedSet took 0 sec
-Testcase: testListToSet took 0.015 sec
+Testcase: testListToSet took 0 sec
 Testcase: testInvalidList took 0 sec
 Testcase: testUnknownCollectionList took 0 sec
-Testcase: testAbstractList took 0.016 sec
-Testcase: testNotACollection took 0 sec
+Testcase: testAbstractList took 0 sec
+Testcase: testNotACollection took 0.016 sec
 Testcase: testMissingCollection took 0 sec
 Testcase: testDirectory took 0 sec
