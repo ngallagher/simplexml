@@ -15,10 +15,6 @@ class Pointer implements Label {
       this.value = value;
    }
    
-   public Object getValue() {
-      return value;
-   }
-   
    public Converter getConverter(Source root) throws Exception {
       Converter reader = label.getConverter(root);
       
@@ -67,7 +63,11 @@ class Pointer implements Label {
    public boolean isRequired() {
       return label.isRequired();
    }
-
+   
+   public Object getValue() {
+      return value;
+   }
+   
    private class Adapter implements Repeater {
       
       private Converter reader;
