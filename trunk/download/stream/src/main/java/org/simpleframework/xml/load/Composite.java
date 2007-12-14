@@ -146,9 +146,9 @@ class Composite implements Converter {
    }
    
    /**
-    * The <code>replace</code> method is used to determine if there is
-    * a replacement method which can be used to substitute the object
-    * deserialized. The replace method is used when an object wishes 
+    * The <code>readResolve</code> method is used to determine if there 
+    * is a resolution method which can be used to substitute the object
+    * deserialized. The resolve method is used when an object wishes 
     * to provide a substitute within the deserialized object graph.
     * This acts as an equivelant to the Java Object Serialization
     * <code>readResolve</code> method for the object deserialization.
@@ -195,7 +195,7 @@ class Composite implements Converter {
    }   
 
    /**
-    * This <code>read</code> method is used to read the attributes from
+    * This <code>readAttributes</code> method reads the attributes from
     * the provided XML element. This will iterate over all attributes
     * within the element and convert those attributes as primitives to
     * contact values within the source object.
@@ -222,7 +222,7 @@ class Composite implements Converter {
    }
 
    /**
-    * This <code>read</code> method is used to read the elements from
+    * This <code>readElements</code> method reads the elements from 
     * the provided XML element. This will iterate over all elements
     * within the element and convert those elements to primitives or
     * composite objects depending on the contact annotation.
@@ -253,7 +253,7 @@ class Composite implements Converter {
    }
    
    /**
-    * This <code>read</code> method is used to read the text value
+    * This <code>readText</code> method is used to read the text value
     * from the XML element node specified. This will check the class
     * schema to determine if a <code>Text</code> annotation was
     * specified. If one was specified then the text within the XML
@@ -274,7 +274,7 @@ class Composite implements Converter {
    }
    
    /**
-    * This <code>read</code> method is used to perform deserialization
+    * This <code>readAttribute</code> method is used for deserialization
     * of the provided node object using a delegate converter. This is
     * typically another <code>Composite</code> converter, or if the
     * node is an attribute a <code>Primitive</code> converter. When
@@ -302,7 +302,7 @@ class Composite implements Converter {
    }
 
    /**
-    * This <code>read</code> method is used to perform deserialization
+    * This <code>readElement</code> method is used for deserialization
     * of the provided node object using a delegate converter. This is
     * typically another <code>Composite</code> converter, or if the
     * node is an attribute a <code>Primitive</code> converter. When
@@ -441,17 +441,17 @@ class Composite implements Converter {
    }   
 
    /**
-    * This <code>validate</code> method is used to validate the attributes 
+    * This <code>validateAttributes</code> method validates the attributes 
     * from the provided XML element. This will iterate over all attributes
     * within the element and validate those attributes as primitives to
     * contact values within the source object.
     * <p>
-    * Once all attributes within the XML element have been evaluated
-    * the <code>Schema</code> is checked to ensure that there are no
-    * required contacts annotated with the <code>Attribute</code> that
-    * remain. If any required attribute remains an exception is thrown. 
+    * Once all attributes within the XML element have been evaluated the
+    * <code>Schema</code> is checked to ensure that there are no required 
+    * contacts annotated with the <code>Attribute</code> that remain. If 
+    * any required attribute remains an exception is thrown. 
     * 
-    * @param node this is the XML element to be evaluated
+    * @param node this is the XML element to be validated
     * @param schema this is used to visit the attribute contacts
     * 
     * @throws Exception thrown if any required attributes remain
@@ -467,7 +467,7 @@ class Composite implements Converter {
    }
 
    /**
-    * This <code>validate</code> method is used to validate the elements 
+    * This <code>validateElements</code> method validates the elements 
     * from the provided XML element. This will iterate over all elements
     * within the element and validate those elements as primitives or
     * composite objects depending on the contact annotation.
@@ -497,7 +497,7 @@ class Composite implements Converter {
    }
    
    /**
-    * This <code>validate</code> method is used to validate the text 
+    * This <code>validateText</code> method validates the text value 
     * from the XML element node specified. This will check the class
     * schema to determine if a <code>Text</code> annotation was used. 
     * If one was specified then the text within the XML element input 
@@ -517,7 +517,7 @@ class Composite implements Converter {
    }
    
    /**
-    * This <code>validate</code> method is used to perform validation
+    * This <code>validateAttribute</code> method performs a validation
     * of the provided node object using a delegate converter. This is
     * typically another <code>Composite</code> converter, or if the
     * node is an attribute a <code>Primitive</code> converter. If this
@@ -543,7 +543,7 @@ class Composite implements Converter {
    }
 
    /**
-    * This <code>validate</code> method is used to perform validation
+    * This <code>validateElement</code> method performs a validation
     * of the provided node object using a delegate converter. This is
     * typically another <code>Composite</code> converter, or if the
     * node is an attribute a <code>Primitive</code> converter. If this
