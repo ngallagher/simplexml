@@ -304,6 +304,28 @@ class Pointer implements Label {
       }
       
       /**
+       * This <code>read</code> method will perform a read using the
+       * provided object with the repeater. Reading with this method
+       * ensures that any additional XML elements within the source
+       * will be added to the value.
+       * 
+       *  @param node this is the node that contains the extra data
+       *  
+       *  @return this will return the original deserialized object
+       */
+      public boolean validate(InputNode node) throws Exception {
+         Position line = node.getPosition();
+         String name = node.getName();         
+         
+         if(reader instanceof Repeater) {
+            Repeater repeat = (Repeater) reader;
+            
+            return repeat.validate(node);
+         }
+         throw new PersistenceException("Element '%s' declared twice at %s", name, line);
+      }
+      
+      /**
        * This <code>write</code> method acts like any other write
        * in that it passes on the node and source object to write.
        * Typically this will not be used as the repeater object is

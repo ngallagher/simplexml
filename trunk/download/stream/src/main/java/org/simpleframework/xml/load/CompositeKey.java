@@ -134,6 +134,70 @@ class CompositeKey implements Converter {
    }
    
    /**
+    * This method is used to read the key value from the node. The 
+    * value read from the node is resolved using the template filter.
+    * If the key value can not be found according to the annotation
+    * attributes then an exception is thrown.
+    * 
+    * @param node this is the node to read the key value from
+    * 
+    * @return this returns the value deserialized from the node
+    */ 
+   public boolean validate(InputNode node) throws Exception { 
+      Position line = node.getPosition();
+      String name = entry.getKey();
+      
+      if(entry.isAttribute()) {
+         throw new ElementException("Can not have %s as an attribute at %s", type, line);
+      }
+      return validate(node, name);
+   }
+   
+   /**
+    * This method is used to read the key value from the node. The 
+    * value read from the node is resolved using the template filter.
+    * If the key value can not be found according to the annotation
+    * attributes then an exception is thrown.
+    * 
+    * @param node this is the node to read the key value from
+    * @param name this is the name of the key wrapper XML element
+    * 
+    * @return this returns the value deserialized from the node
+    */ 
+   private boolean validate(InputNode node, String name) throws Exception {
+      Position line = node.getPosition();
+      
+      if(name != null) {
+         node = node.getNext(name);
+      }    
+      if(node == null) {
+         throw new ElementException("Element '%s' does not exist at %s", name, line);
+      }   
+      return validate(node, type);
+   }
+   
+   /**
+    * This method is used to read the key value from the node. The 
+    * value read from the node is resolved using the template filter.
+    * If the key value can not be found according to the annotation
+    * attributes then an exception is thrown.
+    * 
+    * @param node this is the node to read the key value from
+    * @param type this is the type that the key is to be read as
+    * 
+    * @return this returns the value deserialized from the node
+    */ 
+   private boolean validate(InputNode node, Class type) throws Exception {
+      Position line = node.getPosition();      
+      InputNode next = node.getNext(); 
+      
+      if(next == null) {
+         throw new ElementException("Element does not exist at %s for %s", line, type);
+      }
+      return root.validate(next, type);
+   }
+
+   /**
     * This method is used to write the value to the specified node.
     * The value written to the node must be a composite object and if
     * the element map annotation is configured to have a key attribute

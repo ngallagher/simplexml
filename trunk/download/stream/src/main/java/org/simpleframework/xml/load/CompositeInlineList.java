@@ -189,6 +189,32 @@ class CompositeInlineList implements Repeater {
    }
    
    /**
+    * This <code>read</code> method wll read the XML element list from
+    * the provided node and deserialize its children as entry types.
+    * This will each entry type is deserialized as a root type, that 
+    * is, its <code>Root</code> annotation must be present and the
+    * name of the entry element must match that root element name.
+    * 
+    * @param node this is the XML element that is to be deserialized
+    * 
+    * @return this returns the item to attach to the object contact
+    */ 
+   public boolean validate(InputNode node) throws Exception{
+	  InputNode from = node.getParent();
+	  String name = node.getName();
+	      
+	  while(node != null) {
+	     boolean valid = root.validate(node, entry);
+	     
+	     if(valid == false) {
+	    	return false;
+	     }
+	     node = from.getNext(name);
+	  }	  
+	  return true;
+   } 
+   
+   /**
     * This <code>write</code> method will write the specified object
     * to the given XML element as as list entries. Each entry within
     * the given collection must be assignable from the annotated 

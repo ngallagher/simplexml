@@ -127,6 +127,46 @@ class PrimitiveValue implements Converter {
    }
    
    /**
+    * This method is used to read the value value from the node. The 
+    * value read from the node is resolved using the template filter.
+    * If the value value can not be found according to the annotation
+    * attributes then an exception is thrown.
+    * 
+    * @param node this is the node to read the value object from
+    * 
+    * @return this returns the value deserialized from the node
+    */ 
+   public boolean validate(InputNode node) throws Exception {
+      String name = Factory.getName(type);
+      
+      if(entry.isInline()) {
+         return primitive.validate(node);
+      }
+      return validate(node, name);
+   }
+   
+   /**
+    * This method is used to read the value value from the node. The 
+    * value read from the node is resolved using the template filter.
+    * If the value value can not be found according to the annotation
+    * attributes then an exception is thrown.
+    * 
+    * @param node this is the node to read the value object from
+    * @param name this is the name of the value XML element
+    * 
+    * @return this returns the value deserialized from the node
+    */ 
+   private boolean validate(InputNode node, String name) throws Exception {
+      InputNode child = node.getNext(name);
+      Position line = node.getPosition();
+      
+      if(child == null) {
+         throw new TextException("Element '%s' not found at %s", name, line);         
+      }
+      return primitive.validate(child);      
+   }
+
+   /**
     * This method is used to write the value to the specified node.
     * The value written to the node can be an attribute or an element
     * depending on the annotation attribute values. This method will

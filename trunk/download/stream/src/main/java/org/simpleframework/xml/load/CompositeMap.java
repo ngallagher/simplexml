@@ -181,6 +181,100 @@ class CompositeMap implements Converter {
       }
       return value.read(node);
    }
+   
+   /**
+    * This <code>validate</code> method will validate the XML element 
+    * map from the provided node and validate its children as entry 
+    * types. Each entry type must contain a key and value so that the 
+    * entry can be inserted in to the map as a pair. If either the key 
+    * or value is composite it is read as a root object, which means its
+    * <code>Root</code> annotation must be present and the name of the
+    * object element must match that root element name.
+    * 
+    * @param node this is the XML element that is to be validate
+    * 
+    * @return true if the element matches the XML schema class given 
+    */
+   public boolean validate(InputNode node) throws Exception{
+      Type type = factory.getInstance(node);
+      Class expect = type.getType();
+      String name = expect.getName();
+      
+      if(name != null) {
+    	  type.getInstance(name);
+      }
+      if(!type.isReference()) {
+         validate(node, expect);
+      }
+      return true;
+   }
+   
+   /**
+    * This <code>validate</code> method will validate the XML element 
+    * map from the provided node and validate its children as entry 
+    * types. Each entry type must contain a key and value so that the 
+    * entry can be inserted in to the map as a pair. If either the key 
+    * or value is composite it is read as a root object, which means its
+    * <code>Root</code> annotation must be present and the name of the
+    * object element must match that root element name.
+    * 
+    * @param node this is the XML element that is to be validate
+    * @param result this is the map object that is to be populated
+    * 
+    * @return true if the element matches the XML schema class given 
+    */
+   private boolean validate(InputNode node, Class type) throws Exception {
+      while(true) {
+         InputNode next = node.getNext();
+        
+         if(next == null) {
+            return true;
+         }
+         if(!validateKey(next)) {
+            return false;
+         }
+         if(!validateValue(next)) {
+            return false;
+         }                     
+      }
+   }
+   
+   /**
+    * This <code>validateKey</code> method will validate the key from 
+    * the XML node whether the key is primitive or composite. If the 
+    * key is a composite value then it is read as a root object, which 
+    * means <code>Root</code> annotation must be present.
+    * 
+    * @param node this is the XML element that is to be validated
+    * 
+    * @return true if the element matches the XML schema class given 
+    */
+   private boolean validateKey(InputNode node) throws Exception {
+      return key.validate(node);
+   }
+   
+   /**
+    * This <code>validateValue</code> method will validate the value 
+    * from the XML node whether the value is primitive or composite. 
+    * If the value is a composite value then it is read as a root 
+    * object, which means <code>Root</code> annotation must be present.
+    * 
+    * @param node this is the XML element that is to be deserialized
+    * 
+    * @return true if the element matches the XML schema class given 
+    */
+   private boolean validateValue(InputNode node) throws Exception {  
+      Position line = node.getPosition();
+      String name = entry.getValue();
+      
+      if(name != null) {
+         node = node.getNext(name);
+      }               
+      if(node == null) {
+         throw new ElementException("Could not find element '%s' at %s", name, line);
+      }
+      return value.validate(node);
+   }
 
    /**
     * This <code>write</code> method will write the key value pairs
