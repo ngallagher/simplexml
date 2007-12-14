@@ -36,7 +36,7 @@ public class SimpleExecutor implements Executor {
       long startWrite = System.currentTimeMillis();
       
       for(int i = 0; i < test.getIterations(); i++) {
-         persister.write(result, test.getResultStream());        
+         persister.write(result, test.getResultWriter());        
       }
       return new Duration(start, startWrite);
    }        

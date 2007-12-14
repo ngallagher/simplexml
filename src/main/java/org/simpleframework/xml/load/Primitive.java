@@ -198,6 +198,25 @@ class Primitive implements Converter {
       return null;
    }  
 
+   public boolean validate(InputNode node) throws Exception {	   
+	   if(node.isElement()) {
+		   validateElement(node);
+	   }
+	   node.getValue();
+	   return true;
+   }
+   
+   private boolean validateElement(InputNode node) throws Exception {
+	   Type type = factory.getInstance(node);
+	   Class expect = type.getType();
+	   String name = expect.getName();
+	      
+	   if(!type.isReference()) {
+	      type.getInstance(name);
+	   }
+	   return true;
+   }
+   
    /**
     * This <code>write</code> method will serialize the contents of
     * the provided object to the given XML element. This will use

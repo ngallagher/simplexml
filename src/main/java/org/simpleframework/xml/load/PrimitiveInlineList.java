@@ -156,8 +156,33 @@ class PrimitiveInlineList implements Repeater {
          node = from.getNext(name);
       }
       return list;
-   }     
+   }
    
+   /**
+    * This <code>read</code> method wll read the XML element list from
+    * the provided node and deserialize its children as entry types.
+    * This will deserialize each entry type as a primitive value. In
+    * order to do this the parent string provided forms the element.
+    * 
+    * @param node this is the XML element that is to be deserialized
+    * 
+    * @return this returns the item to attach to the object contact
+    */ 
+   public boolean validate(InputNode node) throws Exception{     
+      InputNode from = node.getParent();
+      String name = node.getName();
+      
+      while(node != null) {
+         boolean valid = root.validate(node);
+         
+         if(valid == false) {
+            return false;            
+         }      
+         node = from.getNext(name);
+      }
+      return true;
+   }
+
    /**
     * This <code>write</code> method will write the specified object
     * to the given XML element as as list entries. Each entry within

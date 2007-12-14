@@ -159,6 +159,54 @@ class CompositeArray implements Converter {
    }
 
    /**
+    * This <code>validate</code> method wll validate the XML element 
+    * list against the provided node and validate its children as entry 
+    * types. This ensures each entry type is validated as a root type, 
+    * that is, its <code>Root</code> annotation must be present and the
+    * name of the entry element must match that root element name.
+    * 
+    * @param node this is the XML element that is to be validated
+    * 
+    * @return true if the element matches the XML schema class given 
+    */ 
+   public boolean validate(InputNode node) throws Exception{
+      Type type = factory.getInstance(node);
+      Class expect = type.getType();
+      String name = expect.getName();
+
+      if(!type.isReference()) {  
+    	 type.getInstance(name);
+         validate(node, expect);
+      }
+      return true;
+   }
+
+   /**
+    * This <code>validate</code> method wll validate the XML element 
+    * list against the provided node and validate its children as entry 
+    * types. This ensures each entry type is validated as a root type, 
+    * that is, its <code>Root</code> annotation must be present and the
+    * name of the entry element must match that root element name.
+    * 
+    * @param node this is the XML element that is to be validated
+    * @param type this is the array type used to create the array
+    * 
+    * @return true if the element matches the XML schema class given 
+    */  
+   private boolean validate(InputNode node, Class type) throws Exception{
+      for(int i = 0; true; i++) {
+         InputNode next = node.getNext();
+        
+         if(next == null) {
+            return true;
+         }
+         if(!next.isEmpty()) {
+            root.validate(next, type);
+         }
+      }
+   }    
+   
+   /**
     * This <code>write</code> method will write the specified object
     * to the given XML element as as array entries. Each entry within
     * the given array must be assignable to the array component type.

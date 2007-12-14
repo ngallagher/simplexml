@@ -133,6 +133,52 @@ class PrimitiveArray implements Converter {
          Array.set(list, i, root.read(next));
       } 
    }    
+   
+   /**
+    * This <code>validate</code> method wll validate the XML element list 
+    * from the provided node and validate its children as entry types.
+    * This will validate each entry type as a primitive value. In order 
+    * to do this the parent string provided forms the element.
+    * 
+    * @param node this is the XML element that is to be validated
+    * 
+    * @return true if the element matches the XML schema class given 
+    */ 
+   public boolean validate(InputNode node) throws Exception{
+      Type type = factory.getInstance(node);
+      Class expect = type.getType();
+      String name = expect.getName();
+      
+      if(name != null) {
+    	  type.getInstance(name);
+      }
+      if(!type.isReference()) {
+         validate(node, type);
+      }
+      return true;
+   }
+
+   /**
+    * This <code>validate</code> method wll validate the XML element list 
+    * from the provided node and validate its children as entry types.
+    * This will validate each entry type as a primitive value. In order 
+    * to do this the parent string provided forms the element.
+    * 
+    * @param node this is the XML element that is to be validated
+    * @param type this is the array type used to create the array
+    * 
+    * @return true if the element matches the XML schema class given 
+    */ 
+   private boolean validate(InputNode node, Type type) throws Exception{
+      for(int i = 0; true; i++) {
+         InputNode next = node.getNext();
+    
+         if(next == null) {
+            return true;            
+         }
+         root.validate(next);
+      } 
+   }    
 
    /**
     * This <code>write</code> method will write the specified object

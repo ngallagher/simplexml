@@ -203,7 +203,73 @@ class CompositeInlineMap implements Repeater {
       }
       return value.read(node);
    }
-
+   
+   /**
+    * This <code>read</code> method will read the XML element map from
+    * the provided node and deserialize its children as entry types.
+    * Each entry type must contain a key and value so that the entry 
+    * can be inserted in to the map as a pair. If either the key or 
+    * value is composite it is read as a root object, which means its
+    * <code>Root</code> annotation must be present and the name of the
+    * object element must match that root element name.
+    * 
+    * @param node this is the XML element that is to be deserialized
+    * 
+    * @return this returns the item to attach to the object contact
+    */
+   public boolean validate(InputNode node) throws Exception{
+      InputNode from = node.getParent();
+      String name = node.getName();                
+      
+      while(node != null) {
+         if(!validateKey(node)) {
+            return false;
+         }
+         if(!validateValue(node)) {
+            return false;
+         }
+         node = from.getNext(name);
+      }
+      return true;
+   }
+   
+   /**
+    * This <code>readKey</code> method will read the key from the XML 
+    * node whether the key is primitive or composite. If the key is 
+    * a composite value then it is read as a root object, which 
+    * means <code>Root</code> annotation must be present.
+    * 
+    * @param node this is the XML element that is to be deserialized
+    * 
+    * @return this returns the key to use for the resulting map
+    */
+   private boolean validateKey(InputNode node) throws Exception {
+      return key.validate(node);
+   }
+   
+   /**
+    * This <code>readValue</code> method will read the value from the 
+    * XML node whether the value is primitive or composite. If the 
+    * value is a composite value then it is read as a root object, 
+    * which means <code>Root</code> annotation must be present.
+    * 
+    * @param node this is the XML element that is to be deserialized
+    * 
+    * @return this returns the value to use for the resulting map
+    */
+   private boolean validateValue(InputNode node) throws Exception {  
+      Position line = node.getPosition();
+      String name = entry.getValue();
+      
+      if(name != null) {
+         node = node.getNext(name);
+      }               
+      if(node == null) {
+         throw new ElementException("Could not find element '%s' at %s", name, line);
+      }
+      return value.validate(node);
+   }
+   
    /**
     * This <code>write</code> method will write the key value pairs
     * within the provided map to the specified XML node. This will 

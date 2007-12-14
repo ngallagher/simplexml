@@ -83,6 +83,26 @@ class CompositeValue implements Converter {
    }
    
    /**
+    * This method is used to read the value object from the node. The 
+    * value read from the node is resolved using the template filter.
+    * If the value data can not be found according to the annotation 
+    * attributes then an exception is thrown.
+    * 
+    * @param node this is the node to read the value object from
+    * 
+    * @return this returns the value deserialized from the node
+    */ 
+   public boolean validate(InputNode node) throws Exception { 
+      Position line = node.getPosition();
+      InputNode next = node.getNext();
+      
+      if(next == null) {
+         throw new ElementException("Element does not exist at %s", line);
+      }
+      return root.validate(next, type);
+   } 
+   
+   /**
     * This method is used to write the value to the specified node.
     * The value written to the node must be a composite object and if
     * the object provided to this is null then nothing is written.

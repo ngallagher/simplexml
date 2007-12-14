@@ -148,6 +148,70 @@ class PrimitiveKey implements Converter {
       }     
       return primitive.read(child);     
    }
+   
+   /**
+    * This method is used to read the key value from the node. The 
+    * value read from the node is resolved using the template filter.
+    * If the key value can not be found according to the annotation
+    * attributes then an exception is thrown.
+    * 
+    * @param node this is the node to read the key value from
+    * 
+    * @return this returns the value deserialized from the node
+    */   
+   public boolean validate(InputNode node) throws Exception {
+      String name = entry.getKey();
+           
+      if(name == null) {
+         name = Factory.getName(type);
+      }
+      if(!entry.isAttribute()) {         
+         return validateElement(node, name);
+      }
+      return validateAttribute(node, name);
+   }  
+   
+   /**
+    * This method is used to read the key value from the node. The 
+    * value read from the node is resolved using the template filter.
+    * If the key value can not be found according to the annotation
+    * attributes then an exception is thrown.
+    * 
+    * @param node this is the node to read the key value from
+    * @param name this is the name of the attribute used by the key 
+    *     
+    * @return this returns the value deserialized from the node
+    */
+   private boolean validateAttribute(InputNode node, String name) throws Exception {     
+      InputNode key = node.getAttribute(name);
+      Position line = node.getPosition();
+      
+      if(key == null) {
+         throw new AttributeException("Attribute '%s' does not exist at %s", name, line);
+      }
+      return primitive.validate(key);
+   }
+   
+   /**
+    * This method is used to read the key value from the node. The 
+    * value read from the node is resolved using the template filter.
+    * If the key value can not be found according to the annotation
+    * attributes then an exception is thrown.
+    * 
+    * @param node this is the node to read the key value from
+    * @param name this is the name of the element used by the key 
+    *     
+    * @return this returns the value deserialized from the node
+    */
+   private boolean validateElement(InputNode node, String name) throws Exception {
+      InputNode child = node.getNext(name);
+      Position line = node.getPosition();
+      
+      if(child == null) {
+         throw new ElementException("Element '%s' does not exist at %s", name, line);
+      }     
+      return primitive.validate(child);     
+   }
 
    /**
     * This method is used to write the value to the specified node.

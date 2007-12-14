@@ -554,6 +554,167 @@ public class Persister implements Serializer {
    }   
    
    /**
+    * This <code>validate</code> method will validate the contents of
+    * the XML document against the specified XML class schema. This is
+    * used to perform a read traversal of the class schema such that 
+    * the document can be tested against it. This is preferred to
+    * reading the document as it does not instantiate the objects or
+    * invoke any callback methods, thus making it a safe validation.
+    * 
+    * @param type this is the class type to be validated against XML
+    * @param source this provides the source of the XML document
+    * 
+    * @return true if the document matches the class XML schema 
+    * 
+    * @throws Exception if the class XML schema does not fully match
+    */
+   public boolean validate(Class type, String source) throws Exception {
+      return validate(type, new StringReader(source));            
+   }
+   
+   /**
+    * This <code>validate</code> method will validate the contents of
+    * the XML document against the specified XML class schema. This is
+    * used to perform a read traversal of the class schema such that 
+    * the document can be tested against it. This is preferred to
+    * reading the document as it does not instantiate the objects or
+    * invoke any callback methods, thus making it a safe validation.
+    * 
+    * @param type this is the class type to be validated against XML
+    * @param source this provides the source of the XML document
+    * 
+    * @return true if the document matches the class XML schema 
+    * 
+    * @throws Exception if the class XML schema does not fully match
+    */
+   public boolean validate(Class type, File source) throws Exception {
+      InputStream file = new FileInputStream(source);
+      
+      try {
+         return validate(type, file);
+      } finally {
+         file.close();          
+      }
+   }
+   
+   /**
+    * This <code>validate</code> method will validate the contents of
+    * the XML document against the specified XML class schema. This is
+    * used to perform a read traversal of the class schema such that 
+    * the document can be tested against it. This is preferred to
+    * reading the document as it does not instantiate the objects or
+    * invoke any callback methods, thus making it a safe validation.
+    * 
+    * @param type this is the class type to be validated against XML
+    * @param source this provides the source of the XML document
+    * 
+    * @return true if the document matches the class XML schema 
+    * 
+    * @throws Exception if the class XML schema does not fully match
+    */
+   public boolean validate(Class type, InputStream source) throws Exception {
+      return validate(type, source, "utf-8");           
+   }
+   
+   /**
+    * This <code>validate</code> method will validate the contents of
+    * the XML document against the specified XML class schema. This is
+    * used to perform a read traversal of the class schema such that 
+    * the document can be tested against it. This is preferred to
+    * reading the document as it does not instantiate the objects or
+    * invoke any callback methods, thus making it a safe validation.
+    * 
+    * @param type this is the class type to be validated against XML
+    * @param source this provides the source of the XML document
+    * @param charset this is the charset to read the XML document as
+    * 
+    * @return true if the document matches the class XML schema 
+    * 
+    * @throws Exception if the class XML schema does not fully match
+    */ 
+   public boolean validate(Class type, InputStream source, String charset) throws Exception {
+      return validate(type, new InputStreamReader(source, charset));           
+   }
+   
+   /**
+    * This <code>validate</code> method will validate the contents of
+    * the XML document against the specified XML class schema. This is
+    * used to perform a read traversal of the class schema such that 
+    * the document can be tested against it. This is preferred to
+    * reading the document as it does not instantiate the objects or
+    * invoke any callback methods, thus making it a safe validation.
+    * 
+    * @param type this is the class type to be validated against XML
+    * @param source this provides the source of the XML document
+    * 
+    * @return true if the document matches the class XML schema 
+    * 
+    * @throws Exception if the class XML schema does not fully match
+    */
+   public boolean validate(Class type, Reader source) throws Exception {
+      return validate(type, NodeBuilder.read(source));
+   }
+   
+   /**
+    * This <code>validate</code> method will validate the contents of
+    * the XML document against the specified XML class schema. This is
+    * used to perform a read traversal of the class schema such that 
+    * the document can be tested against it. This is preferred to
+    * reading the document as it does not instantiate the objects or
+    * invoke any callback methods, thus making it a safe validation.
+    * 
+    * @param type this is the class type to be validated against XML
+    * @param source this provides the source of the XML document
+    * 
+    * @return true if the document matches the class XML schema 
+    * 
+    * @throws Exception if the class XML schema does not fully match
+    */
+   public boolean validate(Class type, InputNode source) throws Exception {
+      return validate(type, source, filter);
+   }
+
+   /**
+    * This <code>validate</code> method will validate the contents of
+    * the XML document against the specified XML class schema. This is
+    * used to perform a read traversal of the class schema such that 
+    * the document can be tested against it. This is preferred to
+    * reading the document as it does not instantiate the objects or
+    * invoke any callback methods, thus making it a safe validation.
+    * 
+    * @param type this is the class type to be validated against XML
+    * @param node this provides the source of the XML document
+    * @param filter this is the filter used by the templating engine 
+    * 
+    * @return true if the document matches the class XML schema 
+    * 
+    * @throws Exception if the class XML schema does not fully match
+    */
+   private boolean validate(Class type, InputNode node, Filter filter) throws Exception {
+      return validate(type, node, new Source(strategy, filter));
+   }                      
+           
+   /**
+    * This <code>validate</code> method will validate the contents of
+    * the XML document against the specified XML class schema. This is
+    * used to perform a read traversal of the class schema such that 
+    * the document can be tested against it. This is preferred to
+    * reading the document as it does not instantiate the objects or
+    * invoke any callback methods, thus making it a safe validation.
+    * 
+    * @param type this is the class type to be validated against XML
+    * @param node this provides the source of the XML document
+    * @param source the contextual object used for derserialization  
+    * 
+    * @return true if the document matches the class XML schema 
+    * 
+    * @throws Exception if the class XML schema does not fully match
+    */
+   private boolean validate(Class type, InputNode node, Source source) throws Exception {
+      return new Traverser(source).validate(node, type);
+   }
+
+   /**
     * This <code>write</code> method will traverse the provided object
     * checking for field annotations in order to compose the XML data.
     * This uses the <code>getClass</code> method on the object to

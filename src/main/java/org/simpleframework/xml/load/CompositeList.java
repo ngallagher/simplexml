@@ -140,6 +140,52 @@ class CompositeList implements Converter {
          list.add(root.read(next, entry));
       }
    }      
+   
+   /**
+    * This <code>validate</code> method wll validate the XML element 
+    * list from the provided node and deserialize its children as entry 
+    * types. This takes each entry type and validates it as a root type, 
+    * that is, its <code>Root</code> annotation must be present and the
+    * name of the entry element must match that root element name.
+    * 
+    * @param node this is the XML element that is to be validated
+    * 
+    * @return true if the element matches the XML schema class given 
+    */ 
+   public boolean validate(InputNode node) throws Exception{
+      Type type = factory.getInstance(node);
+      Class expect = type.getType();
+      String name = expect.getName();
+      
+      if(!type.isReference()) { 
+    	 type.getInstance(name);
+    	 validate(node, expect);
+      }
+      return true;
+   }
+   
+   /**
+    * This <code>validate</code> method wll validate the XML element 
+    * list from the provided node and deserialize its children as entry 
+    * types. This takes each entry type and validates it as a root type, 
+    * that is, its <code>Root</code> annotation must be present and the
+    * name of the entry element must match that root element name.
+    * 
+    * @param node this is the XML element that is to be validated
+    * @param result this is the collection that is to be populated
+    * 
+    * @return true if the element matches the XML schema class given 
+    */ 
+   private boolean validate(InputNode node, Class type) throws Exception {
+      while(true) {
+         InputNode next = node.getNext();
+        
+         if(next == null) {
+            return true;
+         }
+         root.validate(next, entry);
+      }
+   }     
 
    /**
     * This <code>write</code> method will write the specified object

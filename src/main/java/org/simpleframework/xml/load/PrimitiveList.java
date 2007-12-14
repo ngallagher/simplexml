@@ -134,7 +134,53 @@ class PrimitiveList implements Converter {
          }
          list.add(root.read(next));
       }
-   }      
+   }
+   
+   /**
+    * This <code>validate</code> method wll validate the XML element list 
+    * from the provided node and validate its children as entry types.
+    * This will validate each entry type as a primitive value. In order 
+    * to do this the parent string provided forms the element.
+    * 
+    * @param node this is the XML element that is to be deserialized
+    * 
+    * @return true if the element matches the XML schema class given 
+    */ 
+   public boolean validate(InputNode node) throws Exception{
+      Type type = factory.getInstance(node);
+      Class expect = type.getType();
+      String name = expect.getName();
+      
+      if(name != null) {
+    	  type.getInstance(name);
+      }
+      if(!type.isReference()) {
+         validate(node, expect);
+      }
+      return true;
+   }
+   
+   /**
+    * This <code>validate</code> method wll validate the XML element list 
+    * from the provided node and validate its children as entry types.
+    * This will validate each entry type as a primitive value. In order 
+    * to do this the parent string provided forms the element.
+    * 
+    * @param node this is the XML element that is to be deserialized
+    * @param result this is the collection that is to be populated
+    * 
+    * @return true if the element matches the XML schema class given 
+    */ 
+   private boolean validate(InputNode node, Class type) throws Exception {
+      while(true) {
+         InputNode next = node.getNext();
+        
+         if(next == null) {
+            return true;
+         }
+         root.validate(next);
+      }
+   }     
 
    /**
     * This <code>write</code> method will write the specified object

@@ -47,8 +47,22 @@ interface Converter {
     * 
     * @throws Exception if a deserialized type cannot be instantiated
     */
-   public Object read(InputNode node) throws Exception;
-
+   public Object read(InputNode node) throws Exception; 
+   
+   /**
+    * The <code>validate</code> method is used to validate the class
+    * XML schema against an input source. This will traverse the class
+    * fields and methods ensuring that the input XML document contains
+    * a valid structure when compared against the class XML schema.
+    * 
+    * @param node contains the details used to validate the object
+    * 
+    * @return true if the document matches the class XML schema 
+    * 
+    * @throws Exception if the class XML schema does not fully match
+    */
+   public boolean validate(InputNode node) throws Exception;
+   
    /**
     * The <code>write</code> method writes the fields from the given 
     * object to the XML element. After this has finished the element
@@ -60,5 +74,4 @@ interface Converter {
     * @throws Exception throw if the object cannot be serialized
     */
    public void write(OutputNode node, Object object) throws Exception;
-   
 }

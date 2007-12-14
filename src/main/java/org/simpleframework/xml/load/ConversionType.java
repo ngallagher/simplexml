@@ -92,7 +92,7 @@ class ConversionType implements Type {
     * @return an instance of the type this object represents
     */
    public Object getInstance(Object value) throws Exception {
-      return value;
+      return type.getInstance(value);
    }
    
    /**

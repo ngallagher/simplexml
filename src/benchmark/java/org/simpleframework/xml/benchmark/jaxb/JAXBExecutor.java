@@ -19,11 +19,11 @@ public class JAXBExecutor implements Executor {
       Unmarshaller unmarshaller = context.createUnmarshaller();
       
       // Perform once to build up internal caching
-      Object result = unmarshaller.unmarshal(test.getSourceStream());     
+      Object result = unmarshaller.unmarshal(test.getXMLEventReader());     
       long startRead = System.currentTimeMillis();
       
       for(int i = 0; i < test.getIterations(); i++) {
-         result = unmarshaller.unmarshal(test.getSourceStream());        
+         result = unmarshaller.unmarshal(test.getXMLEventReader());        
       }
       return new Duration(start, startRead);      
    }        
@@ -32,7 +32,7 @@ public class JAXBExecutor implements Executor {
 	  long start = System.currentTimeMillis();
       JAXBContext context = JAXBContext.newInstance(test.getSchemaClass());      
       Unmarshaller unmarshaller = context.createUnmarshaller();
-      Object result = unmarshaller.unmarshal(test.getSourceStream());
+      Object result = unmarshaller.unmarshal(test.getXMLEventReader());
       
       // Perform once to build up any caching
       Marshaller marshaller = context.createMarshaller();
@@ -42,7 +42,7 @@ public class JAXBExecutor implements Executor {
       long startWrite = System.currentTimeMillis();
       
       for(int i = 0; i < test.getIterations(); i++) {
-         marshaller.marshal(result, test.getResultStream());        
+         marshaller.marshal(result, test.getResultWriter());        
       }
       return new Duration(start, startWrite);      
    }   

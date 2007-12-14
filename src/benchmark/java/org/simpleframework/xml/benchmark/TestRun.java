@@ -7,7 +7,13 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+
+import javax.xml.stream.XMLEventReader;
+import javax.xml.stream.XMLInputFactory;
 
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
@@ -16,7 +22,13 @@ import org.simpleframework.xml.Root;
 
 @Root(name="test")
 public class TestRun {
+   
+   private static XMLInputFactory factory;
 
+   static {
+      factory = XMLInputFactory.newInstance();                    
+   }
+   
    @Attribute(name="id")
    private String id;
    
@@ -46,8 +58,16 @@ public class TestRun {
       return Class.forName(executor);
    }
    
+   public Writer getResultWriter() throws IOException {
+      return new OutputStreamWriter(getResultStream(), "utf-8");
+   }
+   
    public OutputStream getResultStream() throws IOException {
       return new NullOutputStream();
+   }
+   
+   public XMLEventReader getXMLEventReader() throws Exception {
+      return factory.createXMLEventReader(new InputStreamReader(getSourceStream(), "utf-8"));
    }
    
    public InputStream getSourceStream() throws IOException {
