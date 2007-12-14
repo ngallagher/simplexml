@@ -36,7 +36,7 @@ class AttributeLabel implements Label {
     * Represents the annotation used to label the field.
     */
    private Attribute label;
-	
+
    /**
     * This contains the details of the annotated contact object.
     */

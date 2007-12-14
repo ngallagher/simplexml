@@ -412,8 +412,8 @@ class Composite implements Converter {
       String name = expect.getName();     
      
       if(!type.isReference()) {  
-    	 type.getInstance(name);
-    	 validate(node, expect);
+         type.getInstance(name);
+         validate(node, expect);
       }
       return true;
    }

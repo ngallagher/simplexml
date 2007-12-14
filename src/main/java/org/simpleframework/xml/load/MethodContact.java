@@ -133,7 +133,7 @@ class MethodContact implements Contact {
     * 
     *  @return this returns the name of the method represented
     */
-   public String getName() {		  
+   public String getName() {
       return name;
    }
    

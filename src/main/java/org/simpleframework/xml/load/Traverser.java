@@ -137,13 +137,13 @@ class Traverser {
     * @throws Exception if the class XML schema does not fully match
     */
    public boolean validate(InputNode node, Class type) throws Exception {
-	  Composite factory = getComposite(type);	  
+      Composite factory = getComposite(type);
       String root = getName(type);
       
       if(root == null) {
          throw new RootException("Root annotation required for %s", type);
       }
-      return factory.validate(node);	   
+      return factory.validate(node);
    }
    
    /**

@@ -209,13 +209,13 @@ class Primitive implements Converter {
     *
     * @return this returns the primitive that has been validated
     */ 
-   public boolean validate(InputNode node) throws Exception {	   
-	   if(node.isElement()) {
-		   validateElement(node);
-	   } else {
-	      node.getValue();
-	   }
-	   return true;
+   public boolean validate(InputNode node) throws Exception {
+      if(node.isElement()) {
+         validateElement(node);
+      } else {
+         node.getValue();
+      }
+      return true;
    }
    
    /**
@@ -230,14 +230,14 @@ class Primitive implements Converter {
     * @return this returns the primitive that has been validated
     */ 
    private boolean validateElement(InputNode node) throws Exception {
-	   Type type = factory.getInstance(node);
-	   Class expect = type.getType();
-	   String name = expect.getName();
-	      
-	   if(!type.isReference()) {
-	      type.getInstance(name);
-	   }
-	   return true;
+      Type type = factory.getInstance(node);
+      Class expect = type.getType();
+      String name = expect.getName();
+      
+      if(!type.isReference()) {
+         type.getInstance(name);
+      }
+      return true;
    }
    
    /**
