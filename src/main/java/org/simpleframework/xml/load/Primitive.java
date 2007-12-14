@@ -197,15 +197,38 @@ class Primitive implements Converter {
       }
       return null;
    }  
-
+   
+   /**
+    * This <code>validate</code> method will validate the primitive 
+    * by checking the node text. If the value is a reference then 
+    * this will not extract any value from the node. Transformation
+    * of the extracted value is not done as it can not account for
+    * template variables. Thus any text extracted is valid.
+    *
+    * @param node this is the node to be validated as a primitive
+    *
+    * @return this returns the primitive that has been validated
+    */ 
    public boolean validate(InputNode node) throws Exception {	   
 	   if(node.isElement()) {
 		   validateElement(node);
+	   } else {
+	      node.getValue();
 	   }
-	   node.getValue();
 	   return true;
    }
    
+   /**
+    * This <code>validateElement</code> method validates a primitive 
+    * by checking the node text. If the value is a reference then 
+    * this will not extract any value from the node. Transformation
+    * of the extracted value is not done as it can not account for
+    * template variables. Thus any text extracted is valid.
+    *
+    * @param node this is the node to be validated as a primitive
+    *
+    * @return this returns the primitive that has been validated
+    */ 
    private boolean validateElement(InputNode node) throws Exception {
 	   Type type = factory.getInstance(node);
 	   Class expect = type.getType();
