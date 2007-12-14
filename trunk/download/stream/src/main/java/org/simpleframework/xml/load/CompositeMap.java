@@ -201,7 +201,7 @@ class CompositeMap implements Converter {
       String name = expect.getName();
       
       if(name != null) {
-    	  type.getInstance(name);
+         type.getInstance(name);
       }
       if(!type.isReference()) {
          validate(node, expect);

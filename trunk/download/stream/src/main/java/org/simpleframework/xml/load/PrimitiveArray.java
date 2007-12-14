@@ -149,10 +149,8 @@ class PrimitiveArray implements Converter {
       Class expect = type.getType();
       String name = expect.getName();
       
-      if(name != null) {
-    	  type.getInstance(name);
-      }
       if(!type.isReference()) {
+         type.getInstance(name);
          validate(node, type);
       }
       return true;

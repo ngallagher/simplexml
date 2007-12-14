@@ -175,7 +175,7 @@ class CompositeArray implements Converter {
       String name = expect.getName();
 
       if(!type.isReference()) {  
-    	 type.getInstance(name);
+         type.getInstance(name);
          validate(node, expect);
       }
       return true;

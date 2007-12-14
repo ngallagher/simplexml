@@ -82,7 +82,7 @@ abstract class Factory {
 
       if(type != null) { 
          Class real = type.getType();
-    	 
+     
          if(!isCompatible(field, real)) {
             throw new InstantiationException("Type %s is not compatible with %s", real, field);              
          }

@@ -64,7 +64,7 @@ class ElementListLabel implements Label {
     * This is the name of the element for this label instance.
     */
    private String name;  
-	
+
    /**
     * Constructor for the <code>ElementListLabel</code> object. This
     * creates a label object, which can be used to convert an XML 
@@ -81,7 +81,7 @@ class ElementListLabel implements Label {
       this.name = label.name();      
       this.label = label;
    }
-	
+
    /**
     * This will create a <code>Converter</code> for transforming an XML
     * element into a collection of XML serializable objects. The XML

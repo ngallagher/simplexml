@@ -109,7 +109,7 @@ class Schema {
     * @return this returns the text label for the scanned class
     */
    public Label getText() {
-	   return text;
+      return text;
    }
    
    /**

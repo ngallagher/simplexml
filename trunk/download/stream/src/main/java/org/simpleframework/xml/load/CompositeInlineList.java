@@ -200,18 +200,18 @@ class CompositeInlineList implements Repeater {
     * @return this returns the item to attach to the object contact
     */ 
    public boolean validate(InputNode node) throws Exception{
-	  InputNode from = node.getParent();
-	  String name = node.getName();
-	      
-	  while(node != null) {
-	     boolean valid = root.validate(node, entry);
-	     
-	     if(valid == false) {
-	    	return false;
-	     }
-	     node = from.getNext(name);
-	  }	  
-	  return true;
+      InputNode from = node.getParent();
+      String name = node.getName();
+      
+      while(node != null) {
+         boolean valid = root.validate(node, entry);
+     
+         if(valid == false) {
+            return false;
+         }
+         node = from.getNext(name);
+      }  
+      return true;
    } 
    
    /**
