@@ -1,5 +1,5 @@
 Testsuite: org.simpleframework.xml.load.MethodTest
-Tests run: 3, Failures: 0, Errors: 0, Time elapsed: 1.125 sec
+Tests run: 3, Failures: 0, Errors: 0, Time elapsed: 2.047 sec
 ------------- Standard Output ---------------
 <test>
    <short>120</short>
@@ -35,6 +35,6 @@ Tests run: 3, Failures: 0, Errors: 0, Time elapsed: 1.125 sec
    <doubleValue>1234567.89</doubleValue>
 </implicitMethodNameExample>------------- ---------------- ---------------
 
-Testcase: testExplicitMethodNameExample took 1 sec
-Testcase: testImplicitMethodNameExample took 0.094 sec
+Testcase: testExplicitMethodNameExample took 1.828 sec
+Testcase: testImplicitMethodNameExample took 0.156 sec
 Testcase: testDirectory took 0 sec

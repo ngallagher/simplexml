@@ -50,7 +50,7 @@ import org.simpleframework.xml.stream.Position;
  * Serialization requires that contacts marked as required must have
  * values that are not null. This ensures that the serialized object
  * can be deserialized at a later stage using the same class schema.
- * If a required value is null the serialization terminates an an
+ * If a required value is null the serialization terminates and an
  * exception is thrown.
  * 
  * @author Niall Gallagher
@@ -406,16 +406,16 @@ class Composite implements Converter {
     * 
     * @return true if the XML element matches the XML schema class given 
     */
-   public boolean validate(InputNode node) throws Exception {
-      Type type = factory.getInstance(node); 
-      Class expect = type.getType();
-      String name = expect.getName();     
-     
-      if(!type.isReference()) {  
-         type.getInstance(name);
-         validate(node, expect);
+   public boolean validate(InputNode node) throws Exception {      
+      Type type = factory.getInstance(node);
+      
+      if(!type.isReference()) {
+         Object real = type.getInstance(type);
+         Class expect = type.getType();
+            
+         return validate(node, expect);
       }
-      return true;
+      return true;  
    }
    
    /**
@@ -432,12 +432,14 @@ class Composite implements Converter {
     * @param node the XML element contact values are deserialized from
     * @param source the object whose contacts are to be deserialized
     */
-   private void validate(InputNode node, Class type) throws Exception {
+   private boolean validate(InputNode node, Class type) throws Exception {
       Schema schema = root.getSchema(type);
       
       validateText(node, schema);
       validateAttributes(node, schema);
       validateElements(node, schema);
+      
+      return node.isElement();
    }   
 
    /**

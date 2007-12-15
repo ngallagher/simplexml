@@ -1,6 +1,6 @@
 Testsuite: org.simpleframework.xml.load.ReflectorTest
-Tests run: 3, Failures: 0, Errors: 0, Time elapsed: 0.046 sec
+Tests run: 3, Failures: 0, Errors: 0, Time elapsed: 0.156 sec
 
-Testcase: testFieldReflector took 0.016 sec
-Testcase: testCollectionReflector took 0 sec
+Testcase: testFieldReflector took 0.125 sec
+Testcase: testCollectionReflector took 0.015 sec
 Testcase: testMapReflector took 0 sec

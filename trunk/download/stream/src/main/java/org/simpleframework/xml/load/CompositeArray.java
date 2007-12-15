@@ -171,14 +171,14 @@ class CompositeArray implements Converter {
     */ 
    public boolean validate(InputNode node) throws Exception{
       Type type = factory.getInstance(node);
-      Class expect = type.getType();
-      String name = expect.getName();
-
-      if(!type.isReference()) {  
-         type.getInstance(name);
-         validate(node, expect);
+      
+      if(!type.isReference()) {
+         Object real = type.getInstance(type);
+         Class expect = type.getType();
+            
+         return validate(node, expect);
       }
-      return true;
+      return true; 
    }
 
    /**

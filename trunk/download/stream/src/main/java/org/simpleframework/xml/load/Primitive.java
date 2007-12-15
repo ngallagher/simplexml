@@ -231,11 +231,9 @@ class Primitive implements Converter {
     */ 
    private boolean validateElement(InputNode node) throws Exception {
       Type type = factory.getInstance(node);
-      Class expect = type.getType();
-      String name = expect.getName();
       
-      if(!type.isReference()) {
-         type.getInstance(name);
+      if(!type.isReference()) {         
+         type.getInstance(type);
       }
       return true;
    }

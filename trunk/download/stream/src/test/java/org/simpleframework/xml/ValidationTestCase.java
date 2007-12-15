@@ -83,9 +83,12 @@ public class ValidationTestCase extends XMLTestCase {
         
         transformer.setOutputProperty(OutputKeys.INDENT, "yes");
         transformer.transform(new DOMSource(doc), new StreamResult(domFile));
-        transformer.transform(new DOMSource(doc), new StreamResult(asciiOut));        
+        transformer.transform(new DOMSource(doc), new StreamResult(asciiOut));    
+        
         domFile.close();      
         asciiFile.close();
+        
+        out.validate(type.getClass(), text);
     }
 
     public static synchronized void validate(String text) throws Exception {    
