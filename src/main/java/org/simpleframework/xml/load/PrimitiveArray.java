@@ -146,14 +146,14 @@ class PrimitiveArray implements Converter {
     */ 
    public boolean validate(InputNode node) throws Exception{
       Type type = factory.getInstance(node);
-      Class expect = type.getType();
-      String name = expect.getName();
       
       if(!type.isReference()) {
-         type.getInstance(name);
-         validate(node, type);
+         Object real = type.getInstance(type);
+         Class expect = type.getType();
+            
+         return validate(node, expect);
       }
-      return true;
+      return true; 
    }
 
    /**
@@ -167,7 +167,7 @@ class PrimitiveArray implements Converter {
     * 
     * @return true if the element matches the XML schema class given 
     */ 
-   private boolean validate(InputNode node, Type type) throws Exception{
+   private boolean validate(InputNode node, Class type) throws Exception{
       for(int i = 0; true; i++) {
          InputNode next = node.getNext();
     

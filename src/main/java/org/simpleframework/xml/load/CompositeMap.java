@@ -197,16 +197,14 @@ class CompositeMap implements Converter {
     */
    public boolean validate(InputNode node) throws Exception{
       Type type = factory.getInstance(node);
-      Class expect = type.getType();
-      String name = expect.getName();
       
-      if(name != null) {
-         type.getInstance(name);
-      }
       if(!type.isReference()) {
-         validate(node, expect);
+         Object real = type.getInstance(type);
+         Class expect = type.getType();
+            
+         return validate(node, expect);
       }
-      return true;
+      return true; 
    }
    
    /**
