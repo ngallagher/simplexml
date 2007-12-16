@@ -402,7 +402,7 @@ class Composite implements Converter {
     * XML element this will terminate validation and throw an exception
     * The annotation missing is reported in the exception.
     * 
-    * @param node the XML element contact values are deserialized from
+    * @param node the XML element contact values are validated from
     * 
     * @return true if the XML element matches the XML schema class given 
     */
@@ -429,8 +429,8 @@ class Composite implements Converter {
     * XML element this will terminate validation and throw an exception
     * The annotation missing is reported in the exception.
     * 
-    * @param node the XML element contact values are deserialized from
-    * @param source the object whose contacts are to be deserialized
+    * @param node the XML element contact values are validated from
+    * @param source the object whose contacts are to be validated
     */
    private boolean validate(InputNode node, Class type) throws Exception {
       Schema schema = root.getSchema(type);
@@ -860,9 +860,9 @@ class Composite implements Converter {
    
    /**
     * This is used to determine whether the specified value has been
-    * overrideen by the strategy. If the item has been overridden
+    * overridden by the strategy. If the item has been overridden
     * then no more serialization is require for that value, this is
-    * effectivly telling the serialization process to stop writing.
+    * effectively telling the serialization process to stop writing.
     * 
     * @param node the node that a potential override is written to
     * @param value this is the object instance to be serialized
