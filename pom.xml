@@ -4,7 +4,7 @@
   <groupId>org.simpleframework</groupId>
   <artifactId>simple-xml</artifactId>
   <packaging>jar</packaging>
-  <version>1.4.1</version>
+  <version>1.6.2</version>
   <name>Simple XML</name>
   <url>http://simple.sourceforge.net</url>
   <description>Simple is a high performance XML serialization and configuration framework for Java</description>
