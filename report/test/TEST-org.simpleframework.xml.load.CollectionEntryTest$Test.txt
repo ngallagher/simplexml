@@ -1,8 +1,0 @@
-Testsuite: org.simpleframework.xml.load.CollectionEntryTest$Test
-Tests run: 1, Failures: 1, Errors: 0, Time elapsed: 0.016 sec
-
-Testcase: warning took 0 sec
-	FAILED
-Class org.simpleframework.xml.load.CollectionEntryTest$Test has no public constructor TestCase(String name) or TestCase()
-junit.framework.AssertionFailedError: Class org.simpleframework.xml.load.CollectionEntryTest$Test has no public constructor TestCase(String name) or TestCase()
-
