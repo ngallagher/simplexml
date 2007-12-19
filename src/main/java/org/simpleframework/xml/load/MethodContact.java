@@ -39,24 +39,14 @@ class MethodContact implements Contact {
     * This is the label that marks both the set and get methods.
     */         
    private Annotation label;
-   
+
    /**
-    * This is the read method which is used to get the value.
-    */
-   private Method read;
-   
-   /**
-    * This is the write method which is used to set the value.
-    */ 
-   private Method write;
-   
-   /**
-    * This is the dependant types as taken from the read method.
+    * This is the dependant types as taken from the get method.
     */
    private Class[] items;
    
    /**
-    * This is the dependant type as taken from the read method.
+    * This is the dependent type as taken from the get method.
     */
    private Class item;
    
@@ -64,6 +54,16 @@ class MethodContact implements Contact {
     * This is the type associated with this point of contact.
     */ 
    private Class type; 
+   
+   /**
+    * This is the get method which is used to get the value.
+    */
+   private Method get;
+   
+   /**
+    * This is the set method which is used to set the value.
+    */ 
+   private Method set;
    
    /**
     * This represents the name of the method for this contact.
@@ -74,19 +74,19 @@ class MethodContact implements Contact {
     * Constructor for the <code>MethodContact</code> object. This is
     * used to compose a point of contact that makes use of a get and
     * set method on a class. The specified methods will be invoked
-    * during the serialization process to read and write values.
+    * during the serialization process to get and set values.
     *
-    * @param read this forms the get method for the object
-    * @param write this forms the get method for the object
+    * @param get this forms the get method for the object
+    * @param set this forms the get method for the object
     */ 
-   public MethodContact(MethodPart read, MethodPart write) {
-      this.label = read.getAnnotation();   
-      this.items = read.getDependants();
-      this.item = read.getDependant();
-      this.write = write.getMethod();
-      this.read = read.getMethod();
-      this.type = read.getType();   
-      this.name = read.getName();
+   public MethodContact(MethodPart get, MethodPart set) {
+      this.label = get.getAnnotation();   
+      this.items = get.getDependants();
+      this.item = get.getDependant();
+      this.set = set.getMethod();
+      this.get = get.getMethod();
+      this.type = get.getType();   
+      this.name = get.getName();
    }
 
    /**
@@ -157,7 +157,7 @@ class MethodContact implements Contact {
     * @param value this is the value that is to be set on the object
     */    
    public void set(Object source, Object value) throws Exception{
-      write.invoke(source, value);
+      set.invoke(source, value);
    }
    
    /**
@@ -171,7 +171,7 @@ class MethodContact implements Contact {
     * @return this is the value that is acquired from the object
     */ 
    public Object get(Object source) throws Exception {
-      return read.invoke(source);
+      return get.invoke(source);
    }
    
    /**
