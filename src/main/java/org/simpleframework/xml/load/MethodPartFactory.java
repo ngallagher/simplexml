@@ -64,9 +64,9 @@ final class MethodPartFactory {
       MethodType type = name.getType();
       
       if(type == MethodType.SET) {
-         return new WritePart(name, label);
+         return new SetPart(name, label);
       }
-      return new ReadPart(name, label);
+      return new GetPart(name, label);
    }
    
    /**
