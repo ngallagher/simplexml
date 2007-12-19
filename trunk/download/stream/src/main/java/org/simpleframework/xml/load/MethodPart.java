@@ -35,7 +35,7 @@ import java.lang.reflect.Method;
 interface MethodPart {
 
    /**
-    * This provdes the name of the method part as acquired from the
+    * This provides the name of the method part as acquired from the
     * method name. The name represents the Java Bean property name
     * of the method and is used to pair getter and setter methods.
     * 

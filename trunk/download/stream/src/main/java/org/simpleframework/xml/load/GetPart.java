@@ -1,5 +1,5 @@
 /*
- * WritePart.java April 2007
+ * GetPart.java April 2007
  *
  * Copyright (C) 2007, Niall Gallagher <niallg@users.sf.net>
  *
@@ -24,48 +24,48 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 /**
- * The <code>WritePart</code> object represents the setter method for
- * a Java Bean property. This composes the set part of the method
- * contact for an object. The write part contains the method that is
- * used to set the value on an object and the annotation that tells
- * the deserialization process how to deserialize the value.
+ * The <code>GetPart</code> object represents the getter method for
+ * a Java Bean property. This composes the get part of the method
+ * contact for an object. The get part contains the method that is
+ * used to get the value in an object and the annotation that tells
+ * the serialization process how to serialize the value.
  * 
  * @author Niall Gallagher
  * 
  * @see org.simpleframework.xml.load.MethodContact
  */
-class WritePart implements MethodPart {
+class GetPart implements MethodPart {
    
    /**
-    * This is the annotation for the set method provided.
+    * This is the annotation for the get method provided.
     */
    private Annotation label;
    
    /**
-    * This represents the method type for the read part method.
+    * This represents the method type for the get part method.
     */
    private MethodType type;
    
    /**
-    * This method is used to set the value during deserialization. 
+    * This method is used to get the value during serialization. 
     */
    private Method method;
    
    /**
-    * This represents the name of this write part instance.
+    * This is the Java Bean name representation of the method.
     */
    private String name;
    
    /**
-    * Constructor for the <code>WritePart</code> object. This is
+    * Constructor for the <code>GetPart</code> object. This is
     * used to create a method part that will provide a means for 
-    * the deserialization process to set a value to a object.
+    * the serialization process to set a value to a object.
     * 
-    * @param method the method that is used to set the value
-    * @param label this describes how to deserialize the value
-    */
-   public WritePart(MethodName method, Annotation label) {
-      this.method = method.getMethod();
+    * @param method the method that is used to get the value
+    * @param label this describes how to serialize the value
+    */   
+   public GetPart(MethodName method, Annotation label) {      
+      this.method = method.getMethod();      
       this.name = method.getName();
       this.type = method.getType();
       this.label = label;
@@ -90,7 +90,7 @@ class WritePart implements MethodPart {
     * @return this returns the schema class for this method
     */
    public Class getType() {
-      return method.getParameterTypes()[0];
+      return method.getReturnType();
    }
    
    /**
@@ -101,22 +101,22 @@ class WritePart implements MethodPart {
     * from the generic information provided.
     * 
     * @return this returns the generic dependant for the type
-    */  
+    */
    public Class getDependant() {
-      return Reflector.getParameterDependant(method, 0);
+      return Reflector.getReturnDependant(method);
    }
    
    /**
     * This is used to acquire the dependant classes for the method 
-    * part. The dependant types are the types that represents the 
-    * generic types of the type. This is used when collections are
-    * annotated as it allows a default entry classes to be taken
+    * part. The dependant types are the types that represent the 
+    * generic types of the type. This is used when collections are 
+    * annotated as it allows a default entry class to be taken
     * from the generic information provided.
     * 
-    * @return this returns the generic dependants for the type
-    */  
+    * @return this returns the generic dependant for the type
+    */
    public Class[] getDependants() {
-      return Reflector.getParameterDependants(method, 0);
+      return Reflector.getReturnDependants(method);
    }
    
    /**
@@ -129,7 +129,7 @@ class WritePart implements MethodPart {
    public Annotation getAnnotation() {
       return label;
    }
-  
+   
    /**
     * This is the method type for the method part. This is used in
     * the scanning process to determine which type of method a
