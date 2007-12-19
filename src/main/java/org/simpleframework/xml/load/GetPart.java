@@ -39,22 +39,22 @@ class GetPart implements MethodPart {
    /**
     * This is the annotation for the get method provided.
     */
-   private Annotation label;
+   private final Annotation label;
    
    /**
     * This represents the method type for the get part method.
     */
-   private MethodType type;
+   private final MethodType type;
    
    /**
     * This method is used to get the value during serialization. 
     */
-   private Method method;
+   private final Method method;
    
    /**
     * This is the Java Bean name representation of the method.
     */
-   private String name;
+   private final String name;
    
    /**
     * Constructor for the <code>GetPart</code> object. This is
