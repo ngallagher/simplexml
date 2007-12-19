@@ -39,22 +39,22 @@ class SetPart implements MethodPart {
    /**
     * This is the annotation for the set method provided.
     */
-   private Annotation label;
+   private final Annotation label;
    
    /**
     * This represents the method type for the set part method.
     */
-   private MethodType type;
+   private final MethodType type;
    
    /**
     * This method is used to set the value during deserialization. 
     */
-   private Method method;
+   private final Method method;
    
    /**
     * This represents the name of this set part instance.
     */
-   private String name;
+   private final String name;
    
    /**
     * Constructor for the <code>SetPart</code> object. This is
