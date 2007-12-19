@@ -130,6 +130,9 @@ class PackageMatcher implements Matcher {
       if(type == String.class) {
          return new StringTransform();
       }      
+      if(type == Class.class) {
+         return new ClassTransform();
+      }
       throw new TransformException("Transform of %s not supported", type);
    }
    
