@@ -236,5 +236,25 @@ abstract class Factory {
          return false;              
       }              
       return !Modifier.isInterface(modifiers);
-   }      
+   } 
+   
+   /**
+    * This is used to determine whether the type specified is an 
+    * abstract class. A class is abstract if it is not a primitive and
+    * it is either an interface or an abstract class. This allows the
+    * correct selection of a converter for an annotated type.
+    * 
+    * @param type this is the type to check to see if it is abstract
+    * 
+    * @return true if the class represents an abstract class
+    */
+   public static boolean isAbstract(Class type) {
+      if(type.isPrimitive()) {
+         return false;
+      }
+      if(type.isArray()) {
+         return false;
+      }
+      return !isInstantiable(type);
+   }
 }           
