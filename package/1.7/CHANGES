@@ -1,0 +1,4 @@
+Change made to the scanning so that abstract class and interfaces can be used
+Enhancement made to the transformer so that transformable type can be validated
+Change made to the method scanning framework for better name matching
+Performance improvements made to serialization to match composite objects
