@@ -76,7 +76,7 @@ class PrimitiveMatcher implements Matcher {
       }
       if(type == char.class) {
          return new CharacterTransform();
-      }     
-      throw new TransformException("Transform of '%s' not supported", type);
+      }
+      return null;
    }
 }

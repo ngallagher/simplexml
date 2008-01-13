@@ -39,17 +39,6 @@ import org.simpleframework.xml.stream.InputNode;
 class PrimitiveFactory extends Factory {
    
    /**
-    * Caches the constructors used to transform primitive types.
-    * 
-    * @see org.simpleframework.xml.load.Primitive
-    */
-   private static Transformer transform;
-
-   static {
-      transform = new Transformer();           
-   } 
-   
-   /**
     * Constructor for the <code>PrimitiveFactory</code> object. This
     * is provided the field type that is to be instantiated. This
     * must be a type that contains a <code>Transform</code> object,

@@ -80,9 +80,6 @@ class ElementLabel implements Label {
     * @return this returns a converter for serializing XML elements
     */
    public Converter getConverter(Source root) throws Exception {
-      if(Factory.isAbstract(type)) {
-         return new Composite(root, type);
-      }
       if(Factory.isPrimitive(type)) {
          return new Primitive(root, type);
       }

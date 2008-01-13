@@ -223,7 +223,7 @@ public class TextTest extends ValidationTestCase {
       
       try {
          persister.read(NonPrimitiveTextEntry.class, DATA_TEXT);                       
-      } catch(TransformException e) {
+      } catch(TextException e) {
          e.printStackTrace();
          success = true;              
       }              

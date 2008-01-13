@@ -93,7 +93,7 @@ class ArrayMatcher implements Matcher {
       Transform transform = primary.match(entry);
      
       if(transform == null) {
-         throw new TransformException("Transform for '%s' not found", entry);
+         return null;
       }
       return new ArrayTransform(transform, entry);
    }
