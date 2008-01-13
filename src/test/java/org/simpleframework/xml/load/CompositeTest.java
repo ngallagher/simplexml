@@ -25,7 +25,6 @@ public class CompositeTest extends ValidationTestCase {
    "      <objectEntry name='b' class='org.simpleframework.xml.load.CompositeTest$CompositeEntry'>b</objectEntry>" +
    "   </objectList>" +
    "</compositeObject>";
-
    
    private static interface Entry {
       
