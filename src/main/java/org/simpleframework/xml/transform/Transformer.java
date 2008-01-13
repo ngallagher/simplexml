@@ -106,6 +106,9 @@ public class Transformer {
          transform = matcher.match(type);
          cache.cache(type, transform);
       }
+      if(transform == null) {
+         throw new TransformException("Transform of %s not supported", type);
+      }      
       return transform.read(value);
    }
    
@@ -127,6 +130,30 @@ public class Transformer {
          transform = matcher.match(type);
          cache.cache(type, transform);
       }
+      if(transform == null) {
+         throw new TransformException("Transform of %s not supported", type);
+      }
       return transform.write(value);
+   }
+
+   /**
+    * This method is used to determine if the type specified can be
+    * transformed. This will use the <code>Matcher</code> to find a
+    * suitable transform, if one exists then this returns true, if
+    * not then this returns false. This is used during serialization
+    * to determine how to convert a field or method parameter. 
+    *
+    * @param type the type to determine whether its transformable
+    * 
+    * @return true if the type specified can be transformed by this
+    */ 
+   public boolean valid(Class type) throws Exception {
+      Transform transform = cache.fetch(type);    
+      
+      if(transform == null) {
+         transform = matcher.match(type);
+         cache.cache(type, transform);
+      }
+      return transform != null;
    }
 }
