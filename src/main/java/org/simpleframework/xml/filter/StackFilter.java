@@ -70,7 +70,7 @@ public class StackFilter implements Filter {
     * @return this will return the replacement text resolved
     */
    public String replace(String text) {
-      for(int i = stack.size(); --i > 0;) {
+      for(int i = stack.size(); --i >= 0;) {
          String value = stack.get(i).replace(text);
 
          if(value != null){
