@@ -100,12 +100,8 @@ public class Transformer {
     * @return this returns an appropriate instanced to be used
     */
    public Object read(String value, Class type) throws Exception {
-      Transform transform = cache.fetch(type);
-      
-      if(transform == null) {
-         transform = matcher.match(type);
-         cache.cache(type, transform);
-      }
+      Transform transform = lookup(type);
+
       if(transform == null) {
          throw new TransformException("Transform of %s not supported", type);
       }      
@@ -124,12 +120,8 @@ public class Transformer {
     * @return this is the string representation of the given value
     */
    public String write(Object value, Class type) throws Exception {
-      Transform transform = cache.fetch(type);
-      
-      if(transform == null) {
-         transform = matcher.match(type);
-         cache.cache(type, transform);
-      }
+      Transform transform = lookup(type);
+
       if(transform == null) {
          throw new TransformException("Transform of %s not supported", type);
       }
@@ -147,13 +139,27 @@ public class Transformer {
     * 
     * @return true if the type specified can be transformed by this
     */ 
-   public boolean valid(Class type) throws Exception {
-      Transform transform = cache.fetch(type);    
+   public boolean valid(Class type) throws Exception {      
+      return lookup(type) != null;
+   }
+
+   /**
+    * This method is used to acquire a <code>Transform</code> for 
+    * the the specified type. If there is no transform for the type
+    * then this will return null. Once acquired once the transform
+    * is cached so that subsequent lookups will be performed faster.
+    *
+    * @param type the type to determine whether its transformable
+    *
+    * @return this will return a transform for the specified type
+    */ 
+   private Transform lookup(Class type) throws Exception {
+      Transform transform = cache.fetch(type);
       
       if(transform == null) {
          transform = matcher.match(type);
          cache.cache(type, transform);
       }
-      return transform != null;
+      return transform;
    }
 }
