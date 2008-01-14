@@ -25,7 +25,7 @@ public class StackFilterTest extends TestCase {
          return null;
       }
    }
-   
+  
    public void testFilter() {
       List<String> list = new ArrayList<String>();
       StackFilter filter = new StackFilter();
@@ -44,8 +44,6 @@ public class StackFilterTest extends TestCase {
       assertEquals(list.size(), 3);
       assertEquals(list.get(0), "one");
       assertEquals(list.get(1), "two");
-      assertEquals(list.get(2), "three");
-      
+      assertEquals(list.get(2), "three");  
    }
-
 }

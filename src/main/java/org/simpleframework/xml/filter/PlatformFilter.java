@@ -20,6 +20,7 @@
 
 package org.simpleframework.xml.filter;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -33,6 +34,16 @@ import java.util.Map;
  */
 public class PlatformFilter extends StackFilter {
 
+   /**
+    * Constructor for the <code>PlatformFilter</code> object. This
+    * adds a filter which can be used to resolve environment 
+    * variables followed by one that can be used to resolve system
+    * properties and finally one to resolve user specified values.
+    */
+   public PlatformFilter() {
+      this(null);
+   }
+   
    /**
     * Constructor for the <code>PlatformFilter</code> object. This
     * adds a filter which can be used to resolve environment 
