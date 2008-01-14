@@ -20,7 +20,6 @@
 
 package org.simpleframework.xml.filter;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
