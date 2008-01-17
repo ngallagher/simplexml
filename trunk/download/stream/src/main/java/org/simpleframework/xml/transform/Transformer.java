@@ -20,6 +20,9 @@
 
 package org.simpleframework.xml.transform;
 
+import org.simpleframework.xml.util.WeakCache;
+import org.simpleframework.xml.util.Cache;
+
 /**
  * The <code>Transformer</code> object is used to convert strings to
  * and from object instances. This is used during the serialization
@@ -58,12 +61,17 @@ public class Transformer {
     * This is used to cache all transforms matched to a given type.
     */
    private TransformCache cache;
-   
+
    /**
     * This is used to perform the matching of types to transforms.
     */
    private Matcher matcher;
    
+   /**
+    * This is used to cache the types that to not have a transform.
+    */ 
+   private Cache error;
+
    /**
     * Constructor for the <code>Transformer</code> object. This is
     * used to create a transformer which will transform specified
@@ -85,7 +93,7 @@ public class Transformer {
    private Transformer(Matcher matcher) {  
       this.matcher = new DefaultMatcher(matcher);
       this.cache = new TransformCache();
-
+      this.error = new WeakCache();
    }
    
    /**
@@ -154,11 +162,34 @@ public class Transformer {
     * @return this will return a transform for the specified type
     */ 
    private Transform lookup(Class type) throws Exception {
-      Transform transform = cache.fetch(type);
+      Transform transform = cache.fetch(type);            
+
+      if(transform != null) {
+         return transform;
+      }
+      if(error.contains(type)) {
+         return null;              
+      }           
+      return match(type);
+   }
+
+   /**
+    * This method is used to acquire a <code>Transform</code> for 
+    * the the specified type. If there is no transform for the type
+    * then this will return null. Once acquired once the transform
+    * is cached so that subsequent lookups will be performed faster.
+    *
+    * @param type the type to determine whether its transformable
+    *
+    * @return this will return a transform for the specified type
+    */ 
+   private Transform match(Class type) throws Exception {
+      Transform transform = matcher.match(type);
       
-      if(transform == null) {
-         transform = matcher.match(type);
+      if(transform != null) {
          cache.cache(type, transform);
+      } else {
+         error.cache(type, type);               
       }
       return transform;
    }

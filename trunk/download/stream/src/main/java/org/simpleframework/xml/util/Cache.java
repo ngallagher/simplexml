@@ -62,4 +62,15 @@ public interface Cache<K, V> {
     * @return this returns the value mapped to the specified key 
     */
    public V fetch(K key);   
+   
+   /**
+    * This is used to determine whether the specified key exists
+    * with in the cache. Typically this can be done using the 
+    * fetch method, which will acquire the object. 
+    * 
+    * @param key this is the key to check within this segment
+    * 
+    * @return true if the specified key is within the cache
+    */
+   public boolean contains(K key);
 }
