@@ -102,6 +102,19 @@ public class WeakCache<K, V> implements Cache<K, V> {
    }
    
    /**
+    * This is used to determine whether the specified key exists
+    * with in the cache. Typically this can be done using the 
+    * fetch method, which will acquire the object. 
+    * 
+    * @param key this is the key to check within this segment
+    * 
+    * @return true if the specified key is within the cache
+    */
+   public boolean contains(K key) {
+      return map(key).contains(key);
+   }
+   
+   /**
     * This method is used to acquire a <code>Segment</code> using
     * the keys has code. This method effectively uses the hash to
     * find a specific segment within the fixed list of segments.
@@ -243,6 +256,19 @@ public class WeakCache<K, V> implements Cache<K, V> {
        */
       public synchronized V take(K key) {
          return remove(key);
+      }
+ 
+      /**
+       * This is used to determine whether the specified key exists
+       * with in the cache. Typically this can be done using the 
+       * fetch method, which will acquire the object. 
+       * 
+       * @param key this is the key to check within this segment
+       * 
+       * @return true if the specified key is within the cache
+       */
+      public synchronized boolean contains(K key) {
+         return containsKey(key);
       }
    }
 }
