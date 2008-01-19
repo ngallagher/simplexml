@@ -1,0 +1,3 @@
+Bug fix made to the stack filter to ensure it uses all filters included
+Enhancement made to the transformer to make sure it handles errors correctly
+Change made to the platform filter to ensure it can be created without mappings
