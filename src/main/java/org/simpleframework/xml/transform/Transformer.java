@@ -189,7 +189,7 @@ public class Transformer {
       if(transform != null) {
          cache.cache(type, transform);
       } else {
-         error.cache(type, type);               
+         error.cache(type, this);               
       }
       return transform;
    }
