@@ -97,8 +97,11 @@ class PrimitiveValue implements Converter {
     * @return this returns the value deserialized from the node
     */ 
    public Object read(InputNode node) throws Exception {
-      String name = Factory.getName(type);
+      String name = entry.getValue();
       
+      if(name == null) {
+         name = Factory.getName(type);
+      }
       if(entry.isInline()) {
          return primitive.read(node);
       }
@@ -134,13 +137,13 @@ class PrimitiveValue implements Converter {
     * 
     * @param node this is the node to read the value object from
     * 
-    * @return this returns the value deserialized from the node
+    * @return this returns true if the primitive key is valid
     */ 
    public boolean validate(InputNode node) throws Exception {
-      String name = Factory.getName(type);
+      String name = entry.getValue();
       
-      if(entry.isInline()) {
-         return primitive.validate(node);
+      if(name == null) {
+         name = Factory.getName(type);
       }
       return validate(node, name);
    }
@@ -152,18 +155,21 @@ class PrimitiveValue implements Converter {
     * attributes then an exception is thrown.
     * 
     * @param node this is the node to read the value object from
-    * @param name this is the name of the value XML element
+    * @param name this is the name of the node to be validated
     * 
-    * @return this returns the value deserialized from the node
-    */ 
+    * @return this returns true if the primitive key is valid
+    */    
    private boolean validate(InputNode node, String name) throws Exception {
-      InputNode child = node.getNext(name);
       Position line = node.getPosition();
       
-      if(child == null) {
-         throw new TextException("Element '%s' not found at %s", name, line);         
+      if(!entry.isInline()) {
+         node = node.getNext(name);
+      
+         if(node == null) {
+            throw new TextException("Element '%s' not found at %s", name, line);         
+         }
       }
-      return primitive.validate(child);      
+      return primitive.validate(node);
    }
 
    /**
@@ -176,13 +182,32 @@ class PrimitiveValue implements Converter {
     * @param item this is the item that is to be written
     */
    public void write(OutputNode node, Object item) throws Exception {
-      String name = Factory.getName(type);
+      String name = entry.getValue();
       
+      if(name == null) {
+         name = Factory.getName(type);
+      } 
+      write(node, item, name);
+   }
+   
+   /**
+    * This method is used to write the value to the specified node.
+    * The value written to the node can be an attribute or an element
+    * depending on the annotation attribute values. This method will
+    * maintain references for serialized elements.
+    * 
+    * @param node this is the node that the value is written to
+    * @param item this is the item that is to be written
+    * @param name this is the name of the node to be created
+    */   
+   private void write(OutputNode node, Object item, String name) throws Exception {
       if(!entry.isInline()) {
          node = node.getChild(name);        
       }
-      if(!isOverridden(node, item)) {
-         primitive.write(node, item);
+      if(item != null) {        
+         if(!isOverridden(node, item)) {
+            primitive.write(node, item);
+         }
       }
    }
    

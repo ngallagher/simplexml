@@ -83,6 +83,9 @@ class CompositeKey implements Converter {
       Position line = node.getPosition();
       String name = entry.getKey();
       
+      if(name == null) {
+         name = Factory.getName(type);
+      }
       if(entry.isAttribute()) {
          throw new ElementException("Can not have %s as an attribute at %s", type, line);
       }
@@ -109,28 +112,7 @@ class CompositeKey implements Converter {
       if(node == null) {
          throw new ElementException("Element '%s' does not exist at %s", name, line);
       }   
-      return read(node, type);
-   }
-   
-   /**
-    * This method is used to read the key value from the node. The 
-    * value read from the node is resolved using the template filter.
-    * If the key value can not be found according to the annotation
-    * attributes then an exception is thrown.
-    * 
-    * @param node this is the node to read the key value from
-    * @param type this is the type that the key is to be read as
-    * 
-    * @return this returns the value deserialized from the node
-    */ 
-   private Object read(InputNode node, Class type) throws Exception {
-      Position line = node.getPosition();      
-      InputNode next = node.getNext(); 
-      
-      if(next == null) {
-         throw new ElementException("Element does not exist at %s for %s", line, type);
-      }
-      return root.read(next, type);
+      return root.read(node, type);
    }
    
    /**
@@ -147,6 +129,9 @@ class CompositeKey implements Converter {
       Position line = node.getPosition();
       String name = entry.getKey();
       
+      if(name == null) {
+         name = Factory.getName(type);
+      }
       if(entry.isAttribute()) {
          throw new ElementException("Can not have %s as an attribute at %s", type, line);
       }
@@ -164,39 +149,19 @@ class CompositeKey implements Converter {
     * 
     * @return this returns the value deserialized from the node
     */ 
-   private boolean validate(InputNode node, String name) throws Exception {
+   private boolean validate(InputNode node, String name) throws Exception {      
+      InputNode next = node.getNext(name);
       Position line = node.getPosition();
       
-      if(name != null) {
-         node = node.getNext(name);
-      }    
-      if(node == null) {
-         throw new ElementException("Element '%s' does not exist at %s", name, line);
-      }   
-      return validate(node, type);
-   }
-   
-   /**
-    * This method is used to read the key value from the node. The 
-    * value read from the node is resolved using the template filter.
-    * If the key value can not be found according to the annotation
-    * attributes then an exception is thrown.
-    * 
-    * @param node this is the node to read the key value from
-    * @param type this is the type that the key is to be read as
-    * 
-    * @return this returns the value deserialized from the node
-    */ 
-   private boolean validate(InputNode node, Class type) throws Exception {
-      Position line = node.getPosition();      
-      InputNode next = node.getNext(); 
-      
       if(next == null) {
-         throw new ElementException("Element does not exist at %s for %s", line, type);
+         throw new ElementException("Element '%s' missing at line %s", name, line);
+      }
+      if(next.isEmpty()) {
+         return true;
       }
       return root.validate(next, type);
    }
-
+   
    /**
     * This method is used to write the value to the specified node.
     * The value written to the node must be a composite object and if
@@ -212,9 +177,9 @@ class CompositeKey implements Converter {
       if(entry.isAttribute()) {
          throw new ElementException("Can not have %s as an attribute", type);
       }
-      if(name != null) {
-         node = node.getChild(name);
-      }
-      root.write(node, item, type);      
+      if(name == null) {
+         name = Factory.getName(type);
+      }      
+      root.write(node, item, type, name);      
    }
 }

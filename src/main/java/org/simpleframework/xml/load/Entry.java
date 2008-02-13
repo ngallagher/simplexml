@@ -203,11 +203,6 @@ class Entry {
     * @return this returns true if the value can be written inline
     */
    public boolean isInline() throws Exception {
-      String value = getValue();
-      
-      if(value != null) {
-         return true;
-      }
       return isAttribute();
    }
    

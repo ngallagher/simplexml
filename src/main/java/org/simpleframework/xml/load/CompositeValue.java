@@ -41,6 +41,11 @@ class CompositeValue implements Converter {
     * This is the traverser used to read and write the value with.
     */
    private final Traverser root;
+   
+   /**
+    * This is the entry object used to provide configuration details.
+    */   
+   private final Entry entry;
   
    /**
     * This represents the type of object the value is written as.
@@ -59,6 +64,7 @@ class CompositeValue implements Converter {
     */
    public CompositeValue(Source root, Entry entry, Class type) throws Exception {
       this.root = new Traverser(root);
+      this.entry = entry;
       this.type = type;
    }
    
@@ -90,17 +96,41 @@ class CompositeValue implements Converter {
     * 
     * @param node this is the node to read the value object from
     * 
-    * @return this returns the value deserialized from the node
+    * @return this returns true if this represents a valid value
     */ 
    public boolean validate(InputNode node) throws Exception { 
       Position line = node.getPosition();
-      InputNode next = node.getNext();
+      String name = entry.getValue();
+      
+      if(name == null) {
+         name = Factory.getName(type);
+      }
+      return validate(node, name);
+   }  
+   
+   /**
+    * This method is used to read the value object from the node. The 
+    * value read from the node is resolved using the template filter.
+    * If the value data can not be found according to the annotation 
+    * attributes then an exception is thrown.
+    * 
+    * @param node this is the node to read the value object from
+    * @param name this is the name of the value element
+    * 
+    * @return this returns true if this represents a valid value
+    */    
+   private boolean validate(InputNode node, String name) throws Exception {      
+      InputNode next = node.getNext(name);
+      Position line = node.getPosition();
       
       if(next == null) {
-         throw new ElementException("Element does not exist at %s", line);
+         throw new ElementException("Element '%s' missing at line %s", name, line);
+      }
+      if(next.isEmpty()) {
+         return true;
       }
       return root.validate(next, type);
-   } 
+   }
    
    /**
     * This method is used to write the value to the specified node.
@@ -110,9 +140,12 @@ class CompositeValue implements Converter {
     * @param node this is the node that the value is written to
     * @param item this is the item that is to be written
     */
-   public void write(OutputNode node, Object item) throws Exception {   
-      if(item != null) {
-         root.write(node, item, type);
+   public void write(OutputNode node, Object item) throws Exception {
+      String name = entry.getValue();
+      
+      if(name == null) {
+         name = Factory.getName(type);
       }
+      root.write(node, item, type, name);      
    }
 }
