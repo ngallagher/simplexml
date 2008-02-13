@@ -246,8 +246,10 @@ class PrimitiveKey implements Converter {
       }    
       OutputNode child = node.getChild(name);  
       
-      if(!isOverridden(child, item)) {
-         primitive.write(child, item);
+      if(item != null) {
+         if(!isOverridden(child, item)) {
+            primitive.write(child, item);
+         }
       }
    }
    

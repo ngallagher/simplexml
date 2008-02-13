@@ -11,7 +11,7 @@ import org.simpleframework.xml.Root;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.ValidationTestCase;
 
-public class MapTest extends ValidationTestCase {
+public class MapNullTest extends ValidationTestCase {
    
    private static final String ENTRY_MAP =     
    "<entryMap>\n"+
@@ -53,97 +53,51 @@ public class MapTest extends ValidationTestCase {
    "   </map>\n"+
    "</stringMap>";
    
-   private static final String COMPLEX_VALUE_KEY_OVERRIDE_MAP =     
+   private static final String COMPLEX_MAP =     
    "<complexMap>\n"+
    "   <map>\n"+   
-   "      <item>" +
-   "         <key>\n" +
+   "      <entry>" +
+   "         <compositeKey>\n" +
    "            <name>name 1</name>\n" +
    "            <address>address 1</address>\n" +
-   "         </key>\n" +
-   "         <value>\n" +  
+   "         </compositeKey>\n" +
+   "         <mapEntry>\n" +  
    "            <name>a</name>\n"+
    "            <value>example 1</value>\n"+
-   "         </value>" + 
-   "      </item>" +
-   "      <item>" +
-   "         <key>\n" +
+   "         </mapEntry>" + 
+   "      </entry>" +
+   "      <entry>" +
+   "         <compositeKey>\n" +
    "            <name>name 2</name>\n" +
    "            <address>address 2</address>\n" +
-   "         </key>\n" +
-   "         <value>\n" +  
+   "         </compositeKey>\n" +
+   "         <mapEntry>\n" +  
    "            <name>b</name>\n"+
    "            <value>example 2</value>\n"+
-   "         </value>" + 
-   "      </item>" +
-   "      <item>" +
-   "         <key>\n" +
+   "         </mapEntry>" + 
+   "      </entry>" +
+   "      <entry>" +
+   "         <compositeKey>\n" +
    "            <name>name 3</name>\n" +
    "            <address>address 3</address>\n" +
-   "         </key>\n" +
-   "         <value>\n" +  
+   "         </compositeKey>\n" +
+   "         <mapEntry>\n" +  
    "            <name>c</name>\n"+
    "            <value>example 3</value>\n"+
-   "         </value>" + 
-   "      </item>" +
-   "      <item>" +
-   "         <key>\n" +
+   "         </mapEntry>" + 
+   "      </entry>" +
+   "      <entry>" +
+   "         <compositeKey>\n" +
    "            <name>name 4</name>\n" +
    "            <address>address 4</address>\n" +
-   "         </key>\n" +
-   "         <value>\n" +  
+   "         </compositeKey>\n" +
+   "         <mapEntry>\n" +  
    "            <name>d</name>\n"+
    "            <value>example 4</value>\n"+
-   "         </value>" + 
-   "      </item>" +
+   "         </mapEntry>" + 
+   "      </entry>" +
    "   </map>\n"+
    "</complexMap>"; 
-   
-   private static final String COMPLEX_MAP =     
-      "<complexMap>\n"+
-      "   <map>\n"+   
-      "      <entry>" +
-      "         <compositeKey>\n" +
-      "            <name>name 1</name>\n" +
-      "            <address>address 1</address>\n" +
-      "         </compositeKey>\n" +
-      "         <mapEntry>\n" +  
-      "            <name>a</name>\n"+
-      "            <value>example 1</value>\n"+
-      "         </mapEntry>" + 
-      "      </entry>" +
-      "      <entry>" +
-      "         <compositeKey>\n" +
-      "            <name>name 2</name>\n" +
-      "            <address>address 2</address>\n" +
-      "         </compositeKey>\n" +
-      "         <mapEntry>\n" +  
-      "            <name>b</name>\n"+
-      "            <value>example 2</value>\n"+
-      "         </mapEntry>" + 
-      "      </entry>" +
-      "      <entry>" +
-      "         <compositeKey>\n" +
-      "            <name>name 3</name>\n" +
-      "            <address>address 3</address>\n" +
-      "         </compositeKey>\n" +
-      "         <mapEntry>\n" +  
-      "            <name>c</name>\n"+
-      "            <value>example 3</value>\n"+
-      "         </mapEntry>" + 
-      "      </entry>" +
-      "      <entry>" +
-      "         <compositeKey>\n" +
-      "            <name>name 4</name>\n" +
-      "            <address>address 4</address>\n" +
-      "         </compositeKey>\n" +
-      "         <mapEntry>\n" +  
-      "            <name>d</name>\n"+
-      "            <value>example 4</value>\n"+
-      "         </mapEntry>" + 
-      "      </entry>" +
-      "   </map>\n"+
-      "</complexMap>";   
    
    private static final String PRIMITIVE_MAP =      
    "<primitiveMap>\n"+
@@ -333,150 +287,6 @@ public class MapTest extends ValidationTestCase {
       public BigDecimal getValue(String name) {
          return map.get(name);
       }
-   }
-   
-   @Root
-   private static class PrimitiveValueOverrideMap {
-      
-      @ElementMap(value="decimal")
-      private Map<String, BigDecimal> map;
-      
-      public BigDecimal getValue(String name) {
-         return map.get(name);
-      }
-   }
-   
-   @Root
-   private static class PrimitiveValueKeyOverrideMap {
-      
-      @ElementMap(value="decimal", key="text", entry="item")
-      private Map<String, BigDecimal> map;
-      
-      public BigDecimal getValue(String name) {
-         return map.get(name);
-      }
-   }
-   
-   @Root
-   private static class ComplexValueKeyOverrideMap {      
-      
-      @ElementMap(key="key", value="value", entry="item")
-      private Map<CompositeKey, MapEntry> map;
-      
-      public ComplexValueKeyOverrideMap() {
-         this.map = new HashMap<CompositeKey, MapEntry>();
-      }
-      
-      public String getValue(CompositeKey key) {
-         return map.get(key).value;
-      }
-   }
-   
-   @Root
-   private static class PrimitiveInlineMap {
-      
-      @ElementMap(entry="entity", inline=true)
-      private Map<String, BigDecimal> map;
-      
-      public BigDecimal getValue(String name) {
-         return map.get(name);
-      }
-   }
-   
-   public void testEntryMap() throws Exception {
-      Serializer serializer = new Persister();
-      EntryMap example = serializer.read(EntryMap.class, ENTRY_MAP);
-      
-      assertEquals("example 1", example.getValue("a"));
-      assertEquals("example 2", example.getValue("b"));
-      assertEquals("example 3", example.getValue("c"));
-      assertEquals("example 4", example.getValue("d"));
-      
-      validate(example, serializer);
-   }
-   
-   public void testStringMap() throws Exception {
-      Serializer serializer = new Persister();
-      StringMap example = serializer.read(StringMap.class, STRING_MAP);
-      
-      assertEquals("example 1", example.getValue("a"));
-      assertEquals("example 2", example.getValue("b"));
-      assertEquals("example 3", example.getValue("c"));
-      assertEquals("example 4", example.getValue("d"));
-      
-      validate(example, serializer);
-   }
-   
-   public void testComplexMap() throws Exception {
-      Serializer serializer = new Persister();
-      ComplexMap example = serializer.read(ComplexMap.class, COMPLEX_MAP);
-      
-      assertEquals("example 1", example.getValue(new CompositeKey("name 1", "address 1")));
-      assertEquals("example 2", example.getValue(new CompositeKey("name 2", "address 2")));
-      assertEquals("example 3", example.getValue(new CompositeKey("name 3", "address 3")));
-      assertEquals("example 4", example.getValue(new CompositeKey("name 4", "address 4")));
-      
-      validate(example, serializer);
-   }
-   
-   public void testPrimitiveMap() throws Exception {
-      Serializer serializer = new Persister();
-      PrimitiveMap example = serializer.read(PrimitiveMap.class, PRIMITIVE_MAP);
-      
-      assertEquals(new BigDecimal("1.0"), example.getValue("one"));
-      assertEquals(new BigDecimal("2.0"), example.getValue("two"));
-      assertEquals(new BigDecimal("3.0"), example.getValue("three"));
-      assertEquals(new BigDecimal("4.0"), example.getValue("four"));
-      
-      validate(example, serializer);
-   }
-   
-   public void testPrimitiveValueOverrideMap() throws Exception {
-      Serializer serializer = new Persister();
-      PrimitiveValueOverrideMap example = serializer.read(PrimitiveValueOverrideMap.class, PRIMITIVE_VALUE_OVERRIDE_MAP);
-      
-      assertEquals(new BigDecimal("1.0"), example.getValue("one"));
-      assertEquals(new BigDecimal("2.0"), example.getValue("two"));
-      assertEquals(new BigDecimal("3.0"), example.getValue("three"));
-      assertEquals(new BigDecimal("4.0"), example.getValue("four"));
-      
-      validate(example, serializer);
-   }
-   
-   public void testPrimitiveValueKeyOverrideMap() throws Exception {
-      Serializer serializer = new Persister();
-      PrimitiveValueKeyOverrideMap example = serializer.read(PrimitiveValueKeyOverrideMap.class, PRIMITIVE_VALUE_KEY_OVERRIDE_MAP);
-      
-      assertEquals(new BigDecimal("1.0"), example.getValue("one"));
-      assertEquals(new BigDecimal("2.0"), example.getValue("two"));
-      assertEquals(new BigDecimal("3.0"), example.getValue("three"));
-      assertEquals(new BigDecimal("4.0"), example.getValue("four"));
-      
-      validate(example, serializer);
-   }
-   
-   public void testComplexValueKeyOverrideMap() throws Exception {
-      Serializer serializer = new Persister();
-      ComplexValueKeyOverrideMap example = serializer.read(ComplexValueKeyOverrideMap.class, COMPLEX_VALUE_KEY_OVERRIDE_MAP);
-      
-      assertEquals("example 1", example.getValue(new CompositeKey("name 1", "address 1")));
-      assertEquals("example 2", example.getValue(new CompositeKey("name 2", "address 2")));
-      assertEquals("example 3", example.getValue(new CompositeKey("name 3", "address 3")));
-      assertEquals("example 4", example.getValue(new CompositeKey("name 4", "address 4")));
-      
-      validate(example, serializer);
-   }
-   
-   public void testPrimitiveInlineMap() throws Exception {
-      Serializer serializer = new Persister();
-      PrimitiveInlineMap example = serializer.read(PrimitiveInlineMap.class, PRIMITIVE_INLINE_MAP);
-      
-      assertEquals(new BigDecimal("1.0"), example.getValue("one"));
-      assertEquals(new BigDecimal("2.0"), example.getValue("two"));
-      assertEquals(new BigDecimal("3.0"), example.getValue("three"));
-      assertEquals(new BigDecimal("4.0"), example.getValue("four"));
-      
-      validate(example, serializer);
    }
    
    public void testNullValue() throws Exception {
