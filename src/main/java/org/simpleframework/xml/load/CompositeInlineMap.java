@@ -22,7 +22,6 @@ package org.simpleframework.xml.load;
 
 import org.simpleframework.xml.stream.InputNode;
 import org.simpleframework.xml.stream.OutputNode;
-import org.simpleframework.xml.stream.Position;
 import java.util.Map;
 
 /**
@@ -154,54 +153,17 @@ class CompositeInlineMap implements Repeater {
    private Object read(InputNode node, Map map) throws Exception {
       InputNode from = node.getParent();
       String name = node.getName();                
-      
-      while(node != null) {
-         Object key = readKey(node);
-         Object value = readValue(node);
+
+      while(node != null) {         
+         Object index = key.read(node);
+         Object item = value.read(node);
             
-         if(key != null) {
-            map.put(key, value);
+         if(map != null) {
+            map.put(index, item);
          }
          node = from.getNext(name);
       }
       return map;
-   }
-   
-   /**
-    * This <code>readKey</code> method will read the key from the XML 
-    * node whether the key is primitive or composite. If the key is 
-    * a composite value then it is read as a root object, which 
-    * means <code>Root</code> annotation must be present.
-    * 
-    * @param node this is the XML element that is to be deserialized
-    * 
-    * @return this returns the key to use for the resulting map
-    */
-   private Object readKey(InputNode node) throws Exception {
-      return key.read(node);
-   }
-   
-   /**
-    * This <code>readValue</code> method will read the value from the 
-    * XML node whether the value is primitive or composite. If the 
-    * value is a composite value then it is read as a root object, 
-    * which means <code>Root</code> annotation must be present.
-    * 
-    * @param node this is the XML element that is to be deserialized
-    * 
-    * @return this returns the value to use for the resulting map
-    */
-   private Object readValue(InputNode node) throws Exception {  
-      Position line = node.getPosition();
-      String name = entry.getValue();
-      
-      if(name != null) {
-         node = node.getNext(name);
-      }               
-      if(node == null) {
-         throw new ElementException("Could not find element '%s' at %s", name, line);
-      }
-      return value.read(node);
    }
    
    /**
@@ -222,52 +184,15 @@ class CompositeInlineMap implements Repeater {
       String name = node.getName();                
       
       while(node != null) {
-         if(!validateKey(node)) {
+         if(!key.validate(node)) {
             return false;
          }
-         if(!validateValue(node)) {
+         if(!value.validate(node)) {
             return false;
          }
          node = from.getNext(name);
       }
       return true;
-   }
-   
-   /**
-    * This <code>readKey</code> method will read the key from the XML 
-    * node whether the key is primitive or composite. If the key is 
-    * a composite value then it is read as a root object, which 
-    * means <code>Root</code> annotation must be present.
-    * 
-    * @param node this is the XML element that is to be deserialized
-    * 
-    * @return this returns the key to use for the resulting map
-    */
-   private boolean validateKey(InputNode node) throws Exception {
-      return key.validate(node);
-   }
-   
-   /**
-    * This <code>readValue</code> method will read the value from the 
-    * XML node whether the value is primitive or composite. If the 
-    * value is a composite value then it is read as a root object, 
-    * which means <code>Root</code> annotation must be present.
-    * 
-    * @param node this is the XML element that is to be deserialized
-    * 
-    * @return this returns the value to use for the resulting map
-    */
-   private boolean validateValue(InputNode node) throws Exception {  
-      Position line = node.getPosition();
-      String name = entry.getValue();
-      
-      if(name != null) {
-         node = node.getNext(name);
-      }               
-      if(node == null) {
-         throw new ElementException("Could not find element '%s' at %s", name, line);
-      }
-      return value.validate(node);
    }
    
    /**
@@ -303,46 +228,14 @@ class CompositeInlineMap implements Repeater {
     * @param map this is the source map that is to be written 
     */
    public void write(OutputNode node, Map map) throws Exception {   
-      for(Object key : map.keySet()) {
-         String name = entry.getEntry();
-         OutputNode next = node.getChild(name);
-         Object value = map.get(key);
-            
-         if(value != null) {
-            writeKey(next, key);            
-            writeValue(next, value);
-         }         
-      }
-   }
-   
-   /**
-    * This <code>writeKey</code> method will write the key to the  
-    * XML node whether the key is primitive or composite. If the 
-    * key is a composite key then it is written as a root object, 
-    * which means <code>Root</code> annotation must be present.
-    * 
-    * @param node this is the XML element that is to be serialized
-    * @param item this is the key to be written to the XML element
-    */
-   private void writeKey(OutputNode node, Object item) throws Exception {
-      key.write(node, item);     
-   }
-   
-   /**
-    * This <code>writeValue</code> method will write the value to the 
-    * XML node whether the value is primitive or composite. If the 
-    * value is a composite value then it is written as a root object, 
-    * which means <code>Root</code> annotation must be present.
-    * 
-    * @param node this is the XML element that is to be serialized
-    * @param item this is the value to be written to the XML element
-    */
-   private void writeValue(OutputNode node, Object item) throws Exception {
-      String name = entry.getValue();
+      String name = entry.getEntry();
       
-      if(name != null) {
-         node = node.getChild(name); // give it the wrapper node
-      }    
-      value.write(node, item);
+      for(Object index : map.keySet()) {
+         OutputNode next = node.getChild(name);
+         Object item = map.get(index);            
+         
+         key.write(next, index);            
+         value.write(next, item);                  
+      }
    }
 }

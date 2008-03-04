@@ -79,11 +79,10 @@ class CompositeValue implements Converter {
     * @return this returns the value deserialized from the node
     */ 
    public Object read(InputNode node) throws Exception { 
-      Position line = node.getPosition();
       InputNode next = node.getNext();
       
       if(next == null) {
-         throw new ElementException("Element does not exist at %s", line);
+         return null;
       }
       return root.read(next, type);
    }
