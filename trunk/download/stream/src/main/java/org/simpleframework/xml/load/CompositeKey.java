@@ -103,14 +103,12 @@ class CompositeKey implements Converter {
     * 
     * @return this returns the value deserialized from the node
     */ 
-   private Object read(InputNode node, String name) throws Exception {
-      Position line = node.getPosition();
-      
+   private Object read(InputNode node, String name) throws Exception {      
       if(name != null) {
          node = node.getNext(name);
       }    
       if(node == null) {
-         throw new ElementException("Element '%s' does not exist at %s", name, line);
+         return null;
       }   
       return root.read(node, type);
    }

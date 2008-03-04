@@ -187,7 +187,7 @@ class PrimitiveKey implements Converter {
       Position line = node.getPosition();
       
       if(key == null) {
-         throw new AttributeException("Attribute '%s' does not exist at %s", name, line);
+         return true;
       }
       return primitive.validate(key);
    }
@@ -225,7 +225,7 @@ class PrimitiveKey implements Converter {
    public void write(OutputNode node, Object item) throws Exception {
       if(!entry.isAttribute()) {
          writeElement(node, item);
-      } else {
+      } else if(item != null) {
          writeAttribute(node, item);
       }
    }
@@ -263,8 +263,11 @@ class PrimitiveKey implements Converter {
     */
    private void writeAttribute(OutputNode node, Object item) throws Exception {    
       String text = factory.getText(item);
-      String name = entry.getKey();   
+      String name = entry.getKey();  
       
+      if(name == null) {
+         name = Factory.getName(type);
+      }      
       if(text != null) {
          node.setAttribute(name, text);
       }
