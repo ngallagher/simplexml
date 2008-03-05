@@ -73,7 +73,7 @@ class CompositeKey implements Converter {
     * This method is used to read the key value from the node. The 
     * value read from the node is resolved using the template filter.
     * If the key value can not be found according to the annotation
-    * attributes then an exception is thrown.
+    * attributes then null is assumed and returned.
     * 
     * @param node this is the node to read the key value from
     * 
@@ -96,7 +96,7 @@ class CompositeKey implements Converter {
     * This method is used to read the key value from the node. The 
     * value read from the node is resolved using the template filter.
     * If the key value can not be found according to the annotation
-    * attributes then an exception is thrown.
+    * attributes then null is assumed and returned.
     * 
     * @param node this is the node to read the key value from
     * @param name this is the name of the key wrapper XML element
@@ -120,7 +120,7 @@ class CompositeKey implements Converter {
     * This method is used to read the key value from the node. The 
     * value read from the node is resolved using the template filter.
     * If the key value can not be found according to the annotation
-    * attributes then an exception is thrown.
+    * attributes then null is assumed and the node is valid.
     * 
     * @param node this is the node to read the key value from
     * 
@@ -143,7 +143,7 @@ class CompositeKey implements Converter {
     * This method is used to read the key value from the node. The 
     * value read from the node is resolved using the template filter.
     * If the key value can not be found according to the annotation
-    * attributes then an exception is thrown.
+    * attributes then null is assumed and the node is valid.
     * 
     * @param node this is the node to read the key value from
     * @param name this is the name of the key wrapper XML element

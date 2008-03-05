@@ -112,7 +112,7 @@ class PrimitiveValue implements Converter {
     * This method is used to read the value value from the node. The 
     * value read from the node is resolved using the template filter.
     * If the value value can not be found according to the annotation
-    * attributes then an exception is thrown.
+    * attributes then null is assumed and returned.
     * 
     * @param node this is the node to read the value object from
     * @param name this is the name of the value XML element
@@ -132,7 +132,7 @@ class PrimitiveValue implements Converter {
     * This method is used to read the value value from the node. The 
     * value read from the node is resolved using the template filter.
     * If the value value can not be found according to the annotation
-    * attributes then an exception is thrown.
+    * attributes then null is assumed and the node is valid.
     * 
     * @param node this is the node to read the value object from
     * 
@@ -151,8 +151,8 @@ class PrimitiveValue implements Converter {
     * This method is used to read the value value from the node. The 
     * value read from the node is resolved using the template filter.
     * If the value value can not be found according to the annotation
-    * attributes then an exception is thrown.
-    * 
+    * attributes then null is assumed and the node is valid.
+    *  
     * @param node this is the node to read the value object from
     * @param name this is the name of the node to be validated
     * 
