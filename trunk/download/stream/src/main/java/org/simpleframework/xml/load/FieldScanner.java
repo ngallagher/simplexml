@@ -42,18 +42,24 @@ import java.lang.reflect.Field;
 class FieldScanner extends ContactList {
    
    /**
-    * Constructor for the <codde>FieldScanner</code> object. This is
+    * This is used to acquire the hierarchy for the class scanned.
+    */
+   private Hierarchy hierarchy;
+   
+   /**
+    * Constructor for the <code>FieldScanner</code> object. This is
     * used to perform a scan on the specified class in order to find
     * all fields that are labeled with an XML annotation.
     * 
     * @param type this is the schema class that is to be scanned
     */
    public FieldScanner(Class type) {
+      this.hierarchy = new Hierarchy(type);
       this.scan(type);
    }
    
    /**
-    * This method is used to scan the class heirarchy for each class
+    * This method is used to scan the class hierarchy for each class
     * in order to extract fields that contain XML annotations. If
     * the field is annotated it is converted to a contact so that
     * it can be used during serialization and deserialization.
@@ -63,11 +69,8 @@ class FieldScanner extends ContactList {
     * @throws Exception thrown if the object schema is invalid
     */
    private void scan(Class type) {
-      Class real = type;
-      
-      while(type != null) {           
-         scan(real, type);
-         type = type.getSuperclass();
+      for(Class next : hierarchy) {
+         scan(type, next);
       }         
    }
    
