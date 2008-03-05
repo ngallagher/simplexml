@@ -121,10 +121,9 @@ class PrimitiveValue implements Converter {
     */ 
    private Object read(InputNode node, String name) throws Exception {
       InputNode child = node.getNext(name);
-      Position line = node.getPosition();
       
       if(child == null) {
-         throw new TextException("Element '%s' not found at %s", name, line);         
+         return null;        
       }
       return primitive.read(child);      
    }
@@ -160,13 +159,11 @@ class PrimitiveValue implements Converter {
     * @return this returns true if the primitive key is valid
     */    
    private boolean validate(InputNode node, String name) throws Exception {
-      Position line = node.getPosition();
-      
       if(!entry.isInline()) {
          node = node.getNext(name);
       
          if(node == null) {
-            throw new TextException("Element '%s' not found at %s", name, line);         
+            return true;        
          }
       }
       return primitive.validate(node);

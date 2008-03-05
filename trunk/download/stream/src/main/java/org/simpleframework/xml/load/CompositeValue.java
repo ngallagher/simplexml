@@ -22,7 +22,6 @@ package org.simpleframework.xml.load;
 
 import org.simpleframework.xml.stream.InputNode;
 import org.simpleframework.xml.stream.OutputNode;
-import org.simpleframework.xml.stream.Position;
 
 /**
  * The <code>CompositeValue</code> object is used to convert an object
@@ -84,6 +83,9 @@ class CompositeValue implements Converter {
       if(next == null) {
          return null;
       }
+      if(next.isEmpty()) {
+         return null;
+      }
       return root.read(next, type);
    }
    
@@ -98,7 +100,6 @@ class CompositeValue implements Converter {
     * @return this returns true if this represents a valid value
     */ 
    public boolean validate(InputNode node) throws Exception { 
-      Position line = node.getPosition();
       String name = entry.getValue();
       
       if(name == null) {
@@ -120,10 +121,9 @@ class CompositeValue implements Converter {
     */    
    private boolean validate(InputNode node, String name) throws Exception {      
       InputNode next = node.getNext(name);
-      Position line = node.getPosition();
       
       if(next == null) {
-         throw new ElementException("Element '%s' missing at line %s", name, line);
+         return true;
       }
       if(next.isEmpty()) {
          return true;

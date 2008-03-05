@@ -12,8 +12,7 @@ import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.ValidationTestCase;
 
 public class MapNullTest extends ValidationTestCase {
-   
-   
+  
    private static final String EMPTY_AS_NULL = 
    "<complexMap>\r\n" +
    "   <map class='java.util.HashMap'>\r\n" +
@@ -51,6 +50,94 @@ public class MapNullTest extends ValidationTestCase {
    "      </entry>\r\n" +
    "   </map>\r\n" +
    "</complexMap>\r\n";
+   
+   private static final String EMPTY_COMPOSITE_VALUE =
+   "<complexMap>\r\n" +
+   "   <map class='java.util.HashMap'>\r\n" +
+   "      <entry>\r\n" +
+   "         <compositeKey>\r\n" +
+   "            <name>name.4</name>\r\n" +
+   "            <address>address.4</address>\r\n" +
+   "         </compositeKey>\r\n" +
+   "      </entry>\r\n" +
+   "   </map>\r\n" +
+   "</complexMap>\r\n";
+   
+   private static final String EMPTY_COMPOSITE_BLANK_VALUE =
+   "<complexMap>\r\n" +
+   "   <map class='java.util.HashMap'>\r\n" +
+   "      <entry>\r\n" +
+   "         <compositeKey>\r\n" +
+   "            <name>name.4</name>\r\n" +
+   "            <address>address.4</address>\r\n" +
+   "         </compositeKey>\r\n" +
+   "         <mapEntry/>\r\n" +
+   "      </entry>\r\n" +
+   "   </map>\r\n" +
+   "</complexMap>\r\n";
+   
+   private static final String EMPTY_COMPOSITE_KEY =
+   "<complexMap>\r\n" +
+   "   <map class='java.util.HashMap'>\r\n" +
+   "      <entry>\r\n" +
+   "         <mapEntry>\r\n" +
+   "            <name>3</name>\r\n" +
+   "            <value>3</value>\r\n" +
+   "         </mapEntry>\r\n" +
+   "      </entry>\r\n" +
+   "   </map>\r\n" +
+   "</complexMap>\r\n";     
+   
+   private static final String EMPTY_COMPOSITE_BLANK_KEY =
+   "<complexMap>\r\n" +
+   "   <map class='java.util.HashMap'>\r\n" +
+   "      <entry>\r\n" +
+   "         <compositeKey/>\r\n" +
+   "         <mapEntry>\r\n" +
+   "            <name>3</name>\r\n" +
+   "            <value>3</value>\r\n" +
+   "         </mapEntry>\r\n" +
+   "      </entry>\r\n" +
+   "   </map>\r\n" +
+   "</complexMap>\r\n";
+   
+   private static final String EMPTY_PRIMITIVE_VALUE =
+   "<primitiveMap>\r\n" +
+   "   <table class='java.util.HashMap'>\r\n" +
+   "      <entry>\r\n" +
+   "         <string>example</string>\r\n" +            
+   "      </entry>\r\n" +
+   "   </table>\r\n" +
+   "</primitiveMap>\r\n";
+   
+   private static final String EMPTY_PRIMITIVE_BLANK_VALUE =
+   "<primitiveMap>\r\n" +
+   "   <table class='java.util.HashMap'>\r\n" +
+   "      <entry>\r\n" +
+   "         <string>example</string>\r\n" + 
+   "         <bigDecimal/>\r\n" +
+   "      </entry>\r\n" +
+   "   </table>\r\n" +
+   "</primitiveMap>\r\n";
+   
+   private static final String EMPTY_PRIMITIVE_KEY =
+   "<primitiveMap>\r\n" +
+   "   <table class='java.util.HashMap'>\r\n" +
+   "      <entry>\r\n" +
+   "         <bigDecimal>4</bigDecimal>\r\n" +
+   "      </entry>\r\n" +
+   "   </table>\r\n" +
+   "</primitiveMap>\r\n";
+   
+   private static final String EMPTY_PRIMITIVE_BLANK_KEY =
+   "<primitiveMap>\r\n" +
+   "   <table class='java.util.HashMap'>\r\n" +
+   "      <entry>\r\n" +
+   "         <string/>\r\n" +
+   "         <bigDecimal>4</bigDecimal>\r\n" +
+   "      </entry>\r\n" +
+   "   </table>\r\n" +
+   "</primitiveMap>\r\n";
    
    @Root
    private static class MapEntry {
@@ -149,6 +236,86 @@ public class MapNullTest extends ValidationTestCase {
       }
    }
    
+   public void testEmptyCompositeValue() throws Exception {
+      Serializer serializer = new Persister();
+      ComplexMap value = serializer.read(ComplexMap.class, EMPTY_COMPOSITE_VALUE);
+      boolean valid = serializer.validate(ComplexMap.class, EMPTY_COMPOSITE_VALUE);
+      
+      assertTrue(valid);
+      
+      validate(value, serializer);
+   }
+   
+   public void testEmptyCompositeBlankValue() throws Exception {
+      Serializer serializer = new Persister();
+      ComplexMap value = serializer.read(ComplexMap.class, EMPTY_COMPOSITE_BLANK_VALUE);
+      boolean valid = serializer.validate(ComplexMap.class, EMPTY_COMPOSITE_BLANK_VALUE);
+      
+      assertTrue(valid);
+      
+      validate(value, serializer);
+   }
+   
+   public void testEmptyCompositeKey() throws Exception {
+      Serializer serializer = new Persister();
+      ComplexMap value = serializer.read(ComplexMap.class, EMPTY_COMPOSITE_KEY);
+      boolean valid = serializer.validate(ComplexMap.class, EMPTY_COMPOSITE_KEY);
+      
+      assertTrue(valid);
+      
+      validate(value, serializer);      
+   }
+   
+   public void testEmptyCompositeBlankKey() throws Exception {
+      Serializer serializer = new Persister();
+      ComplexMap value = serializer.read(ComplexMap.class, EMPTY_COMPOSITE_BLANK_KEY);     
+      boolean valid = serializer.validate(ComplexMap.class, EMPTY_COMPOSITE_BLANK_KEY);
+      
+      assertTrue(valid);
+      
+      validate(value, serializer);      
+   }
+   
+   public void testEmptyPrimitiveValue() throws Exception {
+      Serializer serializer = new Persister();
+      PrimitiveMap value = serializer.read(PrimitiveMap.class, EMPTY_PRIMITIVE_VALUE);     
+      boolean valid = serializer.validate(PrimitiveMap.class, EMPTY_PRIMITIVE_VALUE);
+      
+      assertTrue(valid);
+      
+      validate(value, serializer);      
+   }
+   
+   public void testEmptyPrimitiveBlankValue() throws Exception {
+      Serializer serializer = new Persister();
+      PrimitiveMap value = serializer.read(PrimitiveMap.class, EMPTY_PRIMITIVE_BLANK_VALUE);     
+      boolean valid = serializer.validate(PrimitiveMap.class, EMPTY_PRIMITIVE_BLANK_VALUE);
+      
+      assertTrue(valid);
+      
+      validate(value, serializer);      
+   }
+   
+   public void testEmptyPrimitiveKey() throws Exception {
+      Serializer serializer = new Persister();
+      PrimitiveMap value = serializer.read(PrimitiveMap.class, EMPTY_PRIMITIVE_KEY);     
+      boolean valid = serializer.validate(PrimitiveMap.class, EMPTY_PRIMITIVE_KEY);
+      
+      assertTrue(valid);
+      
+      validate(value, serializer);      
+   }
+   
+   public void testEmptyPrimitiveBlankKey() throws Exception {
+      Serializer serializer = new Persister();
+      PrimitiveMap value = serializer.read(PrimitiveMap.class, EMPTY_PRIMITIVE_BLANK_KEY);     
+      boolean valid = serializer.validate(PrimitiveMap.class, EMPTY_PRIMITIVE_BLANK_KEY);
+      
+      assertTrue(valid);
+      
+      validate(value, serializer);      
+   }
+   
    public void testNullValue() throws Exception {
       Serializer serializer = new Persister();
       PrimitiveMap primitiveMap = new PrimitiveMap();
@@ -188,4 +355,6 @@ public class MapNullTest extends ValidationTestCase {
       
       validate(emptyNull, serializer);
    }
+   
+   // TODO test the null values and exceptions with the map
 }
