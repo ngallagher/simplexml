@@ -28,8 +28,8 @@ import org.simpleframework.xml.ElementMap;
 import org.simpleframework.xml.Text;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.LinkedHashMap;
 import java.util.Iterator;
-import java.util.HashMap;
 
 /**
  * The <code>MethodScanner</code> object is used to scan an object 
@@ -54,7 +54,12 @@ import java.util.HashMap;
  * @author Niall Gallagher
  */
 class MethodScanner extends ContactList {
-                  
+   
+   /**
+    * This is used to acquire the hierarchy for the class scanned.
+    */
+   private Hierarchy hierarchy;
+   
    /**
     * This is used to collect all the set methods from the object.
     */
@@ -80,7 +85,8 @@ class MethodScanner extends ContactList {
     * 
     * @throws Exception thrown if there was a problem scanning
     */
-   public MethodScanner(Class type) throws Exception {      
+   public MethodScanner(Class type) throws Exception {
+      this.hierarchy = new Hierarchy(type);
       this.write = new PartMap();
       this.read = new PartMap();
       this.type = type;
@@ -88,7 +94,7 @@ class MethodScanner extends ContactList {
    }
    
    /**
-    * This method is used to scan the class heirarchy for each class
+    * This method is used to scan the class hierarchy for each class
     * in order to extract methods that contain XML annotations. If
     * a method is annotated it is converted to a contact so that
     * it can be used during serialization and deserialization.
@@ -98,12 +104,9 @@ class MethodScanner extends ContactList {
     * @throws Exception thrown if the object schema is invalid
     */
    private void scan(Class type) throws Exception {
-      Class real = type;
-      
-      while(type != null) {         
-         scan(real, type);
-         type = type.getSuperclass();
-      }
+      for(Class next : hierarchy) {
+         scan(type, next);
+      } 
       build();
       validate();
    }
@@ -216,7 +219,7 @@ class MethodScanner extends ContactList {
    private void process(MethodPart method, PartMap map) {
       String name = method.getName();
       
-      if(!map.containsKey(name)) {
+      if(name != null) {
          map.put(name, method);
       }
    }
@@ -335,7 +338,7 @@ class MethodScanner extends ContactList {
     * 
     * @see org.simpleframework.xml.load.MethodPart
     */
-   private class PartMap extends HashMap<String, MethodPart> implements Iterable<String>{
+   private class PartMap extends LinkedHashMap<String, MethodPart> implements Iterable<String>{
       
       /**
        * This returns an iterator for the Java Bean method names for
