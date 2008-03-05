@@ -35,7 +35,7 @@ import java.util.Iterator;
  * The <code>MethodScanner</code> object is used to scan an object 
  * for matching get and set methods for an XML annotation. This will
  * scan for annotated methods starting with the most specialized
- * class up the class heirarchy. Thus, annotated methods can be 
+ * class up the class hierarchy. Thus, annotated methods can be 
  * overridden in a type specialization.
  * <p>
  * The annotated methods must be either a getter or setter method
@@ -317,7 +317,7 @@ class MethodScanner extends ContactList {
     * match, therefore violating the contract of a property.
     * 
     * @param write this is a get method that has been extracted
-    * @param name this is the Java Bean methos name to be matched 
+    * @param name this is the Java Bean methods name to be matched 
     * 
     * @throws Exception thrown if there is a unmatched set method
     */
