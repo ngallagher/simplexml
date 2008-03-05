@@ -141,10 +141,9 @@ class PrimitiveKey implements Converter {
     */
    private Object readElement(InputNode node, String name) throws Exception {
       InputNode child = node.getNext(name);
-      Position line = node.getPosition();
       
       if(child == null) {
-         throw new ElementException("Element '%s' does not exist at %s", name, line);
+         return null;
       }     
       return primitive.read(child);     
    }
@@ -184,7 +183,6 @@ class PrimitiveKey implements Converter {
     */
    private boolean validateAttribute(InputNode node, String name) throws Exception {     
       InputNode key = node.getAttribute(name);
-      Position line = node.getPosition();
       
       if(key == null) {
          return true;
@@ -205,10 +203,9 @@ class PrimitiveKey implements Converter {
     */
    private boolean validateElement(InputNode node, String name) throws Exception {
       InputNode child = node.getNext(name);
-      Position line = node.getPosition();
       
       if(child == null) {
-         throw new ElementException("Element '%s' does not exist at %s", name, line);
+         return true;
       }     
       return primitive.validate(child);     
    }

@@ -110,6 +110,9 @@ class CompositeKey implements Converter {
       if(node == null) {
          return null;
       }   
+      if(node.isEmpty()) {
+         return null;
+      }
       return root.read(node, type);
    }
    
@@ -149,10 +152,9 @@ class CompositeKey implements Converter {
     */ 
    private boolean validate(InputNode node, String name) throws Exception {      
       InputNode next = node.getNext(name);
-      Position line = node.getPosition();
       
       if(next == null) {
-         throw new ElementException("Element '%s' missing at line %s", name, line);
+         return true;
       }
       if(next.isEmpty()) {
          return true;
