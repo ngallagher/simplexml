@@ -1,0 +1,3 @@
+Enhancement to scanning to ensure order of XML elements follow class heirarchy
+Change made to the element map annotation to support null values and keys
+Performance enhancement made to the scanning of map keys and values
