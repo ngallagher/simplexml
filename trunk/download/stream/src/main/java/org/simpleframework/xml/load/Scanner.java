@@ -341,7 +341,7 @@ class Scanner  {
          scan(real, type);
          type = type.getSuperclass();
       }      
-      process(real);      
+      process(real); 
    }
 
    /**
@@ -382,8 +382,48 @@ class Scanner  {
          if(!elements.isEmpty()) {
             throw new TextException("Elements used with %s in %s", text, type);
          }
-      } else {
+      }  else {
          primitive = isEmpty();
+      }
+      validateElements(type);
+      validateAttributes(type);
+   }
+   
+   /**
+    * This is used to validate the configuration of the scanned class.
+    * If an ordered element is specified but does not refer to an
+    * existing element then this will throw an exception.
+    * 
+    * @param type this is the object type that is being scanned
+    * 
+    * @throws Exception if an ordered element does not exist
+    */
+   private void validateElements(Class type) throws Exception {
+      for(String name : order.elements()) {
+         Label label = elements.get(name);
+         
+         if(label == null) {
+            throw new ElementException("Ordered element '%s' missing for %s", name, type);
+         }
+      }
+   }
+   
+   /**
+    * This is used to validate the configuration of the scanned class.
+    * If an ordered attribute is specified but does not refer to an
+    * existing attribute then this will throw an exception.
+    * 
+    * @param type this is the object type that is being scanned
+    * 
+    * @throws Exception if an ordered attribute does not exist
+    */
+   private void validateAttributes(Class type) throws Exception {
+      for(String name : order.attributes()) {
+         Label label = attributes.get(name);
+         
+         if(label == null) {
+            throw new AttributeException("Ordered attribute '%s' missing for %s", name, type);
+         }
       }
    } 
 
