@@ -1,5 +1,6 @@
 package org.simpleframework.xml.load;
 
+import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Order;
 import org.simpleframework.xml.Transient;
@@ -34,10 +35,10 @@ public class RedundantOrderTest extends ValidationTestCase {
    @Order(attributes={"a", "b", "c"})
    public static class AttributeEntry {
       
-      @Element
+      @Attribute
       private String a;
       
-      @Element
+      @Attribute
       private String b;
       
       @Transient
@@ -62,6 +63,7 @@ public class RedundantOrderTest extends ValidationTestCase {
       try {
          validate(entry, persister);
       }catch(ElementException e) {
+         e.printStackTrace();
          exception = true;
       }
       assertTrue(exception);
@@ -75,6 +77,7 @@ public class RedundantOrderTest extends ValidationTestCase {
       try {
          validate(entry, persister);
       }catch(AttributeException e) {
+         e.printStackTrace();
          exception = true;
       }
       assertTrue(exception);
