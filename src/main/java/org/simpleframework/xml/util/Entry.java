@@ -20,9 +20,6 @@
 
 package org.simpleframework.xml.util;
 
-import org.simpleframework.xml.Attribute;
-import org.simpleframework.xml.Root;
-
 /**
  * The <code>Entry</code> object represents entries to the dictionary
  * object. Every entry must have a name attribute, which is used to
@@ -36,12 +33,15 @@ import org.simpleframework.xml.Root;
  *
  * @author Niall Gallagher
  */ 
-@Root
-public abstract class Entry {
+public interface Entry {
 
    /**
     * Represents the name of the entry instance used for mappings.
+    * This will be used to map the object to the internal map in
+    * the <code>Dictionary</code>. This allows serialized objects
+    * to be added to the dictionary transparently.
+    * 
+    * @return this returns the name of the enrty that is used 
     */         
-   @Attribute
-   protected String name;
+   public String getName();
 }

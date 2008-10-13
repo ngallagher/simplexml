@@ -147,13 +147,20 @@ public class UnicodeTest extends ValidationTestCase {
    "</example>\n"; 
    
    @Root(name="unicode")
-   private static class Unicode extends Entry {
+   private static class Unicode implements Entry {
 
       @Attribute(name="origin")
       private String origin;
 
       @Element(name="text")
       private String text;
+      
+      @Attribute
+      private String name;
+      
+      public String getName() {
+         return name;
+      }
    }
 
    @Root(name="example")

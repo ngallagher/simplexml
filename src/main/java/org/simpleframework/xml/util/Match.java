@@ -20,9 +20,6 @@
  
 package org.simpleframework.xml.util;
 
-import org.simpleframework.xml.Attribute;
-import org.simpleframework.xml.Root;
-
 /**
  * This object is stored within a <code>Resolver</code> so that it 
  * can be retrieved using a string that matches its pattern. Any
@@ -35,12 +32,15 @@ import org.simpleframework.xml.Root;
  *
  * @author Niall Gallagher
  */
-@Root
-public abstract class Match {
+public interface Match {
 
    /**
-    * This is the pattern string that is used by the resolver.
-    */ 
-   @Attribute        
-   protected String pattern;        
+    * This is the pattern string that is used by the resolver. A
+    * pattern can consist of a "*" character and a "?" character
+    * to match the pattern. Implementations of this class should
+    * provide the pattern so that it can be used for resolution.
+    * 
+    * @return this returns the pattern that is to be matched
+    */      
+   public String getPattern();
 }
