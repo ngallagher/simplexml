@@ -1,21 +1,12 @@
 package org.simpleframework.xml.util;
 
-import java.io.StringWriter;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
-import java.util.SortedSet;
-import java.util.Set;
 
 import org.simpleframework.xml.Attribute;
-import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
-import org.simpleframework.xml.load.Persister;
-import org.simpleframework.xml.util.Match;
-import org.simpleframework.xml.util.Resolver;
-
 import org.simpleframework.xml.ValidationTestCase;
+import org.simpleframework.xml.load.Persister;
 
 public class ResolverTest extends ValidationTestCase {
         
@@ -34,10 +25,13 @@ public class ResolverTest extends ValidationTestCase {
    "</test>";  
    
    @Root(name="match")
-   private static class ContentType extends Match {
+   private static class ContentType implements Match {
 
       @Attribute(name="value")
-      private String value;        
+      private String value;   
+      
+      @Attribute
+      private String pattern;
 
       public ContentType() {
          super();                  
@@ -46,6 +40,10 @@ public class ResolverTest extends ValidationTestCase {
       public ContentType(String pattern, String value) {
          this.pattern = pattern;
          this.value = value;        
+      }
+      
+      public String getPattern() {
+         return pattern;
       }
    }
    

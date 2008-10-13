@@ -58,13 +58,20 @@ public class DataTest extends ValidationTestCase {
    }
 
    @Root(name="query")
-   private static class Query extends Entry {
+   private static class Query implements Entry {
 
       @Attribute(name="type")
       private String type;
 
       @Element(name="data", data=true)
       private String data;
+      
+      @Attribute
+      private String name;
+      
+      public String getName() {
+         return name;
+      }
    }
    
 	private Persister serializer;

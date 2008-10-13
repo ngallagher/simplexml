@@ -77,7 +77,7 @@ public class Dictionary<E extends Entry> extends AbstractSet<E> {
     * @param item this is the entry object that is to be inserted
     */ 
    public boolean add(E item) {
-      return map.put(item.name, item) != null;           
+      return map.put(item.getName(), item) != null;           
    }
 
    /**

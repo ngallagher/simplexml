@@ -20,10 +20,12 @@
  
 package org.simpleframework.xml.util;
 
+import java.util.AbstractSet;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
-import java.util.AbstractSet;
-import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -66,12 +68,12 @@ public class Resolver<M extends Match> extends AbstractSet<M> {
    /**
     * Caches the text resolutions made to reduce the work required.
     */        
-   private Cache cache;
+   private final Cache cache;
 
    /**
     * Stores the matches added to the resolver in resolution order.
     */ 
-   private Stack stack;
+   private final Stack stack;
 
    /**
     * The default constructor will create a <code>Resolver</code>
@@ -92,33 +94,71 @@ public class Resolver<M extends Match> extends AbstractSet<M> {
     * This will search the patterns from the last entered pattern to
     * the first entered. So that the last entered patterns are the
     * most searched patterns and will resolve it first if it matches.
-    * <p>
-    * Although it is criticial that this perform well this method
-    * is synchronized. The reasnon for this is that if there was
-    * several threads modifing the <code>Resolver</code> at the same
-    * time <code>ConcurrentModificationException</code> exceptions
-    * would be thrown this would reduce the usefulness of this object.
     *
-    * @param text this is the <code>String</code> to be resolved
+    * @param text this is the string that is to be matched by this
     *
-    * @return will return the <code>String</code> that pattern
-    * resolves to
+    * @return this will return the first match within the resolver
     */
    public M resolve(String text){
-      if(cache.containsKey(text)){
-         return cache.get(text);
+      List<M> list = cache.get(text);
+      
+      if(list == null) {
+         list = resolveAll(text);
+      }
+      if(list.isEmpty()) {
+         return null;
+      }
+      return list.get(0);
+   }
+   
+   /**
+    * This will search the patterns in this <code>Resolver</code> to
+    * see if there is a pattern in it that matches the string given.
+    * This will search the patterns from the last entered pattern to
+    * the first entered. So that the last entered patterns are the
+    * most searched patterns and will resolve it first if it matches.
+    *
+    * @param text this is the string that is to be matched by this
+    *
+    * @return this will return all of the matches within the resolver
+    */
+   public List<M> resolveAll(String text){
+      List<M> list = cache.get(text);
+      
+      if(list != null) {
+         return list;
       }
       char[] array = text.toCharArray();
+  
+      if(array == null) {
+         return null;
+      }
+      return resolveAll(text, array);
+   }
+   
+   /**
+    * This will search the patterns in this <code>Resolver</code> to
+    * see if there is a pattern in it that matches the string given.
+    * This will search the patterns from the last entered pattern to
+    * the first entered. So that the last entered patterns are the
+    * most searched patterns and will resolve it first if it matches.
+    *
+    * @param text this is the string that is to be matched by this
+    *
+    * @return this will return all of the matches within the resolver
+    */
+   private List<M> resolveAll(String key, char[] array){
+      List<M> list = new ArrayList<M>();
       
       for(M match : stack) {
-         String wild = match.pattern;
+         String wild = match.getPattern();
 
          if(match(array, wild.toCharArray())){
-            cache.put(text, match);
-            return match;
+            cache.put(key, list);
+            list.add(match);
          }
       }
-      return null;
+      return list;
    }
 
    /**
@@ -258,17 +298,7 @@ public class Resolver<M extends Match> extends AbstractSet<M> {
     * 
     * @author Niall Gallagher
     */ 
-   private class Cache extends LinkedHashMap<String, M> {
-
-      /**
-       * By default only 1K of resolved matches will be cached.
-       */            
-      private static final int MAX_ENTRIES = 1024;                   
-
-      /**
-       * Represents the load capacity for this cache object.
-       */ 
-      private static final float INITIAL_CAPACITY = 0.75f;
+   private class Cache extends LinkedHashMap<String, List<M>> {
 
       /**
        * Constructor for the <code>Cache</code> object. This is a
@@ -276,7 +306,7 @@ public class Resolver<M extends Match> extends AbstractSet<M> {
        * it will purge the entries that are oldest within the map.
        */ 
       public Cache() {      
-         super(MAX_ENTRIES, INITIAL_CAPACITY, false);              
+         super(1024, 0.75f, false);              
       }
       
       /**
@@ -290,7 +320,7 @@ public class Resolver<M extends Match> extends AbstractSet<M> {
        */ 
       @Override
       public boolean removeEldestEntry(Map.Entry entry) {
-         return size() > MAX_ENTRIES;                                    
+         return size() > 1024;                                    
       } 
    }
 

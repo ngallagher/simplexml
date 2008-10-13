@@ -36,10 +36,17 @@ public class DictionaryTest extends ValidationTestCase {
    "</test>";  
    
    @Root(name="property")
-   private static class Property extends Entry {
+   private static class Property implements Entry {
 
       @Element(name="text")
-      private String text;        
+      private String text; 
+      
+      @Attribute
+      private String name;
+      
+      public String getName() {
+         return name;
+      }
    }
    
    @Root(name="test")

@@ -162,10 +162,17 @@ public class ScatterTest extends ValidationTestCase {
    }
    
    @Root
-   private static class FileMatch extends Entry {
+   private static class FileMatch implements Entry {
       
       @Attribute
       private String file;      
+      
+      @Attribute
+      private String name;
+      
+      public String getName() {
+         return name;
+      }
    }
    
    private enum Version {
