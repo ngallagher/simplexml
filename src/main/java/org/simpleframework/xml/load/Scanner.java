@@ -385,8 +385,10 @@ class Scanner  {
       }  else {
          primitive = isEmpty();
       }
-      validateElements(type);
-      validateAttributes(type);
+      if(order != null) {
+         validateElements(type);
+         validateAttributes(type);
+      }
    }
    
    /**
