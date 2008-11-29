@@ -253,7 +253,7 @@
    </target>
 
    <target name="site" depends="package" description="Generate the site">
-      <copy todir="${root.path}">
+      <copy todir="${root.path}" overwrite="true">
          <fileset dir="${script.path}">
             <include name="site.sh"/>
          </fileset>
@@ -261,6 +261,7 @@
             <filtersfile file="${root.path}/build.properties"/>
          </filterset>
       </copy>
+      <antcall target="javadoc" inheritall="false"/> 
       <antcall target="report" inheritall="false"/>
       <exec executable="sh">
          <arg value="${root.path}/site.sh"/>
