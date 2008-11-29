@@ -2,6 +2,7 @@ archive/serializing_a_simple_object.html
 archive/deserializing_a_simple_object.html
 archive/nested_object_serialization.html
 archive/optional_elements_and_attributes.html
+archive/styling_serialized_xml.html
 archive/reading_a_list_of_elements.html
 archive/overriding_an_annotated_type.html
 archive/dealining_with_inline_lists.html
