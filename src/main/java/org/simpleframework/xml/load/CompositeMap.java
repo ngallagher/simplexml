@@ -20,9 +20,11 @@
 
 package org.simpleframework.xml.load;
 
+import java.util.Map;
+
 import org.simpleframework.xml.stream.InputNode;
 import org.simpleframework.xml.stream.OutputNode;
-import java.util.Map;
+import org.simpleframework.xml.stream.Style;
 
 /**
  * The <code>CompositeMap</code> is used to serialize and deserialize
@@ -70,6 +72,11 @@ class CompositeMap implements Converter {
    private final Converter key;  
    
    /**
+    * This is the style used to style the names used for the XML.
+    */
+   private final Style style;
+   
+   /**
     * The entry object contains the details on how to write the map.
     */
    private final Entry entry;
@@ -88,6 +95,7 @@ class CompositeMap implements Converter {
       this.factory = new MapFactory(root, type);
       this.value = entry.getValue(root);
       this.key = entry.getKey(root);
+      this.style = root.getStyle();
       this.entry = entry;
    }
 
@@ -214,7 +222,8 @@ class CompositeMap implements Converter {
       Map map = (Map) source;                
       
       for(Object index : map.keySet()) {
-         String name = entry.getEntry();
+         String root = entry.getEntry();
+         String name = style.getElement(root);
          OutputNode next = node.getChild(name);
          Object item = map.get(index);            
          

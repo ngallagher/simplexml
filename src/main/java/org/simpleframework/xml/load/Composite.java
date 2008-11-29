@@ -63,6 +63,11 @@ class Composite implements Converter {
    private final ObjectFactory factory;
    
    /**
+    * This is used to convert any primitive values that are needed.
+    */
+   private final Primitive primitive;
+   
+   /**
     * This is used to store objects so that they can be read again.
     */
    private final Collector store;
@@ -88,7 +93,8 @@ class Composite implements Converter {
     */
    public Composite(Source root, Class type) {
       this.factory = new ObjectFactory(root, type);  
-      this.store = new Collector();
+      this.primitive = new Primitive(root, type);
+      this.store = new Collector(root);
       this.root = root;
       this.type = type;
    }
@@ -110,12 +116,18 @@ class Composite implements Converter {
     */
    public Object read(InputNode node) throws Exception {
       Type type = factory.getInstance(node); 
+      
+      if(type.isReference()) {      
+         return type.getInstance();
+      }
+      Class real = type.getType();
+      
+      if(factory.isPrimitive(real)) {
+         return primitive.read(node, real);
+      }
       Object source = type.getInstance();
       
-      if(!type.isReference()) {         
-         return read(node, source);
-      }
-      return source;
+      return read(node, source);
    }
    
    /**
@@ -361,7 +373,7 @@ class Composite implements Converter {
             throw new ValueRequiredException("Empty value for %s in %s at %s", label, type, line);
          }
       } else {
-         if(object != label.getEmpty()) {      
+         if(object != label.getEmpty(root)) {      
             store.put(label, object);
          }
       }         
@@ -387,6 +399,11 @@ class Composite implements Converter {
       for(Label label : map) {
          if(label.isRequired()) {
             throw new ValueRequiredException("Unable to satisfy %s for %s at %s", label, type, line);
+         }
+         Object value = label.getEmpty(root);
+         
+         if(value != null) {
+            store.put(label, value);
          }
       }      
    }
@@ -639,9 +656,13 @@ class Composite implements Converter {
    public void write(OutputNode node, Object source) throws Exception {
       Schema schema = root.getSchema(source);
       
-      try {         
-         schema.persist(source); 
-         write(node, source, schema);
+      try { 
+         if(schema.isPrimitive()) {
+            primitive.write(node, source);
+         } else {
+            schema.persist(source); 
+            write(node, source, schema);
+         }
       } finally {
          schema.complete(source);
       }
@@ -689,7 +710,7 @@ class Composite implements Converter {
          Object value = contact.get(source);
          
          if(value == null) {
-            value = label.getEmpty();
+            value = label.getEmpty(root);
          }
          if(value == null && label.isRequired()) {
             throw new AttributeException("Value for %s is null", label);
@@ -774,7 +795,7 @@ class Composite implements Converter {
          Object value = contact.get(source);
           
          if(value == null) {
-            value = label.getEmpty();
+            value = label.getEmpty(root);
          }
          if(value == null && label.isRequired()) {
             throw new TextException("Value for %s is null", label);
@@ -798,7 +819,7 @@ class Composite implements Converter {
     */
    private void writeAttribute(OutputNode node, Object value, Label label) throws Exception {
       if(value != null) {         
-         String name = label.getName();
+         String name = label.getName(root);
          String text = factory.getText(value);
         
          node.setAttribute(name, text);
@@ -821,7 +842,7 @@ class Composite implements Converter {
     */
    private void writeElement(OutputNode node, Object value, Label label) throws Exception {
       if(value != null) {
-         String name = label.getName();
+         String name = label.getName(root);
          OutputNode next = node.getChild(name);
          Class type = label.getType();         
 

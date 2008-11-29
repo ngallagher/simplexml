@@ -10,6 +10,8 @@
       <property name="javadoc.path" value="doc/javadoc"/>
       <property name="tutorial.path" value="doc/tutorial"/>
       <property name="doc.path" value="doc"/>
+      <property name="maven.path" value="maven"/> 
+      <property name="script.path" value="script"/> 
       <property name="build.path" value="build"/>
       <property name="main.build.path" value="build/main"/>            
       <property name="test.build.path" value="build/test"/>
@@ -32,9 +34,11 @@
    <target name="clean" depends="-layout">
       <delete dir="${build.path}"/>
       <delete dir="${jar.path}"/>
+      <delete dir="${maven.path}"/>
    </target>
 
    <target name="-prepare" depends="clean">
+      <mkdir dir="${maven.path}"/>
       <mkdir dir="${build.path}"/>
       <mkdir dir="${main.build.path}"/>
       <mkdir dir="${test.build.path}"/>
@@ -229,9 +233,9 @@
          </filterset>
       </copy>
       <mkdir dir="${package.path}/${version}"/>
-      <antcall target="report" inheritall="false"/>
       <ant antfile="build.xml" dir="${package.path}/${build.path}/simple-xml-${version}" target="all" inheritall="false"/>
       <ant antfile="build.xml" dir="${package.path}/${build.path}/simple-xml-${version}/${test.path}" target="test" inheritall="false"/>
+      <zip destfile="${package.path}/${version}/simple-xml-${version}.zip" basedir="${package.path}/${build.path}"/>
       <tar tarfile="${package.path}/${version}/simple-xml-${version}.tar" basedir="${package.path}/${build.path}"/>
       <gzip zipfile="${package.path}/${version}/simple-xml-${version}.tar.gz" src="${package.path}/${version}/simple-xml-${version}.tar"/>
       <tstamp>
@@ -248,28 +252,34 @@
       <delete dir="${build.path}"/>
    </target>
 
-   <target name="release" depends="-setup" description="Upload artifacts to sourceforge">
-      <!--available file="${package.path}/${version}/CHANGES" property="changes.exist"/>
-      <fail unless="${changes.exist}" message="${package.path}/${version}/CHANGES file must be provided to release"/-->
-      <antcall target="javadoc"/>
-      <tar tarfile="release.tar">
-         <tarfileset dir="${root.path}">
-            <include name="${javadoc.path}/**/*"/>            
-            <include name="${report.path}/**/*"/>    
-            <include name="${package.path}/${version}/**/*"/>    
-         </tarfileset>
-      </tar>       
-      <gzip zipfile="release.tar.gz" src="release.tar"/>
-      <scp file="release.tar.gz" todir="${login}:${password}@simple.sourceforge.net:${home}" trust="yes"/>
-      <sshexec host="simple.sourceforge.net" username="${login}" password="${password}" command="tar -xzvf ${home}/release.tar.gz -C ${home}" trust="yes"/>
-      <delete file="release.tar.gz"/>      
-      <delete file="release.tar"/>
-      <ftp server="upload.sourceforge.net" remotedir="incoming" userid="anonymous" password="niallg@users.sf.net" verbose="yes" depends="yes">
-         <fileset file="${package.path}/${version}/simple-xml-${version}.tar.gz"/>
-      </ftp>
-      <svn javahl="false">
-         <commit message="Release ${version}" dir="${root.path}"/>               
-      </svn>
+   <target name="site" depends="package" description="Generate the site">
+      <copy todir="${root.path}">
+         <fileset dir="${script.path}">
+            <include name="site.sh"/>
+         </fileset>
+         <filterset>
+            <filtersfile file="${root.path}/build.properties"/>
+         </filterset>
+      </copy>
+      <antcall target="report" inheritall="false"/>
+      <exec executable="sh">
+         <arg value="${root.path}/site.sh"/>
+      </exec>
+   </target>
+
+   <target name="maven" depends="-compile" description="Upload release to maven">
+      <copy todir="${root.path}">
+         <fileset dir="${script.path}">
+            <include name="pom.xml"/>
+            <include name="maven.sh"/>
+         </fileset>
+         <filterset>
+            <filtersfile file="${root.path}/build.properties"/>
+         </filterset>
+      </copy>
+      <exec executable="sh">
+         <arg value="${root.path}/maven.sh"/>
+      </exec>
    </target>
 
    <target name="javadoc" depends="clean" description="Generate source documentation">
@@ -279,8 +289,8 @@
             <fileset dir="${lib.path}">
                <include name="**/*.jar"/>
             </fileset>
-         </classpath>
-         <link href="http://java.sun.com/j2se/1.5.0/docs/api/"/>  
+         </classpath>  
+         <link href="http://java.sun.com/j2se/1.5.0/docs/api/"/> 
       </javadoc>
       <delete dir="${build.path}"/>
    </target>          

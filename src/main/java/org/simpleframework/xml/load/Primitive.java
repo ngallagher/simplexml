@@ -69,6 +69,11 @@ class Primitive implements Converter {
    private final String empty;
    
    /**
+    * This is the type that this primitive expects to represent.
+    */
+   private final Class field;
+   
+   /**
     * Constructor for the <code>Primitive</code> object. This is used
     * to convert an XML node to a primitive object and vice versa. To
     * perform deserialization the primitive object requires the source
@@ -94,6 +99,7 @@ class Primitive implements Converter {
    public Primitive(Source root, Class type, String empty) {
       this.factory = new PrimitiveFactory(root, type);   
       this.empty = empty;
+      this.field = type;
       this.root = root;           
    }
 
@@ -112,8 +118,32 @@ class Primitive implements Converter {
       if(node.isElement()) {
          return readElement(node);
       }
-      return readTemplate(node);
+      return read(node, field);
    }  
+   
+   /**
+    * This <code>read</code> methos will extract the text value from
+    * the node and replace any template variables before converting
+    * it to a primitive value. This uses the <code>Source</code>
+    * object used for this instance of serialization to replace all
+    * template variables with values from the source filter.
+    *
+    * @param node this is the node to be converted to a primitive
+    * @param type this is the type to read the primitive with
+    *
+    * @return this returns the primitive that has been deserialized
+    */ 
+   public Object read(InputNode node, Class type) throws Exception{
+      String value = node.getValue();
+
+      if(value == null) {
+         return null;
+      }
+      if(empty != null && value.equals(empty)) {
+         return empty;         
+      }
+      return readTemplate(value, type);
+   }
    
    /**
     * This <code>read</code> method will extract the text value from
@@ -147,35 +177,12 @@ class Primitive implements Converter {
     * @return this returns the primitive that has been deserialized
     */ 
    private Object readElement(InputNode node, Type type) throws Exception {
-      Object value = readTemplate(node);
+      Object value = read(node, field);
       
       if(value != null) {
          return type.getInstance(value);
       }
       return value;
-   }
-
-   /**
-    * This <code>read</code> methos will extract the text value from
-    * the node and replace any template variables before converting
-    * it to a primitive value. This uses the <code>Source</code>
-    * object used for this instance of serialization to replace all
-    * template variables with values from the source filter.
-    *
-    * @param node this is the node to be converted to a primitive
-    *
-    * @return this returns the primitive that has been deserialized
-    */ 
-   private Object readTemplate(InputNode node) throws Exception{
-      String value = node.getValue();
-      
-      if(value == null) {
-         return null;
-      }
-      if(empty != null && value.equals(empty)) {
-         return empty;         
-      }
-      return readTemplate(value);
    }
    
    /**
@@ -186,14 +193,15 @@ class Primitive implements Converter {
     * template variables with values from the source filter.
     *
     * @param value this is the value to be processed as a template
+    * @param type this is the type that that the primitive is
     *
     * @return this returns the primitive that has been deserialized
     */ 
-   private Object readTemplate(String value) throws Exception {
+   private Object readTemplate(String value, Class type) throws Exception {
       String text = root.getProperty(value);
       
       if(text != null) {
-         return factory.getInstance(text);
+         return factory.getInstance(text, type);
       }
       return null;
    }  

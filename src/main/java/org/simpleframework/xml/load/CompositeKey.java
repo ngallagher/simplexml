@@ -23,6 +23,7 @@ package org.simpleframework.xml.load;
 import org.simpleframework.xml.stream.InputNode;
 import org.simpleframework.xml.stream.OutputNode;
 import org.simpleframework.xml.stream.Position;
+import org.simpleframework.xml.stream.Style;
 
 /**
  * The <code>CompositeKey</code> object is used to convert an object
@@ -42,6 +43,11 @@ class CompositeKey implements Converter {
     * This is the traverser used to read and write the composite key.
     */
    private final Traverser root;
+   
+   /**
+    * This is the style used to style the names used for the XML.
+    */
+   private final Style style;
    
    /**
     * This is the entry object used to provide configuration details.
@@ -65,6 +71,7 @@ class CompositeKey implements Converter {
     */
    public CompositeKey(Source root, Entry entry, Class type) throws Exception {
       this.root = new Traverser(root);
+      this.style = root.getStyle();
       this.entry = entry;
       this.type = type;
    }
@@ -99,11 +106,13 @@ class CompositeKey implements Converter {
     * attributes then null is assumed and returned.
     * 
     * @param node this is the node to read the key value from
-    * @param name this is the name of the key wrapper XML element
+    * @param key this is the name of the key wrapper XML element
     * 
     * @return this returns the value deserialized from the node
     */ 
-   private Object read(InputNode node, String name) throws Exception {      
+   private Object read(InputNode node, String key) throws Exception {
+      String name = style.getElement(key);
+      
       if(name != null) {
          node = node.getNext(name);
       }    
@@ -146,11 +155,12 @@ class CompositeKey implements Converter {
     * attributes then null is assumed and the node is valid.
     * 
     * @param node this is the node to read the key value from
-    * @param name this is the name of the key wrapper XML element
+    * @param key this is the name of the key wrapper XML element
     * 
     * @return this returns the value deserialized from the node
     */ 
-   private boolean validate(InputNode node, String name) throws Exception {      
+   private boolean validate(InputNode node, String key) throws Exception {
+      String name = style.getElement(key);
       InputNode next = node.getNext(name);
       
       if(next == null) {
@@ -172,14 +182,16 @@ class CompositeKey implements Converter {
     * @param item this is the item that is to be written
     */
    public void write(OutputNode node, Object item) throws Exception {
-      String name = entry.getKey();
+      String key = entry.getKey();
       
       if(entry.isAttribute()) {
          throw new ElementException("Can not have %s as an attribute", type);
       }
-      if(name == null) {
-         name = Factory.getName(type);
+      if(key == null) {
+         key = Factory.getName(type);
       }      
+      String name = style.getElement(key);
+      
       root.write(node, item, type, name);      
    }
 }

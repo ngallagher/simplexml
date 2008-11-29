@@ -37,12 +37,17 @@ import java.util.HashMap;
 class Collector extends HashMap<String, Pointer> {
    
    /**
+    * This is the source object used by the serialization process.
+    */
+   private Source source;
+   
+   /**
     * Constructor for the <code>Collector</code> object. This is 
     * used to store pointers to an objects fields and methods.
     * Each pointer is stored using the name of the label.
     */
-   public Collector() {
-      super();
+   public Collector(Source source) {
+      this.source = source;
    }
    
    /**
@@ -55,7 +60,7 @@ class Collector extends HashMap<String, Pointer> {
     * @param value this is the value of the object to be read
     */
    public void put(Label label, Object value) throws Exception {
-      String name = label.getName();
+      String name = label.getName(source);
       
       put(name, new Pointer(label, value));
    }

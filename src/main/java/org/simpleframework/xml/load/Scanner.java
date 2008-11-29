@@ -133,10 +133,12 @@ class Scanner  {
     * object using the label map can manipulate it without changing
     * the core details of the schema, allowing it to be cached.
     * 
+    * @param source this is the source used to style the names 
+    *
     * @return map with the details extracted from the schema class
     */ 
-   public LabelMap getAttributes() {
-      return attributes.clone();
+   public LabelMap getAttributes(Source source) throws Exception {
+      return attributes.clone(source);
    }        
 
    /**
@@ -146,10 +148,12 @@ class Scanner  {
     * <code>Element</code> annotations. This returns a copy of the
     * details extracted from the schema class so this can be cached.
     * 
+    * @param source this is the source used to style the names
+    *
     * @return a map containing the details for XML elements
     */
-   public LabelMap getElements() {
-      return elements.clone();
+   public LabelMap getElements(Source source) throws Exception {
+      return elements.clone(source);
    }
    
    /**

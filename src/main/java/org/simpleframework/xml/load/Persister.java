@@ -20,25 +20,27 @@
 
 package org.simpleframework.xml.load;
 
-import org.simpleframework.xml.Serializer;
-import org.simpleframework.xml.filter.Filter;
-import org.simpleframework.xml.filter.PlatformFilter;
-import org.simpleframework.xml.stream.InputNode;
-import org.simpleframework.xml.stream.NodeBuilder;
-import org.simpleframework.xml.stream.OutputNode;
-import org.simpleframework.xml.stream.Format;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.OutputStreamWriter;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.InputStream;
-import java.io.StringReader;
+import java.io.OutputStreamWriter;
 import java.io.Reader;
+import java.io.StringReader;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
-import java.io.File;
+
+import org.simpleframework.xml.Serializer;
+import org.simpleframework.xml.filter.Filter;
+import org.simpleframework.xml.filter.PlatformFilter;
+import org.simpleframework.xml.stream.Format;
+import org.simpleframework.xml.stream.InputNode;
+import org.simpleframework.xml.stream.NodeBuilder;
+import org.simpleframework.xml.stream.OutputNode;
+import org.simpleframework.xml.stream.Style;
 
 /**
  * The <code>Persister</code> object is used to provide an implementation
@@ -78,6 +80,11 @@ public class Persister implements Serializer {
     * This object is used to format the the generated XML document.
     */ 
    private final Format format;
+   
+   /**
+    * This is the style that is used for the serialization process.
+    */
+   private final Style style;
 
    /**
     * Constructor for the <code>Persister</code> object. This is used
@@ -235,6 +242,7 @@ public class Persister implements Serializer {
     * @param format this is used to format the generated XML document
     */
    public Persister(Strategy strategy, Filter filter, Format format) {
+      this.style = format.getStyle();
       this.strategy = strategy;           
       this.filter = filter;           
       this.format = format;
@@ -371,7 +379,7 @@ public class Persister implements Serializer {
     * @throws Exception if the object cannot be fully deserialized
     */
    private <T> T read(Class<? extends T> type, InputNode node, Filter filter) throws Exception {
-      return (T)read(type, node, new Source(strategy, filter));
+      return (T)read(type, node, new Source(strategy, filter, style));
    }                      
            
    /**
@@ -530,7 +538,7 @@ public class Persister implements Serializer {
     * @throws Exception if the object cannot be fully deserialized
     */ 
    private <T> T read(T value, InputNode node, Filter filter) throws Exception {
-      return (T)read(value, node, new Source(strategy, filter));
+      return (T)read(value, node, new Source(strategy, filter, style));
    }                      
            
    /**
@@ -691,7 +699,7 @@ public class Persister implements Serializer {
     * @throws Exception if the class XML schema does not fully match
     */
    private boolean validate(Class type, InputNode node, Filter filter) throws Exception {
-      return validate(type, node, new Source(strategy, filter));
+      return validate(type, node, new Source(strategy, filter, style));
    }                      
            
    /**
@@ -748,7 +756,7 @@ public class Persister implements Serializer {
     * @throws Exception if the schema for the object is not valid
     */   
    private void write(Object source, OutputNode root, Filter filter) throws Exception {   
-      write(source, root, new Source(strategy, filter));
+      write(source, root, new Source(strategy, filter, style));
    }
 
    /**

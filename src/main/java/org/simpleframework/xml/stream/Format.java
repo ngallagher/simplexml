@@ -40,6 +40,11 @@ public class Format {
     * Represents the prolog that appears in the generated XML.
     */         
    private String prolog;
+   
+   /**
+    * This is the style that is used internally by the format.
+    */
+   private Style style;
          
    /**
     * Represents the indent size to use for the generated XML.
@@ -64,7 +69,7 @@ public class Format {
     * @param indent this is the number of spaces used in the indent
     */ 
    public Format(int indent) {
-      this(indent, null);           
+      this(indent, null, null);           
    }
    
    /**
@@ -89,8 +94,48 @@ public class Format {
     * @param prolog this is the prolog for the generated XML document
     */    
    public Format(int indent, String prolog) {
+      this(indent, prolog, null);           
+   }
+   
+   /**
+    * Constructor for the <code>Format</code> object. This creates an
+    * object that is used to describe how the formatter should create
+    * the XML document. This constructor uses the specified style
+    * to style the attributes and elements of the XML document.
+    * 
+    * @param style this is the style to apply to the format object
+    */    
+   public Format(Style  style) {
+      this(3, null, style);         
+   }
+   
+   /**
+    * Constructor for the <code>Format</code> object. This creates an
+    * object that is used to describe how the formatter should create
+    * the XML document. This constructor uses the specified indent
+    * size and the style provided to style the XML document.
+    *
+    * @param indent this is the number of spaces used in the indent
+    * @param style this is the style to apply to the format object
+    */    
+   public Format(int indent, Style  style) {
+      this(indent, null, style);  
+   }
+   
+   /**
+    * Constructor for the <code>Format</code> object. This creates an
+    * object that is used to describe how the formatter should create
+    * the XML document. This constructor uses the specified indent
+    * size and the text to use in the generated prolog.
+    *
+    * @param indent this is the number of spaces used in the indent
+    * @param prolog this is the prolog for the generated XML document
+    * @param style this is the style to apply to the format object
+    */    
+   public Format(int indent, String prolog, Style style) {
       this.prolog = prolog;           
-      this.indent = indent;           
+      this.indent = indent;       
+      this.style = style;
    }
    
    /**
@@ -114,5 +159,17 @@ public class Format {
     */ 
    public String getProlog() {
       return prolog;           
+   }
+   
+   /**
+    * This is used to acquire the <code>Style</code> for the format.
+    * If no style has been set a default style is used, which does 
+    * not modify the attributes and elements that are used to build
+    * the resulting XML document.
+    * 
+    * @return this returns the style used for this format object
+    */
+   public Style getStyle() {
+      return style;
    }
 }

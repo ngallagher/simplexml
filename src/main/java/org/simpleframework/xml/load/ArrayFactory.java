@@ -20,6 +20,8 @@
 
 package org.simpleframework.xml.load;
 
+import java.lang.reflect.Array;
+
 import org.simpleframework.xml.stream.InputNode;
 
 /**
@@ -44,7 +46,25 @@ class ArrayFactory extends Factory {
     */
    public ArrayFactory(Source root, Class field) {
       super(root, field);                
-   }        
+   }     
+   
+   /**
+    * This is used to create a default instance of the field type. It
+    * is up to the subclass to determine how to best instantiate an
+    * object of the field type that best suits. This is used when the
+    * empty value is required or to create the default type instance.
+    * 
+    * @return a type which is used to instantiate the collection     
+    */
+   @Override
+   public Object getInstance() throws Exception {
+      Class type = field.getComponentType();
+      
+      if(type != null) {
+         return Array.newInstance(type, 0);
+      }
+      return null;
+   }
 
    /**
     * Creates the array type to use. This will use the provided

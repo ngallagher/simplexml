@@ -86,12 +86,27 @@ class TextLabel implements Label {
     * @return this returns a converter for serializing XML elements
     */
    public Converter getConverter(Source root) throws Exception {
-      String ignore = getEmpty();
+      String ignore = getEmpty(root);
       
       if(!Factory.isPrimitive(type)) {
          throw new TextException("Cannot use %s to represent %s", label, type);
       }
       return new Primitive(root, type, ignore);
+   }
+     
+   /**
+    * This is used to acquire the name of the element or attribute
+    * that is used by the class schema. The name is determined by
+    * checking for an override within the annotation. If it contains
+    * a name then that is used, if however the annotation does not
+    * specify a name the the field or method name is used instead.
+    *
+    * @param source this is the source that is used for styling
+    * 
+    * @return returns the name that is used for the XML property
+    */
+   public String getName(Source source) {
+      return contact.toString();
    }
    
    /**
@@ -100,9 +115,11 @@ class TextLabel implements Label {
     * with required details regardless of whether values are null or
     * not. It also provides a means for sensible default values.
     * 
+    * @param root this is the source object for the serialization
+    * 
     * @return this returns the string to use for default values
     */
-   public String getEmpty() {
+   public String getEmpty(Source root) {
       if(detail.isEmpty(empty)) {
          return null;
       }

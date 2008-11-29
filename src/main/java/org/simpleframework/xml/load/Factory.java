@@ -74,6 +74,18 @@ abstract class Factory {
       this.source = source;           
       this.field = field;           
    }
+   
+   /**
+    * This is used to create a default instance of the field type. It
+    * is up to the subclass to determine how to best instantiate an
+    * object of the field type that best suits. This is used when the
+    * empty value is required or to create the default type instance.
+    * 
+    * @return a type which is used to instantiate the collection     
+    */
+   public Object getInstance() throws Exception {
+      return field.newInstance();
+   }
 
    /**
     * This is used to get a possible override from the provided node.

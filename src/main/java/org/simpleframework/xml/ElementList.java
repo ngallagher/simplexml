@@ -129,4 +129,15 @@ public @interface ElementList {
     * @return this returns true if the element list is inline
     */
    public boolean inline() default false;
+   
+   /**
+    * This is used to determine if an optional field or method can
+    * remain null if it does not exist. If this is false then the
+    * optional element is given an empty list. This is a convenience
+    * attribute which avoids having to check if the element is null
+    * before providing it with a suitable default instance.
+    * 
+    * @return false if an optional element is always instantiated
+    */
+   public boolean empty() default true;
 }

@@ -22,6 +22,8 @@ package org.simpleframework.xml.load;
 
 import java.util.Map;
 
+import org.simpleframework.xml.stream.Style;
+
 /**
  * The <code>Schema</code> object is used to track which fields within
  * an object have been visited by a converter. This object is nessecary
@@ -41,7 +43,7 @@ class Schema {
    private LabelMap attributes;
    
    /**
-    * Contains a mpa of all elements present within the schema.
+    * Contains a map of all elements present within the schema.
     */
    private LabelMap elements;
    
@@ -49,6 +51,11 @@ class Schema {
     * This is the pointer to the schema class replace method.
     */
    private Conduit conduit;
+   
+   /**
+    * This is the session that is to be used for serialization.
+    */
+   private Session session;
    
    /**
     * This is used to represent a text value within the schema.
@@ -59,6 +66,11 @@ class Schema {
     * This is the table used to maintain attributes by the source.
     */ 
    private Map table;
+   
+   /**
+    * This is used to specify whether the type is a primitive class.
+    */
+   private boolean primitive;
 
    /**
     * Constructor for the <code>Schema</code> object. This is used 
@@ -67,14 +79,28 @@ class Schema {
     * a converter can determine if all fields have been serialized.
     * 
     * @param schema this contains all labels scanned from the class
-    * @param session this is the session map for the persister
+    * @param source this is the source object for serialization
     */
-   public Schema(Scanner schema, Session session) {   
-      this.attributes = schema.getAttributes();
-      this.elements = schema.getElements();
+   public Schema(Scanner schema, Source source) throws Exception {   
+      this.attributes = schema.getAttributes(source);
+      this.elements = schema.getElements(source);
+      this.primitive = schema.isPrimitive();
       this.conduit = schema.getConduit();
+      this.session = source.getSession();
       this.text = schema.getText();
       this.table = session.getMap();
+   }
+   
+   /**
+    * This is used to determine whether the scanned class represents
+    * a primitive type. A primitive type is a type that contains no
+    * XML annotations and so cannot be serialized with an XML form.
+    * Instead primitives a serialized using transformations.
+    * 
+    * @return this returns true if no XML annotations were found
+    */
+   public boolean isPrimitive() {
+      return primitive;
    }
    
    /**

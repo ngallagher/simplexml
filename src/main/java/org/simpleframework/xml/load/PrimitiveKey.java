@@ -22,6 +22,7 @@ package org.simpleframework.xml.load;
 
 import org.simpleframework.xml.stream.InputNode;
 import org.simpleframework.xml.stream.OutputNode;
+import org.simpleframework.xml.stream.Style;
 
 /**
  * The <code>PrimitiveKey</code> is used to serialize a primitive key 
@@ -59,6 +60,11 @@ class PrimitiveKey implements Converter {
    private final Primitive primitive;
    
    /**
+    * This is the style used to style the XML elements for the key.
+    */
+   private final Style style;
+   
+   /**
     * The entry object contains the details on how to write the key.
     */
    private final Entry entry; 
@@ -80,6 +86,7 @@ class PrimitiveKey implements Converter {
    public PrimitiveKey(Source root, Entry entry, Class type) {
       this.factory = new PrimitiveFactory(root, type);
       this.primitive = new Primitive(root, type);      
+      this.style = root.getStyle();
       this.entry = entry;
       this.type = type;
    }
@@ -113,17 +120,18 @@ class PrimitiveKey implements Converter {
     * attributes then an null is assumed and returned.
     * 
     * @param node this is the node to read the key value from
-    * @param name this is the name of the attribute used by the key 
+    * @param key this is the name of the attribute used by the key 
     *     
     * @return this returns the value deserialized from the node
     */
-   private Object readAttribute(InputNode node, String name) throws Exception {     
-      InputNode key = node.getAttribute(name);
+   private Object readAttribute(InputNode node, String key) throws Exception {     
+      String name = style.getAttribute(key);
+      InputNode child = node.getAttribute(name);
       
-      if(key == null) {
+      if(child == null) {
          return null;
       }
-      return primitive.read(key);
+      return primitive.read(child);
    }
    
    /**
@@ -133,11 +141,12 @@ class PrimitiveKey implements Converter {
     * attributes then null is assumed and returned.
     *  
     * @param node this is the node to read the key value from
-    * @param name this is the name of the element used by the key 
+    * @param key this is the name of the element used by the key 
     *     
     * @return this returns the value deserialized from the node
     */
-   private Object readElement(InputNode node, String name) throws Exception {
+   private Object readElement(InputNode node, String key) throws Exception {
+      String name = style.getElement(key);
       InputNode child = node.getNext(name);
       
       if(child == null) {
@@ -175,17 +184,18 @@ class PrimitiveKey implements Converter {
     * attributes then the node is considered as null and is valid.
     * 
     * @param node this is the node to read the key value from
-    * @param name this is the name of the attribute used by the key 
+    * @param key this is the name of the attribute used by the key 
     *     
     * @return this returns the value deserialized from the node
     */
-   private boolean validateAttribute(InputNode node, String name) throws Exception {     
-      InputNode key = node.getAttribute(name);
+   private boolean validateAttribute(InputNode node, String key) throws Exception {     
+      String name = style.getElement(key);
+      InputNode child = node.getAttribute(name);
       
-      if(key == null) {
+      if(child == null) {
          return true;
       }
-      return primitive.validate(key);
+      return primitive.validate(child);
    }
    
    /**
@@ -195,11 +205,12 @@ class PrimitiveKey implements Converter {
     * attributes then the node is considered as null and is valid.
     * 
     * @param node this is the node to read the key value from
-    * @param name this is the name of the element used by the key 
+    * @param key this is the name of the element used by the key 
     *     
     * @return this returns the value deserialized from the node
     */
-   private boolean validateElement(InputNode node, String name) throws Exception {
+   private boolean validateElement(InputNode node, String key) throws Exception {
+      String name = style.getElement(key);
       InputNode child = node.getNext(name);
       
       if(child == null) {
@@ -234,11 +245,12 @@ class PrimitiveKey implements Converter {
     * @param item this is the item that is to be written
     */
    private void writeElement(OutputNode node, Object item) throws Exception {
-      String name = entry.getKey();
+      String key = entry.getKey();
       
-      if(name == null) {
-         name = Factory.getName(type);
+      if(key == null) {
+         key = Factory.getName(type);
       }    
+      String name = style.getElement(key);
       OutputNode child = node.getChild(name);  
       
       if(item != null) {
@@ -258,11 +270,13 @@ class PrimitiveKey implements Converter {
     */
    private void writeAttribute(OutputNode node, Object item) throws Exception {    
       String text = factory.getText(item);
-      String name = entry.getKey();  
+      String key = entry.getKey();  
       
-      if(name == null) {
-         name = Factory.getName(type);
-      }      
+      if(key == null) {
+         key = Factory.getName(type);
+      }     
+      String name = style.getAttribute(key);
+      
       if(text != null) {
          node.setAttribute(name, text);
       }

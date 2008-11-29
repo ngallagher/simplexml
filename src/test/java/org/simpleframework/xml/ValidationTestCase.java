@@ -3,9 +3,9 @@ package org.simpleframework.xml;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.io.OutputStreamWriter;
 import java.io.Writer;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -17,7 +17,13 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.custommonkey.xmlunit.XMLTestCase;
-
+import org.simpleframework.xml.graph.CycleStrategy;
+import org.simpleframework.xml.load.Persister;
+import org.simpleframework.xml.load.Strategy;
+import org.simpleframework.xml.stream.CamelCaseStyle;
+import org.simpleframework.xml.stream.Format;
+import org.simpleframework.xml.stream.HyphenStyle;
+import org.simpleframework.xml.stream.Style;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
@@ -61,6 +67,9 @@ public class ValidationTestCase extends XMLTestCase {
       assertTrue(directory.exists());           
    }
 
+   public static synchronized void validate(Serializer out, Object type) throws Exception {
+      validate(type, out);
+   }
     public static synchronized void validate(Object type, Serializer out) throws Exception {
         File destination = new File(directory, type.getClass().getSimpleName() + ".xml");
         OutputStream file = new FileOutputStream(destination);
@@ -89,6 +98,23 @@ public class ValidationTestCase extends XMLTestCase {
         asciiFile.close();
         
         out.validate(type.getClass(), text);
+       
+        File hyphenFile = new File(directory, type.getClass().getSimpleName() + ".hyphen.xml");
+        Strategy strategy = new CycleStrategy();
+        Style style = new HyphenStyle();
+        Format format = new Format(style);
+        Persister hyphen = new Persister(strategy, format);
+        
+        hyphen.write(type, hyphenFile);
+        hyphen.write(type, System.out);
+        
+        File camelCaseFile = new File(directory, type.getClass().getSimpleName() + ".camel-case.xml");
+        Style camelCaseStyle = new CamelCaseStyle(true, false);
+        Format camelCaseFormat = new Format(camelCaseStyle);
+        Persister camelCase = new Persister(strategy, camelCaseFormat);
+        
+        camelCase.write(type, camelCaseFile);
+        camelCase.write(type, System.out);
     }
 
     public static synchronized void validate(String text) throws Exception {    

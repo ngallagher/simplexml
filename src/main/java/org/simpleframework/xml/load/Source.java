@@ -24,6 +24,7 @@ import org.simpleframework.xml.filter.Filter;
 import org.simpleframework.xml.stream.InputNode;
 import org.simpleframework.xml.stream.NodeMap;
 import org.simpleframework.xml.stream.OutputNode;
+import org.simpleframework.xml.stream.Style;
 
 /**
  * The <code>Source</code> object acts as a contextual object that is
@@ -71,6 +72,11 @@ class Source {
    private Filter filter;
    
    /**
+    * This is the style that is used by this source instance.
+    */
+   private Style style;
+   
+   /**
     * Constructor for the <code>Source</code> object. This is used to
     * maintain a context during the serialization process. It holds 
     * the <code>Strategy</code> and <code>Filter</code> used in the
@@ -79,13 +85,42 @@ class Source {
     * 
     * @param strategy this is used to resolve the classes used   
     * @param data this is used for replacing the template variables
+    * @param style this is the style used for the serialization
     */       
-   public Source(Strategy strategy, Filter data) {
+   public Source(Strategy strategy, Filter data, Style style) {
       this.filter = new TemplateFilter(this, data);           
       this.engine = new TemplateEngine(filter);           
       this.session = new Session();
       this.strategy = strategy;
-   }   
+      this.style = style;
+   } 
+   
+   /**
+    * This is used to acquire the <code>Session</code> object that 
+    * is used to store the values used within the serialization
+    * process. This provides the internal map that is passed to all
+    * of the call back methods so that is can be populated.
+    * 
+    * @return this returns the session that is used by this source
+    */
+   public Session getSession() {
+      return session;
+   }
+     
+   /**
+    * This is used to acquire the <code>Style</code> for the format.
+    * If no style has been set a default style is used, which does 
+    * not modify the attributes and elements that are used to build
+    * the resulting XML document.
+    * 
+    * @return this returns the style used for this format object
+    */
+   public Style getStyle() {
+      if(style == null) {
+         style = new DefaultStyle();
+      }
+      return style;
+   }
    
    /**
     * This creates a <code>Scanner</code> object that can be used to
@@ -140,7 +175,7 @@ class Source {
       if(schema == null) {
          throw new PersistenceException("Invalid schema class %s", type);
       }
-      return new Schema(schema, session);
+      return new Schema(schema, this);
    }
    
    /**
