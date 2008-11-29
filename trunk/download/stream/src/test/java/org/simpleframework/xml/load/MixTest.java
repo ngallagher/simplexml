@@ -21,6 +21,64 @@ import org.simpleframework.xml.ValidationTestCase;
 public class MixTest extends ValidationTestCase {
    
    @Root
+   public static class PersonProfile {
+
+      @Attribute
+      private String firstName;
+
+      @Attribute
+      private String lastName;
+
+      @Element
+      private PersonAddress personAddress;
+
+      @Element
+      private Date DOB;
+
+      public Date getDateOfBirth() {
+         return DOB;
+      }
+
+      public String getFirstName() {
+         return firstName;
+      }
+
+      public String getLastName() {
+         return lastName;
+      }
+
+      public PersonAddress getAddress() {
+         return personAddress;
+      }
+   }
+
+   @Root
+   public static class PersonAddress {
+
+      @Element
+      private String houseNumber;
+
+      @Element
+      private String streetName;
+
+      @Element
+      private String city;
+
+      public String getHouseNumber() {
+         return houseNumber;
+      }
+
+      public String getStreetName() {
+         return streetName;
+      }
+
+      public String getCity() {
+         return city;
+      }
+   }
+
+   
+   @Root
    private static class MixExample {
       
       @ElementList
