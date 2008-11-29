@@ -110,7 +110,7 @@ public class ScatterTest extends ValidationTestCase {
    }
 
    @Root
-   public class SimpleInlineList {
+   private static class SimpleInlineList {
 
       @ElementList(inline=true)           
       private ArrayList<SimpleEntry> list = new ArrayList<SimpleEntry>();           
@@ -124,7 +124,7 @@ public class ScatterTest extends ValidationTestCase {
    }        
    
    @Root
-   public class SimplePrimitiveInlineList {
+   private static class SimplePrimitiveInlineList {
       
       @ElementList(inline=true)
       private ArrayList<String> list = new ArrayList<String>();
@@ -175,7 +175,7 @@ public class ScatterTest extends ValidationTestCase {
       }
    }
    
-   private enum Version {
+   private static enum Version {
            
       ONE,
       TWO,

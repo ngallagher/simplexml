@@ -100,13 +100,14 @@ public class ValidationTestCase extends XMLTestCase {
         out.validate(type.getClass(), text);
        
         File hyphenFile = new File(directory, type.getClass().getSimpleName() + ".hyphen.xml");
-        Strategy strategy = new CycleStrategy();
+        Strategy strategy = new CycleStrategy("ID", "REFERER");
         Style style = new HyphenStyle();
         Format format = new Format(style);
         Persister hyphen = new Persister(strategy, format);
         
         hyphen.write(type, hyphenFile);
         hyphen.write(type, System.out);
+        hyphen.read(type.getClass(), hyphenFile);
         
         File camelCaseFile = new File(directory, type.getClass().getSimpleName() + ".camel-case.xml");
         Style camelCaseStyle = new CamelCaseStyle(true, false);
@@ -115,6 +116,7 @@ public class ValidationTestCase extends XMLTestCase {
         
         camelCase.write(type, camelCaseFile);
         camelCase.write(type, System.out);
+        camelCase.read(type.getClass(), camelCaseFile);
     }
 
     public static synchronized void validate(String text) throws Exception {    
