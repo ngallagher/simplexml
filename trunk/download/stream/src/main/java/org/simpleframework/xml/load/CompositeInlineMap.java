@@ -22,6 +22,8 @@ package org.simpleframework.xml.load;
 
 import org.simpleframework.xml.stream.InputNode;
 import org.simpleframework.xml.stream.OutputNode;
+import org.simpleframework.xml.stream.Style;
+
 import java.util.Map;
 
 /**
@@ -70,6 +72,11 @@ class CompositeInlineMap implements Repeater {
    private final Converter key;  
    
    /**
+    * This is the style used to style the names used for the XML.
+    */
+   private final Style style;
+   
+   /**
     * The entry object contains the details on how to write the map.
     */
    private final Entry entry;
@@ -88,6 +95,7 @@ class CompositeInlineMap implements Repeater {
       this.factory = new MapFactory(root, type);
       this.value = entry.getValue(root);
       this.key = entry.getKey(root);
+      this.style = root.getStyle();
       this.entry = entry;
    }
 
@@ -228,7 +236,8 @@ class CompositeInlineMap implements Repeater {
     * @param map this is the source map that is to be written 
     */
    public void write(OutputNode node, Map map) throws Exception {   
-      String name = entry.getEntry();
+      String root = entry.getEntry();
+      String name = style.getElement(root);
       
       for(Object index : map.keySet()) {
          OutputNode next = node.getChild(name);
