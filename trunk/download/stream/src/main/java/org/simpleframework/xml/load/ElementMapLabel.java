@@ -21,6 +21,7 @@
 package org.simpleframework.xml.load;
 
 import org.simpleframework.xml.ElementMap;
+import org.simpleframework.xml.stream.Style;
 
 /**
  * The <code>ElementMapLabel</code> represents a label that is used
@@ -104,6 +105,46 @@ class ElementMapLabel implements Label {
    }  
    
    /**
+    * This is used to acquire the name of the element or attribute
+    * that is used by the class schema. The name is determined by
+    * checking for an override within the annotation. If it contains
+    * a name then that is used, if however the annotation does not
+    * specify a name the the field or method name is used instead.
+    * 
+    * @param source this is the source used to style the nanme
+    * 
+    * @return returns the name that is used for the XML property
+    */
+   public String getName(Source source) throws Exception {
+      Style style = source.getStyle();
+      String name = entry.getEntry();
+      
+      if(!label.inline()) {
+         name = detail.getName();
+      }
+      return style.getElement(name);
+   }
+   
+   /**
+    * This is used to provide a configured empty value used when the
+    * annotated value is null. This ensures that XML can be created
+    * with required details regardless of whether values are null or
+    * not. It also provides a means for sensible default values.
+    * 
+    * @param root this is the source object for the serialization
+    * 
+    * @return this returns the string to use for default values
+    */
+   public Object getEmpty(Source root) throws Exception {
+      Factory factory = new MapFactory(root, type);
+      
+      if(!label.empty()) {
+         return factory.getInstance();
+      }
+      return null;
+   }
+   
+   /**
     * This is used to acquire the dependant type for the annotated
     * list. This will simply return the type that the map object is
     * composed to hold. This must be a serializable type, that is,
@@ -147,7 +188,7 @@ class ElementMapLabel implements Label {
     * 
     * @return returns the name that is used for the XML property
     */
-   public String getName() throws Exception {
+   public String getName() throws Exception{
       if(label.inline()) {
          return entry.getEntry();
       }
@@ -228,18 +269,6 @@ class ElementMapLabel implements Label {
     */
    public boolean isInline() {
       return label.inline();
-   }
-   
-   /**
-    * This is used to provide a configured empty value used when the
-    * annotated value is null. This ensures that XML can be created
-    * with required details regardless of whether values are null or
-    * not. It also provides a means for sensible default values.
-    * 
-    * @return this returns the string to use for default values
-    */
-   public String getEmpty() {
-      return null;
    }
    
    /**

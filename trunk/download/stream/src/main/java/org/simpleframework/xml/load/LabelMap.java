@@ -82,13 +82,17 @@ class LabelMap extends LinkedHashMap<String, Label> implements Iterable<Label> {
     * in the clone. This is used to that the <code>Schema</code> can
     * remove mappings from the label map as they are visited. 
     *
+    * @param root this is the source used to style the XML names
+    *
     * @return this returns a cloned representation of this map
     */ 
-   public LabelMap clone() {
+   public LabelMap clone(Source root) throws Exception {
       LabelMap clone = new LabelMap(source);
       
-      if(!isEmpty()) {
-         clone.putAll(this);
+      for(Label label : this) {
+         String name = label.getName(root);
+
+         clone.put(name, label);
       }         
       return clone;      
    }   

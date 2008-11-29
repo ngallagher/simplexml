@@ -37,6 +37,18 @@ package org.simpleframework.xml.load;
 interface Label {
 
    /**
+    * This is used to provide a configured empty value used when the
+    * annotated value is null. This ensures that XML can be created
+    * with required details regardless of whether values are null or
+    * not. It also provides a means for sensible default values.
+    * 
+    * @param root this is the source object for the serialization
+    * 
+    * @return this returns the string to use for default values
+    */
+   public Object getEmpty(Source root) throws Exception;
+   
+   /**
     * This method returns a <code>Converter</code> which can be used to
     * convert an XML node into an object value and vice versa. The 
     * converter requires only the source object in order to perform
@@ -47,6 +59,19 @@ interface Label {
     * @return this returns an object that is used for conversion
     */
    public Converter getConverter(Source root) throws Exception;
+   
+   /**
+    * This is used to acquire the name of the element or attribute
+    * that is used by the class schema. The name is determined by
+    * checking for an override within the annotation. If it contains
+    * a name then that is used, if however the annotation does not
+    * specify a name the the field or method name is used instead.
+    * 
+    * @param source this is the source used to style the name
+    * 
+    * @return returns the name that is used for the XML property
+    */
+   public String getName(Source source) throws Exception;
    
    /**
     * This is used to acquire the name of the element or attribute
@@ -78,17 +103,7 @@ interface Label {
     * 
     * @return this returns the name of the XML entry element used 
     */
-   public String getEntry() throws Exception;  
-   
-   /**
-    * This is used to provide a configured empty value used when the
-    * annotated value is null. This ensures that XML can be created
-    * with required details regardless of whether values are null or
-    * not. It also provides a means for sensible default values.
-    * 
-    * @return this returns the string to use for default values
-    */
-   public String getEmpty();
+   public String getEntry() throws Exception; 
    
    /**
     * This is used to acquire the contact object for this label. The 

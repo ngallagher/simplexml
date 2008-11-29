@@ -57,6 +57,7 @@ class CollectionFactory extends Factory {
     * 
     * @return a type which is used to instantiate the collection     
     */
+   @Override
    public Object getInstance() throws Exception {
       Class type = field;
 

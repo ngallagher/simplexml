@@ -51,11 +51,6 @@ class Entry {
    private Contact contact;
    
    /**
-    * Determines whether the key object is written as an attribute.
-    */
-   private boolean attribute;
-   
-   /**
     * Provides the class XML schema used for the value objects.
     */
    private Class valueType;
@@ -79,6 +74,11 @@ class Entry {
     * Specifies the name of the XML key node used by the map.
     */
    private String key;
+   
+   /**
+    * Determines whether the key object is written as an attribute.
+    */
+   private boolean attribute;
 
    /**
     * Constructor for the <code>Entry</code> object. This takes the

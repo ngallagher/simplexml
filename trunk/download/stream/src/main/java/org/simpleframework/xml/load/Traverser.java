@@ -22,6 +22,7 @@ package org.simpleframework.xml.load;
 
 import org.simpleframework.xml.stream.InputNode;
 import org.simpleframework.xml.stream.OutputNode;
+import org.simpleframework.xml.stream.Style;
 
 /**
  * The <code>Traverser</code> object is used to traverse the XML class
@@ -39,6 +40,11 @@ class Traverser {
     * This is the root object used for the traversal performed.
     */
    private final Source root;
+   
+   /**
+    * This is the style that is used to style the XML roots.
+    */
+   private final Style style;
         
    /**
     * Constructor for the <code>Traverser</code> object. This creates
@@ -48,6 +54,7 @@ class Traverser {
     * @param root the source object used for the traversal
     */
    public Traverser(Source root) {
+      this.style = root.getStyle();
       this.root = root;           
    }
    
@@ -233,6 +240,9 @@ class Traverser {
     * @return this returns the root annotation for the XML schema
     */   
    protected String getName(Class type) throws Exception {
-      return Factory.getName(type);
+      String root = Factory.getName(type);
+      String name = style.getElement(root);
+      
+      return name;
    }
 }

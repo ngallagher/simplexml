@@ -3,15 +3,17 @@ package org.simpleframework.xml.load;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import junit.framework.TestCase;
+
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.Text;
-import org.simpleframework.xml.load.Label;
-import org.simpleframework.xml.load.Scanner;
-
-import junit.framework.TestCase;
+import org.simpleframework.xml.filter.Filter;
+import org.simpleframework.xml.filter.MapFilter;
+import org.simpleframework.xml.stream.Format;
+import org.simpleframework.xml.stream.Style;
 
 public class ScannerTest extends TestCase {
    
@@ -100,27 +102,29 @@ public class ScannerTest extends TestCase {
    }
    
    public void testExample() throws Exception {
+      Filter filter = new MapFilter(null);
+      Strategy strategy = new DefaultStrategy();
+      Style style = new DefaultStyle(); 
+      Source source = new Source(strategy, filter, style);
       Scanner scanner = new Scanner(Example.class);
       ArrayList<Class> types = new ArrayList<Class>();
       
-      assertEquals(scanner.getElements().size(), 1);
-      assertEquals(scanner.getAttributes().size(), 2);
+      assertEquals(scanner.getElements(source).size(), 1);
+      assertEquals(scanner.getAttributes(source).size(), 2);
       assertNull(scanner.getText());
       assertTrue(scanner.isStrict());
       
-      for(Label label : scanner.getElements()) {
+      for(Label label : scanner.getElements(source)) {
          assertTrue(label.getName() == intern(label.getName()));
          assertTrue(label.getEntry() == intern(label.getEntry()));
-         assertTrue(label.getEmpty() == intern(label.getEmpty()));
          
          types.add(label.getType());
       }
       assertTrue(types.contains(Collection.class));      
       
-      for(Label label : scanner.getAttributes()) {
+      for(Label label : scanner.getAttributes(source)) {
          assertTrue(label.getName() == intern(label.getName()));
          assertTrue(label.getEntry() == intern(label.getEntry()));
-         assertTrue(label.getEmpty() == intern(label.getEmpty()));
          
          types.add(label.getType());
       }
@@ -129,18 +133,21 @@ public class ScannerTest extends TestCase {
    }
    
    public void testMixedExample() throws Exception {
+      Filter filter = new MapFilter(null);
+      Strategy strategy = new DefaultStrategy();
+      Style style = new DefaultStyle();
+      Source source = new Source(strategy, filter, style);
       Scanner scanner = new Scanner(MixedExample.class);
       ArrayList<Class> types = new ArrayList<Class>();
       
-      assertEquals(scanner.getElements().size(), 3);
-      assertEquals(scanner.getAttributes().size(), 2);
+      assertEquals(scanner.getElements(source).size(), 3);
+      assertEquals(scanner.getAttributes(source).size(), 2);
       assertNull(scanner.getText());
       assertFalse(scanner.isStrict());
       
-      for(Label label : scanner.getElements()) {
+      for(Label label : scanner.getElements(source)) {
          assertTrue(label.getName() == intern(label.getName()));
          assertTrue(label.getEntry() == intern(label.getEntry()));
-         assertTrue(label.getEmpty() == intern(label.getEmpty()));
          
          types.add(label.getType());
       }
@@ -148,10 +155,9 @@ public class ScannerTest extends TestCase {
       assertTrue(types.contains(Entry.class));
       assertTrue(types.contains(String.class));
       
-      for(Label label : scanner.getAttributes()) {
+      for(Label label : scanner.getAttributes(source)) {
          assertTrue(label.getName() == intern(label.getName()));
          assertTrue(label.getEntry() == intern(label.getEntry()));
-         assertTrue(label.getEmpty() == intern(label.getEmpty()));
          
          types.add(label.getType());
       }

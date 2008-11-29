@@ -20,7 +20,6 @@
 
 package org.simpleframework.xml.load;
 
-import org.simpleframework.xml.transform.Transformer;
 import org.simpleframework.xml.stream.InputNode;
 
 /**
@@ -84,13 +83,30 @@ class PrimitiveFactory extends Factory {
     * @return this returns an instance of the field type
     */         
    public Object getInstance(String text) throws Exception {
-      if(field == String.class) {
+      return getInstance(text, field);
+   }
+   
+   /**
+    * This will instantiate an object of the field type using the
+    * provided string. Typically this string is transformed in to the
+    * type using a <code>Transform</code> object. However, if the
+    * values is an enumeration then its value is created using the
+    * <code>Enum.valueOf</code> method. Also string values typically
+    * do not require conversion of any form and are just returned.
+    * 
+    * @param text this is the value to be transformed to an object
+    * @param type this is the type of the primitive to instantiate
+    * 
+    * @return this returns an instance of the field type
+    */         
+   public Object getInstance(String text, Class type) throws Exception {
+      if(type == String.class) {
          return text;              
       }    
       if(field.isEnum()) {
-         return Enum.valueOf(field, text);              
+         return Enum.valueOf(type, text);              
       }           
-      return transform.read(text, field);
+      return transform.read(text, type);
    }
    
    /**

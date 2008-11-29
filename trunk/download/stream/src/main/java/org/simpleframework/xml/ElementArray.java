@@ -96,4 +96,15 @@ public @interface ElementArray {
     * @return true if the element is required, false otherwise
     */        
    public boolean required() default true;
+   
+   /**
+    * This is used to determine if an optional field or method can
+    * remain null if it does not exist. If this is false then the
+    * optional element is given an empty array. This is a convenience
+    * attribute which avoids having to check if the element is null
+    * before providing it with a suitable default instance.
+    * 
+    * @return false if an optional element is always instantiated
+    */
+   public boolean empty() default true;
 }

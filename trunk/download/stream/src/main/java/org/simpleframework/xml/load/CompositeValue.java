@@ -22,6 +22,7 @@ package org.simpleframework.xml.load;
 
 import org.simpleframework.xml.stream.InputNode;
 import org.simpleframework.xml.stream.OutputNode;
+import org.simpleframework.xml.stream.Style;
 
 /**
  * The <code>CompositeValue</code> object is used to convert an object
@@ -40,6 +41,11 @@ class CompositeValue implements Converter {
     * This is the traverser used to read and write the value with.
     */
    private final Traverser root;
+   
+   /**
+    * This is the style used to style the names used for the XML.
+    */
+   private final Style style;
    
    /**
     * This is the entry object used to provide configuration details.
@@ -63,6 +69,7 @@ class CompositeValue implements Converter {
     */
    public CompositeValue(Source root, Entry entry, Class type) throws Exception {
       this.root = new Traverser(root);
+      this.style = root.getStyle();
       this.entry = entry;
       this.type = type;
    }
@@ -115,11 +122,12 @@ class CompositeValue implements Converter {
     * attributes then null is assumed and the node is valid.
     * 
     * @param node this is the node to read the value object from
-    * @param name this is the name of the value element
+    * @param key this is the name of the value element
     * 
     * @return this returns true if this represents a valid value
     */    
-   private boolean validate(InputNode node, String name) throws Exception {      
+   private boolean validate(InputNode node, String key) throws Exception {  
+      String name = style.getElement(key);
       InputNode next = node.getNext(name);
       
       if(next == null) {
@@ -140,11 +148,13 @@ class CompositeValue implements Converter {
     * @param item this is the item that is to be written
     */
    public void write(OutputNode node, Object item) throws Exception {
-      String name = entry.getValue();
+      String key = entry.getValue();
       
-      if(name == null) {
-         name = Factory.getName(type);
+      if(key == null) {
+         key = Factory.getName(type);
       }
+      String name = style.getElement(key);
+      
       root.write(node, item, type, name);      
    }
 }

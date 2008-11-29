@@ -21,6 +21,7 @@
 package org.simpleframework.xml.load;
 
 import org.simpleframework.xml.ElementList;
+import org.simpleframework.xml.stream.Style;
 
 /**
  * The <code>ElementListLabel</code> represents a label that is used
@@ -93,7 +94,7 @@ class ElementListLabel implements Label {
     * @return this returns the converter for creating a collection 
     */
    public Converter getConverter(Source root) throws Exception {
-      String entry = getEntry();
+      String entry = getEntry(root);
       
       if(!label.inline()) {
          return getConverter(root, entry);
@@ -112,7 +113,7 @@ class ElementListLabel implements Label {
     * 
     * @return this returns the converter for creating a collection 
     */
-   private Converter getConverter(Source root, String name) throws Exception {      
+   private Converter getConverter(Source root, String name) throws Exception {    
       Class item = getDependant();
       
       if(!Factory.isPrimitive(item)) {
@@ -138,6 +139,58 @@ class ElementListLabel implements Label {
          return new CompositeInlineList(root, type, item, name);
       }
       return new PrimitiveInlineList(root, type, item, name);      
+   }
+   
+   /**
+    * This is used to acquire the name of the element or attribute
+    * that is used by the class schema. The name is determined by
+    * checking for an override within the annotation. If it contains
+    * a name then that is used, if however the annotation does not
+    * specify a name the the field or method name is used instead.
+    * 
+    * @return returns the name that is used for the XML property
+    */
+   public String getName(Source source) throws Exception{
+      Style style = source.getStyle();
+      String name = detail.getName();
+      
+      return style.getElement(name);
+   }
+   
+   /**
+    * This is used to either provide the entry value provided within
+    * the annotation or compute a entry value. If the entry string
+    * is not provided the the entry value is calculated as the type
+    * of primitive the object is as a simplified class name.
+    * 
+    * @param source this is the source used to style the entry
+    * 
+    * @return this returns the name of the XML entry element used 
+    */
+   private String getEntry(Source root) throws Exception {
+      Style style = root.getStyle();
+      String entry = getEntry();
+      
+      return style.getElement(entry);
+   }
+   
+   /**
+    * This is used to provide a configured empty value used when the
+    * annotated value is null. This ensures that XML can be created
+    * with required details regardless of whether values are null or
+    * not. It also provides a means for sensible default values.
+    * 
+    * @param root this is the source object for the serialization
+    * 
+    * @return this returns the string to use for default values
+    */
+   public Object getEmpty(Source root) throws Exception {
+      Factory factory = new CollectionFactory(root, type);
+      
+      if(!label.empty()) {
+         return factory.getInstance();
+      }
+      return null;
    }
    
    /**
@@ -168,7 +221,7 @@ class ElementListLabel implements Label {
     * 
     * @return this returns the name of the XML entry element used 
     */
-   public String getEntry() throws Exception {      
+   public String getEntry() throws Exception {
       if(detail.isEmpty(entry)) {
          entry = detail.getEntry();
       }
@@ -184,7 +237,7 @@ class ElementListLabel implements Label {
     * 
     * @return returns the name that is used for the XML property
     */
-   public String getName() throws Exception {
+   public String getName() throws Exception{
       return detail.getName();
    }
    
@@ -262,18 +315,6 @@ class ElementListLabel implements Label {
     */
    public boolean isInline() {
       return label.inline();
-   }
-   
-   /**
-    * This is used to provide a configured empty value used when the
-    * annotated value is null. This ensures that XML can be created
-    * with required details regardless of whether values are null or
-    * not. It also provides a means for sensible default values.
-    * 
-    * @return this returns the string to use for default values
-    */
-   public String getEmpty() {
-      return null;
    }
    
    /**

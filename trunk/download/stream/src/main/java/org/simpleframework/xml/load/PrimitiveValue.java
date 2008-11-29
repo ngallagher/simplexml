@@ -22,7 +22,7 @@ package org.simpleframework.xml.load;
 
 import org.simpleframework.xml.stream.InputNode;
 import org.simpleframework.xml.stream.OutputNode;
-import org.simpleframework.xml.stream.Position;
+import org.simpleframework.xml.stream.Style;
 
 
 /**
@@ -61,6 +61,11 @@ class PrimitiveValue implements Converter {
    private final Primitive primitive;
    
    /**
+    * This is the style used to style the XML names for the value.
+    */
+   private final Style style;
+   
+   /**
     * The entry object contains the details on how to write the value.
     */
    private final Entry entry; 
@@ -82,6 +87,7 @@ class PrimitiveValue implements Converter {
    public PrimitiveValue(Source root, Entry entry, Class type) {
       this.factory = new PrimitiveFactory(root, type);
       this.primitive = new Primitive(root, type);
+      this.style = root.getStyle();
       this.entry = entry;
       this.type = type;
    }
@@ -115,11 +121,12 @@ class PrimitiveValue implements Converter {
     * attributes then null is assumed and returned.
     * 
     * @param node this is the node to read the value object from
-    * @param name this is the name of the value XML element
+    * @param key this is the name of the value XML element
     * 
     * @return this returns the value deserialized from the node
     */ 
-   private Object read(InputNode node, String name) throws Exception {
+   private Object read(InputNode node, String key) throws Exception {
+      String name = style.getAttribute(key);
       InputNode child = node.getNext(name);
       
       if(child == null) {
@@ -154,11 +161,13 @@ class PrimitiveValue implements Converter {
     * attributes then null is assumed and the node is valid.
     *  
     * @param node this is the node to read the value object from
-    * @param name this is the name of the node to be validated
+    * @param key this is the name of the node to be validated
     * 
     * @return this returns true if the primitive key is valid
     */    
-   private boolean validate(InputNode node, String name) throws Exception {
+   private boolean validate(InputNode node, String key) throws Exception {
+      String name = style.getAttribute(key);
+      
       if(!entry.isInline()) {
          node = node.getNext(name);
       
@@ -195,9 +204,11 @@ class PrimitiveValue implements Converter {
     * 
     * @param node this is the node that the value is written to
     * @param item this is the item that is to be written
-    * @param name this is the name of the node to be created
+    * @param key this is the name of the node to be created
     */   
-   private void write(OutputNode node, Object item, String name) throws Exception {
+   private void write(OutputNode node, Object item, String key) throws Exception {
+      String name = style.getAttribute(key);
+      
       if(!entry.isInline()) {
          node = node.getChild(name);        
       }
