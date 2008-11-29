@@ -20,6 +20,19 @@ import org.simpleframework.xml.ValidationTestCase;
 
 public class MixTest extends ValidationTestCase {
    
+   private static final String SOURCE =
+      /*
+       
+       <person-profile first-name='Niall' last-name='Gallagher'>
+          <person-DOB>10/10/2008</person-DOB>
+          <person-address>
+             <house-number>10</house-number>
+             <street-name>Sesame Street</street-name>
+             <city>Disney Land</city>
+          </person-address>
+       </person-profile>
+       */
+   
    @Root
    public static class PersonProfile {
 
@@ -33,10 +46,10 @@ public class MixTest extends ValidationTestCase {
       private PersonAddress personAddress;
 
       @Element
-      private Date DOB;
+      private Date personDOB;
 
       public Date getDateOfBirth() {
-         return DOB;
+         return personDOB;
       }
 
       public String getFirstName() {
