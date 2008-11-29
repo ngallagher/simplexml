@@ -79,7 +79,7 @@ public class InlineTest extends ValidationTestCase {
    }
 
    @Root
-   public class SimpleInlineList {
+   private static class SimpleInlineList {
 
       @ElementList(inline=true)           
       private ArrayList<SimpleEntry> list = new ArrayList<SimpleEntry>();           
@@ -93,20 +93,20 @@ public class InlineTest extends ValidationTestCase {
    }        
    
    @Root
-   public class SimplePrimitiveInlineList {
+   private static class SimplePrimitiveInlineList {
       
       @ElementList(inline=true)
       private ArrayList<String> list = new ArrayList<String>();
    }
    
    @Root
-   public class SimpleNameInlineList {
+   private static class SimpleNameInlineList {
       
       @ElementList(inline=true, entry="item")           
       private ArrayList<SimpleEntry> list = new ArrayList<SimpleEntry>(); 
    }
 
-   private enum Version {
+   private static enum Version {
            
       ONE,
       TWO,
