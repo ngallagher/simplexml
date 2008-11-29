@@ -88,6 +88,7 @@ public class MixTest extends ValidationTestCase {
       example.put(new Entry("1", "key 1"), new Entry("1", "value 1"));
       example.put("key 2", "value 2");
       example.put("key 3", 3);
+      example.put("key 4", new Entry("4", "value 4"));
       
       serializer.write(example, System.out);
       serializer.write(example, source);   
