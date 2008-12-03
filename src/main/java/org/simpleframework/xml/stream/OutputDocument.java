@@ -30,7 +30,7 @@ package org.simpleframework.xml.stream;
  * @author Niall Gallagher
  */ 
 class OutputDocument implements OutputNode {
-
+   
    /**
     * Represents a dummy output node map for the attributes.
     */ 
@@ -45,6 +45,11 @@ class OutputDocument implements OutputNode {
     * This is the output stack used by the node writer object.
     */ 
    private OutputStack stack;
+  
+   /**
+    * This represents the namespace reference used by this.
+    */  
+   private String reference;
    
    /**
     * Represents the value that has been set on this document.
@@ -69,7 +74,55 @@ class OutputDocument implements OutputNode {
       this.mode = Mode.INHERIT;
       this.writer = writer;
       this.stack = stack;
-   }     
+   }  
+   
+   /**
+    * The default for the <code>OutputDocument</code> is null as it
+    * does not require a namespace. A null prefix is always used by
+    * the document as it represents a virtual node that does not
+    * exist and will not form any part of the resulting XML.
+    *
+    * @return this returns a null prefix for the output document
+    */ 
+   public String getPrefix() {
+      return null;
+   }
+  
+   /**
+    * This is used to acquire the reference that has been set on
+    * this output node. Typically this should be null as this node
+    * does not represent anything that actually exists. However
+    * if a namespace reference is set it can be acquired.
+    *
+    * @return this returns the namespace reference for this node
+    */  
+   public String getReference() {
+      return reference;
+   }
+
+   /**
+    * This is used to set the namespace reference for the document.
+    * Setting a reference for the document node has no real effect
+    * as the document node is virtual and is not written to the
+    * resulting XML document that is generated.
+    *
+    * @param reference this is the namespace reference added
+    */ 
+   public void setReference(String reference) {
+      this.reference = reference;
+   }
+
+   /**
+    * This returns the <code>NamespaceMap</code> for the document.
+    * The namespace map for the document must be null as this will
+    * signify the end of the resolution process for a prefix if
+    * given a namespace reference.
+    *
+    * @return this will return a null namespace map object
+    */ 
+   public NamespaceMap getNamespaces() {
+      return null;
+   }
    
    /**
     * This is used to acquire the <code>Node</code> that is the
@@ -152,9 +205,11 @@ class OutputDocument implements OutputNode {
     * 
     * @param name this is the name of the attribute to be added
     * @param value this is the value of the node to be added
+    * 
+    * @return this returns the node that has just been added
     */ 
-   public void setAttribute(String name, String value) {
-      table.put(name, value);
+   public OutputNode setAttribute(String name, String value) {
+      return table.put(name, value);
    }
 
    /**
@@ -164,7 +219,7 @@ class OutputDocument implements OutputNode {
     *
     * @return returns the node map used to manipulate attributes
     */ 
-   public NodeMap getAttributes() {
+   public NodeMap<OutputNode> getAttributes() {
       return table;
    }
 

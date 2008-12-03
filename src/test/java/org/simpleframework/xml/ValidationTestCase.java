@@ -121,5 +121,6 @@ public class ValidationTestCase extends XMLTestCase {
 
     public static synchronized void validate(String text) throws Exception {    
         builder.parse(new InputSource(new StringReader(text)));   
+        System.out.println(text);
     }
 }

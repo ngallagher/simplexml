@@ -35,7 +35,7 @@ import java.util.Iterator;
  *
  * @author Niall Gallagher
  */ 
-class InputNodeMap extends LinkedHashMap<String, InputNode> implements NodeMap {
+class InputNodeMap extends LinkedHashMap<String, InputNode> implements NodeMap<InputNode> {
 
    /**
     * This is the source node that this node map belongs to.
@@ -105,9 +105,17 @@ class InputNodeMap extends LinkedHashMap<String, InputNode> implements NodeMap {
     * Once the node is inserted it can be acquired by its name.
     *
     * @param event this is the attribute to add to this node map
+    * 
+    * @return this returns the node that has just been added
     */     
-   private void put(Attribute event) {
-      put(new InputAttribute(source, event));           
+   private InputNode put(Attribute event) {
+      InputNode node = new InputAttribute(source, event);
+      String name = node.getName();
+      
+      if(name != null) {
+         put(name, node);
+      }
+      return node;
    }
 
    /**
@@ -118,22 +126,16 @@ class InputNodeMap extends LinkedHashMap<String, InputNode> implements NodeMap {
     *
     * @param name this is the name of the node to be created
     * @param value this is the value to be given to the node
+    * 
+    * @return this returns the node that has just been added
     */    
-   public void put(String name, String value) {
-      put(new InputAttribute(source, name, value));
-   }
-
-
-   /**
-    * This is used to insert an <code>InputAttribute</code> node 
-    * to the map. The inserted node can be used by an input node to
-    * to represent the attribute as another input node. Once the 
-    * node is inserted it can be acquired using the attribute name.
-    *
-    * @param input this is the attribute to add to the node map
-    */    
-   private void put(InputAttribute input) {
-      put(input.getName(), input);
+   public InputNode put(String name, String value) {
+      InputNode node = new InputAttribute(source, name, value);
+      
+      if(name != null) {
+         put(name, node);
+      }
+      return node;
    }
    
    /**

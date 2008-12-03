@@ -30,6 +30,11 @@ package org.simpleframework.xml.load;
  * @author Niall Gallagher
  */
 class CacheLabel implements Label {
+   
+   /**
+    * This is the decorator that is associated with the label.
+    */
+   private final Decorator decorator;
 
    /**
     * This is the contact used to set and get the value for the node.
@@ -89,7 +94,8 @@ class CacheLabel implements Label {
     * 
     * @param label this is the label to acquire the details from  
     */
-   public CacheLabel(Label label) throws Exception {  
+   public CacheLabel(Label label) throws Exception { 
+      this.decorator = label.getDecorator();
       this.contact = label.getContact();
       this.depend = label.getDependant();
       this.required = label.isRequired();
@@ -113,6 +119,19 @@ class CacheLabel implements Label {
     */
    public Contact getContact() {
       return contact;
+   }
+   
+   /**
+    * This is used to acquire the <code>Decorator</code> for this.
+    * A decorator is an object that adds various details to the
+    * node without changing the overall structure of the node. For
+    * example comments and namespaces can be added to the node with
+    * a decorator as they do not affect the deserialization.
+    * 
+    * @return this returns the decorator associated with this
+    */
+   public Decorator getDecorator() throws Exception {
+      return decorator;
    }
    
    /**

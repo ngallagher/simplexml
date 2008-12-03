@@ -44,6 +44,17 @@ interface Contact {
    public Annotation getAnnotation();
    
    /**
+    * This is the annotation associated with the point of contact.
+    * This will be an XML annotation that describes how the contact
+    * should be serializaed and deserialized from the object.
+    * 
+    * @param type this is the type of the annotation to acquire
+    *
+    * @return this provides the annotation associated with this
+    */
+   public <T extends Annotation> T getAnnotation(Class<T> type);
+   
+   /**
     * This will provide the contact type. The contact type is the
     * class that is to be set and get on the object. Typically the
     * type will be a serializable object or a primitive type.

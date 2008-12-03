@@ -1,3 +1,2 @@
 mvn source:jar javadoc:jar repository:bundle-create
-svn copy https://niallg@simple.svn.sourceforge.net/svnroot/simple/trunk/download/stream https://niallg@simple.svn.sourceforge.net/svnroot/simple/branches/namespace -m "Create branch to work on namespaces"
 

@@ -152,7 +152,7 @@ class InputElement implements InputNode {
     * 
     * @return this returns a map of attributes for the element
     */    
-   public NodeMap getAttributes() {
+   public NodeMap<InputNode> getAttributes() {
       return map;
    }
 

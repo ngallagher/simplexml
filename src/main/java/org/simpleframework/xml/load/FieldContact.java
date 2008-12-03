@@ -142,6 +142,19 @@ class FieldContact implements Contact {
    public Annotation getAnnotation() {
       return label;
    }
+   
+   /**
+    * This is the annotation associated with the point of contact.
+    * This will be an XML annotation that describes how the contact
+    * should be serializaed and deserialized from the object.
+    * 
+    * @param type this is the type of the annotation to acquire
+    *
+    * @return this provides the annotation associated with this
+    */
+   public <T extends Annotation> T getAnnotation(Class<T> type) {
+      return field.getAnnotation(type);
+   }
 
    /**
     * This is used to set the specified value on the provided object.

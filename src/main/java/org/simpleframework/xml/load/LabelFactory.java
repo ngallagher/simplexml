@@ -77,7 +77,7 @@ final class LabelFactory {
     * 
     * @return returns the label instantiated for the field
     */
-   private static Label getLabel(Contact contact, Annotation label) throws Exception {      
+   private static Label getLabel(Contact contact, Annotation label) throws Exception {     
       Constructor factory = getConstructor(label);    
       
       if(!factory.isAccessible()) {

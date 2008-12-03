@@ -31,19 +31,19 @@ import java.util.Iterator;
  * 
  * @author Niall Gallagher
  */ 
-class OutputNodeMap extends LinkedHashMap<String, Node> implements NodeMap {
+class OutputNodeMap extends LinkedHashMap<String, OutputNode> implements NodeMap<OutputNode> {
 
    /**
     * This is the source node that this node map belongs to.
     */         
-   private Node source;
+   private OutputNode source;
         
    /**
     * Constructor for the <code>OutputNodeMap</code> object. This is
     * used to create a node map that is used to create and collect
     * nodes, which will be used as attributes for an output element.
     */         
-   public OutputNodeMap(Node source) {
+   public OutputNodeMap(OutputNode source) {
       this.source = source;           
    }
    
@@ -65,9 +65,16 @@ class OutputNodeMap extends LinkedHashMap<String, Node> implements NodeMap {
     *
     * @param name this is the name of the node to be created
     * @param value this is the value to be given to the node
+    * 
+    * @return this is the node that has been added to the map
     */    
-   public void put(String name, String value) {
-      put(name, new EntryNode(name, value));           
+   public OutputNode put(String name, String value) {
+      OutputNode node = new OutputAttribute(source, name, value);
+      
+      if(source != null) {
+         put(name, node);
+      }
+      return node;
    }
    
    /**
@@ -80,7 +87,7 @@ class OutputNodeMap extends LinkedHashMap<String, Node> implements NodeMap {
     * 
     * @return this will return the node mapped to the given name
     */    
-   public Node remove(String name) {
+   public OutputNode remove(String name) {
       return super.remove(name);
    }
 
@@ -94,7 +101,7 @@ class OutputNodeMap extends LinkedHashMap<String, Node> implements NodeMap {
     * 
     * @return this will return the node mapped to the given name
     */   
-   public Node get(String name) {
+   public OutputNode get(String name) {
       return super.get(name);
    }
 
@@ -107,71 +114,5 @@ class OutputNodeMap extends LinkedHashMap<String, Node> implements NodeMap {
     */    
    public Iterator<String> iterator() {
       return keySet().iterator();           
-   }
-
-   /**
-    * The <code>EntryNode</code> object is used to represent a node
-    * added to the output node map. It represents a simple name 
-    * value pair that is used as an attribute by an output element.
-    *
-    * @see org.simpleframework.xml.stream.Node
-    */ 
-   private class EntryNode implements Node {
-
-      /**
-       * Represents the name of this node object instance.
-       */            
-      private String name;
-
-      /**
-       * Represents the value of this node object instance.
-       */  
-      private String value;
-           
-      /**
-       * Constructor for the <code>EntryNode</code> object. This is
-       * used to create a simple name value pair attribute holder.
-       *
-       * @param name this is the name that is used for the node
-       * @param value this is the value used for the node
-       */ 
-      public EntryNode(String name, String value) {
-         this.value = value;              
-         this.name = name;              
-      }         
-      
-      /**
-       * Returns the value for the node that this represents. This   
-       * is a modifiable property for the node and can be changed.
-       *    
-       * @return the name of the value for this node instance
-       * 
-       * @throws Exception if there is a problem getting the value
-       */      
-      public String getValue() {
-         return value;              
-      }
-
-      /**
-       * Returns the name of the node that this represents. This is
-       * an immutable property and should not change for any node.  
-       *  
-       * @return returns the name of the node that this represents
-       */          
-      public String getName() {
-         return name;              
-      }
-      
-      /**
-       * This is used to acquire the <code>Node</code> that is the
-       * parent of this node. This will return the node that is
-       * the direct parent of this node and allows for siblings to
-       * make use of nodes with their parents if required.  
-       *   
-       * @return this returns the parent node for this node
-       */
-      public Node getParent() {
-    	  return source;
-      }      
    }
 }

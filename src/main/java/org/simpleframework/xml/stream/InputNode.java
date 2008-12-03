@@ -81,7 +81,7 @@ public interface InputNode extends Node {
     * 
     * @return this returns a map of attributes for the element
     */  
-   public NodeMap getAttributes();
+   public NodeMap<InputNode> getAttributes();
    
    /**
     * This is used to acquire the <code>Node</code> that is the

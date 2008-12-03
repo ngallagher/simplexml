@@ -182,7 +182,7 @@ class InputAttribute implements InputNode {
     *
     * @return this always returns an empty node map of attributes
     */
-   public NodeMap getAttributes() {
+   public NodeMap<InputNode> getAttributes() {
       return new InputNodeMap(this);
    }
    

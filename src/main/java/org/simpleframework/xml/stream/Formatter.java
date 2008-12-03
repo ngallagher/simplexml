@@ -37,6 +37,11 @@ import java.io.Writer;
 class Formatter {
 
    /**
+    * Represents the prefix used when declaring an XML namespace.
+    */
+   private static final char[] NAMESPACE = { 'x', 'm', 'l', 'n', 's' };
+   
+   /**
     * Represents the XML escape sequence for the less than sign.
     */ 
    private static final char[] LESS = { '&', 'l', 't', ';'};        
@@ -49,17 +54,17 @@ class Formatter {
    /**
     * Represents the XML escape sequence for the double quote.
     */ 
-   private static final char[] DOUBLE = { '&', 'q', 'u', 'o', 't', ';'};
+   private static final char[] DOUBLE = { '&', 'q', 'u', 'o', 't', ';' };
 
    /**
     * Represents the XML escape sequence for the single quote.
     */ 
-   private static final char[] SINGLE = { '&', 'a', 'p', 'o', 's', ';'};
+   private static final char[] SINGLE = { '&', 'a', 'p', 'o', 's', ';' };
 
    /**
     * Represents the XML escape sequence for the ampersand sign.
     */ 
-   private static final char[] AND = { '&', 'a', 'm', 'p', ';'};
+   private static final char[] AND = { '&', 'a', 'm', 'p', ';' };
    
    /**
     * Output buffer used to write the generated XML result to.
@@ -115,6 +120,16 @@ class Formatter {
          write("\n");         
       }
    }
+  
+   /**
+    * This is used to write any comments that have been set. The
+    * comment will typically be written at the start of an element
+    * to describe the purpose of the element or include debug data
+    * that can be used to determine any issues in serialization.
+    */  
+   public void writeComment() throws Exception {
+      return;
+   }
    
    /**
     * This method is used to write a start tag for an element. If a
@@ -126,7 +141,7 @@ class Formatter {
     *
     * @throws Exception thrown if there is an I/O exception
     */ 
-   public void writeStart(String name) throws Exception{
+   public void writeStart(String name, String prefix) throws Exception{
       String text = indenter.push();
 
       if(last == Tag.START) {
@@ -135,6 +150,11 @@ class Formatter {
       flush();
       append(text);
       append('<');
+      
+      if(!isEmpty(prefix)) {
+         append(prefix);
+         append(':');
+      }
       append(name);
       last = Tag.START;
    }
@@ -149,15 +169,42 @@ class Formatter {
     *
     * @throws Exception thrown if there is an I/O exception
     */  
-   public void writeAttribute(String name, String value) throws Exception{
+   public void writeAttribute(String name, String value, String prefix) throws Exception{
       if(last != Tag.START) {
          throw new NodeException("Start element required");              
       }         
       write(' ');
-      write(name);
+      write(name, prefix);
       write('=');
       write('"');
       escape(value);
+      write('"');               
+   }
+   
+   /**
+    * This is used to write a name value attribute pair. If the last
+    * tag written was not a start tag then this throws an exception.
+    * All attribute values written are enclosed in double quotes.
+    * 
+    * @param name this is the name of the attribute to be written
+    * @param value this is the value to assigne to the attribute
+    *
+    * @throws Exception thrown if there is an I/O exception
+    */  
+   public void writeNamespace(String location, String prefix) throws Exception{
+      if(last != Tag.START) {
+         throw new NodeException("Start element required");              
+      }         
+      write(' ');
+      write(NAMESPACE);
+      
+      if(!isEmpty(prefix)) {
+         write(':');
+         write(prefix);
+      }
+      write('=');
+      write('"');
+      escape(location);
       write('"');               
    }
 
@@ -205,7 +252,7 @@ class Formatter {
     *
     * @throws Exception thrown if there is an I/O exception
     */ 
-   public void writeEnd(String name) throws Exception {
+   public void writeEnd(String name, String prefix) throws Exception {
       String text = indenter.pop();
 
       if(last == Tag.START) {
@@ -218,7 +265,7 @@ class Formatter {
          if(last != Tag.START) {
             write('<');
             write('/');
-            write(name);
+            write(name, prefix);
             write('>');
          }                    
       }                    
@@ -261,6 +308,25 @@ class Formatter {
    private void write(String plain) throws Exception{      
       buffer.write(result);
       buffer.clear();
+      result.write(plain);  
+   }
+   
+   /**
+    * This is used to write plain text to the output stream without
+    * any translation. This is used when writing the start tags and
+    * end tags, this is also used to write attribute names.
+    *
+    * @param plain this is the text to be written to the output
+    * @param prefix this is the namespace prefix to be written
+    */    
+   private void write(String plain, String prefix) throws Exception{      
+      buffer.write(result);
+      buffer.clear();
+      
+      if(!isEmpty(prefix)) {
+         result.write(prefix);
+         result.write(':');
+      }
       result.write(plain);  
    }
    
@@ -336,21 +402,6 @@ class Formatter {
          write(ch);                 
       }
    }   
-   
-   /**
-    * This method is used to reset the internal buffer such that the
-    * contents are discarded. This is useful when a tag needs to be
-    * removed or deleted as its contents can be removed from the 
-    * buffer so as not to affect the resulting XML document.    
-    */
-   public void reset() throws Exception {
-      if(last != Tag.START) {
-         throw new NodeException("Can not remove element text");
-      }      
-      indenter.pop();
-      buffer.clear();
-      last = Tag.TEXT;
-   }
 
    /**
     * This is used to flush the writer when the XML if it has been
@@ -375,6 +426,23 @@ class Formatter {
     */ 
    private String unicode(char ch) {
       return Integer.toString(ch);           
+   }
+   
+   /**
+    * This method is used to determine if a root annotation value is
+    * an empty value. Rather than determining if a string is empty
+    * be comparing it to an empty string this method allows for the
+    * value an empty string represents to be changed in future.
+    * 
+    * @param value this is the value to determine if it is empty
+    * 
+    * @return true if the string value specified is an empty value
+    */
+   private boolean isEmpty(String prefix) {
+      if(prefix != null) {
+         return prefix.length() == 0;
+      }
+      return true;  
    }
 
    /**

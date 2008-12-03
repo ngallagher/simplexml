@@ -22,8 +22,6 @@ package org.simpleframework.xml.load;
 
 import java.util.Map;
 
-import org.simpleframework.xml.stream.Style;
-
 /**
  * The <code>Schema</code> object is used to track which fields within
  * an object have been visited by a converter. This object is nessecary
@@ -36,6 +34,11 @@ import org.simpleframework.xml.stream.Style;
  * @author Niall Gallagher
  */ 
 class Schema {
+   
+   /**
+    * This is the decorator associated with this scanner.
+    */
+   private Decorator decorator;
 
    /**
     * Contains a map of all attributes present within the schema.
@@ -84,6 +87,7 @@ class Schema {
    public Schema(Scanner schema, Source source) throws Exception {   
       this.attributes = schema.getAttributes(source);
       this.elements = schema.getElements(source);
+      this.decorator = schema.getDecorator();
       this.primitive = schema.isPrimitive();
       this.conduit = schema.getConduit();
       this.session = source.getSession();
@@ -101,6 +105,19 @@ class Schema {
     */
    public boolean isPrimitive() {
       return primitive;
+   }
+   
+   /**
+    * This is used to acquire the <code>Decorator</code> for this.
+    * A decorator is an object that adds various details to the
+    * node without changing the overall structure of the node. For
+    * example comments and namespaces can be added to the node with
+    * a decorator as they do not affect the deserialization.
+    * 
+    * @return this returns the decorator associated with this
+    */
+   public Decorator getDecorator() {
+      return decorator;
    }
    
    /**

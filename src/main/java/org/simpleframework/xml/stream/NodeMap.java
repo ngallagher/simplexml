@@ -32,7 +32,7 @@ import java.util.Iterator;
  *
  * @see org.simpleframework.xml.stream.Node
  */ 
-public interface NodeMap extends Iterable<String> {
+public interface NodeMap<T extends Node> extends Iterable<String> {
 
    /**
     * This is used to get the name of the element that owns the
@@ -53,7 +53,7 @@ public interface NodeMap extends Iterable<String> {
     * 
     * @return this will return the node mapped to the given name
     */         
-   public Node get(String name);        
+   public T get(String name);        
 
    /**
     * This is used to remove the <code>Node</code> mapped to the
@@ -65,7 +65,7 @@ public interface NodeMap extends Iterable<String> {
     * 
     * @return this will return the node mapped to the given name
     */ 
-   public Node remove(String name);
+   public T remove(String name);
    
    /**
     * This returns an iterator for the names of all the nodes in
@@ -84,6 +84,8 @@ public interface NodeMap extends Iterable<String> {
     *
     * @param name this is the name of the node to be created
     * @param value this is the value to be given to the node
+    * 
+    * @return this is the node that has been added to the map
     */ 
-   public void put(String name, String value);
+   public T put(String name, String value);
 }
