@@ -20,6 +20,8 @@
 
 package org.simpleframework.xml.load;
 
+import java.util.Iterator;
+
 import org.simpleframework.xml.stream.InputNode;
 import org.simpleframework.xml.stream.NodeMap;
 import org.simpleframework.xml.stream.OutputNode;
@@ -224,7 +226,7 @@ class Composite implements Converter {
     * @throws Exception thrown if any required attributes remain
     */
    private void readAttributes(InputNode node, Object source, Schema schema) throws Exception {
-      NodeMap list = node.getAttributes();
+      NodeMap<InputNode> list = node.getAttributes();
       LabelMap map = schema.getAttributes();
 
       for(String name : list) {         
@@ -476,7 +478,7 @@ class Composite implements Converter {
     * @throws Exception thrown if any required attributes remain
     */
    private void validateAttributes(InputNode node, Schema schema) throws Exception {
-      NodeMap list = node.getAttributes();
+      NodeMap<InputNode> list = node.getAttributes();
       LabelMap map = schema.getAttributes();
 
       for(String name : list) {         
@@ -819,10 +821,12 @@ class Composite implements Converter {
     */
    private void writeAttribute(OutputNode node, Object value, Label label) throws Exception {
       if(value != null) {         
+         Decorator decorator = label.getDecorator();
          String name = label.getName(root);
          String text = factory.getText(value);
-        
-         node.setAttribute(name, text);
+         OutputNode done = node.setAttribute(name, text);
+         
+         decorator.decorate(done);
       }
    }
    
@@ -851,9 +855,47 @@ class Composite implements Converter {
             boolean data = label.isData();
             
             next.setData(data);
-            convert.write(next, value);
+            writeNamespaces(next, type, label);
+            writeElement(next, value, convert);
          }
       }
+   }
+   
+   /**
+    * This is used write the element specified using the specified
+    * converter. Writing the value using the specified converter will
+    * result in the node being populated with the elements, attributes,
+    * and text values to the provided node. If there is a problem
+    * writing the value using the converter an exception is thrown.
+    * 
+    * @param node this is the node that the value is to be written to
+    * @param value this is the value that is to be written
+    * @param convert this is the converter used to perform writing
+    * 
+    * @throws Exception thrown if there is a serialization problem
+    */
+   private void writeElement(OutputNode node, Object value, Converter convert) throws Exception {
+      convert.write(node, value);
+   }
+   
+   /**
+    * This is used to apply <code>Decorator</code> objects to the
+    * provided node before it is written. Application of decorations
+    * before the node is written allows namespaces and comments to be
+    * applied to the node. Decorations such as this do not affect the
+    * overall structure of the XML that is written.
+    * 
+    * @param node this is the node that decorations are applied to
+    * @param type this is the type to acquire the decoration for
+    * @param label this contains the primary decorator to be used
+    * 
+    * @throws Exception thrown if there is a decoration problem
+    */
+   private void writeNamespaces(OutputNode node, Class type, Label label) throws Exception {
+      Decorator primary = root.getDecorator(type);
+      Decorator decorator = label.getDecorator();
+      
+      decorator.decorate(node, primary);
    }
    
    /**

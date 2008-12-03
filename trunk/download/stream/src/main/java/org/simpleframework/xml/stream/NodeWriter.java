@@ -32,7 +32,7 @@ import java.io.Writer;
  * <p>
  * This keeps a stack of all the active output nodes so that if an
  * output node has been committed it cannot write any further data to
- * the XML document. This allows all output nodes to be independant
+ * the XML document. This allows all output nodes to be independent
  * of each other as the node write organizes the write access.
  *
  * @author Niall Gallagher
@@ -142,7 +142,7 @@ class NodeWriter {
          OutputNode top = stack.top();
          
          if(!isCommitted(top)) {
-            writeAttributes(top);
+            writeStart(top);
          }         
          while(stack.top() != parent) {
             writeEnd(stack.pop());
@@ -164,7 +164,6 @@ class NodeWriter {
       if(stack.top() != node) {
          throw new NodeException("Cannot remove node");
       }      
-      writer.reset();
       stack.pop();
    }
    
@@ -187,7 +186,7 @@ class NodeWriter {
          OutputNode top = stack.top();
       
          if(!isCommitted(top)) {
-            writeAttributes(top);
+            writeStart(top);
          }
          while(stack.top() != parent) {
             writeEnd(stack.pop());
@@ -198,23 +197,55 @@ class NodeWriter {
    }
 
     /**
-     * This is used to write a new start element to the resulting XML
-     * document. This will create an output node of the specified
-     * name before writing the start tag. Once the tag is written 
+     * This is used to begin writing on a new XML element. This is
+     * typically done by writing any comments required. This will 
+     * create an output node of the specified name before writing 
+     * the comment, if any exists. Once the comment has been written
      * the node is pushed on to the head of the output node stack.
      *
      * @param parent this is the parent node to the next output node
-     * @param name this is the name of the node that is to be written
+     * @param name this is the name of the node that is to be created
      *
      * @return this returns an output node used for writing content
      */       
    private OutputNode writeStart(OutputNode parent, String name) throws Exception {
       OutputNode node = new OutputElement(parent, this, name);
 
-      if(name != null) {
-          writer.writeStart(name);
+      if(parent != null) {
+          writer.writeComment();
       }          
       return stack.push(node);
+   }
+  
+   /**
+    * This is used to write the XML element to the underiying buffer.
+    * The element is written in the order of element prefix and name
+    * followed by the attributes an finally the namespaces for the
+    * element. Once this is finished the element is committed to 
+    *
+    * @param node this is the node that is to be fully written
+    */ 
+   public void writeStart(OutputNode node) throws Exception {
+      writeName(node);
+      writeAttributes(node);
+      writeNamespaces(node);
+   }
+
+   /**
+    * This is used to write a new start element to the resulting XML
+    * document. This will create an output node of the specified
+    * name before writing the start tag. Once the tag is written 
+    * the node is pushed on to the head of the output node stack.
+    *
+    * @param node this is the node that is to have its name written
+    */   
+   public void writeName(OutputNode node) throws Exception {
+      String prefix = node.getPrefix();
+      String name = node.getName();
+      
+      if(name != null) {
+         writer.writeStart(name, prefix);
+      }
    }
  
    /**
@@ -247,12 +278,14 @@ class NodeWriter {
     */  
    private void writeEnd(OutputNode node, Mode mode) throws Exception {
       String value = node.getValue();
-      String name = node.getName();
 
       if(value != null) { 
          writer.writeText(value, mode);
-      }         
-      writer.writeEnd(name);
+      }
+      String name = node.getName();
+      String prefix = node.getPrefix();
+      
+      writer.writeEnd(name, prefix);
       writer.flush();
    }
    
@@ -264,15 +297,33 @@ class NodeWriter {
     * @param node this is the node to have is attributes written
     */ 
    private void writeAttributes(OutputNode node) throws Exception {
-      NodeMap map = node.getAttributes();
+      NodeMap<OutputNode> map = node.getAttributes();
       
       for(String name : map) {
-         Node entry = map.get(name);
+         OutputNode entry = map.get(name);
          String value = entry.getValue();
+         String prefix = entry.getPrefix();
          
-         writer.writeAttribute(name, value);
+         writer.writeAttribute(name, value, prefix);
       }
       active.remove(node);
+   }
+   
+   /**
+    * This is used to write the namespaces of the specified node to
+    * the output. This will iterate over each namespace entered on 
+    * to the node. Once written the node is considered qualified.
+    *
+    * @param node this is the node to have is attributes written
+    */ 
+   private void writeNamespaces(OutputNode node) throws Exception {
+      NamespaceMap map = node.getNamespaces();
+      
+      for(String name : map) {
+         String prefix = map.get(name);
+         
+         writer.writeNamespace(name, prefix);
+      }
    }
 }
 

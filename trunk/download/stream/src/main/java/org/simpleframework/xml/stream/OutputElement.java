@@ -35,6 +35,11 @@ class OutputElement implements OutputNode {
     * Represents the attributes that have been set for the element.
     */         
    protected OutputNodeMap table;
+
+   /**
+    * This is the namespace map that contains the namespaces.
+    */ 
+   protected NamespaceMap scope;
    
    /**
     * Used to write the start tag and attributes for the document.
@@ -45,6 +50,11 @@ class OutputElement implements OutputNode {
     * This is the parent XML element to this output node.
     */
    private OutputNode parent;
+   
+   /**
+    * This is the namespace reference URI associated with this.
+    */ 
+   private String reference;
    
    /**
     * Represents the value that has been set for the element.
@@ -72,12 +82,70 @@ class OutputElement implements OutputNode {
     * @param name this is the name of the element this represents
     */ 
    public OutputElement(OutputNode parent, NodeWriter writer, String name) {
+      this.scope = new PrefixResolver(parent);
       this.table = new OutputNodeMap(this);
       this.mode = Mode.INHERIT;
       this.writer = writer;           
       this.parent = parent;
       this.name = name;
    }     
+
+   /**
+    * This is used to acquire the prefix for this output node. This 
+    * will search its parent nodes until the prefix that is currently
+    * in scope is found.  If a prefix is not found in the parent 
+    * nodes then a prefix in the current nodes namespace mappings is
+    * searched, failing that the prefix returned is null.
+    *
+    * @return this returns the prefix associated with this node
+    */  
+   public String getPrefix() {
+      String prefix = scope.get(reference);
+      
+      if(prefix == null) {
+         return parent.getPrefix();
+      }
+      return prefix;
+   }
+   
+   /**
+    * This is used to acquire the namespace URI reference associated
+    * with this node. Although it is recommended that the namespace
+    * reference is a URI it does not have to be, it can be any unique
+    * identifier that can be used to distinguish the qualified names.
+    *
+    * @return this returns the nanmespace URI reference for this
+    */
+   public String getReference() {
+      return reference;
+   }
+  
+   /**
+    * This is used to set the reference for the node. Setting the
+    * reference implies that the node is a qualified node within the
+    * XML document. Both elements and attributes can be qualified.
+    * Depending on the prefix set on this node or, failing that, any
+    * parent node for the reference, the element will appear in the
+    * XML document with that string prefixed to the node name.
+    *
+    * @param reference this is used to set the reference for the node
+    */  
+   public void setReference(String reference) {
+      this.reference = reference;
+   }
+  
+   /**
+    * This returns the <code>NamespaceMap</code> for this node. Only
+    * an element can have namespaces, so if this node represents an
+    * attribute the elements namespaces will be provided when this is
+    * requested. By adding a namespace it becomes in scope for the
+    * current element all all child elements of that element.
+    *
+    * @return this returns the namespaces associated with the node
+    */ 
+   public NamespaceMap getNamespaces() {
+      return scope;
+   }
    
    /**
     * This is used to acquire the <code>Node</code> that is the
@@ -161,7 +229,7 @@ class OutputElement implements OutputNode {
     *
     * @return returns the node map used to manipulate attributes
     */    
-   public NodeMap getAttributes() {
+   public OutputNodeMap getAttributes() {
       return table;
    }
 
@@ -200,9 +268,11 @@ class OutputElement implements OutputNode {
     * 
     * @param name this is the name of the attribute to be added
     * @param value this is the value of the node to be added
+    *
+    * @return this will return the attribute that was just set
     */    
-   public void setAttribute(String name, String value) {
-      table.put(name, value);
+   public OutputNode setAttribute(String name, String value) {
+      return table.put(name, value);
    }
 
    /**

@@ -48,7 +48,7 @@ public interface OutputNode extends Node {
     *
     * @return returns the node map used to manipulate attributes
     */ 
-   public NodeMap getAttributes();
+   public NodeMap<OutputNode> getAttributes();
    
    /**
     * The <code>Mode</code> is used to indicate the output mode
@@ -84,6 +84,50 @@ public interface OutputNode extends Node {
     * @param data if true the value is written as a CDATA block
     */
    public void setData(boolean data);
+  
+   /**
+    * This is used to acquire the prefix for this output node. If
+    * the output node is an element then this will search its parent
+    * nodes until the prefix that is currently in scope is found. 
+    * If however this node is an attribute then the hierarchy of 
+    * nodes is not searched as attributes to not inherit namespaces.
+    *
+    * @return this returns the prefix associated with this node
+    */  
+   public String getPrefix();
+   
+   /**
+    * This is used to acquire the namespace URI reference associated
+    * with this node. Although it is recommended that the namespace
+    * reference is a URI it does not have to be, it can be any unique
+    * identifier that can be used to distinguish the qualified names.
+    *
+    * @return this returns the nanmespace URI reference for this
+    */
+   public String getReference();
+  
+   /**
+    * This is used to set the reference for the node. Setting the
+    * reference implies that the node is a qualified node within the
+    * XML document. Both elements and attributes can be qualified.
+    * Depending on the prefix set on this node or, failing that, any
+    * parent node for the reference, the element will appear in the
+    * XML document with that string prefixed to the node name.
+    *
+    * @param reference this is used to set the reference for the node
+    */  
+   public void setReference(String reference);
+  
+   /**
+    * This returns the <code>NamespaceMap</code> for this node. Only
+    * an element can have namespaces, so if this node represents an
+    * attribute the elements namespaces will be provided when this is
+    * requested. By adding a namespace it becomes in scope for the
+    * current element all all child elements of that element.
+    *
+    * @return this returns the namespaces associated with the node
+    */  
+   public NamespaceMap getNamespaces();
    
    /**
     * This is used to set a text value to the element. This should
@@ -103,8 +147,10 @@ public interface OutputNode extends Node {
     * 
     * @param name this is the name of the attribute to be added
     * @param value this is the value of the node to be added
+    * 
+    * @return this returns the node that has just been added
     */ 
-   public void setAttribute(String name, String value);
+   public OutputNode setAttribute(String name, String value);
    
    /**
     * This is used to acquire the <code>Node</code> that is the

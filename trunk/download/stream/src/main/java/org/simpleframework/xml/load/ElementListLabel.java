@@ -35,6 +35,11 @@ import org.simpleframework.xml.stream.Style;
  *  @see org.simpleframework.xml.ElementList
  */
 class ElementListLabel implements Label {
+   
+   /**
+    * This is the decorator that is associated with the element.
+    */
+   private Decorator decorator;
 
    /**
     * This references the annotation that the field uses.
@@ -76,11 +81,25 @@ class ElementListLabel implements Label {
     */
    public ElementListLabel(Contact contact, ElementList label) {
       this.detail = new Signature(contact, this);
+      this.decorator = new Qualifier(contact);
       this.type = contact.getType();
       this.entry = label.entry();
       this.item = label.type();
       this.name = label.name();      
       this.label = label;
+   }
+   
+   /**
+    * This is used to acquire the <code>Decorator</code> for this.
+    * A decorator is an object that adds various details to the
+    * node without changing the overall structure of the node. For
+    * example comments and namespaces can be added to the node with
+    * a decorator as they do not affect the deserialization.
+    * 
+    * @return this returns the decorator associated with this
+    */
+   public Decorator getDecorator() throws Exception {
+      return decorator;
    }
 
    /**

@@ -209,11 +209,30 @@ class Traverser {
       if(source != null) {
          Class type = source.getClass();
      
-         if(!root.setOverride(expect, source, child)) {                               
-            getComposite(type).write(child, source);         
+         if(!root.setOverride(expect, source, child)) {
+            Converter convert = getComposite(type);
+            Decorator decorator = getDecorator(type);
+            
+            decorator.decorate(child);
+            convert.write(child, source);         
          }
       }         
       child.commit();      
+   }
+   
+   /**
+    * This will acquire the <code>Decorator</code> for the type.
+    * A decorator is an object that adds various details to the
+    * node without changing the overall structure of the node. For
+    * example comments and namespaces can be added to the node with
+    * a decorator as they do not affect the deserialization.
+    * 
+    * @param type this is the type to acquire the decorator for 
+    *
+    * @return this returns the decorator associated with this
+    */
+   private Decorator getDecorator(Class type) throws Exception {
+      return root.getDecorator(type);
    }
    
    /**
@@ -225,7 +244,7 @@ class Traverser {
     * 
     * @return a converter for the specified XML schema class
     */
-   private Composite getComposite(Class type) {
+   private Composite getComposite(Class type) throws Exception {
       return new Composite(root, type);
    }
    

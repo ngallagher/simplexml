@@ -88,6 +88,35 @@ class MethodContact implements Contact {
       this.type = get.getType();   
       this.name = get.getName();
    }
+   
+   /**
+    * This is the annotation associated with the point of contact.
+    * This will be an XML annotation that describes how the contact
+    * should be serialized and deserialized from the object.
+    *
+    * @return this provides the annotation associated with this
+    */
+   public Annotation getAnnotation() {
+      return label;
+   }
+   
+   /**
+    * This is the annotation associated with the point of contact.
+    * This will be an XML annotation that describes how the contact
+    * should be serializaed and deserialized from the object.
+    * 
+    * @param type this is the type of the annotation to acquire
+    *
+    * @return this provides the annotation associated with this
+    */
+   public <T extends Annotation> T getAnnotation(Class<T> type) {
+      T label = get.getAnnotation(type);
+      
+      if(label == null) {
+         label = set.getAnnotation(type);
+      }
+      return label;
+   }
 
    /**
     * This will provide the contact type. The contact type is the
@@ -135,18 +164,7 @@ class MethodContact implements Contact {
     */
    public String getName() {
       return name;
-   }
-   
-   /**
-    * This is the annotation associated with the point of contact.
-    * This will be an XML annotation that describes how the contact
-    * should be serializaed and deserialized from the object.
-    *
-    * @return this provides the annotation associated with this
-    */
-   public Annotation getAnnotation() {
-      return label;
-   }
+   }   
 
    /**
     * This is used to set the specified value on the provided object.

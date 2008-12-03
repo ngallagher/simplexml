@@ -75,6 +75,19 @@ class Pointer implements Label {
    }
    
    /**
+    * This is used to acquire the <code>Decorator</code> for this.
+    * A decorator is an object that adds various details to the
+    * node without changing the overall structure of the node. For
+    * example comments and namespaces can be added to the node with
+    * a decorator as they do not affect the deserialization.
+    * 
+    * @return this returns the decorator associated with this
+    */
+   public Decorator getDecorator() throws Exception {
+      return label.getDecorator();
+   }
+   
+   /**
     * This method returns a <code>Converter</code> which can be used to
     * convert an XML node into an object value and vice versa. The 
     * converter requires only the source object in order to perform

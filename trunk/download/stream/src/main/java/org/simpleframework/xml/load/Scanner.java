@@ -25,6 +25,8 @@ import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementArray;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.ElementMap;
+import org.simpleframework.xml.Namespace;
+import org.simpleframework.xml.NamespaceList;
 import org.simpleframework.xml.Order;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.Text;
@@ -47,7 +49,17 @@ import java.beans.Introspector;
  * @see org.simpleframework.xml.load.Schema
  */ 
 class Scanner  {
-  
+   
+   /**
+    * This is the decorator associated with this scanner.
+    */
+   private NamespaceDecorator decorator;
+   
+   /**
+    * This is the namespace assocated with the scanned class.
+    */
+   private Namespace namespace;
+   
    /**
     * This is used to store all labels that are XML attributes.
     */
@@ -120,11 +132,25 @@ class Scanner  {
     * 
     * @param type this is the type that is scanned for a schema
     */
-   public Scanner(Class type) throws Exception {           
+   public Scanner(Class type) throws Exception {  
+      this.decorator = new NamespaceDecorator();
       this.attributes = new LabelMap(this);
       this.elements = new LabelMap(this);      
       this.scan(type);
    }       
+   
+   /**
+    * This is used to acquire the <code>Decorator</code> for this.
+    * A decorator is an object that adds various details to the
+    * node without changing the overall structure of the node. For
+    * example comments and namespaces can be added to the node with
+    * a decorator as they do not affect the deserialization.
+    * 
+    * @return this returns the decorator associated with this
+    */
+   public Decorator getDecorator() {
+      return decorator;
+   }
 
    /**
     * Returns a <code>LabelMap</code> that contains the details for
@@ -336,12 +362,16 @@ class Scanner  {
       Class real = type;
       
       while(type != null) {
+         if(namespace == null) {
+            namespace(type);
+         }
          if(root == null) {              
             root(type);
-         }     
+         }  
          if(order == null) {
             order(type);
          }
+         scope(type);
          scan(real, type);
          type = type.getSuperclass();
       }      
@@ -388,6 +418,9 @@ class Scanner  {
          }
       }  else {
          primitive = isEmpty();
+      }
+      if(namespace != null) {
+         decorator.set(namespace);
       }
       if(order != null) {
          validateElements(type);
@@ -473,6 +506,43 @@ class Scanner  {
          }
          for(String name : order.attributes()) {
             attributes.put(name, null);
+         }
+      }
+   }
+   
+   /**
+    * This is use to scan for <code>Namespace</code> annotations on
+    * the class. Once a namespace has been located then it is used
+    * to populate the internal namespace decorator. This can then be
+    * used to decorate any output node that requires it.
+    * 
+    * @param type this is the XML schema class to scan for namespaces
+    */
+   private void namespace(Class<?> type) {
+      if(type.isAnnotationPresent(Namespace.class)) {
+         namespace = type.getAnnotation(Namespace.class);
+         
+         if(namespace != null) {
+            decorator.add(namespace);
+         }
+      }
+   }
+   
+   /**
+    * This is use to scan for <code>NamespaceList</code> annotations 
+    * on the class. Once a namespace list has been located then it is 
+    * used to populate the internal namespace decorator. This can then 
+    * be used to decorate any output node that requires it.
+    * 
+    * @param type this is the XML class to scan for namespace lists
+    */
+   private void scope(Class<?> type) {
+      if(type.isAnnotationPresent(NamespaceList.class)) {
+         NamespaceList scope = type.getAnnotation(NamespaceList.class);
+         Namespace[] list = scope.value();
+         
+         for(Namespace name : list) {
+            decorator.add(name);
          }
       }
    }

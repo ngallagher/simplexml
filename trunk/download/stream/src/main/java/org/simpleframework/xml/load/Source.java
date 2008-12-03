@@ -140,6 +140,21 @@ class Source {
    }
    
    /**
+    * This will acquire the <code>Decorator</code> for the type.
+    * A decorator is an object that adds various details to the
+    * node without changing the overall structure of the node. For
+    * example comments and namespaces can be added to the node with
+    * a decorator as they do not affect the deserialization.
+    * 
+    * @param type this is the type to acquire the decorator for 
+    *
+    * @return this returns the decorator associated with this
+    */
+   public Decorator getDecorator(Class type) throws Exception {
+      return getSchema(type).getDecorator();
+   }
+   
+   /**
     * This creates a <code>Schema</code> object that can be used to
     * examine the fields within the XML class schema. The schema
     * maintains information when a field from within the schema is
