@@ -22,7 +22,7 @@ package org.simpleframework.xml.graph;
 
 import java.util.Map;
 
-import org.simpleframework.xml.load.Type;
+import org.simpleframework.xml.core.Type;
 
 /**
  * The <code>Allocate</code> object is used to represent an entity 

@@ -8,8 +8,8 @@ import org.simpleframework.xml.ElementMap;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.ValidationTestCase;
-import org.simpleframework.xml.load.Persister;
-import org.simpleframework.xml.load.Strategy;
+import org.simpleframework.xml.core.Persister;
+import org.simpleframework.xml.core.Strategy;
 
 public class MapCycleTest extends ValidationTestCase {
    

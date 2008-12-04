@@ -4,8 +4,8 @@ import java.io.StringWriter;
 
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
+import org.simpleframework.xml.core.Persister;
 import org.simpleframework.xml.graph.CycleStrategy;
-import org.simpleframework.xml.load.Persister;
 
 import org.simpleframework.xml.ValidationTestCase;
 

@@ -8,9 +8,9 @@ import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.ValidationTestCase;
+import org.simpleframework.xml.core.Persister;
+import org.simpleframework.xml.core.Strategy;
 import org.simpleframework.xml.filter.Filter;
-import org.simpleframework.xml.load.Persister;
-import org.simpleframework.xml.load.Strategy;
 
 public class TreeStrategyTest extends ValidationTestCase {
 

@@ -20,7 +20,7 @@
 
 package org.simpleframework.xml.graph;
 
-import org.simpleframework.xml.load.PersistenceException;
+import org.simpleframework.xml.core.PersistenceException;
 
 /**
  * The <code>CycleException</code> is thrown when an invalid cycle 

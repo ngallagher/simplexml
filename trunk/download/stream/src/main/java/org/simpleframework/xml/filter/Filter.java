@@ -37,11 +37,14 @@ package org.simpleframework.xml.filter;
 public interface Filter {
 
    /**
-    * Replaces the text provided with some property. This method acts
-    * much like a the <code>get</code> method of the <code>Map</code>
-    * object, in that it uses the provided text as a key to some value.
+    * Replaces the text provided with some property. This method 
+    * acts much like a the get method of the <code>Map</code>
+    * object, in that it uses the provided text as a key to some 
+    * value. However it can also be used to evaluate expressions
+    * and output the result for inclusion in the generated XML.
     *
     * @param text this is the text value that is to be replaced
+    * 
     * @return returns a replacement for the provided text value
     */
    public String replace(String text);        

@@ -7,7 +7,7 @@ import java.util.Map;
 
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Root;
-import org.simpleframework.xml.load.Validate;
+import org.simpleframework.xml.core.Validate;
 
 
 @Root(name="context")

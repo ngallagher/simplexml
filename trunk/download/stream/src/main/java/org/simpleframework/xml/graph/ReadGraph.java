@@ -22,7 +22,8 @@ package org.simpleframework.xml.graph;
 
 import org.simpleframework.xml.stream.NodeMap;
 import org.simpleframework.xml.stream.Node;
-import org.simpleframework.xml.load.Type;
+import org.simpleframework.xml.core.Type;
+
 import java.util.HashMap;
 
 /**
