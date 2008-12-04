@@ -5,8 +5,8 @@ have some control or participation in the process. It is no good to have the per
 deserialize the object tree from an XML document only to see that the data is not valid or
 that further data structures need to be created in many of the deserialized objects. 
 To allow objects to participate in the deserialization process two annotations can be used,
-these are the <a href="/download/stream/doc/javadoc/org/simpleframework/xml/load/Validate.html">Validate</a> and
-<a href="/download/stream/doc/javadoc/org/simpleframework/xml/load/Commit.html">Commit</a> annotations. 
+these are the <a href="/download/stream/doc/javadoc/org/simpleframework/xml/core/Validate.html">Validate</a> and
+<a href="/download/stream/doc/javadoc/org/simpleframework/xml/core/Commit.html">Commit</a> annotations. 
 </p>
 <p>Both are
 involved in the deserialization process (not the serialization process) and are called 
@@ -86,8 +86,8 @@ the above object would be represented as an XML document.
 </pre>
 As well as annotations involved in the deserialization process there are annotations that can
 be used to receive persister callbacks for the serialization process. Two annotations can
-be used, they are the <a href="/download/stream/doc/javadoc/org/simpleframework/xml/load/Persist.html">Persist</a> 
-and <a href="/download/stream/doc/javadoc/org/simpleframework/xml/load/Complete.html">Complete</a> methods. 
+be used, they are the <a href="/download/stream/doc/javadoc/org/simpleframework/xml/core/Persist.html">Persist</a> 
+and <a href="/download/stream/doc/javadoc/org/simpleframework/xml/core/Complete.html">Complete</a> methods. 
 To receive persister callbacks the methods must be no argument methods marked with the 
 appropriate annotations.
 </p>

@@ -6,10 +6,17 @@ import junit.framework.TestCase;
 
 public class TransformerTest extends TestCase {
    
+   private static class BlankMatcher implements Matcher {
+
+      public Transform match(Class type) throws Exception {
+         return null;
+      }
+   }
+   
    private Transformer transformer;
    
    public void setUp() {
-      this.transformer = new Transformer();
+      this.transformer = new Transformer(new BlankMatcher());
    }
 
    public void testInteger() throws Exception {     

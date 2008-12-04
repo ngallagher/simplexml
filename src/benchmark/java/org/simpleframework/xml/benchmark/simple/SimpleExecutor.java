@@ -4,7 +4,7 @@ package org.simpleframework.xml.benchmark.simple;
 import org.simpleframework.xml.benchmark.Duration;
 import org.simpleframework.xml.benchmark.Executor;
 import org.simpleframework.xml.benchmark.TestRun;
-import org.simpleframework.xml.load.Persister;
+import org.simpleframework.xml.core.Persister;
 
 
 

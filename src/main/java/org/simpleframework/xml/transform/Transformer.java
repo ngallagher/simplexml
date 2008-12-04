@@ -71,16 +71,6 @@ public class Transformer {
     * This is used to cache the types that to not have a transform.
     */ 
    private Cache error;
-
-   /**
-    * Constructor for the <code>Transformer</code> object. This is
-    * used to create a transformer which will transform specified
-    * types using transforms loaded from the class path. By default
-    * this will match transforms by convention.
-    */
-   public Transformer() {
-      this(new EmptyMatcher());
-   }
    
    /**
     * Constructor for the <code>Transformer</code> object. This is
@@ -90,7 +80,7 @@ public class Transformer {
     * 
     * @param matcher this is used to match types to transforms
     */
-   private Transformer(Matcher matcher) {  
+   public Transformer(Matcher matcher) {  
       this.matcher = new DefaultMatcher(matcher);
       this.cache = new TransformCache();
       this.error = new WeakCache();

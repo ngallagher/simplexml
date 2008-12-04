@@ -20,7 +20,7 @@
 
 package org.simpleframework.xml.transform;
 
-import org.simpleframework.xml.load.PersistenceException;
+import org.simpleframework.xml.core.PersistenceException;
 
 /**
  * The <code>TransformException</code> is thrown if a problem occurs

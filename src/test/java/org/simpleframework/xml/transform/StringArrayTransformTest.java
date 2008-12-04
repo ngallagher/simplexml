@@ -10,7 +10,7 @@ import org.simpleframework.xml.ElementArray;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.ValidationTestCase;
-import org.simpleframework.xml.load.Persister;
+import org.simpleframework.xml.core.Persister;
 
 public class StringArrayTransformTest extends ValidationTestCase {
    

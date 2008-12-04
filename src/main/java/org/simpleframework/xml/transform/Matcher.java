@@ -31,7 +31,7 @@ package org.simpleframework.xml.transform;
  * 
  * @see org.simpleframework.xml.transform.Transformer
  */
-interface Matcher {
+public interface Matcher {
 
    /**
     * This is used to match a <code>Transform</code> using the type

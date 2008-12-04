@@ -4,10 +4,17 @@ import junit.framework.TestCase;
 
 public class TypeMatcherTest extends TestCase {
    
+   private static class BlankMatcher implements Matcher {
+
+      public Transform match(Class type) throws Exception {
+         return null;
+      }
+   }
+   
    private Matcher matcher;
    
    public void setUp() {
-      this.matcher = new DefaultMatcher(new EmptyMatcher());
+      this.matcher = new DefaultMatcher(new BlankMatcher());
    }
 
    public void testInteger() throws Exception {     
@@ -83,7 +90,7 @@ public class TypeMatcherTest extends TestCase {
    }
    
    public void testPrimitiveIntegerArray() throws Exception {
-      Matcher matcher = new DefaultMatcher(new EmptyMatcher());
+      Matcher matcher = new DefaultMatcher(new BlankMatcher());
       Transform transform = matcher.match(int[].class);
       Object value = transform.read("1, 2, 3, 4, 5");
       

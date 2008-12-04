@@ -20,8 +20,8 @@
 
 package org.simpleframework.xml.graph;
 
-import org.simpleframework.xml.load.Strategy;
-import org.simpleframework.xml.load.Type;
+import org.simpleframework.xml.core.Strategy;
+import org.simpleframework.xml.core.Type;
 import org.simpleframework.xml.stream.NodeMap;
 import java.util.Map;
 
@@ -52,8 +52,8 @@ import java.util.Map;
  * 
  * @author Niall Gallagher
  * 
- * @see org.simpleframework.xml.load.Persister
- * @see org.simpleframework.xml.load.Strategy
+ * @see org.simpleframework.xml.core.Persister
+ * @see org.simpleframework.xml.core.Strategy
  */
 public class CycleStrategy implements Strategy {
    

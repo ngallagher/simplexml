@@ -4,7 +4,7 @@ package org.simpleframework.xml.benchmark;
 import java.io.File;
 import java.io.FileNotFoundException;
 
-import org.simpleframework.xml.load.Persister;
+import org.simpleframework.xml.core.Persister;
 
 
 public class Benchmark {
