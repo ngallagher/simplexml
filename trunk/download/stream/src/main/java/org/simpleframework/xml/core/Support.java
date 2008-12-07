@@ -159,4 +159,29 @@ class Support implements Filter {
       }
       return transformer.valid(type);
    }
+   
+   /**
+    * This is used to determine if the type specified is a floating
+    * point type. Types that are floating point are the double and
+    * float primitives as well as the java types for this primitives.
+    * 
+    * @param type this is the type to determine if it is a float
+    * 
+    * @return this returns true if the type is a floating point
+    */
+   public boolean isFloat(Class type) throws Exception {
+      if(type == Double.class) {
+         return true;
+      }
+      if(type == Float.class) {
+         return true;
+      }
+      if(type == float.class) {
+         return true;
+      }
+      if(type == double.class) {
+         return true;
+      }
+      return false;
+   }
 }

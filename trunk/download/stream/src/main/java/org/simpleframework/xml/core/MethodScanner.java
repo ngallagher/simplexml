@@ -20,16 +20,18 @@
 
 package org.simpleframework.xml.core;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementArray;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.ElementMap;
 import org.simpleframework.xml.Text;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-import java.util.LinkedHashMap;
-import java.util.Iterator;
+import org.simpleframework.xml.Version;
 
 /**
  * The <code>MethodScanner</code> object is used to scan an object 
@@ -175,7 +177,10 @@ class MethodScanner extends ContactList {
       }
       if(label instanceof Element) {
          process(method, label);
-      }             
+      }         
+      if(label instanceof Version) {
+         process(method, label);
+      }
       if(label instanceof Text) {
          process(method, label);
       }

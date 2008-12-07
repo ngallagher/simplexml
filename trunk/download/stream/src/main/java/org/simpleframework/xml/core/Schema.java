@@ -22,6 +22,8 @@ package org.simpleframework.xml.core;
 
 import java.util.Map;
 
+import org.simpleframework.xml.Version;
+
 /**
  * The <code>Schema</code> object is used to track which fields within
  * an object have been visited by a converter. This object is nessecary
@@ -51,6 +53,11 @@ class Schema {
    private LabelMap elements;
    
    /**
+    * This is the version annotation for the XML class schema.
+    */
+   private Version revision;
+   
+   /**
     * This is the pointer to the schema class replace method.
     */
    private Conduit conduit;
@@ -59,6 +66,11 @@ class Schema {
     * This is the session that is to be used for serialization.
     */
    private Session session;
+   
+   /**
+    * This is the version label used to read the version attribute.
+    */
+   private Label version;
    
    /**
     * This is used to represent a text value within the schema.
@@ -87,10 +99,12 @@ class Schema {
    public Schema(Scanner schema, Context context) throws Exception {   
       this.attributes = schema.getAttributes(context);
       this.elements = schema.getElements(context);
+      this.revision = schema.getRevision();
       this.decorator = schema.getDecorator();
       this.primitive = schema.isPrimitive();
       this.conduit = schema.getConduit();
       this.session = context.getSession();
+      this.version = schema.getVersion();
       this.text = schema.getText();
       this.table = session.getMap();
    }
@@ -105,6 +119,31 @@ class Schema {
     */
    public boolean isPrimitive() {
       return primitive;
+   }
+   
+   /**
+    * This returns the <code>Label</code> that represents the version
+    * annotation for the scanned class. Only a single version can
+    * exist within the class if more than one exists an exception is
+    * thrown. This will read only floating point types such as double.
+    * 
+    * @return this returns the label used for reading the version
+    */
+   public Label getVersion() {
+      return version;
+   }
+   
+   /**
+    * This is the <code>Version</code> for the scanned class. It 
+    * allows the deserialization process to be configured such that
+    * if the version is different from the schema class none of
+    * the fields and methods are required and unmatched elements
+    * and attributes will be ignored.
+    * 
+    * @return this returns the version of the class that is scanned
+    */
+   public Version getRevision() {
+      return revision;
    }
    
    /**

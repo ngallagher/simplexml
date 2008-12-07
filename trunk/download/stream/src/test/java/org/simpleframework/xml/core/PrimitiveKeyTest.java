@@ -95,6 +95,10 @@ public class PrimitiveKeyTest extends TestCase {
       public String value() {
          return value;
       }
+      
+      public double since() {
+         return 1.0;
+      }
 
       public Class valueType() {
          return valueType;

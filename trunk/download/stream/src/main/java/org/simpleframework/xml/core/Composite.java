@@ -20,8 +20,7 @@
 
 package org.simpleframework.xml.core;
 
-import java.util.Iterator;
-
+import org.simpleframework.xml.Version;
 import org.simpleframework.xml.stream.InputNode;
 import org.simpleframework.xml.stream.NodeMap;
 import org.simpleframework.xml.stream.OutputNode;
@@ -75,6 +74,11 @@ class Composite implements Converter {
    private final Collector store;
    
    /**
+    * This is the current revision of this composite converter.
+    */
+   private final Revision revision;
+   
+   /**
     * This is the source object for the instance of serialization.
     */
    private final Context context;
@@ -97,6 +101,7 @@ class Composite implements Converter {
       this.factory = new ObjectFactory(context, type);  
       this.primitive = new Primitive(context, type);
       this.store = new Collector(context);
+      this.revision = new Revision();
       this.context = context;
       this.type = type;
    }
@@ -199,14 +204,74 @@ class Composite implements Converter {
     * exception. The annotation missing is reported in the exception.
     * 
     * @param node the XML element contact values are deserialized from
-    * @param source ths object whose contacts are to be deserialized
+    * @param source this object whose contacts are to be deserialized
     * @param schema this object visits the objects contacts
     */
    private void read(InputNode node, Object source, Schema schema) throws Exception {
+      readVersion(node, source, schema);
       readText(node, source, schema);
       readAttributes(node, source, schema);
       readElements(node, source, schema);
    }   
+   
+   /**
+    * This method is used to read the version from the provided input
+    * node. Once the version has been read it is used to determine how
+    * to deserialize the object. If the version is not the initial
+    * version then it is read in a manner that ignores excessive XML
+    * elements and attributes. Also none of the annotated fields or
+    * methods are required if the version is not the initial version.
+    * 
+    * @param node the XML element contact values are deserialized from
+    * @param source this object whose contacts are to be deserialized
+    * @param schema this object visits the objects contacts
+    */
+   private void readVersion(InputNode node, Object source, Schema schema) throws Exception {
+      Label label = schema.getVersion();
+      
+      if(label != null) {
+         String name = label.getName();
+         NodeMap<InputNode> map = node.getAttributes();
+         InputNode value = map.remove(name);
+         
+         if(value != null) {
+            readVersion(value, source, label);
+         } else {
+            Version version = context.getVersion(type);
+            Contact contact = label.getContact();
+            Double start = revision.getDefault();
+            Double expected = version.revision();
+            
+            contact.set(source, start);
+            revision.compare(expected, start);
+         }
+      }
+   }
+   
+   /**
+    * This method is used to read the version from the provided input
+    * node. Once the version has been read it is used to determine how
+    * to deserialize the object. If the version is not the initial
+    * version then it is read in a manner that ignores excessive XML
+    * elements and attributes. Also none of the annotated fields or
+    * methods are required if the version is not the initial version.
+    * 
+    * @param node the XML element contact values are deserialized from
+    * @param source this object whose contacts are to be deserialized
+    * @param label this is the label used to read the version attribute
+    */
+   private void readVersion(InputNode node, Object source, Label label) throws Exception {
+      Object value = read(node, source, label);
+     
+      if(value != null) {
+         Version version = context.getVersion(type);
+         Double expected = version.revision();
+         
+         if(!value.equals(revision)) {
+            revision.compare(expected, value);
+         }
+      } 
+   }
 
    /**
     * This <code>readAttributes</code> method reads the attributes from
@@ -307,7 +372,7 @@ class Composite implements Converter {
       Label label = map.take(name);
       
       if(label == null) {
-         if(map.isStrict()) {              
+         if(map.isStrict() && revision.isEqual()) {              
             throw new AttributeException("Attribute '%s' does not exist at %s", name, line);
          }            
       } else {
@@ -339,7 +404,7 @@ class Composite implements Converter {
       if(label == null) {
          Position line = node.getPosition();
          
-         if(map.isStrict()) {              
+         if(map.isStrict() && revision.isEqual()) {              
             throw new ElementException("Element '%s' does not exist at %s", name, line);
          } else {
             node.skip();                 
@@ -363,7 +428,7 @@ class Composite implements Converter {
     * 
     * @throws Exception thrown if the contact could not be deserialized
     */
-   private void read(InputNode node, Object source, Label label) throws Exception {    
+   private Object read(InputNode node, Object source, Label label) throws Exception {    
       Converter reader = label.getConverter(context);      
       Object object = reader.read(node);
     
@@ -371,14 +436,15 @@ class Composite implements Converter {
          Position line = node.getPosition();
          Class type = source.getClass();
          
-         if(label.isRequired()) {              
+         if(label.isRequired() && revision.isEqual()) {              
             throw new ValueRequiredException("Empty value for %s in %s at %s", label, type, line);
          }
       } else {
          if(object != label.getEmpty(context)) {      
             store.put(label, object);
          }
-      }         
+      }
+      return object;
    }   
 
    /**
@@ -399,7 +465,7 @@ class Composite implements Converter {
       Class type = source.getClass();
 
       for(Label label : map) {
-         if(label.isRequired()) {
+         if(label.isRequired() && revision.isEqual()) {
             throw new ValueRequiredException("Unable to satisfy %s for %s at %s", label, type, line);
          }
          Object value = label.getEmpty(context);
@@ -555,7 +621,7 @@ class Composite implements Converter {
       Label label = map.take(name);
       
       if(label == null) {
-         if(map.isStrict()) {              
+         if(map.isStrict() && revision.isEqual()) {              
             throw new AttributeException("Attribute '%s' does not exist at %s", name, line);
          }            
       } else {
@@ -586,7 +652,7 @@ class Composite implements Converter {
       if(label == null) {
          Position line = node.getPosition();
          
-         if(map.isStrict()) {              
+         if(map.isStrict() && revision.isEqual()) {              
             throw new ElementException("Element '%s' does not exist at %s", name, line);
          } else {
             node.skip();                 
@@ -636,7 +702,7 @@ class Composite implements Converter {
       Position line = node.getPosition();
 
       for(Label label : map) {
-         if(label.isRequired()) {
+         if(label.isRequired() && revision.isEqual()) {
             throw new ValueRequiredException("Unable to satisfy %s at %s", label, line);
          }
       }      
@@ -685,9 +751,42 @@ class Composite implements Converter {
     * @throws Exception thrown if there is a serialization problem
     */
    private void write(OutputNode node, Object source, Schema schema) throws Exception {
+      writeVersion(node, source, schema);
       writeAttributes(node, source, schema);
       writeElements(node, source, schema);
       writeText(node, source, schema);
+   }
+   
+   /**
+    * This method is used to write the version attribute. A version is
+    * written only if it is not the initial version or if it required.
+    * The version is used to determine how to deserialize the XML. If
+    * the version is different from the expected version then it allows
+    * the object to be deserialized in a manner that does not require
+    * any attributes or elements, and unmatched nodes are ignored. 
+    * 
+    * @param node this is the node to read the version attribute from
+    * @param source this is the source object that is to be written
+    * @param schema this is the schema that contains the version
+    * 
+    * @throws Exception thrown if there is a serialization problem
+    */
+   private void writeVersion(OutputNode node, Object source, Schema schema) throws Exception {
+      Version version = schema.getRevision();
+      Label label = schema.getVersion();
+      
+      if(version != null) {
+         Double start = revision.getDefault();
+         Double value = version.revision();
+     
+         if(revision.compare(value, start)) {
+            if(label.isRequired()) {
+               writeAttribute(node, value, label);
+            }
+         } else {
+            writeAttribute(node, value, label);
+         }
+      }
    }
 
    /**
@@ -758,7 +857,7 @@ class Composite implements Converter {
     * before it is serialized. This is used so that an object can give
     * a substitute to be written to the XML document in the event that
     * the actual object is not suitable or desired for serialization. 
-    * This acts as an equivelant to the Java Object Serialization
+    * This acts as an equivalent to the Java Object Serialization
     * <code>writeReplace</code> method for the object serialization.
     * 
     * @param source this is the source object that is to be replaced

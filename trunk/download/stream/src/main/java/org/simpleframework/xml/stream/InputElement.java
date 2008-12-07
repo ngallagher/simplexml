@@ -108,6 +108,32 @@ class InputElement implements InputNode {
    }
    
    /**
+    * This is used to acquire the namespace prefix for the node.
+    * If there is no namespace prefix for the node then this will
+    * return null. Acquiring the prefix enables the qualification
+    * of the node to be determined. It also allows nodes to be
+    * grouped by its prefix and allows group operations.
+    * 
+    * @return this returns the prefix associated with this node
+    */
+   public String getPrefix() {
+      return element.getName().getPrefix();
+   }
+   
+   /**
+    * This allows the namespace reference URI to be determined.
+    * A reference is a globally unique string that allows the
+    * node to be identified. Typically the reference will be a URI
+    * but it can be any unique string used to identify the node.
+    * This allows the node to be identified within the namespace.
+    * 
+    * @return this returns the associated namespace reference URI 
+    */
+   public String getReference() {
+      return element.getName().getNamespaceURI();
+   }
+   
+   /**
     * This method is used to determine if this node is the root 
     * node for the XML document. The root node is the first node
     * in the document and has no sibling nodes. This is false
