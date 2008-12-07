@@ -1,54 +1,49 @@
 package org.simpleframework.xml.core;
 
+import java.lang.reflect.Constructor;
+
 import junit.framework.TestCase;
 
-import org.simpleframework.xml.core.Persister;
-import org.simpleframework.xml.core.Strategy;
-import org.simpleframework.xml.core.Type;
-import org.simpleframework.xml.stream.Node;
-import org.simpleframework.xml.stream.NodeMap;
-import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
+import org.simpleframework.xml.Namespace;
 import org.simpleframework.xml.Root;
+import org.simpleframework.xml.Serializer;
+import org.simpleframework.xml.Version;
 
-import java.lang.reflect.Array;
-import java.lang.reflect.Constructor;
-import java.util.Map;
-
-public class VersionTest extends TestCase {
-
-   private static final String VERSION_ATTRIBUTE = "version";        
+public class VersionTest extends TestCase {      
 
    private static final String VERSION_1 =
    "<?xml version=\"1.0\"?>\n"+
-   "<Example version='1'>\n"+
+   "<Example version='1.0'>\n"+
    "   <text>text value</text>  \n\r"+
    "</Example>";
 
    private static final String VERSION_2 =
    "<?xml version=\"1.0\"?>\n"+
-   "<Example version='2'>\n"+
+   "<Example version='2.0'>\n"+
    "   <name>example name</name>  \n\r"+
    "   <value>text value</value> \n"+
    "   <entry name='example'>\n"+   
    "      <value>text value</value> \n"+   
    "   </entry>\n"+
+   "   <ignore>ignore this element</ignore>\n"+
    "</Example>";
    
    
    public interface Versionable {
       
-      public int getVersion();
+      public double getVersion();
    }
 
    @Root(name="Example")
    private static abstract class Example implements Versionable {
 
-      @Attribute(name="version")
-      private int version;
+      @Version
+      @Namespace(prefix="prefix", reference="http://www.domain.com/reference")
+      private double version;
       
-      public int getVersion() {
+      public double getVersion() {
          return version;
       }
       
@@ -89,68 +84,27 @@ public class VersionTest extends TestCase {
       @Element(name="value")
       private String value;              
    }
-
-   public class VersionStrategy implements Strategy {
-
-      private String version;           
-
-      public Type getRoot(Class field, NodeMap root, Map map) throws Exception {
-         Node version = root.get(VERSION_ATTRIBUTE);                       
-
-         if(version != null){
-            map.put(VERSION_ATTRIBUTE, version.getValue());
-         }
-         return getElement(field, root, map);
-      }
-
-      public Type getElement(Class field, NodeMap node, Map map) throws Exception {
-         String value = field.getName() + map.get(VERSION_ATTRIBUTE);
-     
-         try {    
-            Class type = Class.forName(value);
-            
-            return new SimpleType(type);
-         } catch(ClassNotFoundException e) {
-            return null;                 
-         }            
-      }         
-
-      public boolean setRoot(Class field, Object value, NodeMap root, Map map) throws Exception {
-         Class type = value.getClass();
-         
-         if(Versionable.class.isAssignableFrom(type)) {
-            Versionable versionable = (Versionable)value;
-            map.put(VERSION_ATTRIBUTE, String.valueOf(versionable.getVersion()));
-         }              
-         return setElement(field, value, root, map);
-      }              
-
-      public boolean setElement(Class field, Object value, NodeMap node, Map map) throws Exception {
-         node.put(VERSION_ATTRIBUTE, (String)map.get(VERSION_ATTRIBUTE));
-         return false;
-      }
-   }
    
    public static class SimpleType implements Type{
-	   
-	   private Class type;
-	   
-	   public SimpleType(Class type) {
-		   this.type = type;
-	   }
-	   
-	   public Object getInstance() throws Exception {
-		   return getInstance(type);
-	   }
+      
+      private Class type;
+      
+      public SimpleType(Class type) {
+         this.type = type;
+      }
+      
+      public Object getInstance() throws Exception {
+         return getInstance(type);
+      }
 
        public Object getInstance(Class type) throws Exception {
-		   Constructor method = type.getDeclaredConstructor();
+         Constructor method = type.getDeclaredConstructor();
 
-		   if(!method.isAccessible()) {
-		      method.setAccessible(true);              
-		   }
-		   return method.newInstance();   
-	   }   
+         if(!method.isAccessible()) {
+            method.setAccessible(true);              
+         }
+         return method.newInstance();   
+      }   
        
        public Object getInstance(Object value) throws Exception {
           return value;
@@ -160,26 +114,36 @@ public class VersionTest extends TestCase {
           return false;
        }
        
-	   public Class getType() {
-		  return type;
-	   } 
+      public Class getType() {
+        return type;
+      } 
    }
    
-   public void testVersion1() throws Exception {    
-      Strategy strategy = new VersionStrategy();           
-      Serializer persister = new Persister(strategy);
-      Example example = persister.read(Example.class, VERSION_1);
+   public void testVersion1() throws Exception {           
+      Serializer persister = new Persister();
+      Example example = persister.read(Example1.class, VERSION_1);
       
       assertTrue(example instanceof Example1);
       assertEquals(example.getValue(), "text value");
+      assertEquals(example.version, 1.0);
+      
+      persister.write(example, System.out);
+      
+      assertEquals(example.getValue(), "text value");
+      assertEquals(example.version, 1.0);
    }
 
-   public void testVersion2() throws Exception {    
-      Strategy strategy = new VersionStrategy();           
-      Serializer persister = new Persister(strategy);
-      Example example = persister.read(Example.class, VERSION_2);      
+   public void testVersion2() throws Exception {           
+      Serializer persister = new Persister();
+      Example example = persister.read(Example2.class, VERSION_2);      
       
       assertTrue(example instanceof Example2);
       assertEquals(example.getValue(), "text value");
+      assertEquals(example.version, 2.0);
+      
+      persister.write(example, System.out);
+      
+      assertEquals(example.getValue(), "text value");
+      assertEquals(example.version, 2.0);
    }
 }

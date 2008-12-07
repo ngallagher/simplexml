@@ -84,5 +84,5 @@ public @interface Text {
     * 
     * @return true if the element is required, false otherwise
     */
-   public boolean required() default true;   
+   public boolean required() default true; 
 }

@@ -20,14 +20,16 @@
 
 package org.simpleframework.xml.core;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Constructor;
+
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementArray;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.ElementMap;
 import org.simpleframework.xml.Text;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Constructor;
+import org.simpleframework.xml.Version;
 
 /**
  * The <code>LabelFactory</code> object is used to create instances of
@@ -130,6 +132,9 @@ final class LabelFactory {
        }
        if(label instanceof Attribute) {
           return new Entry(AttributeLabel.class, Attribute.class);
+       }
+       if(label instanceof Version) {
+          return new Entry(VersionLabel.class, Version.class);
        }
        if(label instanceof Text) {
           return new Entry(TextLabel.class, Text.class);

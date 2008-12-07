@@ -26,6 +26,8 @@ import org.simpleframework.xml.ElementArray;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.ElementMap;
 import org.simpleframework.xml.Text;
+import org.simpleframework.xml.Version;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
@@ -132,6 +134,9 @@ class FieldScanner extends ContactList {
       if(label instanceof Element) {
          process(field, label);
       }             
+      if(label instanceof Version) {
+         process(field, label);
+      }
       if(label instanceof Text) {
          process(field, label);
       }

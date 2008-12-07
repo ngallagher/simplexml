@@ -20,6 +20,7 @@
 
 package org.simpleframework.xml.core;
 
+import org.simpleframework.xml.Version;
 import org.simpleframework.xml.filter.Filter;
 import org.simpleframework.xml.stream.InputNode;
 import org.simpleframework.xml.stream.NodeMap;
@@ -140,6 +141,19 @@ class Source implements Context {
    }
    
    /**
+    * This is used to determine if the type specified is a floating
+    * point type. Types that are floating point are the double and
+    * float primitives as well as the java types for this primitives.
+    * 
+    * @param type this is the type to determine if it is a float
+    * 
+    * @return this returns true if the type is a floating point
+    */
+   public boolean isFloat(Class type) throws Exception {
+      return support.isFloat(type);
+   }
+   
+   /**
     * This is used to determine whether the scanned class represents
     * a primitive type. A primitive type is a type that contains no
     * XML annotations and so cannot be serialized with an XML form.
@@ -151,6 +165,20 @@ class Source implements Context {
     */
    public boolean isPrimitive(Class type) throws Exception {
       return support.isPrimitive(type);
+   }
+   
+   /**
+    * This returns the version for the type specified. The version is
+    * used to determine how the deserialization process is performed.
+    * If the version of the type is different from the version for
+    * the XML document, then deserialization is done in a best effort.
+    * 
+    * @param type this is the type to acquire the version for
+    * 
+    * @return the version that has been set for this XML schema class
+    */
+   public Version getVersion(Class type) throws Exception {
+      return getScanner(type).getRevision();
    }
    
    /**
@@ -182,7 +210,7 @@ class Source implements Context {
     * @return this returns the decorator associated with this
     */
    public Decorator getDecorator(Class type) throws Exception {
-      return getSchema(type).getDecorator();
+      return getScanner(type).getDecorator();
    }
    
    /**

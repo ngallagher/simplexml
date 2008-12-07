@@ -54,6 +54,28 @@ public interface InputNode extends Node {
    public boolean isElement();
    
    /**
+    * This is used to acquire the namespace prefix for the node.
+    * If there is no namespace prefix for the node then this will
+    * return null. Acquiring the prefix enables the qualification
+    * of the node to be determined. It also allows nodes to be
+    * grouped by its prefix and allows group operations.
+    * 
+    * @return this returns the prefix associated with this node
+    */
+   public String getPrefix();
+   
+   /**
+    * This allows the namespace reference URI to be determined.
+    * A reference is a globally unique string that allows the
+    * node to be identified. Typically the reference will be a URI
+    * but it can be any unique string used to identify the node.
+    * This allows the node to be identified within the namespace.
+    * 
+    * @return this returns the associated namespace reference URI 
+    */
+   public String getReference();
+   
+   /**
     * This provides the position of this node within the document.
     * This allows the user of this node to report problems with
     * the location within the document, allowing the XML to be

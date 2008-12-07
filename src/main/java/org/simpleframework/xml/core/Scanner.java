@@ -20,19 +20,19 @@
 
 package org.simpleframework.xml.core;
 
+import java.beans.Introspector;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementArray;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.ElementMap;
-import org.simpleframework.xml.Namespace;
-import org.simpleframework.xml.NamespaceList;
 import org.simpleframework.xml.Order;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.Text;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-import java.beans.Introspector;
+import org.simpleframework.xml.Version;
 
 /**
  * The <code>Scanner</code> object performs the reflective inspection
@@ -51,14 +51,9 @@ import java.beans.Introspector;
 class Scanner  {
    
    /**
-    * This is the decorator associated with this scanner.
+    * This method acts as a pointer to the types commit process.
     */
-   private NamespaceDecorator decorator;
-   
-   /**
-    * This is the namespace assocated with the scanned class.
-    */
-   private Namespace namespace;
+   private ClassScanner scanner;
    
    /**
     * This is used to store all labels that are XML attributes.
@@ -69,51 +64,16 @@ class Scanner  {
     * This is used to store all labels that are XML elements.
     */
    private LabelMap elements;
-
-   /**
-    * This method acts as a pointer to the types commit process.
-    */
-   private Method commit;
    
    /**
-    * This method acts as a pointer to the types validate process.
+    * This is the version label used to read the version attribute.
     */
-   private Method validate;
-
-   /**
-    * This method acts as a pointer to the types persist process.
-    */
-   private Method persist;
-
-   /**
-    * This method acts as a pointer to the types complete process.
-    */
-   private Method complete;   
-   
-   /**
-    * This method is used as a pointer to the replacement method.
-    */
-   private Method replace;
-   
-   /**
-    * This method is used as a pointer to the resolution method.
-    */
-   private Method resolve;
+   private Label version;
 
    /**
     * This is used to store all labels that are XML text values.
     */
    private Label text;
-   
-   /**
-    * This is the optional order annotation for the scanned class.
-    */
-   private Order order;
-
-   /**
-    * This is the optional root annotation for the scanned class.
-    */
-   private Root root;
    
    /**
     * This is the name of the class as taken from the root class.
@@ -126,18 +86,34 @@ class Scanner  {
    private boolean primitive;
    
    /**
-    * Constructor for the <code>Schema</code> object. This is used 
+    * Constructor for the <code>Scanner</code> object. This is used 
     * to scan the provided class for annotations that are used to
     * build a schema for an XML file to follow. 
     * 
     * @param type this is the type that is scanned for a schema
     */
    public Scanner(Class type) throws Exception {  
-      this.decorator = new NamespaceDecorator();
+      this.scanner = new ClassScanner(type);
       this.attributes = new LabelMap(this);
-      this.elements = new LabelMap(this);      
+      this.elements = new LabelMap(this); 
       this.scan(type);
-   }       
+   }      
+   
+   /**
+    * This is the <code>Version</code> for the scanned class. It 
+    * allows the deserialization process to be configured such that
+    * if the version is different from the schema class none of
+    * the fields and methods are required and unmatched elements
+    * and attributes will be ignored.
+    * 
+    * @return this returns the version of the class that is scanned
+    */
+   public Version getRevision() {
+      if(version != null) {
+         return version.getContact().getAnnotation(Version.class);
+      }
+      return null;
+   }
    
    /**
     * This is used to acquire the <code>Decorator</code> for this.
@@ -149,7 +125,7 @@ class Scanner  {
     * @return this returns the decorator associated with this
     */
    public Decorator getDecorator() {
-      return decorator;
+      return scanner.getDecorator();
    }
 
    /**
@@ -183,6 +159,18 @@ class Scanner  {
    }
    
    /**
+    * This returns the <code>Label</code> that represents the version
+    * annotation for the scanned class. Only a single version can
+    * exist within the class if more than one exists an exception is
+    * thrown. This will read only floating point types such as double.
+    * 
+    * @return this returns the label used for reading the version
+    */
+   public Label getVersion() {
+      return version;
+   }
+   
+   /**
     * This returns the <code>Label</code> that represents the text
     * annotation for the scanned class. Only a single text annotation
     * can be used per class, so this returns only a single label
@@ -207,20 +195,7 @@ class Scanner  {
    public String getName() {
       return name;
    }
-
-   /**
-    * This method is used to retrieve the schema class commit method
-    * during the deserialization process. The commit method must be
-    * marked with the <code>Commit</code> annotation so that when the
-    * object is deserialized the persister has a chance to invoke the
-    * method so that the object can build further data structures.
-    * 
-    * @return this returns the commit method for the schema class
-    */
-   public Method getCommit() {
-      return commit;           
-   }
-   
+    
    /**
     * This method is used to return the <code>Conduit</code> for this
     * class. The conduit is a means to deliver invocations to the
@@ -234,6 +209,19 @@ class Scanner  {
    }
 
    /**
+    * This method is used to retrieve the schema class commit method
+    * during the deserialization process. The commit method must be
+    * marked with the <code>Commit</code> annotation so that when the
+    * object is deserialized the persister has a chance to invoke the
+    * method so that the object can build further data structures.
+    * 
+    * @return this returns the commit method for the schema class
+    */
+   public Method getCommit() {
+      return scanner.getCommit();           
+   }
+
+   /**
     * This method is used to retrieve the schema class validation
     * method during the deserialization process. The validation method
     * must be marked with the <code>Validate</code> annotation so that
@@ -243,7 +231,7 @@ class Scanner  {
     * @return this returns the validate method for the schema class
     */   
    public Method getValidate() {
-      return validate;       
+      return scanner.getValidate();       
    }
    
    /**
@@ -256,7 +244,7 @@ class Scanner  {
     * @return this returns the persist method for the schema class
     */
    public Method getPersist() {
-      return persist;           
+      return scanner.getPersist();           
    }
 
    /**
@@ -269,7 +257,7 @@ class Scanner  {
     * @return returns the complete method for the schema class
     */   
    public Method getComplete() {
-      return complete;           
+      return scanner.getComplete();           
    }
    
    /**
@@ -282,7 +270,7 @@ class Scanner  {
     * @return returns the replace method for the schema class
     */
    public Method getReplace() {
-      return replace;
+      return scanner.getReplace();
    }
    
    /**
@@ -295,7 +283,7 @@ class Scanner  {
     * @return returns the replace method for the schema class
     */
    public Method getResolve() {
-      return resolve;
+      return scanner.getResolve();
    }
 
    /**
@@ -319,6 +307,8 @@ class Scanner  {
     * @return this returns true if no XML annotations were found
     */
    private boolean isEmpty() {
+      Root root = scanner.getRoot();
+      
       if(!elements.isEmpty()) {
          return false;
       }
@@ -342,64 +332,23 @@ class Scanner  {
     * @return true if strict parsing is enabled, false otherwise
     */ 
    public boolean isStrict() {
-      if(root != null) {
-         return root.strict();              
-      }              
-      return true;
+      return scanner.isStrict();
    }
-  
+   
    /**
-    * Scan the fields and methods such that the given class is scanned 
-    * first then all super classes up to the root <code>Object</code>. 
-    * All fields and methods from the most specialized classes override 
-    * fields and methods from higher up the inheritance heirarchy. This
-    * means that annotated details can be overridden and so may not 
-    * have a value assigned to them during deserialization.
-    * 
-    * @param type the class to extract fields and methods from
-    */   
+    * This is used to scan the specified object to extract the fields
+    * and methods that are to be used in the serialization process.
+    * This will acquire all fields and getter setter pairs that have
+    * been annotated with the XML annotations.
+    *
+    * @param type this is the object type that is to be scanned
+    */  
    private void scan(Class type) throws Exception {
-      Class real = type;
-      
-      while(type != null) {
-         if(namespace == null) {
-            namespace(type);
-         }
-         if(root == null) {              
-            root(type);
-         }  
-         if(order == null) {
-            order(type);
-         }
-         scope(type);
-         scan(real, type);
-         type = type.getSuperclass();
-      }      
-      process(real); 
-   }
-
-   /**
-    * This is used to scan the specified class for methods so that
-    * the persister callback annotations can be collected. These
-    * annotations help object implementations to validate the data
-    * that is injected into the instance during deserialization.
-    * 
-    * @param real this is the actual type of the scanned class 
-    * @param type this is a type from within the class heirarchy
-    * 
-    * @throws Exception thrown if the class schema is invalid
-    */
-   private void scan(Class real, Class type) throws Exception {
-      Method[] method = type.getDeclaredMethods();
-
-      for(int i = 0; i < method.length; i++) {
-         Method next = method[i];
-         
-         if(!next.isAccessible()) {
-            next.setAccessible(true);
-         }
-         scan(next);              
-      }     
+      root(type);
+      order(type);
+      field(type);
+      method(type);
+      validate(type);
    }
    
    /**
@@ -412,19 +361,31 @@ class Scanner  {
     * @throws Exception if text and element annotations are present
     */
    private void validate(Class type) throws Exception {
+      Order order = scanner.getOrder();
+      
+      if(order != null) {
+         validateElements(type, order);
+         validateAttributes(type, order);
+      }
+      validateText(type);
+   }
+   
+   /**
+    * This is used to validate the configuration of the scanned class.
+    * If a <code>Text</code> annotation has been used with elements
+    * then validation will fail and an exception will be thrown. 
+    * 
+    * @param type this is the object type that is being scanned
+    * 
+    * @throws Exception if text and element annotations are present
+    */
+   private void validateText(Class type) throws Exception {
       if(text != null) {
          if(!elements.isEmpty()) {
             throw new TextException("Elements used with %s in %s", text, type);
          }
       }  else {
          primitive = isEmpty();
-      }
-      if(namespace != null) {
-         decorator.set(namespace);
-      }
-      if(order != null) {
-         validateElements(type);
-         validateAttributes(type);
       }
    }
    
@@ -437,7 +398,7 @@ class Scanner  {
     * 
     * @throws Exception if an ordered element does not exist
     */
-   private void validateElements(Class type) throws Exception {
+   private void validateElements(Class type, Order order) throws Exception {
       for(String name : order.elements()) {
          Label label = elements.get(name);
          
@@ -456,7 +417,7 @@ class Scanner  {
     * 
     * @throws Exception if an ordered attribute does not exist
     */
-   private void validateAttributes(Class type) throws Exception {
+   private void validateAttributes(Class type, Order order) throws Exception {
       for(String name : order.attributes()) {
          Label label = attributes.get(name);
          
@@ -476,10 +437,10 @@ class Scanner  {
     */    
    private void root(Class<?> type) {
       String real = type.getSimpleName();
+      Root root = scanner.getRoot();
       String text = real;
 
-      if(type.isAnnotationPresent(Root.class)) {
-         root = type.getAnnotation(Root.class);
+      if(root != null) {
          text = root.name();
 
          if(isEmpty(text)) {
@@ -498,51 +459,14 @@ class Scanner  {
     * @param type this is the type to be scanned for the order
     */
    private void order(Class<?> type) {
-      if(type.isAnnotationPresent(Order.class)) {
-         order = type.getAnnotation(Order.class);
-         
+      Order order = scanner.getOrder();
+      
+      if(order != null) {
          for(String name : order.elements()) {
             elements.put(name, null);            
          }
          for(String name : order.attributes()) {
             attributes.put(name, null);
-         }
-      }
-   }
-   
-   /**
-    * This is use to scan for <code>Namespace</code> annotations on
-    * the class. Once a namespace has been located then it is used
-    * to populate the internal namespace decorator. This can then be
-    * used to decorate any output node that requires it.
-    * 
-    * @param type this is the XML schema class to scan for namespaces
-    */
-   private void namespace(Class<?> type) {
-      if(type.isAnnotationPresent(Namespace.class)) {
-         namespace = type.getAnnotation(Namespace.class);
-         
-         if(namespace != null) {
-            decorator.add(namespace);
-         }
-      }
-   }
-   
-   /**
-    * This is use to scan for <code>NamespaceList</code> annotations 
-    * on the class. Once a namespace list has been located then it is 
-    * used to populate the internal namespace decorator. This can then 
-    * be used to decorate any output node that requires it.
-    * 
-    * @param type this is the XML class to scan for namespace lists
-    */
-   private void scope(Class<?> type) {
-      if(type.isAnnotationPresent(NamespaceList.class)) {
-         NamespaceList scope = type.getAnnotation(NamespaceList.class);
-         Namespace[] list = scope.value();
-         
-         for(Namespace name : list) {
-            decorator.add(name);
          }
       }
    }
@@ -559,20 +483,6 @@ class Scanner  {
     */
    private boolean isEmpty(String value) {
       return value.length() == 0;
-   }
-   
-   /**
-    * This is used to scan the specified object to extract the fields
-    * and methods that are to be used in the serialization process.
-    * This will acquire all fields and getter setter pairs that have
-    * been annotated with the XML annotations.
-    *
-    * @param type this is the object type that is to be scanned
-    */  
-   private void process(Class type) throws Exception {
-      field(type);
-      method(type);
-      validate(type);
    }
   
    /**
@@ -631,9 +541,12 @@ class Scanner  {
       }
       if(label instanceof Element) {
          process(field, label, elements);
-      }             
+      }    
+      if(label instanceof Version) {
+         version(field, label);
+      }
       if(label instanceof Text) {
-         process(field, label);
+         text(field, label);
       }
    }
    
@@ -648,13 +561,33 @@ class Scanner  {
     * 
     * @throws Exception if there is more than one text annotation
     */   
-   private void process(Contact field, Annotation type) throws Exception {
+   private void text(Contact field, Annotation type) throws Exception {
       Label label = LabelFactory.getInstance(field, type);
       
       if(text != null) {
          throw new TextException("Multiple text annotations in %s", type);
       }
       text = label;
+   }
+   
+   /**
+    * This is used to process the <code>Text</code> annotations that
+    * are present in the scanned class. This will set the text label
+    * for the class and an ensure that if there is more than one
+    * text label within the class an exception is thrown.
+    * 
+    * @param field the field the annotation was extracted from
+    * @param type the annotation extracted from the field
+    * 
+    * @throws Exception if there is more than one text annotation
+    */   
+   private void version(Contact field, Annotation type) throws Exception {
+      Label label = LabelFactory.getInstance(field, type);
+      
+      if(version != null) {
+         throw new AttributeException("Multiple version annotations in %s", type);
+      }
+      version = label;
    }
    
    /**
@@ -679,129 +612,4 @@ class Scanner  {
       }
       map.put(name, label);      
    }
-   
-   /**
-    * Scans the provided method for a persister callback method. If 
-    * the method contains an method annotated as a callback that 
-    * method is stored so that it can be invoked by the persister
-    * during the serialization and deserialization process.
-    * 
-    * @param method this is the method to scan for callback methods
-    */
-   private void scan(Method method) {
-      if(commit == null) {           
-         commit(method);
-      }
-      if(validate == null) {      
-         validate(method);
-      }
-      if(persist == null) {      
-         persist(method);
-      }
-      if(complete == null) {      
-         complete(method);
-      }    
-      if(replace == null) {
-         replace(method);              
-      }   
-      if(resolve == null) {
-         resolve(method);              
-      }  
-   }
-   
-   /**
-    * This method is used to check the provided method to determine
-    * if it contains the <code>Replace</code> annotation. If the
-    * method contains the required annotation it is stored so that
-    * it can be invoked during the deserialization process.
-    *
-    * @param method this is the method checked for the annotation
-    */ 
-   private void replace(Method method) {
-      Annotation mark = method.getAnnotation(Replace.class);
-
-      if(mark != null) {
-         replace = method;                    
-      }      
-   }
-   
-   /**
-    * This method is used to check the provided method to determine
-    * if it contains the <code>Resolve</code> annotation. If the
-    * method contains the required annotation it is stored so that
-    * it can be invoked during the deserialization process.
-    *
-    * @param method this is the method checked for the annotation
-    */ 
-   private void resolve(Method method) {
-      Annotation mark = method.getAnnotation(Resolve.class);
-
-      if(mark != null) {
-         resolve = method;                    
-      }      
-   }
-   
-   /**
-    * This method is used to check the provided method to determine
-    * if it contains the <code>Commit</code> annotation. If the
-    * method contains the required annotation it is stored so that
-    * it can be invoked during the deserialization process.
-    *
-    * @param method this is the method checked for the annotation
-    */ 
-   private void commit(Method method) {
-      Annotation mark = method.getAnnotation(Commit.class);
-
-      if(mark != null) {
-         commit = method;                    
-      }    
-   }
-   
-   /**
-    * This method is used to check the provided method to determine
-    * if it contains the <code>Validate</code> annotation. If the
-    * method contains the required annotation it is stored so that
-    * it can be invoked during the deserialization process.
-    *
-    * @param method this is the method checked for the annotation
-    */ 
-   private void validate(Method method) {
-      Annotation mark = method.getAnnotation(Validate.class);
-
-      if(mark != null) {
-         validate = method;                    
-      }         
-   }
-   
-   /**
-    * This method is used to check the provided method to determine
-    * if it contains the <code>Persist</code> annotation. If the
-    * method contains the required annotation it is stored so that
-    * it can be invoked during the deserialization process.
-    *
-    * @param method this is the method checked for the annotation
-    */    
-   private void persist(Method method) {
-      Annotation mark = method.getAnnotation(Persist.class);
-
-      if(mark != null) {
-         persist = method;                    
-      }      
-   }
-
-   /**
-    * This method is used to check the provided method to determine
-    * if it contains the <code>Complete</code> annotation. If the
-    * method contains the required annotation it is stored so that
-    * it can be invoked during the deserialization process.
-    *
-    * @param method this is the method checked for the annotation
-    */ 
-   private void complete(Method method) {
-      Annotation mark = method.getAnnotation(Complete.class);
-
-      if(mark != null) {
-         complete = method;                    
-      }      
-   }      
 }

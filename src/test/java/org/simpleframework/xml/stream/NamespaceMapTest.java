@@ -1,12 +1,35 @@
 package org.simpleframework.xml.stream;
 
+import java.io.StringReader;
 import java.io.StringWriter;
 
 import org.simpleframework.xml.ValidationTestCase;
 
 public class NamespaceMapTest extends ValidationTestCase {
 
-   public void testNamespace() throws Exception {
+   private static final String SOURCE =
+   "<root a:name='value' xmlns:a='http://www.domain.com/a'>\n" +
+   "   <a:child>this is the child</a:child>\n" +
+   "</root>";
+   
+   public void testInputNode() throws Exception {
+      StringReader reader = new StringReader(SOURCE);
+      InputNode node = NodeBuilder.read(reader);
+      NodeMap<InputNode> map = node.getAttributes();
+      InputNode attr = map.get("name");
+      
+      assertEquals("value", attr.getValue());
+      assertEquals("a", attr.getPrefix());
+      assertEquals("http://www.domain.com/a", attr.getReference());
+      
+      InputNode child = node.getNext();
+      
+      assertEquals("this is the child", child.getValue());
+      assertEquals("a", child.getPrefix());
+      assertEquals("http://www.domain.com/a", child.getReference());
+   }
+   
+   public void testOutputNode() throws Exception {
       StringWriter out = new StringWriter();           
       OutputNode top = NodeBuilder.write(out);
       OutputNode root = top.getChild("root");
