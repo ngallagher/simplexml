@@ -68,7 +68,7 @@ class Revision {
       if(current != null) {
          equal = current.equals(expected);
       } else if(expected != null) {
-         equal = current.equals(1.0);
+         equal = expected.equals(1.0);
       }
       return equal;
    }
