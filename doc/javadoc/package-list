@@ -1,7 +1,7 @@
 org.simpleframework.xml
+org.simpleframework.xml.core
 org.simpleframework.xml.filter
 org.simpleframework.xml.graph
-org.simpleframework.xml.load
 org.simpleframework.xml.stream
 org.simpleframework.xml.transform
 org.simpleframework.xml.util
