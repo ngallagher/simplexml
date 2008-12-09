@@ -22,6 +22,7 @@ package org.simpleframework.xml.core;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.Map;
 
 import org.simpleframework.xml.Namespace;
 import org.simpleframework.xml.NamespaceList;
@@ -52,34 +53,34 @@ class ClassScanner  {
    private Namespace namespace;
    
    /**
-    * This method acts as a pointer to the types commit process.
+    * This function acts as a pointer to the types commit process.
     */
-   private Method commit;
+   private Function commit;
    
    /**
-    * This method acts as a pointer to the types validate process.
+    * This function acts as a pointer to the types validate process.
     */
-   private Method validate;
+   private Function validate;
 
    /**
-    * This method acts as a pointer to the types persist process.
+    * This function acts as a pointer to the types persist process.
     */
-   private Method persist;
+   private Function persist;
 
    /**
-    * This method acts as a pointer to the types complete process.
+    * This function acts as a pointer to the types complete process.
     */
-   private Method complete;   
+   private Function complete;   
    
    /**
-    * This method is used as a pointer to the replacement method.
+    * This function is used as a pointer to the replacement method.
     */
-   private Method replace;
+   private Function replace;
    
    /**
-    * This method is used as a pointer to the resolution method.
+    * This function is used as a pointer to the resolution method.
     */
-   private Method resolve;
+   private Function resolve;
    
    /**
     * This is the optional order annotation for the scanned class.
@@ -149,7 +150,7 @@ class ClassScanner  {
     * 
     * @return this returns the commit method for the schema class
     */
-   public Method getCommit() {
+   public Function getCommit() {
       return commit;           
    }
 
@@ -162,7 +163,7 @@ class ClassScanner  {
     * 
     * @return this returns the validate method for the schema class
     */   
-   public Method getValidate() {
+   public Function getValidate() {
       return validate;       
    }
    
@@ -175,7 +176,7 @@ class ClassScanner  {
     * 
     * @return this returns the persist method for the schema class
     */
-   public Method getPersist() {
+   public Function getPersist() {
       return persist;           
    }
 
@@ -188,7 +189,7 @@ class ClassScanner  {
     * 
     * @return returns the complete method for the schema class
     */   
-   public Method getComplete() {
+   public Function getComplete() {
       return complete;           
    }
    
@@ -201,7 +202,7 @@ class ClassScanner  {
     * 
     * @return returns the replace method for the schema class
     */
-   public Method getReplace() {
+   public Function getReplace() {
       return replace;
    }
    
@@ -214,7 +215,7 @@ class ClassScanner  {
     * 
     * @return returns the replace method for the schema class
     */
-   public Method getResolve() {
+   public Function getResolve() {
       return resolve;
    }
    
@@ -409,7 +410,7 @@ class ClassScanner  {
       Annotation mark = method.getAnnotation(Replace.class);
 
       if(mark != null) {
-         replace = method;                    
+         replace = getFunction(method);                    
       }      
    }
    
@@ -425,7 +426,7 @@ class ClassScanner  {
       Annotation mark = method.getAnnotation(Resolve.class);
 
       if(mark != null) {
-         resolve = method;                    
+         resolve = getFunction(method);                    
       }      
    }
    
@@ -441,7 +442,7 @@ class ClassScanner  {
       Annotation mark = method.getAnnotation(Commit.class);
 
       if(mark != null) {
-         commit = method;                    
+         commit = getFunction(method);                    
       }    
    }
    
@@ -457,7 +458,7 @@ class ClassScanner  {
       Annotation mark = method.getAnnotation(Validate.class);
 
       if(mark != null) {
-         validate = method;                    
+         validate = getFunction(method);                    
       }         
    }
    
@@ -473,7 +474,7 @@ class ClassScanner  {
       Annotation mark = method.getAnnotation(Persist.class);
 
       if(mark != null) {
-         persist = method;                    
+         persist = getFunction(method);                    
       }      
    }
 
@@ -489,7 +490,40 @@ class ClassScanner  {
       Annotation mark = method.getAnnotation(Complete.class);
 
       if(mark != null) {
-         complete = method;                    
+         complete = getFunction(method);                    
       }      
-   }      
+   } 
+   
+   /**
+    * This is used to acquire a <code>Function</code> object for the
+    * method provided. The function returned will allow the callback
+    * method to be invoked when given the context and target object.
+    * 
+    * @param method this is the method that is to be invoked
+    * 
+    * @return this returns the function that is to be invoked
+    */
+   private Function getFunction(Method method) {
+      boolean contextual = isContextual(method);
+      
+      return new Function(method, contextual);
+   }
+   
+   /**
+    * This is used to determine whether the annotated method takes a
+    * contextual object. If the method takes a <code>Map</code> then
+    * this returns true, otherwise it returns false.
+    *
+    * @param method this is the method to check the parameters of
+    *
+    * @return this returns true if the method takes a map object
+    */ 
+   private boolean isContextual(Method method)  {
+      Class[] list = method.getParameterTypes();
+
+      if(list.length == 1) {
+         return Map.class.equals(list[0]);                 
+      }      
+      return false;
+   }
 }

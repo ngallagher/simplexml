@@ -218,7 +218,7 @@ class Scanner  {
     * 
     * @return this returns the commit method for the schema class
     */
-   public Method getCommit() {
+   public Function getCommit() {
       return scanner.getCommit();           
    }
 
@@ -231,7 +231,7 @@ class Scanner  {
     * 
     * @return this returns the validate method for the schema class
     */   
-   public Method getValidate() {
+   public Function getValidate() {
       return scanner.getValidate();       
    }
    
@@ -244,7 +244,7 @@ class Scanner  {
     * 
     * @return this returns the persist method for the schema class
     */
-   public Method getPersist() {
+   public Function getPersist() {
       return scanner.getPersist();           
    }
 
@@ -257,7 +257,7 @@ class Scanner  {
     * 
     * @return returns the complete method for the schema class
     */   
-   public Method getComplete() {
+   public Function getComplete() {
       return scanner.getComplete();           
    }
    
@@ -270,7 +270,7 @@ class Scanner  {
     * 
     * @return returns the replace method for the schema class
     */
-   public Method getReplace() {
+   public Function getReplace() {
       return scanner.getReplace();
    }
    
@@ -283,7 +283,7 @@ class Scanner  {
     * 
     * @return returns the replace method for the schema class
     */
-   public Method getResolve() {
+   public Function getResolve() {
       return scanner.getResolve();
    }
 
