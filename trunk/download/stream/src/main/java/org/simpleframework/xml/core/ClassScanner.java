@@ -1,7 +1,7 @@
 /*
- * Scanner.java July 2006
+ * ClassScanner.java July 2008
  *
- * Copyright (C) 2006, Niall Gallagher <niallg@users.sf.net>
+ * Copyright (C) 2008, Niall Gallagher <niallg@users.sf.net>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
