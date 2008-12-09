@@ -1,5 +1,5 @@
 /*
- * Conduit.java June 2007
+ * Caller.java June 2007
  *
  * Copyright (C) 2007, Niall Gallagher <niallg@users.sf.net>
  *
@@ -24,7 +24,7 @@ import java.lang.reflect.Method;
 import java.util.Map;
 
 /**
- * The <code>Conduit</code> acts as a means for the schema to invoke
+ * The <code>Caller</code> acts as a means for the schema to invoke
  * the callback methods on an object. This ensures that the correct
  * method is invoked within the schema class. If the annotated method
  * accepts a map then this will provide that map to the method. This
@@ -33,7 +33,7 @@ import java.util.Map;
  * 
  * @author Niall Gallagher
  */
-class Conduit {
+class Caller {
    
    /**
     * This is the pointer to the schema class commit method.
@@ -66,21 +66,28 @@ class Conduit {
    private final Method resolve;
    
    /**
-    * Constructor for the <code>conduit</code> object. This is used 
+    * This is the context that is used to invoke the functions.
+    */
+   private final Context context;
+   
+   /**
+    * Constructor for the <code>Caller</code> object. This is used 
     * to wrap the schema class such that callbacks from the persister
     * can be dealt with in a seamless manner. This ensures that the
     * correct method and arguments are provided to the methods.
     * element and attribute XML annotations scanned from
     * 
     * @param schema this is the scanner that contains the methods
+    * @param context this is the context used to acquire the session
     */
-   public Conduit(Scanner schema) {     
+   public Caller(Scanner schema, Context context) {     
       this.validate = schema.getValidate();      
       this.complete = schema.getComplete();
       this.replace = schema.getReplace();
       this.resolve = schema.getResolve();
       this.persist = schema.getPersist();  
-      this.commit = schema.getCommit();    
+      this.commit = schema.getCommit();  
+      this.context = context;
    }
    
    /**
@@ -91,15 +98,14 @@ class Conduit {
     * a different type.
     * 
     * @param source the source object to invoke the method on
-    * @param map this is the session map used by the persister
     * 
     * @return this returns the object that acts as the replacement
     * 
     * @throws Exception if the replacement method cannot complete
     */
-   public Object replace(Object source, Map map) throws Exception {
+   public Object replace(Object source) throws Exception {
       if(replace != null) {        
-         return invoke(source, replace, map);
+         return invoke(source, replace);
       }
       return source;
    }
@@ -111,16 +117,15 @@ class Conduit {
     * which needs to be loaded externally to create an object of
     * a different type.
     * 
-    * @param source the source object to invoke the method on
-    * @param map this is the session map used by the persister 
+    * @param source the source object to invoke the method on 
     * 
     * @return this returns the object that acts as the replacement
     * 
     * @throws Exception if the replacement method cannot complete
     */
-   public Object resolve(Object source, Map map) throws Exception {
+   public Object resolve(Object source) throws Exception {
       if(resolve != null) {
-         return invoke(source, resolve, map);
+         return invoke(source, resolve);
       }
       return source;
    }
@@ -133,13 +138,12 @@ class Conduit {
     * method so that the object can build further data structures.
     * 
     * @param source this is the object that has just been deserialized
-    * @param map this is the session map used by the persister 
     * 
     * @throws Exception thrown if the commit process cannot complete
     */
-   public void commit(Object source, Map map) throws Exception {
+   public void commit(Object source) throws Exception {
       if(commit != null) {
-         invoke(source, commit, map);
+         invoke(source, commit);
       }
    }
 
@@ -151,31 +155,29 @@ class Conduit {
     * invoke that method so that object can validate its field values.
     * 
     * @param source this is the object that has just been deserialized
-    * @param map this is the session map used by the persister 
     * 
     * @throws Exception thrown if the validation process failed
     */
-   public void validate(Object source, Map map) throws Exception {
+   public void validate(Object source) throws Exception {
       if(validate != null) {
-         invoke(source, validate, map);
+         invoke(source, validate);
       }
    }
    
    /**
     * This method is used to invoke the provided objects persistence
     * method. This is invoked during the serialization process to
-    * get the object a chance to perform an nessecary preparation
+    * get the object a chance to perform an necessary preparation
     * before the serialization of the object proceeds. The persist
     * method must be marked with the <code>Persist</code> annotation.
     * 
     * @param source the object that is about to be serialized
-    * @param map this is the session map used by the persister
     * 
     * @throws Exception thrown if the object cannot be persisted
     */
-   public void persist(Object source, Map map) throws Exception {
+   public void persist(Object source) throws Exception {
       if(persist != null) {
-         invoke(source, persist, map);
+         invoke(source, persist);
       }
    }
    
@@ -187,13 +189,12 @@ class Conduit {
     * This is marked with the <code>Complete</code> annotation.
     * 
     * @param source this is the object that has been serialized
-    * @param map this is the session map used by the persister
     * 
     * @throws Exception thrown if the object cannot complete
     */
-   public void complete(Object source, Map map) throws Exception {
+   public void complete(Object source) throws Exception {
       if(complete != null) {
-         invoke(source, complete, map);
+         invoke(source, complete);
       }
    }
 
@@ -212,12 +213,15 @@ class Conduit {
     * 
     * @throws Exception thrown if the method cannot be invoked
     */
-   private Object invoke(Object source, Method method, Map map) throws Exception {
+   private Object invoke(Object source, Method method) throws Exception {
+      Session session = context.getSession();
+      Map table = session.getMap();
+      
       if(source == null) {
          return null;
       }
       if(isContextual(method)) {              
-         return method.invoke(source, map);           
+         return method.invoke(source, table);           
       }
       return method.invoke(source);
    }

@@ -154,7 +154,13 @@ class Support implements Filter {
     * @return this returns true if no XML annotations were found
     */
    public boolean isPrimitive(Class type) throws Exception{
+      if(type == String.class) {
+         return true;
+      }
       if(type.isEnum()) {
+         return true;
+      }
+      if(type.isPrimitive()) {
          return true;
       }
       return transformer.valid(type);
