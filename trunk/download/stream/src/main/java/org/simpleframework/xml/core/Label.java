@@ -172,6 +172,15 @@ interface Label {
    public boolean isRequired();
    
    /**
+    * This method is used to determine if the label represents an
+    * attribute. This is used to style the name so that elements
+    * are styled as elements and attributes are styled as required.
+    * 
+    * @return this is used to determine if this is an attribute
+    */
+   public boolean isAttribute();
+   
+   /**
     * This is used to determine whether the label represents an
     * inline XML entity. The <code>ElementList</code> annotation
     * and the <code>Text</code> annotation represent inline 

@@ -212,6 +212,17 @@ class VersionLabel implements Label {
    }
    
    /**
+    * This method is used to determine if the label represents an
+    * attribute. This is used to style the name so that elements
+    * are styled as elements and attributes are styled as required.
+    * 
+    * @return this is used to determine if this is an attribute
+    */
+   public boolean isAttribute() {
+      return true;
+   }
+   
+   /**
     * This is used to determine whether the attribute is required. 
     * This ensures that if an attribute is missing from a document
     * that deserialization can continue. Also, in the process of
