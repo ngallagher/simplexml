@@ -20,9 +20,6 @@
 
 package org.simpleframework.xml.core;
 
-import java.lang.reflect.Method;
-import java.util.Map;
-
 /**
  * The <code>Caller</code> acts as a means for the schema to invoke
  * the callback methods on an object. This ensures that the correct
@@ -36,34 +33,34 @@ import java.util.Map;
 class Caller {
    
    /**
-    * This is the pointer to the schema class commit method.
+    * This is the pointer to the schema class commit function.
     */
-   private final Method commit;
+   private final Function commit;
 
    /**
-    * This is the pointer to the schema class validation method.
+    * This is the pointer to the schema class validation function.
     */
-   private final Method validate;
+   private final Function validate;
 
    /**
-    * This is the pointer to the schema class persist method.
+    * This is the pointer to the schema class persist function.
     */
-   private final Method persist;
+   private final Function persist;
 
    /**
-    * This is the pointer to the schema class complete method.
+    * This is the pointer to the schema class complete function.
     */
-   private final Method complete;
+   private final Function complete;
    
    /**
-    * This is the pointer to the schema class replace method.
+    * This is the pointer to the schema class replace function.
     */
-   private final Method replace;
+   private final Function replace;
    
    /**
-    * This is the pointer to the schema class resolve method.
+    * This is the pointer to the schema class resolve function.
     */
-   private final Method resolve;
+   private final Function resolve;
    
    /**
     * This is the context that is used to invoke the functions.
@@ -74,10 +71,10 @@ class Caller {
     * Constructor for the <code>Caller</code> object. This is used 
     * to wrap the schema class such that callbacks from the persister
     * can be dealt with in a seamless manner. This ensures that the
-    * correct method and arguments are provided to the methods.
+    * correct function and arguments are provided to the functions.
     * element and attribute XML annotations scanned from
     * 
-    * @param schema this is the scanner that contains the methods
+    * @param schema this is the scanner that contains the functions
     * @param context this is the context used to acquire the session
     */
    public Caller(Scanner schema, Context context) {     
@@ -97,15 +94,15 @@ class Caller {
     * which needs to be loaded externally to create an object of
     * a different type.
     * 
-    * @param source the source object to invoke the method on
+    * @param source the source object to invoke the function on
     * 
     * @return this returns the object that acts as the replacement
     * 
-    * @throws Exception if the replacement method cannot complete
+    * @throws Exception if the replacement function cannot complete
     */
    public Object replace(Object source) throws Exception {
       if(replace != null) {        
-         return invoke(source, replace);
+         return replace.call(context, source);
       }
       return source;
    }
@@ -117,25 +114,25 @@ class Caller {
     * which needs to be loaded externally to create an object of
     * a different type.
     * 
-    * @param source the source object to invoke the method on 
+    * @param source the source object to invoke the function on 
     * 
     * @return this returns the object that acts as the replacement
     * 
-    * @throws Exception if the replacement method cannot complete
+    * @throws Exception if the replacement function cannot complete
     */
    public Object resolve(Object source) throws Exception {
       if(resolve != null) {
-         return invoke(source, resolve);
+         return resolve.call(context, source);
       }
       return source;
    }
    
    /**
-    * This method is used to invoke the provided objects commit method
-    * during the deserialization process. The commit method must be
+    * This function is used to invoke the provided objects commit function
+    * during the deserialization process. The commit function must be
     * marked with the <code>Commit</code> annotation so that when the
     * object is deserialized the persister has a chance to invoke the
-    * method so that the object can build further data structures.
+    * function so that the object can build further data structures.
     * 
     * @param source this is the object that has just been deserialized
     * 
@@ -143,16 +140,16 @@ class Caller {
     */
    public void commit(Object source) throws Exception {
       if(commit != null) {
-         invoke(source, commit);
+         commit.call(context, source);
       }
    }
 
    /**
-    * This method is used to invoke the provided objects validation
-    * method during the deserialization process. The validation method
+    * This function is used to invoke the provided objects validation
+    * function during the deserialization process. The validation function
     * must be marked with the <code>Validate</code> annotation so that
     * when the object is deserialized the persister has a chance to 
-    * invoke that method so that object can validate its field values.
+    * invoke that function so that object can validate its field values.
     * 
     * @param source this is the object that has just been deserialized
     * 
@@ -160,16 +157,16 @@ class Caller {
     */
    public void validate(Object source) throws Exception {
       if(validate != null) {
-         invoke(source, validate);
+         validate.call(context, source);
       }
    }
    
    /**
-    * This method is used to invoke the provided objects persistence
-    * method. This is invoked during the serialization process to
+    * This function is used to invoke the provided objects persistence
+    * function. This is invoked during the serialization process to
     * get the object a chance to perform an necessary preparation
     * before the serialization of the object proceeds. The persist
-    * method must be marked with the <code>Persist</code> annotation.
+    * function must be marked with the <code>Persist</code> annotation.
     * 
     * @param source the object that is about to be serialized
     * 
@@ -177,15 +174,15 @@ class Caller {
     */
    public void persist(Object source) throws Exception {
       if(persist != null) {
-         invoke(source, persist);
+         persist.call(context, source);
       }
    }
    
    /**
-    * This method is used to invoke the provided objects completion
-    * method. This is invoked after the serialization process has
+    * This function is used to invoke the provided objects completion
+    * function. This is invoked after the serialization process has
     * completed and gives the object a chance to restore its state
-    * if the persist method required some alteration or locking.
+    * if the persist function required some alteration or locking.
     * This is marked with the <code>Complete</code> annotation.
     * 
     * @param source this is the object that has been serialized
@@ -194,53 +191,7 @@ class Caller {
     */
    public void complete(Object source) throws Exception {
       if(complete != null) {
-         invoke(source, complete);
+         complete.call(context, source);
       }
-   }
-
-   /**
-    * This method is used to invoke the specified method. If it has 
-    * a single parameter that takes a <code>Map</code> then the
-    * provided method will be invoked with the session map. If it
-    * takes no parameters then it is invoked and the return value
-    * is returned from the method.
-    * 
-    * @param source this is the method to invoke the method on
-    * @param method this is the method that is to be invoked
-    * @param map this is the session map used by the persister
-    * 
-    * @return this is the return value from the specified method
-    * 
-    * @throws Exception thrown if the method cannot be invoked
-    */
-   private Object invoke(Object source, Method method) throws Exception {
-      Session session = context.getSession();
-      Map table = session.getMap();
-      
-      if(source == null) {
-         return null;
-      }
-      if(isContextual(method)) {              
-         return method.invoke(source, table);           
-      }
-      return method.invoke(source);
-   }
-
-   /**
-    * This is used to determine whether the annotated method takes a
-    * contextual object. If the method takes a <code>Map</code> then
-    * this returns true, otherwise it returns false.
-    *
-    * @param method this is the method to check the parameters of
-    *
-    * @return this returns true if the method takes a map object
-    */ 
-   private boolean isContextual(Method method) throws Exception {
-      Class[] list = method.getParameterTypes();
-
-      if(list.length == 1) {
-         return Map.class.equals(list[0]);                 
-      }      
-      return false;
    }
 }
