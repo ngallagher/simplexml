@@ -128,7 +128,7 @@ class Caller {
    }
    
    /**
-    * This function is used to invoke the provided objects commit function
+    * This method is used to invoke the provided objects commit function
     * during the deserialization process. The commit function must be
     * marked with the <code>Commit</code> annotation so that when the
     * object is deserialized the persister has a chance to invoke the
@@ -145,7 +145,7 @@ class Caller {
    }
 
    /**
-    * This function is used to invoke the provided objects validation
+    * This method is used to invoke the provided objects validation
     * function during the deserialization process. The validation function
     * must be marked with the <code>Validate</code> annotation so that
     * when the object is deserialized the persister has a chance to 
@@ -162,7 +162,7 @@ class Caller {
    }
    
    /**
-    * This function is used to invoke the provided objects persistence
+    * This method is used to invoke the provided objects persistence
     * function. This is invoked during the serialization process to
     * get the object a chance to perform an necessary preparation
     * before the serialization of the object proceeds. The persist
@@ -179,7 +179,7 @@ class Caller {
    }
    
    /**
-    * This function is used to invoke the provided objects completion
+    * This method is used to invoke the provided objects completion
     * function. This is invoked after the serialization process has
     * completed and gives the object a chance to restore its state
     * if the persist function required some alteration or locking.

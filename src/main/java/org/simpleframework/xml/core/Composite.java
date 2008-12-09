@@ -840,7 +840,6 @@ class Composite implements Converter {
     */
    private void writeElements(OutputNode node, Object source, Schema schema) throws Exception {
       LabelMap elements = schema.getElements();
-      Caller caller = schema.getCaller();
       
       for(Label label : elements) {
          Contact contact = label.getContact();
@@ -849,7 +848,7 @@ class Composite implements Converter {
          if(value == null && label.isRequired()) {
             throw new ElementException("Value for %s is null", label);
          }
-         Object replace = writeReplace(value, caller);
+         Object replace = writeReplace(value);
          
          if(replace != null) {
             writeElement(node, replace, label);            
@@ -866,14 +865,16 @@ class Composite implements Converter {
     * <code>writeReplace</code> method for the object serialization.
     * 
     * @param source this is the source object that is to be replaced
-    * @param caller this is the caller used to invoke the methods
     * 
     * @return this returns the object to use as a replacement value
     * 
     * @throws Exception if the replacement object is not suitable
     */
-   private Object writeReplace(Object source, Caller caller) throws Exception {      
+   private Object writeReplace(Object source) throws Exception {      
       if(source != null) {
+         Class type = source.getClass();
+         Caller caller = context.getCaller(type);
+         
          return caller.replace(source);
       }
       return source;
