@@ -74,6 +74,11 @@ class CacheLabel implements Label {
    private final boolean data;
    
    /**
+    * This is used to determine the styling of the label name.
+    */
+   private final boolean attribute;
+   
+   /**
     * This is used to represent whether the entity is required or not.
     */
    private final boolean required;
@@ -98,6 +103,7 @@ class CacheLabel implements Label {
     */
    public CacheLabel(Label label) throws Exception { 
       this.decorator = label.getDecorator();
+      this.attribute = label.isAttribute();
       this.contact = label.getContact();
       this.depend = label.getDependant();
       this.required = label.isRequired();
@@ -164,10 +170,10 @@ class CacheLabel implements Label {
    public String getName(Context context) throws Exception {
       Style style = context.getStyle();
       
-      if(style != null) {
-         return style.getElement(name);
+      if(attribute) {
+         return style.getAttribute(name);
       }
-      return name;
+      return style.getElement(name);
    }
    
    /**
@@ -272,6 +278,17 @@ class CacheLabel implements Label {
     */
    public boolean isInline() {
       return inline;
+   }
+   
+   /**
+    * This method is used to determine if the label represents an
+    * attribute. This is used to style the name so that elements
+    * are styled as elements and attributes are styled as required.
+    * 
+    * @return this is used to determine if this is an attribute
+    */
+   public boolean isAttribute() {
+      return attribute;
    }
    
    /**

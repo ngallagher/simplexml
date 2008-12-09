@@ -243,6 +243,17 @@ class Pointer implements Label {
    }
    
    /**
+    * This method is used to determine if the label represents an
+    * attribute. This is used to style the name so that elements
+    * are styled as elements and attributes are styled as required.
+    * 
+    * @return this is used to determine if this is an attribute
+    */
+   public boolean isAttribute() {
+      return label.isAttribute();
+   }
+   
+   /**
     * Determines whether the XML attribute or element is required. 
     * This ensures that if an XML element is missing from a document
     * that deserialization can continue. Also, in the process of
