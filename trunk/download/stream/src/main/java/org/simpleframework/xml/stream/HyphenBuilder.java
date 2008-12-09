@@ -54,7 +54,10 @@ class HyphenBuilder implements Style {
     * @return this returns the styled name of the XML attribute
     */
    public String getAttribute(String name) {
-      return new Parser(name).process();
+      if(name != null) {
+         return new Parser(name).process();
+      }
+      return null;
    }
 
    /**
@@ -68,7 +71,10 @@ class HyphenBuilder implements Style {
     * @return this returns the styled name of the XML element
     */
    public String getElement(String name) {
-      return new Parser(name).process();
+      if(name != null) {
+         return new Parser(name).process();
+      }
+      return null;
    }
    
    /**
