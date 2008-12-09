@@ -78,7 +78,10 @@ class CamelCaseBuilder implements Style {
     * @return this returns the styled name of the XML attribute
     */
    public String getAttribute(String name) {
-      return new Attribute(name).process();
+      if(name != null) {
+         return new Attribute(name).process();
+      }
+      return null;
    }
 
    /**
@@ -92,7 +95,10 @@ class CamelCaseBuilder implements Style {
     * @return this returns the styled name of the XML element
     */
    public String getElement(String name) {
-      return new Element(name).process();
+      if(name != null) {
+         return new Element(name).process();
+      }
+      return null;
    }
    
    /**
