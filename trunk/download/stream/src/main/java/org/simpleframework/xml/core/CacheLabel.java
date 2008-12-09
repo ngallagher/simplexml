@@ -20,6 +20,8 @@
 
 package org.simpleframework.xml.core;
 
+import org.simpleframework.xml.stream.Style;
+
 /**
  * The <code>CacheLabel</code> object is used to acquire details from an
  * inner label object so that details can be retrieved repeatedly without
@@ -155,10 +157,17 @@ class CacheLabel implements Label {
     * a name then that is used, if however the annotation does not
     * specify a name the the field or method name is used instead.
     * 
+    * @param context this is the context used to style the name
+    * 
     * @return returns the name that is used for the XML property
     */
    public String getName(Context context) throws Exception {
-      return label.getName(context);
+      Style style = context.getStyle();
+      
+      if(style != null) {
+         return style.getElement(name);
+      }
+      return name;
    }
    
    /**
