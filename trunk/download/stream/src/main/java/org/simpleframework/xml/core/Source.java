@@ -212,24 +212,21 @@ class Source implements Context {
    public Decorator getDecorator(Class type) throws Exception {
       return getScanner(type).getDecorator();
    }
-   
-   /**
-    * This creates a <code>Schema</code> object that can be used to
-    * examine the fields within the XML class schema. The schema
-    * maintains information when a field from within the schema is
-    * visited, this allows the serialization and deserialization
-    * process to determine if all required XML annotations are used.
-    * 
-    * @param source the source object the schema is created for
-    * 
-    * @return a new schema that can track visits within the schema
-    * 
-    * @throws Exception if the class contains an illegal schema  
-    */
-   public Schema getSchema(Object source) throws Exception {
-      return getSchema(source.getClass());           
-   }
 
+   /**
+    * This is used to acquire the <code>Caller</code> object. This
+    * is used to call the callback methods within the object. If the
+    * object contains no callback methods then this will return an
+    * object that does not invoke any methods that are invoked. 
+    * 
+    * @param type this is the type to acquire the caller for
+    * 
+    * @return this returns the caller for the specified type
+    */
+   public Caller getCaller(Class type) throws Exception {
+      return getScanner(type).getCaller(this);
+   }
+   
    /**
     * This creates a <code>Schema</code> object that can be used to
     * examine the fields within the XML class schema. The schema

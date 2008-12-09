@@ -154,14 +154,16 @@ class Composite implements Converter {
     * @return this returns the fully deserialized object graph 
     */
    public Object read(InputNode node, Object source) throws Exception {
-      Schema schema = context.getSchema(source);
+      Class type = source.getClass();
+      Schema schema = context.getSchema(type);
+      Caller caller = schema.getCaller();
       
       read(node, source, schema);
       store.commit(source);
-      schema.validate(source);
-      schema.commit(source);
+      caller.validate(source);
+      caller.commit(source);
       
-      return readResolve(node, source, schema);
+      return readResolve(node, source, caller);
    }
    
    /**
@@ -174,14 +176,14 @@ class Composite implements Converter {
     * 
     * @param node the XML element object provided as a replacement
     * @param source this is the source object that is deserialized
-    * @param schema this object visits the objects contacts
+    * @param caller this is used to invoke the callback methods
     * 
     * @return this returns a replacement for the deserialized object
     */
-   private Object readResolve(InputNode node, Object source, Schema schema) throws Exception {
+   private Object readResolve(InputNode node, Object source, Caller caller) throws Exception {
       if(source != null) {
          Position line = node.getPosition();
-         Object value = schema.resolve(source);
+         Object value = caller.resolve(source);
          Class real = value.getClass();
       
          if(!type.isAssignableFrom(real)) {
@@ -722,17 +724,19 @@ class Composite implements Converter {
     * @throws Exception thrown if there is a serialization problem
     */
    public void write(OutputNode node, Object source) throws Exception {
-      Schema schema = context.getSchema(source);
+      Class type = source.getClass();
+      Schema schema = context.getSchema(type);
+      Caller caller = schema.getCaller();
       
       try { 
          if(schema.isPrimitive()) {
             primitive.write(node, source);
          } else {
-            schema.persist(source); 
+            caller.persist(source); 
             write(node, source, schema);
          }
       } finally {
-         schema.complete(source);
+         caller.complete(source);
       }
    }
    
@@ -836,6 +840,7 @@ class Composite implements Converter {
     */
    private void writeElements(OutputNode node, Object source, Schema schema) throws Exception {
       LabelMap elements = schema.getElements();
+      Caller caller = schema.getCaller();
       
       for(Label label : elements) {
          Contact contact = label.getContact();
@@ -844,7 +849,7 @@ class Composite implements Converter {
          if(value == null && label.isRequired()) {
             throw new ElementException("Value for %s is null", label);
          }
-         Object replace = writeReplace(value);
+         Object replace = writeReplace(value, caller);
          
          if(replace != null) {
             writeElement(node, replace, label);            
@@ -861,15 +866,15 @@ class Composite implements Converter {
     * <code>writeReplace</code> method for the object serialization.
     * 
     * @param source this is the source object that is to be replaced
+    * @param caller this is the caller used to invoke the methods
     * 
     * @return this returns the object to use as a replacement value
     * 
     * @throws Exception if the replacement object is not suitable
     */
-   private Object writeReplace(Object source) throws Exception {      
+   private Object writeReplace(Object source, Caller caller) throws Exception {      
       if(source != null) {
-         Schema schema = context.getSchema(source);
-         return schema.replace(source);
+         return caller.replace(source);
       }
       return source;
    }

@@ -60,7 +60,7 @@ class Schema {
    /**
     * This is the pointer to the schema class replace method.
     */
-   private Conduit conduit;
+   private Caller caller;
    
    /**
     * This is the session that is to be used for serialization.
@@ -99,10 +99,10 @@ class Schema {
    public Schema(Scanner schema, Context context) throws Exception {   
       this.attributes = schema.getAttributes(context);
       this.elements = schema.getElements(context);
+      this.caller = schema.getCaller(context);
       this.revision = schema.getRevision();
       this.decorator = schema.getDecorator();
       this.primitive = schema.isPrimitive();
-      this.conduit = schema.getConduit();
       this.session = context.getSession();
       this.version = schema.getVersion();
       this.text = schema.getText();
@@ -160,6 +160,18 @@ class Schema {
    }
    
    /**
+    * This is used to acquire the <code>Caller</code> object. This
+    * is used to call the callback methods within the object. If the
+    * object contains no callback methods then this will return an
+    * object that does not invoke any methods that are invoked. 
+    * 
+    * @return this returns the caller for the specified type
+    */
+   public Caller getCaller() {
+      return caller;
+   }
+   
+   /**
     * Returns a <code>LabelMap</code> that contains the details for
     * all fields marked as XML attributes. Labels contained within
     * this map are used to convert primitive types only.
@@ -192,98 +204,5 @@ class Schema {
     */
    public Label getText() {
       return text;
-   }
-   
-   /**
-    * This is used to replace the serialized object with another
-    * instance, perhaps of a different type. This is useful when an
-    * XML schema class wishes the insert another object into the
-    * stream during the serialization process.
-    * 
-    * @param source the source object to invoke the method on
-    * 
-    * @return this returns the object that acts as the replacement
-    * 
-    * @throws Exception if the replacement method cannot complete
-    */
-   public Object replace(Object source) throws Exception {
-      return conduit.replace(source, table);
-   }
-   
-   /**
-    * This is used to resolve the deserialized object with another
-    * instance, perhaps of a different type. This is useful when an
-    * XML schema class acts as a reference to another XML document
-    * which needs to be loaded externally to create an object of
-    * a different type, or just to substitute the instance.
-    * 
-    * @param source the source object to invoke the method on
-    * 
-    * @return this returns the object that acts as the substitute
-    * 
-    * @throws Exception if the replacement method cannot complete
-    */
-   public Object resolve(Object source) throws Exception {
-      return conduit.resolve(source, table);
-   }
-   
-   /**
-    * This method is used to invoke the provided objects commit method
-    * during the deserialization process. The commit method must be
-    * marked with the <code>Commit</code> annotation so that when the
-    * object is deserialized the persister has a chance to invoke the
-    * method so that the object can build further data structures.
-    * 
-    * @param source this is the object that has just been deserialized
-    * 
-    * @throws Exception thrown if the commit process cannot complete
-    */
-   public void commit(Object source) throws Exception {
-      conduit.commit(source, table);   
-   }
-
-   /**
-    * This method is used to invoke the provided objects validation
-    * method during the deserialization process. The validation method
-    * must be marked with the <code>Validate</code> annotation so that
-    * when the object is deserialized the persister has a chance to 
-    * invoke that method so that object can validate its field values.
-    * 
-    * @param source this is the object that has just been deserialized
-    * 
-    * @throws Exception thrown if the validation process failed
-    */
-   public void validate(Object source) throws Exception {
-      conduit.validate(source, table);        
-   }
-   
-   /**
-    * This method is used to invoke the provided objects persistence
-    * method. This is invoked during the serialization process to
-    * get the object a chance to perform an nessecary preparation
-    * before the serialization of the object proceeds. The persist
-    * method must be marked with the <code>Persist</code> annotation.
-    * 
-    * @param source the object that is about to be serialized
-    * 
-    * @throws Exception thrown if the object cannot be persisted
-    */
-   public void persist(Object source) throws Exception {
-      conduit.persist(source, table);        
-   }
-   
-   /**
-    * This method is used to invoke the provided objects completion
-    * method. This is invoked after the serialization process has
-    * completed and gives the object a chance to restore its state
-    * if the persist method required some alteration or locking.
-    * This is marked with the <code>Complete</code> annotation.
-    * 
-    * @param source this is the object that has been serialized
-    * 
-    * @throws Exception thrown if the object cannot complete
-    */
-   public void complete(Object source) throws Exception {
-      conduit.complete(source, table);
    }
 }
