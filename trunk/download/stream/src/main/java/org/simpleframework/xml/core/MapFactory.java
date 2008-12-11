@@ -20,10 +20,11 @@
 
 package org.simpleframework.xml.core;
 
-import org.simpleframework.xml.stream.InputNode;
-import java.util.TreeMap;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
+
+import org.simpleframework.xml.stream.InputNode;
 
 /**
  * The <code>MapFactory</code> is used to create map instances that
