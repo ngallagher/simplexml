@@ -168,6 +168,21 @@ class Source implements Context {
    }
    
    /**
+    * This is used to acquire the name of the specified type using
+    * the <code>Root</code> annotation for the class. This will 
+    * use either the name explicitly provided by the annotation or
+    * it will use the name of the class that the annotation was
+    * placed on if there is no explicit name for the root.
+    * 
+    * @param type this is the type to acquire the root name for
+    * 
+    * @return this returns the name of the type from the root
+    */
+   public String getName(Class type) throws Exception {
+      return support.getName(type);
+   }
+   
+   /**
     * This returns the version for the type specified. The version is
     * used to determine how the deserialization process is performed.
     * If the version of the type is different from the version for
@@ -195,7 +210,7 @@ class Source implements Context {
     * @throws Exception if the class contains an illegal schema 
     */ 
    private Scanner getScanner(Class type) throws Exception {
-      return ScannerFactory.getInstance(type);
+      return support.getScanner(type);
    }
    
    /**

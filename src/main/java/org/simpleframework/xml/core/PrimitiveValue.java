@@ -56,6 +56,11 @@ class PrimitiveValue implements Converter {
    private final PrimitiveFactory factory;
    
    /**
+    * This is the context used to support the serialization process.
+    */
+   private final Context context;
+   
+   /**
     * The primitive converter used to read the value from the node.
     */
    private final Primitive root;
@@ -88,6 +93,7 @@ class PrimitiveValue implements Converter {
       this.factory = new PrimitiveFactory(context, type);
       this.root = new Primitive(context, type);
       this.style = context.getStyle();
+      this.context = context;
       this.entry = entry;
       this.type = type;
    }
@@ -106,7 +112,7 @@ class PrimitiveValue implements Converter {
       String name = entry.getValue();
       
       if(name == null) {
-         name = Factory.getName(type);
+         name = context.getName(type);
       }
       if(entry.isInline()) {
          return root.read(node);
@@ -149,7 +155,7 @@ class PrimitiveValue implements Converter {
       String name = entry.getValue();
       
       if(name == null) {
-         name = Factory.getName(type);
+         name = context.getName(type);
       }
       return validate(node, name);
    }
@@ -191,7 +197,7 @@ class PrimitiveValue implements Converter {
       String name = entry.getValue();
       
       if(name == null) {
-         name = Factory.getName(type);
+         name = context.getName(type);
       } 
       write(node, item, name);
    }

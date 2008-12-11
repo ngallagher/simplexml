@@ -259,7 +259,7 @@ class Traverser {
     * @return this returns the root annotation for the XML schema
     */   
    protected String getName(Class type) throws Exception {
-      String root = Factory.getName(type);
+      String root = context.getName(type);
       String name = style.getElement(root);
       
       return name;
