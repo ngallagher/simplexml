@@ -20,10 +20,11 @@
 
 package org.simpleframework.xml.core;
 
-import org.simpleframework.xml.stream.Node;
-import org.simpleframework.xml.stream.NodeMap;
 import java.lang.reflect.Array;
 import java.util.Map;
+
+import org.simpleframework.xml.stream.Node;
+import org.simpleframework.xml.stream.NodeMap;
 
 /**
  * The <code>DefaultStrategy</code> object is used by the persister if
@@ -51,7 +52,7 @@ class DefaultStrategy implements Strategy {
    /**
     * This is used to cache the constructors for the given types.
     */
-   private final ConstructorCache cache;
+   private final TypeFactory factory;
    
    /**
     * This is the attribute that is used to determine an array size.
@@ -83,7 +84,7 @@ class DefaultStrategy implements Strategy {
     * @param length this is used to determine the array length
     */
    public DefaultStrategy(String label, String length) {
-      this.cache = new ConstructorCache();
+      this.factory = new TypeFactory();
       this.length = length;
       this.label = label;         
    }
@@ -128,10 +129,10 @@ class DefaultStrategy implements Strategy {
       if(field.isArray()) {
          return getArray(type, node);   
       }
-      if(field != type) {
-         return new ClassType(cache, type);
+      if(field == type) {
+         return null;
       }
-      return null;
+      return factory.getInstance(type);
    }
    
    /**
@@ -156,7 +157,7 @@ class DefaultStrategy implements Strategy {
          String value = entry.getValue();
          size = Integer.parseInt(value);
       }      
-      return new ArrayType(type, size);
+      return factory.getInstance(type, size);
    }
    
    /**
@@ -251,6 +252,19 @@ class DefaultStrategy implements Strategy {
          node.put(length, String.valueOf(size));
       }
       return field.getComponentType();
+   }
+   
+   /**
+    * This will create a <code>Type</code> object that can be used
+    * to instantiate objects of the specified class. This leverages
+    * an internal constructor cache to ensure creation is quicker.
+    * 
+    * @param type this is the type that is to be instantiated
+    * 
+    * @return this will return a type for instantiating objects
+    */
+   public Type getInstance(Class type) {
+      return factory.getInstance(type);
    }
    
    /**

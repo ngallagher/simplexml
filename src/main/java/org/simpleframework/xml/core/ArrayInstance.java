@@ -1,5 +1,5 @@
 /*
- * ArrayType.java April 2007
+ * ArrayInstance.java April 2007
  *
  * Copyright (C) 2007, Niall Gallagher <niallg@users.sf.net>
  *
@@ -20,20 +20,23 @@
 
 package org.simpleframework.xml.core;
 
+
+import org.simpleframework.xml.core.Type;
+
 import java.lang.reflect.Array;
 
 /**
- * The <code>ArrayType</code> object is a type used for constructing
+ * The <code>ArrayInstance</code> object is a type used for creating
  * arrays from a specified component type or <code>Type</code> object.
- * This allows primitive and composite lists to be acquired either by
- * reference or by value from a converter object. This will accept a
- * list of objects which it will convert to an array object.
+ * This allows primitive and composite arrays to be acquired either 
+ * by reference or by value from a converter object. This must be 
+ * given the length of the array so that it can be allocated.
  * 
  * @author Niall Gallagher
  * 
- * @see org.simpleframework.xml.core.ArrayFactory
+ * @see org.simpleframework.xml.core.Instance
  */
-class ArrayType implements Type {
+class ArrayInstance implements Type {
    
    /**
     * This is the optional field type for the array to be created. 
@@ -54,7 +57,7 @@ class ArrayType implements Type {
     * @param type this is the component type for the array
     * @param size this is the size of the array to instantiate
     */
-   public ArrayType(Class type, int size) {
+   public ArrayInstance(Class type, int size) {
       this.type = type;      
       this.size = size;
    }

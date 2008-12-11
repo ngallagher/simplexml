@@ -28,13 +28,16 @@ package org.simpleframework.xml.core;
  * later be deserialized.
  *
  * @author Niall Gallagher
+ * 
+ * @see org.simpleframework.xml.core.Instantiator
+ * @see org.simpleframework.xml.core.Instance
  */
 class TypeFactory {
 
    /**
     * This is used to cache the constructors for the given types.
     */
-   private final ConstructorCache cache;
+   private final Instantiator factory;
    
    /**
     * Constructor for the <code>TypeFactory</code> object. This will
@@ -42,7 +45,7 @@ class TypeFactory {
     * the constructors instantiated for the required types. 
     */
    public TypeFactory() {
-      this.cache = new ConstructorCache();
+      this.factory = new Instantiator();
    }
    
    /**
@@ -55,6 +58,20 @@ class TypeFactory {
     * @return this will return a type for instantiating objects
     */
    public Type getInstance(Class type) {
-      return new ClassType(cache, type);
+      return new Instance(factory, type);
+   }
+   
+   /**
+    * This will create an array <code>Type</code> that can be used
+    * to instantiate arrays of the specified class. This leverages
+    * an internal constructor cache to ensure creation is quicker.
+    * 
+    * @param type this is the array type that is to be instantiated
+    * @param size this is the length of the array to be created
+    * 
+    * @return this will return a type for instantiating objects
+    */
+   public Type getInstance(Class type, int size) {
+      return new ArrayInstance(type, size);
    }
 }
