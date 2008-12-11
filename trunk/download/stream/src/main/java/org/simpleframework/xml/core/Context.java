@@ -105,6 +105,18 @@ interface Context {
    public boolean isPrimitive(Class type) throws Exception;
    
    /**
+    * This is used to create a <code>Type</code> object for the class
+    * specified. This will allow instances of the specified type to
+    * be instantiated and also allows reflective information to be
+    * cached internally within the context object.
+    * 
+    * @param type this is the type that is to be instantiated
+    * 
+    * @return this returns a type that can be used for instantiation
+    */
+   public Type getType(Class type) throws Exception;
+   
+   /**
     * This is used to acquire the name of the specified type using
     * the <code>Root</code> annotation for the class. This will 
     * use either the name explicitly provided by the annotation or

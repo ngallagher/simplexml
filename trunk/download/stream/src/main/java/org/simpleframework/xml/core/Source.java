@@ -93,7 +93,7 @@ class Source implements Context {
     */       
    public Source(Strategy strategy, Support support, Style style) {
       this.filter = new TemplateFilter(this, support);           
-      this.engine = new TemplateEngine(filter);           
+      this.engine = new TemplateEngine(filter);     
       this.session = new Session();
       this.strategy = strategy;
       this.support = support;
@@ -165,6 +165,20 @@ class Source implements Context {
     */
    public boolean isPrimitive(Class type) throws Exception {
       return support.isPrimitive(type);
+   }
+   
+   /**
+    * This is used to create a <code>Type</code> object for the class
+    * specified. This will allow instances of the specified type to
+    * be instantiated and also allows reflective information to be
+    * cached internally within the context object.
+    * 
+    * @param type this is the type that is to be instantiated
+    * 
+    * @return this returns a type that can be used for instantiation
+    */
+   public Type getType(Class type) throws Exception {
+      return support.getType(type);
    }
    
    /**

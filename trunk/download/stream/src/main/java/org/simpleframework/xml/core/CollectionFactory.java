@@ -92,7 +92,7 @@ class CollectionFactory extends Factory {
       if(!isCollection(field)) {
          throw new InstantiationException("Type is not a collection %s", field);
       }
-      return new ClassType(field);         
+      return context.getType(field);         
    }     
 
    /**

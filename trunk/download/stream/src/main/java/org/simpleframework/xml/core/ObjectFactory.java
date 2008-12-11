@@ -66,7 +66,7 @@ class ObjectFactory extends PrimitiveFactory {
          if(!isInstantiable(field)) {
             throw new InstantiationException("Cannot instantiate %s", field);              
          }
-         return new ClassType(field);         
+         return context.getType(field);         
       }
       return type;      
    }     
