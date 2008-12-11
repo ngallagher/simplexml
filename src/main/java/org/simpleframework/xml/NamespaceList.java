@@ -37,7 +37,7 @@ import java.lang.annotation.RetentionPolicy;
  *    &lt;/example&gt;
  *    
  * </pre>
- * The above XML example shows how a prefixed namespce has been added
+ * The above XML example shows how a prefixed namespace has been added
  * to the element without qualifying that element. Such declarations
  * will allow child elements to pick up the parents prefix when this
  * is required, this avoids having to redeclare the same namespace.
@@ -50,9 +50,9 @@ import java.lang.annotation.RetentionPolicy;
 public @interface NamespaceList {
 
    /**
-    * This is used to acquire the nanmespaces that are delcared on
+    * This is used to acquire the namespaces that are declared on
     * the class. Any number of namespaces can be declared. None of
-    * the declared nanmespaces will be made the elements namespace,
+    * the declared namespaces will be made the elements namespace,
     * instead it will simply declare the namespaces so that the
     * reference URI and prefix will be made available to children.
     * 
