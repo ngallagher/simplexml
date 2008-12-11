@@ -28,7 +28,7 @@ package org.simpleframework.xml.core;
  * 
  * @author Niall Gallagher
  * 
- * @see org.simpleframework.xml.core.XSource
+ * @see org.simpleframework.xml.core.Context
  */
 final class ScannerFactory {
 

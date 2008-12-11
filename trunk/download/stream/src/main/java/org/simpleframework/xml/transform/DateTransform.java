@@ -57,7 +57,7 @@ class DateTransform<T extends Date> implements Transform<T> {
     * the date using a different locale or time zone between read and
     * write operations.
     * 
-    * @param format this is the date format that is to be used
+    * @param type this is the type of date to be created by this
     */
    public DateTransform(Class<T> type) throws Exception {
       this.factory = new DateFactory<T>(type);
@@ -69,7 +69,7 @@ class DateTransform<T extends Date> implements Transform<T> {
     * being deserialized from the XML document and the value for
     * the string representation is required.
     * 
-    * @param date the string representation of the date value 
+    * @param text the string representation of the date value 
     * 
     * @return this returns an appropriate instanced to be used
     */

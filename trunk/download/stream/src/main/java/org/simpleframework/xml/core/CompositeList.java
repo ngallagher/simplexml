@@ -165,14 +165,14 @@ class CompositeList implements Converter {
    }
    
    /**
-    * This <code>validate</code> method wll validate the XML element 
+    * This <code>validate</code> method will validate the XML element 
     * list from the provided node and deserialize its children as entry 
     * types. This takes each entry type and validates it as a root type, 
     * that is, its <code>Root</code> annotation must be present and the
     * name of the entry element must match that root element name.
     * 
     * @param node this is the XML element that is to be validated
-    * @param result this is the collection that is to be populated
+    * @param type this is the type to validate against the input node
     * 
     * @return true if the element matches the XML schema class given 
     */ 

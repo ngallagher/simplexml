@@ -154,7 +154,7 @@ class CompositeInlineMap implements Repeater {
     * object element must match that root element name.
     * 
     * @param node this is the XML element that is to be deserialized
-    * @param table this is the map object that is to be populated
+    * @param map this is the map object that is to be populated
     * 
     * @return this returns the item to attach to the object contact
     */

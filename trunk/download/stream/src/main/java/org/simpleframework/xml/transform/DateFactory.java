@@ -57,7 +57,7 @@ class DateFactory<T extends Date> {
     * created by this instance must take the specified parameter.
     * 
     * @param type this is the date implementation to be created
-    * @param this is basically the list of accepted parameters
+    * @param list is basically the list of accepted parameters
     */
    public DateFactory(Class<T> type, Class... list) throws Exception {
       this.factory = type.getDeclaredConstructor(list);
@@ -68,7 +68,7 @@ class DateFactory<T extends Date> {
     * date. A <code>long</code> parameter is extracted from the 
     * given date an used to instantiate a date of the required type.
     * 
-    * @param date this is the type used to provide the long value
+    * @param list this is the type used to provide the long value
     * 
     * @return this returns an instance of the required date type
     */

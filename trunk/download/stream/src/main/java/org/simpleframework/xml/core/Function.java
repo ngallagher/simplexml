@@ -60,7 +60,7 @@ class Function {
     * that no reflection is required when the method is to be called.
     * 
     * @param method this is the method that is to be wrapped by this
-    * @poram contextual determines if the method is a contextual one
+    * @param contextual determines if the method is a contextual one
     */
    public Function(Method method, boolean contextual) {
       this.contextual = contextual;

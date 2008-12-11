@@ -378,7 +378,7 @@ class Pointer implements Label {
        * used for repeat reads of scattered XML elements.
        * 
        * @param node this is the node to write the data to
-       * @param source this is the source object to be written
+       * @param value this is the source object to be written
        */
       public void write(OutputNode node, Object value) throws Exception {
          write(node, value);

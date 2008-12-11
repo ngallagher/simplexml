@@ -182,16 +182,16 @@ class Formatter {
    }
    
    /**
-    * This is used to write a name value attribute pair. If the last
-    * tag written was not a start tag then this throws an exception.
-    * All attribute values written are enclosed in double quotes.
+    * This is used to write the namespace to the element. This will
+    * write the special attribute using the prefix and reference
+    * specified. This will escape the reference if it is required.
     * 
-    * @param name this is the name of the attribute to be written
-    * @param value this is the value to assigne to the attribute
+    * @param reference this is the namespace URI reference to use
+    * @param prefix this is the prefix to used for the namespace
     *
     * @throws Exception thrown if there is an I/O exception
     */  
-   public void writeNamespace(String location, String prefix) throws Exception{
+   public void writeNamespace(String reference, String prefix) throws Exception{
       if(last != Tag.START) {
          throw new NodeException("Start element required");              
       }         
@@ -204,7 +204,7 @@ class Formatter {
       }
       write('=');
       write('"');
-      escape(location);
+      escape(reference);
       write('"');               
    }
 
@@ -438,9 +438,9 @@ class Formatter {
     * 
     * @return true if the string value specified is an empty value
     */
-   private boolean isEmpty(String prefix) {
-      if(prefix != null) {
-         return prefix.length() == 0;
+   private boolean isEmpty(String value) {
+      if(value != null) {
+         return value.length() == 0;
       }
       return true;  
    }

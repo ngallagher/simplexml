@@ -517,7 +517,7 @@ class Composite implements Converter {
     * The annotation missing is reported in the exception.
     * 
     * @param node the XML element contact values are validated from
-    * @param source the object whose contacts are to be validated
+    * @param type this is the type to validate against the input node
     */
    private boolean validate(InputNode node, Class type) throws Exception {
       Schema schema = context.getSchema(type);
@@ -639,7 +639,6 @@ class Composite implements Converter {
     * fails validation then an exception is thrown to report the issue.
     * 
     * @param node this is the node that contains the contact value
-    * @param source the source object to assign the contact value to
     * @param map this is the map that contains the label objects
     * 
     * @throws Exception thrown if the the label object does not exist
@@ -695,8 +694,8 @@ class Composite implements Converter {
     * class annotations. If there is a required label that remains it 
     * is reported within the exception thrown.
     * 
-    * @param map this is the map to check for remaining labels
-    * @param source this is the object that has been deserialized 
+    * @param node this is the node that contains the composite data
+    * @param map this contains the converters to perform validation
     * 
     * @throws Exception thrown if an XML property was not declared
     */

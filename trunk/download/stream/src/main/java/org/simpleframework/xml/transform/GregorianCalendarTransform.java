@@ -68,7 +68,7 @@ class GregorianCalendarTransform implements Transform<GregorianCalendar> {
     * enough information to create the date using a different 
     * locale or time zone between read and write operations.
     * 
-    * @param format this is the date format that is to be used
+    * @param type this is the type of date to be transformed
     */
    public GregorianCalendarTransform(Class type) throws Exception {
       this.transform = new DateTransform(type);      

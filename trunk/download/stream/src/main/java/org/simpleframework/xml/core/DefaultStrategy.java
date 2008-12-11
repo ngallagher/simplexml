@@ -254,7 +254,7 @@ class DefaultStrategy implements Strategy {
     * requirements dictate. Typically the thread context class loader
     * can handle all serialization requirements.
     * 
-    * @param name this is the name of the class that is to be loaded
+    * @param type this is the name of the class that is to be loaded
     * 
     * @return this returns the class that has been loaded by this
     */

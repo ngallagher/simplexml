@@ -295,6 +295,19 @@
          <link href="http://java.sun.com/j2se/1.5.0/docs/api/"/> 
       </javadoc>
       <delete dir="${build.path}"/>
+   </target>         
+
+   <target name="javadoc-private" depends="clean" description="Generate source documentation">
+      <mkdir dir="${javadoc.path}"/>
+      <javadoc sourcepath="${main.source.path}" packagenames="org.simpleframework.*" destdir="${javadoc.path}" private="true">
+         <classpath>
+            <fileset dir="${lib.path}">
+               <include name="**/*.jar"/>
+            </fileset>
+         </classpath>  
+         <link href="http://java.sun.com/j2se/1.5.0/docs/api/"/> 
+      </javadoc>
+      <delete dir="${build.path}"/>
    </target>          
 
    <target name="tutorial" depends="-setup" description="Upload tutorial to sourceforge">
