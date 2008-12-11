@@ -22,7 +22,7 @@ public class SimpleExecutor implements Executor {
       for(int i = 0; i < test.getIterations(); i++) {
          result = persister.read(schemaClass, test.getSourceStream());        
       }
-      return new Duration(start, startRead);
+      return new Duration(start, startRead, test.getIterations());
    }        
    
    public Duration write(TestRun test) throws Exception {
@@ -32,12 +32,14 @@ public class SimpleExecutor implements Executor {
       Object result = persister.read(schemaClass, test.getSourceStream());
       
       // Perform once to build up schema cache
-      persister.write(result, System.out);
+      if(test.isDebug()) {
+         persister.write(result, System.out);
+      }
       long startWrite = System.currentTimeMillis();
       
       for(int i = 0; i < test.getIterations(); i++) {
          persister.write(result, test.getResultWriter());        
       }
-      return new Duration(start, startWrite);
+      return new Duration(start, startWrite, test.getIterations());
    }        
 }

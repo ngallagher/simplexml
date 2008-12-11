@@ -29,10 +29,11 @@ public class TestExecution {
       Duration readDuration = executor.read(test);
       Duration writeDuration = executor.write(test);
       
-      System.err.printf("Execution of "+test.getId() + 
-    		  ": read=%s ms read-total=%s write=%s ms write-total=%s", 
+      System.err.printf("Execution of "+test.getId() + " " +test.getIterations() +
+    		  " times: read=%s ms read-total=%s write=%s ms write-total=%s ms average-read=%s ms average-write=%s ms", 
     		  readDuration.getOperation(), readDuration.getTotal(), 
-    		  writeDuration.getOperation(), writeDuration.getOperation());
+    		  writeDuration.getOperation(), writeDuration.getOperation(),
+    		  readDuration.getAverage(), writeDuration.getAverage());
       
       System.err.println();
    }

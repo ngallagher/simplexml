@@ -1,37 +1,37 @@
 <execute>
    <context identifier="ROOT_PATH" rootPath="/Users/niall/Workspace/xml/data"/>
    <list>
-      <test id="JAXB Test 1">
+      <test debug="true" id="JAXB Test 1">
          <executorClass>org.simpleframework.xml.benchmark.jaxb.JAXBExecutor</executorClass>
          <schemaClass>org.simpleframework.xml.benchmark.jaxb.JAXBClass</schemaClass>
          <sourceFile>${ROOT_PATH}/example.xml</sourceFile>
          <iterations>10000</iterations>
       </test>
-      <test id="Simple Test 1">
+      <test debug="true" id="Simple Test 1">
          <executorClass>org.simpleframework.xml.benchmark.simple.SimpleExecutor</executorClass>
          <schemaClass>org.simpleframework.xml.benchmark.simple.SimpleClass</schemaClass>
          <sourceFile>${ROOT_PATH}/example.xml</sourceFile>
          <iterations>10000</iterations>
       </test>
-      <test id="JAXB Test 2">
+      <test debug="false" id="JAXB Test 2">
          <executorClass>org.simpleframework.xml.benchmark.jaxb.JAXBExecutor</executorClass>
          <schemaClass>org.simpleframework.xml.benchmark.jaxb.JAXBClass</schemaClass>
          <sourceFile>${ROOT_PATH}/example.xml</sourceFile>
          <iterations>10000</iterations>
       </test>
-      <test id="Simple Test 2">
+      <test debug="false" id="Simple Test 2">
          <executorClass>org.simpleframework.xml.benchmark.simple.SimpleExecutor</executorClass>
          <schemaClass>org.simpleframework.xml.benchmark.simple.SimpleClass</schemaClass>
          <sourceFile>${ROOT_PATH}/example.xml</sourceFile>
          <iterations>10000</iterations>
       </test>
-      <test id="JAXB Test 3">
+      <test debug="false" id="JAXB Test 3">
          <executorClass>org.simpleframework.xml.benchmark.jaxb.JAXBExecutor</executorClass>
          <schemaClass>org.simpleframework.xml.benchmark.jaxb.JAXBClass</schemaClass>
          <sourceFile>${ROOT_PATH}/example.xml</sourceFile>
          <iterations>10000</iterations>
       </test>
-      <test id="Simple Test 3">
+      <test debug="false" id="Simple Test 3">
          <executorClass>org.simpleframework.xml.benchmark.simple.SimpleExecutor</executorClass>
          <schemaClass>org.simpleframework.xml.benchmark.simple.SimpleClass</schemaClass>
          <sourceFile>${ROOT_PATH}/example.xml</sourceFile>

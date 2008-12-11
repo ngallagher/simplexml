@@ -31,6 +31,9 @@ public class TestRun {
    
    @Attribute(name="id")
    private String id;
+  
+   @Attribute(name="debug")
+   private boolean debug;
    
    @Element(name="executorClass")
    private String executor;
@@ -43,11 +46,15 @@ public class TestRun {
    
    @Element(name="iterations")
    private int count;
-   
+  
    private byte[] content;
    
    public String getId() {
       return id;
+   }
+   
+   public boolean isDebug() {
+      return debug;
    }
    
    public int getIterations() {
