@@ -44,17 +44,17 @@ class Support implements Filter {
    /**
     * This will perform the scanning of types are provide scanners.
     */
-   private final ScannerFactory scanner;
+   private final ScannerFactory factory;
+   
+   /**
+    * This is the factory that is used to create the scanners.
+    */
+   private final Instantiator creator;
    
    /**
     * This is the transformer used to transform objects to text.
     */
    private final Transformer transform;
-   
-   /**
-    * This is the factory that is used to create the scanners.
-    */
-   private final TypeFactory factory;
    
    /**
     * This is the matcher used to acquire the transform objects.
@@ -99,8 +99,8 @@ class Support implements Filter {
     */
    public Support(Filter filter, Matcher matcher) {
       this.transform = new Transformer(matcher);
-      this.scanner = new ScannerFactory();
-      this.factory = new TypeFactory();
+      this.factory = new ScannerFactory();
+      this.creator = new Instantiator();
       this.matcher = matcher;
       this.filter = filter;
    }
@@ -130,7 +130,7 @@ class Support implements Filter {
     * @return this returns a type that can be used for instantiation
     */
    public Type getType(Class type) throws Exception {
-      return factory.getInstance(type);
+      return creator.getType(type);
    }
    
    /**
@@ -158,7 +158,7 @@ class Support implements Filter {
     * @return a scanner that can maintains information on the type
     */ 
    public Scanner getScanner(Class type) throws Exception {
-      return scanner.getInstance(type);
+      return factory.getInstance(type);
    }
    
    /**

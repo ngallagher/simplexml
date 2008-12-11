@@ -52,7 +52,7 @@ class DefaultStrategy implements Strategy {
    /**
     * This is used to cache the constructors for the given types.
     */
-   private final TypeFactory factory;
+   private final Instantiator factory;
    
    /**
     * This is the attribute that is used to determine an array size.
@@ -84,7 +84,7 @@ class DefaultStrategy implements Strategy {
     * @param length this is used to determine the array length
     */
    public DefaultStrategy(String label, String length) {
-      this.factory = new TypeFactory();
+      this.factory = new Instantiator();
       this.length = length;
       this.label = label;         
    }
@@ -132,7 +132,7 @@ class DefaultStrategy implements Strategy {
       if(field == type) {
          return null;
       }
-      return factory.getInstance(type);
+      return factory.getType(type);
    }
    
    /**
@@ -157,7 +157,7 @@ class DefaultStrategy implements Strategy {
          String value = entry.getValue();
          size = Integer.parseInt(value);
       }      
-      return factory.getInstance(type, size);
+      return factory.getType(type, size);
    }
    
    /**
@@ -252,19 +252,6 @@ class DefaultStrategy implements Strategy {
          node.put(length, String.valueOf(size));
       }
       return field.getComponentType();
-   }
-   
-   /**
-    * This will create a <code>Type</code> object that can be used
-    * to instantiate objects of the specified class. This leverages
-    * an internal constructor cache to ensure creation is quicker.
-    * 
-    * @param type this is the type that is to be instantiated
-    * 
-    * @return this will return a type for instantiating objects
-    */
-   public Type getInstance(Class type) {
-      return factory.getInstance(type);
    }
    
    /**
