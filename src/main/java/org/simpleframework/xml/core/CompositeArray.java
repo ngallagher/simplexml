@@ -124,7 +124,7 @@ class CompositeArray implements Converter {
     * name of the entry element must match that root element name.
     * 
     * @param node this is the XML element that is to be deserialized
-    * @param type this is the array type used to create the array
+    * @param list this is the array that is to be deserialized
     * 
     * @return this returns the item to attach to the object contact
     */  

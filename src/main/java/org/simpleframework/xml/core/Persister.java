@@ -695,7 +695,7 @@ public class Persister implements Serializer {
     * 
     * @param value this is the object to deserialize the XML in to
     * @param node this provides the source of the XML document
-    * @param source the contextual object used for deserialization
+    * @param context the contextual object used for deserialization
     * 
     * @return the same instance provided is returned when finished 
     * 

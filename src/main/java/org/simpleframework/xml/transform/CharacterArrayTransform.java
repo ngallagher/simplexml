@@ -56,7 +56,6 @@ class CharacterArrayTransform implements Transform {
     * arrays and populate the values of the array with values from a
     * comma separated list of individual values for the entry type.
     * 
-    * @param delegate this is used to perform individual transforms
     * @param entry this is the entry component type for the array
     */
    public CharacterArrayTransform(Class entry) {

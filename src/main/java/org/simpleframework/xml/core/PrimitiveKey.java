@@ -293,7 +293,7 @@ class PrimitiveKey implements Converter {
     * 
     * @return returns true if the strategy overrides the object
     */
-   private boolean isOverridden(OutputNode node, Object item) throws Exception{
-      return factory.setOverride(type, item, node);
+   private boolean isOverridden(OutputNode node, Object value) throws Exception{
+      return factory.setOverride(type, value, node);
    }
 }

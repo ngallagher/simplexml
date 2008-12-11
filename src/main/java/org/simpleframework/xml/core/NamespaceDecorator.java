@@ -36,7 +36,7 @@ import org.simpleframework.xml.stream.OutputNode;
  * 
  * @author Niall Gallagher
  * 
- * @see org.simpleframewor.xml.load.Qualifier
+ * @see org.simpleframework.xml.core.Qualifier
  */
 class NamespaceDecorator implements Decorator {
    
@@ -109,11 +109,11 @@ class NamespaceDecorator implements Decorator {
     * this decorator, any common data can then be overwritten.
     * 
     * @param node this is the node that is to be decorated by this
-    * @param secondary this is a secondary decorator to be applied
+    * @param decorator this is a secondary decorator to be applied
     */
-   public void decorate(OutputNode node, Decorator qualifier) {
-      if(qualifier != null) {
-         qualifier.decorate(node);
+   public void decorate(OutputNode node, Decorator decorator) {
+      if(decorator != null) {
+         decorator.decorate(node);
       }
       scope(node);
       namespace(node);

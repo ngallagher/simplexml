@@ -82,7 +82,7 @@ public @interface Namespace {
     * attributes and elements that do not contain a prefix belong
     * to the namespace declared by this annotation.
     *
-    * @param this returns the prefix used for this namespace
+    * @return this returns the prefix used for this namespace
     */ 
    public String prefix() default "";
 }

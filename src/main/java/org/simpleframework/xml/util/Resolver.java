@@ -144,17 +144,18 @@ public class Resolver<M extends Match> extends AbstractSet<M> {
     * most searched patterns and will resolve it first if it matches.
     *
     * @param text this is the string that is to be matched by this
+    * @param array this is the character array of the text string
     *
     * @return this will return all of the matches within the resolver
     */
-   private List<M> resolveAll(String key, char[] array){
+   private List<M> resolveAll(String text, char[] array){
       List<M> list = new ArrayList<M>();
       
       for(M match : stack) {
          String wild = match.getPattern();
 
          if(match(array, wild.toCharArray())){
-            cache.put(key, list);
+            cache.put(text, list);
             list.add(match);
          }
       }
