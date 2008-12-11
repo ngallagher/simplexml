@@ -9,8 +9,6 @@ import org.simpleframework.xml.benchmark.Duration;
 import org.simpleframework.xml.benchmark.Executor;
 import org.simpleframework.xml.benchmark.TestRun;
 
-
-
 public class JAXBExecutor implements Executor {
    
    public Duration read(TestRun test) throws Exception {
@@ -25,7 +23,7 @@ public class JAXBExecutor implements Executor {
       for(int i = 0; i < test.getIterations(); i++) {
          result = unmarshaller.unmarshal(test.getXMLEventReader());        
       }
-      return new Duration(start, startRead);      
+      return new Duration(start, startRead, test.getIterations());      
    }        
    
    public Duration write(TestRun test) throws Exception {
@@ -37,13 +35,15 @@ public class JAXBExecutor implements Executor {
       // Perform once to build up any caching
       Marshaller marshaller = context.createMarshaller();
       marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-      marshaller.marshal(result, System.out);
       
+      if(test.isDebug()) {
+         marshaller.marshal(result, System.out);
+      }
       long startWrite = System.currentTimeMillis();
       
       for(int i = 0; i < test.getIterations(); i++) {
          marshaller.marshal(result, test.getResultWriter());        
       }
-      return new Duration(start, startWrite);      
+      return new Duration(start, startWrite, test.getIterations());      
    }   
 }

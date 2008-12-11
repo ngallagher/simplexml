@@ -185,9 +185,28 @@
       <delete dir="${build.path}"/>
    </target>
 
-   <target name="profile" depends="-compile" description="Target for netbeans profiler">       
-      <ant antfile="build.xml" dir="${example.path}" target="profile" inheritall="false"/>
-      <delete dir="${build.path}"/>
+   <target name="profile" depends="-compile" description="Target for netbeans profiler">
+      <fail unless="netbeans.home">Requires Net Beans IDE</fail>
+      <nbprofiledirect>
+         <classpath>
+            <fileset dir="${lib.path}">
+               <include name="**/*.jar"/>
+            </fileset>
+            <pathelement path="${main.build.path}"/>
+            <pathelement path="${benchmark.build.path}"/>
+         </classpath>
+      </nbprofiledirect> 
+      <java classname="org.simpleframework.xml.benchmark.Benchmark" fork="yes">
+         <jvmarg value="${profiler.info.jvmargs.agent}"/>                   
+         <classpath>
+            <fileset dir="${lib.path}">
+               <include name="**/*.jar"/>
+            </fileset>
+            <pathelement path="${main.build.path}"/>
+            <pathelement path="${benchmark.build.path}"/>
+         </classpath>
+         <arg value="${root.path}/data/test.xml"/>
+      </java>           
    </target>
 
    <target name="benchmark" depends="-compile" description="Benchmark the current version">
