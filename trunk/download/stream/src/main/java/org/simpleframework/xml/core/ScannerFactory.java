@@ -30,17 +30,21 @@ package org.simpleframework.xml.core;
  * 
  * @see org.simpleframework.xml.core.Context
  */
-final class ScannerFactory {
+class ScannerFactory {
 
    /**
     * This is used to cache all schemas built to represent a class.
-    * 
-    * @see org.simpleframework.xml.core.Scanner
     */
-   private static ScannerCache cache;
-
-   static {
-      cache = new ScannerCache();           
+   private final ScannerCache cache;
+   
+   /**
+    * Constructor for the <code>ScannerFactory</code> object. This is
+    * used to create a factory that will create and cache scanned 
+    * data for a given class. Scanning the class is required to find
+    * the fields and methods that have been annotated.
+    */
+   public ScannerFactory() {
+      this.cache = new ScannerCache();
    }
    
    /**
@@ -56,7 +60,7 @@ final class ScannerFactory {
     * 
     * @throws Exception if the class contains an illegal schema 
     */ 
-   public static Scanner getInstance(Class type) throws Exception {
+   public Scanner getInstance(Class type) throws Exception {
       Scanner schema = cache.fetch(type);
       
       if(schema == null) {

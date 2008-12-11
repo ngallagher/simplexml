@@ -20,9 +20,12 @@
 
 package org.simpleframework.xml.core;
 
+import java.beans.Introspector;
+
 import org.simpleframework.xml.filter.Filter;
 import org.simpleframework.xml.filter.PlatformFilter;
 import org.simpleframework.xml.transform.Matcher;
+import org.simpleframework.xml.transform.Transform;
 import org.simpleframework.xml.transform.Transformer;
 
 /**
@@ -39,9 +42,19 @@ import org.simpleframework.xml.transform.Transformer;
 class Support implements Filter {
    
    /**
+    * This is the factory that is used to create the scanners.
+    */
+   private final ScannerFactory factory;
+   
+   /**
     * This is the transformer used to transform objects to text.
     */
    private final Transformer transformer;
+   
+   /**
+    * This is the matcher used to acquire the transform objects.
+    */
+   private final Matcher matcher;
    
    /**
     * This is the filter used to transform the template variables.
@@ -81,9 +94,11 @@ class Support implements Filter {
     */
    public Support(Filter filter, Matcher matcher) {
       this.transformer = new Transformer(matcher);
+      this.factory = new ScannerFactory();
+      this.matcher = matcher;
       this.filter = filter;
    }
-
+   
    /**
     * Replaces the text provided with some property. This method 
     * acts much like a the get method of the <code>Map</code>
@@ -96,6 +111,38 @@ class Support implements Filter {
     */
    public String replace(String text) {
       return filter.replace(text);
+   }
+   
+   /**
+    * This is used to match a <code>Transform</code> using the type
+    * specified. If no transform can be acquired then this returns
+    * a null value indicating that no transform could be found.
+    * 
+    * @param type this is the type to acquire the transform for
+    * 
+    * @return returns a transform for processing the type given
+    * 
+    * @throws Exception thrown if a transform could not be found
+    */ 
+   public Transform getTransform(Class type) throws Exception {
+      return matcher.match(type);
+   }
+
+   /**
+    * This creates a <code>Scanner</code> object that can be used to
+    * examine the fields within the XML class schema. The scanner
+    * maintains information when a field from within the scanner is
+    * visited, this allows the serialization and deserialization
+    * process to determine if all required XML annotations are used.
+    * 
+    * @param type the schema class the scanner is created for
+    * 
+    * @return a scanner that can maintains information on the type
+    * 
+    * @throws Exception if the class contains an illegal schema 
+    */ 
+   public Scanner getScanner(Class type) throws Exception {
+      return factory.getInstance(type);
    }
    
    /**
@@ -141,6 +188,51 @@ class Support implements Filter {
     */ 
    public boolean valid(Class type) throws Exception {  
       return transformer.valid(type);
+   }
+   
+   /**
+    * This is used to acquire the name of the specified type using
+    * the <code>Root</code> annotation for the class. This will 
+    * use either the name explicitly provided by the annotation or
+    * it will use the name of the class that the annotation was
+    * placed on if there is no explicit name for the root.
+    * 
+    * @param type this is the type to acquire the root name for
+    * 
+    * @return this returns the name of the type from the root
+    * 
+    * @throws Exception if the class contains an illegal schema
+    */
+   public String getName(Class type) throws Exception {
+      Scanner schema = getScanner(type);
+      String name = schema.getName();
+      
+      if(name != null) {
+         return name;
+      }
+      return getClassName(type);
+   }
+   
+   /**
+    * This returns the name of the class specified. If there is a root
+    * annotation on the type, then this is ignored in favor of the 
+    * actual class name. This is typically used when the type is a
+    * primitive or if there is no <code>Root</code> annotation present. 
+    * 
+    * @param type this is the type to acquire the root name for
+    * 
+    * @return this returns the name of the type from the root
+    */
+   private String getClassName(Class type) throws Exception {
+      if(type.isArray()) {
+         type = type.getComponentType();
+      }      
+      String name = type.getSimpleName();
+      
+      if(type.isPrimitive()) {
+         return name;
+      }
+      return Introspector.decapitalize(name);
    }
    
    /**

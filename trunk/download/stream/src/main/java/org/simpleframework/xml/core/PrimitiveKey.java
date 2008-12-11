@@ -55,9 +55,14 @@ class PrimitiveKey implements Converter {
    private final PrimitiveFactory factory;
    
    /**
+    * This is the context used to support the serialization process.
+    */
+   private final Context context;
+   
+   /**
     * The primitive converter used to read the key from the node.
     */
-   private final Primitive primitive;
+   private final Primitive root;
    
    /**
     * This is the style used to style the XML elements for the key.
@@ -85,8 +90,9 @@ class PrimitiveKey implements Converter {
     */
    public PrimitiveKey(Context context, Entry entry, Class type) {
       this.factory = new PrimitiveFactory(context, type);
-      this.primitive = new Primitive(context, type);      
+      this.root = new Primitive(context, type);      
       this.style = context.getStyle();
+      this.context = context;
       this.entry = entry;
       this.type = type;
    }
@@ -105,7 +111,7 @@ class PrimitiveKey implements Converter {
       String name = entry.getKey();
            
       if(name == null) {
-         name = Factory.getName(type);
+         name = context.getName(type);
       }
       if(!entry.isAttribute()) {         
          return readElement(node, name);
@@ -131,7 +137,7 @@ class PrimitiveKey implements Converter {
       if(child == null) {
          return null;
       }
-      return primitive.read(child);
+      return root.read(child);
    }
    
    /**
@@ -152,7 +158,7 @@ class PrimitiveKey implements Converter {
       if(child == null) {
          return null;
       }     
-      return primitive.read(child);     
+      return root.read(child);     
    }
    
    /**
@@ -169,7 +175,7 @@ class PrimitiveKey implements Converter {
       String name = entry.getKey();
            
       if(name == null) {
-         name = Factory.getName(type);
+         name = context.getName(type);
       }
       if(!entry.isAttribute()) {         
          return validateElement(node, name);
@@ -195,7 +201,7 @@ class PrimitiveKey implements Converter {
       if(child == null) {
          return true;
       }
-      return primitive.validate(child);
+      return root.validate(child);
    }
    
    /**
@@ -216,7 +222,7 @@ class PrimitiveKey implements Converter {
       if(child == null) {
          return true;
       }     
-      return primitive.validate(child);     
+      return root.validate(child);     
    }
 
    /**
@@ -248,14 +254,14 @@ class PrimitiveKey implements Converter {
       String key = entry.getKey();
       
       if(key == null) {
-         key = Factory.getName(type);
+         key = context.getName(type);
       }    
       String name = style.getElement(key);
       OutputNode child = node.getChild(name);  
       
       if(item != null) {
          if(!isOverridden(child, item)) {
-            primitive.write(child, item);
+            root.write(child, item);
          }
       }
    }
@@ -273,7 +279,7 @@ class PrimitiveKey implements Converter {
       String key = entry.getKey();  
       
       if(key == null) {
-         key = Factory.getName(type);
+         key = context.getName(type);
       }     
       String name = style.getAttribute(key);
       
