@@ -240,11 +240,10 @@ class ClassScanner  {
     * Scan the fields and methods such that the given class is scanned 
     * first then all super classes up to the root <code>Object</code>. 
     * All fields and methods from the most specialized classes override 
-    * fields and methods from higher up the inheritance heirarchy. This
-    * means that annotated details can be overridden and so may not 
-    * have a value assigned to them during deserialization.
+    * fields and methods from higher up the inheritance hierarchy. This
+    * means that annotated details can be overridden.
     * 
-    * @param type the class to extract fields and methods from
+    * @param type the class to extract method and class annotations
     */   
    private void scan(Class type) throws Exception {
       Class real = type;
