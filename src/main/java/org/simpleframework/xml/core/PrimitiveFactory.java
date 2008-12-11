@@ -66,7 +66,7 @@ class PrimitiveFactory extends Factory {
       Type type = getOverride(node);
     
       if(type == null) { 
-         return new ClassType(field);         
+         return context.getType(field);         
       }
       return type;      
    }      

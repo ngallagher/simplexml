@@ -49,14 +49,19 @@ class DefaultStrategy implements Strategy {
    private static final String LABEL = "class";
    
    /**
+    * This is used to cache the constructors for the given types.
+    */
+   private final ConstructorCache cache;
+   
+   /**
     * This is the attribute that is used to determine an array size.
     */
-   private String length;
+   private final String length;
    
    /**   
     * This is the attribute that is used to determine the real type.
     */   
-   private String label;
+   private final String label;
    
    /**
     * Constructor for the <code>DefaultStrategy</code> object. This 
@@ -78,6 +83,7 @@ class DefaultStrategy implements Strategy {
     * @param length this is used to determine the array length
     */
    public DefaultStrategy(String label, String length) {
+      this.cache = new ConstructorCache();
       this.length = length;
       this.label = label;         
    }
@@ -123,7 +129,7 @@ class DefaultStrategy implements Strategy {
          return getArray(type, node);   
       }
       if(field != type) {
-         return new ClassType(type);
+         return new ClassType(cache, type);
       }
       return null;
    }

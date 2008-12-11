@@ -36,28 +36,24 @@ class ClassType implements Type {
    
    /**
     * Caches the constructors used to convert composite types.
-    * 
-    * @see org.simpleframework.xml.core.Composite
     */
-   private static ConstructorCache cache;
-
-   static {
-      cache = new ConstructorCache();           
-   }
+   private final ConstructorCache cache;
    
    /**
     * This is the type that this object is used to represent.
     */
-   private Class type;
+   private final Class type;
 
    /**
     * Constructor for the <code>ClassType</code> object. This is
     * used to create a type object that can be used to instantiate
     * and object with that objects default no argument constructor.
     * 
+    * @param cache this is the constructor cache for this type
     * @param type this is the type of object that is created
     */
-   public ClassType(Class type) {
+   public ClassType(ConstructorCache cache, Class type) {
+      this.cache = cache;
       this.type = type;
    }        
    

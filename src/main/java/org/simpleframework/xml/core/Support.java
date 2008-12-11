@@ -42,14 +42,19 @@ import org.simpleframework.xml.transform.Transformer;
 class Support implements Filter {
    
    /**
-    * This is the factory that is used to create the scanners.
+    * This will perform the scanning of types are provide scanners.
     */
-   private final ScannerFactory factory;
+   private final ScannerFactory scanner;
    
    /**
     * This is the transformer used to transform objects to text.
     */
-   private final Transformer transformer;
+   private final Transformer transform;
+   
+   /**
+    * This is the factory that is used to create the scanners.
+    */
+   private final TypeFactory factory;
    
    /**
     * This is the matcher used to acquire the transform objects.
@@ -93,8 +98,9 @@ class Support implements Filter {
     * @param matcher this is the matcher used for transformations
     */
    public Support(Filter filter, Matcher matcher) {
-      this.transformer = new Transformer(matcher);
-      this.factory = new ScannerFactory();
+      this.transform = new Transformer(matcher);
+      this.scanner = new ScannerFactory();
+      this.factory = new TypeFactory();
       this.matcher = matcher;
       this.filter = filter;
    }
@@ -114,6 +120,20 @@ class Support implements Filter {
    }
    
    /**
+    * This is used to create a <code>Type</code> object for the class
+    * specified. This will allow instances of the specified type to
+    * be instantiated and also allows reflective information to be
+    * cached internally within the context object.
+    * 
+    * @param type this is the type that is to be instantiated
+    * 
+    * @return this returns a type that can be used for instantiation
+    */
+   public Type getType(Class type) throws Exception {
+      return factory.getInstance(type);
+   }
+   
+   /**
     * This is used to match a <code>Transform</code> using the type
     * specified. If no transform can be acquired then this returns
     * a null value indicating that no transform could be found.
@@ -121,8 +141,6 @@ class Support implements Filter {
     * @param type this is the type to acquire the transform for
     * 
     * @return returns a transform for processing the type given
-    * 
-    * @throws Exception thrown if a transform could not be found
     */ 
    public Transform getTransform(Class type) throws Exception {
       return matcher.match(type);
@@ -138,11 +156,9 @@ class Support implements Filter {
     * @param type the schema class the scanner is created for
     * 
     * @return a scanner that can maintains information on the type
-    * 
-    * @throws Exception if the class contains an illegal schema 
     */ 
    public Scanner getScanner(Class type) throws Exception {
-      return factory.getInstance(type);
+      return scanner.getInstance(type);
    }
    
    /**
@@ -157,7 +173,7 @@ class Support implements Filter {
     * @return this returns an appropriate instanced to be used
     */
    public Object read(String value, Class type) throws Exception {
-      return transformer.read(value, type);
+      return transform.read(value, type);
    }
    
    /**
@@ -172,7 +188,7 @@ class Support implements Filter {
     * @return this is the string representation of the given value
     */
    public String write(Object value, Class type) throws Exception {
-      return transformer.write(value, type);
+      return transform.write(value, type);
    }
    
    /**
@@ -187,7 +203,7 @@ class Support implements Filter {
     * @return true if the type specified can be transformed by this
     */ 
    public boolean valid(Class type) throws Exception {  
-      return transformer.valid(type);
+      return transform.valid(type);
    }
    
    /**
@@ -255,7 +271,7 @@ class Support implements Filter {
       if(type.isPrimitive()) {
          return true;
       }
-      return transformer.valid(type);
+      return transform.valid(type);
    }
    
    /**

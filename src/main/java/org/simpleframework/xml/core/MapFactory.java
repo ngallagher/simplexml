@@ -91,7 +91,7 @@ class MapFactory extends Factory {
       if(!isMap(field)) {
          throw new InstantiationException("Type is not a map %s", field);
       }
-      return new ClassType(field);         
+      return context.getType(field);         
    }  
    
    /**
