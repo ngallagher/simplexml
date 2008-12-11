@@ -20,9 +20,6 @@
 
 package org.simpleframework.xml.core;
 
-
-import org.simpleframework.xml.core.Type;
-
 import java.lang.reflect.Array;
 
 /**
