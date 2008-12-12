@@ -431,8 +431,7 @@ class Composite implements Converter {
     * @throws Exception thrown if the contact could not be deserialized
     */
    private Object read(InputNode node, Object source, Label label) throws Exception {    
-      Converter reader = label.getConverter(context);      
-      Object object = reader.read(node);
+      Object object = readOriginal(node, source, label);
     
       if(object == null) {     
          Position line = node.getPosition();
@@ -447,7 +446,36 @@ class Composite implements Converter {
          }
       }
       return object;
-   }   
+   }  
+   
+   /**
+    * This <code>readOriginal</code> method is used to perform the
+    * deserialization of the XML in to any original value. If there
+    * is no original value then this will do a read and instantiate
+    * a new value to deserialize in to. Reading in to the original
+    * ensures that existing lists or maps can be read in to.
+    * 
+    * @param node this is the node that contains the contact value
+    * @param source the source object to assign the contact value to
+    * @param label this is the label used to create the converter
+    * 
+    * @return this returns the original value deserialized in to
+    * 
+    * @throws Exception thrown if the contact could not be deserialized
+    */
+   private Object readOriginal(InputNode node, Object source, Label label) throws Exception {    
+      Converter reader = label.getConverter(context);   
+      
+      if(label.isCollection()) {
+         Contact contact = label.getContact();
+         Object original = contact.get(source);
+         
+         if(original != null) {
+            return reader.read(node, original);
+         }
+      }
+      return reader.read(node);
+   }
 
    /**
     * This method checks to see if there are any <code>Label</code>

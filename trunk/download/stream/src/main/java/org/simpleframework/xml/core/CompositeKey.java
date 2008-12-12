@@ -112,6 +112,21 @@ class CompositeKey implements Converter {
     * attributes then null is assumed and returned.
     * 
     * @param node this is the node to read the key value from
+    * @param value this is the value to deserialize in to
+    * 
+    * @return this returns the value deserialized from the node
+    */ 
+   public Object read(InputNode node, Object value) throws Exception { 
+      return read(node);
+   }
+   
+   /**
+    * This method is used to read the key value from the node. The 
+    * value read from the node is resolved using the template filter.
+    * If the key value can not be found according to the annotation
+    * attributes then null is assumed and returned.
+    * 
+    * @param node this is the node to read the key value from
     * @param key this is the name of the key wrapper XML element
     * 
     * @return this returns the value deserialized from the node

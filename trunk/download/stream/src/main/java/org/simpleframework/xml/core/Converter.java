@@ -50,6 +50,21 @@ interface Converter {
    public Object read(InputNode node) throws Exception; 
    
    /**
+    * The <code>read</code> method reads an object to a specific type
+    * from the provided node. If the node provided is an attribute
+    * then the object must be a primitive such as a string, integer,
+    * boolean, or any of the other Java primitive types.  
+    * 
+    * @param node contains the details used to deserialize the object
+    * @param value this is an existing value to deserialize in to
+    * 
+    * @return a fully deserialized object will all its fields 
+    * 
+    * @throws Exception if a deserialized type cannot be instantiated
+    */
+   public Object read(InputNode node, Object value) throws Exception; 
+   
+   /**
     * The <code>validate</code> method is used to validate the class
     * XML schema against an input source. This will traverse the class
     * fields and methods ensuring that the input XML document contains

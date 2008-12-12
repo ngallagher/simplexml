@@ -128,7 +128,7 @@ class CompositeList implements Converter {
     * 
     * @return this returns the item to attach to the object contact
     */ 
-   private Object read(InputNode node, Object result) throws Exception {
+   public Object read(InputNode node, Object result) throws Exception {
       Collection list = (Collection) result;                 
       
       while(true) {

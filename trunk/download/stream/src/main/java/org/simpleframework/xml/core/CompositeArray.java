@@ -128,7 +128,7 @@ class CompositeArray implements Converter {
     * 
     * @return this returns the item to attach to the object contact
     */  
-   private Object read(InputNode node, Object list) throws Exception{
+   public Object read(InputNode node, Object list) throws Exception{
       for(int i = 0; true; i++) {
          InputNode next = node.getNext();
         

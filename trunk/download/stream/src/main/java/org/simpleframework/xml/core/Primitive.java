@@ -129,6 +129,22 @@ class Primitive implements Converter {
     * template variables with values from the context filter.
     *
     * @param node this is the node to be converted to a primitive
+    * @param value this is the original primitive value used
+    *
+    * @return this returns the primitive that has been deserialized
+    */ 
+   public Object read(InputNode node, Object value) throws Exception{
+      return read(node);
+   }
+   
+   /**
+    * This <code>read</code> method will extract the text value from
+    * the node and replace any template variables before converting
+    * it to a primitive value. This uses the <code>Source</code>
+    * object used for this instance of serialization to replace all
+    * template variables with values from the context filter.
+    *
+    * @param node this is the node to be converted to a primitive
     * @param type this is the type to read the primitive with
     *
     * @return this returns the primitive that has been deserialized

@@ -181,6 +181,17 @@ interface Label {
    public boolean isAttribute();
    
    /**
+    * This is used to determine if the label is a collection. If the
+    * label represents a collection then any original assignment to
+    * the field or method can be written to without the need to 
+    * create a new collection. This allows obscure collections to be
+    * used and also allows initial entries to be maintained.
+    * 
+    * @return true if the label represents a collection value
+    */
+   public boolean isCollection();
+   
+   /**
     * This is used to determine whether the label represents an
     * inline XML entity. The <code>ElementList</code> annotation
     * and the <code>Text</code> annotation represent inline 

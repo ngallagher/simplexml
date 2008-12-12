@@ -103,27 +103,26 @@ class PrimitiveArray implements Converter {
     */ 
    public Object read(InputNode node) throws Exception{
       Type type = factory.getInstance(node);
+      Object list = type.getInstance();
       
       if(!type.isReference()) {
-         return read(node, type);
+         return read(node, list);
       }
-      return type.getInstance();
+      return list;
    }
 
    /**
-    * This <code>read</code> method wll read the XML element list from
+    * This <code>read</code> method will read the XML element list from
     * the provided node and deserialize its children as entry types.
     * This will deserialize each entry type as a primitive value. In
     * order to do this the parent string provided forms the element.
     * 
     * @param node this is the XML element that is to be deserialized
-    * @param type this is the array type used to create the array
+    * @param list this is the array to read the array values in to
     * 
     * @return this returns the item to attach to the object contact
     */ 
-   private Object read(InputNode node, Type type) throws Exception{
-      Object list = type.getInstance();
-      
+   public Object read(InputNode node, Object list) throws Exception{
       for(int i = 0; true; i++) {
          InputNode next = node.getNext();
     
