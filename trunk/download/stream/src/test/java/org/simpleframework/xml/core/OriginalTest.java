@@ -9,6 +9,7 @@ import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.ElementMap;
 import org.simpleframework.xml.Namespace;
+import org.simpleframework.xml.NamespaceList;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.ValidationTestCase;
 
@@ -87,6 +88,7 @@ public class OriginalTest extends ValidationTestCase {
    }
    
    @Root
+   @NamespaceList({@Namespace(prefix="root", reference="http://domain/entry")})
    private static class ExampleWithOriginals {
       
       @ElementList
