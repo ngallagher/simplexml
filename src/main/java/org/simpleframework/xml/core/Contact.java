@@ -37,7 +37,7 @@ interface Contact {
    /**
     * This is the annotation associated with the point of contact.
     * This will be an XML annotation that describes how the contact
-    * should be serializaed and deserialized from the object.
+    * should be serialized and deserialized from the object.
     *
     * @return this provides the annotation associated with this
     */
@@ -46,7 +46,7 @@ interface Contact {
    /**
     * This is the annotation associated with the point of contact.
     * This will be an XML annotation that describes how the contact
-    * should be serializaed and deserialized from the object.
+    * should be serialized and deserialized from the object.
     * 
     * @param type this is the type of the annotation to acquire
     *

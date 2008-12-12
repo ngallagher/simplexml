@@ -22,6 +22,7 @@ package org.simpleframework.xml.core;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 
 /**
  * The <code>FieldContact</code> object is used to act as a contact
@@ -51,6 +52,11 @@ class FieldContact implements Contact {
    private String name;
    
    /**
+    * This is the modifiers for the field that this represents.
+    */
+   private int modifier;
+   
+   /**
     * Constructor for the <code>FieldContact</code> object. This is 
     * used as a point of contact for a field within a schema class.
     * Values can be read and written directly to the field with this.
@@ -59,6 +65,7 @@ class FieldContact implements Contact {
     * @param label this is the annotation that is used by the field
     */ 
    public FieldContact(Field field, Annotation label) {
+      this.modifier = field.getModifiers();
       this.label = label;
       this.field = field;
    }
@@ -75,24 +82,24 @@ class FieldContact implements Contact {
    }
    
    /**
-    * This provides the dependant class for the contact. This will
+    * This provides the dependent class for the contact. This will
     * actually represent a generic type for the actual type. For
     * contacts that use a <code>Collection</code> type this will
     * be the generic type parameter for that collection.
     * 
-    * @return this returns the dependant type for the contact
+    * @return this returns the dependent type for the contact
     */
    public Class getDependant() {
       return Reflector.getDependant(field);
    }
    
    /**
-    * This provides the dependant classes for the contact. This will
+    * This provides the dependent classes for the contact. This will
     * typically represent a generic types for the actual type. For
     * contacts that use a <code>Map</code> type this will be the 
     * generic type parameter for that map type declaration.
     * 
-    * @return this returns the dependant type for the contact
+    * @return this returns the dependent type for the contact
     */
    public Class[] getDependants() {
       return Reflector.getDependants(field);
@@ -165,7 +172,9 @@ class FieldContact implements Contact {
     * @param value this is the value that is to be set on the object
     */ 
    public void set(Object source, Object value) throws Exception {
-      field.set(source, value);
+      if(!Modifier.isFinal(modifier)) {
+         field.set(source, value);
+      }
    }
 
    /**
