@@ -106,6 +106,21 @@ class CompositeValue implements Converter {
     * This method is used to read the value object from the node. The 
     * value read from the node is resolved using the template filter.
     * If the value data can not be found according to the annotation 
+    * attributes then null is assumed and returned.
+    * 
+    * @param node this is the node to read the value object from
+    * @param value this is the value to deserialize in to
+    * 
+    * @return this returns the value deserialized from the node
+    */ 
+   public Object read(InputNode node, Object value) throws Exception { 
+      return read(node);
+   }
+   
+   /**
+    * This method is used to read the value object from the node. The 
+    * value read from the node is resolved using the template filter.
+    * If the value data can not be found according to the annotation 
     * attributes then null is assumed and the node is valid.
     * 
     * @param node this is the node to read the value object from

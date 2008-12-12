@@ -278,6 +278,19 @@ class ElementMapLabel implements Label {
    }
    
    /**
+    * This is used to determine if the label is a collection. If the
+    * label represents a collection then any original assignment to
+    * the field or method can be written to without the need to 
+    * create a new collection. This allows obscure collections to be
+    * used and also allows initial entries to be maintained.
+    * 
+    * @return true if the label represents a collection value
+    */
+   public boolean isCollection() {
+      return true;
+   }
+   
+   /**
     * This is used to determine whether the XML element is required. 
     * This ensures that if an XML element is missing from a document
     * that deserialization can continue. Also, in the process of

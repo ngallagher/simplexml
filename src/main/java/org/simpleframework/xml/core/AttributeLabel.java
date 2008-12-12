@@ -243,6 +243,19 @@ class AttributeLabel implements Label {
    }
    
    /**
+    * This is used to determine if the label is a collection. If the
+    * label represents a collection then any original assignment to
+    * the field or method can be written to without the need to 
+    * create a new collection. This allows obscure collections to be
+    * used and also allows initial entries to be maintained.
+    * 
+    * @return true if the label represents a collection value
+    */
+   public boolean isCollection() {
+      return false;
+   }
+   
+   /**
     * Because the attribute can contain only simple text values it
     * is never required to specified as anything other than text.
     * Therefore this will always return false as CDATA does not

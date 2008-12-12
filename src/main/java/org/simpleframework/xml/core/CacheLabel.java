@@ -84,6 +84,11 @@ class CacheLabel implements Label {
    private final boolean required;
    
    /**
+    * This is used to determine if the label represents a collection.
+    */
+   private final boolean collection;
+   
+   /**
     * This is used to determine whether the entity is inline or not. 
     */
    private final boolean inline;
@@ -104,6 +109,7 @@ class CacheLabel implements Label {
    public CacheLabel(Label label) throws Exception { 
       this.decorator = label.getDecorator();
       this.attribute = label.isAttribute();
+      this.collection = label.isCollection();
       this.contact = label.getContact();
       this.depend = label.getDependant();
       this.required = label.isRequired();
@@ -289,6 +295,19 @@ class CacheLabel implements Label {
     */
    public boolean isAttribute() {
       return attribute;
+   }
+   
+   /**
+    * This is used to determine if the label is a collection. If the
+    * label represents a collection then any original assignment to
+    * the field or method can be written to without the need to 
+    * create a new collection. This allows obscure collections to be
+    * used and also allows initial entries to be maintained.
+    * 
+    * @return true if the label represents a collection value
+    */
+   public boolean isCollection() {
+      return collection;
    }
    
    /**
