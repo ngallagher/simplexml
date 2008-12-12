@@ -120,7 +120,7 @@ class CompositeInlineList implements Repeater {
    }
    
    /**
-    * This <code>read</code> method wll read the XML element list from
+    * This <code>read</code> method will read the XML element list from
     * the provided node and deserialize its children as entry types.
     * This will each entry type is deserialized as a root type, that 
     * is, its <code>Root</code> annotation must be present and the
