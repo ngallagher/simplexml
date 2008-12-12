@@ -130,8 +130,13 @@ class PrimitiveValue implements Converter {
     * @param value this is the value to deserialize in to
     * 
     * @return this returns the value deserialized from the node
+    * 
+    * @throws Exception if value is not null an exception is thrown
     */ 
    public Object read(InputNode node, Object value) throws Exception {
+      if(value != null) {
+         throw new PersistenceException("Can not read value of %s", type);
+      }
       return read(node);
    }
    
