@@ -431,7 +431,7 @@ class Composite implements Converter {
     * @throws Exception thrown if the contact could not be deserialized
     */
    private Object read(InputNode node, Object source, Label label) throws Exception {    
-      Object object = readOriginal(node, source, label);
+      Object object = readObject(node, source, label);
     
       if(object == null) {     
          Position line = node.getPosition();
@@ -449,7 +449,7 @@ class Composite implements Converter {
    }  
    
    /**
-    * This <code>readOriginal</code> method is used to perform the
+    * This <code>readObject</code> method is used to perform the
     * deserialization of the XML in to any original value. If there
     * is no original value then this will do a read and instantiate
     * a new value to deserialize in to. Reading in to the original
@@ -463,7 +463,7 @@ class Composite implements Converter {
     * 
     * @throws Exception thrown if the contact could not be deserialized
     */
-   private Object readOriginal(InputNode node, Object source, Label label) throws Exception {    
+   private Object readObject(InputNode node, Object source, Label label) throws Exception {    
       Converter reader = label.getConverter(context);   
       
       if(label.isCollection()) {
