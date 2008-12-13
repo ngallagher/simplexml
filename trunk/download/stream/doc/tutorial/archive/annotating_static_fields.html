@@ -1,7 +1,7 @@
 <a name='static'></a><b>Serializing static final fields</b>
 <p>
 Often there is a need to add elements and attributes to an XML document that does not change. In such 
-and event it is often attractive to declare these fields as static final fields. When annotating 
+an event it is often attractive to declare these fields as static final fields. When annotating 
 static final fields they form part of the XML schema and contribute to the validation of the document
 but do not get set when deserializing the XML in to a object instance. So should a required static
 final field not exist in the source XML then an exception is thrown when deserializing, much like what
@@ -84,7 +84,6 @@ public class Detail {
 @NamespaceList({
    @Namespace(prefix="para", reference="http://www.domain.com/paragraph")
 })
-@Namespace(reference = "http://www.domain.com/section")
 public class Section {
 
    @Attribute
