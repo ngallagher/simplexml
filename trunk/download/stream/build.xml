@@ -210,6 +210,16 @@
    </target>
 
    <target name="benchmark" depends="-compile" description="Benchmark the current version">
+      <jar jarfile="${jar.path}/simple-xml-benchmark-${version}.jar">
+          <fileset dir="${main.build.path}">
+             <include name="**/*.class"/>
+             <include name="**/*.properties"/>
+          </fileset>
+          <fileset dir="${benchmark.build.path}">
+             <include name="**/*.class"/>
+             <include name="**/*.properties"/>
+          </fileset>
+      </jar>
       <java classname="org.simpleframework.xml.benchmark.Benchmark" fork="yes">
          <sysproperty key="javax.xml.stream.XMLInputFactory"  value="com.ctc.wstx.stax.WstxInputFactory"/>
          <classpath location="${main.build.path}"/>
