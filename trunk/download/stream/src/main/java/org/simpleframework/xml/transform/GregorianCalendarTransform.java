@@ -49,7 +49,7 @@ class GregorianCalendarTransform implements Transform<GregorianCalendar> {
    /**
     * This is the date transform used to parse and format dates.
     */  
-   private DateTransform transform;
+   private final DateTransform transform;
    
    /**
     * Constructor for the <code>GregorianCalendarTransform</code> 

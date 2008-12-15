@@ -60,17 +60,17 @@ public class Transformer {
    /**
     * This is used to cache all transforms matched to a given type.
     */
-   private TransformCache cache;
+   private final TransformCache cache;
 
    /**
     * This is used to perform the matching of types to transforms.
     */
-   private Matcher matcher;
+   private final Matcher matcher;
    
    /**
     * This is used to cache the types that to not have a transform.
     */ 
-   private Cache error;
+   private final Cache error;
    
    /**
     * Constructor for the <code>Transformer</code> object. This is

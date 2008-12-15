@@ -34,17 +34,17 @@ class OutputElement implements OutputNode {
    /**
     * Represents the attributes that have been set for the element.
     */         
-   protected OutputNodeMap table;
+   private OutputNodeMap table;
 
    /**
     * This is the namespace map that contains the namespaces.
     */ 
-   protected NamespaceMap scope;
+   private NamespaceMap scope;
    
    /**
     * Used to write the start tag and attributes for the document.
     */ 
-   protected NodeWriter writer;
+   private NodeWriter writer;
    
    /**
     * This is the parent XML element to this output node.

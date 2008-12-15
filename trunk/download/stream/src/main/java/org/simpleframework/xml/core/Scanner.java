@@ -22,8 +22,6 @@ package org.simpleframework.xml.core;
 
 import java.beans.Introspector;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-import java.util.Map;
 
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;

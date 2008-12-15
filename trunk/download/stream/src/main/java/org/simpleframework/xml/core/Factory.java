@@ -20,7 +20,6 @@
 
 package org.simpleframework.xml.core;
 
-import java.beans.Introspector;
 import java.lang.reflect.Modifier;
 
 import org.simpleframework.xml.stream.InputNode;
