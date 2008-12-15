@@ -20,8 +20,6 @@
 
 package org.simpleframework.xml.core;
 
-import java.util.Map;
-
 import org.simpleframework.xml.Version;
 
 /**
@@ -63,11 +61,6 @@ class Schema {
    private Caller caller;
    
    /**
-    * This is the session that is to be used for serialization.
-    */
-   private Session session;
-   
-   /**
     * This is the version label used to read the version attribute.
     */
    private Label version;
@@ -76,11 +69,6 @@ class Schema {
     * This is used to represent a text value within the schema.
     */
    private Label text;
-
-   /**
-    * This is the table used to maintain attributes by the context.
-    */ 
-   private Map table;
    
    /**
     * This is used to specify whether the type is a primitive class.
@@ -103,10 +91,8 @@ class Schema {
       this.revision = schema.getRevision();
       this.decorator = schema.getDecorator();
       this.primitive = schema.isPrimitive();
-      this.session = context.getSession();
       this.version = schema.getVersion();
       this.text = schema.getText();
-      this.table = session.getMap();
    }
    
    /**

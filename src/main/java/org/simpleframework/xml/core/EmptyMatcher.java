@@ -22,7 +22,6 @@ package org.simpleframework.xml.core;
 
 import org.simpleframework.xml.transform.Matcher;
 import org.simpleframework.xml.transform.Transform;
-import org.simpleframework.xml.transform.Transformer;
 
 /**
  * The <code>EmptyMatcher</code> object is used as a delegate type 

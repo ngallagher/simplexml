@@ -285,8 +285,10 @@ class NodeWriter {
       String name = node.getName();
       String prefix = node.getPrefix();
       
-      writer.writeEnd(name, prefix);
-      writer.flush();
+      if(name != null) {
+         writer.writeEnd(name, prefix);
+         writer.flush();
+      }
    }
    
    /**

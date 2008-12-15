@@ -40,7 +40,7 @@ class OutputStack extends ArrayList<OutputNode> {
    /**
     * Represents the set of nodes that have not been committed.
     */         
-   private Set active;
+   private final Set active;
   
    /**
     * Constructor for the <code>OutputStack</code> object. This is

@@ -43,7 +43,7 @@ import org.simpleframework.xml.Root;
 class ClassScanner  {
    
    /**
-    * This is the decorator associated with this scanner.
+    * This is the namespace decorator associated with this scanner.
     */
    private NamespaceDecorator decorator;
    
