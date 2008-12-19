@@ -5,8 +5,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import org.simpleframework.util.buffer.Allocator;
 import org.simpleframework.util.buffer.Buffer;
@@ -14,7 +15,7 @@ import org.simpleframework.util.buffer.FileAllocator;
 
 public class Client {
    
-   private Executor executor;
+   private ExecutorService executor;
    private Allocator allocator;
    private int timeout;
    
@@ -43,6 +44,12 @@ public class Client {
       socket.close();
       return response;
    }
+
+   public void shutdown() throws Exception {
+      executor.shutdown();
+      executor.awaitTermination(5000L, TimeUnit.MILLISECONDS);      
+   }
+
    
    private class SendTask implements Runnable {
       

@@ -28,6 +28,7 @@ public class RequestTaskTest extends TestCase {
    "Content-Type: text/plain\r\n"+
    "User-Agent: Mozilla/1.1\r\n"+
    "Content-Length: 10\r\n"+
+   "Sequence: 1\r\n"+
    "Connection: keep-alive\r\n"+
    "\r\n"+
    "0123456789"+
@@ -35,6 +36,7 @@ public class RequestTaskTest extends TestCase {
    "Content-Type: text/plain\r\n"+
    "User-Agent: Mozilla/1.1\r\n"+
    "Content-Length: 10\r\n"+
+   "Sequence: 2\r\n"+
    "Connection: close\r\n"+
    "\r\n"+
    "0123456789";

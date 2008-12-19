@@ -42,7 +42,7 @@ public class RequestTask {
    
    public byte[] getRequest() throws Exception {
       StringBuilder builder = new StringBuilder();      
-      append(builder, false);
+      append(builder, null, false);
       return builder.toString().getBytes("ISO-8859-1");
    }
    
@@ -50,13 +50,13 @@ public class RequestTask {
       StringBuilder builder = new StringBuilder();
       
       for(int i = 0; i < count -1; i++) {
-         append(builder, false);         
+         append(builder, i + 1, false);         
       }
-      append(builder, true);      
+      append(builder, count, true);      
       return builder.toString().getBytes("ISO-8859-1");
    }
    
-   private void append(StringBuilder builder, boolean close) {
+   private void append(StringBuilder builder, Integer sequence, boolean close) {
       builder.append(method.name());
       builder.append(" ").append(target);
       builder.append(" HTTP/1.1\r\n");
@@ -74,6 +74,9 @@ public class RequestTask {
       builder.append("Content-Length: ").append(length);
       builder.append("\r\n");
       
+      if(sequence != null) {
+         builder.append("Sequence: "+sequence+"\r\n");              
+      }
       if(close) {
          builder.append("Connection: close\r\n");
       } else {       
