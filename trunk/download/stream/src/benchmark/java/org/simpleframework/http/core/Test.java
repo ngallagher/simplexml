@@ -3,8 +3,9 @@ package org.simpleframework.http.core;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import org.simpleframework.util.buffer.Buffer;
 import org.simpleframework.xml.Attribute;
@@ -37,17 +38,24 @@ public class Test {
    private int timeout;
    
    public List<Buffer> execute() throws Exception {
-      Executor executor = Executors.newFixedThreadPool(repeat);
+      ExecutorService executor = Executors.newFixedThreadPool(repeat);
       Client client = new Client(repeat, timeout);
-      List<Buffer> list = new ArrayList<Buffer>();
-      CountDownLatch start = new CountDownLatch(repeat);
-      CountDownLatch finish = new CountDownLatch(repeat);
-      
-      for(int i = 0; i < repeat; i++) {
-         connection.execute(client);
+
+      try {
+        List<Buffer> list = new ArrayList<Buffer>();
+        CountDownLatch start = new CountDownLatch(repeat);
+        CountDownLatch finish = new CountDownLatch(repeat);
+       
+        for(int i = 0; i < repeat; i++) {
+          connection.execute(client);
+        }
+        finish.await();      
+        return list;
+      }finally{
+        client.shutdown();              
+        executor.shutdown();     
+        executor.awaitTermination(5000L, TimeUnit.MILLISECONDS);
       }
-      finish.await();      
-      return list;
    }
    
    private class ExecutionTask implements Runnable {
