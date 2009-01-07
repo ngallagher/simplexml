@@ -72,7 +72,7 @@ class Formatter {
    private OutputBuffer buffer;
    
    /**
-    * Creates the indentations that are used bu the XML file.
+    * Creates the indentations that are used buffer the XML file.
     */         
    private Indenter indenter;
    

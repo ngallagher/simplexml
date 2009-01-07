@@ -20,7 +20,6 @@
 
 package org.simpleframework.xml.transform;
 
-
 /**
  * The <code>ByteTransform</code> object is used to transform byte
  * values to and from string representations, which will be inserted

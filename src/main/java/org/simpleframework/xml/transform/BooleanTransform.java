@@ -20,7 +20,6 @@
 
 package org.simpleframework.xml.transform;
 
-
 /**
  * The <code>BooleanTransform</code> is used to transform boolean
  * values to and from string representations, which will be inserted

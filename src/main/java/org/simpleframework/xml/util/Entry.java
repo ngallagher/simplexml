@@ -41,7 +41,7 @@ public interface Entry {
     * the <code>Dictionary</code>. This allows serialized objects
     * to be added to the dictionary transparently.
     * 
-    * @return this returns the name of the enrty that is used 
+    * @return this returns the name of the entry that is used 
     */         
    public String getName();
 }

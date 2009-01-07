@@ -20,7 +20,6 @@
 
 package org.simpleframework.xml.transform;
 
-
 /**
  * The <code>IntegerTransform</code> is used to transform integer
  * values to and from string representations, which will be inserted
