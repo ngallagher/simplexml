@@ -38,7 +38,7 @@ import java.util.LinkedHashMap;
 class PrefixResolver extends LinkedHashMap<String, String> implements NamespaceMap {
 
    /**
-    * Represents the actual XML element this is accociated with.
+    * Represents the actual XML element this is associated with.
     */ 
    private final OutputNode source;
    

@@ -20,7 +20,6 @@
 
 package org.simpleframework.xml.transform;
 
-
 /**
  * The <code>LongTransform</code> object is used to transform long
  * values to and from string representations, which will be inserted

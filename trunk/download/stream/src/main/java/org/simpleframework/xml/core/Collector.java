@@ -39,7 +39,7 @@ class Collector extends HashMap<String, Pointer> {
    /**
     * This is the context object used by the serialization process.
     */
-   private Context context;
+   private final Context context;
    
    /**
     * Constructor for the <code>Collector</code> object. This is 
