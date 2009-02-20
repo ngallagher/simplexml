@@ -107,14 +107,42 @@ class PrimitiveList implements Converter {
       Object list = type.getInstance();
       
       if(!type.isReference()) {
-         return read(node, list);
+         return populate(node, list);
       }
       return list;
    }
    
    /**
-    * This <code>read</code> method wll read the XML element list from
+    * This <code>read</code> method will read the XML element map from
     * the provided node and deserialize its children as entry types.
+    * Each entry type must contain a key and value so that the entry 
+    * can be inserted in to the map as a pair. If either the key or 
+    * value is composite it is read as a root object, which means its
+    * <code>Root</code> annotation must be present and the name of the
+    * object element must match that root element name.
+    * 
+    * @param node this is the XML element that is to be deserialized
+    * @param result this is the map object that is to be populated
+    * 
+    * @return this returns the item to attach to the object contact
+    */
+   public Object read(InputNode node, Object result) throws Exception {
+      Type type = factory.getInstance(node);
+      
+      if(type.isReference()) {
+         return type.getInstance();
+      }
+      Object list = type.getInstance(result);
+      
+      if(list != null) {
+         return populate(node, list);
+      }
+      return list;
+   }
+   
+   /**
+    * This <code>populate</code> method wll read the XML element list 
+    * from the provided node and deserialize its children as entry types.
     * This will deserialize each entry type as a primitive value. In
     * order to do this the parent string provided forms the element.
     * 
@@ -123,7 +151,7 @@ class PrimitiveList implements Converter {
     * 
     * @return this returns the item to attach to the object contact
     */ 
-   public Object read(InputNode node, Object result) throws Exception {
+   private Object populate(InputNode node, Object result) throws Exception {
       Collection list = (Collection) result;                 
       
       while(true) {

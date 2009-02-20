@@ -117,7 +117,7 @@ class CompositeMap implements Converter {
       Object map = type.getInstance();
       
       if(!type.isReference()) {
-         return read(node, map);
+         return populate(node, map);
       }
       return map;
    }
@@ -137,6 +137,34 @@ class CompositeMap implements Converter {
     * @return this returns the item to attach to the object contact
     */
    public Object read(InputNode node, Object result) throws Exception {
+      Type type = factory.getInstance(node);
+      
+      if(type.isReference()) {
+         return type.getInstance();
+      }
+      Object map = type.getInstance(result);
+      
+      if(map != null) {
+         return populate(node, map);
+      }
+      return map;
+   }
+   
+   /**
+    * This <code>populate</code> method will read the XML element map 
+    * from the provided node and deserialize its children as entry types.
+    * Each entry type must contain a key and value so that the entry 
+    * can be inserted in to the map as a pair. If either the key or 
+    * value is composite it is read as a root object, which means its
+    * <code>Root</code> annotation must be present and the name of the
+    * object element must match that root element name.
+    * 
+    * @param node this is the XML element that is to be deserialized
+    * @param result this is the map object that is to be populated
+    * 
+    * @return this returns the item to attach to the object contact
+    */
+   private Object populate(InputNode node, Object result) throws Exception {
       Map map = (Map) result;                 
       
       while(true) {
