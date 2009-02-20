@@ -106,7 +106,7 @@ class Primitive implements Converter {
    /**
     * This <code>read</code> method will extract the text value from
     * the node and replace any template variables before converting
-    * it to a primitive value. This uses the <code>Source</code>
+    * it to a primitive value. This uses the <code>Context</code>
     * object used for this instance of serialization to replace all
     * template variables with values from the context filter.
     *
@@ -124,7 +124,7 @@ class Primitive implements Converter {
    /**
     * This <code>read</code> method will extract the text value from
     * the node and replace any template variables before converting
-    * it to a primitive value. This uses the <code>Source</code>
+    * it to a primitive value. This uses the <code>Context</code>
     * object used for this instance of serialization to replace all
     * template variables with values from the context filter.
     *
@@ -145,7 +145,7 @@ class Primitive implements Converter {
    /**
     * This <code>read</code> method will extract the text value from
     * the node and replace any template variables before converting
-    * it to a primitive value. This uses the <code>Source</code>
+    * it to a primitive value. This uses the <code>Context</code>
     * object used for this instance of serialization to replace all
     * template variables with values from the context filter.
     *
@@ -169,7 +169,7 @@ class Primitive implements Converter {
    /**
     * This <code>read</code> method will extract the text value from
     * the node and replace any template variables before converting
-    * it to a primitive value. This uses the <code>Source</code>
+    * it to a primitive value. This uses the <code>Context</code>
     * object used for this instance of serialization to replace all
     * template variables with values from the context filter.
     *
@@ -189,7 +189,7 @@ class Primitive implements Converter {
    /**
     * This <code>read</code> methos will extract the text value from
     * the node and replace any template variables before converting
-    * it to a primitive value. This uses the <code>Source</code>
+    * it to a primitive value. This uses the <code>Context</code>
     * object used for this instance of serialization to replace all
     * template variables with values from the context filter.
     *
@@ -209,7 +209,7 @@ class Primitive implements Converter {
    /**
     * This <code>read</code> method will extract the text value from
     * the node and replace any template variables before converting
-    * it to a primitive value. This uses the <code>Source</code>
+    * it to a primitive value. This uses the <code>Context</code>
     * object used for this instance of serialization to replace all
     * template variables with values from the context filter.
     *

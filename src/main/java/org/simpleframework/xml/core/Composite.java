@@ -130,11 +130,57 @@ class Composite implements Converter {
       Class real = type.getType();
       
       if(context.isPrimitive(real)) {
-         return primitive.read(node, real);
+         return readPrimitive(node, type);
       }
-      Object source = type.getInstance();
-      
-      return read(node, source);
+      return read(node, type);
+   }
+   
+   /**
+    * This <code>read</code> method performs deserialization of the XML
+    * schema class type by traversing the contacts and instantiating them
+    * using details from the provided XML element. Because this will
+    * convert a non-primitive value it delegates to other converters to
+    * perform deserialization of lists and primitives.
+    * <p>
+    * If any of the required contacts are not present within the provided
+    * XML element this will terminate deserialization and throw an
+    * exception. The annotation missing is reported in the exception.
+    * 
+    * @param node the XML element contact values are deserialized from
+    * @param type this is the type for the object within the graph
+    * 
+    * @return this returns the fully deserialized object graph
+    */
+   private Object read(InputNode node, Type type) throws Exception {
+     Object source = type.getInstance();
+
+     if(source != null) {
+       return read(node, source);
+     }
+     return source;
+
+   }
+
+   /**
+    * This <code>readPrimitive</code> method will extract the text value
+    * from the node and replace any template variables before converting
+    * it to a primitive value. This uses a <code>Primitive</code> object
+    * to convert the node text to the resulting string. This will also
+    * respect all references on the node so cycle can be followed.
+    *
+    * @param node this is the node to be converted to a primitive
+    * @param type this is the type for the object within the graph
+    *
+    * @return this returns the primitive that has been deserialized
+    */ 
+   private Object readPrimitive(InputNode node, Type type) throws Exception {
+     Class real = type.getType();
+     Object value = primitive.read(node, real);
+
+     if(value != null) {
+       return type.getInstance(value);
+     }
+     return value;    
    }
    
    /**
