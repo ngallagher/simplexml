@@ -77,7 +77,7 @@ class Allocate implements Type {
    public Object getInstance() throws Exception {      
       Object value = type.getInstance();
       
-      if(value != null) {
+      if(key != null) {
          map.put(key, value);
       }
       return value;
@@ -96,7 +96,7 @@ class Allocate implements Type {
    public Object getInstance(Class convert) throws Exception {      
       Object value = type.getInstance(convert);
       
-      if(value != null) {
+      if(key != null) {
          map.put(key, value);
       }
       return value;
@@ -115,7 +115,7 @@ class Allocate implements Type {
    public Object getInstance(Object replace) throws Exception {
       Object value = type.getInstance(replace);
       
-      if(value != null) {
+      if(key != null) {
          map.put(key, value);
       }
       return value;      
