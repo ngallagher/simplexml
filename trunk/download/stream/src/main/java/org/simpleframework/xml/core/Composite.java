@@ -177,10 +177,7 @@ class Composite implements Converter {
      Class real = type.getType();
      Object value = primitive.read(node, real);
 
-     if(value != null) {
-       return type.getInstance(value);
-     }
-     return value;    
+     return type.getInstance(value);
    }
    
    /**

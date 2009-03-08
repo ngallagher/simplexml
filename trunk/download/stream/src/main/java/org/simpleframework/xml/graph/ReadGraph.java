@@ -154,7 +154,7 @@ class ReadGraph extends HashMap {
       String key = entry.getValue();
       Object value = get(key); 
          
-      if(value == null) {        
+      if(!containsKey(key)) {        
          throw new CycleException("Invalid reference '%s' found", key);
       }
       return new Reference(value, real);
