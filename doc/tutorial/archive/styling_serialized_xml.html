@@ -6,7 +6,7 @@ can be used to format the elements and attributes written to the XML document. S
 both serialization and deserialization to be performed. So once serialized in a styled XML format you can
 deserialize the same document back in to an object. 
 </p>
-<pre>
+<pre class="brush: java;">
 @Root
 public class PersonProfile {
 
@@ -69,7 +69,7 @@ For example, taking the above annotated objects. An instance of the person profi
 to an XML document that is styled with a hyphenated format. This produces a consistently formated
 result which is just as deserializable as a serialization that is not styled.
 </p>
-<pre>
+<pre class="brush: xml;">
 &lt;person-profile first-name='Niall' last-name='Gallagher'&gt;
    &lt;person-DOB&gt;10/10/2008&lt;/person-DOB&gt;
    &lt;person-address&gt;
@@ -87,7 +87,7 @@ be used. If neither suits one can always be implemented. Also, for convenience a
 attributes can be overridden with a specific string by setting it to the style instance. The code snippet 
 below shows how to serialize the object in the hyphenated style above.
 </p>
-<pre>
+<pre class="brush: java;">
 Style style = new HyphenStyle();
 Format format = new Format(style);
 Serializer serializer = new Persister(format);

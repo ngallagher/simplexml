@@ -6,7 +6,7 @@ the collection object. For example take the following XML element. It contains i
 which are in no specific order. Even though they are not in any order the deserialization process is able to gather
 the XML elements as thet are encountered.
 </p>
-<pre>
+<pre class="brush: xml;">
 &lt;fileSet path=&quot;c:\&quot;&gt;
    &lt;include pattern=&quot;.*.jar&quot;/&gt;
    &lt;exclude pattern=&quot;.*.bak&quot;/&gt;
@@ -20,7 +20,7 @@ In order to achieve this the following object can be used. This declares two inl
 of the entry objects that they are collecting. If the entry attribute is not specified then the name of the object will
 be used instead.
 </p>
-<pre>
+<pre class="brush: java;">
 @Root
 public class FileSet {
 

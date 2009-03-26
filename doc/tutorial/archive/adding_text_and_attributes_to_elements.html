@@ -5,7 +5,7 @@ As can be seen from the previous example annotating a primitive such as a String
 result in text been added to a names XML element. However it is also possible to add text
 to an element that contains attributes. An example of such a class schema is shown below.
 </p>
-<pre>
+<pre class="brush: java;">
 @Root
 public class Entry {
 
@@ -36,7 +36,7 @@ Here the class is annotated in such a way that an element contains two attribute
 also contains a text annotation which specifies text to add to the generated element. Below is an example
 XML document that can be generated using the specified class schema.
 </p>
-<pre>
+<pre class="brush: xml;">
 &lt;entry version='1' name='name'&gt;
    Some example text within an element
 &lt;/entry&gt;  
