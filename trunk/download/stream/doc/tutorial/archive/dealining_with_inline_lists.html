@@ -5,7 +5,7 @@ the elements to exist in a sequence with no wrapping parent element. In order to
 element list annotation can be configured to ignore the parent element for the list. For example take the following
 XML document.
 </p>
-<pre>
+<pre class="brush: xml;">
 &lt;propertyList&gt;
    &lt;name&gt;example&lt;/name&gt;
    &lt;entry key="one"&gt;
@@ -25,7 +25,7 @@ enclosed within a parent element. In order to achieve this the inline attribute 
 <a href="/download/stream/doc/javadoc/org/simpleframework/xml/ElementList.html">ElementList</a> annotation can be set to true. 
 The following code snippet demonstrates how to use the inline attribute to process the above XML document.
 </p>
-<pre>
+<pre class="brush: java;">
 @Root
 public class PropertyList {
 
@@ -49,7 +49,7 @@ There are a number of conditions for the use of the inline element list. Firstly
 list must be placed one after another. They cannot be dispersed in between other elements. Also, each entry
 type within the list must have the same root name, to clarify take the following example.
 </p>
-<pre>
+<pre class="brush: java;">
 package example.demo;
 
 @Root
@@ -96,7 +96,7 @@ have the same XML element name of "entry". By extending the <code>InvalidEntry</
 name to be "entry" the <code>FixedEntry</code> subclass can be used without any issues. For example take the following
 XML document, which could represent a mixture of entry types.
 </p>
-<pre>
+<pre class="brush: xml;">
 &lt;propertyList&gt;
    &lt;name&gt;example&lt;/name&gt;
    &lt;entry key="one" class="example.demo.ValidEntry"&gt;

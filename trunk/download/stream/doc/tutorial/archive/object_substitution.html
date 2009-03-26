@@ -4,7 +4,7 @@ Often there is a need to substitute an object into the XML stream either during 
 it may be more convinient to use several XML documents to represent a configuration that can be deserialized in to a single
 object graph transparently. For example take the following XML.
 </p>
-<pre>
+<pre class="brush: xml;">
 &lt;registry&gt;
     &lt;import name=&quot;external.xml&quot; class="example.ExternalDefinition"/&gt;
     &lt;define name=&quot;blah&quot; class=&quot;example.DefaultDefinition&quot;&gt;
@@ -19,7 +19,7 @@ external file contains further definitions it would be nice to be able to replac
 from the file. In such cases the <a href="/download/stream/doc/javadoc/org/simpleframework/xml/core/Resolve.html">Resolve</a>  
 annotation can be used. Below is an example of how to annotate your class to substitute the objects.
 </p>
-<pre>
+<pre class="brush: java;">
 @Root
 private class Registry {
 
