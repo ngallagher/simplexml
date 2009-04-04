@@ -4,7 +4,7 @@ When serializing and deserializing objects there is often a need to share inform
 callbacks without affecting the object implementation. In order to achieve this the persister
 can provide a session map to the methods annotated for persister callbacks. Below is an example
 of a serializable object that can receive a persister session object.
-<pre class="brush: java;">
+<pre>
 @Root
 public class Person {
 
@@ -92,7 +92,7 @@ when paired with the templating system described earlier. The templating engine 
 access to all details placed into the session map object. So other values within the XML
 document can reference each other. For example take the XML document below for the above
 objects.
-<pre class="brush: xml;">
+<pre>
 &lt;person&gt;
    &lt;details&gt;
       &lt;var name="name" value="John Doe"/&gt;

@@ -8,7 +8,7 @@ final field not exist in the source XML then an exception is thrown when deseria
 would happen if the field was mutable. For example take the code snippet below, which shows static
 final primitive fields and a static final composite object.
 </p>
-<pre class="brush: java;">
+<pre>
 @Root
 @Namespace(reference = "http://www.domain.com/document")
 public class Document {
@@ -129,7 +129,7 @@ will be written to the resulting XML document when serialized. However, on deser
 fields. Instead the deserialization process will simply validate the presence of the elements and attributes within the document. This results in 
 an object that will always write the same values for specific elements and attributes.
 </p>
-<pre class="brush: xml;">
+<pre>
 &lt;document title="Secret Document" xmlns="http://www.domain.com/document"&gt;
    &lt;user:author xmlns:user="http://www.domain.com/user"&gt;Niall Gallagher&lt;/user:author&gt;
    &lt;contact&gt;niallg@users.sourceforge.net&lt;/contact&gt;

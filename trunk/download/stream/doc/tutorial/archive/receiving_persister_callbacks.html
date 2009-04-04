@@ -20,7 +20,7 @@ invoked. However, unlike the validate method the commit method is typically used
 further data structures, for example hash tables or trees. Below is an example of an 
 object making use of these annotations.
 </p>
-<pre class="brush: java;">
+<pre>
 @Root
 public class PropertyMap {
 
@@ -69,7 +69,7 @@ key exists only once. After the validation process has completed the commit meth
 invoked by the persister, here the object uses the deserialized property object to build
 a hash table containing the property values keyed via the property key. Below is how
 the above object would be represented as an XML document.
-<pre class="brush: xml;">
+<pre>
 &lt;properties&gt;
    &lt;list&gt;
       &lt;entry key="one"&gt;
@@ -99,7 +99,7 @@ completed the complete method is invoked. This allows the object to revert to it
 state, that is, to undo what the persist method has done. Below is an example of how
 these annotations can be used. 
 </p>
-<pre class="brush: java;">
+<pre>
 @Root
 public class MailMessage {
    
@@ -159,7 +159,7 @@ the memory it holds. This example is somewhat contrived however it effectively
 demonstrates how the annotations can be used. Below is an example of what the XML 
 document should look like.
 </p>
-<pre class="brush: xml;">
+<pre>
 &lt;mailMessage format="base64"&gt;
     U2ltcGxlIGlzIGFuIFhNTCBzZXJpYWxpemF0aW9uIGZyYW1ld29yayBmb3IgSmF2YS4gSXRzIGdv
     YWwgaXMgdG8gcHJvdmlkZSBhbiBYTUwgZnJhbWV3b3JrIHRoYXQgZW5hYmxlcyByYXBpZCBkZXZl
