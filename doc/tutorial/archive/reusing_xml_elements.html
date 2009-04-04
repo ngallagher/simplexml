@@ -5,7 +5,7 @@ in the previous section object references can easily be maintained regardless of
 cycle strategy is that you can conviniently reuse elements when creating configuration. For example take the following
 example of a task framework.
 </p>
-<pre class="brush: java;">
+<pre>
 @Root
 public class Workspace {
 
@@ -74,7 +74,7 @@ the cycle strategy it is possible to declare a specific object once, using a kno
 that object throughout a single XML document. This eases the configuration burden and ensures that less errors
 can creap in to large complex documents where may objects are declared.
 </p>
-<pre class="brush: xml;">
+<pre>
 &lt;job&gt;
    &lt;workspace id=&quot;default&quot;&gt;
       &lt;path&gt;c:\workspace\task&lt;/path&gt;

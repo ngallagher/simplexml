@@ -6,7 +6,7 @@ wrap the values within XML CDATA blocks. The CDATA block can contain XML charact
 formatting information which will not be modified by other XML parsers. For example take
 the following XML source.
 </p>
-<pre class="brush: xml;">
+<pre>
 &lt;query type=&quot;scrape&quot; name=&quot;title&quot;&gt;
    &lt;data&gt;&lt;![CDATA[
 
@@ -27,7 +27,7 @@ without any need to escape the XML characters. Also, if the XQuery expression wa
 large then this form of encoding would provide better performance. In order to ensure that
 the data is maintained within the CDATA block the following could be used.
 </b>
-<pre class="brush: java;">
+<pre>
 @Root
 public class Query {
 

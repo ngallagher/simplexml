@@ -2,7 +2,7 @@
 <p>
 Although it is possible to deal with most repetitive XML elements within documents using element lists it is often more convenient to use a <code>Map</code> object. In order to deal with maps the <a href="/download/stream/doc/javadoc/org/simpleframework/xml/ElementMap.html">ElementMap</a> annotation can be used. The element map annotation can be used with both primitive and composite objects. For example take the following XML document.
 </p>
-<pre class="brush: xml;">
+<pre>
 &lt;properties&gt;
    &lt;property key=&quot;one&quot;&gt;first value&lt;/property&gt;
    &lt;property key=&quot;two&quot;&gt;second value&lt;/property&gt;
@@ -13,7 +13,7 @@ Although it is possible to deal with most repetitive XML elements within documen
 <p>
 In the above XML document the sequence of properties elements can be used to describe a map of strings, where the key attribute acts as the key for the value within the property element. The following code snipped demonstrates how to use the <a href="/download/stream/doc/javadoc/org/simpleframework/xml/ElementMap.html">ElementMap</a> annotation to process the above XML document.
 </p>
-<pre class="brush: java;">
+<pre>
 @Root(name="properties")
 public class PropertyMap {
 

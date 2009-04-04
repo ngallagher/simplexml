@@ -5,7 +5,7 @@ any number of serializable objects, to any depth. Take the example shown in the 
 that are linked together to form a single serializable entity. Here the root configuration object contains a server object, which
 in turn contains a security information object.
 </p>
-<pre class="brush: java;">
+<pre>
 @Root
 public class Configuration {
 
@@ -70,7 +70,7 @@ In order to create an initialized configuration object an XML document can be us
 match the XML annotations for the object graph. So taking the above class schema the XML document would look
 like the following example.
 </p>
-<pre class="brush: xml;">
+<pre>
 &lt;configuration id="1234"&gt;
    &lt;server port="80"&gt;
       &lt;host&gt;www.domain.com&lt;/host&gt;
