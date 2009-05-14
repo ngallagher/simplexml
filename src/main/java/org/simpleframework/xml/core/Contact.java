@@ -21,6 +21,7 @@
 package org.simpleframework.xml.core;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Constructor;
 
 /**
  * The <code>Contact</code> interface is used to provide a point of
@@ -81,7 +82,18 @@ interface Contact {
     * 
     * @return this returns the dependant type for the contact
     */
-   public Class[] getDependants();
+   public Class[] getDependants();   
+   
+   /**
+    * This method is used to acquire the candidate constructors
+    * that this contact can be set with. Any constructor that has
+    * been annotated with a matching annotation for a constructor
+    * parameter is a candidate. This allows values to be set in 
+    * the constructor rather than using the set method.
+    * 
+    * @return the constructors this is a candidate for
+    */
+   public Constructor[] getCandidates();
    
    /**
     * This represents the name of the object contact. If the contact

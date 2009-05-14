@@ -21,6 +21,7 @@
 package org.simpleframework.xml.core;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
 /**
@@ -34,6 +35,11 @@ import java.lang.reflect.Method;
  * @see org.simpleframework.xml.core.MethodScanner
  */ 
 class MethodContact implements Contact {
+   
+   /**
+    * These are the constructor candidates to be considered.
+    */
+   private Constructor[] list;
    
    /**
     * This is the label that marks both the set and get methods.
@@ -77,9 +83,23 @@ class MethodContact implements Contact {
     * during the serialization process to get and set values.
     *
     * @param get this forms the get method for the object
-    * @param set this forms the get method for the object
+    * @param set this forms the get method for the object 
     */ 
    public MethodContact(MethodPart get, MethodPart set) {
+      this(get, set, new Constructor[]{});
+   }
+   
+   /**
+    * Constructor for the <code>MethodContact</code> object. This is
+    * used to compose a point of contact that makes use of a get and
+    * set method on a class. The specified methods will be invoked
+    * during the serialization process to get and set values.
+    *
+    * @param get this forms the get method for the object
+    * @param set this forms the get method for the object
+    * @param list these are the constructor candidates to use 
+    */ 
+   public MethodContact(MethodPart get, MethodPart set, Constructor... list) {
       this.label = get.getAnnotation();   
       this.items = get.getDependants();
       this.item = get.getDependant();
@@ -87,6 +107,7 @@ class MethodContact implements Contact {
       this.get = get.getMethod();
       this.type = get.getType();   
       this.name = get.getName();
+      this.list = list;
    }
    
    /**
@@ -152,6 +173,19 @@ class MethodContact implements Contact {
    public Class[] getDependants() {
       return items;
    } 
+   
+   /**
+    * This method is used to acquire the candidate constructors
+    * that this contact can be set with. Any constructor that has
+    * been annotated with a matching annotation for a constructor
+    * parameter is a candidate. This allows values to be set in 
+    * the constructor rather than using the set method.
+    * 
+    * @return the constructors this is a candidate for
+    */
+   public Constructor[] getCandidates() {
+      return list;
+   }
    
    /**
     * This is used to acquire the name of the method. This returns
