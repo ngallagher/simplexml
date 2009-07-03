@@ -177,11 +177,14 @@ class Composite implements Converter {
       
       read(node, type, schema); // <----- FILL THE STORE
       
-      store.commit(null); // instantiate here 
-      caller.validate(null); // <--- VALIDATE once we get the object
-      caller.commit(null); // <--- COMMIT the value
+      Builder builder = schema.getBuilder(store.keySet());
+      Object value = builder.build(store);
       
-      return readResolve(node, null, caller); // we can only READ RESOLVE THE INSTANCE
+      store.commit(value); // instantiate here 
+      caller.validate(value); // <--- VALIDATE once we get the object
+      caller.commit(value); // <--- COMMIT the value
+      
+      return readResolve(node, value, caller); // we can only READ RESOLVE THE INSTANCE
    }
    
 
