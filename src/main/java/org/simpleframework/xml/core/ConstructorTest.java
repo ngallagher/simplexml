@@ -7,15 +7,37 @@ import junit.framework.TestCase;
 
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
+import org.simpleframework.xml.Root;
 
 public class ConstructorTest extends TestCase {
-
+   
+   private static final String SOURCE = 
+      "<example>"+
+      "  <integer>12</integer>"+
+      "  <string>text</string>"+
+      "  <number>12</number>"+
+      "</example>";
+   
+   @Root
    private static class Example {
       
+      @Element private int integer;   
+      @Element private String string;
+      @Element private long number;
+      
       public Example(){}
-      public Example(@Element(name="integer") int integer){}
-      public Example(@Element(name="integer") int integer, @Element(name="string") String string, @Attribute(name="long") Long number){}
-      public Example(@Element(name="integer") int integer, @Element(name="string") String string){}
+      public Example(@Element(name="integer") int integer){
+         this.integer = integer;
+      }
+      public Example(@Element(name="integer") int integer, @Element(name="string") String string, @Attribute(name="number") long number){
+         this.integer = integer;
+         this.string = string;
+         this.number = number;
+      }
+      public Example(@Element(name="integer") int integer, @Element(name="string") String string){
+         this.integer = integer;
+         this.string = string;
+      }
    }
    
    public void testConstructor() throws Exception {
@@ -36,6 +58,8 @@ public class ConstructorTest extends TestCase {
       odd.add("boolean");
       
       System.err.println(scanner.getBuilder(odd));
+      
+      new Persister().read(Example.class, SOURCE);
       
    }
 }
