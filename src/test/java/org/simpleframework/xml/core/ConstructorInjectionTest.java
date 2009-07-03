@@ -1,22 +1,19 @@
 package org.simpleframework.xml.core;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import junit.framework.TestCase;
 
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 
-public class ConstructorTest extends TestCase {
+public class ConstructorInjectionTest extends TestCase {
    
    private static final String SOURCE = 
-      "<example>"+
-      "  <integer>12</integer>"+
-      "  <string>text</string>"+
-      "  <number>12</number>"+
-      "</example>";
+   "<example>"+
+   "  <integer>12</integer>"+
+   "  <string>text</string>"+
+   "  <number>32</number>"+
+   "</example>";
    
    @Root
    private static class Example {
@@ -40,26 +37,13 @@ public class ConstructorTest extends TestCase {
       }
    }
    
-   public void testConstructor() throws Exception {
-      ConstructorScanner scanner = new ConstructorScanner(Example.class);
-      Set<String> set = new HashSet<String>();
+   public void testConstructor() throws Exception {      
+      Persister persister = new Persister();
+      Example example = persister.read(Example.class, SOURCE);
       
-      set.add("integer");
-  
-      System.err.println(scanner.getBuilder(set));
-      
-      set.add("integer");
-      set.add("string");
-      
-      System.err.println(scanner.getBuilder(set));
-      
-      Set<String> odd = new HashSet<String>();
-      
-      odd.add("boolean");
-      
-      System.err.println(scanner.getBuilder(odd));
-      
-      new Persister().read(Example.class, SOURCE);
+      assertEquals(example.integer, 12);
+      assertEquals(example.number, 32);
+      assertEquals(example.string, "text");
       
    }
 }
