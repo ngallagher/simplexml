@@ -46,7 +46,21 @@ public class Builder {
    
    public Object build(List<Object> list) throws Exception {
       Object[] array = list.toArray();
-      return factory.newInstance(array);
+      System.err.print("["+this.list.size()+"] ("+factory+") ARGS["+array.length+"]");
+      for(Parameter param : this.list ) {
+         System.out.print(">>>>>>"+param+"<<<<<<<");
+      }
+      System.out.println("<---");
+      Object value = null;
+      try {
+         value = factory.newInstance(array);
+      
+      }catch(Exception e) {
+         e.printStackTrace();
+         System.err.println("Constructor: "+factory);
+         throw e;
+      }
+      return value;
    }
    
    
