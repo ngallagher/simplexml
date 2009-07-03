@@ -23,6 +23,7 @@ package org.simpleframework.xml.core;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Map;
+import java.util.Set;
 
 import org.simpleframework.xml.Namespace;
 import org.simpleframework.xml.NamespaceList;
@@ -46,6 +47,11 @@ class ClassScanner  {
     * This is the namespace decorator associated with this scanner.
     */
    private NamespaceDecorator decorator;
+   
+   /**
+    * This is the scanner that is used to acquire the constructors.
+    */
+   private ConstructorScanner scanner;
    
    /**
     * This is the namespace associated with the scanned class.
@@ -99,10 +105,24 @@ class ClassScanner  {
     * 
     * @param type this is the type that is scanned for a schema
     */
-   public ClassScanner(Class type) throws Exception {  
+   public ClassScanner(Class type) throws Exception { 
+      this.scanner = new ConstructorScanner(type);
       this.decorator = new NamespaceDecorator();
       this.scan(type);
    }      
+   
+   /**
+    * This is used to acquire a <code>Builder</code> which is used
+    * to instantiate the object. If there is no match for the builder
+    * then the default constructor is provided.
+    * 
+    * @param names the names of the parameters to be matched
+    * 
+    * @return this returns the builder that has been matched
+    */
+   public Builder getBuilder(Set<String> names) {
+      return scanner.getBuilder(names);
+   }
    
    /**
     * This is used to acquire the <code>Decorator</code> for this.

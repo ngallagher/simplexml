@@ -22,6 +22,7 @@ package org.simpleframework.xml.core;
 
 import java.beans.Introspector;
 import java.lang.annotation.Annotation;
+import java.util.Set;
 
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
@@ -97,6 +98,19 @@ class Scanner  {
       this.elements = new LabelMap(this); 
       this.scan(type);
    }      
+   
+   /**
+    * This is used to acquire a <code>Builder</code> which is used
+    * to instantiate the object. If there is no match for the builder
+    * then the default constructor is provided.
+    * 
+    * @param names the names of the parameters to be matched
+    * 
+    * @return this returns the builder that has been matched
+    */
+   public Builder getBuilder(Set<String> names) {
+      return scanner.getBuilder(names);
+   }
    
    /**
     * This is used to acquire the <code>Decorator</code> for this.
