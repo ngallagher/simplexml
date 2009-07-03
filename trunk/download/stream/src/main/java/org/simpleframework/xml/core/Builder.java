@@ -32,16 +32,13 @@ public class Builder {
    
    public Object build(Map<String, Pointer> store) throws Exception {
       List<Object> values = new ArrayList<Object>();
-      List<String> names = new ArrayList<String>();
       
-      for(String name : store.keySet()) {
+      for(Parameter parameter : list) {
+         String name = parameter.getName();
          Pointer pointer = store.get(name);
          Object value = pointer.getValue();
          
-         names.add(name);
-         values.add(value);  
-      }
-      for(String name : names) {
+         values.add(value);
          store.remove(name);
       }
       return build(values);
