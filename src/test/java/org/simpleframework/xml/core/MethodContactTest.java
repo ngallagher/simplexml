@@ -13,7 +13,7 @@ import org.simpleframework.xml.core.MethodScanner;
 
 import junit.framework.TestCase;
 
-public class MethodContactTest extends TestCase {
+public class MethodContactTest extends TestCase implements ParameterMap {
    
    @Root(name="name")
    public static class Example {
@@ -63,7 +63,7 @@ public class MethodContactTest extends TestCase {
    }
    
    public void testContact() throws Exception {
-      MethodScanner scanner = new MethodScanner(Example.class);
+      MethodScanner scanner = new MethodScanner(this, Example.class);
       ArrayList<Class> types = new ArrayList<Class>();
      
       for(Contact contact : scanner) {
@@ -107,6 +107,10 @@ public class MethodContactTest extends TestCase {
             return contact;
          }
       }
+      return null;
+   }
+   
+   public Parameter getParameter(String name) {
       return null;
    }
    

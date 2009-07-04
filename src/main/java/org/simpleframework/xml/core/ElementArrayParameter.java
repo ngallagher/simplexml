@@ -1,5 +1,6 @@
 package org.simpleframework.xml.core;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 
 import org.simpleframework.xml.ElementArray;
@@ -18,7 +19,7 @@ class ElementArrayParameter implements Parameter {
    }
 
    public Class getType() {
-      return factory.getDeclaringClass();
+      return factory.getParameterTypes()[index];
    }
    
    public int getIndex() {
@@ -27,5 +28,9 @@ class ElementArrayParameter implements Parameter {
 
    public String getName() throws Exception{
       return label.getName();
+   }
+   
+   public Annotation getAnnotation() {
+      return contact.getAnnotation();
    }
 }

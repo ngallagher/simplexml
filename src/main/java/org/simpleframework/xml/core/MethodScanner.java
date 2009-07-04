@@ -65,7 +65,7 @@ class MethodScanner extends ContactList {
    /**
     * This is the primary scanner used to acquire the schema.
     */
-   private final Scanner scanner;
+   private final ParameterMap table;
    
    /**
     * This is used to collect all the set methods from the object.
@@ -88,16 +88,16 @@ class MethodScanner extends ContactList {
     * such that all bean property methods can be paired under the
     * XML annotation specified within the class.
     * 
-    * @param scanner this is the primary scanner used for the class
+    * @param table this contains all the parameters for the schema
     * @param type this is the type that is to be scanned for methods
     * 
     * @throws Exception thrown if there was a problem scanning
     */
-   public MethodScanner(Scanner scanner, Class type) throws Exception {
+   public MethodScanner(ParameterMap table, Class type) throws Exception {
       this.hierarchy = new Hierarchy(type);
       this.write = new PartMap();
       this.read = new PartMap();
-      this.scanner = scanner;
+      this.table = table;
       this.type = type;
       this.scan(type);
    }
@@ -272,7 +272,7 @@ class MethodScanner extends ContactList {
       Method method = read.getMethod();
       
       if(match == null) {
-         Parameter parameter = scanner.getParameter(name);
+         Parameter parameter = table.getParameter(name);
          
          if(parameter == null) {
             throw new MethodException("No matching set method for %s in %s", method, type);
@@ -305,7 +305,7 @@ class MethodScanner extends ContactList {
       Class expect = read.getType();
       
       if(expect != parameter.getType()) {
-         throw new MethodException("Method types do not match for %s in %s", name, type);
+         throw new MethodException("Method types do not match for '%s' in %s", name, type);
       }
       add(new MethodContact(read));
    }
