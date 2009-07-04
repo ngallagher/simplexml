@@ -172,6 +172,7 @@ class CompositeArray implements Converter {
    public boolean validate(InputNode node) throws Exception{
       Type type = factory.getInstance(node);
       
+      // XXX TODO fix this
       if(!type.isReference()) {
          Object real = type.getInstance(type);
          Class expect = type.getType();

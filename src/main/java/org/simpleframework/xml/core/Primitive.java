@@ -201,7 +201,7 @@ class Primitive implements Converter {
       Object value = read(node, field);
       
       if(value != null) {
-         type.setInstance(value);
+         return type.getInstance(value);
       }
       return value;
    }
@@ -263,7 +263,7 @@ class Primitive implements Converter {
       
       // XXX TODO here we just want the cycle reference to be registered
       if(!type.isReference()) {         
-         type.setInstance(null);
+         type.getInstance(type);
       }
       return true;
    }
