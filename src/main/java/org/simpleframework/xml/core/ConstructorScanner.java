@@ -60,44 +60,55 @@ import org.simpleframework.xml.ElementMap;
  */
 class ConstructorScanner {
 
-   private Map<String, Parameter> parameters;
-   private List<Builder> builders;
+   private Map<String, Parameter> all;
+   private List<Builder> done;
    private Class type;
    
    public ConstructorScanner(Class type) throws Exception {
-      this.parameters = new HashMap<String, Parameter>();
-      this.builders = new ArrayList<Builder>();
+      this.all = new HashMap<String, Parameter>();
+      this.done = new ArrayList<Builder>();
       this.type = type;
       this.scan(type);
    }
    
    public Parameter getParameter(String name) {
-      return parameters.get(name);
+      return all.get(name);
    }
    
    public Builder getBuilder(Set<String> names) {
       PriorityQueue<Rank> queue = new PriorityQueue<Rank>();
       
-      for(Builder builder : builders) {
+      for(Builder builder : done) {
          queue.add(new Rank(names, builder));
       }
       return  queue.remove().getBuilder();
+   }
+   
+   /**
+    * This is used to acquire all of the builders for the class. It
+    * is used to validate the schema and ensure that the annotations
+    * describe a fully serializable and deserializable class.
+    * 
+    * @return this returns the builders for this class schema
+    */
+   public List<Builder> getBuilders() {
+      return done;
    }
    
    private void scan(Class type) throws Exception {
       Constructor[] array = type.getDeclaredConstructors();
       
       for(Constructor factory: array){
-         List<Parameter> list = new ArrayList<Parameter>();
+         ParameterMap map = new ParameterMap();
          
          if(!factory.isAccessible()) {
             factory.setAccessible(true);
          }
-         scan(factory, list);
+         scan(factory, map);
       } 
    }
    
-   private void scan(Constructor factory, List<Parameter> list) throws Exception {
+   private void scan(Constructor factory, ParameterMap map) throws Exception {
       Annotation[][] labels = factory.getParameterAnnotations();
       Class[] types = factory.getParameterTypes();
 
@@ -108,27 +119,19 @@ class ConstructorScanner {
             if(value != null) {
                String name = value.getName();
                
-               parameters.put(name, value);
-               list.add(value);
+               if(map.containsKey(name)) {
+                  throw new PersistenceException("Parameter '%s' is a duplicate in %s", name, factory);
+               }
+               all.put(name, value);
+               map.put(name, value);
             }
          }
       }
-      build(factory, list);
+      build(factory, map);
    }
    
-   private void build(Constructor factory, List<Parameter> list) throws Exception {
-      Builder builder = new Builder(factory, list);
-      Set set = new HashSet();
-      
-      for(Parameter value : list) {
-         String name = value.getName();
-         
-         if(set.contains(name)) {
-            throw new PersistenceException("Parameter '%s' is a duplicate in %s", name, factory);
-         }
-         set.add(name);
-      }
-      builders.add(builder);
+   private void build(Constructor factory, ParameterMap map) throws Exception {
+      done.add(new Builder(factory, map));
       
    }
    
@@ -155,14 +158,14 @@ class ConstructorScanner {
       Parameter value = ParameterFactory.getInstance(factory, label, index);
       String name = value.getName(); // TODO this is not the real name, the real name comes from the label
       
-      if(parameters.containsKey(name)) {
+      if(all.containsKey(name)) {
          validate(value, name);
       }
       return value;
    }
    
    private void validate(Parameter parameter, String name) throws Exception {
-      Parameter other = parameters.get(name);
+      Parameter other = all.get(name);
       Annotation label = other.getAnnotation();
       
       if(!parameter.getAnnotation().equals(label)) {
