@@ -175,19 +175,6 @@ class MethodContact implements Contact {
    } 
    
    /**
-    * This method is used to acquire the candidate constructors
-    * that this contact can be set with. Any constructor that has
-    * been annotated with a matching annotation for a constructor
-    * parameter is a candidate. This allows values to be set in 
-    * the constructor rather than using the set method.
-    * 
-    * @return the constructors this is a candidate for
-    */
-   public Constructor[] getCandidates() {
-      return list;
-   }
-   
-   /**
     * This is used to acquire the name of the method. This returns
     * the name of the method without the get, set or is prefix that
     * represents the Java Bean method type. Also this decaptitalizes

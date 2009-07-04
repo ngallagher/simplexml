@@ -545,11 +545,14 @@ class Composite implements Converter {
       Converter reader = label.getConverter(context);   
       
       if(label.isCollection()) {
-         Object original = label.getCollection();
+         Pointer pointer = store.get(label);
          
-         if(original != null) {
-            return reader.read(node, original); // won't respect cycles
+         if(pointer == null) { 
+            return reader.read(node);
          }
+         Object original = pointer.getValue();
+
+         return reader.read(node, original); // won't respect cycles
       }
       return reader.read(node);
    }

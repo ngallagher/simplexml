@@ -217,18 +217,6 @@ class ElementMapLabel implements Label {
    }
    
    /**
-    * This is used to acquire a temporary collection which can be
-    * used to gather the information before setting it. It allows
-    * elements to be scattered within the XML document. Each entry
-    * deserialized from the document will be added to this.
-    * 
-    * @return this is the collection used for temporary storage
-    */
-   public Object getCollection() {
-      return new LinkedHashMap();
-   }
-   
-   /**
     * This acts as a convinience method used to determine the type of
     * contact this represents. This is used when an object is written
     * to XML. It determines whether a <code>class</code> attribute

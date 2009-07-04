@@ -16,7 +16,7 @@ class Builder {
       this.list = list;
    } 
    
-   public int score(Set<String> map)  {
+   public int score(Set<String> map) throws Exception {
       int score = 0;
       
       for(Parameter label : list) {

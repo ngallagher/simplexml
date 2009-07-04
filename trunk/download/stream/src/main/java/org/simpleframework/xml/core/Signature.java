@@ -43,7 +43,7 @@ class Signature {
    /**
     * This is the field or method contact that has been annotated.
     */
-   private Contact contact;
+   private Contact contact; 
    
    /**
     * This is the label used to expose the annotation details.

@@ -20,11 +20,12 @@
 
 package org.simpleframework.xml.core;
 
-import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Array;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.Method;
-import java.lang.reflect.Array;
-import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
 /**
@@ -202,6 +203,50 @@ final class Reflector {
    }
    
    /**
+    * This method is used to acquire a generic parameter dependant 
+    * from the specified parameter type. This will acquire the type
+    * for the parameter at the specified index and attempt to extract
+    * the first generic parameter type from that type. If there is a
+    * generic parameter then the class of that parameter is returned
+    * from this method, otherwise null is returned.
+    * 
+    * @param factory this is the constructor to acquire the dependant
+    * @param index this is the index to acquire the parameter from    
+    * 
+    * @return this returns the generic parameter class declared
+    */
+   public static Class getParameterDependant(Constructor factory, int index) {
+      ParameterizedType type = getParameterType(factory, index);
+      
+      if(type != null) {
+         return getClass(type);
+      }
+      return null;
+   }
+   
+   /**
+    * This method is used to acquire a generic parameter dependant 
+    * from the specified parameter type. This will acquire the type
+    * for the parameter at the specified index and attempt to extract
+    * the first generic parameter type from that type. If there is a
+    * generic parameter then the class of that parameter is returned
+    * from this method, otherwise null is returned.
+    * 
+    * @param factory this is the constructor to acquire the dependant 
+    * @param index this is the index to acquire the parameter from    
+    * 
+    * @return this returns the generic parameter class declared
+    */
+   public static Class[] getParameterDependants(Constructor factory, int index) {
+      ParameterizedType type = getParameterType(factory, index);
+      
+      if(type != null) {
+         return getClasses(type);
+      }
+      return new Class[]{};
+   }
+   
+   /**
     * This is used to acquire the parameterized types from the given
     * methods parameter class at the specified index position. If the
     * parameter class is parameterized this returns the parameters 
@@ -214,6 +259,30 @@ final class Reflector {
     */
    private static ParameterizedType getParameterType(Method method, int index) {
       Type[] list = method.getGenericParameterTypes();
+         
+      if(list.length > index) {         
+         Type type = list[index];
+         
+         if(type instanceof ParameterizedType) {
+            return (ParameterizedType) type;
+         }
+      }
+      return null;
+   }
+   
+   /**
+    * This is used to acquire the parameterized types from the given
+    * constructors parameter class at the specified index position. If 
+    * the parameter class is parameterized this returns the parameters 
+    * that have been declared on that class.
+    * 
+    * @param factory this is constructor method to acquire the parameters 
+    * @param index this is the index to acquire the parameter from     
+    * 
+    * @return this  returns the parameterized types for the method
+    */
+   private static ParameterizedType getParameterType(Constructor factory, int index) {
+      Type[] list = factory.getGenericParameterTypes();
          
       if(list.length > index) {         
          Type type = list[index];

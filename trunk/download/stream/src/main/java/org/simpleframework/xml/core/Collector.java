@@ -90,9 +90,13 @@ class Collector extends HashMap<String, Pointer> {
                } else if(value instanceof Collection) {
                   ((Collection)original).addAll((Collection)value);
                }
+               System.err.println(original+" >>>"+original.getClass()+" contact="+contact);
                value = original;
             }
          } 
+         if(value == null) {
+            System.err.println(contact);
+         }
          contact.set(source, value);
       }
    }   
