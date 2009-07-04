@@ -20,6 +20,8 @@
 
 package org.simpleframework.xml.core;
 
+import java.util.ArrayList;
+
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.stream.Style;
 
@@ -258,6 +260,18 @@ class ElementListLabel implements Label {
     */
    public String getName() throws Exception{
       return detail.getName();
+   }
+   
+   /**
+    * This is used to acquire a temporary collection which can be
+    * used to gather the information before setting it. It allows
+    * elements to be scattered within the XML document. Each entry
+    * deserialized from the document will be added to this.
+    * 
+    * @return this is the collection used for temporary storage
+    */
+   public Object getCollection() {
+      return new ArrayList();
    }
    
    /**

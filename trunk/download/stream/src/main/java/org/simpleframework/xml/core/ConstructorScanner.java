@@ -75,14 +75,7 @@ public class ConstructorScanner {
       for(Builder builder : builders) {
          queue.add(new Rank(names, builder));
       }
-      Builder builder = null;
-      try {
-      builder =  queue.remove().getBuilder();
-      }catch(Exception e) {
-         System.err.println(builders.size() +":"+type);
-         e.printStackTrace();
-      }
-      return builder;
+      return  queue.remove().getBuilder();
    }
    
    private void scan(Class type) throws Exception {

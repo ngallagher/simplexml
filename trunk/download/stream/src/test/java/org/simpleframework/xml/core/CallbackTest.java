@@ -33,6 +33,10 @@ public class CallbackTest extends TestCase {
       private boolean persisted;
 
       private boolean completed;
+      
+      public Entry() {
+         super();
+      }
 
       @Validate
       public void validate() {
@@ -96,6 +100,10 @@ public class CallbackTest extends TestCase {
       public boolean validated;
 
       public boolean persisted;
+      
+      public ExtendedEntry() {
+         super();
+      }
      
       @Validate
       public void extendedValidate() {

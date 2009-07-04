@@ -36,6 +36,10 @@ public class RootTest extends ValidationTestCase {
       
       private String text;
       
+      public RootExample() {
+         super();
+      }
+      
       @Attribute
       public void setVersion(int version) {
          this.version = version;
@@ -57,15 +61,27 @@ public class RootTest extends ValidationTestCase {
       }
    }
    
-   private static class ExtendedRootExample extends RootExample {      
+   private static class ExtendedRootExample extends RootExample {     
+      
+      public ExtendedRootExample() {
+         super();
+      }
    }
    
    @Root
-   private static class ExtendedOverriddenRootExample extends ExtendedRootExample {      
+   private static class ExtendedOverriddenRootExample extends ExtendedRootExample { 
+      
+      public ExtendedOverriddenRootExample() {
+         super();
+      }
    }
    
    @Root(name="explicitOverride")
-   private static class ExtendedExplicitlyOverriddenRootExample extends ExtendedRootExample {      
+   private static class ExtendedExplicitlyOverriddenRootExample extends ExtendedRootExample { 
+      
+      public ExtendedExplicitlyOverriddenRootExample() {
+         super();
+      }
    }
    
    private Persister persister;
