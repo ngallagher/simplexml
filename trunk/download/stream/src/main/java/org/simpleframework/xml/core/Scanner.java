@@ -22,6 +22,8 @@ package org.simpleframework.xml.core;
 
 import java.beans.Introspector;
 import java.lang.annotation.Annotation;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.simpleframework.xml.Attribute;
@@ -393,10 +395,8 @@ class Scanner {
    private void validate(Class type) throws Exception {
       Order order = scanner.getOrder();
       
-      if(order != null) {
-         validateElements(type, order);
-         validateAttributes(type, order);
-      }
+      validateElements(type, order);
+      validateAttributes(type, order);
       validateText(type);
    }
    
@@ -429,11 +429,18 @@ class Scanner {
     * @throws Exception if an ordered element does not exist
     */
    private void validateElements(Class type, Order order) throws Exception {
-      for(String name : order.elements()) {
-         Label label = elements.get(name);
-         
-         if(label == null) {
-            throw new ElementException("Ordered element '%s' missing for %s", name, type);
+      List<Builder> builders = scanner.getBuilders();
+      
+      for(Builder builder : builders) {
+         validateConstructor(builder, elements);
+      }
+      if(order != null) {
+         for(String name : order.elements()) {
+            Label label = elements.get(name);
+            
+            if(label == null) {
+               throw new ElementException("Ordered element '%s' missing for %s", name, type);
+            }
          }
       }
    }
@@ -448,15 +455,38 @@ class Scanner {
     * @throws Exception if an ordered attribute does not exist
     */
    private void validateAttributes(Class type, Order order) throws Exception {
-      for(String name : order.attributes()) {
-         Label label = attributes.get(name);
-         
-         if(label == null) {
-            throw new AttributeException("Ordered attribute '%s' missing for %s", name, type);
+      List<Builder> builders = scanner.getBuilders();
+      
+      for(Builder builder : builders) {
+         validateConstructor(builder, elements);
+      }
+      if(order != null) {
+         for(String name : order.attributes()) {
+            Label label = attributes.get(name);
+            
+            if(label == null) {
+               throw new AttributeException("Ordered attribute '%s' missing for %s", name, type);
+            }
          }
       }
    } 
 
+   
+   private void validateConstructor(Builder builder, LabelMap map) throws Exception {
+      for(Label label : map) {
+         Contact contact = label.getContact();
+         String name = label.getName();
+         
+         if(contact.isFinal()) {
+            Parameter value = builder.getParameter(name);
+            
+            if(value == null) {
+               throw new PersistenceException("Can not set '%s' in '%s'", name, type);
+            }
+         }
+      }
+   }
+   
    /**
     * This is used to acquire the optional <code>Root</code> from the
     * specified class. The root annotation provides information as

@@ -99,6 +99,17 @@ class MethodContact implements Contact {
       this.type = get.getType();   
       this.name = get.getName();
       this.set = set;
+   }  
+   
+   /**
+    * This is used to identify annotated methods are fields that
+    * can not be modified. Such field will require that there is 
+    * a constructor that can have the value injected in to it.
+    * 
+    * @return this returns true if the field or method is final
+    */
+   public boolean isFinal() {
+      return set == null;
    }
    
    /**

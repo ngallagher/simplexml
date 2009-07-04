@@ -137,6 +137,17 @@ class ClassScanner  {
    }
    
    /**
+    * This is used to acquire all of the builders for the class. It
+    * is used to validate the schema and ensure that the annotations
+    * describe a fully serializable and deserializable class.
+    * 
+    * @return this returns the builders for this class schema
+    */
+   public List<Builder> getBuilders() {
+      return scanner.getBuilders();
+   }
+   
+   /**
     * This is used to acquire the <code>Decorator</code> for this.
     * A decorator is an object that adds various details to the
     * node without changing the overall structure of the node. For

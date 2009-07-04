@@ -16,6 +16,8 @@ public class ParameterContact implements Contact {
       this.label = label;
       this.name = name;
    }
+   
+   
 
    public Annotation getAnnotation() {
       return label;
@@ -37,7 +39,7 @@ public class ParameterContact implements Contact {
       return index;
    }
 
-   public String getName() throws Exception{
+   public String getName() {
       return name;
    }
 
@@ -50,5 +52,9 @@ public class ParameterContact implements Contact {
    }
 
    public void set(Object source, Object value) throws Exception {      
+   }
+
+   public boolean isFinal() {
+      return true;
    }
 }

@@ -9,20 +9,22 @@ import java.util.Set;
 class Builder {
 
    private final Constructor factory;
-   private final List<Parameter> list;
+   private final ParameterMap map;
 
-   public Builder(Constructor factory, List<Parameter> list) {
+   public Builder(Constructor factory, ParameterMap map) {
       this.factory = factory;
-      this.list = list;
+      this.map = map;
    } 
    
-   public int score(Set<String> map) throws Exception {
+   public Parameter getParameter(String name) {
+      return map.get(name);
+   }
+   
+   public int score(Set<String> set) throws Exception {
       int score = 0;
       
-      for(Parameter label : list) {
-         String name = label.getName();
-         
-         if(!map.contains(name)) {
+      for(String name : map.keySet()) {
+         if(!set.contains(name)) {
             return -1;
          }
          score++;
@@ -33,7 +35,7 @@ class Builder {
    public Object build(Map<String, Pointer> store) throws Exception {
       List<Object> values = new ArrayList<Object>();
       
-      for(Parameter parameter : list) {
+      for(Parameter parameter : map) {
          String name = parameter.getName();
          Pointer pointer = store.get(name);
          Object value = pointer.getValue();
@@ -50,8 +52,8 @@ class Builder {
    }
    
    
-   public List<Parameter> getParameters() {
-      return list;
+   public Map<String, Parameter> getParameters() {
+      return map;
    }
    
    

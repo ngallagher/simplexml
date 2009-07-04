@@ -69,6 +69,17 @@ class FieldContact implements Contact {
       this.modifier = field.getModifiers();
       this.label = label;
       this.field = field;
+   } 
+   
+   /**
+    * This is used to identify annotated methods are fields that
+    * can not be modified. Such field will require that there is 
+    * a constructor that can have the value injected in to it.
+    * 
+    * @return this returns true if the field or method is final
+    */
+   public boolean isFinal() {
+      return Modifier.isFinal(modifier); 
    }
 
    /**
@@ -173,7 +184,7 @@ class FieldContact implements Contact {
     * @param value this is the value that is to be set on the object
     */ 
    public void set(Object source, Object value) throws Exception {
-      if(!Modifier.isFinal(modifier)) {
+      if(!isFinal()) {
          field.set(source, value);
       }
    }
