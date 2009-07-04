@@ -9,18 +9,22 @@ import org.simpleframework.xml.Root;
 public class ConstructorInjectionTest extends TestCase {
    
    private static final String SOURCE = 
-   "<example>"+
+   "<example number='32'>"+
    "  <integer>12</integer>"+
    "  <string>text</string>"+
-   "  <number>32</number>"+
    "</example>";
    
    @Root
    private static class Example {
       
-      @Element private int integer;   
-      @Element private String string;
-      @Element private long number;
+      @Element(name="integer")
+      private int integer;   
+      
+      @Element(name="string") 
+      private String string;
+      
+      @Attribute(name="number") 
+      private long number;
       
       public Example(){}
       public Example(@Element(name="integer") int integer){
