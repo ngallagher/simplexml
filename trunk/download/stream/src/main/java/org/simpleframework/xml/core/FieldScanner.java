@@ -46,17 +46,32 @@ class FieldScanner extends ContactList {
    /**
     * This is used to acquire the hierarchy for the class scanned.
     */
-   private Hierarchy hierarchy;
+   private final Hierarchy hierarchy;
+   
+   /**
+    * This is the primary scanner used to acquire the schema.
+    */
+   private final Scanner scanner;
+   
+   /**
+    * This is the class that is being scanned for annotations.
+    */
+   private final Class type;
    
    /**
     * Constructor for the <code>FieldScanner</code> object. This is
     * used to perform a scan on the specified class in order to find
     * all fields that are labeled with an XML annotation.
     * 
+    * @param scanner this is the primary scanner used for the class
     * @param type this is the schema class that is to be scanned
+    * 
+    * @throws Exception thrown if the object schema is invalid
     */
-   public FieldScanner(Class type) {
+   public FieldScanner(Scanner scanner, Class type) throws Exception {
       this.hierarchy = new Hierarchy(type);
+      this.scanner = scanner;
+      this.type = type;
       this.scan(type);
    }
    
@@ -70,10 +85,11 @@ class FieldScanner extends ContactList {
     * 
     * @throws Exception thrown if the object schema is invalid
     */
-   private void scan(Class type) {
+   private void scan(Class type) throws Exception {
       for(Class next : hierarchy) {
          scan(type, next);
-      }         
+      }  
+      validate();
    }
    
    /**
@@ -156,5 +172,52 @@ class FieldScanner extends ContactList {
          field.setAccessible(true);              
       }           
       add(new FieldContact(field, label));
+   }
+   
+   /**
+    * This method is used to pair the get methods with a matching
+    * parameter. This pairs the parameter and the method so that the
+    * schema will always be a readable and writable object. If no
+    * such pairing was done an illegal class schema could be created.
+    * 
+    * @param read this is a get method that has been extracted
+    * @param parameter this is the write method to compare details with      
+    *  
+    * @throws Exception thrown if there is a problem matching methods
+    */
+   private void validate()  throws Exception {
+      for(Contact contact : this) {
+         String name = contact.getName();
+         
+         if(name != null) {
+            validate(contact, name);
+         }
+      }
+   }
+   
+   /**
+    * This method is used to pair the get methods with a matching
+    * parameter. This pairs the parameter and the method so that the
+    * schema will always be a readable and writable object. If no
+    * such pairing was done an illegal class schema could be created.
+    * 
+    * @param read this is a get method that has been extracted
+    * @param parameter this is the write method to compare details with      
+    *  
+    * @throws Exception thrown if there is a problem matching methods
+    */
+   private void validate(Contact field, String name)  throws Exception {
+      Parameter parameter = scanner.getParameter(name);
+      Annotation label = field.getAnnotation();
+      
+      if(!parameter.getAnnotation().equals(label)) {
+         throw new PersistenceException("Annotations do not match for '%s' in %s", name, type);
+      }
+      Class type = field.getType();
+      
+      if(type != parameter.getType()) {
+         throw new PersistenceException("Method types do not match for %s in %s", name, type);
+      }
+ 
    }
 }

@@ -50,6 +50,11 @@ class Builder {
    }
    
    
+   public List<Parameter> getParameters() {
+      return list;
+   }
+   
+   
    public String toString() {
       return factory.toString();
    }

@@ -129,6 +129,19 @@ class SetPart implements MethodPart {
    public Annotation getAnnotation() {
       return label;
    }
+   
+   /**
+    * This is the annotation associated with the point of contact.
+    * This will be an XML annotation that describes how the contact
+    * should be serialized and deserialized from the object.
+    * 
+    * @param type this is the type of the annotation to acquire
+    *
+    * @return this provides the annotation associated with this
+    */
+   public <T extends Annotation> T getAnnotation(Class<T> type) {
+      return method.getAnnotation(type);
+   }
   
    /**
     * This is the method type for the method part. This is used in
