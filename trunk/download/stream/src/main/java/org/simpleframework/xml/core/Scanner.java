@@ -22,8 +22,9 @@ package org.simpleframework.xml.core;
 
 import java.beans.Introspector;
 import java.lang.annotation.Annotation;
-import java.util.List;
 import java.util.Set;
+
+import javax.media.jai.ParameterList;
 
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
@@ -49,7 +50,7 @@ import org.simpleframework.xml.Version;
  * 
  * @see org.simpleframework.xml.core.Schema
  */ 
-class Scanner  {
+class Scanner implements ParameterMap {
    
    /**
     * This method acts as a pointer to the types commit process.

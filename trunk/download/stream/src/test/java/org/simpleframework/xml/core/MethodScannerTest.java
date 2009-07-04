@@ -13,7 +13,7 @@ import org.simpleframework.xml.core.MethodScanner;
 
 import junit.framework.TestCase;
 
-public class MethodScannerTest extends TestCase {
+public class MethodScannerTest extends TestCase implements ParameterMap {
    
    @Root(name="name")
    public static class Example {
@@ -110,7 +110,7 @@ public class MethodScannerTest extends TestCase {
    }
    
    public void testExample() throws Exception {
-      MethodScanner scanner = new MethodScanner(Example.class);
+      MethodScanner scanner = new MethodScanner(this, Example.class);
       ArrayList<Class> list = new ArrayList<Class>();
      
       for(Contact contact : scanner) {
@@ -125,7 +125,7 @@ public class MethodScannerTest extends TestCase {
       boolean success = false;
       
       try {
-         new MethodScanner(IllegalOverload.class);
+         new MethodScanner(this, IllegalOverload.class);
       }catch(Exception e){
          success = true;
       }
@@ -136,7 +136,7 @@ public class MethodScannerTest extends TestCase {
       boolean success = false;
       
       try {
-         new MethodScanner(NonMatchingMethods.class);
+         new MethodScanner(this, NonMatchingMethods.class);
       }catch(Exception e){
          success = true;
       }
@@ -147,7 +147,7 @@ public class MethodScannerTest extends TestCase {
       boolean success = false;
       
       try {
-         new MethodScanner(NotBeanMethod.class);
+         new MethodScanner(this, NotBeanMethod.class);
       }catch(Exception e){
          success = true;
       }
@@ -156,7 +156,7 @@ public class MethodScannerTest extends TestCase {
    
    
    public void testText() throws Exception {
-      MethodScanner scanner = new MethodScanner(TextMethod.class);
+      MethodScanner scanner = new MethodScanner(this, TextMethod.class);
       ArrayList<Class> list = new ArrayList<Class>();
 
       for(Contact contact : scanner) {
@@ -169,7 +169,7 @@ public class MethodScannerTest extends TestCase {
    }
    
    public void testCollection() throws Exception {
-      MethodScanner scanner = new MethodScanner(CollectionMethod.class);
+      MethodScanner scanner = new MethodScanner(this, CollectionMethod.class);
       ArrayList<Class> list = new ArrayList<Class>();
       
       for(Contact contact : scanner) {
@@ -180,5 +180,9 @@ public class MethodScannerTest extends TestCase {
       assertTrue(list.contains(int.class));
       assertTrue(list.contains(long.class));
       assertTrue(list.contains(Collection.class));
+   }
+
+   public Parameter getParameter(String name) {
+      return null;
    }
 }

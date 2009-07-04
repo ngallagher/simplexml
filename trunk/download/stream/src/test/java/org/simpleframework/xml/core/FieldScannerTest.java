@@ -11,7 +11,7 @@ import org.simpleframework.xml.core.FieldScanner;
 
 import junit.framework.TestCase;
 
-public class FieldScannerTest extends TestCase {
+public class FieldScannerTest extends TestCase implements ParameterMap {
    
    @Root(name="name")
    public static class Example {
@@ -34,7 +34,7 @@ public class FieldScannerTest extends TestCase {
    }
    
    public void testExample() throws Exception {
-      FieldScanner scanner = new FieldScanner(Example.class);
+      FieldScanner scanner = new FieldScanner(this, Example.class);
       ArrayList<Class> list = new ArrayList<Class>();
       
       for(Contact contact : scanner) {
@@ -44,5 +44,9 @@ public class FieldScannerTest extends TestCase {
       assertTrue(list.contains(Collection.class));
       assertTrue(list.contains(String.class));
       assertTrue(list.contains(int.class));
+   }
+
+   public Parameter getParameter(String name) {
+      return null;
    }
 }

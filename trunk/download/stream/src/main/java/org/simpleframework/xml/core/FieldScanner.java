@@ -36,7 +36,7 @@ import java.lang.reflect.Field;
  * fields marked with an XML annotation. All fields that contain an
  * XML annotation are added as <code>Contact</code> objects to the
  * list of contacts for the class. This scans the object by checking
- * the class heirarchy, this allows a subclass to override a super
+ * the class hierarchy, this allows a subclass to override a super
  * class annotated field, although this should be used rarely.
  * 
  * @author Niall Gallagher
@@ -51,7 +51,7 @@ class FieldScanner extends ContactList {
    /**
     * This is the primary scanner used to acquire the schema.
     */
-   private final Scanner scanner;
+   private final ParameterMap table;
    
    /**
     * This is the class that is being scanned for annotations.
@@ -68,9 +68,9 @@ class FieldScanner extends ContactList {
     * 
     * @throws Exception thrown if the object schema is invalid
     */
-   public FieldScanner(Scanner scanner, Class type) throws Exception {
+   public FieldScanner(ParameterMap table, Class type) throws Exception {
       this.hierarchy = new Hierarchy(type);
-      this.scanner = scanner;
+      this.table = table;
       this.type = type;
       this.scan(type);
    }
@@ -175,15 +175,12 @@ class FieldScanner extends ContactList {
    }
    
    /**
-    * This method is used to pair the get methods with a matching
-    * parameter. This pairs the parameter and the method so that the
+    * This method is used to pair the get fields with a matching
+    * parameter. This pairs the parameter and the field so that the
     * schema will always be a readable and writable object. If no
     * such pairing was done an illegal class schema could be created.
-    * 
-    * @param read this is a get method that has been extracted
-    * @param parameter this is the write method to compare details with      
     *  
-    * @throws Exception thrown if there is a problem matching methods
+    * @throws Exception thrown if there is no matching parameter
     */
    private void validate()  throws Exception {
       for(Contact contact : this) {
@@ -196,27 +193,46 @@ class FieldScanner extends ContactList {
    }
    
    /**
-    * This method is used to pair the get methods with a matching
-    * parameter. This pairs the parameter and the method so that the
+    * This method is used to pair the get fields with a matching
+    * parameter. This pairs the parameter and the field so that the
     * schema will always be a readable and writable object. If no
     * such pairing was done an illegal class schema could be created.
     * 
-    * @param read this is a get method that has been extracted
-    * @param parameter this is the write method to compare details with      
+    * @param field this is a field that is to be validated against
+    * @param name this is the name of the parameter to be validated  
     *  
-    * @throws Exception thrown if there is a problem matching methods
+    * @throws Exception thrown if there is no matching parameter
     */
    private void validate(Contact field, String name)  throws Exception {
-      Parameter parameter = scanner.getParameter(name);
+      Parameter parameter = table.getParameter(name);
+      
+      if(parameter != null) {
+         validate(field, parameter);
+      }
+   }
+   
+   /**
+    * This method is used to pair the get fields with a matching
+    * parameter. This pairs the parameter and the field so that the
+    * schema will always be a readable and writable object. If no
+    * such pairing was done an illegal class schema could be created.
+    * 
+    * @param field this is a field that is to be validated against
+    * @param parameter this is the parameter to be validated against
+    *  
+    * @throws Exception thrown if there is no matching parameter
+    */
+   private void validate(Contact field, Parameter parameter)  throws Exception {   
       Annotation label = field.getAnnotation();
+      String name = parameter.getName();
       
       if(!parameter.getAnnotation().equals(label)) {
          throw new PersistenceException("Annotations do not match for '%s' in %s", name, type);
       }
-      Class type = field.getType();
+      Class expect = field.getType();
       
-      if(type != parameter.getType()) {
-         throw new PersistenceException("Method types do not match for %s in %s", name, type);
+      if(expect != parameter.getType()) {
+         throw new PersistenceException("Parameter does not match field for '%s' in %s", name, type);
       }
  
    }

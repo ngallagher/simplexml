@@ -171,7 +171,7 @@ class ConstructorScanner {
       Class expect = other.getType();
       
       if(expect != parameter.getType()) {
-         throw new MethodException("Method types do not match for %s in %s", name, type);
+         throw new MethodException("Method types do not match for '%s' in %s", name, type);
       }
    }
    
