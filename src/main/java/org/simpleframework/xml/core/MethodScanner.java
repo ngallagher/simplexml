@@ -63,11 +63,6 @@ class MethodScanner extends ContactList {
    private final Hierarchy hierarchy;
    
    /**
-    * This is the primary scanner used to acquire the schema.
-    */
-   private final ParameterMap table;
-   
-   /**
     * This is used to collect all the set methods from the object.
     */
    private final PartMap write;
@@ -88,16 +83,14 @@ class MethodScanner extends ContactList {
     * such that all bean property methods can be paired under the
     * XML annotation specified within the class.
     * 
-    * @param table this contains all the parameters for the schema
     * @param type this is the type that is to be scanned for methods
     * 
     * @throws Exception thrown if there was a problem scanning
     */
-   public MethodScanner(ParameterMap table, Class type) throws Exception {
+   public MethodScanner(Class type) throws Exception {
       this.hierarchy = new Hierarchy(type);
       this.write = new PartMap();
       this.read = new PartMap();
-      this.table = table;
       this.type = type;
       this.scan(type);
    }
@@ -269,44 +262,26 @@ class MethodScanner extends ContactList {
     */
    private void build(MethodPart read, String name) throws Exception {      
       MethodPart match = write.take(name);
-      Method method = read.getMethod();
-      
-      if(match == null) {
-         Parameter parameter = table.getParameter(name);
-         
-         if(parameter == null) {
-            throw new MethodException("No matching set method for %s in %s", method, type);
-         } else {
-            build(read, parameter);
-         }
-      } else {
+
+      if(match != null) {
          build(read, match);
+      } else {
+         build(read); // read only
       }
    }   
    
    /**
-    * This method is used to pair the get methods with a matching
-    * parameter. This pairs the parameter and the method so that the
-    * schema will always be a readable and writable object. If no
-    * such pairing was done an illegal class schema could be created.
+    * This method is used to pair the get methods with a matching set
+    * method. This pairs methods using the Java Bean method name, the
+    * names must match exactly, meaning that the case and value of
+    * the strings must be identical. Also in order for this to succeed
+    * the types for the methods and the annotation must also match.
     * 
-    * @param read this is a get method that has been extracted
-    * @param parameter this is the write method to compare details with      
+    * @param write this is the write method to compare details with      
     *  
     * @throws Exception thrown if there is a problem matching methods
     */
-   private void build(MethodPart read, Parameter parameter) throws Exception {
-      Annotation label = read.getAnnotation();
-      String name = read.getName();
-      
-      if(!parameter.getAnnotation().equals(label)) {
-         throw new MethodException("Annotations do not match for '%s' in %s", name, type);
-      }
-      Class expect = read.getType();
-      
-      if(expect != parameter.getType()) {
-         throw new MethodException("Method types do not match for '%s' in %s", name, type);
-      }
+   private void build(MethodPart read) throws Exception {
       add(new MethodContact(read));
    }
    
