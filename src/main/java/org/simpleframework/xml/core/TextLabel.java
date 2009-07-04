@@ -216,6 +216,18 @@ class TextLabel implements Label {
    }
    
    /**
+    * This is used to acquire a temporary collection which can be
+    * used to gather the information before setting it. It allows
+    * elements to be scattered within the XML document. Each entry
+    * deserialized from the document will be added to this.
+    * 
+    * @return this is the collection used for temporary storage
+    */
+   public Object getCollection() {
+      return null;
+   }
+   
+   /**
     * This method is used to determine if the label represents an
     * attribute. This is used to style the name so that elements
     * are styled as elements and attributes are styled as required.

@@ -60,5 +60,4 @@ public class EnumMapTest extends ValidationTestCase {
       
       validate(persister, example);
    }
-
 }

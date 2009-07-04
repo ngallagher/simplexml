@@ -40,6 +40,8 @@ public class ContextualCallbackTest extends TestCase {
       private boolean persisted;
 
       private boolean completed;
+      
+      public Entry(){}
 
       @Validate
       public void validate(Map map) {

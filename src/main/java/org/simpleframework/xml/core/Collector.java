@@ -22,6 +22,7 @@ package org.simpleframework.xml.core;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The <code>Collector</code> object is used to store pointers for
@@ -79,7 +80,19 @@ class Collector extends HashMap<String, Pointer> {
       for(Pointer entry : set) { 
          Contact contact = entry.getContact();
          Object value = entry.getValue();
-                
+         
+         if(entry.isCollection()) {
+           Object original = contact.get(source);; // GET the original
+            
+            if(original != null) {
+               if(value instanceof Map) {
+                  ((Map)original).putAll((Map)value);
+               } else if(value instanceof Collection) {
+                  ((Collection)original).addAll((Collection)value);
+               }
+               value = original;
+            }
+         } 
          contact.set(source, value);
       }
    }   

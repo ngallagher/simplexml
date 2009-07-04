@@ -20,6 +20,8 @@
 
 package org.simpleframework.xml.core;
 
+import java.util.Set;
+
 import org.simpleframework.xml.Version;
 import org.simpleframework.xml.stream.InputNode;
 import org.simpleframework.xml.stream.NodeMap;
@@ -173,18 +175,24 @@ class Composite implements Converter {
    
    public Object readFromClass(InputNode node, Class type) throws Exception {
       Schema schema = context.getSchema(type);
+      
+      if(schema != null) {
+         read(node, type, schema); 
+      }
+      return build(node, schema);
+   }
+   
+   public Object build(InputNode node, Schema schema) throws Exception {
       Caller caller = schema.getCaller();
-      
-      read(node, type, schema); // <----- FILL THE STORE
-      
-      Builder builder = schema.getBuilder(store.keySet());
+      Set<String> names = store.keySet();
+      Builder builder = schema.getBuilder(names);
       Object value = builder.build(store);
       
-      store.commit(value); // instantiate here 
-      caller.validate(value); // <--- VALIDATE once we get the object
-      caller.commit(value); // <--- COMMIT the value
+      store.commit(value); 
+      caller.validate(value); 
+      caller.commit(value); 
       
-      return readResolve(node, value, caller); // we can only READ RESOLVE THE INSTANCE
+      return readResolve(node, value, caller);    
    }
    
 
@@ -537,8 +545,7 @@ class Composite implements Converter {
       Converter reader = label.getConverter(context);   
       
       if(label.isCollection()) {
-         Contact contact = label.getContact();
-         Object original = contact.get(source);
+         Object original = label.getCollection();
          
          if(original != null) {
             return reader.read(node, original); // won't respect cycles

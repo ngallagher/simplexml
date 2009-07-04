@@ -20,6 +20,8 @@
 
 package org.simpleframework.xml.core;
 
+import java.util.LinkedHashMap;
+
 import org.simpleframework.xml.ElementMap;
 import org.simpleframework.xml.stream.Style;
 
@@ -212,6 +214,18 @@ class ElementMapLabel implements Label {
          return entry.getEntry();
       }
       return detail.getName();
+   }
+   
+   /**
+    * This is used to acquire a temporary collection which can be
+    * used to gather the information before setting it. It allows
+    * elements to be scattered within the XML document. Each entry
+    * deserialized from the document will be added to this.
+    * 
+    * @return this is the collection used for temporary storage
+    */
+   public Object getCollection() {
+      return new LinkedHashMap();
    }
    
    /**

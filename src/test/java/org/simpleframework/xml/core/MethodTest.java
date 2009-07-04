@@ -45,6 +45,10 @@ public class MethodTest extends ValidationTestCase {
       protected long longValue;         
       protected double doubleValue;
       
+      public ExplicitMethodNameExample() {
+         super();
+      }
+      
       @Element(name="boolean")
       public boolean getBooleanValue() {
          return booleanValue;

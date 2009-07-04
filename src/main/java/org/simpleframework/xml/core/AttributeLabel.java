@@ -159,6 +159,18 @@ class AttributeLabel implements Label {
    }
    
    /**
+    * This is used to acquire a temporary collection which can be
+    * used to gather the information before setting it. It allows
+    * elements to be scattered within the XML document. Each entry
+    * deserialized from the document will be added to this.
+    * 
+    * @return this is the collection used for temporary storage
+    */
+   public Object getCollection() {
+      return null;
+   }
+   
+   /**
     * This is used to acquire the name of the element or attribute
     * as taken from the annotation. If the element or attribute
     * explicitly specifies a name then that name is used for the
