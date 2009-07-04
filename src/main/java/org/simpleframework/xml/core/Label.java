@@ -117,20 +117,10 @@ interface Label {
    public String getEntry() throws Exception; 
    
    /**
-    * This is used to acquire a temporary collection which can be
-    * used to gather the information before setting it. It allows
-    * elements to be scattered within the XML document. Each entry
-    * deserialized from the document will be added to this.
-    * 
-    * @return this is the collection used for temporary storage
-    */
-   public Object getCollection();
-   
-   /**
     * This is used to acquire the contact object for this label. The 
     * contact retrieved can be used to set any object or primitive that
     * has been deserialized, and can also be used to acquire values to
-    * be serialized in the case of object persistance. All contacts 
+    * be serialized in the case of object persistence. All contacts 
     * that are retrieved from this method will be accessible. 
     * 
     * @return returns the field that this label is representing
@@ -138,7 +128,7 @@ interface Label {
    public Contact getContact();
 
    /**
-    * This acts as a convinience method used to determine the type of
+    * This acts as a convenience method used to determine the type of
     * the field this represents. This is used when an object is written
     * to XML. It determines whether a <code>class</code> attribute
     * is required within the serialized XML element, that is, if the

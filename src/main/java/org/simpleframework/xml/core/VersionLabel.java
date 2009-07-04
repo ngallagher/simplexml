@@ -42,7 +42,7 @@ class VersionLabel implements Label {
     * This contains the details of the annotated contact object.
     */
    private Signature detail;
-
+   
    /**
     * Represents the annotation used to label the field.
     */
@@ -208,18 +208,6 @@ class VersionLabel implements Label {
     * @return this is used to return the dependant type of null
     */
    public Class getDependant() {
-      return null;
-   }
-   
-   /**
-    * This is used to acquire a temporary collection which can be
-    * used to gather the information before setting it. It allows
-    * elements to be scattered within the XML document. Each entry
-    * deserialized from the document will be added to this.
-    * 
-    * @return this is the collection used for temporary storage
-    */
-   public Object getCollection() {
       return null;
    }
    

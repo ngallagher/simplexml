@@ -107,19 +107,6 @@ class FieldContact implements Contact {
    }
    
    /**
-    * This method is used to acquire the candidate constructors
-    * that this contact can be set with. Any constructor that has
-    * been annotated with a matching annotation for a constructor
-    * parameter is a candidate. This allows values to be set in 
-    * the constructor rather than using the set method.
-    * 
-    * @return the constructors this is a candidate for
-    */
-   public Constructor[] getCandidates() {
-      return new Constructor[]{};
-   }
-   
-   /**
     * This is used to acquire the name of the field. This will return
     * the name of the field wich can then be used to determine the 
     * XML attribute or element the contact represents. This ensures
@@ -214,6 +201,6 @@ class FieldContact implements Contact {
     * @return this returns a string representation of the contact
     */
    public String toString() {
-      return String.format("field '%s'", getName());
+      return String.format("field '%s' %s", getName(), field.toString());
    }
 }

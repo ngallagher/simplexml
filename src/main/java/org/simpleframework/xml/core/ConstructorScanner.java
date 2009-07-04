@@ -3,7 +3,9 @@ package org.simpleframework.xml.core;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.lang.reflect.TypeVariable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Set;
@@ -13,6 +15,7 @@ import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementArray;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.ElementMap;
+import java.lang.reflect.Type;
 
 
 /**
@@ -95,9 +98,9 @@ public class ConstructorScanner {
       Annotation[][] labels = factory.getParameterAnnotations();
       Class[] types = factory.getParameterTypes();
 
-      for(int i = 0; i < types.length; i++) {
+      for(int i = 0; i < types.length; i++) {         
          for(int j = 0; j < labels[i].length; j++) {
-            Parameter value = process(types[i], labels[i][j]);
+            Parameter value = process(factory, labels[i][j], i);
             
             if(value != null) {
                list.add(value);
@@ -109,46 +112,47 @@ public class ConstructorScanner {
    
    private void build(Constructor factory, List<Parameter> list) throws Exception {
       Builder builder = new Builder(factory, list);
+      Set set = new HashSet();
       
+      for(Parameter value : list) {
+         String name = value.getName();
+         
+         if(set.contains(name)) {
+            throw new PersistenceException("Parameter '%s' is a duplicate in %s", name, factory);
+         }
+         set.add(name);
+      }
       builders.add(builder);
       
    }
    
-   private Parameter process(Class type, Annotation label) throws Exception{
+   private Parameter process(Constructor factory, Annotation label, int index) throws Exception{
       if(label instanceof Attribute) {
-         return create(type, label);
+         return create(factory, label, index);
       }
       if(label instanceof ElementList) {
-         return create(type, label);
+         return create(factory, label, index);
       }     
       if(label instanceof ElementArray) {
-         return create(type, label);
+         return create(factory, label, index);
       }
       if(label instanceof ElementMap) {
-         return create(type, label);
+         return create(factory, label, index);
       }
       if(label instanceof Element) {
-         return create(type, label);
+         return create(factory, label, index);
       }
       return null;
    }
    
-   private Parameter create(Class type, Annotation label) throws Exception {
-      String name = getName(label);
+   private Parameter create(Constructor factory, Annotation label, int index) throws Exception {
+      Parameter value = ParameterFactory.getInstance(factory, label, index);
+      String name = value.getName();
       
-      if(name.equals("")) {
-         throw new PersistenceException("");
+      if(name == null) {
+         throw new PersistenceException("Annotated parameters must be named");
       }
-      return new Parameter(type, label, name);
-
-   }
-   
-   private String getName(Annotation label) throws Exception {
-      Class type = label.getClass();
-      Method method = type.getMethod(NAME);
-      Object name =  method.invoke(label);
-      
-      return name.toString();
+      return value;
    }
    
    private class Rank implements Comparable<Rank> {
@@ -162,7 +166,11 @@ public class ConstructorScanner {
       }
       
       public int compareTo(Rank rank) {
-         return rank.builder.score(names) - builder.score(names) ;
+         try {
+            return rank.builder.score(names) - builder.score(names) ;
+         } catch(Exception e) {
+            throw new IllegalStateException(e);
+         }
       }
       
       public Builder getBuilder() {

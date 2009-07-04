@@ -37,16 +37,16 @@ class AttributeLabel implements Label {
     * This is the decorator that is associated with the attribute.
     */
    private Decorator decorator;
+   
+   /**
+    * This contains the details of the annotated contact object.
+    */
+   private Signature detail;
 
    /**
     * Represents the annotation used to label the field.
     */
    private Attribute label;
-
-   /**
-    * This contains the details of the annotated contact object.
-    */
-   private Signature detail;
    
    /**
     * This is the type that the field object references. 
@@ -156,18 +156,6 @@ class AttributeLabel implements Label {
     */
    public String getName() throws Exception {
       return detail.getName();
-   }
-   
-   /**
-    * This is used to acquire a temporary collection which can be
-    * used to gather the information before setting it. It allows
-    * elements to be scattered within the XML document. Each entry
-    * deserialized from the document will be added to this.
-    * 
-    * @return this is the collection used for temporary storage
-    */
-   public Object getCollection() {
-      return null;
    }
    
    /**
