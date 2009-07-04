@@ -257,4 +257,15 @@ class InputAttribute implements InputNode {
    public boolean isEmpty() {
       return false;
    }
+   
+   /**
+    * This is the string representation of the attribute. It is
+    * used for debugging purposes. When evaluating the attribute
+    * the to string can be used to print out the attribute name.
+    * 
+    * @return this returns a text description of the attribute
+    */
+   public String toString() {
+      return String.format("attribute %s='%s'", name, value);
+   }
 }

@@ -137,14 +137,14 @@ class Composite implements Converter {
     * @return this returns the fully deserialized object graph
     */
    public Object read(InputNode node) throws Exception {
-      Type type = factory.getInstance(node); 
+      Type type = factory.getInstance(node); // Get the class type for the object
       
       if(type.isReference()) {      
-         return type.getInstance();
+         return type.getInstance(); // Just return previous creation
       }
-      Class real = type.getType();
+      Class real = type.getType(); // What is the type of this class as taken from the XML
       
-      if(context.isPrimitive(real)) {
+      if(context.isPrimitive(real)) { 
          return readPrimitive(node, type);
       }
       return read(node, type);
@@ -167,22 +167,18 @@ class Composite implements Converter {
     * @return this returns the fully deserialized object graph
     */
    private Object read(InputNode node, Type type) throws Exception {
-     Class typeClass = type.getType();
-     Object value = readFromClass(node, typeClass);
-     
-     return value;
-   }
-   
-   public Object readFromClass(InputNode node, Class type) throws Exception {
-      Schema schema = context.getSchema(type);
+      Class real = type.getType();
+      Schema schema = context.getSchema(real);
       
       if(schema != null) {
-         read(node, type, schema); 
+         read(node, real, schema); 
       }
-      return build(node, schema);
+      Object value = read(node, schema);
+      
+      return type.getInstance(value);
    }
    
-   public Object build(InputNode node, Schema schema) throws Exception {
+   public Object read(InputNode node, Schema schema) throws Exception {
       Caller caller = schema.getCaller();
       Set<String> names = store.keySet();
       Builder builder = schema.getBuilder(names);
@@ -212,6 +208,7 @@ class Composite implements Converter {
      Class real = type.getType();
      Object value = primitive.read(node, real);
 
+     // TODO Here we are just going to set the VALUE
      return type.getInstance(value);
    }
    
