@@ -2,11 +2,11 @@ package org.simpleframework.xml.core;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
-import java.lang.reflect.TypeVariable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Set;
 
@@ -15,7 +15,6 @@ import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementArray;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.ElementMap;
-import java.lang.reflect.Type;
 
 
 /**
@@ -59,17 +58,21 @@ import java.lang.reflect.Type;
  * @author gallagna
  *
  */
-public class ConstructorScanner {
-   
-   private static final String NAME = "name";
-   
+class ConstructorScanner {
+
+   private Map<String, Parameter> parameters;
    private List<Builder> builders;
    private Class type;
    
    public ConstructorScanner(Class type) throws Exception {
+      this.parameters = new HashMap<String, Parameter>();
       this.builders = new ArrayList<Builder>();
       this.type = type;
       this.scan(type);
+   }
+   
+   public Parameter getParameter(String name) {
+      return parameters.get(name);
    }
    
    public Builder getBuilder(Set<String> names) {
@@ -103,6 +106,9 @@ public class ConstructorScanner {
             Parameter value = process(factory, labels[i][j], i);
             
             if(value != null) {
+               String name = value.getName();
+               
+               parameters.put(name, value);
                list.add(value);
             }
          }
@@ -149,10 +155,24 @@ public class ConstructorScanner {
       Parameter value = ParameterFactory.getInstance(factory, label, index);
       String name = value.getName();
       
-      if(name == null) {
-         throw new PersistenceException("Annotated parameters must be named");
+      if(parameters.containsKey(name)) {
+         validate(value, name);
       }
       return value;
+   }
+   
+   private void validate(Parameter parameter, String name) throws Exception {
+      Parameter other = parameters.get(name);
+      Annotation label = other.getAnnotation();
+      
+      if(!parameter.getAnnotation().equals(label)) {
+         throw new MethodException("Annotations do not match for '%s' in %s", name, type);
+      }
+      Class expect = other.getType();
+      
+      if(expect != parameter.getType()) {
+         throw new MethodException("Method types do not match for %s in %s", name, type);
+      }
    }
    
    private class Rank implements Comparable<Rank> {

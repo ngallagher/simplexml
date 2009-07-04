@@ -72,7 +72,7 @@ class GetPart implements MethodPart {
    }
    
    /**
-    * This provdes the name of the method part as acquired from the
+    * This provides the name of the method part as acquired from the
     * method name. The name represents the Java Bean property name
     * of the method and is used to pair getter and setter methods.
     * 
@@ -94,26 +94,26 @@ class GetPart implements MethodPart {
    }
    
    /**
-    * This is used to acquire the dependant class for the method 
-    * part. The dependant type is the type that represents the 
+    * This is used to acquire the dependent class for the method 
+    * part. The dependent type is the type that represents the 
     * generic type of the type. This is used when collections are
     * annotated as it allows a default entry class to be taken
     * from the generic information provided.
     * 
-    * @return this returns the generic dependant for the type
+    * @return this returns the generic dependent for the type
     */
    public Class getDependant() {
       return Reflector.getReturnDependant(method);
    }
    
    /**
-    * This is used to acquire the dependant classes for the method 
-    * part. The dependant types are the types that represent the 
+    * This is used to acquire the dependent classes for the method 
+    * part. The dependent types are the types that represent the 
     * generic types of the type. This is used when collections are 
     * annotated as it allows a default entry class to be taken
     * from the generic information provided.
     * 
-    * @return this returns the generic dependant for the type
+    * @return this returns the generic dependent for the type
     */
    public Class[] getDependants() {
       return Reflector.getReturnDependants(method);
@@ -128,6 +128,19 @@ class GetPart implements MethodPart {
     */
    public Annotation getAnnotation() {
       return label;
+   }
+   
+   /**
+    * This is the annotation associated with the point of contact.
+    * This will be an XML annotation that describes how the contact
+    * should be serialized and deserialized from the object.
+    * 
+    * @param type this is the type of the annotation to acquire
+    *
+    * @return this provides the annotation associated with this
+    */
+   public <T extends Annotation> T getAnnotation(Class<T> type) {
+      return method.getAnnotation(type);
    }
    
    /**

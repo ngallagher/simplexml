@@ -22,6 +22,7 @@ package org.simpleframework.xml.core;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -110,6 +111,17 @@ class ClassScanner  {
       this.decorator = new NamespaceDecorator();
       this.scan(type);
    }      
+
+   /**
+    * This is used to acquire the <code>Parameter</code> object that
+    * has the provided name. This is used to validate the annotated
+    * methods and fields against the annotated constructor parameters.
+    * 
+    * @return this returns the parameter for the specified name
+    */
+   public Parameter getParameter(String name) {
+      return scanner.getParameter(name);
+   }
    
    /**
     * This is used to acquire a <code>Builder</code> which is used

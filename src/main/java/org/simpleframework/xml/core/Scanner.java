@@ -22,6 +22,7 @@ package org.simpleframework.xml.core;
 
 import java.beans.Introspector;
 import java.lang.annotation.Annotation;
+import java.util.List;
 import java.util.Set;
 
 import org.simpleframework.xml.Attribute;
@@ -98,6 +99,17 @@ class Scanner  {
       this.elements = new LabelMap(this); 
       this.scan(type);
    }      
+   
+   /**
+    * This is used to acquire the <code>Parameter</code> object that
+    * has the provided name. This is used to validate the annotated
+    * methods and fields against the annotated constructor parameters.
+    * 
+    * @return this returns the parameter for the specified name
+    */
+   public Parameter getParameter(String name) {
+      return scanner.getParameter(name);
+   }
    
    /**
     * This is used to acquire a <code>Builder</code> which is used
@@ -506,7 +518,7 @@ class Scanner  {
     * @param type this is the object type that is to be scanned
     */    
    public void field(Class type) throws Exception {
-      ContactList list = new FieldScanner(type);
+      ContactList list = new FieldScanner(this, type);
       
       for(Contact contact : list) {
          scan(contact, contact.getAnnotation());
@@ -521,7 +533,7 @@ class Scanner  {
     * @param type this is the object type that is to be scanned
     */ 
    public void method(Class type) throws Exception {
-      ContactList list = new MethodScanner(type);
+      ContactList list = new MethodScanner(this, type);
       
       for(Contact contact : list) {
          scan(contact, contact.getAnnotation());

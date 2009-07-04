@@ -21,7 +21,6 @@
 package org.simpleframework.xml.core;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
 /**
@@ -37,17 +36,17 @@ import java.lang.reflect.Method;
 class MethodContact implements Contact {
    
    /**
-    * These are the constructor candidates to be considered.
-    */
-   private Constructor[] list;
-   
-   /**
     * This is the label that marks both the set and get methods.
     */         
    private Annotation label;
+   
+   /**
+    * This is the set method which is used to set the value.
+    */ 
+   private MethodPart set;
 
    /**
-    * This is the dependant types as taken from the get method.
+    * This is the dependent types as taken from the get method.
     */
    private Class[] items;
    
@@ -67,11 +66,6 @@ class MethodContact implements Contact {
    private Method get;
    
    /**
-    * This is the set method which is used to set the value.
-    */ 
-   private Method set;
-   
-   /**
     * This represents the name of the method for this contact.
     */
    private String name;
@@ -83,10 +77,9 @@ class MethodContact implements Contact {
     * during the serialization process to get and set values.
     *
     * @param get this forms the get method for the object
-    * @param set this forms the get method for the object 
     */ 
-   public MethodContact(MethodPart get, MethodPart set) {
-      this(get, set, new Constructor[]{});
+   public MethodContact(MethodPart get) {
+      this(get, null);
    }
    
    /**
@@ -96,18 +89,16 @@ class MethodContact implements Contact {
     * during the serialization process to get and set values.
     *
     * @param get this forms the get method for the object
-    * @param set this forms the get method for the object
-    * @param list these are the constructor candidates to use 
+    * @param set this forms the get method for the object 
     */ 
-   public MethodContact(MethodPart get, MethodPart set, Constructor... list) {
+   public MethodContact(MethodPart get, MethodPart set) {
       this.label = get.getAnnotation();   
       this.items = get.getDependants();
       this.item = get.getDependant();
-      this.set = set.getMethod();
       this.get = get.getMethod();
       this.type = get.getType();   
       this.name = get.getName();
-      this.list = list;
+      this.set = set;
    }
    
    /**
@@ -133,7 +124,7 @@ class MethodContact implements Contact {
    public <T extends Annotation> T getAnnotation(Class<T> type) {
       T label = get.getAnnotation(type);
       
-      if(label == null) {
+      if(label == null && set != null) {        
          label = set.getAnnotation(type);
       }
       return label;
@@ -196,7 +187,12 @@ class MethodContact implements Contact {
     * @param value this is the value that is to be set on the object
     */    
    public void set(Object source, Object value) throws Exception{
-      set.invoke(source, value);
+      Class type = getType();
+      
+      if(set == null) {
+         throw new MethodException("Method '%s' of '%s' is read only", name, type);
+      }
+      set.getMethod().invoke(source, value);
    }
    
    /**
