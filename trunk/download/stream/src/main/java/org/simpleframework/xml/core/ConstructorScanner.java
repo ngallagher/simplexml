@@ -153,7 +153,7 @@ class ConstructorScanner {
    
    private Parameter create(Constructor factory, Annotation label, int index) throws Exception {
       Parameter value = ParameterFactory.getInstance(factory, label, index);
-      String name = value.getName();
+      String name = value.getName(); // TODO this is not the real name, the real name comes from the label
       
       if(parameters.containsKey(name)) {
          validate(value, name);

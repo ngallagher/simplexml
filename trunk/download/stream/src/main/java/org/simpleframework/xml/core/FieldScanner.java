@@ -49,11 +49,6 @@ class FieldScanner extends ContactList {
    private final Hierarchy hierarchy;
    
    /**
-    * This is the primary scanner used to acquire the schema.
-    */
-   private final ParameterMap table;
-   
-   /**
     * This is the class that is being scanned for annotations.
     */
    private final Class type;
@@ -63,14 +58,10 @@ class FieldScanner extends ContactList {
     * used to perform a scan on the specified class in order to find
     * all fields that are labeled with an XML annotation.
     * 
-    * @param scanner this is the primary scanner used for the class
     * @param type this is the schema class that is to be scanned
-    * 
-    * @throws Exception thrown if the object schema is invalid
     */
-   public FieldScanner(ParameterMap table, Class type) throws Exception {
+   public FieldScanner(Class type) {
       this.hierarchy = new Hierarchy(type);
-      this.table = table;
       this.type = type;
       this.scan(type);
    }
@@ -85,11 +76,10 @@ class FieldScanner extends ContactList {
     * 
     * @throws Exception thrown if the object schema is invalid
     */
-   private void scan(Class type) throws Exception {
+   private void scan(Class type) {
       for(Class next : hierarchy) {
          scan(type, next);
       }  
-      validate();
    }
    
    /**
@@ -172,68 +162,5 @@ class FieldScanner extends ContactList {
          field.setAccessible(true);              
       }           
       add(new FieldContact(field, label));
-   }
-   
-   /**
-    * This method is used to pair the get fields with a matching
-    * parameter. This pairs the parameter and the field so that the
-    * schema will always be a readable and writable object. If no
-    * such pairing was done an illegal class schema could be created.
-    *  
-    * @throws Exception thrown if there is no matching parameter
-    */
-   private void validate()  throws Exception {
-      for(Contact contact : this) {
-         String name = contact.getName();
-         
-         if(name != null) {
-            validate(contact, name);
-         }
-      }
-   }
-   
-   /**
-    * This method is used to pair the get fields with a matching
-    * parameter. This pairs the parameter and the field so that the
-    * schema will always be a readable and writable object. If no
-    * such pairing was done an illegal class schema could be created.
-    * 
-    * @param field this is a field that is to be validated against
-    * @param name this is the name of the parameter to be validated  
-    *  
-    * @throws Exception thrown if there is no matching parameter
-    */
-   private void validate(Contact field, String name)  throws Exception {
-      Parameter parameter = table.getParameter(name);
-      
-      if(parameter != null) {
-         validate(field, parameter);
-      }
-   }
-   
-   /**
-    * This method is used to pair the get fields with a matching
-    * parameter. This pairs the parameter and the field so that the
-    * schema will always be a readable and writable object. If no
-    * such pairing was done an illegal class schema could be created.
-    * 
-    * @param field this is a field that is to be validated against
-    * @param parameter this is the parameter to be validated against
-    *  
-    * @throws Exception thrown if there is no matching parameter
-    */
-   private void validate(Contact field, Parameter parameter)  throws Exception {   
-      Annotation label = field.getAnnotation();
-      String name = parameter.getName();
-      
-      if(!parameter.getAnnotation().equals(label)) {
-         throw new PersistenceException("Annotations do not match for '%s' in %s", name, type);
-      }
-      Class expect = field.getType();
-      
-      if(expect != parameter.getType()) {
-         throw new PersistenceException("Parameter does not match field for '%s' in %s", name, type);
-      }
- 
    }
 }

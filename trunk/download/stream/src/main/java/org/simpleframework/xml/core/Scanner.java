@@ -24,8 +24,6 @@ import java.beans.Introspector;
 import java.lang.annotation.Annotation;
 import java.util.Set;
 
-import javax.media.jai.ParameterList;
-
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementArray;
@@ -50,7 +48,7 @@ import org.simpleframework.xml.Version;
  * 
  * @see org.simpleframework.xml.core.Schema
  */ 
-class Scanner implements ParameterMap {
+class Scanner {
    
    /**
     * This method acts as a pointer to the types commit process.
@@ -83,6 +81,11 @@ class Scanner implements ParameterMap {
    private String name;
    
    /**
+    * This is the type that is being scanned by this scanner.
+    */
+   private Class type;
+   
+   /**
     * This is used to specify whether the type is a primitive class.
     */
    private boolean primitive;
@@ -98,6 +101,7 @@ class Scanner implements ParameterMap {
       this.scanner = new ClassScanner(type);
       this.attributes = new LabelMap(this);
       this.elements = new LabelMap(this); 
+      this.type = type;
       this.scan(type);
    }      
    
@@ -519,7 +523,7 @@ class Scanner implements ParameterMap {
     * @param type this is the object type that is to be scanned
     */    
    public void field(Class type) throws Exception {
-      ContactList list = new FieldScanner(this, type);
+      ContactList list = new FieldScanner(type);
       
       for(Contact contact : list) {
          scan(contact, contact.getAnnotation());
@@ -534,7 +538,7 @@ class Scanner implements ParameterMap {
     * @param type this is the object type that is to be scanned
     */ 
    public void method(Class type) throws Exception {
-      ContactList list = new MethodScanner(this, type);
+      ContactList list = new MethodScanner(type);
       
       for(Contact contact : list) {
          scan(contact, contact.getAnnotation());
@@ -637,5 +641,28 @@ class Scanner implements ParameterMap {
          throw new PersistenceException("Annotation of name '%s' declared twice", name);
       }
       map.put(name, label);      
+      validate(label, name);
+   }
+   
+   private void validate(Label field, String name) throws Exception {
+      Parameter parameter = scanner.getParameter(name);
+      
+      if(parameter != null) {
+         validate(field, parameter);
+      }
+   }
+   
+   private void validate(Label field, Parameter parameter) throws Exception {
+      Contact contact = field.getContact();
+      Annotation label = contact.getAnnotation();
+      
+      if(!parameter.getAnnotation().equals(label)) {
+         throw new PersistenceException("Annotations do not match for '%s' in %s", name, type);
+      }
+      Class expect = contact.getType();
+      
+      if(expect != parameter.getType()) {
+         throw new PersistenceException("Parameter does not match field for '%s' in %s", name, type);
+      }     
    }
 }
