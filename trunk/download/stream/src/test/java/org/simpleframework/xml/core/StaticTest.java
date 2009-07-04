@@ -70,13 +70,13 @@ public class StaticTest extends ValidationTestCase {
 
       @Element(name="author")
       @Namespace(prefix="user", reference="http://www.domain.com/user")
-      private static final String AUTHOR = "Niall Gallagher";
+      private static String AUTHOR = "Niall Gallagher";
 
       @Element(name="contact")
-      private static final String CONTACT = "niallg@users.sourceforge.net";
+      private static String CONTACT = "niallg@users.sourceforge.net";
       
       @Element(name="detail")
-      private static final Detail DETAIL = new Detail(
+      private static Detail DETAIL = new Detail(
          "Stanford Press",
          "2001",
          "Palo Alto",

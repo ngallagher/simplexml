@@ -52,15 +52,8 @@ public class ReadOnlyTest extends TestCase {
       
       private final String name;
       private final String value;
-      
-      // This is illegal
+
       public IllegalReadOnlyMethodExample(@Attribute(name="name") String name, @Element(name="value") String value) {
-         this.name = name;
-         this.value = value;
-      }
-      
-      // This is legal
-      public IllegalReadOnlyMethodExample(@Attribute(name="name") String name, @Element(name="value") String value, @Element(name="illegal") String illegal) {
          this.name = name;
          this.value = value;
       }
@@ -98,10 +91,13 @@ public class ReadOnlyTest extends TestCase {
    }
 
    public void testIllegalReadOnlyMethod() throws Exception {
-      Persister persister = new Persister();
-      IllegalReadOnlyMethodExample example = persister.read(IllegalReadOnlyMethodExample.class, SOURCE);
-      
-      assertEquals(example.getName(), "name");
-      assertEquals(example.getValue(), "some text here");
+      boolean failure = false;
+      try {
+         Persister persister = new Persister();
+         IllegalReadOnlyMethodExample example = persister.read(IllegalReadOnlyMethodExample.class, SOURCE);
+      }catch(Exception e) {
+         failure = true;
+      }
+      assertTrue(failure);
    }
 }

@@ -474,14 +474,16 @@ class Scanner {
    
    private void validateConstructor(Builder builder, LabelMap map) throws Exception {
       for(Label label : map) {
-         Contact contact = label.getContact();
-         String name = label.getName();
-         
-         if(contact.isFinal()) {
-            Parameter value = builder.getParameter(name);
+         if(label != null) {
+            Contact contact = label.getContact();
+            String name = label.getName();
             
-            if(value == null) {
-               throw new PersistenceException("Can not set '%s' in '%s'", name, type);
+            if(contact.isFinal()) {
+               Parameter value = builder.getParameter(name);
+               
+               if(value == null) {
+                  throw new PersistenceException("Can not set '%s' in '%s'", name, type);
+               }
             }
          }
       }
