@@ -138,12 +138,11 @@ class Composite implements Converter {
     */
    public Object read(InputNode node) throws Exception {
       Type type = factory.getInstance(node); // Get the class type for the object
+      Class real = type.getType(); // What is the type of this class as taken from the XML
       
       if(type.isReference()) {      
          return type.getInstance(); // Just return previous creation
       }
-      Class real = type.getType(); // What is the type of this class as taken from the XML
-      
       if(context.isPrimitive(real)) { 
          return readPrimitive(node, type);
       }
@@ -178,6 +177,14 @@ class Composite implements Converter {
       return type.getInstance(value);
    }
    
+   /*
+    * 1) Is this a public no argument constructor?
+    * 2) If it is then instantiate
+    * 
+    * 
+    * 
+    * 
+    */
    public Object read(InputNode node, Schema schema) throws Exception {
       Caller caller = schema.getCaller();
       Set<String> names = store.keySet();

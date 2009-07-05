@@ -3,28 +3,24 @@ package org.simpleframework.xml.core;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 
-public class ParameterContact implements Contact {
+abstract class ParameterContact<T extends Annotation> implements Contact {
 
-   private final Constructor factory;
-   private final Annotation label;
-   private final String name;
-   private final int index;
+   protected final Constructor factory;
+   protected final int index;
+   protected final T label;
    
-   public ParameterContact(Constructor factory, Annotation label, String name, int index) {
+   public ParameterContact(T label, Constructor factory, int index) {
       this.factory = factory;
       this.index = index;
       this.label = label;
-      this.name = name;
    }
    
-   
-
    public Annotation getAnnotation() {
       return label;
    }
    
    public Class getType() {
-      return factory.getDeclaringClass();
+      return factory.getParameterTypes()[index];
    }
 
    public Class getDependant() {
@@ -34,27 +30,26 @@ public class ParameterContact implements Contact {
    public Class[] getDependants() {
       return Reflector.getParameterDependants(factory, index);
    }
-
-   public int getIndex() {
-      return index;
-   }
-
-   public String getName() {
-      return name;
-   }
-
-   public Object get(Object source) throws Exception {
+   
+   public Object get(Object source) {
       return null;
+   }  
+
+   public void set(Object source, Object value) {  
+      return;
    }
 
    public <T extends Annotation> T getAnnotation(Class<T> type) {
       return null;
    }
-
-   public void set(Object source, Object value) throws Exception {      
-   }
-
+   
    public boolean isFinal() {
       return true;
    }
+
+   public int getIndex() {
+      return index;
+   }
+
+   public abstract String getName();
 }

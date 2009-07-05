@@ -7,13 +7,13 @@ import org.simpleframework.xml.ElementMap;
 
 class ElementMapParameter implements Parameter {
 
-   private Constructor factory;
-   private Contact contact;
-   private Label label;
-   private int index;
+   private final Constructor factory;
+   private final Contact contact;
+   private final Label label;
+   private final int index;
    
    public ElementMapParameter(Constructor factory, ElementMap label, int index) {
-      this.contact = new ParameterContact(factory, label, label.name(), index);
+      this.contact = new LabelContact(label, factory, index);
       this.label = new ElementMapLabel(contact, label);
       this.factory = factory;
       this.index = index;
@@ -33,5 +33,16 @@ class ElementMapParameter implements Parameter {
    
    public Annotation getAnnotation() {
       return contact.getAnnotation();
+   }
+   
+   private static class LabelContact extends ParameterContact<ElementMap>  {
+      
+      public LabelContact(ElementMap label, Constructor factory, int index) {
+         super(label, factory, index);
+      }
+      
+      public String getName() {
+         return label.name();
+      }
    }
 }
