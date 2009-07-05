@@ -6,13 +6,14 @@ import java.lang.reflect.Constructor;
 import org.simpleframework.xml.Element;
 
 class ElementParameter implements Parameter {
-   private Constructor factory;
-   private Contact contact;
-   private Label label;
-   private int index;
+   
+   private final Constructor factory;
+   private final Contact contact;
+   private final Label label;
+   private final int index;
    
    public ElementParameter(Constructor factory, Element label, int index) {
-      this.contact = new ParameterContact(factory, label, label.name(), index);
+      this.contact = new LabelContact(label, factory, index);
       this.label = new ElementLabel(contact, label);
       this.factory = factory;
       this.index = index;
@@ -32,5 +33,16 @@ class ElementParameter implements Parameter {
    
    public Annotation getAnnotation() {
       return contact.getAnnotation();
+   }
+   
+   private static class LabelContact extends ParameterContact<Element>  {
+      
+      public LabelContact(Element label, Constructor factory, int index) {
+         super(label, factory, index);
+      }
+      
+      public String getName() {
+         return label.name();
+      }
    }
 }
