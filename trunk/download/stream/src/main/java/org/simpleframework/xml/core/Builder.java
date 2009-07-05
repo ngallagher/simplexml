@@ -16,6 +16,10 @@ class Builder {
       this.map = map;
    } 
    
+   public boolean isDefault() {
+      return map.size() == 0;
+   }
+   
    public Parameter getParameter(String name) {
       return map.get(name);
    }

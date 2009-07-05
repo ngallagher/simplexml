@@ -62,6 +62,7 @@ class ConstructorScanner {
 
    private Map<String, Parameter> all;
    private List<Builder> done;
+   private Builder primary;
    private Class type;
    
    public ConstructorScanner(Class type) throws Exception {
@@ -69,6 +70,10 @@ class ConstructorScanner {
       this.done = new ArrayList<Builder>();
       this.type = type;
       this.scan(type);
+   }
+   
+   public boolean isDefault() {
+      return primary != null;
    }
    
    public Parameter getParameter(String name) {
@@ -127,12 +132,18 @@ class ConstructorScanner {
             }
          }
       }
-      build(factory, map);
+      if(types.length == map.size()) {
+         build(factory, map);
+      }
    }
    
    private void build(Constructor factory, ParameterMap map) throws Exception {
-      done.add(new Builder(factory, map));
+      Builder builder = new Builder(factory, map);
       
+      if(builder.isDefault()) {
+         primary = builder;
+      }
+      done.add(builder);   
    }
    
    private Parameter process(Constructor factory, Annotation label, int index) throws Exception{
@@ -156,7 +167,7 @@ class ConstructorScanner {
    
    private Parameter create(Constructor factory, Annotation label, int index) throws Exception {
       Parameter value = ParameterFactory.getInstance(factory, label, index);
-      String name = value.getName(); // TODO this is not the real name, the real name comes from the label
+      String name = value.getName(); 
       
       if(all.containsKey(name)) {
          validate(value, name);
@@ -199,21 +210,5 @@ class ConstructorScanner {
       public Builder getBuilder() {
          return builder;
       }
-   }
-
-   /**
-    * Here we validate to ensure the constructors have correctly
-    * annotated the parameters with a matching method or field.
-    * If there is no match here then there is an exception. 
-    * <p>
-    * In particular here we must ensure that IF THE METHOD IS A
-    * READ ONLY METHOD THAT THERE IS AT LEAST ONE CONSTRUCTOR THAT
-    * WILL ACCEPT THE VALUE.  
-    * 
-    * @param attributes
-    * @param elements
-    */
-   public void validate(LabelMap attributes, LabelMap elements){
-      
    }
 }
