@@ -60,44 +60,20 @@ import org.simpleframework.xml.ElementMap;
  */
 class ConstructorScanner {
 
-   private Map<String, Parameter> all;
+   private ParameterMap all;
    private List<Builder> done;
    private Builder primary;
    private Class type;
    
    public ConstructorScanner(Class type) throws Exception {
-      this.all = new HashMap<String, Parameter>();
       this.done = new ArrayList<Builder>();
+      this.all = new ParameterMap();
       this.type = type;
       this.scan(type);
    }
    
-   public boolean isDefault() {
-      return primary != null;
-   }
-   
-   public Parameter getParameter(String name) {
-      return all.get(name);
-   }
-   
-   public Builder getBuilder(Set<String> names) {
-      PriorityQueue<Rank> queue = new PriorityQueue<Rank>();
-      
-      for(Builder builder : done) {
-         queue.add(new Rank(names, builder));
-      }
-      return  queue.remove().getBuilder();
-   }
-   
-   /**
-    * This is used to acquire all of the builders for the class. It
-    * is used to validate the schema and ensure that the annotations
-    * describe a fully serializable and deserializable class.
-    * 
-    * @return this returns the builders for this class schema
-    */
-   public List<Builder> getBuilders() {
-      return done;
+   public Instantiator2 getInstantiator() {
+      return new ClassInstantiator(done, all, primary);
    }
    
    private void scan(Class type) throws Exception {
@@ -186,29 +162,6 @@ class ConstructorScanner {
       
       if(expect != parameter.getType()) {
          throw new MethodException("Method types do not match for '%s' in %s", name, type);
-      }
-   }
-   
-   private class Rank implements Comparable<Rank> {
-      
-      private final Set<String> names;
-      private final Builder builder;
-      
-      public Rank(Set<String> names, Builder builder) {
-         this.builder = builder;
-         this.names = names;
-      }
-      
-      public int compareTo(Rank rank) {
-         try {
-            return rank.builder.score(names) - builder.score(names) ;
-         } catch(Exception e) {
-            throw new IllegalStateException(e);
-         }
-      }
-      
-      public Builder getBuilder() {
-         return builder;
       }
    }
 }

@@ -112,39 +112,8 @@ class ClassScanner  {
       this.scan(type);
    }      
 
-   /**
-    * This is used to acquire the <code>Parameter</code> object that
-    * has the provided name. This is used to validate the annotated
-    * methods and fields against the annotated constructor parameters.
-    * 
-    * @return this returns the parameter for the specified name
-    */
-   public Parameter getParameter(String name) {
-      return scanner.getParameter(name);
-   }
-   
-   /**
-    * This is used to acquire a <code>Builder</code> which is used
-    * to instantiate the object. If there is no match for the builder
-    * then the default constructor is provided.
-    * 
-    * @param names the names of the parameters to be matched
-    * 
-    * @return this returns the builder that has been matched
-    */
-   public Builder getBuilder(Set<String> names) {
-      return scanner.getBuilder(names);
-   }
-   
-   /**
-    * This is used to acquire all of the builders for the class. It
-    * is used to validate the schema and ensure that the annotations
-    * describe a fully serializable and deserializable class.
-    * 
-    * @return this returns the builders for this class schema
-    */
-   public List<Builder> getBuilders() {
-      return scanner.getBuilders();
+   public Instantiator2 getInstantiator() {
+      return scanner.getInstantiator();
    }
    
    /**

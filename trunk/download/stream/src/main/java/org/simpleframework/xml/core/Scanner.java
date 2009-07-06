@@ -107,28 +107,8 @@ class Scanner {
       this.scan(type);
    }      
    
-   /**
-    * This is used to acquire the <code>Parameter</code> object that
-    * has the provided name. This is used to validate the annotated
-    * methods and fields against the annotated constructor parameters.
-    * 
-    * @return this returns the parameter for the specified name
-    */
-   public Parameter getParameter(String name) {
-      return scanner.getParameter(name);
-   }
-   
-   /**
-    * This is used to acquire a <code>Builder</code> which is used
-    * to instantiate the object. If there is no match for the builder
-    * then the default constructor is provided.
-    * 
-    * @param names the names of the parameters to be matched
-    * 
-    * @return this returns the builder that has been matched
-    */
-   public Builder getBuilder(Set<String> names) {
-      return scanner.getBuilder(names);
+   public Instantiator2 getInstantiator() {
+      return scanner.getInstantiator();
    }
    
    /**
@@ -429,7 +409,8 @@ class Scanner {
     * @throws Exception if an ordered element does not exist
     */
    private void validateElements(Class type, Order order) throws Exception {
-      List<Builder> builders = scanner.getBuilders();
+      Instantiator2 factory = scanner.getInstantiator();
+      List<Builder> builders = factory.getBuilders();
       
       for(Builder builder : builders) {
          validateConstructor(builder, elements);
@@ -455,7 +436,8 @@ class Scanner {
     * @throws Exception if an ordered attribute does not exist
     */
    private void validateAttributes(Class type, Order order) throws Exception {
-      List<Builder> builders = scanner.getBuilders();
+      Instantiator2 factory = scanner.getInstantiator();
+      List<Builder> builders = factory.getBuilders();
       
       for(Builder builder : builders) {
          validateConstructor(builder, elements);
@@ -677,7 +659,8 @@ class Scanner {
    }
    
    private void validate(Label field, String name) throws Exception {
-      Parameter parameter = scanner.getParameter(name);
+      Instantiator2 factory = scanner.getInstantiator();
+      Parameter parameter = factory.getParameter(name);
       
       if(parameter != null) {
          validate(field, parameter);
