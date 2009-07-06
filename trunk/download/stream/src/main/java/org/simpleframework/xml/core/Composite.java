@@ -176,27 +176,42 @@ class Composite implements Converter {
       
       return readResolve(node, value, caller);    
    }
-
-   
    
    private Object read(InputNode node, Schema schema, Type type) throws Exception {
       Creator creator = schema.getCreator();
-      Object value = null;
       
       if(creator.isDefault()) {
-         value = creator.getDefault(); // create the default
-         type.getInstance(value);
+         return readDefault(node, schema, type);
       }
-      if(schema != null) {
-         read(node, null, schema);// read all the variables
-      }
-      if(value == null) {
-         Set<String> keys = store.keySet(); // get the keys
-         Builder builder = creator.getBuilder(keys); // get the builder
-         
-         value = builder.build(store);
-      }
+      return readComplex(node, schema, type);
+   }
+   
+   private Object readDefault(InputNode node, Schema schema, Type type) throws Exception {
+      Creator creator = schema.getCreator();
+      Object value = creator.getDefault();
+      Class real = type.getType();
+      
+      type.getInstance(value);
+      read(node, real, schema);// read all the variables
       store.commit(value); // commit the variables 
+      
+      return value;
+   }
+   
+   private Object readComplex(InputNode node, Schema schema, Type type) throws Exception {
+      Creator creator = schema.getCreator();
+      Class real = type.getType();
+      
+      if(schema != null) {
+         read(node, real, schema);// read all the variables
+      }
+      Set<String> keys = store.keySet(); // get the keys
+      Builder builder = creator.getBuilder(keys); // get the builder
+      Object value = builder.build(store);
+      
+      type.getInstance(value);
+      store.commit(value); // commit the variables 
+      
       return value;
    }
    
