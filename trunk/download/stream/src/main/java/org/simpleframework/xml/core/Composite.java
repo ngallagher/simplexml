@@ -203,7 +203,6 @@ class Composite implements Converter {
       
       caller.validate(value); 
       caller.commit(value); 
-      type.getInstance(value);
       
       return readResolve(node, value, caller);    
    }
@@ -214,7 +213,7 @@ class Composite implements Converter {
       if(creator.isDefault()) {
          return readDefault(node, schema, type);
       }
-      return readComplex(node, schema, type);
+      return readInject(node, schema, type);
    }
    
    private Object readDefault(InputNode node, Schema schema, Type type) throws Exception {
@@ -229,7 +228,7 @@ class Composite implements Converter {
       return value;
    }
    
-   private Object readComplex(InputNode node, Schema schema, Type type) throws Exception {
+   private Object readInject(InputNode node, Schema schema, Type type) throws Exception {
       Creator creator = schema.getCreator();
       
       if(schema != null) {
@@ -271,7 +270,7 @@ class Composite implements Converter {
     * is a resolution method which can be used to substitute the object
     * deserialized. The resolve method is used when an object wishes 
     * to provide a substitute within the deserialized object graph.
-    * This acts as an equivelant to the Java Object Serialization
+    * This acts as an equivalent to the Java Object Serialization
     * <code>readResolve</code> method for the object deserialization.
     * 
     * @param node the XML element object provided as a replacement
