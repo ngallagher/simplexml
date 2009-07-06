@@ -146,7 +146,7 @@ class Composite implements Converter {
       if(context.isPrimitive(real)) { 
          return readPrimitive(node, type);
       }
-      return read(node, type);
+      return read(node, type, real);
    }
    
    /**
@@ -165,38 +165,39 @@ class Composite implements Converter {
     * 
     * @return this returns the fully deserialized object graph
     */
-   private Object read(InputNode node, Type type) throws Exception {
-      Class real = type.getType();
+   private Object read(InputNode node, Type type, Class real) throws Exception {
       Schema schema = context.getSchema(real);
-      
-      if(schema != null) {
-         read(node, real, schema); 
-      }
-      Object value = read(node, schema);
-      
-      return type.getInstance(value);
-   }
-   
-   /*
-    * 1) Is this a public no argument constructor?
-    * 2) If it is then instantiate
-    * 
-    * 
-    * 
-    * 
-    */
-   public Object read(InputNode node, Schema schema) throws Exception {
       Caller caller = schema.getCaller();
-      Set<String> names = store.keySet();
-      Specification factory = schema.getInstantiator();
-      Builder builder = factory.getBuilder(names);
-      Object value = builder.build(store);
+      Object value = read(node, schema, type);
       
-      store.commit(value); 
       caller.validate(value); 
       caller.commit(value); 
+      type.getInstance(value);
       
       return readResolve(node, value, caller);    
+   }
+
+   
+   
+   private Object read(InputNode node, Schema schema, Type type) throws Exception {
+      Creator creator = schema.getCreator();
+      Object value = null;
+      
+      if(creator.isDefault()) {
+         value = creator.getDefault(); // create the default
+         type.getInstance(value);
+      }
+      if(schema != null) {
+         read(node, null, schema);// read all the variables
+      }
+      if(value == null) {
+         Set<String> keys = store.keySet(); // get the keys
+         Builder builder = creator.getBuilder(keys); // get the builder
+         
+         value = builder.build(store);
+      }
+      store.commit(value); // commit the variables 
+      return value;
    }
    
 

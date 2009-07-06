@@ -3,7 +3,7 @@ package org.simpleframework.xml.core;
 import java.util.List;
 import java.util.Set;
 
-interface Specification {
+interface Creator {
 
    public boolean isDefault(); 
    public Object getDefault() throws Exception; 

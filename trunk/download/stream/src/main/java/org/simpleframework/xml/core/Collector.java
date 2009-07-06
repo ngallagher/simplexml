@@ -82,7 +82,7 @@ class Collector extends HashMap<String, Pointer> {
          Object value = entry.getValue();
          
          if(entry.isCollection()) {
-           Object original = contact.get(source);; // GET the original
+           Object original = contact.get(source); // GET the original
             
             if(original != null) {
                if(value instanceof Map) {

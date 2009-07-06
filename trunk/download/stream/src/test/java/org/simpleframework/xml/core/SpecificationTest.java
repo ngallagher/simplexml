@@ -53,7 +53,7 @@ public class SpecificationTest extends TestCase {
    
    public void testSpecification() throws Exception {
       ConstructorScanner scanner = new ConstructorScanner(SimpleClass.class);
-      Specification spec = scanner.getSpecification();
+      Creator spec = scanner.getCreator();
       
       assertTrue(spec.isDefault());
       assertEquals(spec.getBuilder(toSet("name")).getParameter("name").getType(), String.class);

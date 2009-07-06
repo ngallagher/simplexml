@@ -40,7 +40,7 @@ class Schema {
    /**
     * This is the scanner that is used to acquire the constructor.
     */
-   private Specification factory;
+   private Creator factory;
    
    /**
     * This is the decorator associated with this schema object.
@@ -95,7 +95,7 @@ class Schema {
       this.attributes = schema.getAttributes(context);
       this.elements = schema.getElements(context);
       this.caller = schema.getCaller(context);
-      this.factory = schema.getInstantiator();
+      this.factory = schema.getCreator();
       this.revision = schema.getRevision();
       this.decorator = schema.getDecorator();
       this.primitive = schema.isPrimitive();
@@ -103,7 +103,7 @@ class Schema {
       this.text = schema.getText();
    }
    
-   public Specification getInstantiator() {
+   public Creator getCreator() {
       return factory;
    }
    
