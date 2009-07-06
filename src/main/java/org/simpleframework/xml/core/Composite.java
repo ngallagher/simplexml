@@ -189,10 +189,9 @@ class Composite implements Converter {
    private Object readDefault(InputNode node, Schema schema, Type type) throws Exception {
       Creator creator = schema.getCreator();
       Object value = creator.getDefault();
-      Class real = type.getType();
       
       type.getInstance(value);
-      read(node, real, schema);// read all the variables
+      read(node, value, schema);// read all the variables
       store.commit(value); // commit the variables 
       
       return value;
@@ -200,10 +199,9 @@ class Composite implements Converter {
    
    private Object readComplex(InputNode node, Schema schema, Type type) throws Exception {
       Creator creator = schema.getCreator();
-      Class real = type.getType();
       
       if(schema != null) {
-         read(node, real, schema);// read all the variables
+         read(node, null, schema);// read all the variables
       }
       Set<String> keys = store.keySet(); // get the keys
       Builder builder = creator.getBuilder(keys); // get the builder
@@ -308,7 +306,7 @@ class Composite implements Converter {
     * @param source this type of the object that is to be deserialized
     * @param schema this object visits the objects contacts
     */
-   private void read(InputNode node, Class source, Schema schema) throws Exception {
+   private void read(InputNode node, Object source, Schema schema) throws Exception {
       readVersion(node, source, schema);
       readText(node, source, schema);
       readAttributes(node, source, schema);
@@ -327,7 +325,7 @@ class Composite implements Converter {
     * @param source this object whose contacts are to be deserialized
     * @param schema this object visits the objects contacts
     */
-   private void readVersion(InputNode node, Class source, Schema schema) throws Exception {
+   private void readVersion(InputNode node, Object source, Schema schema) throws Exception {
       Label label = schema.getVersion();
       
       if(label != null) {
@@ -339,7 +337,6 @@ class Composite implements Converter {
             readVersion(value, source, label);
          } else {
             Version version = context.getVersion(type);
-            Contact contact = label.getContact();
             Double start = revision.getDefault();
             Double expected = version.revision();
             
@@ -361,7 +358,7 @@ class Composite implements Converter {
     * @param source the type of the object that is being deserialized
     * @param label this is the label used to read the version attribute
     */
-   private void readVersion(InputNode node, Class source, Label label) throws Exception {
+   private void readVersion(InputNode node, Object source, Label label) throws Exception {
       Object value = read(node, source, label);
      
       if(value != null) {
@@ -391,7 +388,7 @@ class Composite implements Converter {
     * 
     * @throws Exception thrown if any required attributes remain
     */
-   private void readAttributes(InputNode node, Class source, Schema schema) throws Exception {
+   private void readAttributes(InputNode node, Object source, Schema schema) throws Exception {
       NodeMap<InputNode> list = node.getAttributes();
       LabelMap map = schema.getAttributes();
 
@@ -418,7 +415,7 @@ class Composite implements Converter {
     * 
     * @throws Exception thrown if any required elements remain
     */
-   private void readElements(InputNode node, Class source, Schema schema) throws Exception {
+   private void readElements(InputNode node, Object source, Schema schema) throws Exception {
       LabelMap map = schema.getElements();
       
       while(true) {
@@ -445,7 +442,7 @@ class Composite implements Converter {
     * 
     * @throws Exception thrown if a required text value was null
     */
-   private void readText(InputNode node, Class source, Schema schema) throws Exception {
+   private void readText(InputNode node, Object source, Schema schema) throws Exception {
       Label label = schema.getText();
       
       if(label != null) {
@@ -467,7 +464,7 @@ class Composite implements Converter {
     * 
     * @throws Exception thrown if the the label object does not exist
     */
-   private void readAttribute(InputNode node, Class source, LabelMap map) throws Exception {
+   private void readAttribute(InputNode node, Object source, LabelMap map) throws Exception {
       Position line = node.getPosition();
       String name = node.getName();
       Label label = map.take(name);
@@ -495,7 +492,7 @@ class Composite implements Converter {
     * 
     * @throws Exception thrown if the the label object does not exist
     */
-   private void readElement(InputNode node, Class source, LabelMap map) throws Exception {
+   private void readElement(InputNode node, Object source, LabelMap map) throws Exception {
       String name = node.getName();
       Label label = map.take(name);      
 
@@ -529,7 +526,7 @@ class Composite implements Converter {
     * 
     * @throws Exception thrown if the contact could not be deserialized
     */
-   private Object read(InputNode node, Class source, Label label) throws Exception {    
+   private Object read(InputNode node, Object source, Label label) throws Exception {    
       Object object = readObject(node, source, label);
     
       if(object == null) {     
@@ -562,18 +559,26 @@ class Composite implements Converter {
     * 
     * @throws Exception thrown if the contact could not be deserialized
     */
-   private Object readObject(InputNode node, Class source, Label label) throws Exception {    
+   private Object readObject(InputNode node, Object source, Label label) throws Exception {    
       Converter reader = label.getConverter(context);   
       
       if(label.isCollection()) {
          Pointer pointer = store.get(label);
+         Contact contact = label.getContact();
          
-         if(pointer == null) { 
-            return reader.read(node);
-         }
-         Object original = pointer.getValue();
+         if(pointer != null) {
+            Object value = pointer.getValue();
 
-         return reader.read(node, original); // won't respect cycles
+            return reader.read(node, value);
+         } else {
+            if(source != null) {
+               Object value = contact.get(source);
+            
+               if(value != null) {
+                  return reader.read(node, value);
+               }
+            }
+         }
       }
       return reader.read(node);
    }
@@ -593,11 +598,14 @@ class Composite implements Converter {
     */
    private void validate(InputNode node, LabelMap map, Object source) throws Exception {     
       Position line = node.getPosition();
-      Class type = source.getClass();
-
+      Class real = type;
+      
+      if(source != null) {
+         real = source.getClass();
+      }
       for(Label label : map) {
          if(label.isRequired() && revision.isEqual()) {
-            throw new ValueRequiredException("Unable to satisfy %s for %s at %s", label, type, line);
+            throw new ValueRequiredException("Unable to satisfy %s for %s at %s", label, real, line);
          }
          Object value = label.getEmpty(context);
          

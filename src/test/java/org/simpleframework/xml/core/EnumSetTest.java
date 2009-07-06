@@ -15,7 +15,7 @@ public class EnumSetTest extends ValidationTestCase {
       EXPERT,
       GURU
    }
-   /*
+   
    @Root
    private static class EnumSetExample {
       
@@ -48,7 +48,6 @@ public class EnumSetTest extends ValidationTestCase {
 
       persister.write(example, System.out);
       validate(persister, example);
-   }*/
-   public void testA(){}
+   }
 
 }
