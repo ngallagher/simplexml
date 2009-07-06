@@ -107,8 +107,8 @@ class Scanner {
       this.scan(type);
    }      
    
-   public Specification getInstantiator() {
-      return scanner.getInstantiator();
+   public Creator getCreator() {
+      return scanner.getCreator();
    }
    
    /**
@@ -409,7 +409,7 @@ class Scanner {
     * @throws Exception if an ordered element does not exist
     */
    private void validateElements(Class type, Order order) throws Exception {
-      Specification factory = scanner.getInstantiator();
+      Creator factory = scanner.getCreator();
       List<Builder> builders = factory.getBuilders();
       
       for(Builder builder : builders) {
@@ -436,7 +436,7 @@ class Scanner {
     * @throws Exception if an ordered attribute does not exist
     */
    private void validateAttributes(Class type, Order order) throws Exception {
-      Specification factory = scanner.getInstantiator();
+      Creator factory = scanner.getCreator();
       List<Builder> builders = factory.getBuilders();
       
       for(Builder builder : builders) {
@@ -659,7 +659,7 @@ class Scanner {
    }
    
    private void validate(Label field, String name) throws Exception {
-      Specification factory = scanner.getInstantiator();
+      Creator factory = scanner.getCreator();
       Parameter parameter = factory.getParameter(name);
       
       if(parameter != null) {

@@ -4,13 +4,13 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Set;
 
-class ClassInstantiator implements Specification {
+class ClassCreator implements Creator {
    
    private final ParameterMap map;
    private final List<Builder> list;
    private final Builder primary;
    
-   public ClassInstantiator(List<Builder> list, ParameterMap map, Builder primary) {
+   public ClassCreator(List<Builder> list, ParameterMap map, Builder primary) {
       this.primary = primary;
       this.list = list;
       this.map = map;

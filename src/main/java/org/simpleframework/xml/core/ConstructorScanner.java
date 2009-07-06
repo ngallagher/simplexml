@@ -72,8 +72,8 @@ class ConstructorScanner {
       this.scan(type);
    }
    
-   public Specification getSpecification() {
-      return new ClassInstantiator(done, all, primary);
+   public Creator getCreator() {
+      return new ClassCreator(done, all, primary);
    }
    
    private void scan(Class type) throws Exception {
