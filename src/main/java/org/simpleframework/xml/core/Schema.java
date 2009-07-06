@@ -38,6 +38,11 @@ import org.simpleframework.xml.Version;
 class Schema {
    
    /**
+    * This is the scanner that is used to acquire the constructor.
+    */
+   private Instantiator2 factory;
+   
+   /**
     * This is the decorator associated with this schema object.
     */
    private Decorator decorator;
@@ -56,11 +61,6 @@ class Schema {
     * This is the version annotation for the XML class schema.
     */
    private Version revision;
-   
-   /**
-    * This is the scanner that is used to acquire the constructor.
-    */
-   private Scanner schema;
    
    /**
     * This is the pointer to the schema class replace method.
@@ -91,29 +91,20 @@ class Schema {
     * @param schema this contains all labels scanned from the class
     * @param context this is the context object for serialization
     */
-   public Schema(Scanner schema, Context context) throws Exception {   
+   public Schema(Scanner schema, Context context) throws Exception {  
       this.attributes = schema.getAttributes(context);
       this.elements = schema.getElements(context);
       this.caller = schema.getCaller(context);
+      this.factory = schema.getInstantiator();
       this.revision = schema.getRevision();
       this.decorator = schema.getDecorator();
       this.primitive = schema.isPrimitive();
       this.version = schema.getVersion();
       this.text = schema.getText();
-      this.schema = schema;
    }
    
-   /**
-    * This is used to acquire a <code>Builder</code> which is used
-    * to instantiate the object. If there is no match for the builder
-    * then the default constructor is provided.
-    * 
-    * @param names the names of the parameters to be matched
-    * 
-    * @return this returns the builder that has been matched
-    */
-   public Builder getBuilder(Set<String> names) {
-      return schema.getBuilder(names);
+   public Instantiator2 getInstantiator() {
+      return factory;
    }
    
    /**

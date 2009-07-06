@@ -16,6 +16,10 @@ class Builder {
       this.map = map;
    } 
    
+   public Object getDefault() throws Exception {
+      return factory.newInstance();
+   }
+   
    public boolean isDefault() {
       return map.size() == 0;
    }
