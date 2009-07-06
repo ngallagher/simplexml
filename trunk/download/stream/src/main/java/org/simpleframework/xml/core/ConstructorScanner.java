@@ -72,7 +72,7 @@ class ConstructorScanner {
       this.scan(type);
    }
    
-   public Instantiator2 getInstantiator() {
+   public Specification getSpecification() {
       return new ClassInstantiator(done, all, primary);
    }
    

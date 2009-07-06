@@ -112,8 +112,8 @@ class ClassScanner  {
       this.scan(type);
    }      
 
-   public Instantiator2 getInstantiator() {
-      return scanner.getInstantiator();
+   public Specification getInstantiator() {
+      return scanner.getSpecification();
    }
    
    /**

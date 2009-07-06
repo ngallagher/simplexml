@@ -40,7 +40,7 @@ class Schema {
    /**
     * This is the scanner that is used to acquire the constructor.
     */
-   private Instantiator2 factory;
+   private Specification factory;
    
    /**
     * This is the decorator associated with this schema object.
@@ -103,7 +103,7 @@ class Schema {
       this.text = schema.getText();
    }
    
-   public Instantiator2 getInstantiator() {
+   public Specification getInstantiator() {
       return factory;
    }
    

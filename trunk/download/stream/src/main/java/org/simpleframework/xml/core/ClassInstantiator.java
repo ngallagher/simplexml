@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Set;
 
-class ClassInstantiator implements Instantiator2 {
+class ClassInstantiator implements Specification {
    
    private final ParameterMap map;
    private final List<Builder> list;

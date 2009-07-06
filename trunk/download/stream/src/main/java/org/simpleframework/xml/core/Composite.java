@@ -188,7 +188,7 @@ class Composite implements Converter {
    public Object read(InputNode node, Schema schema) throws Exception {
       Caller caller = schema.getCaller();
       Set<String> names = store.keySet();
-      Instantiator2 factory = schema.getInstantiator();
+      Specification factory = schema.getInstantiator();
       Builder builder = factory.getBuilder(names);
       Object value = builder.build(store);
       
