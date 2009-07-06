@@ -45,6 +45,10 @@ public class ResolverTest extends ValidationTestCase {
       public String getPattern() {
          return pattern;
       }
+      
+      public String toString() {
+         return String.format("%s=%s", pattern, value);
+      }
    }
    
    @Root(name="test")
