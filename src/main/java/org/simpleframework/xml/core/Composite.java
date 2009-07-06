@@ -564,9 +564,10 @@ class Composite implements Converter {
     */
    private Object readObject(InputNode node, Object source, Label label) throws Exception {    
       Converter reader = label.getConverter(context);   
+      String name = label.getName(context);
       
       if(label.isCollection()) {
-         Pointer pointer = store.get(label);
+         Pointer pointer = store.get(name);
          Contact contact = label.getContact();
          
          if(pointer != null) {

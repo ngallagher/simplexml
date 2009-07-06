@@ -81,21 +81,21 @@ class Collector extends HashMap<String, Pointer> {
          Contact contact = entry.getContact();
          Object value = entry.getValue();
          
-         if(entry.isCollection()) {
-           Object original = contact.get(source); // GET the original
-            
+         //if(entry.isCollection()) {
+           //Object original = contact.get(source); // GET the original
+            /*
             if(original != null) {
                if(value instanceof Map) {
                   ((Map)original).putAll((Map)value);
                } else if(value instanceof Collection) {
                   ((Collection)original).addAll((Collection)value);
                }
-               System.err.println(original+" >>>"+original.getClass()+" contact="+contact);
-               value = original;
-            }
-         } 
+               System.err.println(original+" >>>"+original.getClass()+" contact="+contact);*/
+               //value = original;
+            //}
+         //} 
          if(value == null) {
-            System.err.println(contact);
+            System.err.println(value);
          }
          contact.set(source, value);
       }
