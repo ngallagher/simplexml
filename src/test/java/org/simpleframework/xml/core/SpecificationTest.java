@@ -1,7 +1,8 @@
 package org.simpleframework.xml.core;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import junit.framework.TestCase;
@@ -64,9 +65,28 @@ public class SpecificationTest extends TestCase {
       assertEquals(spec.getBuilder(toSet("name", "value")).getParameter("value").getType(), int.class);
       assertEquals(spec.getBuilder(toSet("name", "value")).getParameter("value").getIndex(), 1);
       assertEquals(spec.getBuilder(toSet("name", "value")).getParameter("value").getName(), "value");
-      assertEquals(spec.getBuilder(Collections.EMPTY_SET).build(Collections.EMPTY_LIST).getClass(), SimpleClass.class);
+      assertEquals(spec.getBuilder(toSet()).build(toList()).getClass(), SimpleClass.class);
       assertEquals(spec.getDefault().getClass(), SimpleClass.class);
-      assertEquals(spec.getBuilder(Collections.EMPTY_SET).build(Collections.EMPTY_LIST), spec.getDefault());
+      assertEquals(spec.getBuilder(toSet()).build(toList()), spec.getDefault());
+      
+      SimpleClass instance = (SimpleClass)spec.getDefault();
+      
+      assertEquals(instance.getName(), "default");
+      assertEquals(instance.getValue(), 2);
+      
+      SimpleClass other = (SimpleClass)spec.getBuilder(toSet("name", "value")).build(toList("test", 1));
+      
+      assertEquals(other.getName(), "test");
+      assertEquals(other.getValue(), 1);
+   }
+   
+   public List<Object> toList(Object... list) {
+      List<Object> arr = new ArrayList<Object>();
+      
+      for(Object value : list) {
+         arr.add(value);
+      }
+      return arr;
    }
    
    public Set<String> toSet(String... list) {
