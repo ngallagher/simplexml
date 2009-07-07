@@ -28,19 +28,6 @@ import org.simpleframework.xml.stream.NodeMap;
 import org.simpleframework.xml.stream.OutputNode;
 import org.simpleframework.xml.stream.Position;
 
-/*
- * 
- * 1) Read all attributes/elements/text in to the store
- * 2) Instantiate the composite object with values from the store
- * 3) Populate the object fields and methods --> REQUIRES SOME FORM OF TRANSFER FOR ORIGINALS
- * 4) Read resolve the object
- * 5) Return the result
- * 
- * 
- * 
- */
-
-
 /**
  * The <code>Composite</code> object is used to perform serialization
  * of objects that contain XML annotation. Composite objects are objects
@@ -86,7 +73,7 @@ class Composite implements Converter {
    /**
     * This is used to store objects so that they can be read again.
     */
-   private final Collector store;
+   private final Criteria store;
    
    /**
     * This is the current revision of this composite converter.
@@ -146,7 +133,7 @@ class Composite implements Converter {
       if(context.isPrimitive(real)) { 
          return readPrimitive(node, type);
       }
-      return read(node, type);
+      return read(node, type, real);
    }
    
    /**
@@ -195,8 +182,7 @@ class Composite implements Converter {
     * 
     * @return this returns the fully deserialized object graph
     */
-   private Object read(InputNode node, Type type) throws Exception {
-      Class real = type.getType();
+   private Object read(InputNode node, Type type, Class real) throws Exception {
       Schema schema = context.getSchema(real);
       Caller caller = schema.getCaller();
       Object value = read(node, schema, type);
@@ -208,6 +194,13 @@ class Composite implements Converter {
       return readResolve(node, value, caller);    
    }
    
+   /**
+    * 
+    * @param node
+    * @param schema
+    * @param type
+    * @return
+    */
    private Object read(InputNode node, Schema schema, Type type) throws Exception {
       Creator creator = schema.getCreator();
       
@@ -219,12 +212,12 @@ class Composite implements Converter {
    
    private Object readDefault(InputNode node, Schema schema, Type type) throws Exception {
       Creator creator = schema.getCreator();
-      Object value = creator.getDefault();
+      Object value = creator.getInstance();
       
       if(type != null) {
          type.getInstance(value);
-         read(node, value, schema);// read all the variables
-         store.commit(value); // commit the variables 
+         read(node, value, schema);
+         store.commit(value);  
       }
       return value;
    }
@@ -233,19 +226,16 @@ class Composite implements Converter {
       Creator creator = schema.getCreator();
       
       if(schema != null) {
-         read(node, null, schema);// read all the variables
+         read(node, null, schema);
       }
-      Set<String> keys = store.keySet(); // get the keys
-      Builder builder = creator.getBuilder(keys); // get the builder
-      Object value = builder.build(store);
+      Object value = creator.getInstance(store);
       
       if(type != null) {
          type.getInstance(value);
-         store.commit(value); // commit the variables 
+         store.commit(value); 
       }
       return value;
    }
-   
 
    /**
     * This <code>readPrimitive</code> method will extract the text value
@@ -271,7 +261,7 @@ class Composite implements Converter {
     * is a resolution method which can be used to substitute the object
     * deserialized. The resolve method is used when an object wishes 
     * to provide a substitute within the deserialized object graph.
-    * This acts as an equivelant to the Java Object Serialization
+    * This acts as an equivalent to the Java Object Serialization
     * <code>readResolve</code> method for the object deserialization.
     * 
     * @param node the XML element object provided as a replacement
@@ -343,7 +333,7 @@ class Composite implements Converter {
             Double start = revision.getDefault();
             Double expected = version.revision();
             
-            store.put(label, start);
+            store.set(label, start);
             revision.compare(expected, start);
          }
       }
@@ -541,7 +531,7 @@ class Composite implements Converter {
          }
       } else {
          if(object != label.getEmpty(context)) {      
-            store.put(label, object);
+            store.set(label, object);
          }
       }
       return object;
@@ -614,7 +604,7 @@ class Composite implements Converter {
          Object value = label.getEmpty(context);
          
          if(value != null) {
-            store.put(label, value);
+            store.set(label, value);
          }
       }      
    }
@@ -824,7 +814,7 @@ class Composite implements Converter {
       if(valid == false) {     
         throw new PersistenceException("Invalid value for %s in %s at %s", label, type, line);
       }
-      store.put(label, null);
+      store.set(label, null);
    }
 
    /**

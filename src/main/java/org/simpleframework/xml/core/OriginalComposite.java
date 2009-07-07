@@ -485,7 +485,7 @@ class OriginalComposite implements Converter {
          }
       } else {
          if(object != label.getEmpty(context)) {      
-            store.put(label, object);
+            store.set(label, object);
          }
       }
       return object;
@@ -544,7 +544,7 @@ class OriginalComposite implements Converter {
          Object value = label.getEmpty(context);
          
          if(value != null) {
-            store.put(label, value);
+            store.set(label, value);
          }
       }      
    }
@@ -754,7 +754,7 @@ class OriginalComposite implements Converter {
       if(valid == false) {     
         throw new PersistenceException("Invalid value for %s in %s at %s", label, type, line);
       }
-      store.put(label, null);
+      store.set(label, null);
    }
 
    /**

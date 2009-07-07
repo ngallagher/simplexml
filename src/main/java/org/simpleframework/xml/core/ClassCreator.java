@@ -16,8 +16,12 @@ class ClassCreator implements Creator {
       this.map = map;
    }
    
-   public Object getDefault() throws Exception {
+   public Object getInstance() throws Exception {
       return primary.getDefault();
+   }
+
+   public Object getInstance(Criteria criteria) throws Exception {
+      return getBuilder(criteria).build(criteria);
    }
    
    public boolean isDefault() {
@@ -44,11 +48,11 @@ class ClassCreator implements Creator {
     * 
     * @return this returns the builder that has been matched
     */
-   public Builder getBuilder(Set<String> names) {
+   private Builder getBuilder(Criteria criteria) {
       PriorityQueue<Rank> queue = new PriorityQueue<Rank>();
       
       for(Builder builder : list) {
-         queue.add(new Rank(names, builder));
+         queue.add(new Rank(criteria, builder));
       }
       return  queue.remove().getBuilder();
    }
@@ -66,17 +70,17 @@ class ClassCreator implements Creator {
    
    private class Rank implements Comparable<Rank> {
       
-      private final Set<String> names;
+      private final Criteria criteria;
       private final Builder builder;
       
-      public Rank(Set<String> names, Builder builder) {
+      public Rank(Criteria criteria, Builder builder) {
          this.builder = builder;
-         this.names = names;
+         this.criteria = criteria;
       }
       
       public int compareTo(Rank rank) {
          try {
-            return rank.builder.score(names) - builder.score(names) ;
+            return rank.builder.score(criteria) - builder.score(criteria) ;
          } catch(Exception e) {
             throw new IllegalStateException(e);
          }

@@ -4,7 +4,6 @@ import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 class Builder {
 
@@ -28,11 +27,13 @@ class Builder {
       return map.get(name);
    }
    
-   public int score(Set<String> set) throws Exception {
+   public int score(Criteria criteria) throws Exception {
       int score = 0;
       
       for(String name : map.keySet()) {
-         if(!set.contains(name)) {
+         Label label = criteria.get(name);
+         
+         if(label == null) {
             return -1;
          }
          score++;
@@ -40,16 +41,16 @@ class Builder {
       return score;
    }
    
-   public Object build(Map<String, Pointer> store) throws Exception {
+   public Object build(Criteria criteria) throws Exception {
       List<Object> values = new ArrayList<Object>();
       
       for(Parameter parameter : map) {
          String name = parameter.getName();
-         Pointer pointer = store.get(name);
+         Pointer pointer = criteria.get(name);
          Object value = pointer.getValue();
          
          values.add(value);
-         store.remove(name);
+         criteria.remove(name);
       }
       return build(values);
    }

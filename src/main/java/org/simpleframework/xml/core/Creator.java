@@ -1,13 +1,12 @@
 package org.simpleframework.xml.core;
 
 import java.util.List;
-import java.util.Set;
 
 interface Creator {
 
    public boolean isDefault(); 
-   public Object getDefault() throws Exception; 
+   public Object getInstance() throws Exception; 
+   public Object getInstance(Criteria criteria) throws Exception;
    public Parameter getParameter(String name);
-   public Builder getBuilder(Set<String> names);
    public List<Builder> getBuilders();
 }

@@ -22,7 +22,7 @@ package org.simpleframework.xml.core;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Map;
+import java.util.Iterator;
 
 /**
  * The <code>Collector</code> object is used to store pointers for
@@ -35,7 +35,9 @@ import java.util.Map;
  * 
  * @see org.simpleframework.xml.core.Composite
  */
-class Collector extends HashMap<String, Pointer> {
+class Collector implements Criteria {
+   
+   private final PointerMap registry;
    
    /**
     * This is the context object used by the serialization process.
@@ -48,6 +50,7 @@ class Collector extends HashMap<String, Pointer> {
     * Each pointer is stored using the name of the label.
     */
    public Collector(Context context) {
+      this.registry = new PointerMap();
       this.context = context;
    }
    
@@ -60,10 +63,13 @@ class Collector extends HashMap<String, Pointer> {
     * @param label this is the label used to create the pointer
     * @param value this is the value of the object to be read
     */
-   public void put(Label label, Object value) throws Exception {
-      String name = label.getName(context);
-      
-      put(name, new Pointer(label, value));
+   public void set(Label label, Object value) throws Exception {
+      Pointer pointer = new Pointer(label, value);
+
+      if(label != null) {
+         String name = label.getName(context);     
+         registry.put(name, pointer);
+      }
    }
    
    /**
@@ -75,29 +81,33 @@ class Collector extends HashMap<String, Pointer> {
     * @param source this is the object that is to be populated
     */
    public void commit(Object source) throws Exception {
-      Collection<Pointer> set = values();
+      Collection<Pointer> set = registry.values();
       
       for(Pointer entry : set) { 
          Contact contact = entry.getContact();
          Object value = entry.getValue();
-         
-         //if(entry.isCollection()) {
-           //Object original = contact.get(source); // GET the original
-            /*
-            if(original != null) {
-               if(value instanceof Map) {
-                  ((Map)original).putAll((Map)value);
-               } else if(value instanceof Collection) {
-                  ((Collection)original).addAll((Collection)value);
-               }
-               System.err.println(original+" >>>"+original.getClass()+" contact="+contact);*/
-               //value = original;
-            //}
-         //} 
-         if(value == null) {
-            System.err.println(value);
-         }
+
          contact.set(source, value);
       }
    }   
+   
+   public Pointer get(String name) {
+      return registry.get(name);
+   }
+
+   public Iterator<String> iterator() {
+      return registry.keySet().iterator();
+   }
+
+   public void remove(String name) {
+      registry.remove(name);
+   }
+   
+   
+   private class PointerMap extends HashMap<String, Pointer> {
+   
+      public PointerMap() {
+         super();
+      }
+   }
 }
