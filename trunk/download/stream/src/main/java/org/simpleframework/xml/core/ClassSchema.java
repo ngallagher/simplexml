@@ -20,8 +20,6 @@
 
 package org.simpleframework.xml.core;
 
-import java.util.Set;
-
 import org.simpleframework.xml.Version;
 
 /**
@@ -35,7 +33,73 @@ import org.simpleframework.xml.Version;
  * 
  * @author Niall Gallagher
  */ 
-interface Schema {
+class ClassSchema implements Schema {
+   
+   /**
+    * This is the scanner that is used to acquire the constructor.
+    */
+   private Creator factory;
+   
+   /**
+    * This is the decorator associated with this schema object.
+    */
+   private Decorator decorator;
+
+   /**
+    * Contains a map of all attributes present within the schema.
+    */
+   private LabelMap attributes;
+   
+   /**
+    * Contains a map of all elements present within the schema.
+    */
+   private LabelMap elements;
+   
+   /**
+    * This is the version annotation for the XML class schema.
+    */
+   private Version revision;
+   
+   /**
+    * This is the pointer to the schema class replace method.
+    */
+   private Caller caller;
+   
+   /**
+    * This is the version label used to read the version attribute.
+    */
+   private Label version;
+   
+   /**
+    * This is used to represent a text value within the schema.
+    */
+   private Label text;
+   
+   /**
+    * This is used to specify whether the type is a primitive class.
+    */
+   private boolean primitive;
+
+   /**
+    * Constructor for the <code>Schema</code> object. This is used 
+    * to wrap the element and attribute XML annotations scanned from
+    * a class schema. The schema tracks all fields visited so that
+    * a converter can determine if all fields have been serialized.
+    * 
+    * @param schema this contains all labels scanned from the class
+    * @param context this is the context object for serialization
+    */
+   public ClassSchema(Scanner schema, Context context) throws Exception {  
+      this.attributes = schema.getAttributes(context);
+      this.elements = schema.getElements(context);
+      this.caller = schema.getCaller(context);
+      this.factory = schema.getCreator();
+      this.revision = schema.getRevision();
+      this.decorator = schema.getDecorator();
+      this.primitive = schema.isPrimitive();
+      this.version = schema.getVersion();
+      this.text = schema.getText();
+   }
    
    /**
     * This is used to determine whether the scanned class represents
@@ -45,7 +109,9 @@ interface Schema {
     * 
     * @return this returns true if no XML annotations were found
     */
-   public boolean isPrimitive();
+   public boolean isPrimitive() {
+      return primitive;
+   }
    
    /**
     * This is used to create the object instance. It does this by
@@ -56,7 +122,9 @@ interface Schema {
     * 
     * @return this returns the creator for the class object
     */
-   public Creator getCreator();
+   public Creator getCreator() {
+      return factory;
+   }
    
    /**
     * This returns the <code>Label</code> that represents the version
@@ -66,7 +134,9 @@ interface Schema {
     * 
     * @return this returns the label used for reading the version
     */
-   public Label getVersion();
+   public Label getVersion() {
+      return version;
+   }
    
    /**
     * This is the <code>Version</code> for the scanned class. It 
@@ -77,7 +147,9 @@ interface Schema {
     * 
     * @return this returns the version of the class that is scanned
     */
-   public Version getRevision();
+   public Version getRevision() {
+      return revision;
+   }
    
    /**
     * This is used to acquire the <code>Decorator</code> for this.
@@ -88,7 +160,9 @@ interface Schema {
     * 
     * @return this returns the decorator associated with this
     */
-   public Decorator getDecorator();
+   public Decorator getDecorator() {
+      return decorator;
+   }
    
    /**
     * This is used to acquire the <code>Caller</code> object. This
@@ -98,7 +172,9 @@ interface Schema {
     * 
     * @return this returns the caller for the specified type
     */
-   public Caller getCaller();
+   public Caller getCaller() {
+      return caller;
+   }
    
    /**
     * Returns a <code>LabelMap</code> that contains the details for
@@ -107,8 +183,9 @@ interface Schema {
     * 
     * @return map with the details extracted from the schema class
     */ 
-   public LabelMap getAttributes();
-   
+   public LabelMap getAttributes() {
+      return attributes;
+   }   
    /**
     * Returns a <code>LabelMap</code> that contains the details for
     * all fields marked as XML elements. The annotations that are
@@ -117,7 +194,9 @@ interface Schema {
     * 
     * @return a map containing the details for XML elements
     */
-   public LabelMap getElements();
+   public LabelMap getElements() {
+      return elements;
+   }
    
    /**
     * This returns the <code>Label</code> that represents the text
@@ -128,5 +207,7 @@ interface Schema {
     * 
     * @return this returns the text label for the scanned class
     */
-   public Label getText();
+   public Label getText() {
+      return text;
+   }
 }
