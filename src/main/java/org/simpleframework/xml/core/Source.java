@@ -275,7 +275,7 @@ class Source implements Context {
       if(schema == null) {
          throw new PersistenceException("Invalid schema class %s", type);
       }
-      return new Schema(schema, this);
+      return new ClassSchema(schema, this);
    }
    
    /**
