@@ -1,5 +1,5 @@
 /*
- * LabelFactory.java July 2006
+ * ParameterFactory.java July 2006
  *
  * Copyright (C) 2006, Niall Gallagher <niallg@users.sf.net>
  *
@@ -28,18 +28,16 @@ import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementArray;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.ElementMap;
-import org.simpleframework.xml.Text;
-import org.simpleframework.xml.Version;
 
 /**
- * The <code>LabelFactory</code> object is used to create instances of
- * the <code>Label</code> object that can be used to convert an XML
- * node into a Java object. Each label created requires the contact it
- * represents and the XML annotation it is marked with.  
+ * The <code>ParameterFactory</code> object is used to create instances 
+ * of the <code>Parameter</code> object. Each parameter created can be
+ * used to validate against the annotated fields and methods to ensure
+ * that the annotations are compatible. 
  * <p>
- * The <code>Label</code> objects created by this factory a selected
+ * The <code>Parameter</code> objects created by this are selected
  * using the XML annotation type. If the annotation type is not known
- * the factory will throw an exception, otherwise a label instance
+ * the factory will throw an exception, otherwise a parameter instance
  * is created that will expose the properties of the annotation.
  * 
  * @author Niall Gallagher
@@ -47,35 +45,34 @@ import org.simpleframework.xml.Version;
 final class ParameterFactory {
 
    /**
-    * Creates a <code>Label</code> using the provided contact and XML
-    * annotation. The label produced contains all information related
-    * to an object member. It knows the name of the XML entity, as
-    * well as whether it is required. Once created the converter can
-    * transform an XML node into Java object and vice versa.
+    * Creates a <code>Parameter</code> using the provided constructor
+    * and the XML annotation. The parameter produced contains all 
+    * information related to the constructor parameter. It knows the 
+    * name of the XML entity, as well as the type. 
     * 
-    * @param contact this is contact that the label is produced for
+    * @param method this is the constructor the parameter exists in
     * @param label represents the XML annotation for the contact
     * 
-    * @return returns the label instantiated for the field
+    * @return returns the parameter instantiated for the field
     */
-   public static Parameter getInstance(Constructor contact, Annotation label, int index) throws Exception {   
+   public static Parameter getInstance(Constructor method, Annotation label, int index) throws Exception {   
       Constructor factory = getConstructor(label);    
       
       if(!factory.isAccessible()) {
          factory.setAccessible(true);
       }
-      return (Parameter)factory.newInstance(contact, label, index);
+      return (Parameter)factory.newInstance(method, label, index);
    }
     
     /**
-     * Creates a constructor that can be used to instantiate the label
+     * Creates a constructor that is used to instantiate the parameter
      * used to represent the specified annotation. The constructor
-     * created by this method takes two arguments, a contact object 
-     * and an <code>Annotation</code> of the type specified.
+     * created by this method takes three arguments, a constructor, 
+     * an annotation, and the parameter index.
      * 
      * @param label the XML annotation representing the label
      * 
-     * @return returns a constructor for instantiating the label 
+     * @return returns a constructor for instantiating the parameter 
      * 
      * @throws Exception thrown if the annotation is not supported
      */
@@ -85,14 +82,14 @@ final class ParameterFactory {
     
     /**
      * Creates an entry that is used to select the constructor for the
-     * label. Each label must implement a constructor that takes a
-     * contact and the specific XML annotation for that field. If the
-     * annotation is not know this method throws an exception.
+     * parameter. Each parameter must implement a constructor that takes 
+     * a constructor, and annotation, and the index of the parameter. If
+     * the annotation is not know this method throws an exception.
      * 
-     * @param label the XML annotation used to create the label
+     * @param label the XML annotation used to create the parameter
      * 
      * @return this returns the entry used to create a suitable
-     *         constructor for the label
+     *         constructor for the parameter
      * 
      * @throws Exception thrown if the annotation is not supported
      */
@@ -117,13 +114,18 @@ final class ParameterFactory {
     
     /**
      * The <code>Entry<code> object is used to create a constructor 
-     * that can be used to instantiate the correct label for the XML
-     * annotation specified. The constructor requires two arguments
-     * a <code>Contact</code> and the specified XML annotation.
+     * that can be used to instantiate the correct parameter for the 
+     * XML annotation specified. The constructor requires three 
+     * arguments, the constructor, the annotation, and the index.
      * 
      * @see java.lang.reflect.Constructor
      */
     private static class Entry {
+             
+       /**
+        * This is the parameter type that is to be instantiated.
+        */
+       public Class create;
        
        /**       
         * This is the XML annotation type within the constructor.
@@ -131,45 +133,40 @@ final class ParameterFactory {
        public Class type;
        
        /**
-        * This is the label type that is to be instantiated.
-        */
-       public Class label;
-       
-       /**
         * Constructor for the <code>Entry</code> object. This pairs
-        * the label type with the XML annotation argument used within
+        * the parameter type with the annotation argument used within
         * the constructor. This allows constructor to be selected.
         * 
-        * @param label this is the label type to be instantiated
+        * @param create this is the label type to be instantiated
         * @param argument type that is used within the constructor
         */
-       public Entry(Class label, Class type) {
-          this.label = label;
+       public Entry(Class create, Class type) {
+          this.create = create;
           this.type = type;
        }
        
        /**
-        * Creates the constructor used to instantiate the label for
-        * the XML annotation. The constructor returned will take two
-        * arguments, a contact and the XML annotation type. 
+        * Creates the constructor used to instantiate the parameter
+        * for the XML annotation. The constructor returned will take 
+        * two arguments, a contact and the XML annotation type. 
         * 
-        * @return returns the constructor for the label object
+        * @return returns the constructor for the parameter object
         */
        public Constructor getConstructor() throws Exception {
           return getConstructor(Constructor.class, type, int.class);
        }
        
        /**
-        * Creates the constructor used to instantiate the label for
-        * the XML annotation. The constructor returned will take two
-        * arguments, a contact and the XML annotation type.
+        * Creates the constructor used to instantiate the parameter 
+        * for the XML annotation. The constructor returned will take 
+        * two arguments, a contact and the XML annotation type.
         * 
         * @param type this is the XML annotation argument type used
         * 
-        * @return returns the constructor for the label object
+        * @return returns the constructor for the parameter object
         */
        private Constructor getConstructor(Class... types) throws Exception {
-          return label.getConstructor(types);
+          return create.getConstructor(types);
        }
     }
 }
