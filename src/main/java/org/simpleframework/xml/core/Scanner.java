@@ -670,6 +670,7 @@ class Scanner {
    private void validate(Label field, Parameter parameter) throws Exception {
       Contact contact = field.getContact();
       Annotation label = contact.getAnnotation();
+      String name = field.getName();
       
       if(!parameter.getAnnotation().equals(label)) {
          throw new PersistenceException("Annotations do not match for '%s' in %s", name, type);
