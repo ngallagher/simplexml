@@ -6,6 +6,7 @@ import java.util.Vector;
 import junit.framework.TestCase;
 
 import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.ElementMap;
 import org.simpleframework.xml.Root;
@@ -27,6 +28,15 @@ public class CollectionConstructorTest extends TestCase {
    "     <entry name='b' value='2'/>"+
    "  </element>"+
    "</example>";
+   
+   
+   private static final String COMPOSITE =
+   "<composite>"+
+   "  <example class='org.simpleframework.xml.core.CollectionConstructorTest$ExtendedCollectionConstructor'>"+
+   "    <entry name='a' value='1'/>"+
+   "    <entry name='b' value='2'/>"+
+   "  </example>"+
+   "</composite>";
    
    @Root(name="example")
    private static class MapConstructor {
@@ -81,6 +91,25 @@ public class CollectionConstructorTest extends TestCase {
       }
    }
    
+   @Root(name="example")
+   private static class ExtendedCollectionConstructor extends CollectionConstructor {
+      
+      public ExtendedCollectionConstructor(@ElementList(name="list", inline=true) Vector<Entry> vector) {
+         super(vector);
+      }
+   }
+   
+   @Root(name="composite")
+   private static class CollectionConstructorComposite {
+      
+      @Element(name="example")
+      private CollectionConstructor collection;
+   
+      public CollectionConstructor getCollection() {
+         return collection;
+      }
+   }
+   
    public void testCollectionConstructor() throws Exception {
       Persister persister = new Persister();
       CollectionConstructor constructor = persister.read(CollectionConstructor.class, LIST);
@@ -95,4 +124,11 @@ public class CollectionConstructorTest extends TestCase {
       assertEquals(constructor.size(), 2);
    }
 
+   public void testCollectionConstructorComposite() throws Exception {
+      Persister persister = new Persister();
+      CollectionConstructorComposite composite = persister.read(CollectionConstructorComposite.class, COMPOSITE);
+      
+      assertEquals(composite.getCollection().getClass(), ExtendedCollectionConstructor.class);
+      assertEquals(composite.getCollection().size(), 2);
+   }
 }
