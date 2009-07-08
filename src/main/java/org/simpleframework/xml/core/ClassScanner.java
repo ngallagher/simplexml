@@ -22,9 +22,7 @@ package org.simpleframework.xml.core;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.simpleframework.xml.Namespace;
 import org.simpleframework.xml.NamespaceList;
