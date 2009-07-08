@@ -1,5 +1,5 @@
 /*
- * Pointer.java December 2007
+ * Variable.java December 2007
  *
  * Copyright (C) 2007, Niall Gallagher <niallg@users.sf.net>
  *
@@ -26,8 +26,8 @@ import org.simpleframework.xml.stream.Position;
 import org.simpleframework.xml.stream.Style;
 
 /**
- * The <code>Pointer</code> object is used to represent a pointer to 
- * a method or field of a deserialized object. It contains the value
+ * The <code>Variable</code> object is used to represent a variable 
+ * for a method or field of a deserialized object. It has the value
  * for the field or method as well as the details from the annotation.
  * This is used by the <code>Collector</code> to populate an object
  * once all the values for that object have been collected. 
@@ -36,7 +36,7 @@ import org.simpleframework.xml.stream.Style;
  * 
  * @see org.simpleframework.xml.core.Collector
  */
-class Pointer implements Label {
+class Variable implements Label {
    
    /**
     * This is the object that has been deserialized from the XML.
@@ -49,7 +49,7 @@ class Pointer implements Label {
    private Label label;
    
    /**
-    * Constructor for the <code>Pointer</code> object. This is used
+    * Constructor for the <code>Variable</code> object. This is used
     * to create an object that holds a deserialized value, as well as
     * the details of the annotated method or field it is to be set to.
     * This allows the value to be repeatedly deserialized.
@@ -57,13 +57,13 @@ class Pointer implements Label {
     * @param label this is the label for the field or method used
     * @param value the deserialized object for the method or field
     */
-   public Pointer(Label label, Object value) {
+   public Variable(Label label, Object value) {
       this.label = label;
       this.value = value;
    }
    
    /**
-    * This is used to acquire the value associated with the pointer.
+    * This is used to acquire the value associated with the variable.
     * Once fully deserialized the value is used to set the value for 
     * a field or method of the object. This value can be repeatedly
     * read if the <code>Converter</code> is acquired a second time.
