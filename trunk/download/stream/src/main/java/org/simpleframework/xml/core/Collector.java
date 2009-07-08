@@ -37,7 +37,7 @@ import java.util.Iterator;
  */
 class Collector implements Criteria {
    
-   private final PointerMap registry;
+   private final Registry registry;
    
    /**
     * This is the context object used by the serialization process.
@@ -50,8 +50,20 @@ class Collector implements Criteria {
     * Each pointer is stored using the name of the label.
     */
    public Collector(Context context) {
-      this.registry = new PointerMap();
+      this.registry = new Registry();
       this.context = context;
+   }
+   
+   public Variable get(String name) {
+      return registry.get(name);
+   }  
+
+   public Variable remove(String name) {
+      return registry.remove(name);
+   }
+
+   public Iterator<String> iterator() {
+      return registry.iterator();
    }
    
    /**
@@ -91,23 +103,11 @@ class Collector implements Criteria {
       }
    }   
    
-   public Variable get(String name) {
-      return registry.get(name);
-   }
-
-   public Iterator<String> iterator() {
-      return registry.keySet().iterator();
-   }
-
-   public Variable remove(String name) {
-      return registry.remove(name);
-   }
    
-   
-   private class PointerMap extends HashMap<String, Variable> {
-   
-      public PointerMap() {
-         super();
+   private class Registry extends HashMap<String, Variable> {
+      
+      public Iterator<String> iterator() {
+         return keySet().iterator();
       }
    }
 }
