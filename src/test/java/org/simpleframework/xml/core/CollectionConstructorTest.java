@@ -72,10 +72,10 @@ public class CollectionConstructorTest extends TestCase {
    private static class Entry {
    
       @Attribute(name="name")
-      private String name;
+      private final String name;
       
       @Attribute(name="value")
-      private String value;
+      private final String value;
       
       public Entry(@Attribute(name="name") String name, @Attribute(name="value") String value) {
          this.name = name;

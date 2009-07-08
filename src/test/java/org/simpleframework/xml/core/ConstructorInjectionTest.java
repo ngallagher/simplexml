@@ -26,7 +26,6 @@ public class ConstructorInjectionTest extends TestCase {
       @Attribute(name="number") 
       private long number;
       
-      public Example(){}
       public Example(@Element(name="integer") int integer){
          this.integer = integer;
       }
