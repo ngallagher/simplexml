@@ -217,14 +217,14 @@ class ElementArrayLabel implements Label {
    }
    
    /**
-    * This is used to acquire the dependant type for the annotated
+    * This is used to acquire the dependent type for the annotated
     * array. This will simply return the type that the array is
     * composed to hold. This must be a serializable type, that is,
     * a type that is annotated with the <code>Root</code> class.
     * 
     * @return this returns the component type for the array
     */
-   public Class getDependant() {
+   public Class getDependent() {
       return type.getComponentType();
    }
    

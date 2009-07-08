@@ -42,17 +42,17 @@ import java.lang.reflect.Type;
 final class Reflector {
    
    /**
-    * This method is used to acquire a generic parameter dependant 
+    * This method is used to acquire a generic parameter dependent 
     * from the specified field. This will acquire the field class and
     * attempt to extract the first generic parameter type from that  
     * field. If there is a generic parameter then the class of that 
     * parameter is returned from this method.
     * 
-    * @param field this is the field to acquire the dependant class
+    * @param field this is the field to acquire the dependent class
     * 
     * @return this returns the generic parameter class declared
     */
-   public static Class getDependant(Field field) {
+   public static Class getDependent(Field field) {
       ParameterizedType type = getType(field);
       
       if(type != null) {
@@ -62,17 +62,17 @@ final class Reflector {
    }
    
    /**
-    * This method is used to acquire generic parameter dependants 
+    * This method is used to acquire generic parameter dependents 
     * from the specified field. This will acquire the field class and
     * attempt to extract all of the generic parameter types from that  
     * field. If there is a generic parameter then the class of that 
     * parameter is returned from this method.
     * 
-    * @param field this is the field to acquire the dependant types
+    * @param field this is the field to acquire the dependent types
     * 
     * @return this returns the generic parameter classes declared
     */
-   public static Class[] getDependants(Field field) {
+   public static Class[] getDependents(Field field) {
       ParameterizedType type = getType(field);
       
       if(type != null) {
@@ -100,17 +100,17 @@ final class Reflector {
    }
    
    /**
-    * This method is used to acquire a generic parameter dependant 
+    * This method is used to acquire a generic parameter dependent 
     * from the method return type. This will acquire the return type
     * and attempt to extract the first generic parameter type from 
     * that type. If there is a generic parameter then the class of 
     * that parameter is returned from this method.
     * 
-    * @param method this is the method to acquire the dependant of   
+    * @param method this is the method to acquire the dependent of   
     * 
     * @return this returns the generic parameter class declared
     */   
-   public static Class getReturnDependant(Method method) {
+   public static Class getReturnDependent(Method method) {
       ParameterizedType type = getReturnType(method);
       
       if(type != null) {
@@ -120,17 +120,17 @@ final class Reflector {
    }
    
    /**
-    * This method is used to acquire a generic parameter dependant 
+    * This method is used to acquire a generic parameter dependent 
     * from the method return type. This will acquire the return type
     * and attempt to extract the first generic parameter type from 
     * that type. If there is a generic parameter then the class of 
     * that parameter is returned from this method.
     * 
-    * @param method this is the method to acquire the dependant of   
+    * @param method this is the method to acquire the dependent of   
     * 
     * @return this returns the generic parameter class declared
     */   
-   public static Class[] getReturnDependants(Method method) {
+   public static Class[] getReturnDependents(Method method) {
       ParameterizedType type = getReturnType(method);
       
       if(type != null) {
@@ -159,19 +159,19 @@ final class Reflector {
    }
    
    /**
-    * This method is used to acquire a generic parameter dependant 
+    * This method is used to acquire a generic parameter dependent 
     * from the specified parameter type. This will acquire the type
     * for the parameter at the specified index and attempt to extract
     * the first generic parameter type from that type. If there is a
     * generic parameter then the class of that parameter is returned
     * from this method, otherwise null is returned.
     * 
-    * @param method this is the method to acquire the dependant of
+    * @param method this is the method to acquire the dependent of
     * @param index this is the index to acquire the parameter from    
     * 
     * @return this returns the generic parameter class declared
     */
-   public static Class getParameterDependant(Method method, int index) {
+   public static Class getParameterDependent(Method method, int index) {
       ParameterizedType type = getParameterType(method, index);
       
       if(type != null) {
@@ -181,19 +181,19 @@ final class Reflector {
    }
    
    /**
-    * This method is used to acquire a generic parameter dependant 
+    * This method is used to acquire a generic parameter dependent 
     * from the specified parameter type. This will acquire the type
     * for the parameter at the specified index and attempt to extract
     * the first generic parameter type from that type. If there is a
     * generic parameter then the class of that parameter is returned
     * from this method, otherwise null is returned.
     * 
-    * @param method this is the method to acquire the dependant of
+    * @param method this is the method to acquire the dependent of
     * @param index this is the index to acquire the parameter from    
     * 
     * @return this returns the generic parameter class declared
     */
-   public static Class[] getParameterDependants(Method method, int index) {
+   public static Class[] getParameterDependents(Method method, int index) {
       ParameterizedType type = getParameterType(method, index);
       
       if(type != null) {
@@ -203,19 +203,19 @@ final class Reflector {
    }
    
    /**
-    * This method is used to acquire a generic parameter dependant 
+    * This method is used to acquire a generic parameter dependent 
     * from the specified parameter type. This will acquire the type
     * for the parameter at the specified index and attempt to extract
     * the first generic parameter type from that type. If there is a
     * generic parameter then the class of that parameter is returned
     * from this method, otherwise null is returned.
     * 
-    * @param factory this is the constructor to acquire the dependant
+    * @param factory this is the constructor to acquire the dependent
     * @param index this is the index to acquire the parameter from    
     * 
     * @return this returns the generic parameter class declared
     */
-   public static Class getParameterDependant(Constructor factory, int index) {
+   public static Class getParameterDependent(Constructor factory, int index) {
       ParameterizedType type = getParameterType(factory, index);
       
       if(type != null) {
@@ -225,19 +225,19 @@ final class Reflector {
    }
    
    /**
-    * This method is used to acquire a generic parameter dependant 
+    * This method is used to acquire a generic parameter dependent 
     * from the specified parameter type. This will acquire the type
     * for the parameter at the specified index and attempt to extract
     * the first generic parameter type from that type. If there is a
     * generic parameter then the class of that parameter is returned
     * from this method, otherwise null is returned.
     * 
-    * @param factory this is the constructor to acquire the dependant 
+    * @param factory this is the constructor to acquire the dependent 
     * @param index this is the index to acquire the parameter from    
     * 
     * @return this returns the generic parameter class declared
     */
-   public static Class[] getParameterDependants(Constructor factory, int index) {
+   public static Class[] getParameterDependents(Constructor factory, int index) {
       ParameterizedType type = getParameterType(factory, index);
       
       if(type != null) {

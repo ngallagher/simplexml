@@ -77,15 +77,15 @@ class Signature {
    }
    
    /**
-    * This returns the dependant type for the annotation. This type
+    * This returns the dependent type for the annotation. This type
     * is the type other than the annotated field or method type that
     * the label depends on. For the <code>ElementList</code> this 
     * can be the generic parameter to an annotated collection type.
     * 
     * @return this is the type that the annotation depends on
     */
-   public Class getDependant() throws Exception {
-      return label.getDependant();
+   public Class getDependent() throws Exception {
+      return label.getDependent();
    }
 
    /**
@@ -97,7 +97,7 @@ class Signature {
     * @return this returns a suitable XML entry element name
     */
    public String getEntry() throws Exception {
-      Class type = getDependant();   
+      Class type = getDependent();   
       
       if(type.isArray()) {
          type = type.getComponentType();

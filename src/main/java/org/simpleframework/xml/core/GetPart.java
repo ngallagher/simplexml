@@ -102,8 +102,8 @@ class GetPart implements MethodPart {
     * 
     * @return this returns the generic dependent for the type
     */
-   public Class getDependant() {
-      return Reflector.getReturnDependant(method);
+   public Class getDependent() {
+      return Reflector.getReturnDependent(method);
    }
    
    /**
@@ -115,8 +115,8 @@ class GetPart implements MethodPart {
     * 
     * @return this returns the generic dependent for the type
     */
-   public Class[] getDependants() {
-      return Reflector.getReturnDependants(method);
+   public Class[] getDependents() {
+      return Reflector.getReturnDependents(method);
    }
    
    /**

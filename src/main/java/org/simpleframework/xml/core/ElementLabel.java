@@ -204,13 +204,13 @@ class ElementLabel implements Label {
    }
    
    /**
-    * This is used to acquire the dependant class for this label. 
-    * This returns null as there are no dependants to the element
-    * annotation as it can only hold primitives with no dependants.
+    * This is used to acquire the dependent class for this label. 
+    * This returns null as there are no dependents to the element
+    * annotation as it can only hold primitives with no dependents.
     * 
-    * @return this is used to return the dependant type of null
+    * @return this is used to return the dependent type of null
     */
-   public Class getDependant() {
+   public Class getDependent() {
       return null;
    }
 
