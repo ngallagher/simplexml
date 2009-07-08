@@ -46,7 +46,7 @@ class Builder {
       
       for(Parameter parameter : map) {
          String name = parameter.getName();
-         Pointer pointer = criteria.get(name);
+         Variable pointer = criteria.get(name);
          Object value = pointer.getValue();
          
          values.add(value);

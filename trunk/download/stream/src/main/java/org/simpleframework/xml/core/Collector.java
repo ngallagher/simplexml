@@ -64,7 +64,7 @@ class Collector implements Criteria {
     * @param value this is the value of the object to be read
     */
    public void set(Label label, Object value) throws Exception {
-      Pointer pointer = new Pointer(label, value);
+      Variable pointer = new Variable(label, value);
 
       if(label != null) {
          String name = label.getName(context);     
@@ -81,9 +81,9 @@ class Collector implements Criteria {
     * @param source this is the object that is to be populated
     */
    public void commit(Object source) throws Exception {
-      Collection<Pointer> set = registry.values();
+      Collection<Variable> set = registry.values();
       
-      for(Pointer entry : set) { 
+      for(Variable entry : set) { 
          Contact contact = entry.getContact();
          Object value = entry.getValue();
 
@@ -91,7 +91,7 @@ class Collector implements Criteria {
       }
    }   
    
-   public Pointer get(String name) {
+   public Variable get(String name) {
       return registry.get(name);
    }
 
@@ -99,12 +99,12 @@ class Collector implements Criteria {
       return registry.keySet().iterator();
    }
 
-   public void remove(String name) {
-      registry.remove(name);
+   public Variable remove(String name) {
+      return registry.remove(name);
    }
    
    
-   private class PointerMap extends HashMap<String, Pointer> {
+   private class PointerMap extends HashMap<String, Variable> {
    
       public PointerMap() {
          super();

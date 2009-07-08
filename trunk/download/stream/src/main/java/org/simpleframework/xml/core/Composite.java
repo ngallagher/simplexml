@@ -557,7 +557,7 @@ class Composite implements Converter {
       String name = label.getName(context);
       
       if(label.isCollection()) {
-         Pointer pointer = store.get(name);
+         Variable pointer = store.get(name);
          Contact contact = label.getContact();
          
          if(pointer != null) {
