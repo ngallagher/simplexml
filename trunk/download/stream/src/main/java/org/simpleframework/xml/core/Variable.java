@@ -124,7 +124,6 @@ class Variable implements Label {
       return style.getElement(name);
    }
    
-   
    /**
     * This is used to provide a configured empty value used when the
     * annotated value is null. This ensures that XML can be created
