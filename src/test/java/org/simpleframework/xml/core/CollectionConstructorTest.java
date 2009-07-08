@@ -32,7 +32,7 @@ public class CollectionConstructorTest extends TestCase {
    private static class MapConstructor {
     
       @ElementMap(name="list", entry="element", key="key", attribute=true, inline=true)
-      private Map<String, Entry> map;
+      private final Map<String, Entry> map;
       
       public MapConstructor(@ElementMap(name="list", entry="element", key="key", attribute=true, inline=true) Map<String, Entry> map) {
          this.map = map;
@@ -47,7 +47,7 @@ public class CollectionConstructorTest extends TestCase {
    private static class CollectionConstructor {
       
       @ElementList(name="list", inline=true)
-      private Vector<Entry> vector;
+      private final Vector<Entry> vector;
       
       public CollectionConstructor(@ElementList(name="list", inline=true) Vector<Entry> vector) {
          this.vector = vector;
@@ -80,13 +80,13 @@ public class CollectionConstructorTest extends TestCase {
          return value;
       }
    }
-   /*
-   public void s_testCollectionConstructor() throws Exception {
+   
+   public void testCollectionConstructor() throws Exception {
       Persister persister = new Persister();
       CollectionConstructor constructor = persister.read(CollectionConstructor.class, LIST);
       
       assertEquals(constructor.size(), 2);
-   }*/
+   }
    
    public void testMapConstructor() throws Exception {
       Persister persister = new Persister();
