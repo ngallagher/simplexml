@@ -96,7 +96,7 @@ interface Label {
    public String getName() throws Exception;
    
    /**
-    * This returns the dependant type for the annotation. This type
+    * This returns the dependent type for the annotation. This type
     * is the type other than the annotated field or method type that
     * the label depends on. For the <code>ElementList</code> and 
     * the <code>ElementArray</code> this is the component type that
@@ -104,7 +104,7 @@ interface Label {
     * 
     * @return this is the type that the annotation depends on
     */
-   public Class getDependant() throws Exception;
+   public Class getDependent() throws Exception;
    
    /**
     * This is used to either provide the entry value provided within

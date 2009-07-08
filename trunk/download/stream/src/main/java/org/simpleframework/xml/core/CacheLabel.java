@@ -111,7 +111,7 @@ class CacheLabel implements Label {
       this.attribute = label.isAttribute();
       this.collection = label.isCollection();
       this.contact = label.getContact();
-      this.depend = label.getDependant();
+      this.depend = label.getDependent();
       this.required = label.isRequired();
       this.override = label.getOverride();
       this.inline = label.isInline();
@@ -205,7 +205,7 @@ class CacheLabel implements Label {
     * 
     * @return this is the type that the annotation depends on
     */
-   public Class getDependant() throws Exception {
+   public Class getDependent() throws Exception {
       return depend;
    }
    

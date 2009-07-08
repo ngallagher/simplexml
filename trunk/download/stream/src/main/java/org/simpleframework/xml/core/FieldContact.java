@@ -101,8 +101,8 @@ class FieldContact implements Contact {
     * 
     * @return this returns the dependent type for the contact
     */
-   public Class getDependant() {
-      return Reflector.getDependant(field);
+   public Class getDependent() {
+      return Reflector.getDependent(field);
    }
    
    /**
@@ -113,8 +113,8 @@ class FieldContact implements Contact {
     * 
     * @return this returns the dependent type for the contact
     */
-   public Class[] getDependants() {
-      return Reflector.getDependants(field);
+   public Class[] getDependents() {
+      return Reflector.getDependents(field);
    }
    
    /**

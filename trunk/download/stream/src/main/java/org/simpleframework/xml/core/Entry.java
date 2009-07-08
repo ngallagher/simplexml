@@ -101,7 +101,7 @@ class Entry {
    }
    
    /**
-    * This is used to acquire the dependant key for the annotated
+    * This is used to acquire the dependent key for the annotated
     * map. This will simply return the type that the map object is
     * composed to hold. This must be a serializable type, that is,
     * it must be a composite or supported primitive type.
@@ -115,7 +115,7 @@ class Entry {
       Class keyType = label.keyType();
       
       if(keyType == void.class) {
-         keyType = getDependant(0);
+         keyType = getDependent(0);
       }
       return keyType;
    }
@@ -155,7 +155,7 @@ class Entry {
    }
    
    /**
-    * This is used to acquire the dependant value for the annotated
+    * This is used to acquire the dependent value for the annotated
     * map. This will simply return the type that the map object is
     * composed to hold. This must be a serializable type, that is,
     * it must be a composite or supported primitive type.
@@ -169,7 +169,7 @@ class Entry {
       Class valueType = label.valueType();
       
       if(valueType == void.class) {
-         valueType = getDependant(1);
+         valueType = getDependent(1);
       }
       return valueType;
    }
@@ -207,20 +207,20 @@ class Entry {
    }
    
    /**
-    * Provides the dependant class for the map as taken from the 
+    * Provides the dependent class for the map as taken from the 
     * specified index. This allows the entry to fall back on generic
-    * declarations of the map if no explicit dependant types are 
+    * declarations of the map if no explicit dependent types are 
     * given within the element map annotation.
     * 
     * @param index this is the index to acquire the parameter from
     * 
     * @return this returns the generic type at the specified index
     */
-   private Class getDependant(int index) throws Exception {
-      Class[] list = contact.getDependants();
+   private Class getDependent(int index) throws Exception {
+      Class[] list = contact.getDependents();
       
       if(list.length < index) {
-         throw new PersistenceException("Could not find dependant at index %s", index);
+         throw new PersistenceException("Could not find dependent at index %s", index);
       }
       return list[index];
    }

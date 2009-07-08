@@ -30,25 +30,25 @@ public class ReflectorTest extends TestCase {
    
    public void testFieldReflector() throws Exception {
       Field field = getField(ReflectorTest.class, "genericMap");
-      Class[] types = Reflector.getDependants(field);
+      Class[] types = Reflector.getDependents(field);
       
       assertEquals(types.length, 2);
       assertEquals(types[0], Float.class);
       assertEquals(types[1], Double.class);
       
       field = getField(ReflectorTest.class, "normalMap");
-      types = Reflector.getDependants(field);
+      types = Reflector.getDependents(field);
       
       assertEquals(types.length, 0);
       
       field = getField(ReflectorTest.class, "genericList");
-      types = Reflector.getDependants(field);
+      types = Reflector.getDependents(field);
       
       assertEquals(types.length, 1);
       assertEquals(types[0], String.class);
       
       field = getField(ReflectorTest.class, "normalList");
-      types = Reflector.getDependants(field);
+      types = Reflector.getDependents(field);
       
       assertEquals(types.length, 0);
       
@@ -56,24 +56,24 @@ public class ReflectorTest extends TestCase {
    
    public void testCollectionReflector() throws Exception {
       Method method = getMethod(ReflectorTest.class, "genericMethodCollectionParameter", Collection.class);
-      Class[] types = Reflector.getParameterDependants(method, 0);
+      Class[] types = Reflector.getParameterDependents(method, 0);
       
       assertEquals(types.length, 1);
       assertEquals(types[0], String.class); 
       
       method = getMethod(ReflectorTest.class, "normalMethodCollectionParameter", Collection.class);
-      types = Reflector.getParameterDependants(method, 0);     
+      types = Reflector.getParameterDependents(method, 0);     
       
       assertEquals(types.length, 0);
       
       method = getMethod(ReflectorTest.class, "genericMethodCollectionReturn");
-      types = Reflector.getReturnDependants(method);
+      types = Reflector.getReturnDependents(method);
       
       assertEquals(types.length, 1);
       assertEquals(types[0], Float.class);
       
       method = getMethod(ReflectorTest.class, "normalMethodCollectionReturn");
-      types = Reflector.getReturnDependants(method);
+      types = Reflector.getReturnDependents(method);
       
       assertEquals(types.length, 0);    
    }
@@ -81,26 +81,26 @@ public class ReflectorTest extends TestCase {
    
    public void testMapReflector() throws Exception {
       Method method = getMethod(ReflectorTest.class, "genericMethodMapParameter", Map.class);
-      Class[] types = Reflector.getParameterDependants(method, 0);
+      Class[] types = Reflector.getParameterDependents(method, 0);
       
       assertEquals(types.length, 2);
       assertEquals(types[0], String.class);
       assertEquals(types[1], Integer.class); 
       
       method = getMethod(ReflectorTest.class, "normalMethodMapParameter", Map.class);
-      types = Reflector.getParameterDependants(method, 0);     
+      types = Reflector.getParameterDependents(method, 0);     
       
       assertEquals(types.length, 0);
       
       method = getMethod(ReflectorTest.class, "genericMethodMapReturn");
-      types = Reflector.getReturnDependants(method);
+      types = Reflector.getReturnDependents(method);
       
       assertEquals(types.length, 2);
       assertEquals(types[0], String.class);
       assertEquals(types[1], Boolean.class);
       
       method = getMethod(ReflectorTest.class, "normalMethodMapReturn");
-      types = Reflector.getReturnDependants(method);
+      types = Reflector.getReturnDependents(method);
       
       assertEquals(types.length, 0);      
    }

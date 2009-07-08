@@ -93,8 +93,8 @@ class MethodContact implements Contact {
     */ 
    public MethodContact(MethodPart get, MethodPart set) {
       this.label = get.getAnnotation();   
-      this.items = get.getDependants();
-      this.item = get.getDependant();
+      this.items = get.getDependents();
+      this.item = get.getDependent();
       this.get = get.getMethod();
       this.type = get.getType();   
       this.name = get.getName();
@@ -153,26 +153,26 @@ class MethodContact implements Contact {
    }
    
    /**
-    * This provides the dependant class for the contact. This will
+    * This provides the dependent class for the contact. This will
     * actually represent a generic type for the actual type. For
     * contacts that use a <code>Collection</code> type this will
     * be the generic type parameter for that collection.
     * 
-    * @return this returns the dependant type for the contact
+    * @return this returns the dependent type for the contact
     */
-   public Class getDependant() {
+   public Class getDependent() {
       return item;
    }
    
    /**
-    * This provides the dependant classes for the contact. This will
+    * This provides the dependent classes for the contact. This will
     * typically represent a generic types for the actual type. For
     * contacts that use a <code>Map</code> type this will be the 
     * generic type parameter for that map type declaration.
     * 
-    * @return this returns the dependant type for the contact
+    * @return this returns the dependent type for the contact
     */
-   public Class[] getDependants() {
+   public Class[] getDependents() {
       return items;
    } 
    

@@ -161,8 +161,8 @@ class Variable implements Label {
     * 
     * @return this is the type that the annotation depends on
     */
-   public Class getDependant() throws Exception {
-      return label.getDependant();
+   public Class getDependent() throws Exception {
+      return label.getDependent();
    }
    
    /**

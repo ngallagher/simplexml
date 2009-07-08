@@ -73,26 +73,26 @@ interface MethodPart {
    public Class getType();
    
    /**
-    * This is used to acquire the dependant class for the method 
-    * part. The dependant type is the type that represents the 
+    * This is used to acquire the dependent class for the method 
+    * part. The dependent type is the type that represents the 
     * generic type of the type. This is used when collections are
     * annotated as it allows a default entry class to be taken
     * from the generic information provided.
     * 
-    * @return this returns the generic dependant for the type
+    * @return this returns the generic dependent for the type
     */
-   public Class getDependant();
+   public Class getDependent();
    
    /**
-    * This is used to acquire the dependant classes for the method 
-    * part. The dependant types are the types that represent the 
+    * This is used to acquire the dependent classes for the method 
+    * part. The dependent types are the types that represent the 
     * generic types of the type. This is used when collections are 
     * annotated as it allows a default entry class to be taken
     * from the generic information provided.
     * 
-    * @return this returns the generic dependant for the type
+    * @return this returns the generic dependent for the type
     */
-   public Class[] getDependants();
+   public Class[] getDependents();
    
    /**
     * This is the method for this point of contact. This is what
