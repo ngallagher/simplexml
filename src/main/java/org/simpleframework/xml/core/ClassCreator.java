@@ -81,7 +81,7 @@ class ClassCreator implements Creator {
     * @return this returns the object that has been instantiated
     */
    public Object getInstance() throws Exception {
-      return primary.getDefault();
+      return primary.getInstance();
    }
    
    /**
@@ -95,7 +95,7 @@ class ClassCreator implements Creator {
     * @return this returns the object that has been instantiated
     */
    public Object getInstance(Criteria criteria) throws Exception {
-      return getBuilder(criteria).build(criteria);
+      return getBuilder(criteria).getInstance(criteria);
    }
    
    /**
@@ -103,7 +103,7 @@ class ClassCreator implements Creator {
     * to instantiate the object. If there is no match for the builder
     * then the default constructor is provided.
     * 
-    * @param names the names of the parameters to be matched
+    * @param criteria this contains the criteria to be used
     * 
     * @return this returns the builder that has been matched
     */
