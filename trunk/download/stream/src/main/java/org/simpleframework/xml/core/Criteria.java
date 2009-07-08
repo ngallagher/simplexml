@@ -20,8 +20,6 @@
 
 package org.simpleframework.xml.core;
 
-import java.util.Iterator;
-
 /**
  * The <code>Criteria</code> object represents the criteria used to
  * create an object and populate its methods and fields. This allows
@@ -31,7 +29,7 @@ import java.util.Iterator;
  * 
  * @author Niall Gallagher
  */
-interface Criteria extends Iterable<String> {
+interface Criteria {
    
    /**
     * This is used to get the <code>Variable</code> that represents
@@ -56,15 +54,6 @@ interface Criteria extends Iterable<String> {
     * @return this returns the named variable if it exists
     */
    public Variable remove(String name);
-   
-   /**
-    * This is used to acquire an iterator over the named variables.
-    * Providing an <code>Iterator</code> allows the criteria to be
-    * used in a for each loop. This is primarily for convenience.
-    * 
-    * @return this returns an iterator of all the variable names
-    */
-   public Iterator<String> iterator();
    
    /**
     * This is used to create a <code>Variable</code> and set it for

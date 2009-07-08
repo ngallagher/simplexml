@@ -4,6 +4,7 @@ import junit.framework.TestCase;
 
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
+import org.simpleframework.xml.ElementArray;
 import org.simpleframework.xml.Root;
 
 public class ConstructorInjectionTest extends TestCase {
@@ -24,6 +25,18 @@ public class ConstructorInjectionTest extends TestCase {
    "<example>"+
    "  <integer>12</integer>"+
    "</example>";
+   
+   private static final String ARRAY =
+   "<exampleArray>"+
+   "   <array length='5'>\n\r"+
+   "      <string>entry one</string>  \n\r"+
+   "      <string>entry two</string>  \n\r"+
+   "      <string>entry three</string>  \n\r"+
+   "      <string>entry four</string>  \n\r"+
+   "      <string>entry five</string>  \n\r"+
+   "   </array>\n\r"+
+   "</exampleArray>";
+   
    
    @Root
    private static class Example {
@@ -48,6 +61,21 @@ public class ConstructorInjectionTest extends TestCase {
       public Example(@Element(name="integer") int integer, @Element(name="string", required=false) String string){
          this.integer = integer;
          this.string = string;
+      }
+   }
+   
+   @Root
+   private static class ArrayExample {
+      
+      @ElementArray(name="array")
+      private final String[] array;
+      
+      public ArrayExample(@ElementArray(name="array") String[] array) {
+         this.array = array;
+      }
+      
+      public String[] getArray() {
+         return array;
       }
    }
    
@@ -76,5 +104,17 @@ public class ConstructorInjectionTest extends TestCase {
       assertEquals(example.integer, 12);
       assertEquals(example.number, 0);
       assertEquals(example.string, null); 
+   }
+   
+   public void testArrayExample() throws Exception {      
+      Persister persister = new Persister();
+      ArrayExample example = persister.read(ArrayExample.class, ARRAY);
+      
+      assertEquals(example.getArray().length, 5);
+      assertEquals(example.getArray()[0], "entry one");
+      assertEquals(example.getArray()[1], "entry two");
+      assertEquals(example.getArray()[2], "entry three");
+      assertEquals(example.getArray()[3], "entry four");
+      assertEquals(example.getArray()[4], "entry five");
    }
 }
