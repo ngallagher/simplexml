@@ -509,7 +509,7 @@ class Composite implements Converter {
       Label label = map.take(name);
       
       if(label == null) {
-         if(map.isStrict() && revision.isEqual()) {              
+         if(map.isStrict(context) && revision.isEqual()) {              
             throw new AttributeException("Attribute '%s' does not exist at %s", name, line);
          }            
       } else {
@@ -541,7 +541,7 @@ class Composite implements Converter {
       if(label == null) {
          Position line = node.getPosition();
          
-         if(map.isStrict() && revision.isEqual()) {              
+         if(map.isStrict(context) && revision.isEqual()) {              
             throw new ElementException("Element '%s' does not exist at %s", name, line);
          } else {
             node.skip();                 
@@ -803,7 +803,7 @@ class Composite implements Converter {
       Label label = map.take(name);
       
       if(label == null) {
-         if(map.isStrict() && revision.isEqual()) {              
+         if(map.isStrict(context) && revision.isEqual()) {              
             throw new AttributeException("Attribute '%s' does not exist at %s", name, line);
          }            
       } else {
@@ -833,7 +833,7 @@ class Composite implements Converter {
       if(label == null) {
          Position line = node.getPosition();
          
-         if(map.isStrict() && revision.isEqual()) {              
+         if(map.isStrict(context) && revision.isEqual()) {              
             throw new ElementException("Element '%s' does not exist at %s", name, line);
          } else {
             node.skip();                 

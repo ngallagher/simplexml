@@ -102,10 +102,12 @@ class LabelMap extends LinkedHashMap<String, Label> implements Iterable<Label> {
     * source XML document. When strict mapping is disabled, then
     * XML elements and attributes that do not exist in the schema
     * class will be ignored without breaking the parser.
+    * 
+    * @param context this is used to determine if this is strict
     *
     * @return true if strict parsing is enabled, false otherwise
     */ 
-   public boolean isStrict() {
-      return source.isStrict();           
+   public boolean isStrict(Context context) {
+      return context.isStrict() && source.isStrict();           
    }
 }
