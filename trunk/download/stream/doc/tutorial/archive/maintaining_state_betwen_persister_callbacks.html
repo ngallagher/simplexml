@@ -1,0 +1,113 @@
+<a name='state'></a><b>Maintaining state between persister callbacks</b>
+<p>
+When serializing and deserializing objects there is often a need to share information between
+callbacks without affecting the object implementation. In order to achieve this the persister
+can provide a session map to the methods annotated for persister callbacks. Below is an example
+of a serializable object that can receive a persister session object.
+<pre class="prettyprint">
+@Root
+public class Person {
+
+   @ElementList
+   private List&lt;Variable&gt; details;
+
+   @Element
+   private Address address;
+
+   private List names;
+   
+   @Validate
+   public void validate(Map session) throws PersistenceException {
+      if(session.isEmpty()) {
+         throw new PersistenceException("Map must not be empty")
+      }
+   }
+
+   @Commit
+   public void commit(Map session) {
+      Set keys = session.keySet();
+
+      for(Object item : keys) {
+         names.add(item);
+      }
+   }
+}
+
+@Address
+public class Address {
+
+   @Element
+   private String street;
+
+   @Element
+   private String city;
+
+   @Element
+   private String state;
+
+   public String getStreet() {
+      return street;
+   }
+
+   public String getCity() {
+      return city;
+   }
+
+   public String getState() {
+      return state;
+   }
+}
+
+@Root
+public class Variable {
+
+   @Attribute
+   private String name;
+
+   @Attribute
+   private String value;
+
+   @Commit
+   public void commit(Map session) {
+      session.put(name, value);
+   }
+
+   public String getName() {
+      return name;
+   }
+
+   public String getValue() {
+      return value;
+   }
+}
+</pre>
+The above example shows how entry objects can pass there names to its parent during the
+deserialization process. To clarify, deserialization is performed in a depth first manner
+so for this example the entry objects will be initialized and have their callback methods
+invoked before the root example class. 
+</p>
+<p>
+Although this may not seem like a very powerful feature, it offers great capabilities 
+when paired with the templating system described earlier. The templating engine has
+access to all details placed into the session map object. So other values within the XML
+document can reference each other. For example take the XML document below for the above
+objects.
+<pre class="prettyprint">
+&lt;person&gt;
+   &lt;details&gt;
+      &lt;var name="name" value="John Doe"/&gt;
+      &lt;var name="street" value="Sesame Street"/&gt;
+      &lt;var name="city" value="Metropolis"/&gt;
+      &lt;var name="state" value="Some State"/&gt;
+   &lt;/details&gt;
+   &lt;address&gt;
+      &lt;street&gt;${street}&lt;/street&gt;
+      &lt;city&gt;${city}&lt;/city&gt;
+      &lt;state&gt;${state}&lt;/state&gt;
+   &lt;/address&gt;   
+&lt;/person&gt;
+</pre>
+The above XML document illustrates how the variable objects values are accessible to the 
+elements declared in the address element. The street, city, and state needed to be 
+defined only once to be shared throughout the document.
+</p>

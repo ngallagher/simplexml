@@ -1,0 +1,2 @@
+Changes made to ensure cycles can be handled with null references
+Improvement to write exceptions to ensure the class is described

@@ -1,0 +1,1 @@
+Fix the reference collector so that there are not stack overflow errors

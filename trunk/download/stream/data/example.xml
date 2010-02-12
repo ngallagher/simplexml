@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<root id="1234">
+   <example1 version="1" name="NAME">
+        <element1 text="TEXT">
+                <integer>1</integer>
+                <long>1</long>
+                <boolean>true</boolean>
+        </element1>
+        <element2 text="TWO">
+                <integer>2</integer>
+                <long>2</long>
+                <boolean>true</boolean>
+        </element2>
+        <element3 text="THREE">
+                <integer>3</integer>
+                <long>3</long>
+                <boolean>true</boolean>
+        </element3>
+        <element4 text="FOUR">
+                <integer>4</integer>
+                <long>4</long>
+                <boolean>true</boolean>
+        </element4>
+        <text>Some free text element</text>
+   </example1>
+   <example2 version="2" name="TWO">
+        <element1 text="TEXT">
+                <integer>1</integer>
+                <long>1</long>
+                <boolean>true</boolean>
+        </element1>
+        <element2 text="TWO">
+                <integer>2</integer>
+                <long>2</long>
+                <boolean>true</boolean>
+        </element2>
+        <element3 text="THREE">
+                <integer>3</integer>
+                <long>3</long>
+                <boolean>true</boolean>
+        </element3>
+        <element4 text="FOUR">
+                <integer>4</integer>
+                <long>4</long>
+                <boolean>true</boolean>
+        </element4>
+        <text>Some free text element</text>
+   </example2>
+</root>   

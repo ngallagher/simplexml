@@ -1,0 +1,93 @@
+<a name='reuse'></a><b>Reusing XML elements</b>
+<p>
+As can be seen from using the <a href="/download/stream/doc/javadoc/org/simpleframework/xml/graph/CycleStrategy.html">CycleStrategy</a>
+in the previous section object references can easily be maintained regardless of complexity. Another benifit of using the
+cycle strategy is that you can conviniently reuse elements when creating configuration. For example take the following
+example of a task framework.
+</p>
+<pre class="prettyprint">
+@Root
+public class Workspace {
+
+   @Attribute
+   private File path;
+
+   @Attribute
+   private String name
+
+   private File getPath() {
+      return path;           
+   }
+
+   private String getName() {
+      return name;           
+   }
+}
+
+@Root
+public abstract Task {
+
+   @Element        
+   private Workspace workspace;         
+
+   public abstract void execute() throws Exception;
+}
+
+public class DeleteTask extends Task {
+
+   @ElementList(inline=true, entry="resource")        
+   private Collection&lt;String&gt; list;        
+
+   public void execute() {
+      File root = getPath();
+
+      for(String path : list) {
+         new File(root, path).delete();              
+      }
+   }  
+}
+
+public class MoveTask extends Task {
+
+   @ElementList(inline=true, entry="resource")
+   private Collection&lt;String&gt; list;
+
+   @Attribute
+   private File from;
+
+   public void execute() {
+      File root = getPath();
+
+      for(String path : list) {
+         File create = new File(root, path);
+         File copy = new File(from, path);
+
+         copy.renameTo(create);
+      }
+   }
+}
+</pre>
+<p>
+The above code snippet shows a very simple task framework that is used to perform actions on a workspace.
+Each task must contain details for the workspace it will perform its specific task on. So, making use of
+the cycle strategy it is possible to declare a specific object once, using a know identifier and referencing
+that object throughout a single XML document. This eases the configuration burden and ensures that less errors
+can creap in to large complex documents where may objects are declared.
+</p>
+<pre class="prettyprint">
+&lt;job&gt;
+   &lt;workspace id=&quot;default&quot;&gt;
+      &lt;path&gt;c:\workspace\task&lt;/path&gt;
+   &lt;/workspace&gt;
+   &lt;task class=&quot;example.DeleteTask&quot;&gt;
+      &lt;workspace ref=&quot;default&quot;/&gt;
+      &lt;resource&gt;output.dat&lt;/resource&gt;
+      &lt;resource&gt;result.log&lt;/resource&gt;
+   &lt;/task&gt;
+   &lt;task class=&quot;example.MoveTask&quot;&gt;
+      &lt;workspace ref=&quot;default&quot;/&gt;
+      &lt;from&gt;c:\workspace\data&lt;/from&gt;
+      &lt;resource&gt;input.xml&lt;/resource&gt;
+   &lt;/task&gt;
+&lt;/job&gt;
+</pre>

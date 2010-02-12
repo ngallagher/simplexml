@@ -1,0 +1,90 @@
+<a name='loosemap'></a><b>Loose object mapping</b>
+<p>
+An important feature for any XML tool is the ability to sift through the source XML to find particular
+XML attributes an elements of interest. It would not be very convinient if you had to write an object
+that accurately mapped every attribute an element in an XML document if all you are interested in is
+perhaps an element and several attributes. Take the following XML document.
+</p>
+<pre class="prettyprint">
+&lt;contact id='71' version='1.0'&gt;
+   &lt;name&gt;
+      &lt;first&gt;Niall&lt;/first&gt;
+      &lt;surname&gt;Gallagher&lt;/surname&gt;
+   &lt;/name&gt;
+   &lt;address&gt;
+      &lt;house&gt;House 33&lt;/house&gt;
+      &lt;street&gt;Sesame Street&lt;/street&gt;
+      &lt;city&gt;City&lt;/city&gt;
+   &lt;/address&gt;
+   &lt;phone&gt;
+      &lt;mobile&gt;123456789&lt;/mobile&gt;
+      &lt;home&gt;987654321&lt;/home&gt;
+   &lt;/phone&gt;
+&lt;/example&gt; 
+</pre>
+<p>
+If my object only required the some of the details of the specified contact, for example the phone
+contacts and the name then it needs to be able to ignore the address details safely. The following
+code shows how this can be done by setting strict to false within the <a href="/download/stream/doc/javadoc/org/simpleframework/xml/Root.html">Root</a>
+annotation.
+</p>
+<pre class="prettyprint">
+@Root(strict=false)
+public class Contact {
+
+   @Element
+   private Name name;
+
+   @Element
+   private Phone phone;
+
+   public String getName() {
+      return name.first;
+   }
+
+   public String getSurname() {
+      return name.surname;
+   }
+
+   public String getMobilePhone() {
+      return phone.mobile;
+   }
+
+   public String getHomePhone() {
+      return phone.home;
+   }
+
+   private static class Name {
+    
+      @Element
+      private String first;
+
+      @Element
+      private String surname;
+   }
+
+   private static class Phone {
+
+      @Element(required=false)
+      private String mobile;
+
+      @Element
+      private String home;
+   }
+}
+</pre>
+<p>
+The above object can be used to parse the contact XML source. This simple ignores any XML elements or attributes that do not appear
+in the class schema. To further clarify the implementation of loose mappings take the example shown below. This shows how the entry 
+object is deserialized from the above document, which is contained within a file. Once deserialized the object values can be examined.
+</p>
+<pre class="prettyprint">
+Serializer serializer = new Persister();
+File source = new File("contact.xml");
+Contact contact = serializer.read(Contact.class, source);
+
+assert contact.getName().equals("Niall");
+assert contact.getSurname().equals("Gallagher");
+assert contact.getMobilePhone().equals("123456789");
+assert contact.getHomePhone().equals("987654321");
+</pre>

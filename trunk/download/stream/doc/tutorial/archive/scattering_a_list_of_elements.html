@@ -1,0 +1,95 @@
+<a name='scatter'></a><b>Scattering inline element entries</b>
+<p>
+Elements that are scattered throughout an XML document can be collected by inline lists and inline maps. Simply provide
+an entry name for the XML element name the list or map is to collect and they will be extracted and placed in to
+the collection object. For example take the following XML element. It contains include and exclude XML elements
+which are in no specific order. Even though they are not in any order the deserialization process is able to gather
+the XML elements as thet are encountered.
+</p>
+<pre class="prettyprint">
+&lt;fileSet path=&quot;c:\&quot;&gt;
+   &lt;include pattern=&quot;.*.jar&quot;/&gt;
+   &lt;exclude pattern=&quot;.*.bak&quot;/&gt;
+   &lt;exclude pattern=&quot;~.*&quot;/&gt;
+   &lt;include pattern=&quot;.*.class&quot;/&gt;
+   &lt;exclude pattern=&quot;images/.*&quot;/&gt;
+&lt;/fileSet&gt;
+</pre>
+<p>
+In order to achieve this the following object can be used. This declares two inline collections which specify the name
+of the entry objects that they are collecting. If the entry attribute is not specified then the name of the object will
+be used instead.
+</p>
+<pre class="prettyprint">
+@Root
+public class FileSet {
+
+   @ElementList(entry="include", inline=true)
+   private List&lt;Match&gt; include;
+
+   @ElementList(entry="exclude", inline=true)
+   private List&lt;Match&gt; exclude;
+
+   @Attribute
+   private File path;
+
+   private List&lt;File&gt; files;
+
+   public FileSet() {
+      this.files = new ArrayList&lt;File&gt;();
+   }
+
+   @Commit
+   public void commit() {
+      scan(path);
+   }
+
+   private void scan(File path) { 
+      File[] list = path.listFiles();
+
+      for(File file : list) {
+         if(file.isDirectory()) {
+            scan(path);
+         } else {            
+            if(matches(file)) {
+               files.add(file);
+            }
+         }
+      }
+   }
+
+   private boolean matches(File file) {
+      for(Match match : exclude) {
+         if(match.matches(file)) {
+            return false;
+         }
+      }
+      for(Match match : include) {
+         if(match.matches(file)) {
+            return true;
+         }
+      }
+      return false;
+   }
+
+   public List&lt;File&gt; getFiles() {
+      return files;
+   }
+
+   @Root
+   private static class Match {
+
+      @Attribute            
+      private String pattern;            
+
+      public boolean matches(File file) {
+         Stirng path = file.getPath();
+
+         if(!file.isFile()) {
+            return false;
+         }
+         return path.matches(pattern);         
+      }         
+   }
+}
+</pre>
