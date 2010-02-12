@@ -443,7 +443,7 @@ public class Persister implements Serializer {
     * @throws Exception if the object cannot be fully deserialized
     */
    public <T> T read(Class<? extends T> type, InputStream source) throws Exception {
-      return read(type, NodeBuilder.read(source), true);           
+      return read(type, source, true);           
    }
    
    /**
@@ -461,7 +461,7 @@ public class Persister implements Serializer {
     * @throws Exception if the object cannot be fully deserialized
     */
    public <T> T read(Class<? extends T> type, Reader source) throws Exception {
-      return read(type, NodeBuilder.read(source), true);
+      return read(type, source, true);
    }
    
    /**
