@@ -1,7 +1,0 @@
-<p>
-Here you can download the latest releases for the XML serialization framework. Each download link
-will redirect you to the <a href="http://sf.net/">SourceForge.net</a> download site. All downloads
-are compatible with the Java 5 and Java 6 platform. For Java 6 the framework has no external
-dependancies and is completely self contained. For Java 5 two external JAR files are required,
-the StAX API and the StAX implementation, both are provided with the download.
-</p>

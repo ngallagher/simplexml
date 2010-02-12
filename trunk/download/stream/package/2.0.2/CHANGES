@@ -1,3 +1,0 @@
-Removed all static reflection caching from within the persister object 
-Moved the scanner cache into the context to improve access to scanners
-Ensured no singletons used in the persister to enable use of strategies 
