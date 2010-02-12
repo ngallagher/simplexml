@@ -51,6 +51,17 @@ import org.simpleframework.xml.stream.Style;
 interface Context {
    
    /**
+    * This is used to determine if the deserialization mode is strict
+    * or not. If this is not strict then deserialization will be done
+    * in such a way that additional elements and attributes can be
+    * ignored. This allows external XML formats to be used without 
+    * having to match the object structure to the XML fully.
+    * 
+    * @return this returns true if the deserialization is strict
+    */
+   public boolean isStrict();
+   
+   /**
     * This is used to acquire the <code>Style</code> for the format.
     * If no style has been set a default style is used, which does 
     * not modify the attributes and elements that are used to build

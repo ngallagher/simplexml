@@ -82,6 +82,11 @@ class Source implements Context {
    private Style style;
    
    /**
+    * This is used to determine whether the read should be strict.
+    */
+   private boolean strict;
+   
+   /**
     * Constructor for the <code>Source</code> object. This is used to
     * maintain a context during the serialization process. It holds 
     * the <code>Strategy</code> and <code>Context</code> used in the
@@ -93,13 +98,43 @@ class Source implements Context {
     * @param style this is the style used for the serialization
     */       
    public Source(Strategy strategy, Support support, Style style) {
+      this(strategy, support, style, true);
+   }
+   
+   /**
+    * Constructor for the <code>Source</code> object. This is used to
+    * maintain a context during the serialization process. It holds 
+    * the <code>Strategy</code> and <code>Context</code> used in the
+    * serialization process. The same source instance is used for 
+    * each XML element evaluated in a the serialization process. 
+    * 
+    * @param strategy this is used to resolve the classes used   
+    * @param support this is the context used to process strings
+    * @param style this is the style used for the serialization
+    * @param strict this determines whether to read in strict mode
+    */       
+   public Source(Strategy strategy, Support support, Style style, boolean strict) {
       this.filter = new TemplateFilter(this, support);           
       this.engine = new TemplateEngine(filter);     
       this.session = new Session();
       this.strategy = strategy;
       this.support = support;
+      this.strict = strict;
       this.style = style;
    } 
+   
+   /**
+    * This is used to determine if the deserialization mode is strict
+    * or not. If this is not strict then deserialization will be done
+    * in such a way that additional elements and attributes can be
+    * ignored. This allows external XML formats to be used without 
+    * having to match the object structure to the XML fully.
+    * 
+    * @return this returns true if the deserialization is strict
+    */
+   public boolean isStrict() {
+      return strict;
+   }
    
    /**
     * This is used to acquire the <code>Session</code> object that 
