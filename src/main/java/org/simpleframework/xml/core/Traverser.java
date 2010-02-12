@@ -3,23 +3,22 @@
  *
  * Copyright (C) 2006, Niall Gallagher <niallg@users.sf.net>
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
- * GNU Lesser General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General 
- * Public License along with this library; if not, write to the 
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, 
- * Boston, MA  02111-1307  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or 
+ * implied. See the License for the specific language governing 
+ * permissions and limitations under the License.
  */
 
 package org.simpleframework.xml.core;
 
+import org.simpleframework.xml.strategy.Type;
 import org.simpleframework.xml.stream.InputNode;
 import org.simpleframework.xml.stream.OutputNode;
 import org.simpleframework.xml.stream.Style;
@@ -56,6 +55,21 @@ class Traverser {
    public Traverser(Context context) {
       this.style = context.getStyle();
       this.context = context;           
+   }
+   
+   /**
+    * This will acquire the <code>Decorator</code> for the type.
+    * A decorator is an object that adds various details to the
+    * node without changing the overall structure of the node. For
+    * example comments and namespaces can be added to the node with
+    * a decorator as they do not affect the deserialization.
+    * 
+    * @param type this is the type to acquire the decorator for 
+    *
+    * @return this returns the decorator associated with this
+    */
+   private Decorator getDecorator(Class type) throws Exception {
+      return context.getDecorator(type);
    }
    
    /**
@@ -209,13 +223,14 @@ class Traverser {
     */
    public void write(OutputNode node, Object source, Class expect, String name) throws Exception {
       OutputNode child = node.getChild(name);
+      Type type = getType(expect);
       
       if(source != null) {
-         Class type = source.getClass();
+         Class actual = source.getClass();
      
-         if(!context.setOverride(expect, source, child)) {
-            Converter convert = getComposite(type);
-            Decorator decorator = getDecorator(type);
+         if(!context.setOverride(type, source, child)) {
+            Converter convert = getComposite(actual);
+            Decorator decorator = getDecorator(actual);
             
             decorator.decorate(child);
             convert.write(child, source);         
@@ -225,31 +240,34 @@ class Traverser {
    }
    
    /**
-    * This will acquire the <code>Decorator</code> for the type.
-    * A decorator is an object that adds various details to the
-    * node without changing the overall structure of the node. For
-    * example comments and namespaces can be added to the node with
-    * a decorator as they do not affect the deserialization.
-    * 
-    * @param type this is the type to acquire the decorator for 
-    *
-    * @return this returns the decorator associated with this
-    */
-   private Decorator getDecorator(Class type) throws Exception {
-      return context.getDecorator(type);
-   }
-   
-   /**
     * This will create a <code>Composite</code> object using the XML 
     * schema class provided. This makes use of the source object that
     * this traverser has been given to create a composite converter. 
     * 
-    * @param type this is the XML schema class to be used
+    * @param expect this is the XML schema class to be used
     * 
     * @return a converter for the specified XML schema class
     */
-   private Composite getComposite(Class type) throws Exception {
+   private Composite getComposite(Class expect) throws Exception {
+      Type type = getType(expect);
+      
+      if(expect == null) {
+         throw new RootException("Can not instantiate null class");
+      }
       return new Composite(context, type);
+   }
+   
+   /**
+    * This is used to acquire a type for the provided class. This will
+    * wrap the class in a <code>Type</code> wrapper object. Wrapping
+    * the class allows it to be used within the framework.
+    * 
+    * @param type this is the type that is to be wrapped for use
+    * 
+    * @return this returns the type that wraps the specified class
+    */
+   private Type getType(Class type) {
+      return new ClassType(type);
    }
    
    /**

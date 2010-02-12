@@ -1,21 +1,21 @@
 package org.simpleframework.xml.core;
 
-import java.io.FileOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.io.StringWriter;
-import java.util.List;
 
-import org.simpleframework.xml.core.Persister;
-import org.simpleframework.xml.util.Entry;
-import org.simpleframework.xml.util.Dictionary;
-import org.simpleframework.xml.ValidationTestCase;
-import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
+import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
+import org.simpleframework.xml.ValidationTestCase;
+import org.simpleframework.xml.util.Dictionary;
+import org.simpleframework.xml.util.Entry;
 
 public class UnicodeTest extends ValidationTestCase {
 
-   private static final String SOURCE =        
+   private static final String SOURCE =     
+   "<?xml version='1.0' encoding='UTF-8'?>\n"+      
    "<example>\n"+
    "   <list>\n"+
    "      <unicode origin=\"Australia\" name=\"Nicole Kidman\">\n"+
@@ -201,51 +201,72 @@ public class UnicodeTest extends ValidationTestCase {
       assertUnicode(example);
       validate(example, persister);      
    }
+   
+   public void testUnicodeFromByteStream() throws Exception {
+      byte[] data = SOURCE.getBytes("UTF-8");
+      InputStream source = new ByteArrayInputStream(data);
+      UnicodeExample example = persister.read(UnicodeExample.class, source);
 
+      assertUnicode(example);
+      validate(example, persister); // Ensure the deserialized object is valid
+   }
 
+   public void testIncorrectEncoding() throws Exception {
+      byte[] data = SOURCE.getBytes("UTF-8");
+      InputStream source = new ByteArrayInputStream(data);
+      UnicodeExample example = persister.read(UnicodeExample.class, source, "ISO-8859-1");
+
+      assertFalse("Encoding of ISO-8859-1 did not work", isUnicode(example));
+   }
+   
    public void assertUnicode(UnicodeExample example) throws Exception {
+      assertTrue("Data was not unicode", isUnicode(example));
+   }
+   
+   public boolean isUnicode(UnicodeExample example) throws Exception {
       // Ensure text remailed unicode           
-      assertEquals(example.get("Nicole Kidman").text, "Nicole Kidman");
-      assertEquals(example.get("Johann Strauss").text, "Johann Strauß");
-      assertEquals(example.get("Celine Dion").text, "Céline Dion");
-      assertEquals(example.get("LEE Sol-Hee").text, "이설희");
-      assertEquals(example.get("Soren Hauch-Fausboll").text, "Søren Hauch-Fausbøll");
-      assertEquals(example.get("Soren Kierkegaard").text, "Søren Kierkegård");
-      assertEquals(example.get("Abdel Halim Hafez").text, "ﻋﺑﺪﺍﻠﺣﻟﻳﻢ ﺤﺎﻓﻅ");
-      assertEquals(example.get("Om Kolthoum").text, "ﺃﻡ ﻛﻟﺛﻭﻡ");
-      assertEquals(example.get("Berhane Zeray").text, "ኤርትራ");
-      assertEquals(example.get("Haile Gebreselassie").text, "ኢትዮጵያ");
-      assertEquals(example.get("Gerard Depardieu").text, "Gérard Depardieu");
-      assertEquals(example.get("Jean Reno").text, "Jean Réno");
-      assertEquals(example.get("Camille Saint-Saens").text, "Camille Saint-Saëns");
-      assertEquals(example.get("Mylene Demongeot").text, "Mylène Demongeot");
-      assertEquals(example.get("Francois Truffaut").text, "François Truffaut");
-      //assertEquals(example.get("Rudi Voeller").text, "Rudi Völler");
-      assertEquals(example.get("Walter Schultheiss").text, "Walter Schultheiß");
-      assertEquals(example.get("Giorgos Dalaras").text, "Γιώργος Νταλάρας");
-      assertEquals(example.get("Bjork Gudmundsdottir").text, "Björk Guðmundsdóttir");
-      assertEquals(example.get("Madhuri Dixit").text, "माधुरी दिछित");
-      assertEquals(example.get("Sinead O'Connor").text, "Sinéad O'Connor");
-      assertEquals(example.get("Yehoram Gaon").text, "יהורם גאון");
-      assertEquals(example.get("Fabrizio DeAndre").text, "Fabrizio De André");
-      assertEquals(example.get("KUBOTA Toshinobu").text, "久保田    利伸");
-      assertEquals(example.get("HAYASHIBARA Megumi").text, "林原 めぐみ");
-      assertEquals(example.get("Mori Ogai").text, "森鷗外");
-      assertEquals(example.get("Tex Texin").text, "テクス テクサン");
-      assertEquals(example.get("Tor Age Bringsvaerd").text, "Tor Åge Bringsværd");
-      assertEquals(example.get("Nusrat Fatah Ali Khan").text, "نصرت فتح علی خان");
-      assertEquals(example.get("ZHANG Ziyi").text, "章子怡");
-      assertEquals(example.get("WONG Faye").text, "王菲");
-      assertEquals(example.get("Lech Walesa").text, "Lech Wałęsa");
-      assertEquals(example.get("Olga Tanon").text, "Olga Tañón");
-      assertEquals(example.get("Hsu Chi").text, "舒淇");
-      assertEquals(example.get("Ang Lee").text, "李安");
-      assertEquals(example.get("AHN Sung-Gi").text, "안성기");
-      assertEquals(example.get("SHIM Eun-Ha").text, "심은하");
-      assertEquals(example.get("Mikhail Gorbachev").text, "Михаил Горбачёв");
-      assertEquals(example.get("Boris Grebenshchikov").text, "Борис Гребенщиков");
-      assertEquals(example.get("Archimedes").text, "Ἀρχιμήδης");
-      assertEquals(example.get("Thongchai McIntai").text, "ธงไชย แม็คอินไตย์");
-      assertEquals(example.get("Brad Pitt").text, "Brad Pitt");
+      if(!example.get("Nicole Kidman").text.equals("Nicole Kidman")) return false;
+      if(!example.get("Johann Strauss").text.equals("Johann Strauß")) return false;
+      if(!example.get("Celine Dion").text.equals("Céline Dion")) return false;
+      if(!example.get("LEE Sol-Hee").text.equals("이설희")) return false;
+      if(!example.get("Soren Hauch-Fausboll").text.equals("Søren Hauch-Fausbøll")) return false;
+      if(!example.get("Soren Kierkegaard").text.equals("Søren Kierkegård")) return false;
+      if(!example.get("Abdel Halim Hafez").text.equals("ﻋﺑﺪﺍﻠﺣﻟﻳﻢ ﺤﺎﻓﻅ")) return false;
+      if(!example.get("Om Kolthoum").text.equals("ﺃﻡ ﻛﻟﺛﻭﻡ")) return false;
+      if(!example.get("Berhane Zeray").text.equals("ኤርትራ")) return false;
+      if(!example.get("Haile Gebreselassie").text.equals("ኢትዮጵያ")) return false;
+      if(!example.get("Gerard Depardieu").text.equals("Gérard Depardieu")) return false;
+      if(!example.get("Jean Reno").text.equals("Jean Réno")) return false;
+      if(!example.get("Camille Saint-Saens").text.equals("Camille Saint-Saëns")) return false;
+      if(!example.get("Mylene Demongeot").text.equals("Mylène Demongeot")) return false;
+      if(!example.get("Francois Truffaut").text.equals("François Truffaut")) return false;
+      //if(!example.get("Rudi Voeller").text.equals("Rudi Völler")) return false;
+      if(!example.get("Walter Schultheiss").text.equals("Walter Schultheiß")) return false;
+      if(!example.get("Giorgos Dalaras").text.equals("Γιώργος Νταλάρας")) return false;
+      if(!example.get("Bjork Gudmundsdottir").text.equals("Björk Guðmundsdóttir")) return false;
+      if(!example.get("Madhuri Dixit").text.equals("माधुरी दिछित")) return false;
+      if(!example.get("Sinead O'Connor").text.equals("Sinéad O'Connor")) return false;
+      if(!example.get("Yehoram Gaon").text.equals("יהורם גאון")) return false;
+      if(!example.get("Fabrizio DeAndre").text.equals("Fabrizio De André")) return false;
+      if(!example.get("KUBOTA Toshinobu").text.equals("久保田    利伸")) return false;
+      if(!example.get("HAYASHIBARA Megumi").text.equals("林原 めぐみ")) return false;
+      if(!example.get("Mori Ogai").text.equals("森鷗外")) return false;
+      if(!example.get("Tex Texin").text.equals("テクス テクサン")) return false;
+      if(!example.get("Tor Age Bringsvaerd").text.equals("Tor Åge Bringsværd")) return false;
+      if(!example.get("Nusrat Fatah Ali Khan").text.equals("نصرت فتح علی خان")) return false;
+      if(!example.get("ZHANG Ziyi").text.equals("章子怡")) return false;
+      if(!example.get("WONG Faye").text.equals("王菲")) return false;
+      if(!example.get("Lech Walesa").text.equals("Lech Wałęsa")) return false;
+      if(!example.get("Olga Tanon").text.equals("Olga Tañón")) return false;
+      if(!example.get("Hsu Chi").text.equals("舒淇")) return false;
+      if(!example.get("Ang Lee").text.equals("李安")) return false;
+      if(!example.get("AHN Sung-Gi").text.equals("안성기")) return false;
+      if(!example.get("SHIM Eun-Ha").text.equals("심은하")) return false;
+      if(!example.get("Mikhail Gorbachev").text.equals("Михаил Горбачёв")) return false;
+      if(!example.get("Boris Grebenshchikov").text.equals("Борис Гребенщиков")) return false;
+      if(!example.get("Archimedes").text.equals("Ἀρχιμήδης")) return false;
+      if(!example.get("Thongchai McIntai").text.equals("ธงไชย แม็คอินไตย์")) return false;
+      if(!example.get("Brad Pitt").text.equals("Brad Pitt")) return false;
+      return true;
    }
 }

@@ -10,6 +10,7 @@ import org.simpleframework.xml.Namespace;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.Version;
+import org.simpleframework.xml.strategy.Value;
 
 public class VersionTest extends TestCase {      
 
@@ -85,7 +86,7 @@ public class VersionTest extends TestCase {
       private String value;              
    }
    
-   public static class SimpleType implements Type{
+   public static class SimpleType implements Value{
       
       private Class type;
       
@@ -93,21 +94,24 @@ public class VersionTest extends TestCase {
          this.type = type;
       }
       
-      public Object getInstance() throws Exception {
-         return getInstance(type);
+      public int getLength() {
+         return 0;
       }
-
-       public Object getInstance(Class type) throws Exception {
-         Constructor method = type.getDeclaredConstructor();
-
-         if(!method.isAccessible()) {
-            method.setAccessible(true);              
+      
+      public Object getValue()  {
+         try {
+            Constructor method = type.getDeclaredConstructor();
+   
+            if(!method.isAccessible()) {
+               method.setAccessible(true);              
+            }
+            return method.newInstance();   
+         }catch(Exception e) {
+            throw new RuntimeException(e);
          }
-         return method.newInstance();   
       }   
        
-       public Object getInstance(Object value) throws Exception {
-          return value;
+       public void setValue(Object value) {
        }
        
        public boolean isReference() {

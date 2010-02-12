@@ -3,25 +3,22 @@
  *
  * Copyright (C) 2007, Niall Gallagher <niallg@users.sf.net>
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
- * GNU Lesser General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General 
- * Public License along with this library; if not, write to the 
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, 
- * Boston, MA  02111-1307  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or 
+ * implied. See the License for the specific language governing 
+ * permissions and limitations under the License.
  */
 
 package org.simpleframework.xml.core;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
@@ -72,6 +69,30 @@ class FieldContact implements Contact {
    } 
    
    /**
+    * This is used to determine if the annotated contact is for a
+    * read only variable. A read only variable is a field that
+    * can be set from within the constructor such as a blank final
+    * variable. It can also be a method with no set counterpart.
+    * 
+    * @return this returns true if the contact is a constant one
+    */
+   public boolean isReadOnly() {
+      return !isStatic() && isFinal();
+   }
+   
+   /**
+    * This is used to determine if the annotated contact is for a
+    * static field or method. A static field or method is one that
+    * contains the "static" keyword. Any static final fields will
+    * be read only and does not require any matching annotation.
+    * 
+    * @return this returns true if the contact is a static one
+    */
+   public boolean isStatic() {
+      return Modifier.isStatic(modifier);
+   }
+   
+   /**
     * This is used to identify annotated methods are fields that
     * can not be modified. Such field will require that there is 
     * a constructor that can have the value injected in to it.
@@ -119,7 +140,7 @@ class FieldContact implements Contact {
    
    /**
     * This is used to acquire the name of the field. This will return
-    * the name of the field wich can then be used to determine the 
+    * the name of the field which can then be used to determine the 
     * XML attribute or element the contact represents. This ensures
     * that the name provided string is internalized for performance.  
     * 
@@ -154,7 +175,7 @@ class FieldContact implements Contact {
    /**
     * This is the annotation associated with the point of contact.
     * This will be an XML annotation that describes how the contact
-    * should be serializaed and deserialized from the object.
+    * should be serialized and deserialized from the object.
     *
     * @return this provides the annotation associated with this
     */
@@ -165,7 +186,7 @@ class FieldContact implements Contact {
    /**
     * This is the annotation associated with the point of contact.
     * This will be an XML annotation that describes how the contact
-    * should be serializaed and deserialized from the object.
+    * should be serialized and deserialized from the object.
     * 
     * @param type this is the type of the annotation to acquire
     *

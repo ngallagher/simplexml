@@ -3,24 +3,24 @@
  *
  * Copyright (C) 2006, Niall Gallagher <niallg@users.sf.net>
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
- * GNU Lesser General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General 
- * Public License along with this library; if not, write to the 
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, 
- * Boston, MA  02111-1307  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or 
+ * implied. See the License for the specific language governing 
+ * permissions and limitations under the License.
  */
 
 package org.simpleframework.xml.core;
 
 import java.lang.reflect.Constructor;
+
+import org.simpleframework.xml.strategy.Value;
 
 /**
  * The <code>Instantiator</code> is used to instantiate types that 
@@ -50,30 +50,29 @@ class Instantiator {
    }
    
    /**
-    * This will create a <code>Type</code> object that can be used
+    * This will create an <code>Instance</code> that can be used
+    * to instantiate objects of the specified class. This leverages
+    * an internal constructor cache to ensure creation is quicker.
+    * 
+    * @param value this contains information on the object instance
+    * 
+    * @return this will return an object for instantiating objects
+    */
+   public Instance getInstance(Value value) {
+      return new ValueInstance(this, value);
+   }
+
+   /**
+    * This will create an <code>Instance</code> that can be used
     * to instantiate objects of the specified class. This leverages
     * an internal constructor cache to ensure creation is quicker.
     * 
     * @param type this is the type that is to be instantiated
     * 
-    * @return this will return a type for instantiating objects
+    * @return this will return an object for instantiating objects
     */
-   public Type getType(Class type) {
-      return new Instance(this, type);
-   }
-   
-   /**
-    * This will create an array <code>Type</code> that can be used
-    * to instantiate arrays of the specified class. This leverages
-    * an internal constructor cache to ensure creation is quicker.
-    * 
-    * @param type this is the array type that is to be instantiated
-    * @param size this is the length of the array to be created
-    * 
-    * @return this will return a type for instantiating objects
-    */
-   public Type getType(Class type, int size) {
-      return new ArrayInstance(type, size);
+   public Instance getInstance(Class type) {
+      return new ClassInstance(this, type);
    }
    
    /**
@@ -85,8 +84,8 @@ class Instantiator {
     *
     * @return this returns an instance of the specific class type
     */ 
-   public Object getInstance(Class type) throws Exception {
-      Constructor method = cache.fetch(type);
+   public Object getObject(Class type) throws Exception {
+      Constructor method = cache.get(type);
       
       if(method == null) {
          method = type.getDeclaredConstructor();      
@@ -94,7 +93,7 @@ class Instantiator {
          if(!method.isAccessible()) {
             method.setAccessible(true);              
          }
-         cache.cache(type, method);
+         cache.put(type, method);
       }
       return method.newInstance();   
    }

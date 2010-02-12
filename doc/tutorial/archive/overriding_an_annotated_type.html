@@ -5,7 +5,7 @@ XML element, which will ensure that that element can be instantiated as the decl
 field and method types can reference abstract classes and interfaces, it also allows multiple types to be added into 
 an annotated collection.
 </p>
-<pre>
+<pre class="prettyprint">
 package example.demo;
 
 public interface Task {
@@ -56,7 +56,7 @@ it. Also, the type can contain its own unique annotations and types which makes 
 and serialization process truly dynamic. Below is an example XML document declaring the class 
 type for the task object.
 </p>
-<pre>
+<pre class="prettyprint">
 &lt;example&gt;
    &lt;task class="example.demo.DivideTask"&gt;
       &lt;left&gt;16.5&lt;/left&gt;
@@ -69,7 +69,7 @@ In order to execute the task described in the XML document the following code ca
 assumed the XML source is contained within a file. Once the example object has been deserialized 
 the task can be executed and the result acquired.
 </p>
-<pre>
+<pre class="prettyprint">
 Serializer serializer = new Persister();
 File example = new File("example.xml");
 Example example = serializer.read(Example.class, example)

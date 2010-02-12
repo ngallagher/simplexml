@@ -6,14 +6,7 @@ import java.lang.annotation.Annotation;
 import junit.framework.TestCase;
 
 import org.simpleframework.xml.ElementMap;
-import org.simpleframework.xml.core.Contact;
-import org.simpleframework.xml.core.DefaultStrategy;
-import org.simpleframework.xml.core.DefaultStyle;
-import org.simpleframework.xml.core.Entry;
-import org.simpleframework.xml.core.FieldContact;
-import org.simpleframework.xml.core.PrimitiveKey;
-import org.simpleframework.xml.core.Source;
-import org.simpleframework.xml.core.Support;
+import org.simpleframework.xml.strategy.TreeStrategy;
 import org.simpleframework.xml.stream.NodeBuilder;
 import org.simpleframework.xml.stream.OutputNode;
 
@@ -135,7 +128,7 @@ public class PrimitiveKeyTest extends TestCase {
    
    public void testInlineString() throws Exception 
    {
-      Source source = new Source(new DefaultStrategy(), new Support(), new DefaultStyle());
+      Source source = new Source(new TreeStrategy(), new Support(), new DefaultStyle());
       MockElementMap map = new MockElementMap(true, // attribute
                                               false, // data
                                               "entry", // entry 
@@ -149,7 +142,7 @@ public class PrimitiveKeyTest extends TestCase {
       PrimitiveType type = new PrimitiveType(map);
       Contact string = type.getString();
       Entry entry = new Entry(string, map);
-      PrimitiveKey value = new PrimitiveKey(source, entry, String.class);
+      PrimitiveKey value = new PrimitiveKey(source, entry, new ClassType(String.class));
       OutputNode node = NodeBuilder.write(new PrintWriter(System.out));
       
       value.write(node.getChild("inlineString"), "example");
@@ -158,7 +151,7 @@ public class PrimitiveKeyTest extends TestCase {
    
    public void testNotInlineString() throws Exception 
    {
-      Source source = new Source(new DefaultStrategy(), new Support(), new DefaultStyle());
+      Source source = new Source(new TreeStrategy(), new Support(), new DefaultStyle());
       MockElementMap map = new MockElementMap(false, // attribute
                                               false, // data
                                               "entry", // entry 
@@ -172,7 +165,7 @@ public class PrimitiveKeyTest extends TestCase {
       PrimitiveType type = new PrimitiveType(map);
       Contact string = type.getString();
       Entry entry = new Entry(string, map);
-      PrimitiveKey value = new PrimitiveKey(source, entry, String.class);
+      PrimitiveKey value = new PrimitiveKey(source, entry, new ClassType(String.class));
       OutputNode node = NodeBuilder.write(new PrintWriter(System.out));
       
       value.write(node.getChild("notInlineString"), "example");
@@ -181,7 +174,7 @@ public class PrimitiveKeyTest extends TestCase {
    
    public void testNoAttributeString() throws Exception 
    {
-      Source source = new Source(new DefaultStrategy(), new Support(), new DefaultStyle());
+      Source source = new Source(new TreeStrategy(), new Support(), new DefaultStyle());
       MockElementMap map = new MockElementMap(false, // attribute
                                               false, // data
                                               "entry", // entry 
@@ -195,7 +188,7 @@ public class PrimitiveKeyTest extends TestCase {
       PrimitiveType type = new PrimitiveType(map);
       Contact string = type.getString();
       Entry entry = new Entry(string, map);
-      PrimitiveKey value = new PrimitiveKey(source, entry, String.class);
+      PrimitiveKey value = new PrimitiveKey(source, entry, new ClassType(String.class));
       OutputNode node = NodeBuilder.write(new PrintWriter(System.out));
       
       value.write(node.getChild("noAttributeString"), "example");
@@ -204,7 +197,7 @@ public class PrimitiveKeyTest extends TestCase {
    
    public void testAttributeNoKeyString() throws Exception 
    {
-      Source source = new Source(new DefaultStrategy(), new Support(), new DefaultStyle());
+      Source source = new Source(new TreeStrategy(), new Support(), new DefaultStyle());
       MockElementMap map = new MockElementMap(true, // attribute
                                               false, // data
                                               "entry", // entry 
@@ -218,7 +211,7 @@ public class PrimitiveKeyTest extends TestCase {
       PrimitiveType type = new PrimitiveType(map);
       Contact string = type.getString();
       Entry entry = new Entry(string, map);
-      PrimitiveKey value = new PrimitiveKey(source, entry, String.class);
+      PrimitiveKey value = new PrimitiveKey(source, entry, new ClassType(String.class));
       OutputNode node = NodeBuilder.write(new PrintWriter(System.out));
       
       value.write(node.getChild("attributeNoKeyString"), "example");

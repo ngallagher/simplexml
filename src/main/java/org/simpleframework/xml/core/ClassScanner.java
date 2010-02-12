@@ -3,19 +3,17 @@
  *
  * Copyright (C) 2008, Niall Gallagher <niallg@users.sf.net>
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
- * GNU Lesser General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General 
- * Public License along with this library; if not, write to the 
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, 
- * Boston, MA  02111-1307  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or 
+ * implied. See the License for the specific language governing 
+ * permissions and limitations under the License.
  */
 
 package org.simpleframework.xml.core;
@@ -110,6 +108,15 @@ class ClassScanner  {
       this.scan(type);
    }      
 
+   /**
+    * This is used to create the object instance. It does this by
+    * either delegating to the default no argument constructor or by
+    * using one of the annotated constructors for the object. This
+    * allows deserialized values to be injected in to the created
+    * object if that is required by the class schema.
+    * 
+    * @return this returns the creator for the class object
+    */
    public Creator getCreator() {
       return scanner.getCreator();
    }
@@ -289,13 +296,8 @@ class ClassScanner  {
    private void scan(Class real, Class type) throws Exception {
       Method[] method = type.getDeclaredMethods();
 
-      for(int i = 0; i < method.length; i++) {
-         Method next = method[i];
-         
-         if(!next.isAccessible()) {
-            next.setAccessible(true);
-         }
-         scan(next);              
+      for(int i = 0; i < method.length; i++) {         
+         scan(method[i]);              
       }     
    }
 
@@ -515,6 +517,9 @@ class ClassScanner  {
    private Function getFunction(Method method) {
       boolean contextual = isContextual(method);
       
+      if(!method.isAccessible()) {
+         method.setAccessible(true);
+      }
       return new Function(method, contextual);
    }
    

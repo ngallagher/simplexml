@@ -112,4 +112,13 @@ public class ReflectorTest extends TestCase {
    public Field getField(Class type, String name) throws Exception {
       return type.getDeclaredField(name);
    }
+   
+   public void testCase() throws Exception {
+      assertEquals("URL", Reflector.getName("URL"));
+      assertEquals("getEntry", Reflector.getName("getEntry"));
+      assertEquals("iF", Reflector.getName("iF"));
+      assertEquals("if", Reflector.getName("if"));
+      assertEquals("URLConnection", Reflector.getName("URLConnection"));
+      assertEquals("type", Reflector.getName("Type"));
+   }
 }

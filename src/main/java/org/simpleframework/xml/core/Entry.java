@@ -3,24 +3,23 @@
  *
  * Copyright (C) 2007, Niall Gallagher <niallg@users.sf.net>
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
- * GNU Lesser General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General 
- * Public License along with this library; if not, write to the 
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, 
- * Boston, MA  02111-1307  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or 
+ * implied. See the License for the specific language governing 
+ * permissions and limitations under the License.
  */
 
 package org.simpleframework.xml.core;
 
 import org.simpleframework.xml.ElementMap;
+import org.simpleframework.xml.strategy.Type;
 
 /**
  * The <code>Entry</code> object is used to provide configuration for
@@ -108,16 +107,15 @@ class Entry {
     * 
     * @return this returns the key object type for the map object
     */
-   protected Class getKeyType() throws Exception  {
-      if(keyType != null) {
-         return keyType;
+   protected Type getKeyType() throws Exception  {
+      if(keyType == null) {
+         keyType = label.keyType();
+         
+         if(keyType == void.class) {
+            keyType = getDependent(0);
+         }
       }
-      Class keyType = label.keyType();
-      
-      if(keyType == void.class) {
-         keyType = getDependent(0);
-      }
-      return keyType;
+      return new ClassType(keyType);
    }
    
    /**
@@ -132,7 +130,7 @@ class Entry {
     * @return returns the converter used for serializing the key
     */
    public Converter getKey(Context context) throws Exception {
-      Class type = getKeyType();
+      Type type = getKeyType();
 
       if(context.isPrimitive(type)) {        
          return new PrimitiveKey(context, this, type);
@@ -162,16 +160,15 @@ class Entry {
     * 
     * @return this returns the value object type for the map object
     */
-   protected Class getValueType() throws Exception {
-      if(valueType != null) {
-         return valueType;
+   protected Type getValueType() throws Exception {
+      if(valueType == null) {
+         valueType = label.valueType();
+         
+         if(valueType == void.class) {
+            valueType = getDependent(1);
+         }
       }
-      Class valueType = label.valueType();
-      
-      if(valueType == void.class) {
-         valueType = getDependent(1);
-      }
-      return valueType;
+      return new ClassType(valueType);
    }
    
    /**
@@ -186,12 +183,12 @@ class Entry {
     * @return returns the converter used for serializing the value
     */
    public Converter getValue(Context context) throws Exception {
-      Class value = getValueType();
-          
-      if(context.isPrimitive(value)) {
-         return new PrimitiveValue(context, this, value);
+      Type type = getValueType();
+      
+      if(context.isPrimitive(type)) {
+         return new PrimitiveValue(context, this, type);
       }
-      return new CompositeValue(context, this, value);
+      return new CompositeValue(context, this, type);
    }
    
    /**

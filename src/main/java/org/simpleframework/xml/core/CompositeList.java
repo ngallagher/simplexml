@@ -3,26 +3,26 @@
  *
  * Copyright (C) 2006, Niall Gallagher <niallg@users.sf.net>
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
- * GNU Lesser General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General 
- * Public License along with this library; if not, write to the 
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, 
- * Boston, MA  02111-1307  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or 
+ * implied. See the License for the specific language governing 
+ * permissions and limitations under the License.
  */
 
 package org.simpleframework.xml.core;
 
+import java.util.Collection;
+
+import org.simpleframework.xml.strategy.Type;
 import org.simpleframework.xml.stream.InputNode;
 import org.simpleframework.xml.stream.OutputNode;
-import java.util.Collection;
 
 /**
  * The <code>CompositeList</code> object is used to convert an element
@@ -67,16 +67,16 @@ class CompositeList implements Converter {
     * This performs the traversal used for object serialization.
     */ 
    private final Traverser root;
-      
-   /**
-    * This is the entry type for elements within the list.
-    */   
-   private final Class entry;
    
    /**
     * This represents the name of the entry elements to write.
     */
    private final String name;
+   
+   /**
+    * This is the entry type for elements within the list.
+    */   
+   private final Type entry;
 
    /**
     * Constructor for the <code>CompositeList</code> object. This is
@@ -88,7 +88,7 @@ class CompositeList implements Converter {
     * @param type this is the collection type for the list used
     * @param entry the entry type to be stored within the list
     */    
-   public CompositeList(Context context, Class type, Class entry, String name) {
+   public CompositeList(Context context, Type type, Type entry, String name) {
       this.factory = new CollectionFactory(context, type); 
       this.root = new Traverser(context);      
       this.entry = entry;
@@ -96,7 +96,7 @@ class CompositeList implements Converter {
    }
 
    /**
-    * This <code>read</code> method wll read the XML element list from
+    * This <code>read</code> method will read the XML element list from
     * the provided node and deserialize its children as entry types.
     * This will each entry type is deserialized as a root type, that 
     * is, its <code>Root</code> annotation must be present and the
@@ -107,7 +107,7 @@ class CompositeList implements Converter {
     * @return this returns the item to attach to the object contact
     */ 
    public Object read(InputNode node) throws Exception{
-      Type type = factory.getInstance(node);
+      Instance type = factory.getInstance(node);
       Object list = type.getInstance();
       
       if(!type.isReference()) {
@@ -131,17 +131,17 @@ class CompositeList implements Converter {
     * @return this returns the item to attach to the object contact
     */
    public Object read(InputNode node, Object result) throws Exception {
-      Type type = factory.getInstance(node);
+      Instance type = factory.getInstance(node);
       
       if(type.isReference()) {
          return type.getInstance();
       }
-      Object list = type.getInstance(result);
+      type.setInstance(result);
       
-      if(list != null) {
-         return populate(node, list);
+      if(result != null) {
+         return populate(node, result);
       }
-      return list;
+      return result;
    }
    
    /**
@@ -161,16 +161,17 @@ class CompositeList implements Converter {
       
       while(true) {
          InputNode next = node.getNext();
+         Class expect = entry.getType();
         
          if(next == null) {
             return list;
          }
-         list.add(root.read(next, entry));
+         list.add(root.read(next, expect));
       }
    }      
    
    /**
-    * This <code>validate</code> method wll validate the XML element 
+    * This <code>validate</code> method will validate the XML element 
     * list from the provided node and deserialize its children as entry 
     * types. This takes each entry type and validates it as a root type, 
     * that is, its <code>Root</code> annotation must be present and the
@@ -181,13 +182,13 @@ class CompositeList implements Converter {
     * @return true if the element matches the XML schema class given 
     */ 
    public boolean validate(InputNode node) throws Exception{
-      Type type = factory.getInstance(node);
+      Instance value = factory.getInstance(node);
       
-      if(!type.isReference()) {
-         Object real = type.getInstance(type);
-         Class expect = type.getType();
+      if(!value.isReference()) {
+         Object result = value.setInstance(null);
+         Class type = value.getType();
             
-         return validate(node, expect);
+         return validate(node, type);
       }
       return true; 
    }
@@ -207,11 +208,12 @@ class CompositeList implements Converter {
    private boolean validate(InputNode node, Class type) throws Exception {
       while(true) {
          InputNode next = node.getNext();
-        
+         Class expect = entry.getType();
+         
          if(next == null) {
             return true;
          }
-         root.validate(next, entry);
+         root.validate(next, expect);
       }
    }     
 
@@ -231,12 +233,13 @@ class CompositeList implements Converter {
       
       for(Object item : list) {
          if(item != null) {
+            Class expect = entry.getType();
             Class type = item.getClass();
 
-            if(!entry.isAssignableFrom(type)) {
+            if(!expect.isAssignableFrom(type)) {
                throw new PersistenceException("Entry %s does not match %s", type, entry);                     
             }
-            root.write(node, item, entry, name);
+            root.write(node, item, expect, name);
          }
       }
    }

@@ -3,28 +3,23 @@
  *
  * Copyright (C) 2006, Niall Gallagher <niallg@users.sf.net>
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
- * GNU Lesser General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General 
- * Public License along with this library; if not, write to the 
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, 
- * Boston, MA  02111-1307  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or 
+ * implied. See the License for the specific language governing 
+ * permissions and limitations under the License.
  */
 
 package org.simpleframework.xml.core;
 
-import java.beans.Introspector;
 import java.lang.annotation.Annotation;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
@@ -65,7 +60,12 @@ class Scanner {
    /**
     * This is used to store all labels that are XML elements.
     */
-   private LabelMap elements;
+   private LabelMap elements;   
+   
+   /**
+    * This is used to compare the annotations being scanned.
+    */
+   private Comparer comparer;
    
    /**
     * This is the version label used to read the version attribute.
@@ -103,10 +103,31 @@ class Scanner {
       this.scanner = new ClassScanner(type);
       this.attributes = new LabelMap(this);
       this.elements = new LabelMap(this); 
+      this.comparer = new Comparer();
       this.type = type;
       this.scan(type);
    }      
    
+   /**
+    * This is used to acquire the type that this scanner scans for
+    * annotations to be used in a schema. Exposing the class that
+    * this represents allows the schema it creates to be known.
+    * 
+    * @return this is the type that this creator will represent
+    */
+   public Class getType() {
+      return type;
+   }
+   
+   /**
+    * This is used to create the object instance. It does this by
+    * either delegating to the default no argument constructor or by
+    * using one of the annotated constructors for the object. This
+    * allows deserialized values to be injected in to the created
+    * object if that is required by the class schema.
+    * 
+    * @return this returns the creator for the class object
+    */
    public Creator getCreator() {
       return scanner.getCreator();
    }
@@ -373,10 +394,12 @@ class Scanner {
     * @throws Exception if text and element annotations are present
     */
    private void validate(Class type) throws Exception {
+      Creator creator = scanner.getCreator();
       Order order = scanner.getOrder();
       
       validateElements(type, order);
       validateAttributes(type, order);
+      validateParameters(creator);
       validateText(type);
    }
    
@@ -453,20 +476,56 @@ class Scanner {
       }
    } 
 
-   
+   /**
+    * This is used to ensure that final methods and fields have a 
+    * constructor parameter that allows the value to be injected in
+    * to. Validating the constructor in this manner ensures that the
+    * class schema remains fully serializable and deserializable.
+    * 
+    * @param builder this is the builder to validate the labels with
+    * @param map this is the map that contains the labels to validate
+    * 
+    * @throws Exception this is thrown if the validation fails
+    */
    private void validateConstructor(Builder builder, LabelMap map) throws Exception {
-      for(Label label : map) {
+      for(Label label : map) {         
          if(label != null) {
             Contact contact = label.getContact();
             String name = label.getName();
             
-            if(contact.isFinal()) {
+            if(contact.isReadOnly()) {
                Parameter value = builder.getParameter(name);
                
                if(value == null) {
-                  throw new PersistenceException("Can not set '%s' in '%s'", name, type);
+                  throw new ConstructorException("No match found for %s in %s", contact, type);
                }
-            }
+            }        
+         }
+      } 
+   }
+   
+   /**
+    * This is used to ensure that for each parameter in the builder
+    * there is a matching method or field. This ensures that the
+    * class schema is fully readable and writable. If not method or
+    * field annotation exists for the parameter validation fails.
+    * 
+    * @param creator this is the creator to validate the labels with
+    * 
+    * @throws Exception this is thrown if the validation fails
+    */
+   private void validateParameters(Creator creator) throws Exception {
+      List<Parameter> list = creator.getParameters();
+      
+      for(Parameter parameter : list) {
+         String name = parameter.getName();
+         Label label = elements.get(name);
+         
+         if(label == null) {
+            label = attributes.get(name);
+         }
+         if(label == null) {
+            throw new ConstructorException("Parameter '%s' does not have a match in %s", name, type);
          }
       }
    }
@@ -488,7 +547,7 @@ class Scanner {
          text = root.name();
 
          if(isEmpty(text)) {
-            text = Introspector.decapitalize(real);
+            text = Reflector.getName(real);
          }      
          name = text.intern();      
       }
@@ -658,6 +717,16 @@ class Scanner {
       validate(label, name);
    }
    
+   /**
+    * This is used to validate the <code>Parameter</code> object that
+    * exist in the constructors. Validation is performed against the
+    * annotated methods and fields to ensure that they match up.
+    * 
+    * @param field this is the annotated method or field to validate
+    * @param name this is the name of the parameter to validate with
+    * 
+    * @throws Exception thrown if the validation fails
+    */
    private void validate(Label field, String name) throws Exception {
       Creator factory = scanner.getCreator();
       Parameter parameter = factory.getParameter(name);
@@ -667,18 +736,29 @@ class Scanner {
       }
    }
    
+   /**
+    * This is used to validate the <code>Parameter</code> object that
+    * exist in the constructors. Validation is performed against the
+    * annotated methods and fields to ensure that they match up.
+    * 
+    * @param field this is the annotated method or field to validate
+    * @param parameter this is the parameter to validate with
+    * 
+    * @throws Exception thrown if the validation fails
+    */
    private void validate(Label field, Parameter parameter) throws Exception {
       Contact contact = field.getContact();
       Annotation label = contact.getAnnotation();
+      Annotation match = parameter.getAnnotation();
       String name = field.getName();
       
-      if(!parameter.getAnnotation().equals(label)) {
-         throw new PersistenceException("Annotations do not match for '%s' in %s", name, type);
+      if(!comparer.equals(label, match)) {
+         throw new ConstructorException("Annotation does not match for '%s' in %s", name, type);
       }
       Class expect = contact.getType();
       
       if(expect != parameter.getType()) {
-         throw new PersistenceException("Parameter does not match field for '%s' in %s", name, type);
+         throw new ConstructorException("Parameter does not match field for '%s' in %s", name, type);
       }     
    }
 }

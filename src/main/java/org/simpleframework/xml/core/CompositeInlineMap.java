@@ -3,28 +3,28 @@
  *
  * Copyright (C) 2007, Niall Gallagher <niallg@users.sf.net>
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
- * GNU Lesser General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General 
- * Public License along with this library; if not, write to the 
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, 
- * Boston, MA  02111-1307  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or 
+ * implied. See the License for the specific language governing 
+ * permissions and limitations under the License.
  */
 
 package org.simpleframework.xml.core;
 
+import java.util.Map;
+
+import org.simpleframework.xml.strategy.Type;
 import org.simpleframework.xml.stream.InputNode;
+import org.simpleframework.xml.stream.Mode;
 import org.simpleframework.xml.stream.OutputNode;
 import org.simpleframework.xml.stream.Style;
-
-import java.util.Map;
 
 /**
  * The <code>CompositeMap</code> is used to serialize and deserialize
@@ -91,7 +91,7 @@ class CompositeInlineMap implements Repeater {
     * @param entry this provides configuration for the resulting XML
     * @param type this is the map type that is to be converted
     */
-   public CompositeInlineMap(Context context, Entry entry, Class type) throws Exception {
+   public CompositeInlineMap(Context context, Entry entry, Type type) throws Exception {
       this.factory = new MapFactory(context, type);
       this.value = entry.getValue(context);
       this.key = entry.getKey(context);
@@ -215,13 +215,14 @@ class CompositeInlineMap implements Repeater {
     * @param source this is the source map that is to be written 
     */
    public void write(OutputNode node, Object source) throws Exception {               
-      OutputNode parent = node.getParent();      
-      Map table = (Map) source;
-      
+      OutputNode parent = node.getParent();  
+      Mode mode = node.getMode();
+      Map map = (Map) source;
+
       if(!node.isCommitted()) {
          node.remove();
       }
-      write(parent, table);
+      write(parent, map, mode);
    }
    
    /**
@@ -234,8 +235,9 @@ class CompositeInlineMap implements Repeater {
     * 
     * @param node this is the node the map is to be written to
     * @param map this is the source map that is to be written 
+    * @param mode this is the mode that has been inherited
     */
-   public void write(OutputNode node, Map map) throws Exception {   
+   private void write(OutputNode node, Map map, Mode mode) throws Exception {   
       String root = entry.getEntry();
       String name = style.getElement(root);
       
@@ -243,6 +245,7 @@ class CompositeInlineMap implements Repeater {
          OutputNode next = node.getChild(name);
          Object item = map.get(index);            
          
+         next.setMode(mode); 
          key.write(next, index);            
          value.write(next, item);                  
       }

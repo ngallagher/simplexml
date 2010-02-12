@@ -3,19 +3,17 @@
  *
  * Copyright (C) 2008, Niall Gallagher <niallg@users.sf.net>
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
- * GNU Lesser General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General 
- * Public License along with this library; if not, write to the 
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, 
- * Boston, MA  02111-1307  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or 
+ * implied. See the License for the specific language governing 
+ * permissions and limitations under the License.
  */
 
 package org.simpleframework.xml;
@@ -33,30 +31,34 @@ import java.lang.annotation.RetentionPolicy;
  * <pre>
  *  
  *    &lt;book:book xmlns:book="http://www.example.com/book"&gt;
- *       &lt;book:author&gt;saurabh&lt;/book:author&gt;
- *       &lt;book:title&gt;example title&lt;/book:title&gt;
- *       &lt;book:isbn&gt;ISB-16728-10&lt;/book:isbn&gt;
+ *       &lt;author&gt;saurabh&lt;/author&gt;
+ *       &lt;title&gt;example title&lt;/title&gt;
+ *       &lt;isbn&gt;ISB-16728-10&lt;/isbn&gt;
  *    &lt;/book:book&gt;
  *
  * </pre>
  * In the above XML snippet a namespace has been declared with the
  * prefix "book" and the reference "http://www.example.com/book". If
  * such a namespace is applied to a class, method, or field then 
- * each of the attributes an elements, which does not have an 
- * explicit override then they inherit their parents prefix. 
+ * that element will contain the namespace and the element name will
+ * be prefixed with a namespace qualifier, which is "book" here.
  * <pre>
  *
- *    &lt;root:example xmlns:root="http://www.example.com/root"&gt;
- *       &lt;child xmlns=""&gt;
- *          &lt;anonymous&gt;anonymous element&lt;/anonymous&gt;
+ *    &lt;example xmlns="http://www.example.com/root"&gt;
+ *       &lt;child&gt;
+ *          &lt;text xmlns=""&gt;text element&lt;/text&gt;
  *       &lt;/child&gt;
- *    &lt;/root:example&gt;
+ *    &lt;/example&gt;
  *
  * </pre>
- * In order to override the parent namespace an anonymous namespace
- * can be declared. This overrides the parents scope with no default
- * namespace tied to the child elements which is declared within a
- * given namespace.
+ * In order for a namespace to be inherited it must be specified as
+ * a default namespace. A default namespace is one that does not have
+ * a prefix. All elements that do not have an explicit namespace will
+ * inherit the last default namespace in scope. For details see
+ * <a href='http://www.w3.org/TR/xml-names/#defaulting'>Section 6.2</a>
+ * of the namespaces in XML 1.0 specification. To remove the default
+ * namespace simply specify a namespace with no prefix or reference,
+ * such as the "text" element in the above example.  
  *
  * @author Niall Gallagher
  */ 
@@ -69,7 +71,7 @@ public @interface Namespace {
     * a URI as this is a well know universally unique identifier. 
     * It can be anything unique, but typically should be a unique
     * URI reference. If left as the empty string then this will
-    * signify that the anonymous nanmespace will be used.
+    * signify that the anonymous namespace will be used.
     *
     * @return this returns the reference used by this namespace    
     */         

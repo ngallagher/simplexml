@@ -3,23 +3,22 @@
  *
  * Copyright (C) 2006, Niall Gallagher <niallg@users.sf.net>
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
- * GNU Lesser General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General 
- * Public License along with this library; if not, write to the 
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, 
- * Boston, MA  02111-1307  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or 
+ * implied. See the License for the specific language governing 
+ * permissions and limitations under the License.
  */
 
 package org.simpleframework.xml.core;
 
+import org.simpleframework.xml.strategy.Type;
 import org.simpleframework.xml.stream.InputNode;
 import org.simpleframework.xml.stream.OutputNode;
 
@@ -71,18 +70,18 @@ class Primitive implements Converter {
    /**
     * This is the type that this primitive expects to represent.
     */
-   private final Class field;
+   private final Class type;
    
    /**
     * Constructor for the <code>Primitive</code> object. This is used
     * to convert an XML node to a primitive object and vice versa. To
     * perform deserialization the primitive object requires the context
-    * object used for the instance of serialization to peformed.
+    * object used for the instance of serialization to performed.
     *
     * @param context the context object used for the serialization
     * @param type this is the type of primitive this represents
     */ 
-   public Primitive(Context context, Class type) {
+   public Primitive(Context context, Type type) {
       this(context, type, null);          
    }
    
@@ -90,17 +89,17 @@ class Primitive implements Converter {
     * Constructor for the <code>Primitive</code> object. This is used
     * to convert an XML node to a primitive object and vice versa. To
     * perform deserialization the primitive object requires the context
-    * object used for the instance of serialization to peformed.
+    * object used for the instance of serialization to performed.
     *
     * @param context the context object used for the serialization
     * @param type this is the type of primitive this represents
     * @param empty this is the value used to represent a null value
     */ 
-   public Primitive(Context context, Class type, String empty) {
-      this.factory = new PrimitiveFactory(context, type);   
+   public Primitive(Context context, Type type, String empty) {
+      this.factory = new PrimitiveFactory(context, type);  
+      this.type = type.getType();
       this.context = context; 
-      this.empty = empty;
-      this.field = type;          
+      this.empty = empty;          
    }
 
    /**
@@ -118,7 +117,7 @@ class Primitive implements Converter {
       if(node.isElement()) {
          return readElement(node);
       }
-      return read(node, field);
+      return read(node, type);
    }  
    
    /**
@@ -137,7 +136,7 @@ class Primitive implements Converter {
     */ 
    public Object read(InputNode node, Object value) throws Exception{
       if(value != null) {
-         throw new PersistenceException("Can not read existing %s", field);
+         throw new PersistenceException("Can not read existing %s", type);
       }
       return read(node);
    }
@@ -178,32 +177,33 @@ class Primitive implements Converter {
     * @return this returns the primitive that has been deserialized
     */ 
    private Object readElement(InputNode node) throws Exception {
-      Type type = factory.getInstance(node);
+      Instance value = factory.getInstance(node);
       
-      if(!type.isReference()) {
-         return readElement(node, type);
+      if(!value.isReference()) {
+         return readElement(node, value);
       }
-      return type.getInstance();
+      return value.getInstance();
    }
    
    /**
-    * This <code>read</code> methos will extract the text value from
+    * This <code>read</code> method will extract the text value from
     * the node and replace any template variables before converting
     * it to a primitive value. This uses the <code>Context</code>
     * object used for this instance of serialization to replace all
     * template variables with values from the context filter.
     *
     * @param node this is the node to be converted to a primitive
+    * @param value this is the instance to set the result to
     *
     * @return this returns the primitive that has been deserialized
     */ 
-   private Object readElement(InputNode node, Type type) throws Exception {
-      Object value = read(node, field);
+   private Object readElement(InputNode node, Instance value) throws Exception {
+      Object result = read(node, type);
       
       if(value != null) {
-         return type.getInstance(value);
+         value.setInstance(result);
       }
-      return value;
+      return result;
    }
    
    /**
@@ -259,11 +259,10 @@ class Primitive implements Converter {
     * @return this returns the primitive that has been validated
     */ 
    private boolean validateElement(InputNode node) throws Exception {
-      Type type = factory.getInstance(node);
+      Instance type = factory.getInstance(node);
       
-      // XXX TODO here we just want the cycle reference to be registered
       if(!type.isReference()) {         
-         type.getInstance(type);
+         type.setInstance(null);
       }
       return true;
    }

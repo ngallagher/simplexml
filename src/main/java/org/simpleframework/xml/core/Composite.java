@@ -3,24 +3,23 @@
  *
  * Copyright (C) 2006, Niall Gallagher <niallg@users.sf.net>
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
- * GNU Lesser General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General 
- * Public License along with this library; if not, write to the 
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, 
- * Boston, MA  02111-1307  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or 
+ * implied. See the License for the specific language governing 
+ * permissions and limitations under the License.
  */
 
 package org.simpleframework.xml.core;
 
 import org.simpleframework.xml.Version;
+import org.simpleframework.xml.strategy.Type;
 import org.simpleframework.xml.stream.InputNode;
 import org.simpleframework.xml.stream.NodeMap;
 import org.simpleframework.xml.stream.OutputNode;
@@ -71,12 +70,12 @@ class Composite implements Converter {
    /**
     * This is used to store objects so that they can be read again.
     */
-   private final Criteria store;
+   private final Criteria criteria;
    
    /**
     * This is the current revision of this composite converter.
     */
-   private final Revision revision;
+   private final Revision revision; 
    
    /**
     * This is the source object for the instance of serialization.
@@ -86,7 +85,7 @@ class Composite implements Converter {
    /**
     * This is the type that this composite produces instances of.
     */
-   private final Class type;
+   private final Type type;
         
    /**
     * Constructor for the <code>Composite</code> object. This creates 
@@ -95,12 +94,12 @@ class Composite implements Converter {
     * be given to the instance in order to perform deserialization.
     *  
     * @param context the source object used to perform serialization
-    * @param type this is the XML schema class to use
+    * @param type this is the XML schema type to use for this
     */
-   public Composite(Context context, Class type) {
+   public Composite(Context context, Type type) {
       this.factory = new ObjectFactory(context, type);  
       this.primitive = new Primitive(context, type);
-      this.store = new Collector(context);
+      this.criteria = new Collector(context);
       this.revision = new Revision();
       this.context = context;
       this.type = type;
@@ -122,16 +121,16 @@ class Composite implements Converter {
     * @return this returns the fully deserialized object graph
     */
    public Object read(InputNode node) throws Exception {
-      Type type = factory.getInstance(node); 
-      Class real = type.getType(); 
+      Instance value = factory.getInstance(node); 
+      Class type = value.getType(); 
       
-      if(type.isReference()) {      
-         return type.getInstance(); 
+      if(value.isReference()) {      
+         return value.getInstance(); 
       }
-      if(context.isPrimitive(real)) { 
-         return readPrimitive(node, type);
+      if(context.isPrimitive(type)) { 
+         return readPrimitive(node, value);
       }
-      return read(node, type, real);
+      return read(node, value, type);
    }
    
    /**
@@ -156,7 +155,7 @@ class Composite implements Converter {
       Caller caller = schema.getCaller();
       
       read(node, source, schema); 
-      store.commit(source);
+      criteria.commit(source);
       caller.validate(source);
       caller.commit(source);
       
@@ -175,63 +174,107 @@ class Composite implements Converter {
     * exception. The annotation missing is reported in the exception.
     * 
     * @param node the XML element contact values are deserialized from
-    * @param type this is the type for the object within the graph
+    * @param value this is the instance for the object within the graph
     * @param real this is the real type that is to be evaluated
     * 
     * @return this returns the fully deserialized object graph
     */
-   private Object read(InputNode node, Type type, Class real) throws Exception {
+   private Object read(InputNode node, Instance value, Class real) throws Exception {
       Schema schema = context.getSchema(real);
       Caller caller = schema.getCaller();
-      Object value = read(node, schema, type);
+      Object source = read(node, schema, value);
       
-      caller.validate(value); 
-      caller.commit(value); 
-      type.getInstance(value);
+      caller.validate(source); 
+      caller.commit(source); 
+      value.setInstance(source);
       
-      return readResolve(node, value, caller);    
+      return readResolve(node, source, caller);    
    }
    
    /**
+    * This <code>read</code> method performs deserialization of the XML
+    * schema class type by traversing the contacts and instantiating them
+    * using details from the provided XML element. Because this will
+    * convert a non-primitive value it delegates to other converters to
+    * perform deserialization of lists and primitives.
+    * <p>
+    * If any of the required contacts are not present within the provided
+    * XML element this will terminate deserialization and throw an
+    * exception. The annotation missing is reported in the exception.
     * 
-    * @param node
-    * @param schema
-    * @param type
-    * @return
+    * @param node the XML element contact values are deserialized from
+    * @param schema this is the schema for the class to be deserialized
+    * @param value this is the value used for the deserialization
+    * 
+    * @return this returns the fully deserialized object graph
     */
-   private Object read(InputNode node, Schema schema, Type type) throws Exception {
+   private Object read(InputNode node, Schema schema, Instance value) throws Exception {
       Creator creator = schema.getCreator();
       
       if(creator.isDefault()) {
-         return readDefault(node, schema, type);
-      }
-      return readComplex(node, schema, type);
-   }
-   
-   private Object readDefault(InputNode node, Schema schema, Type type) throws Exception {
-      Object value = type.getInstance();
-      
-      if(type != null) {
-         type.getInstance(value);
-         read(node, value, schema);
-         store.commit(value);  
-      }
-      return value;
-   }
-   
-   private Object readComplex(InputNode node, Schema schema, Type type) throws Exception {
-      Creator creator = schema.getCreator();
-      
-      if(schema != null) {
+         return readDefault(node, schema, value);
+      } else {
          read(node, null, schema);
       }
-      Object value = creator.getInstance(store);
+      return readConstructor(node, schema, value);
+   }
+   
+   /**
+    * This <code>readDefault</code> method performs deserialization of the 
+    * XM schema class type by traversing the contacts and instantiating 
+    * them using details from the provided XML element. Because this will
+    * convert a non-primitive value it delegates to other converters to
+    * perform deserialization of lists and primitives.
+    * <p>
+    * This takes the approach that the object is instantiated first and
+    * then the annotated fields and methods are deserialized from the XML
+    * elements and attributes. When all the details have be deserialized
+    * they are set on the internal contacts of the object.
+    * 
+    * @param node the XML element contact values are deserialized from
+    * @param schema this is the schema for the class to be deserialized
+    * @param value this is the value used for the deserialization
+    * 
+    * @return this returns the fully deserialized object graph
+    */
+   private Object readDefault(InputNode node, Schema schema, Instance value) throws Exception {
+      Object source = value.getInstance();
       
-      if(type != null) {
-         type.getInstance(value);
-         store.commit(value); 
+      if(value != null) {
+         value.setInstance(source);
+         read(node, source, schema);
+         criteria.commit(source);  
       }
-      return value;
+      return source;
+   }
+   
+   /**
+    * This <code>readConstructor</code> method performs deserialization of 
+    * the XML schema class type by traversing the contacts and creating 
+    * them using details from the provided XML element. Because this will
+    * convert a non-primitive value it delegates to other converters to
+    * perform deserialization of lists and primitives.
+    * <p>
+    * This takes the approach of reading the XML elements and attributes
+    * before instantiating the object. Instantiation is performed using a
+    * declared constructor. The parameters for the constructor are taken
+    * from the deserialized objects.
+    * 
+    * @param node the XML element contact values are deserialized from
+    * @param schema this is the schema for the class to be deserialized
+    * @param value this is the value used for the deserialization
+    * 
+    * @return this returns the fully deserialized object graph
+    */
+   private Object readConstructor(InputNode node, Schema schema, Instance value) throws Exception {
+      Creator creator = schema.getCreator();
+      Object source = creator.getInstance(criteria);
+      
+      if(value != null) {
+         value.setInstance(source);
+         criteria.commit(source); 
+      }
+      return source;
    }
 
    /**
@@ -242,15 +285,18 @@ class Composite implements Converter {
     * respect all references on the node so cycle can be followed.
     *
     * @param node this is the node to be converted to a primitive
-    * @param type this is the type for the object within the graph
+    * @param value this is the type for the object within the graph
     *
     * @return this returns the primitive that has been deserialized
     */ 
-   private Object readPrimitive(InputNode node, Type type) throws Exception {
-      Class real = type.getType();
-      Object value = primitive.read(node, real);
+   private Object readPrimitive(InputNode node, Instance value) throws Exception {
+      Class type = value.getType();
+      Object result = primitive.read(node, type);
 
-      return type.getInstance(value);
+      if(type != null) {
+         value.setInstance(result);
+      }
+      return result;
    }
    
    /**
@@ -271,10 +317,11 @@ class Composite implements Converter {
       if(source != null) {
          Position line = node.getPosition();
          Object value = caller.resolve(source);
+         Class expect = type.getType();
          Class real = value.getClass();
       
-         if(!type.isAssignableFrom(real)) {
-            throw new ElementException("Type %s does not match %s at %s", real, type, line);              
+         if(!expect.isAssignableFrom(real)) {
+            throw new ElementException("Type %s does not match %s at %s", real, expect, line);              
          }
          return value;
       }
@@ -317,6 +364,7 @@ class Composite implements Converter {
     */
    private void readVersion(InputNode node, Object source, Schema schema) throws Exception {
       Label label = schema.getVersion();
+      Class expect = type.getType();
       
       if(label != null) {
          String name = label.getName();
@@ -326,11 +374,11 @@ class Composite implements Converter {
          if(value != null) {
             readVersion(value, source, label);
          } else {
-            Version version = context.getVersion(type);
+            Version version = context.getVersion(expect);
             Double start = revision.getDefault();
             Double expected = version.revision();
             
-            store.set(label, start);
+            criteria.set(label, start);
             revision.compare(expected, start);
          }
       }
@@ -350,13 +398,14 @@ class Composite implements Converter {
     */
    private void readVersion(InputNode node, Object source, Label label) throws Exception {
       Object value = read(node, source, label);
+      Class expect = type.getType();
      
       if(value != null) {
-         Version version = context.getVersion(type);
-         Double expected = version.revision();
+         Version version = context.getVersion(expect);
+         Double actual = version.revision();
          
          if(!value.equals(revision)) {
-            revision.compare(expected, value);
+            revision.compare(actual, value);
          }
       } 
    }
@@ -487,7 +536,7 @@ class Composite implements Converter {
       Label label = map.take(name);      
 
       if(label == null) {
-         label = store.get(name);
+         label = criteria.get(name);
       }
       if(label == null) {
          Position line = node.getPosition();
@@ -521,14 +570,17 @@ class Composite implements Converter {
     
       if(object == null) {     
          Position line = node.getPosition();
-         Class type = source.getClass();
+         Class expect = type.getType();
          
+         if(source != null) {
+            expect = source.getClass();
+         }
          if(label.isRequired() && revision.isEqual()) {              
-            throw new ValueRequiredException("Empty value for %s in %s at %s", label, type, line);
+            throw new ValueRequiredException("Empty value for %s in %s at %s", label, expect, line);
          }
       } else {
          if(object != label.getEmpty(context)) {      
-            store.set(label, object);
+            criteria.set(label, object);
          }
       }
       return object;
@@ -554,11 +606,11 @@ class Composite implements Converter {
       String name = label.getName(context);
       
       if(label.isCollection()) {
-         Variable pointer = store.get(name);
+         Variable variable = criteria.get(name);
          Contact contact = label.getContact();
          
-         if(pointer != null) {
-            Object value = pointer.getValue();
+         if(variable != null) {
+            Object value = variable.getValue();
 
             return reader.read(node, value);
          } else {
@@ -589,19 +641,19 @@ class Composite implements Converter {
     */
    private void validate(InputNode node, LabelMap map, Object source) throws Exception {     
       Position line = node.getPosition();
-      Class real = type;
+      Class expect = type.getType();
       
       if(source != null) {
-         real = source.getClass();
+         expect = source.getClass();
       }
       for(Label label : map) {
          if(label.isRequired() && revision.isEqual()) {
-            throw new ValueRequiredException("Unable to satisfy %s for %s at %s", label, real, line);
+            throw new ValueRequiredException("Unable to satisfy %s for %s at %s", label, expect, line);
          }
          Object value = label.getEmpty(context);
          
          if(value != null) {
-            store.set(label, value);
+            criteria.set(label, value);
          }
       }      
    }
@@ -622,13 +674,13 @@ class Composite implements Converter {
     * @return true if the XML element matches the XML schema class given 
     */
    public boolean validate(InputNode node) throws Exception {      
-      Type type = factory.getInstance(node);
+      Instance value = factory.getInstance(node);
       
-      if(!type.isReference()) {
-         Object real = type.getInstance(type);
-         Class expect = type.getType();
+      if(!value.isReference()) {
+         Object result = value.setInstance(null);
+         Class type = value.getType();
             
-         return validate(node, expect);
+         return validate(node, type);
       }
       return true;  
    }
@@ -776,7 +828,7 @@ class Composite implements Converter {
       Label label = map.take(name);      
 
       if(label == null) {
-         label = store.get(name);
+         label = criteria.get(name);
       }
       if(label == null) {
          Position line = node.getPosition();
@@ -806,12 +858,13 @@ class Composite implements Converter {
    private void validate(InputNode node, Label label) throws Exception {    
       Converter reader = label.getConverter(context);      
       Position line = node.getPosition();
+      Class expect = type.getType();
       boolean valid = reader.validate(node);
     
       if(valid == false) {     
-        throw new PersistenceException("Invalid value for %s in %s at %s", label, type, line);
+        throw new PersistenceException("Invalid value for %s in %s at %s", label, expect, line);
       }
-      store.set(label, null);
+      criteria.set(label, null);
    }
 
    /**
@@ -1027,12 +1080,13 @@ class Composite implements Converter {
       if(label != null) {
          Contact contact = label.getContact();
          Object value = contact.get(source);
+         Class type = source.getClass();
           
          if(value == null) {
             value = label.getEmpty(context);
          }
          if(value == null && label.isRequired()) {
-            throw new TextException("Value for %s is null", label);
+            throw new TextException("Value for %s is null for %s", label, type);
          }
          writeText(node, value, label); 
       }         
@@ -1069,6 +1123,11 @@ class Composite implements Converter {
     * done using the <code>Converter</code> acquired from the contact
     * label. If the type of the contact value is not of the same
     * type as the XML schema class a "class" attribute is appended.
+    * <p>
+    * If the element being written is inline, then this will not 
+    * check to see if there is a "class" attribute specifying the
+    * name of the class. This is because inline elements do not have
+    * an outer class and thus could never have an override.
     * 
     * @param value this is the value to be set as an element
     * @param node this is the XML element to write the element to
@@ -1080,14 +1139,17 @@ class Composite implements Converter {
       if(value != null) {
          String name = label.getName(context);
          OutputNode next = node.getChild(name);
-         Class type = label.getType();         
+         Type contact = label.getContact(); 
+         Class type = contact.getType();
 
-         if(label.isInline() || !isOverridden(next, value, type)) {
+         if(!label.isInline()) {
+            writeNamespaces(next, type, label);
+         }
+         if(label.isInline() || !isOverridden(next, value, contact)) {
             Converter convert = label.getConverter(context);
             boolean data = label.isData();
             
             next.setData(data);
-            writeNamespaces(next, type, label);
             writeElement(next, value, convert);
          }
       }
@@ -1165,7 +1227,7 @@ class Composite implements Converter {
     * 
     * @return returns true if the strategy overrides the object
     */
-   private boolean isOverridden(OutputNode node, Object value, Class type) throws Exception{
+   private boolean isOverridden(OutputNode node, Object value, Type type) throws Exception{
       return factory.setOverride(type, value, node);
    }
 }

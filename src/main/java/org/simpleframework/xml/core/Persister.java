@@ -3,19 +3,17 @@
  *
  * Copyright (C) 2006, Niall Gallagher <niallg@users.sf.net>
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
- * GNU Lesser General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General 
- * Public License along with this library; if not, write to the 
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, 
- * Boston, MA  02111-1307  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or 
+ * implied. See the License for the specific language governing 
+ * permissions and limitations under the License.
  */
 
 package org.simpleframework.xml.core;
@@ -36,6 +34,8 @@ import java.util.Map;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.filter.Filter;
 import org.simpleframework.xml.filter.PlatformFilter;
+import org.simpleframework.xml.strategy.Strategy;
+import org.simpleframework.xml.strategy.TreeStrategy;
 import org.simpleframework.xml.stream.Format;
 import org.simpleframework.xml.stream.InputNode;
 import org.simpleframework.xml.stream.NodeBuilder;
@@ -56,7 +56,7 @@ import org.simpleframework.xml.transform.Matcher;
  * The read method then reads the contents of the XML stream and builds
  * the object using annotations within the XML schema class.
  * <p>
- * Serialization is peformed by passing an object and an XML stream into
+ * Serialization is performed by passing an object and an XML stream into
  * one of the <code>write</code> methods. The serialization process will
  * use the class of the provided object as the schema class. The object
  * is traversed and all fields are marshalled to the result stream.
@@ -107,7 +107,7 @@ public class Persister implements Serializer {
     * @param format this is used to structure the generated XML
     */
    public Persister(Format format) {
-      this(new DefaultStrategy(), format);
+      this(new TreeStrategy(), format);
    } 
 
    /**
@@ -146,7 +146,7 @@ public class Persister implements Serializer {
     * @param filter the filter used to replace template variables
     */
    public Persister(Filter filter) {
-      this(new DefaultStrategy(), filter);
+      this(new TreeStrategy(), filter);
    }     
 
    /**
@@ -159,7 +159,7 @@ public class Persister implements Serializer {
     * @param format this is used to structure the generated XML
     */
    public Persister(Filter filter, Format format) {
-      this(new DefaultStrategy(), filter, format);
+      this(new TreeStrategy(), filter, format);
    }
    
    /**
@@ -172,7 +172,7 @@ public class Persister implements Serializer {
     * @param matcher this is used to customize the transformations
     */
    public Persister(Matcher matcher) {
-      this(new DefaultStrategy(), matcher);
+      this(new TreeStrategy(), matcher);
    }  
    
    /**
@@ -186,14 +186,14 @@ public class Persister implements Serializer {
     * @param format this is used to structure the generated XML
     */
    public Persister(Matcher matcher, Format format) {
-      this(new DefaultStrategy(), matcher, format);
+      this(new TreeStrategy(), matcher, format);
    }  
 
    /**
     * Constructor for the <code>Persister</code> object. This is used
     * to create a serializer object that will use a strategy object. 
     * This persister will use the provided <code>Strategy</code> to
-    * intercept the XML elements in order to read and write persisent
+    * intercept the XML elements in order to read and write persistent
     * data, such as the class name or version of the document.
     * 
     * @param strategy this is the strategy used to resolve classes
@@ -206,7 +206,7 @@ public class Persister implements Serializer {
     * Constructor for the <code>Persister</code> object. This is used
     * to create a serializer object that will use a strategy object. 
     * This persister will use the provided <code>Strategy</code> to
-    * intercept the XML elements in order to read and write persisent
+    * intercept the XML elements in order to read and write persistent
     * data, such as the class name or version of the document.
     * 
     * @param strategy this is the strategy used to resolve classes
@@ -226,7 +226,7 @@ public class Persister implements Serializer {
     * @param matcher this is used to customize the transformations
     */
    public Persister(Filter filter, Matcher matcher) {
-      this(new DefaultStrategy(), filter, matcher);
+      this(new TreeStrategy(), filter, matcher);
    }     
 
    /**
@@ -240,7 +240,7 @@ public class Persister implements Serializer {
     * @param format this is used to structure the generated XML
     */
    public Persister(Filter filter, Matcher matcher, Format format) {
-      this(new DefaultStrategy(), filter, matcher, format);
+      this(new TreeStrategy(), filter, matcher, format);
    }
 
    /**
@@ -251,7 +251,7 @@ public class Persister implements Serializer {
     * from within the provided map, followed by system properties. 
     * <p>
     * This persister will use the provided <code>Strategy</code> to
-    * intercept the XML elements in order to read and write persisent
+    * intercept the XML elements in order to read and write persistent
     * data, such as the class name or version of the document.
     * 
     * @param strategy this is the strategy used to resolve classes 
@@ -268,7 +268,7 @@ public class Persister implements Serializer {
     * deserializing an object with mappings found in the filter.
     * <p>
     * This persister will use the provided <code>Strategy</code> to
-    * intercept the XML elements in order to read and write persisent
+    * intercept the XML elements in order to read and write persistent
     * data, such as the class name or version of the document.
     * 
     * @param strategy this is the strategy used to resolve classes 
@@ -286,7 +286,7 @@ public class Persister implements Serializer {
     * deserializing an object with mappings found in the filter.
     * <p>
     * This persister will use the provided <code>Strategy</code> to
-    * intercept the XML elements in order to read and write persisent
+    * intercept the XML elements in order to read and write persistent
     * data, such as the class name or version of the document.
     * 
     * @param strategy this is the strategy used to resolve classes 
@@ -303,7 +303,7 @@ public class Persister implements Serializer {
     * deserializing an object with mappings found in the filter.
     * <p>
     * This persister will use the provided <code>Strategy</code> to
-    * intercept the XML elements in order to read and write persisent
+    * intercept the XML elements in order to read and write persistent
     * data, such as the class name or version of the document.
     * 
     * @param strategy this is the strategy used to resolve classes 
@@ -322,7 +322,7 @@ public class Persister implements Serializer {
     * the types that are not annotated and considered primitives.
     * <p>
     * This persister will use the provided <code>Strategy</code> to
-    * intercept the XML elements in order to read and write persisent
+    * intercept the XML elements in order to read and write persistent
     * data, such as the class name or version of the document.
     * 
     * @param strategy this is the strategy used to resolve classes 
@@ -337,10 +337,10 @@ public class Persister implements Serializer {
     * to create a serializer object that will use the provided matcher
     * for customizable transformations. The <code>Matcher</code> will
     * enable the persister to determine the correct way to transform
-    * the types that are not anotated and considered primitives.
+    * the types that are not annotated and considered primitives.
     * <p>
     * This persister will use the provided <code>Strategy</code> to
-    * intercept the XML elements in order to read and write persisent
+    * intercept the XML elements in order to read and write persistent
     * data, such as the class name or version of the document.
     * 
     * @param strategy this is the strategy used to resolve classes 
@@ -356,10 +356,10 @@ public class Persister implements Serializer {
     * to create a serializer object that will use the provided matcher
     * for customizable transformations. The <code>Matcher</code> will
     * enable the persister to determine the correct way to transform
-    * the types that are not anotated and considered primitives.
+    * the types that are not annotated and considered primitives.
     * <p>
     * This persister will use the provided <code>Strategy</code> to
-    * intercept the XML elements in order to read and write persisent
+    * intercept the XML elements in order to read and write persistent
     * data, such as the class name or version of the document.
     * 
     * @param strategy this is the strategy used to resolve classes 
@@ -375,10 +375,10 @@ public class Persister implements Serializer {
     * to create a serializer object that will use the provided matcher
     * for customizable transformations. The <code>Matcher</code> will
     * enable the persister to determine the correct way to transform
-    * the types that are not anotated and considered primitives.
+    * the types that are not annotated and considered primitives.
     * <p>
     * This persister will use the provided <code>Strategy</code> to
-    * intercept the XML elements in order to read and write persisent
+    * intercept the XML elements in order to read and write persistent
     * data, such as the class name or version of the document.
     * 
     * @param strategy this is the strategy used to resolve classes 
@@ -449,7 +449,7 @@ public class Persister implements Serializer {
     * @throws Exception if the object cannot be fully deserialized
     */
    public <T> T read(Class<? extends T> type, InputStream source) throws Exception {
-      return (T)read(type, source, "utf-8");           
+      return (T)read(type, NodeBuilder.read(source));           
    }
    
    /**
@@ -765,7 +765,7 @@ public class Persister implements Serializer {
     * @throws Exception if the class XML schema does not fully match
     */
    public boolean validate(Class type, InputStream source) throws Exception {
-      return validate(type, source, "utf-8");           
+      return validate(type, NodeBuilder.read(source));           
    }
    
    /**

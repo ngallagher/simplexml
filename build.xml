@@ -244,6 +244,9 @@
             <exclude name="**/*.class"/>
          </fileset>
       </copy>
+      <copy todir="${package.path}/${build.path}/simple-xml-${version}">
+         <fileset file="LICENSE.txt"/>
+      </copy>
       <copy todir="${package.path}/${build.path}/simple-xml-${version}/${doc.path}">
          <fileset file="${doc.path}"/>
       </copy>

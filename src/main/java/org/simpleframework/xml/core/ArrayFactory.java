@@ -3,25 +3,25 @@
  *
  * Copyright (C) 2006, Niall Gallagher <niallg@users.sf.net>
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
- * GNU Lesser General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General 
- * Public License along with this library; if not, write to the 
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, 
- * Boston, MA  02111-1307  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or 
+ * implied. See the License for the specific language governing 
+ * permissions and limitations under the License.
  */
 
 package org.simpleframework.xml.core;
 
 import java.lang.reflect.Array;
 
+import org.simpleframework.xml.strategy.Type;
+import org.simpleframework.xml.strategy.Value;
 import org.simpleframework.xml.stream.InputNode;
 
 /**
@@ -33,7 +33,7 @@ import org.simpleframework.xml.stream.InputNode;
  * 
  * @author Niall Gallagher
  */ 
-class ArrayFactory extends Factory {
+class ArrayFactory extends Factory { 
         
    /**
     * Constructor for the <code>ArrayFactory</code> object. This is
@@ -42,11 +42,11 @@ class ArrayFactory extends Factory {
     * an array which uses a compatible component type.
     * 
     * @param context this is the context object for serialization
-    * @param field the array component type for the field object
+    * @param type the array component type for the field object
     */
-   public ArrayFactory(Context context, Class field) {
-      super(context, field);                
-   }     
+   public ArrayFactory(Context context, Type type) {
+      super(context, type);                
+   }    
    
    /**
     * This is used to create a default instance of the field type. It
@@ -58,7 +58,7 @@ class ArrayFactory extends Factory {
     */
    @Override
    public Object getInstance() throws Exception {
-      Class type = field.getComponentType();
+      Class type = getComponentType();
       
       if(type != null) {
          return Array.newInstance(type, 0);
@@ -69,41 +69,58 @@ class ArrayFactory extends Factory {
    /**
     * Creates the array type to use. This will use the provided
     * XML element to determine the array type and provide a means
-    * for creating an array with the <code>Type</code> object. If
+    * for creating an array with the <code>Value</code> object. If
     * the array size cannot be determined an exception is thrown.
     * 
     * @param node this is the input node for the array element
     * 
     * @return the object array type used for the instantiation
     */         
-   public Type getInstance(InputNode node) throws Exception {
-      Type type = getOverride(node);    
+   public Instance getInstance(InputNode node) throws Exception {
+      Value value = getOverride(node);    
       
-      if(type == null) {
-         throw new ElementException("Array length required for %s", field);         
+      if(value == null) {
+         throw new ElementException("Array length required for %s", type);         
       }      
-      Class entry = type.getType();
+      Class type = value.getType();
       
-      return getInstance(type, entry);
+      return getInstance(value, type);
    }
 
    /**
     * Creates the array type to use. This will use the provided
     * XML element to determine the array type and provide a means
-    * for creating an array with the <code>Type</code> object. If
+    * for creating an array with the <code>Value</code> object. If
     * the array types are not compatible an exception is thrown.
     * 
-    * @param type this is the type object with the array details
-    * @param entry this is the entry type for the array instance    
+    * @param value this is the type object with the array details
+    * @param type this is the entry type for the array instance    
     * 
     * @return this object array type used for the instantiation  
     */
-   private Type getInstance(Type type, Class entry) throws Exception {
-      Class expect = field.getComponentType();
+   private Instance getInstance(Value value, Class type) throws Exception {
+      Class expect = getComponentType();
 
-      if(!expect.isAssignableFrom(entry)) {
-         throw new InstantiationException("Array of type %s cannot hold %s", expect, entry);
+      if(!expect.isAssignableFrom(type)) {
+         throw new InstantiationException("Array of type %s cannot hold %s", expect, type);
       }
-      return type;      
+      return new ArrayInstance(value);   
    }   
+   
+   /**
+    * This is used to extract the component type for the array class
+    * this factory represents. This is used when an array is to be
+    * instantiated. If the class provided to the factory is not an
+    * array then this will throw an exception.
+    * 
+    * @return this returns the component type for the array
+    */
+   private Class getComponentType() throws Exception {
+      Class type = getType();
+      
+      if(!type.isArray()) {
+         throw new InstantiationException("The %s not an array", type);
+      }
+      return type.getComponentType();
+   }
 }

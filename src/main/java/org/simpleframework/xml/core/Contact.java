@@ -3,24 +3,24 @@
  *
  * Copyright (C) 2007, Niall Gallagher <niallg@users.sf.net>
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
- * GNU Lesser General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General 
- * Public License along with this library; if not, write to the 
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, 
- * Boston, MA  02111-1307  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or 
+ * implied. See the License for the specific language governing 
+ * permissions and limitations under the License.
  */
 
 package org.simpleframework.xml.core;
 
 import java.lang.annotation.Annotation;
+
+import org.simpleframework.xml.strategy.Type;
 
 /**
  * The <code>Contact</code> interface is used to provide a point of
@@ -32,36 +32,18 @@ import java.lang.annotation.Annotation;
  *
  * @see org.simpleframework.xml.core.Label
  */ 
-interface Contact {
-
-   /**
-    * This is used to identify annotated methods are fields that
-    * can not be modified. Such field will require that there is 
-    * a constructor that can have the value injected in to it.
-    * 
-    * @return this returns true if the field or method is final
-    */
-   public boolean isFinal();
+interface Contact extends Type {
    
    /**
     * This represents the name of the object contact. If the contact
     * is a field then the name of the field is provided. If however
     * the contact is a method then the Java Bean name of the method
-    * is provided, which will be the decapatilized name of the 
+    * is provided, which will be the decapitalized name of the 
     * method without the get, set, or is prefix to the method.
     * 
     * @return this returns the name of the contact represented
     */
    public String getName();
-   
-   /**
-    * This will provide the contact type. The contact type is the
-    * class that is to be set and get on the object. Typically the
-    * type will be a serializable object or a primitive type.
-    *
-    * @return this returns the type that this contact represents
-    */ 
-   public Class getType();
    
    /**
     * This provides the dependent class for the contact. This will
@@ -93,17 +75,6 @@ interface Contact {
    public Annotation getAnnotation();
    
    /**
-    * This is the annotation associated with the point of contact.
-    * This will be an XML annotation that describes how the contact
-    * should be serialized and deserialized from the object.
-    * 
-    * @param type this is the type of the annotation to acquire
-    *
-    * @return this provides the annotation associated with this
-    */
-   public <T extends Annotation> T getAnnotation(Class<T> type);
-   
-   /**
     * This is used to set the value on the specified object through
     * this contact. Depending on the type of contact this will set
     * the value given, typically this will be done by invoking a
@@ -125,6 +96,16 @@ interface Contact {
     * @return this is the value acquired from the point of contact
     */ 
    public Object get(Object source) throws Exception;
+   
+   /**
+    * This is used to determine if the annotated contact is for a
+    * read only variable. A read only variable is a field that
+    * can be set from within the constructor such as a blank final
+    * variable. It can also be a method with no set counterpart.
+    * 
+    * @return this returns true if the contact is a constant one
+    */
+   public boolean isReadOnly();
    
    /**
     * This is used to describe the contact as it exists within the

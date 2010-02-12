@@ -1,13 +1,15 @@
 package org.simpleframework.xml.core;
 
-import junit.framework.TestCase;
-
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementArray;
 import org.simpleframework.xml.Root;
+import org.simpleframework.xml.ValidationTestCase;
+import org.simpleframework.xml.stream.CamelCaseStyle;
+import org.simpleframework.xml.stream.Format;
+import org.simpleframework.xml.stream.Style;
 
-public class ConstructorInjectionTest extends TestCase {
+public class ConstructorInjectionTest extends ValidationTestCase {
    
    private static final String SOURCE = 
    "<example number='32'>"+
@@ -27,24 +29,24 @@ public class ConstructorInjectionTest extends TestCase {
    "</example>";
    
    private static final String ARRAY =
-   "<exampleArray>"+
-   "   <array length='5'>\n\r"+
-   "      <string>entry one</string>  \n\r"+
-   "      <string>entry two</string>  \n\r"+
-   "      <string>entry three</string>  \n\r"+
-   "      <string>entry four</string>  \n\r"+
-   "      <string>entry five</string>  \n\r"+
-   "   </array>\n\r"+
-   "</exampleArray>";
+   "<ExampleArray>"+
+   "   <Array length='5'>\n\r"+
+   "      <String>entry one</String>  \n\r"+
+   "      <String>entry two</String>  \n\r"+
+   "      <String>entry three</String>  \n\r"+
+   "      <String>entry four</String>  \n\r"+
+   "      <String>entry five</String>  \n\r"+
+   "   </Array>\n\r"+
+   "</ExampleArray>";
    
    
    @Root
    private static class Example {
       
-      @Element(name="integer")
+      @Element
       private int integer;   
       
-      @Element(name="string", required=false) 
+      @Element(required=false) 
       private String string;
       
       @Attribute(name="number", required=false) 
@@ -86,6 +88,8 @@ public class ConstructorInjectionTest extends TestCase {
       assertEquals(example.integer, 12);
       assertEquals(example.number, 32);
       assertEquals(example.string, "text"); 
+      
+      validate(persister, example);
    }
    
    public void testPartialConstructor() throws Exception {      
@@ -95,6 +99,8 @@ public class ConstructorInjectionTest extends TestCase {
       assertEquals(example.integer, 12);
       assertEquals(example.number, 0);
       assertEquals(example.string, "text"); 
+      
+      validate(persister, example);
    }
    
    public void testBareConstructor() throws Exception {      
@@ -104,10 +110,14 @@ public class ConstructorInjectionTest extends TestCase {
       assertEquals(example.integer, 12);
       assertEquals(example.number, 0);
       assertEquals(example.string, null); 
+      
+      validate(persister, example);
    }
    
-   public void testArrayExample() throws Exception {      
-      Persister persister = new Persister();
+   public void testArrayExample() throws Exception {   
+      Style style = new CamelCaseStyle();
+      Format format = new Format(style);
+      Persister persister = new Persister(format);
       ArrayExample example = persister.read(ArrayExample.class, ARRAY);
       
       assertEquals(example.getArray().length, 5);
@@ -116,5 +126,7 @@ public class ConstructorInjectionTest extends TestCase {
       assertEquals(example.getArray()[2], "entry three");
       assertEquals(example.getArray()[3], "entry four");
       assertEquals(example.getArray()[4], "entry five");
+      
+      validate(persister, example);
    }
 }

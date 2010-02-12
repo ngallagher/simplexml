@@ -35,7 +35,16 @@ public class StrictTest extends ValidationTestCase {
     "   <object name='key'>\n" +
     "      <integer>12345</integer>\n" +
     "   </object>\n" +
+    "   <name>test</name>\n"+
     "</object>\n";
+   
+   private static final String SIMPLE_MISSING_NAME =
+   "<object name='name'>\n" +
+   "   <integer>123</integer>\n" +
+   "   <object name='key'>\n" +
+   "      <integer>12345</integer>\n" +
+   "   </object>\n" +
+   "</object>\n";
    
    @Root(name="root", strict=false)
    private static class StrictExample {
@@ -63,6 +72,9 @@ public class StrictTest extends ValidationTestCase {
 
    @Root(name="object", strict=false)
    private static class NamedStrictObject extends StrictObject {
+      
+      @Element(name="name")
+      private String name;
    }
 
    private Persister persister;
@@ -99,5 +111,17 @@ public class StrictTest extends ValidationTestCase {
 
       assertEquals(object.integer, 123);
       validate(object, persister);
-   }   
+   }  
+   
+   public void testNamedStrictMissingName() throws Exception {    
+      boolean failure = false;
+      try {
+         StrictObject object = persister.read(NamedStrictObject.class, SIMPLE_MISSING_NAME);
+         assertNotNull(object);
+      }catch(Exception e) {
+         e.printStackTrace();
+         failure = true;
+      }
+      assertTrue("Did not fail", failure);
+   } 
 }

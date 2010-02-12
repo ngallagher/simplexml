@@ -5,7 +5,7 @@ annotations tell the persister how the object should be serialized. For example 
 below. Here there are three different annotations, one used to describe the name of the root element, one
 that describes an XML message element, and a final annotation for an id attribute.
 </p>
-<pre>
+<pre class="prettyprint">
 @Root
 public class Example {
 
@@ -38,7 +38,7 @@ To serialize an instance of the above object a <a href="/download/stream/doc/jav
 The persister object is then given an instance of the annotated object and an output result, which is a file in this example. Other
 output formats are possible with the persister object.
 </p>
-<pre>
+<pre class="prettyprint">
 Serializer serializer = new Persister();
 Example example = new Example("Example message", 123);
 File result = new File("example.xml");
@@ -49,7 +49,7 @@ serializer.write(example, result);
 Once the above code is executed the object instance will have been transferred as an XML document to the specified file. The resulting XML 
 file will contain the contents shown below.
 </p>
-<pre>
+<pre class="prettyprint">
 &lt;example index="123"&gt;
    &lt;text&gt;Example message&lt;/text&gt;
 &lt;/example&gt;
@@ -61,7 +61,7 @@ that should the object have unusable field or method names they can be overridde
 the only reliable way to serialize and deserialize objects consistently. An example of the previous object with explicit naming is shown
 below.
 </p>
-<pre>
+<pre class="prettyprint">
 @Root(name="root")
 public class Example {
 
@@ -93,7 +93,7 @@ public class Example {
 For the above object the XML document constructed from an instance of the object results in a different format. Here the XML element
 and attribute names have been overridden with the annotation names. The resulting output is shown below.
 </p>
-<pre>
+<pre class="prettyprint">
 &lt;root id="123"&gt;
    &lt;message&gt;Example message&lt;/message&gt;
 &lt;/root&gt;

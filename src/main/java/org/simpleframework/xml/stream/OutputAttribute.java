@@ -3,19 +3,17 @@
  *
  * Copyright (C) 2006, Niall Gallagher <niallg@users.sf.net>
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
- * GNU Lesser General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General 
- * Public License along with this library; if not, write to the 
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, 
- * Boston, MA  02111-1307  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or 
+ * implied. See the License for the specific language governing 
+ * permissions and limitations under the License.
  */
 
 package org.simpleframework.xml.stream;
@@ -194,7 +192,22 @@ class OutputAttribute implements OutputNode {
     * @return this returns the prefix associated with this node
     */  
    public String getPrefix() {
-      return scope.get(reference);           
+      return scope.get(reference);          
+   }
+   
+   /**
+    * This is used to acquire the prefix for this output node. If
+    * the output node is an element then this will search its parent
+    * nodes until the prefix that is currently in scope is found. 
+    * If however this node is an attribute then the hierarchy of 
+    * nodes is not searched as attributes to not inherit namespaces.
+    *
+    * @param inherit if there is no explicit prefix then inherit
+    *
+    * @return this returns the prefix associated with this node
+    */  
+   public String getPrefix(boolean inherit) {
+      return scope.get(reference);
    }
    
    /**
@@ -203,7 +216,7 @@ class OutputAttribute implements OutputNode {
     * reference is a URI it does not have to be, it can be any unique
     * identifier that can be used to distinguish the qualified names.
     *
-    * @return this returns the nanmespace URI reference for this
+    * @return this returns the namespace URI reference for this
     */
    public String getReference() {
       return reference;           
@@ -285,11 +298,22 @@ class OutputAttribute implements OutputNode {
    /**
     * This is used to determine whether the node has been committed.
     * If the node has been committed, then this will return true.
-    * When committed the node can no longer produce chile nodes.
+    * When committed the node can no longer produce child nodes.
     *
     * @return true if this node has already been committed
     */
    public boolean isCommitted() {
       return true;           
+   }
+   
+   /**
+    * This is used to acquire the name and value of the attribute.
+    * Implementing this method ensures that debugging the output
+    * node is simplified as it is possible to get the actual value.
+    * 
+    * @return this returns the details of this output node
+    */
+   public String toString() {
+       return String.format("attribute %s='%s'", name, value);
    }
 }

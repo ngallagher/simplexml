@@ -3,19 +3,17 @@
  *
  * Copyright (C) 2007, Niall Gallagher <niallg@users.sf.net>
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
- * GNU Lesser General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General 
- * Public License along with this library; if not, write to the 
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, 
- * Boston, MA  02111-1307  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or 
+ * implied. See the License for the specific language governing 
+ * permissions and limitations under the License.
  */
 
 package org.simpleframework.xml.core;
@@ -148,19 +146,20 @@ abstract class ParameterContact<T extends Annotation> implements Contact {
     *
     * @return this provides the annotation associated with this
     */
-   public <T extends Annotation> T getAnnotation(Class<T> type) {
+   public <A extends Annotation> A getAnnotation(Class<A> type) {
       return null;
    }
    
    /**
-    * This is used to identify annotated methods are fields that
-    * can not be modified. Such field will require that there is 
-    * a constructor that can have the value injected in to it.
+    * This is used to determine if the annotated contact is for a
+    * read only variable. A read only variable is a field that
+    * can be set from within the constructor such as a blank final
+    * variable. It can also be a method with no set counterpart.
     * 
-    * @return this returns true if the field or method is final
+    * @return this returns true if the contact is a constant one
     */
-   public boolean isFinal() {
-      return true;
+   public boolean isReadOnly() {
+      return false;
    }
 
    /**

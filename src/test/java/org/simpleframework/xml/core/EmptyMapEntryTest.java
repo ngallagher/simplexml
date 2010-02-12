@@ -8,7 +8,8 @@ import org.simpleframework.xml.ElementMap;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.ValidationTestCase;
-import org.simpleframework.xml.graph.CycleStrategy;
+import org.simpleframework.xml.strategy.CycleStrategy;
+import org.simpleframework.xml.strategy.Strategy;
 
 public class EmptyMapEntryTest extends ValidationTestCase {
 

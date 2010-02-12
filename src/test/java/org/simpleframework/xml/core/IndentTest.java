@@ -1,17 +1,11 @@
 package org.simpleframework.xml.core;
 
-import java.io.StringReader;
-
-import org.simpleframework.xml.ValidationTestCase;
 import java.io.StringWriter;
-import java.util.List;
-import java.util.Map;
 
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
-import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
-import org.simpleframework.xml.core.Persister;
+import org.simpleframework.xml.ValidationTestCase;
 import org.simpleframework.xml.stream.Format;
 
 public class IndentTest extends ValidationTestCase {

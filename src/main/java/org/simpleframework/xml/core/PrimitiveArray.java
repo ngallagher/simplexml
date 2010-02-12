@@ -3,26 +3,27 @@
  *
  * Copyright (C) 2006, Niall Gallagher <niallg@users.sf.net>
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
- * GNU Lesser General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General 
- * Public License along with this library; if not, write to the 
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, 
- * Boston, MA  02111-1307  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or 
+ * implied. See the License for the specific language governing 
+ * permissions and limitations under the License.
  */
 
 package org.simpleframework.xml.core;
 
+import java.lang.reflect.Array;
+
+import org.simpleframework.xml.strategy.Type;
 import org.simpleframework.xml.stream.InputNode;
 import org.simpleframework.xml.stream.OutputNode;
-import java.lang.reflect.Array;
+import org.simpleframework.xml.stream.Position;
 
 /**
  * The <code>PrimitiveArray</code> object is used to convert a list of
@@ -71,7 +72,7 @@ class PrimitiveArray implements Converter {
    /**
     * This is the type of object that will be held in the list.
     */
-   private final Class entry;
+   private final Type entry;
    
    /**
     * Constructor for the <code>PrimitiveArray</code> object. This is
@@ -80,19 +81,19 @@ class PrimitiveArray implements Converter {
     * elements and will be the same length as the number of elements.
     *
     * @param context this is the context object used for serialization
-    * @param field this is the actual field type from the schema
+    * @param type this is the actual field type from the schema
     * @param entry the entry type to be stored within the array
     * @param parent this is the name to wrap the array element with     
     */    
-   public PrimitiveArray(Context context, Class field, Class entry, String parent) {
-      this.factory = new ArrayFactory(context, field); 
-      this.root = new Primitive(context, entry, null);          
+   public PrimitiveArray(Context context, Type type, Type entry, String parent) {
+      this.factory = new ArrayFactory(context, type); 
+      this.root = new Primitive(context, entry);          
       this.parent = parent;
       this.entry = entry;
    }
 
    /**
-    * This <code>read</code> method wll read the XML element list from
+    * This <code>read</code> method will read the XML element list from
     * the provided node and deserialize its children as entry types.
     * This will deserialize each entry type as a primitive value. In
     * order to do this the parent string provided forms the element.
@@ -102,7 +103,7 @@ class PrimitiveArray implements Converter {
     * @return this returns the item to attach to the object contact
     */ 
    public Object read(InputNode node) throws Exception{
-      Type type = factory.getInstance(node);
+      Instance type = factory.getInstance(node);
       Object list = type.getInstance();
       
       if(!type.isReference()) {
@@ -123,18 +124,24 @@ class PrimitiveArray implements Converter {
     * @return this returns the item to attach to the object contact
     */ 
    public Object read(InputNode node, Object list) throws Exception{
-      for(int i = 0; true; i++) {
+      int length = Array.getLength(list);
+
+      for(int pos = 0; true; pos++) {
+         Position line = node.getPosition();
          InputNode next = node.getNext();
     
          if(next == null) {
             return list;            
          }
-         Array.set(list, i, root.read(next));
+         if(pos >= length){
+            throw new ElementException("Array length missing or incorrect at %s", line);
+         }
+         Array.set(list, pos, root.read(next));
       } 
    }    
    
    /**
-    * This <code>validate</code> method wll validate the XML element list 
+    * This <code>validate</code> method will validate the XML element list 
     * from the provided node and validate its children as entry types.
     * This will validate each entry type as a primitive value. In order 
     * to do this the parent string provided forms the element.
@@ -144,11 +151,11 @@ class PrimitiveArray implements Converter {
     * @return true if the element matches the XML schema class given 
     */ 
    public boolean validate(InputNode node) throws Exception{
-      Type type = factory.getInstance(node);
+      Instance value = factory.getInstance(node);
       
-      if(!type.isReference()) {
-         Object real = type.getInstance(type);
-         Class expect = type.getType();
+      if(!value.isReference()) {
+         Object result = value.setInstance(null);
+         Class expect = value.getType();
             
          return validate(node, expect);
       }
@@ -223,9 +230,9 @@ class PrimitiveArray implements Converter {
    
    /**
     * This is used to determine whether the specified value has been
-    * overrideen by the strategy. If the item has been overridden
+    * overridden by the strategy. If the item has been overridden
     * then no more serialization is require for that value, this is
-    * effectivly telling the serialization process to stop writing.
+    * effectively telling the serialization process to stop writing.
     * 
     * @param node the node that a potential override is written to
     * @param value this is the object instance to be serialized

@@ -3,26 +3,27 @@
  *
  * Copyright (C) 2006, Niall Gallagher <niallg@users.sf.net>
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
- * GNU Lesser General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General 
- * Public License along with this library; if not, write to the 
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, 
- * Boston, MA  02111-1307  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or 
+ * implied. See the License for the specific language governing 
+ * permissions and limitations under the License.
  */
 
 package org.simpleframework.xml.core;
 
+import java.lang.reflect.Array;
+
+import org.simpleframework.xml.strategy.Type;
 import org.simpleframework.xml.stream.InputNode;
 import org.simpleframework.xml.stream.OutputNode;
-import java.lang.reflect.Array;
+import org.simpleframework.xml.stream.Position;
 
 /**
  * The <code>CompositeArray</code> object is used to convert a list of
@@ -75,7 +76,7 @@ class CompositeArray implements Converter {
    /**
     * This is the entry type for elements within the array.
     */   
-   private final Class entry;
+   private final Type entry;
    
    /**
     * Constructor for the <code>CompositeArray</code> object. This is
@@ -84,12 +85,12 @@ class CompositeArray implements Converter {
     * elements and will be the same length as the number of elements.
     *
     * @param context this is the context object used for serialization
-    * @param field this is the field type for the array being used
+    * @param type this is the field type for the array being used
     * @param entry this is the entry type for the array elements
     * @param parent this is the name to wrap the array element with
     */    
-   public CompositeArray(Context context, Class field, Class entry, String parent) {
-      this.factory = new ArrayFactory(context, field);           
+   public CompositeArray(Context context, Type type, Type entry, String parent) {
+      this.factory = new ArrayFactory(context, type);           
       this.root = new Traverser(context);     
       this.parent = parent;
       this.entry = entry;
@@ -107,7 +108,7 @@ class CompositeArray implements Converter {
     * @return this returns the item to attach to the object contact
     */ 
    public Object read(InputNode node) throws Exception{
-      Type type = factory.getInstance(node);
+      Instance type = factory.getInstance(node);
       Object list = type.getInstance();
       
       if(!type.isReference()) {
@@ -129,13 +130,19 @@ class CompositeArray implements Converter {
     * @return this returns the item to attach to the object contact
     */  
    public Object read(InputNode node, Object list) throws Exception{
-      for(int i = 0; true; i++) {
+      int length = Array.getLength(list);
+       
+      for(int pos = 0; true; pos++) {
+         Position line = node.getPosition();
          InputNode next = node.getNext();
         
          if(next == null) {
             return list;
          }
-         read(next, list, i);
+         if(pos >= length){
+             throw new ElementException("Array length missing or incorrect at %s", line);
+         }
+         read(next, list, pos);
       } 
    }    
    
@@ -150,16 +157,17 @@ class CompositeArray implements Converter {
     * @param index this is the offset to set the value in the array
     */
    private void read(InputNode node, Object list, int index) throws Exception {
+      Class type = entry.getType();
       Object value = null;     
       
       if(!node.isEmpty()) {
-         value = root.read(node, entry);
+         value = root.read(node, type);
       }
       Array.set(list, index, value);      
    }
 
    /**
-    * This <code>validate</code> method wll validate the XML element 
+    * This <code>validate</code> method will validate the XML element 
     * list against the provided node and validate its children as entry 
     * types. This ensures each entry type is validated as a root type, 
     * that is, its <code>Root</code> annotation must be present and the
@@ -170,14 +178,13 @@ class CompositeArray implements Converter {
     * @return true if the element matches the XML schema class given 
     */ 
    public boolean validate(InputNode node) throws Exception{
-      Type type = factory.getInstance(node);
+      Instance value = factory.getInstance(node);
       
-      // XXX TODO fix this
-      if(!type.isReference()) {
-         Object real = type.getInstance(type);
-         Class expect = type.getType();
+      if(!value.isReference()) {
+         Object result = value.setInstance(null);
+         Class type = value.getType();
             
-         return validate(node, expect);
+         return validate(node, type);
       }
       return true; 
    }
@@ -221,9 +228,10 @@ class CompositeArray implements Converter {
       int size = Array.getLength(source);                
       
       for(int i = 0; i < size; i++) {   
-         Object item = Array.get(source, i);      
+         Object item = Array.get(source, i); 
+         Class type = entry.getType();
       
-         root.write(node, item, entry, parent);   
+         root.write(node, item, type, parent);   
       }
       node.commit();
    }

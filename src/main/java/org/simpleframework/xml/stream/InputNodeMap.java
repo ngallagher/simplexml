@@ -3,19 +3,17 @@
  *
  * Copyright (C) 2006, Niall Gallagher <niallg@users.sf.net>
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
- * GNU Lesser General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General 
- * Public License along with this library; if not, write to the 
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, 
- * Boston, MA  02111-1307  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or 
+ * implied. See the License for the specific language governing 
+ * permissions and limitations under the License.
  */
 
 package org.simpleframework.xml.stream;
@@ -40,7 +38,7 @@ class InputNodeMap extends LinkedHashMap<String, InputNode> implements NodeMap<I
    /**
     * This is the source node that this node map belongs to.
     */          
-   private InputNode source;        
+   private final InputNode source;        
    
    /**
     * Constructor for the <code>InputNodeMap</code> object. This
@@ -65,6 +63,18 @@ class InputNodeMap extends LinkedHashMap<String, InputNode> implements NodeMap<I
    public InputNodeMap(InputNode source, StartElement element) {
       this.source = source;           
       this.put(element);   
+   }
+   
+   /**
+    * This is used to acquire the actual node this map represents.
+    * The source node provides further details on the context of
+    * the node, such as the parent name, the namespace, and even
+    * the value in the node. Care should be taken when using this. 
+    * 
+    * @return this returns the node that this map represents
+    */
+   public InputNode getNode() {
+       return source;
    }
 
    /**

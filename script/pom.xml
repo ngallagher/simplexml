@@ -10,8 +10,8 @@
   <description>Simple is a high performance XML serialization and configuration framework for Java</description>
   <licenses>
     <license>
-      <name>LGPL</name>
-      <url>http://www.gnu.org/licenses/lgpl.txt</url>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
       <distribution>repo</distribution>
     </license>
   </licenses>

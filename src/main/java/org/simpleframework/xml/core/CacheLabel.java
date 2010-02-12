@@ -3,23 +3,22 @@
  *
  * Copyright (C) 2006, Niall Gallagher <niallg@users.sf.net>
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
- * GNU Lesser General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General 
- * Public License along with this library; if not, write to the 
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, 
- * Boston, MA  02111-1307  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or 
+ * implied. See the License for the specific language governing 
+ * permissions and limitations under the License.
  */
 
 package org.simpleframework.xml.core;
 
+import org.simpleframework.xml.strategy.Type;
 import org.simpleframework.xml.stream.Style;
 
 /**
@@ -44,11 +43,6 @@ class CacheLabel implements Label {
    private final Contact contact;
    
    /**
-    * This is used to represent the dependent class to be used.
-    */
-   private final Class depend;
-   
-   /**
     * This is used to represent the label class that this will use.
     */
    private final Class type;
@@ -67,6 +61,16 @@ class CacheLabel implements Label {
     * This is used to represent the name of the annotated element.
     */
    private final String name;
+   
+   /**
+    * This is the label the this cache is wrapping the values for.
+    */
+   private final Label label;
+   
+   /**
+    * This is used to represent the dependent type to be used.
+    */
+   private final Type depend;
    
    /**
     * This is used to represent whether the data is written as data. 
@@ -92,11 +96,6 @@ class CacheLabel implements Label {
     * This is used to determine whether the entity is inline or not. 
     */
    private final boolean inline;
-   
-   /**
-    * This is the label the this cache is wrapping the values for.
-    */
-   private final Label label;
    
    /**
     * Constructor for the <code>CacheLabel</code> object. This is used
@@ -205,7 +204,7 @@ class CacheLabel implements Label {
     * 
     * @return this is the type that the annotation depends on
     */
-   public Class getDependent() throws Exception {
+   public Type getDependent() throws Exception {
       return depend;
    }
    

@@ -11,7 +11,7 @@ import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.ValidationTestCase;
 import org.simpleframework.xml.core.Persister;
-import org.simpleframework.xml.graph.CycleStrategy;
+import org.simpleframework.xml.strategy.CycleStrategy;
 
 public class PrimitiveArrayTransformTest extends ValidationTestCase {
    

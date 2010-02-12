@@ -3,24 +3,23 @@
  *
  * Copyright (C) 2006, Niall Gallagher <niallg@users.sf.net>
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
- * GNU Lesser General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General 
- * Public License along with this library; if not, write to the 
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, 
- * Boston, MA  02111-1307  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or 
+ * implied. See the License for the specific language governing 
+ * permissions and limitations under the License.
  */
 
 package org.simpleframework.xml.core;
 
 import org.simpleframework.xml.ElementArray;
+import org.simpleframework.xml.strategy.Type;
 import org.simpleframework.xml.stream.Style;
 
 /**
@@ -126,14 +125,15 @@ class ElementArrayLabel implements Label {
     * @return this returns the converter for creating a collection 
     */      
    private Converter getConverter(Context context, String name) throws Exception {
-      Class entry = type.getComponentType();   
+      Type entry = getDependent();
+      Type type = getContact();
       
       if(!context.isPrimitive(entry)) { 
          return new CompositeArray(context, type, entry, name);        
       }
       return new PrimitiveArray(context, type, entry, name);            
    }
-   
+
    /**
     * This is used to either provide the entry value provided within
     * the annotation or compute a entry value. If the entry string
@@ -180,7 +180,8 @@ class ElementArrayLabel implements Label {
     * @return this returns the string to use for default values
     */
    public Object getEmpty(Context context) throws Exception {
-      Factory factory = new ArrayFactory(context, type);
+      Type array = new ClassType(type);
+      Factory factory = new ArrayFactory(context, array);
       
       if(!label.empty()) {
          return factory.getInstance();
@@ -224,12 +225,17 @@ class ElementArrayLabel implements Label {
     * 
     * @return this returns the component type for the array
     */
-   public Class getDependent() {
-      return type.getComponentType();
+   public Type getDependent() {
+      Class entry = type.getComponentType();
+      
+      if(entry == null) {
+         return new ClassType(type);
+      }
+      return new ClassType(entry);
    }
    
    /**
-    * This acts as a convinience method used to determine the type of
+    * This acts as a convenience method used to determine the type of
     * contact this represents. This is used when an object is written
     * to XML. It determines whether a <code>class</code> attribute
     * is required within the serialized XML element, that is, if the
@@ -246,7 +252,7 @@ class ElementArrayLabel implements Label {
     * This is used to acquire the contact object for this label. The 
     * contact retrieved can be used to set any object or primitive that
     * has been deserialized, and can also be used to acquire values to
-    * be serialized in the case of object persistance. All contacts
+    * be serialized in the case of object persistence. All contacts
     * that are retrieved from this method will be accessible. 
     * 
     * @return returns the contact that this label is representing

@@ -3,26 +3,26 @@
  *
  * Copyright (C) 2006, Niall Gallagher <niallg@users.sf.net>
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
- * GNU Lesser General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General 
- * Public License along with this library; if not, write to the 
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, 
- * Boston, MA  02111-1307  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or 
+ * implied. See the License for the specific language governing 
+ * permissions and limitations under the License.
  */
 
 package org.simpleframework.xml.core;
 
+import java.util.Collection;
+
+import org.simpleframework.xml.strategy.Type;
 import org.simpleframework.xml.stream.InputNode;
 import org.simpleframework.xml.stream.OutputNode;
-import java.util.Collection;
 
 /**
  * The <code>CompositeInlineList</code> object is used to convert an 
@@ -70,16 +70,16 @@ class CompositeInlineList implements Repeater {
     * This performs the traversal used for object serialization.
     */ 
    private final Traverser root;
-      
-   /**
-    * This is the entry type for elements within the list.
-    */   
-   private final Class entry;
 
    /**
     * This represents the name of the entry elements to write.
     */
    private final String name;
+   
+   /**
+    * This is the entry type for elements within the list.
+    */   
+   private final Type entry;
 
    /**
     * Constructor for the <code>CompositeInlineList</code> object. 
@@ -90,8 +90,9 @@ class CompositeInlineList implements Repeater {
     * @param context this is the context object used for serialization
     * @param type this is the collection type for the list used
     * @param entry the entry type to be stored within the list
+    * @param name this is the name of the entries used for this list
     */    
-   public CompositeInlineList(Context context, Class type, Class entry, String name) {
+   public CompositeInlineList(Context context, Type type, Type entry, String name) {
       this.factory = new CollectionFactory(context, type); 
       this.root = new Traverser(context);      
       this.entry = entry;
@@ -156,7 +157,8 @@ class CompositeInlineList implements Repeater {
       String name = node.getName();
       
       while(node != null) {
-         Object item = read(node, entry);
+         Class type = entry.getType();
+         Object item = read(node, type);
          
          if(item != null) {
             list.add(item);
@@ -167,11 +169,11 @@ class CompositeInlineList implements Repeater {
    }     
    
    /**
-    * This <code>read</code> method wll read the XML element from the     
+    * This <code>read</code> method will read the XML element from the     
     * provided node. This checks to ensure that the deserialized type
     * is the same as the entry type provided. If the types are not 
     * the same then an exception is thrown. This is done to ensure
-    * each node in the collection contain the same root annotaiton. 
+    * each node in the collection contain the same root annotation. 
     * 
     * @param node this is the XML element that is to be deserialized
     * @param expect this is the type expected of the deserialized type
@@ -180,10 +182,11 @@ class CompositeInlineList implements Repeater {
     */ 
    private Object read(InputNode node, Class expect) throws Exception {
       Object item = root.read(node, expect);
-      Class type = item.getClass();
+      Class result = item.getClass();
+      Class type = entry.getType();
       
-      if(!entry.isAssignableFrom(type)) {
-         throw new PersistenceException("Entry %s does not match %s", type, entry);
+      if(!type.isAssignableFrom(result)) {
+         throw new PersistenceException("Entry %s does not match %s", result, entry);
       }
       return item;      
    }
@@ -201,10 +204,11 @@ class CompositeInlineList implements Repeater {
     */ 
    public boolean validate(InputNode node) throws Exception{
       InputNode from = node.getParent();
+      Class type = entry.getType();
       String name = node.getName();
       
       while(node != null) {
-         boolean valid = root.validate(node, entry);
+         boolean valid = root.validate(node, type);
      
          if(valid == false) {
             return false;
@@ -249,12 +253,13 @@ class CompositeInlineList implements Repeater {
    public void write(OutputNode node, Collection list) throws Exception {  
       for(Object item : list) {
          if(item != null) {
-            Class type = item.getClass();
+            Class type = entry.getType();
+            Class result = item.getClass();
 
-            if(!entry.isAssignableFrom(type)) {
-               throw new PersistenceException("Entry %s does not match %s", type, entry);
+            if(!type.isAssignableFrom(result)) {
+               throw new PersistenceException("Entry %s does not match %s", result, type);
             }
-            root.write(node, item, entry, name);
+            root.write(node, item, type, name);
          }
       }
    }

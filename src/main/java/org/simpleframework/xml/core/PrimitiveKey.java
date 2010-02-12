@@ -3,23 +3,22 @@
  *
  * Copyright (C) 2007, Niall Gallagher <niallg@users.sf.net>
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
- * GNU Lesser General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General 
- * Public License along with this library; if not, write to the 
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, 
- * Boston, MA  02111-1307  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or 
+ * implied. See the License for the specific language governing 
+ * permissions and limitations under the License.
  */
 
 package org.simpleframework.xml.core;
 
+import org.simpleframework.xml.strategy.Type;
 import org.simpleframework.xml.stream.InputNode;
 import org.simpleframework.xml.stream.OutputNode;
 import org.simpleframework.xml.stream.Style;
@@ -77,7 +76,7 @@ class PrimitiveKey implements Converter {
    /**
     * Represents the primitive type the key is serialized to and from.
     */
-   private final Class type;
+   private final Type type;
    
    /**
     * Constructor for the <code>PrimitiveKey</code> object. This is 
@@ -88,7 +87,7 @@ class PrimitiveKey implements Converter {
     * @param entry this is the entry object that describes entries
     * @param type this is the type that this converter deals with
     */
-   public PrimitiveKey(Context context, Entry entry, Class type) {
+   public PrimitiveKey(Context context, Entry entry, Type type) {
       this.factory = new PrimitiveFactory(context, type);
       this.root = new Primitive(context, type);      
       this.style = context.getStyle();
@@ -108,10 +107,11 @@ class PrimitiveKey implements Converter {
     * @return this returns the value deserialized from the node
     */   
    public Object read(InputNode node) throws Exception {
+      Class expect = type.getType();
       String name = entry.getKey();
            
       if(name == null) {
-         name = context.getName(type);
+         name = context.getName(expect);
       }
       if(!entry.isAttribute()) {         
          return readElement(node, name);
@@ -133,8 +133,10 @@ class PrimitiveKey implements Converter {
     * @throws Exception if value is not null an exception is thrown
     */   
    public Object read(InputNode node, Object value) throws Exception {
+      Class expect = type.getType();
+      
       if(value != null) {
-         throw new PersistenceException("Can not read key of %s", type);
+         throw new PersistenceException("Can not read key of %s", expect);
       }
       return read(node);
    }
@@ -192,10 +194,11 @@ class PrimitiveKey implements Converter {
     * @return this returns the value deserialized from the node
     */   
    public boolean validate(InputNode node) throws Exception {
+      Class expect = type.getType();
       String name = entry.getKey();
            
       if(name == null) {
-         name = context.getName(type);
+         name = context.getName(expect);
       }
       if(!entry.isAttribute()) {         
          return validateElement(node, name);
@@ -271,10 +274,11 @@ class PrimitiveKey implements Converter {
     * @param item this is the item that is to be written
     */
    private void writeElement(OutputNode node, Object item) throws Exception {
+      Class expect = type.getType();
       String key = entry.getKey();
       
       if(key == null) {
-         key = context.getName(type);
+         key = context.getName(expect);
       }    
       String name = style.getElement(key);
       OutputNode child = node.getChild(name);  
@@ -294,12 +298,13 @@ class PrimitiveKey implements Converter {
     * @param node this is the node that the value is written to
     * @param item this is the item that is to be written
     */
-   private void writeAttribute(OutputNode node, Object item) throws Exception {    
+   private void writeAttribute(OutputNode node, Object item) throws Exception { 
+      Class expect = type.getType();
       String text = factory.getText(item);
       String key = entry.getKey();  
       
       if(key == null) {
-         key = context.getName(type);
+         key = context.getName(expect);
       }     
       String name = style.getAttribute(key);
       

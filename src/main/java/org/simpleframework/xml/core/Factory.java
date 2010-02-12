@@ -3,25 +3,25 @@
  *
  * Copyright (C) 2006, Niall Gallagher <niallg@users.sf.net>
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
- * GNU Lesser General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General 
- * Public License along with this library; if not, write to the 
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, 
- * Boston, MA  02111-1307  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or 
+ * implied. See the License for the specific language governing 
+ * permissions and limitations under the License.
  */
 
 package org.simpleframework.xml.core;
 
 import java.lang.reflect.Modifier;
 
+import org.simpleframework.xml.strategy.Type;
+import org.simpleframework.xml.strategy.Value;
 import org.simpleframework.xml.stream.InputNode;
 import org.simpleframework.xml.stream.OutputNode;
 
@@ -32,7 +32,7 @@ import org.simpleframework.xml.stream.OutputNode;
  * to determine the type of the field value. The strategy class must be 
  * assignable to the field class type, that is, it must extend it or
  * implement it if it represents an interface. If the strategy returns
- * a null <code>Type</code> then the subclass implementation determines 
+ * a null <code>Value</code> then the subclass implementation determines 
  * the type used to populate the object field value.
  * 
  * @author Niall Gallagher
@@ -52,7 +52,7 @@ abstract class Factory {
    /**
     * This is the field type that the class must be assignable to.
     */
-   protected Class field;        
+   protected Type type;  
 
    /**
     * Constructor for the <code>Factory</code> object. This is given 
@@ -61,12 +61,23 @@ abstract class Factory {
     * field type to insure that any instance can be set. 
     * 
     * @param context the contextual object used by the persister
-    * @param field this is the field type to determine the value of
+    * @param type this is the property representing the field 
     */
-   protected Factory(Context context, Class field) {
+   protected Factory(Context context, Type type) {
       this.support = context.getSupport();
-      this.context = context;           
-      this.field = field;           
+      this.context = context; 
+      this.type = type;
+   }
+   
+   /**
+    * This is used to extract the type this factory is using. Each
+    * factory represents a specific class, which it instantiates if
+    * required. This method provides the represented class.
+    * 
+    * @return this returns the class represented by the factory
+    */
+   public Class getType() {
+      return type.getType();
    }
    
    /**
@@ -78,7 +89,12 @@ abstract class Factory {
     * @return a type which is used to instantiate the collection     
     */
    public Object getInstance() throws Exception {
-      return field.newInstance();
+      Class type = getType();
+      
+      if(!isInstantiable(type)) {
+         throw new InstantiationException("Type %s can not be instantiated", type);
+      }
+      return type.newInstance();
    }
 
    /**
@@ -86,7 +102,7 @@ abstract class Factory {
     * If the node provided is an element then this checks for a  
     * specific class override using the <code>Strategy</code> object.
     * If the strategy cannot resolve a class then this will return 
-    * null. If the resolved <code>Type</code> is not assignable to 
+    * null. If the resolved <code>Value</code> is not assignable to 
     * the field then this will thrown an exception.
     * 
     * @param node this is the node used to search for the override
@@ -95,17 +111,18 @@ abstract class Factory {
     * 
     * @throws Exception if the override type is not compatible
     */
-   public Type getOverride(InputNode node) throws Exception {
-      Type type = getConversion(node);      
+   protected Value getOverride(InputNode node) throws Exception {
+      Value value = getConversion(node);      
 
-      if(type != null) { 
-         Class real = type.getType();
+      if(value != null) { 
+         Class type = value.getType();
+         Class expect = getType();
      
-         if(!isCompatible(field, real)) {
-            throw new InstantiationException("Type %s is not compatible with %s", real, field);              
+         if(!isCompatible(expect, type)) {
+            throw new InstantiationException("Type %s is not compatible with %s", type, expect);              
          }
       }         
-      return type; 
+      return value; 
    }
    
    /**
@@ -114,14 +131,16 @@ abstract class Factory {
     * depending on the implementation may add an attribute of a child
     * element to describe the type of the object provided to this.
     * 
-    * @param field this is the class of the field type being serialized
+    * @param type this is the class of the field type being serialized
     * @param node the XML element that is to be given the details
     *
     * @throws Exception thrown if an error occurs within the strategy
     */
-   public boolean setOverride(Class field, Object value, OutputNode node) throws Exception {
-      if(!field.isPrimitive()) {
-         return context.setOverride(field, value, node);
+   public boolean setOverride(Type type, Object value, OutputNode node) throws Exception {
+      Class expect = type.getType();
+      
+      if(!expect.isPrimitive()) {
+         return context.setOverride(type, value, node);
       }
       return false;
    }
@@ -139,8 +158,8 @@ abstract class Factory {
     * 
     * @throws Exception thrown if the override class cannot be loaded    
     */ 
-   public Type getConversion(InputNode node) throws Exception {
-      return context.getOverride(field, node);
+   public Value getConversion(InputNode node) throws Exception {
+      return context.getOverride(type, node);
    }
    
    /**
@@ -149,16 +168,16 @@ abstract class Factory {
     * with the field type an instance of the override type must be 
     * assignable to the field value. 
     * 
-    * @param field this is the field value present the the object    
+    * @param expect this is the field value present the the object    
     * @param type this is the specialized type that will be assigned
     * 
     * @return true if the field type can be assigned the type value
     */
-   public static boolean isCompatible(Class field, Class type) {
-      if(field.isArray()) {
-         field = field.getComponentType();
+   public static boolean isCompatible(Class expect, Class type) {
+      if(expect.isArray()) {
+         expect = expect.getComponentType();
       }
-      return field.isAssignableFrom(type);           
+      return expect.isAssignableFrom(type);           
    }
 
    /**

@@ -8,7 +8,7 @@ final field not exist in the source XML then an exception is thrown when deseria
 would happen if the field was mutable. For example take the code snippet below, which shows static
 final primitive fields and a static final composite object.
 </p>
-<pre>
+<pre class="prettyprint">
 @Root
 @Namespace(reference = "http://www.domain.com/document")
 public class Document {
@@ -129,18 +129,18 @@ will be written to the resulting XML document when serialized. However, on deser
 fields. Instead the deserialization process will simply validate the presence of the elements and attributes within the document. This results in 
 an object that will always write the same values for specific elements and attributes.
 </p>
-<pre>
-&lt;document title="Secret Document" xmlns="http://www.domain.com/document"&gt;
-   &lt;user:author xmlns:user="http://www.domain.com/user"&gt;Niall Gallagher&lt;/user:author&gt;
+<pre class="prettyprint">
+&lt;document title=&quot;Secret Document&quot; xmlns=&quot;http://www.domain.com/document&quot;&gt;
+   &lt;user:author xmlns:user=&quot;http://www.domain.com/user&quot;&gt;Niall Gallagher&lt;/user:author&gt;
    &lt;contact&gt;niallg@users.sourceforge.net&lt;/contact&gt;
-   &lt;detail xmlns="http://www.domain.com/detail"&gt;
+   &lt;detail xmlns=&quot;http://www.domain.com/detail&quot;&gt;
       &lt;publisher&gt;Stanford Press&lt;/publisher&gt;
       &lt;date&gt;2001&lt;/date&gt;
       &lt;address&gt;Palo Alto&lt;/address&gt;
       &lt;edition&gt;1st&lt;/edition&gt;
       &lt;ISBN&gt;0-69-697269-4&lt;/ISBN&gt;
    &lt;/detail&gt;
-   &lt;section name="Introduction" xmlns:para="http://www.domain.com/paragraph"&gt;
+   &lt;section name=&quot;Introduction&quot; xmlns:para=&quot;http://www.domain.com/paragraph&quot;&gt;
       &lt;para:paragraph&gt;First paragraph of document&lt;/para:paragraph&gt;
       &lt;para:paragraph&gt;Second paragraph in the document&lt;/para:paragraph&gt;
       &lt;para:paragraph&gt;Third and final paragraph&lt;/para:paragraph&gt;

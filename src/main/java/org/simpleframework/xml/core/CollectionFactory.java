@@ -3,28 +3,29 @@
  *
  * Copyright (C) 2006, Niall Gallagher <niallg@users.sf.net>
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
- * GNU Lesser General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General 
- * Public License along with this library; if not, write to the 
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, 
- * Boston, MA  02111-1307  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or 
+ * implied. See the License for the specific language governing 
+ * permissions and limitations under the License.
  */
 
 package org.simpleframework.xml.core;
 
-import org.simpleframework.xml.stream.InputNode;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.TreeSet;
+
+import org.simpleframework.xml.strategy.Type;
+import org.simpleframework.xml.strategy.Value;
+import org.simpleframework.xml.stream.InputNode;
 
 /**
  * The <code>CollectionFactory</code> is used to create collection
@@ -43,10 +44,11 @@ class CollectionFactory extends Factory {
     * is given the field type as taken from the owning object. The
     * given type is used to determine the collection instance created.
     * 
-    * @param field this is the class for the owning object
+    * @param context this is the context associated with this factory
+    * @param type this is the class for the owning object
     */
-   public CollectionFactory(Context context, Class field) {
-      super(context, field);           
+   public CollectionFactory(Context context, Type type) {
+      super(context, type);           
    }
    
    /**
@@ -59,15 +61,16 @@ class CollectionFactory extends Factory {
     */
    @Override
    public Object getInstance() throws Exception {
-      Class type = field;
+      Class type = getType();
+      Class real = type;
 
-      if(!isInstantiable(type)) {
-         type = getConversion(field);   
+      if(!isInstantiable(real)) {
+         real = getConversion(type);   
       }
-      if(!isCollection(type)) {
-         throw new InstantiationException("Type is not a collection %s", field);
+      if(!isCollection(real)) {
+         throw new InstantiationException("Type is not a collection %s", type);
       }
-      return type.newInstance();
+      return real.newInstance();
    }
    
    /**
@@ -80,19 +83,20 @@ class CollectionFactory extends Factory {
     * 
     * @return this is the collection instantiated for the field
     */         
-   public Type getInstance(InputNode node) throws Exception {
-      Type type = getOverride(node);
+   public Instance getInstance(InputNode node) throws Exception {
+      Value value = getOverride(node);
+      Class type = getType();
      
-      if(type != null) {              
-         return getInstance(type);
+      if(value != null) {              
+         return getInstance(value);
       }
-      if(!isInstantiable(field)) {
-         field = getConversion(field);
+      if(!isInstantiable(type)) {
+         type = getConversion(type);
       }
-      if(!isCollection(field)) {
-         throw new InstantiationException("Type is not a collection %s", field);
+      if(!isCollection(type)) {
+         throw new InstantiationException("Type is not a collection %s", type);
       }
-      return context.getType(field);         
+      return context.getInstance(type);         
    }     
 
    /**
@@ -101,20 +105,20 @@ class CollectionFactory extends Factory {
     * this can promote the type to a collection type that can be 
     * instantiated. This is done by asking the type to convert itself.
     * 
-    * @param type the type used to instantiate the collection
+    * @param value the type used to instantiate the collection
     * 
     * @return this returns a compatible collection instance 
     */
-   public Type getInstance(Type type) throws Exception {
-      Class real = type.getType();
+   public Instance getInstance(Value value) throws Exception {
+      Class type = value.getType();
 
-      if(!isInstantiable(real)) {
-         real = getConversion(real);
+      if(!isInstantiable(type)) {
+         type = getConversion(type);
       }
-      if(!isCollection(real)) {
-         throw new InstantiationException("Type is not a collection %s", real);              
+      if(!isCollection(type)) {
+         throw new InstantiationException("Type is not a collection %s", type);              
       }
-      return new ConversionType(type, real);         
+      return new ConversionInstance(context, value, type);         
    }  
 
    /**

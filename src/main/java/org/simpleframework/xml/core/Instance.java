@@ -3,57 +3,34 @@
  *
  * Copyright (C) 2007, Niall Gallagher <niallg@users.sf.net>
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
- * GNU Lesser General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General 
- * Public License along with this library; if not, write to the 
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, 
- * Boston, MA  02111-1307  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or 
+ * implied. See the License for the specific language governing 
+ * permissions and limitations under the License.
  */
 
 package org.simpleframework.xml.core;
 
 /**
- * The <code>Instance</code> is an implementation of the type that
- * is used to instantiate an object using its default no argument
- * constructor. This will simply ensure that the constructor is an
- * accessible method before invoking the types new instance method.
+ * The <code>Instance</code> object creates a type that is represented 
+ * by an XML element. Typically the <code>getInstance</code> method 
+ * acts as a proxy to the classes new instance method, which takes no 
+ * arguments. Simply delegating to <code>Class.newInstance</code> will 
+ * sometimes not be sufficient, is such cases reflectively acquiring 
+ * the classes constructor may be required in order to pass arguments.
  * 
  * @author Niall Gallagher
  * 
- * @see org.simpleframework.xml.core.DefaultStrategy
+ * @see org.simpleframework.xml.strategy.Value
  */
-class Instance implements Type {
-   
-   /**
-    * Caches the constructors used to convert composite types.
-    */
-   private final Instantiator factory;
-   
-   /**
-    * This is the type that this object is used to represent.
-    */
-   private final Class type;
-
-   /**
-    * Constructor for the <code>Instance</code> object. This is
-    * used to create a type object that can be used to instantiate
-    * and object with that objects default no argument constructor.
-    * 
-    * @param factory this is the constructor cache for this type
-    * @param type this is the type of object that is created
-    */
-   public Instance(Instantiator factory, Class type) {
-      this.factory = factory;
-      this.type = type;
-   }        
+interface Instance {
    
    /**
     * This method is used to acquire an instance of the type that
@@ -62,22 +39,7 @@ class Instance implements Type {
     * 
     * @return an instance of the type this object represents
     */
-   public Object getInstance() throws Exception {
-      return getInstance(type);
-   }
-   
-   /**
-    * This method will instantiate an object of the provided type. If
-    * the object or constructor does not have public access then this
-    * will ensure the constructor is accessible and can be used.
-    * 
-    * @param type this is used to ensure the object is accessible
-    *
-    * @return this returns an instance of the specifiec class type
-    */ 
-   public Object getInstance(Class type) throws Exception {
-      return factory.getInstance(type);  
-   }
+   public Object getInstance() throws Exception;
    
    /**
     * This method is used acquire the value from the type and if
@@ -89,9 +51,17 @@ class Instance implements Type {
     * 
     * @return an instance of the type this object represents
     */
-   public Object getInstance(Object value) throws Exception {
-      return value;
-   }
+   public Object setInstance(Object value) throws Exception;
+   
+   /**
+    * This is used to determine if the type is a reference type.
+    * A reference type is a type that does not require any XML
+    * deserialization based on its annotations. Values that are
+    * references could be substitutes objects or existing ones. 
+    * 
+    * @return this returns true if the object is a reference
+    */
+   public boolean isReference();
    
    /**
     * This is the type of the object instance that will be created
@@ -100,18 +70,5 @@ class Instance implements Type {
     * 
     * @return the type of the object that will be instantiated
     */
-   public Class getType() {
-      return type;
-   }
-
-   /**
-    * This method always returns false for the default type. This
-    * is because by default all elements encountered within the 
-    * XML are to be deserialized based on there XML annotations.
-    * 
-    * @return this returns false for each type encountered     
-    */
-   public boolean isReference() {
-      return false;
-   }
+   public Class getType();
 }

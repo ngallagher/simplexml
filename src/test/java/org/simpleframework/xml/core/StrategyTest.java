@@ -1,18 +1,17 @@
 package org.simpleframework.xml.core;
 
-import junit.framework.TestCase;
-
-import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.util.Map;
+
+import junit.framework.TestCase;
 
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.Serializer;
-import org.simpleframework.xml.core.Persister;
-import org.simpleframework.xml.core.Strategy;
-import org.simpleframework.xml.core.Type;
+import org.simpleframework.xml.strategy.Type;
+import org.simpleframework.xml.strategy.Strategy;
+import org.simpleframework.xml.strategy.Value;
 import org.simpleframework.xml.stream.Node;
 import org.simpleframework.xml.stream.NodeMap;
 
@@ -63,12 +62,12 @@ public class StrategyTest extends TestCase {
          this.test = test;              
       }
 
-      public Type getRoot(Class type, NodeMap root, Map map) throws Exception {
+      public Value getRoot(Type type, NodeMap root, Map map) throws Exception {
          readRootCount++;
          return getElement(type, root, map);              
       }
 
-      public Type getElement(Class field, NodeMap node, Map map) throws Exception {
+      public Value getElement(Type field, NodeMap node, Map map) throws Exception {
          Node value = node.remove(ELEMENT_NAME);
 
          if(readRootCount != 1) {
@@ -83,23 +82,23 @@ public class StrategyTest extends TestCase {
          return new SimpleType(type);
       }         
 
-      public boolean setRoot(Class field, Object value, NodeMap root, Map map) throws Exception {                       
+      public boolean setRoot(Type field, Object value, NodeMap root, Map map) throws Exception {                       
          writeRootCount++;              
          return setElement(field, value, root, map);              
       }              
 
-      public boolean setElement(Class field, Object value, NodeMap node, Map map) throws Exception {
+      public boolean setElement(Type field, Object value, NodeMap node, Map map) throws Exception {
          if(writeRootCount != 1) {
             test.assertTrue("Root must be written only once", false);                 
          }                 
-         if(field != value.getClass()) {                       
+         if(field.getType() != value.getClass()) {                       
             node.put(ELEMENT_NAME, value.getClass().getName());
          }  
          return false;
       }
    }
    
-   public static class SimpleType implements Type{
+   public static class SimpleType implements Value{
 	   
 	   private Class type;
 	   
@@ -107,21 +106,24 @@ public class StrategyTest extends TestCase {
 		   this.type = type;
 	   }
 	   
-	   public Object getInstance() throws Exception {
-		   return getInstance(type);
+	   public int getLength() {
+	      return 0;
+	   }
+	   
+      public Object getValue()  {
+         try {    
+   		   Constructor method = type.getDeclaredConstructor();
+   
+   		   if(!method.isAccessible()) {
+   		      method.setAccessible(true);              
+   		   }
+   		   return method.newInstance();
+         }catch(Exception e) {
+            throw new RuntimeException(e);
+         }
 	   }
 
-      public Object getInstance(Class type) throws Exception {
-		   Constructor method = type.getDeclaredConstructor();
-
-		   if(!method.isAccessible()) {
-		      method.setAccessible(true);              
-		   }
-		   return method.newInstance();   
-	   }
-
-      public Object getInstance(Object value) throws Exception {
-         return value;
+      public void setValue(Object value) {
       }
       
        public boolean isReference() {

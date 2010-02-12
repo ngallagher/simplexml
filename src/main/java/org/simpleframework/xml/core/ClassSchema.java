@@ -3,19 +3,17 @@
  *
  * Copyright (C) 2006, Niall Gallagher <niallg@users.sf.net>
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
- * GNU Lesser General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General 
- * Public License along with this library; if not, write to the 
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, 
- * Boston, MA  02111-1307  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or 
+ * implied. See the License for the specific language governing 
+ * permissions and limitations under the License.
  */
 
 package org.simpleframework.xml.core;
@@ -36,49 +34,54 @@ import org.simpleframework.xml.Version;
 class ClassSchema implements Schema {
    
    /**
-    * This is the scanner that is used to acquire the constructor.
-    */
-   private Creator factory;
-   
-   /**
     * This is the decorator associated with this schema object.
     */
-   private Decorator decorator;
+   private final Decorator decorator;
 
    /**
     * Contains a map of all attributes present within the schema.
     */
-   private LabelMap attributes;
+   private final LabelMap attributes;
    
    /**
     * Contains a map of all elements present within the schema.
     */
-   private LabelMap elements;
+   private final LabelMap elements;
    
    /**
     * This is the version annotation for the XML class schema.
     */
-   private Version revision;
+   private final Version revision;
+   
+   /**
+    * This is the scanner that is used to acquire the constructor.
+    */
+   private final Creator factory;
    
    /**
     * This is the pointer to the schema class replace method.
     */
-   private Caller caller;
+   private final Caller caller;
    
    /**
     * This is the version label used to read the version attribute.
     */
-   private Label version;
+   private final Label version;
    
    /**
     * This is used to represent a text value within the schema.
     */
-   private Label text;
+   private final Label text;
+   
+   /**
+    * This is the type that this class schema is representing.
+    */
+   private final Class type;
    
    /**
     * This is used to specify whether the type is a primitive class.
     */
-   private boolean primitive;
+   private final boolean primitive;
 
    /**
     * Constructor for the <code>Schema</code> object. This is used 
@@ -99,6 +102,7 @@ class ClassSchema implements Schema {
       this.primitive = schema.isPrimitive();
       this.version = schema.getVersion();
       this.text = schema.getText();
+      this.type = schema.getType();
    }
    
    /**
@@ -209,5 +213,16 @@ class ClassSchema implements Schema {
     */
    public Label getText() {
       return text;
+   }
+   
+   /**
+    * This is used to acquire a description of the schema. This is
+    * useful when debugging an issue as it allows a representation
+    * of the instance to be viewed with the class it represents.
+    * 
+    * @return this returns a visible description of the schema
+    */
+   public String toString() {
+      return String.format("schema for %s", type);
    }
 }

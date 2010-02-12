@@ -47,48 +47,48 @@ public class EntryTest extends TestCase {
    public void testEntry() throws Exception {
       Entry entry = getEntry(EntryTest.class, "defaultMap");
       
-      assertEquals(entry.getKeyType(), String.class);
-      assertEquals(entry.getValueType(), String.class);
+      assertEquals(entry.getKeyType().getType(), String.class);
+      assertEquals(entry.getValueType().getType(), String.class);
       assertEquals(entry.getValue(), null);
       assertEquals(entry.getKey(), null);
       assertEquals(entry.getEntry(), "entry");      
       
       entry = getEntry(EntryTest.class, "annotatedMap");
       
-      assertEquals(entry.getKeyType(), Integer.class);
-      assertEquals(entry.getValueType(), Long.class);      
+      assertEquals(entry.getKeyType().getType(), Integer.class);
+      assertEquals(entry.getValueType().getType(), Long.class);      
       assertEquals(entry.getValue(), null);
       assertEquals(entry.getKey(), null);
       assertEquals(entry.getEntry(), "entry");
       
       entry = getEntry(EntryTest.class, "bodyMap");
       
-      assertEquals(entry.getKeyType(), String.class);
-      assertEquals(entry.getValueType(), String.class);
+      assertEquals(entry.getKeyType().getType(), String.class);
+      assertEquals(entry.getValueType().getType(), String.class);
       assertEquals(entry.getValue(), "value");
       assertEquals(entry.getKey(), null);
       assertEquals(entry.getEntry(), "entry");
       
       entry = getEntry(EntryTest.class, "attributeMap");
       
-      assertEquals(entry.getKeyType(), String.class);
-      assertEquals(entry.getValueType(), String.class);
+      assertEquals(entry.getKeyType().getType(), String.class);
+      assertEquals(entry.getValueType().getType(), String.class);
       assertEquals(entry.getValue(), "value");
       assertEquals(entry.getKey(), "key");
       assertEquals(entry.getEntry(), "entry");
       
       entry = getEntry(EntryTest.class, "entryMap");
       
-      assertEquals(entry.getKeyType(), Double.class);
-      assertEquals(entry.getValueType(), String.class);      
+      assertEquals(entry.getKeyType().getType(), Double.class);
+      assertEquals(entry.getValueType().getType(), String.class);      
       assertEquals(entry.getValue(), null);
       assertEquals(entry.getKey(), null);
       assertEquals(entry.getEntry(), "entry");
       
       entry = getEntry(EntryTest.class, "compositeMap");
       
-      assertEquals(entry.getKeyType(), CompositeKey.class);
-      assertEquals(entry.getValueType(), String.class);      
+      assertEquals(entry.getKeyType().getType(), CompositeKey.class);
+      assertEquals(entry.getValueType().getType(), String.class);      
       assertEquals(entry.getValue(), null);
       assertEquals(entry.getKey(), null);
       assertEquals(entry.getEntry(), "entry");    

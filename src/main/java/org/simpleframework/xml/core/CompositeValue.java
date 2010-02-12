@@ -3,23 +3,22 @@
  *
  * Copyright (C) 2007, Niall Gallagher <niallg@users.sf.net>
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
- * GNU Lesser General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General 
- * Public License along with this library; if not, write to the 
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, 
- * Boston, MA  02111-1307  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or 
+ * implied. See the License for the specific language governing 
+ * permissions and limitations under the License.
  */
 
 package org.simpleframework.xml.core;
 
+import org.simpleframework.xml.strategy.Type;
 import org.simpleframework.xml.stream.InputNode;
 import org.simpleframework.xml.stream.OutputNode;
 import org.simpleframework.xml.stream.Style;
@@ -60,7 +59,7 @@ class CompositeValue implements Converter {
    /**
     * This represents the type of object the value is written as.
     */
-   private final Class type;
+   private final Type type;
    
    /**
     * Constructor for the <code>CompositeValue</code> object. This 
@@ -72,7 +71,7 @@ class CompositeValue implements Converter {
     * @param entry this is the entry object used for configuration
     * @param type this is the type of object the value represents
     */
-   public CompositeValue(Context context, Entry entry, Class type) throws Exception {
+   public CompositeValue(Context context, Entry entry, Type type) throws Exception {
       this.root = new Traverser(context);
       this.style = context.getStyle();
       this.context = context;
@@ -92,6 +91,7 @@ class CompositeValue implements Converter {
     */ 
    public Object read(InputNode node) throws Exception { 
       InputNode next = node.getNext();
+      Class expect = type.getType();
       
       if(next == null) {
          return null;
@@ -99,7 +99,7 @@ class CompositeValue implements Converter {
       if(next.isEmpty()) {
          return null;
       }
-      return root.read(next, type);
+      return root.read(next, expect);
    }
    
    /**
@@ -116,8 +116,10 @@ class CompositeValue implements Converter {
     * @throws Exception if value is not null an exception is thrown
     */ 
    public Object read(InputNode node, Object value) throws Exception { 
+      Class expect = type.getType();
+      
       if(value != null) {
-         throw new PersistenceException("Can not read value of %s", type);
+         throw new PersistenceException("Can not read value of %s", expect);
       }
       return read(node);
    }
@@ -133,10 +135,11 @@ class CompositeValue implements Converter {
     * @return this returns true if this represents a valid value
     */ 
    public boolean validate(InputNode node) throws Exception { 
+      Class expect = type.getType();
       String name = entry.getValue();
       
       if(name == null) {
-         name = context.getName(type);
+         name = context.getName(expect);
       }
       return validate(node, name);
    }  
@@ -155,6 +158,7 @@ class CompositeValue implements Converter {
    private boolean validate(InputNode node, String key) throws Exception {  
       String name = style.getElement(key);
       InputNode next = node.getNext(name);
+      Class expect = type.getType();
       
       if(next == null) {
          return true;
@@ -162,7 +166,7 @@ class CompositeValue implements Converter {
       if(next.isEmpty()) {
          return true;
       }
-      return root.validate(next, type);
+      return root.validate(next, expect);
    }
    
    /**
@@ -174,13 +178,14 @@ class CompositeValue implements Converter {
     * @param item this is the item that is to be written
     */
    public void write(OutputNode node, Object item) throws Exception {
+      Class expect = type.getType();
       String key = entry.getValue();
       
       if(key == null) {
-         key = context.getName(type);
+         key = context.getName(expect);
       }
       String name = style.getElement(key);
       
-      root.write(node, item, type, name);      
+      root.write(node, item, expect, name);      
    }
 }

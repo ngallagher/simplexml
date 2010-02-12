@@ -8,14 +8,7 @@ import java.util.Map;
 import junit.framework.TestCase;
 
 import org.simpleframework.xml.ElementMap;
-import org.simpleframework.xml.core.CompositeMap;
-import org.simpleframework.xml.core.Contact;
-import org.simpleframework.xml.core.DefaultStrategy;
-import org.simpleframework.xml.core.DefaultStyle;
-import org.simpleframework.xml.core.Entry;
-import org.simpleframework.xml.core.FieldContact;
-import org.simpleframework.xml.core.Source;
-import org.simpleframework.xml.core.Support;
+import org.simpleframework.xml.strategy.TreeStrategy;
 import org.simpleframework.xml.stream.NodeBuilder;
 import org.simpleframework.xml.stream.OutputNode;
 
@@ -137,7 +130,7 @@ public class CompositeMapTest extends TestCase {
    
    public void testInlineString() throws Exception 
    {
-      Source source = new Source(new DefaultStrategy(), new Support(), new DefaultStyle());
+      Source source = new Source(new TreeStrategy(), new Support(), new DefaultStyle());
       MockElementMap map = new MockElementMap(true, // attribute
                                               false, // data
                                               "entry", // entry 
@@ -151,7 +144,7 @@ public class CompositeMapTest extends TestCase {
       PrimitiveType type = new PrimitiveType(map);
       Contact string = type.getString();
       Entry entry = new Entry(string, map);
-      CompositeMap value = new CompositeMap(source, entry, Map.class);
+      CompositeMap value = new CompositeMap(source, entry, new ClassType(Map.class));
       OutputNode node = NodeBuilder.write(new PrintWriter(System.out));
       Map exampleMap = new HashMap();
       
@@ -163,7 +156,7 @@ public class CompositeMapTest extends TestCase {
    
    public void testNotInlineString() throws Exception 
    {
-      Source source = new Source(new DefaultStrategy(), new Support(), new DefaultStyle());
+      Source source = new Source(new TreeStrategy(), new Support(), new DefaultStyle());
       MockElementMap map = new MockElementMap(false, // attribute
                                               false, // data
                                               "entry", // entry 
@@ -177,7 +170,7 @@ public class CompositeMapTest extends TestCase {
       PrimitiveType type = new PrimitiveType(map);
       Contact string = type.getString();
       Entry entry = new Entry(string, map);
-      CompositeMap value = new CompositeMap(source, entry, Map.class);
+      CompositeMap value = new CompositeMap(source, entry, new ClassType(Map.class));
       OutputNode node = NodeBuilder.write(new PrintWriter(System.out));
       Map exampleMap = new HashMap();
       
@@ -189,7 +182,7 @@ public class CompositeMapTest extends TestCase {
    
    public void testNoAttributeString() throws Exception 
    {
-      Source source = new Source(new DefaultStrategy(), new Support(), new DefaultStyle());
+      Source source = new Source(new TreeStrategy(), new Support(), new DefaultStyle());
       MockElementMap map = new MockElementMap(false, // attribute
                                               false, // data
                                               "entry", // entry 
@@ -203,7 +196,7 @@ public class CompositeMapTest extends TestCase {
       PrimitiveType type = new PrimitiveType(map);
       Contact string = type.getString();
       Entry entry = new Entry(string, map);
-      CompositeMap value = new CompositeMap(source, entry, Map.class);
+      CompositeMap value = new CompositeMap(source, entry, new ClassType(Map.class));
       OutputNode node = NodeBuilder.write(new PrintWriter(System.out));
       Map exampleMap = new HashMap();
       
@@ -215,7 +208,7 @@ public class CompositeMapTest extends TestCase {
    
    public void testAttributeNoKeyString() throws Exception 
    {
-      Source source = new Source(new DefaultStrategy(), new Support(), new DefaultStyle());
+      Source source = new Source(new TreeStrategy(), new Support(), new DefaultStyle());
       MockElementMap map = new MockElementMap(true, // attribute
                                               false, // data
                                               "entry", // entry 
@@ -229,7 +222,7 @@ public class CompositeMapTest extends TestCase {
       PrimitiveType type = new PrimitiveType(map);
       Contact string = type.getString();
       Entry entry = new Entry(string, map);
-      CompositeMap value = new CompositeMap(source, entry, Map.class);
+      CompositeMap value = new CompositeMap(source, entry, new ClassType(Map.class));
       OutputNode node = NodeBuilder.write(new PrintWriter(System.out));
       Map exampleMap = new HashMap();
       

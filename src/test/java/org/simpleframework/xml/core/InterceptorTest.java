@@ -13,7 +13,10 @@ import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.ElementMap;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.ValidationTestCase;
-import org.simpleframework.xml.graph.TreeStrategy;
+import org.simpleframework.xml.strategy.Type;
+import org.simpleframework.xml.strategy.Strategy;
+import org.simpleframework.xml.strategy.TreeStrategy;
+import org.simpleframework.xml.strategy.Value;
 import org.simpleframework.xml.stream.InputNode;
 import org.simpleframework.xml.stream.Node;
 import org.simpleframework.xml.stream.NodeMap;
@@ -47,30 +50,30 @@ public class InterceptorTest extends ValidationTestCase {
          this.type = type;
       }
       
-      public Type getRoot(Class field, NodeMap node, Map map) throws Exception {
+      public Value getRoot(Type field, NodeMap node, Map map) throws Exception {
          Interceptor interceptor = InterceptorFactory.getInterceptor(type);
          cache.cache(map, interceptor);
          return getElement(field, node, map);
       }
 
-      public Type getElement(Class field, NodeMap node, Map map) throws Exception { 
+      public Value getElement(Type field, NodeMap node, Map map) throws Exception { 
          Interceptor interceptor = cache.fetch(map);
          Class type = interceptor.read(node);
          
          if(type == null) { // no override
-            type = field;
+            type = field.getType();
          }
-         return strategy.getElement(type, node, map);
+         return strategy.getElement(new ClassType(type), node, map);
       }
 
-      public boolean setElement(Class field, Object value, NodeMap node, Map map) throws Exception {
+      public boolean setElement(Type field, Object value, NodeMap node, Map map) throws Exception {
          boolean result = strategy.setElement(field, value, node, map);
          Interceptor interceptor = cache.fetch(map);
          interceptor.write(node);
          return result;
       }
 
-      public boolean setRoot(Class field, Object value, NodeMap node, Map map) throws Exception {
+      public boolean setRoot(Type field, Object value, NodeMap node, Map map) throws Exception {
          Interceptor interceptor = InterceptorFactory.getInterceptor(type);
          cache.cache(map, interceptor);
          return setElement(field, value, node, map);

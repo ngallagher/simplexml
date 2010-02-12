@@ -3,24 +3,24 @@
  *
  * Copyright (C) 2006, Niall Gallagher <niallg@users.sf.net>
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
- * GNU Lesser General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General 
- * Public License along with this library; if not, write to the 
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, 
- * Boston, MA  02111-1307  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or 
+ * implied. See the License for the specific language governing 
+ * permissions and limitations under the License.
  */
 
 package org.simpleframework.xml.core;
 
 import org.simpleframework.xml.Version;
+import org.simpleframework.xml.strategy.Type;
+import org.simpleframework.xml.strategy.Value;
 import org.simpleframework.xml.stream.InputNode;
 import org.simpleframework.xml.stream.OutputNode;
 import org.simpleframework.xml.stream.Style;
@@ -46,7 +46,7 @@ import org.simpleframework.xml.stream.Style;
  * 
  * @author Niall Gallagher
  * 
- * @see org.simpleframework.xml.core.Strategy
+ * @see org.simpleframework.xml.strategy.Strategy
  */ 
 interface Context {
    
@@ -93,6 +93,17 @@ interface Context {
    public boolean isFloat(Class type) throws Exception;
    
    /**
+    * This is used to determine if the type specified is a floating
+    * point type. Types that are floating point are the double and
+    * float primitives as well as the java types for this primitives.
+    * 
+    * @param type this is the type to determine if it is a float
+    * 
+    * @return this returns true if the type is a floating point
+    */
+   public boolean isFloat(Type type) throws Exception;
+   
+   /**
     * This is used to determine whether the scanned class represents
     * a primitive type. A primitive type is a type that contains no
     * XML annotations and so cannot be serialized with an XML form.
@@ -102,19 +113,41 @@ interface Context {
     * 
     * @return this returns true if no XML annotations were found
     */
-   public boolean isPrimitive(Class type) throws Exception;
+   public boolean isPrimitive(Class type) throws Exception;  
    
    /**
-    * This is used to create a <code>Type</code> object for the class
-    * specified. This will allow instances of the specified type to
-    * be instantiated and also allows reflective information to be
-    * cached internally within the context object.
+    * This is used to determine whether the scanned type represents
+    * a primitive type. A primitive type is a type that contains no
+    * XML annotations and so cannot be serialized with an XML form.
+    * Instead primitives a serialized using transformations.
+    *
+    * @param type this is the type to determine if it is primitive
+    * 
+    * @return this returns true if no XML annotations were found
+    */
+   public boolean isPrimitive(Type type) throws Exception;   
+   
+   /**
+    * This will create an <code>Instance</code> that can be used
+    * to instantiate objects of the specified class. This leverages
+    * an internal constructor cache to ensure creation is quicker.
+    * 
+    * @param value this contains information on the object instance
+    * 
+    * @return this will return an object for instantiating objects
+    */
+   public Instance getInstance(Value value);
+
+   /**
+    * This will create an <code>Instance</code> that can be used
+    * to instantiate objects of the specified class. This leverages
+    * an internal constructor cache to ensure creation is quicker.
     * 
     * @param type this is the type that is to be instantiated
     * 
-    * @return this returns a type that can be used for instantiation
+    * @return this will return an object for instantiating objects
     */
-   public Type getType(Class type) throws Exception;
+   public Instance getInstance(Class type);
    
    /**
     * This is used to acquire the name of the specified type using
@@ -199,7 +232,7 @@ interface Context {
     * 
     * @throws Exception thrown if the class cannot be resolved  
     */
-   public Type getOverride(Class type, InputNode node) throws Exception;
+   public Value getOverride(Type type, InputNode node) throws Exception;
 
    /**    
     * This is used to attach elements or attributes to the given 
@@ -216,7 +249,7 @@ interface Context {
     * 
     * @throws Exception thrown if the details cannot be set
     */
-   public boolean setOverride(Class type, Object value, OutputNode node) throws Exception;
+   public boolean setOverride(Type type, Object value, OutputNode node) throws Exception;
 
    /**
     * This is used to acquire the attribute mapped to the specified

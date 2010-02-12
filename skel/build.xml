@@ -29,6 +29,10 @@
             </fileset>
          </classpath>  
       </javac>
+      <mkdir dir="${build.path}/META-INF"/>
+      <copy todir="${build.path}/META-INF">
+         <fileset file="LICENSE.txt"/>
+      </copy>
       <jar jarfile="${jar.path}/simple-xml-${version}.jar" basedir="${build.path}"/>
       <delete dir="${build.path}"/>
    </target>

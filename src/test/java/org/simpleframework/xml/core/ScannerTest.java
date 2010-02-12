@@ -10,16 +10,8 @@ import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.Text;
-import org.simpleframework.xml.core.DefaultStrategy;
-import org.simpleframework.xml.core.DefaultStyle;
-import org.simpleframework.xml.core.Label;
-import org.simpleframework.xml.core.Scanner;
-import org.simpleframework.xml.core.Source;
-import org.simpleframework.xml.core.Strategy;
-import org.simpleframework.xml.core.Support;
-import org.simpleframework.xml.filter.Filter;
-import org.simpleframework.xml.filter.MapFilter;
-import org.simpleframework.xml.stream.Format;
+import org.simpleframework.xml.strategy.Strategy;
+import org.simpleframework.xml.strategy.TreeStrategy;
 import org.simpleframework.xml.stream.Style;
 
 public class ScannerTest extends TestCase {
@@ -110,7 +102,7 @@ public class ScannerTest extends TestCase {
    
    public void testExample() throws Exception {
       Support context = new Support();
-      Strategy strategy = new DefaultStrategy();
+      Strategy strategy = new TreeStrategy();
       Style style = new DefaultStyle(); 
       Source source = new Source(strategy, context, style);
       Scanner scanner = new Scanner(Example.class);
@@ -141,7 +133,7 @@ public class ScannerTest extends TestCase {
    
    public void testMixedExample() throws Exception {
       Support context = new Support();
-      Strategy strategy = new DefaultStrategy();
+      Strategy strategy = new TreeStrategy();
       Style style = new DefaultStyle();
       Source source = new Source(strategy, context, style);
       Scanner scanner = new Scanner(MixedExample.class);

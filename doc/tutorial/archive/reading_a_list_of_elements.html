@@ -5,7 +5,7 @@ a child object. In order to support this common relationship an <a href="/downlo
 provided. This allows an annotated schema class to be used as an entry to a Java collection object.
 Take the example shown below.
 </p>
-<pre>
+<pre class="prettyprint">
 @Root
 public class PropertyList {
 
@@ -53,7 +53,7 @@ Below an XML document is shown that matches the schema class. Here each entry el
 using the declared entry class and inserted into the collection instance created. Once all entry objects have
 been deserialized the object instance contains a collection containing individual property objects.
 </p>
-<pre>
+<pre class="prettyprint">
 &lt;propertyList name="example"&gt;
    &lt;list&gt;
       &lt;entry key="one"&gt;
@@ -77,7 +77,7 @@ It declares a list with the entry class as its generic parameter. This type of d
 for example if a specialized list contains more than one generic type which one is the correct type to use for
 deserialization or serialization. In such scenarios the type must be provided explicitly. Take the following example.
 </p>
-<pre>
+<pre class="prettyprint">
 @Root
 public class ExampleList {
 

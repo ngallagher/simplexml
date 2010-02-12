@@ -1,20 +1,19 @@
 package org.simpleframework.xml.core;
 
+import java.lang.reflect.Constructor;
+import java.util.Map;
+
 import junit.framework.TestCase;
 
-import org.simpleframework.xml.core.Persister;
-import org.simpleframework.xml.core.Strategy;
-import org.simpleframework.xml.core.Type;
-import org.simpleframework.xml.stream.Node;
-import org.simpleframework.xml.stream.NodeMap;
-import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
-
-import java.lang.reflect.Array;
-import java.lang.reflect.Constructor;
-import java.util.Map;
+import org.simpleframework.xml.Serializer;
+import org.simpleframework.xml.strategy.Type;
+import org.simpleframework.xml.strategy.Strategy;
+import org.simpleframework.xml.strategy.Value;
+import org.simpleframework.xml.stream.Node;
+import org.simpleframework.xml.stream.NodeMap;
 
 public class VersionStrategyTest extends TestCase {
 
@@ -94,7 +93,7 @@ public class VersionStrategyTest extends TestCase {
 
       private String version;           
 
-      public Type getRoot(Class field, NodeMap root, Map map) throws Exception {
+      public Value getRoot(Type field, NodeMap root, Map map) throws Exception {
          Node version = root.get(VERSION_ATTRIBUTE);                       
 
          if(version != null){
@@ -103,8 +102,8 @@ public class VersionStrategyTest extends TestCase {
          return getElement(field, root, map);
       }
 
-      public Type getElement(Class field, NodeMap node, Map map) throws Exception {
-         String value = field.getName() + map.get(VERSION_ATTRIBUTE);
+      public Value getElement(Type field, NodeMap node, Map map) throws Exception {
+         String value = field.getType().getName() + map.get(VERSION_ATTRIBUTE);
      
          try {    
             Class type = Class.forName(value);
@@ -115,7 +114,7 @@ public class VersionStrategyTest extends TestCase {
          }            
       }         
 
-      public boolean setRoot(Class field, Object value, NodeMap root, Map map) throws Exception {
+      public boolean setRoot(Type field, Object value, NodeMap root, Map map) throws Exception {
          Class type = value.getClass();
          
          if(Versionable.class.isAssignableFrom(type)) {
@@ -125,13 +124,13 @@ public class VersionStrategyTest extends TestCase {
          return setElement(field, value, root, map);
       }              
 
-      public boolean setElement(Class field, Object value, NodeMap node, Map map) throws Exception {
+      public boolean setElement(Type field, Object value, NodeMap node, Map map) throws Exception {
          node.put(VERSION_ATTRIBUTE, (String)map.get(VERSION_ATTRIBUTE));
          return false;
       }
    }
    
-   public static class SimpleType implements Type{
+   public static class SimpleType implements Value{
 	   
 	   private Class type;
 	   
@@ -139,21 +138,24 @@ public class VersionStrategyTest extends TestCase {
 		   this.type = type;
 	   }
 	   
-	   public Object getInstance() throws Exception {
-		   return getInstance(type);
+	   public int getLength() {
+	      return 0;
 	   }
-
-       public Object getInstance(Class type) throws Exception {
-		   Constructor method = type.getDeclaredConstructor();
-
-		   if(!method.isAccessible()) {
-		      method.setAccessible(true);              
-		   }
-		   return method.newInstance();   
+	   
+	   public Object getValue(){
+	      try {
+   		   Constructor method = type.getDeclaredConstructor();
+   
+   		   if(!method.isAccessible()) {
+   		      method.setAccessible(true);              
+   		   }
+   		   return method.newInstance();   
+	      }catch(Exception e) {
+	         throw new RuntimeException(e);
+	      }
 	   }   
        
-       public Object getInstance(Object value) throws Exception {
-          return value;
+       public void setValue(Object value){
        }
        
        public boolean isReference() {

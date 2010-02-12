@@ -1,15 +1,11 @@
 package org.simpleframework.xml.core;
 
-import java.util.List;
-
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementArray;
-import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.ValidationTestCase;
-import org.simpleframework.xml.core.Persister;
 
 public class ArrayEntryTest extends ValidationTestCase {
         

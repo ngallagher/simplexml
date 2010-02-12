@@ -3,27 +3,24 @@
  *
  * Copyright (C) 2006, Niall Gallagher <niallg@users.sf.net>
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General
- * Public License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330,
- * Boston, MA  02111-1307  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or 
+ * implied. See the License for the specific language governing 
+ * permissions and limitations under the License.
  */
 
 package org.simpleframework.xml.core;
 
-import java.beans.Introspector;
-
 import org.simpleframework.xml.filter.Filter;
 import org.simpleframework.xml.filter.PlatformFilter;
+import org.simpleframework.xml.strategy.Value;
 import org.simpleframework.xml.transform.Matcher;
 import org.simpleframework.xml.transform.Transform;
 import org.simpleframework.xml.transform.Transformer;
@@ -120,17 +117,29 @@ class Support implements Filter {
    }
    
    /**
-    * This is used to create a <code>Type</code> object for the class
-    * specified. This will allow instances of the specified type to
-    * be instantiated and also allows reflective information to be
-    * cached internally within the context object.
+    * This will create an <code>Instance</code> that can be used
+    * to instantiate objects of the specified class. This leverages
+    * an internal constructor cache to ensure creation is quicker.
+    * 
+    * @param value this contains information on the object instance
+    * 
+    * @return this will return an object for instantiating objects
+    */
+   public Instance getInstance(Value value) {
+      return creator.getInstance(value);
+   }
+   
+   /**
+    * This will create an <code>Instance</code> that can be used
+    * to instantiate objects of the specified class. This leverages
+    * an internal constructor cache to ensure creation is quicker.
     * 
     * @param type this is the type that is to be instantiated
     * 
-    * @return this returns a type that can be used for instantiation
+    * @return this will return an object for instantiating objects
     */
-   public Type getType(Class type) throws Exception {
-      return creator.getType(type);
+   public Instance getInstance(Class type) {
+      return creator.getInstance(type);
    }
    
    /**
@@ -248,7 +257,7 @@ class Support implements Filter {
       if(type.isPrimitive()) {
          return name;
       }
-      return Introspector.decapitalize(name);
+      return Reflector.getName(name);
    }
    
    /**

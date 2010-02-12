@@ -1,20 +1,21 @@
 package org.simpleframework.xml.core;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.io.StringWriter;
 
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
-import org.simpleframework.xml.core.Persister;
+import org.simpleframework.xml.ValidationTestCase;
 import org.simpleframework.xml.util.Dictionary;
 import org.simpleframework.xml.util.Entry;
-
-import org.simpleframework.xml.ValidationTestCase;
 
 public class DataTest extends ValidationTestCase {
 
    private static final String SOURCE =
+   "<?xml version='1.0' encoding='UTF-8'?>\n"+
    "<scrape section='one' address='http://localhost:9090/'>\n"+
    "   <query-list>\n"+
    "      <query name='title' type='text'>\n"+
@@ -80,8 +81,34 @@ public class DataTest extends ValidationTestCase {
 	   serializer = new Persister();
 	}
 	
-   public void testData() throws Exception {    
+   public void s_testData() throws Exception {    
       Scrape scrape = serializer.read(Scrape.class, SOURCE);
+      
+      assertEquals(scrape.section, "one");
+      assertEquals(scrape.address, "http://localhost:9090/");
+      assertEquals(scrape.list.get("title").type, "text");
+      assertTrue(scrape.list.get("title").data.indexOf("<title>") > 0);
+      assertEquals(scrape.list.get("news").type, "image");
+      assertTrue(scrape.list.get("news").data.indexOf("<news>") > 0);
+
+      validate(scrape, serializer);
+      
+      String news = scrape.list.get("news").data;
+      String title = scrape.list.get("title").data;
+      
+      StringWriter out = new StringWriter();
+      serializer.write(scrape, out);
+      String text = out.toString();
+      Scrape copy = serializer.read(Scrape.class, text);
+      
+      assertEquals(news, copy.list.get("news").data);
+      assertEquals(title, copy.list.get("title").data);
+   }
+   
+   public void testDataFromByteStream() throws Exception {
+      byte[] data = SOURCE.getBytes("UTF-8");
+      InputStream source = new ByteArrayInputStream(data);
+      Scrape scrape = serializer.read(Scrape.class, source);
       
       assertEquals(scrape.section, "one");
       assertEquals(scrape.address, "http://localhost:9090/");

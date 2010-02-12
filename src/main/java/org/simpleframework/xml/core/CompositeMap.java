@@ -3,25 +3,24 @@
  *
  * Copyright (C) 2007, Niall Gallagher <niallg@users.sf.net>
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
- * GNU Lesser General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General 
- * Public License along with this library; if not, write to the 
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, 
- * Boston, MA  02111-1307  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or 
+ * implied. See the License for the specific language governing 
+ * permissions and limitations under the License.
  */
 
 package org.simpleframework.xml.core;
 
 import java.util.Map;
 
+import org.simpleframework.xml.strategy.Type;
 import org.simpleframework.xml.stream.InputNode;
 import org.simpleframework.xml.stream.OutputNode;
 import org.simpleframework.xml.stream.Style;
@@ -91,7 +90,7 @@ class CompositeMap implements Converter {
     * @param entry this provides configuration for the resulting XML
     * @param type this is the map type that is to be converted
     */
-   public CompositeMap(Context context, Entry entry, Class type) throws Exception {
+   public CompositeMap(Context context, Entry entry, Type type) throws Exception {
       this.factory = new MapFactory(context, type);
       this.value = entry.getValue(context);
       this.key = entry.getKey(context);
@@ -113,7 +112,7 @@ class CompositeMap implements Converter {
     * @return this returns the item to attach to the object contact
     */
    public Object read(InputNode node) throws Exception{
-      Type type = factory.getInstance(node);
+      Instance type = factory.getInstance(node);
       Object map = type.getInstance();
       
       if(!type.isReference()) {
@@ -137,17 +136,17 @@ class CompositeMap implements Converter {
     * @return this returns the item to attach to the object contact
     */
    public Object read(InputNode node, Object result) throws Exception {
-      Type type = factory.getInstance(node);
+      Instance type = factory.getInstance(node);
       
       if(type.isReference()) {
          return type.getInstance();
       }
-      Object map = type.getInstance(result);
+      type.setInstance(result);
       
-      if(map != null) {
-         return populate(node, map);
+      if(result != null) {
+         return populate(node, result);
       }
-      return map;
+      return result;
    }
    
    /**
@@ -194,13 +193,13 @@ class CompositeMap implements Converter {
     * @return true if the element matches the XML schema class given 
     */
    public boolean validate(InputNode node) throws Exception{
-      Type type = factory.getInstance(node);
+      Instance value = factory.getInstance(node);
       
-      if(!type.isReference()) {
-         Object real = type.getInstance(type);
-         Class expect = type.getType();
+      if(!value.isReference()) {
+         Object result = value.setInstance(null);
+         Class type = value.getType();
             
-         return validate(node, expect);
+         return validate(node, type);
       }
       return true; 
    }

@@ -3,26 +3,23 @@
  *
  * Copyright (C) 2007, Niall Gallagher <niallg@users.sf.net>
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
- * GNU Lesser General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General 
- * Public License along with this library; if not, write to the 
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, 
- * Boston, MA  02111-1307  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or 
+ * implied. See the License for the specific language governing 
+ * permissions and limitations under the License.
  */
 
 package org.simpleframework.xml.core;
 
-import java.util.LinkedHashMap;
-
 import org.simpleframework.xml.ElementMap;
+import org.simpleframework.xml.strategy.Type;
 import org.simpleframework.xml.stream.Style;
 
 /**
@@ -119,6 +116,8 @@ class ElementMapLabel implements Label {
     * @return this returns an object that is used for conversion
     */
    public Converter getConverter(Context context) throws Exception {
+      Type type = getMap();
+      
       if(!label.inline()) {
          return new CompositeMap(context, entry, type);
       }
@@ -157,7 +156,8 @@ class ElementMapLabel implements Label {
     * @return this returns the string to use for default values
     */
    public Object getEmpty(Context context) throws Exception {
-      Factory factory = new MapFactory(context, type);
+      Type map = new ClassType(type);
+      Factory factory = new MapFactory(context, map);
       
       if(!label.empty()) {
          return factory.getInstance();
@@ -173,7 +173,7 @@ class ElementMapLabel implements Label {
     * 
     * @return this returns the component type for the map object
     */
-   public Class getDependent() throws Exception  {
+   public Type getDependent() throws Exception  {
       Contact contact = getContact();
      
       if(items == null) {
@@ -181,8 +181,11 @@ class ElementMapLabel implements Label {
       }        
       if(items == null) {
          throw new ElementException("Unable to determine type for %s", label);           
-      }     
-      return items[0];
+      }    
+      if(items.length == 0) {
+         return new ClassType(Object.class);
+      }
+      return new ClassType(items[0]);
    }
    
    /**
@@ -217,7 +220,18 @@ class ElementMapLabel implements Label {
    }
    
    /**
-    * This acts as a convinience method used to determine the type of
+    * This returns the map type for this label. The primary type
+    * is the type of the <code>Map</code> that this creates. The key
+    * and value types are the types used to populate the primary.
+    * 
+    * @return this returns the map type to use for the label
+    */
+   private Type getMap() {
+      return new ClassType(type);
+   }
+   
+   /**
+    * This acts as a convenience method used to determine the type of
     * contact this represents. This is used when an object is written
     * to XML. It determines whether a <code>class</code> attribute
     * is required within the serialized XML element, that is, if the
@@ -234,7 +248,7 @@ class ElementMapLabel implements Label {
     * This is used to acquire the contact object for this label. The 
     * contact retrieved can be used to set any object or primitive that
     * has been deserialized, and can also be used to acquire values to
-    * be serialized in the case of object persistance. All contacts 
+    * be serialized in the case of object persistence. All contacts 
     * that are retrieved from this method will be accessible. 
     * 
     * @return returns the contact that this label is representing

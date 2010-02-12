@@ -1,88 +1,85 @@
 /*
- * ArrayInstance.java April 2007
+ * ArrayInstance.java January 2007
  *
  * Copyright (C) 2007, Niall Gallagher <niallg@users.sf.net>
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
- * GNU Lesser General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General 
- * Public License along with this library; if not, write to the 
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, 
- * Boston, MA  02111-1307  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or 
+ * implied. See the License for the specific language governing 
+ * permissions and limitations under the License.
  */
 
 package org.simpleframework.xml.core;
 
 import java.lang.reflect.Array;
 
+import org.simpleframework.xml.strategy.Value;
+
 /**
- * The <code>ArrayInstance</code> object is a type used for creating
- * arrays from a specified component type or <code>Type</code> object.
- * This allows primitive and composite arrays to be acquired either 
- * by reference or by value from a converter object. This must be 
- * given the length of the array so that it can be allocated.
+ * The <code>ArrayInstance</code> object is used for creating arrays
+ * from a specified <code>Value</code> object. This allows primitive
+ * and composite arrays to be acquired either by reference or by value 
+ * from the given value object. This must be  given the length of the 
+ * array so that it can be allocated correctly.
  * 
  * @author Niall Gallagher
  * 
  * @see org.simpleframework.xml.core.Instance
  */
-class ArrayInstance implements Type {
-   
+class ArrayInstance implements Instance {
+ 
    /**
-    * This is the optional field type for the array to be created. 
+    * This is the value object that contains the criteria.
     */
-   private Class type;
+   private final Value value;
    
    /**
-    * This is used to determine the size of the array to be created.
+    * This is the array component type for the created array.
     */
-   private int size;
+   private final Class type;
    
    /**
-    * This is used to specify the creation of an array type which
-    * can be used for creating an array that can hold instances of 
-    * the specified type. The type specified must be the component
-    * type for the array that is to be created. 
+    * This is the length of the array to be instantiated.
+    */
+   private final int length;
+   
+   /**
+    * Constructor for the <code>ArrayInstance</code> object. This
+    * is used to create an object that can create an array of the
+    * given length and specified component type.
     * 
-    * @param type this is the component type for the array
-    * @param size this is the size of the array to instantiate
+    * @param value this is the value object describing the instance
     */
-   public ArrayInstance(Class type, int size) {
-      this.type = type;      
-      this.size = size;
+   public ArrayInstance(Value value) {
+      this.length = value.getLength();
+      this.type = value.getType();
+      this.value = value;
    }
    
    /**
-    * This is the instance that is acquired from this type. This is
-    * typically used if the <code>isReference</code> method is true.
-    * If there was to type reference provided then this returns null
-    * otherwise this will delegate to the <code>Type</code> given.
+    * This method is used to acquire an instance of the type that
+    * is defined by this object. If for some reason the type can
+    * not be instantiated an exception is thrown from this.
     * 
-    * @return this returns a reference to an existing array
+    * @return an instance of the type this object represents
     */
-   public Object getInstance() throws Exception {
-      return getInstance(type);
-   }
-   
-   /**
-    * This is the instance that is acquired from this type. This is
-    * typically used if the <code>isReference</code> method is true.
-    * If there was to type reference provided then this returns null
-    * otherwise this will delegate to the <code>Type</code> given.
-    * 
-    * @param type the type to convert this array instance to
-    * 
-    * @return this returns a reference to an existing array
-    */
-   public Object getInstance(Class type) throws Exception {  
-      return Array.newInstance(type, size);
+   public Object getInstance() throws Exception {      
+      if(value.isReference()) {
+         return value.getValue();
+      }
+      Object array = Array.newInstance(type, length);
+      
+      if(value != null) {
+         value.setValue(array);
+      }
+      return array;
    }
    
    /**
@@ -91,35 +88,37 @@ class ArrayInstance implements Type {
     * not be replaced then an exception should be thrown. This 
     * is used to allow primitives to be inserted into a graph.
     * 
-    * @param value this is the value to insert as the type
+    * @param array this is the array to insert as the value
     * 
     * @return an instance of the type this object represents
     */
-   public Object getInstance(Object value) throws Exception {
-      return value;
+   public Object setInstance(Object array) {
+      if(value != null) {
+         value.setValue(array);
+      }
+      return array;
    }
    
    /**
-    * This will return the component type for the array instance 
-    * that is produced by this object. Depending on the constructor 
-    * used this will either delegate to the <code>Type</code> object 
-    * specified or will return the component type class provided. 
+    * This is the type of the object instance that will be created
+    * by the <code>getInstance</code> method. This allows the 
+    * deserialization process to perform checks against the field.
     * 
-    * @return this returns the component type for the array
+    * @return the type of the object that will be instantiated
     */
    public Class getType() {
       return type;
    }
-   
+
    /**
-    * This will return true if the <code>Type</code> object provided
-    * is a reference type. Typically a reference type refers to a 
-    * type that is substituted during the deserialization process 
-    * and so constitutes an object that does not need initialization.
+    * This is used to determine if the type is a reference type.
+    * A reference type is a type that does not require any XML
+    * deserialization based on its annotations. Values that are
+    * references could be substitutes objects of existing ones. 
     * 
-    * @return this returns true if the type is a reference type
+    * @return this returns true if the object is a reference
     */
    public boolean isReference() {
-      return false;
-   }   
+      return value.isReference();
+   }
 }
