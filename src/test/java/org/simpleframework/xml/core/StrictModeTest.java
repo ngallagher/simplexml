@@ -92,4 +92,29 @@ public class StrictModeTest extends ValidationTestCase {
       }
       assertTrue("Serialzed correctly", failure);
    } 
+   
+   public void testValidation() throws Exception {
+      Persister persister = new Persister();
+      
+      assertTrue(persister.validate(ExampleObjectWithAddress.class, SOURCE, false));
+      
+      try {
+         assertFalse(persister.validate(ExampleObjectWithAddress.class, SOURCE));  
+         assertFalse(true);
+      }catch(Exception e){
+         e.printStackTrace();
+      }
+      try {
+         assertFalse(persister.validate(ExampleObjectWithAddress.class, SOURCE_MISSING_NAME)); 
+         assertFalse(true);
+      }catch(Exception e){
+         e.printStackTrace();
+      }
+      try {
+         assertFalse(persister.validate(ExampleObjectWithAddress.class, SOURCE_MISSING_NAME, false)); 
+         assertFalse(true);
+      }catch(Exception e){
+         e.printStackTrace();
+      }
+   }
 }
