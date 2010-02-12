@@ -127,6 +127,91 @@ public interface Serializer {
    
    /**
     * This <code>read</code> method will read the contents of the XML
+    * document from the provided source and convert it into an object
+    * of the specified type. If the XML source cannot be deserialized
+    * or there is a problem building the object graph an exception
+    * is thrown. The instance deserialized is returned.
+    * 
+    * @param type this is the class type to be deserialized from XML
+    * @param source this provides the source of the XML document
+    * @param strict this determines whether to read in strict mode
+    * 
+    * @return the object deserialized from the XML document 
+    * 
+    * @throws Exception if the object cannot be fully deserialized
+    */
+   public <T> T read(Class<? extends T> type, String source, boolean strict) throws Exception;
+        
+   /**
+    * This <code>read</code> method will read the contents of the XML
+    * document from the provided source and convert it into an object
+    * of the specified type. If the XML source cannot be deserialized
+    * or there is a problem building the object graph an exception
+    * is thrown. The instance deserialized is returned.
+    * 
+    * @param type this is the class type to be deserialized from XML
+    * @param source this provides the source of the XML document
+    * @param strict this determines whether to read in strict mode 
+    * 
+    * @return the object deserialized from the XML document 
+    * 
+    * @throws Exception if the object cannot be fully deserialized
+    */
+   public <T> T read(Class<? extends T> type, File source, boolean strict) throws Exception;
+
+   /**
+    * This <code>read</code> method will read the contents of the XML
+    * document from the provided source and convert it into an object
+    * of the specified type. If the XML source cannot be deserialized
+    * or there is a problem building the object graph an exception
+    * is thrown. The instance deserialized is returned.
+    * 
+    * @param type this is the class type to be deserialized from XML
+    * @param source this provides the source of the XML document
+    * @param strict this determines whether to read in strict mode
+    * 
+    * @return the object deserialized from the XML document 
+    * 
+    * @throws Exception if the object cannot be fully deserialized
+    */
+   public <T> T read(Class<? extends T> type, InputStream source, boolean strict) throws Exception;
+
+   /**
+    * This <code>read</code> method will read the contents of the XML
+    * document from the provided source and convert it into an object
+    * of the specified type. If the XML source cannot be deserialized
+    * or there is a problem building the object graph an exception
+    * is thrown. The instance deserialized is returned.
+    * 
+    * @param type this is the class type to be deserialized from XML
+    * @param source this provides the source of the XML document
+    * @param strict this determines whether to read in strict mode
+    * 
+    * @return the object deserialized from the XML document 
+    * 
+    * @throws Exception if the object cannot be fully deserialized
+    */   
+   public <T> T read(Class<? extends T> type, Reader source, boolean strict) throws Exception;
+   
+   /**
+    * This <code>read</code> method will read the contents of the XML
+    * document from the provided source and convert it into an object
+    * of the specified type. If the XML source cannot be deserialized
+    * or there is a problem building the object graph an exception
+    * is thrown. The instance deserialized is returned.
+    * 
+    * @param type this is the class type to be deserialized from XML
+    * @param source this provides the source of the XML document
+    * @param strict this determines whether to read in strict mode
+    * 
+    * @return the object deserialized from the XML document 
+    * 
+    * @throws Exception if the object cannot be fully deserialized
+    */   
+   public <T> T read(Class<? extends T> type, InputNode source, boolean strict) throws Exception;
+   
+   /**
+    * This <code>read</code> method will read the contents of the XML
     * document from the provided source and populate the object with
     * the values deserialized. This is used as a means of injecting an
     * object with values deserialized from an XML document. If the
@@ -209,6 +294,96 @@ public interface Serializer {
     * @throws Exception if the object cannot be fully deserialized
     */ 
    public <T> T read(T value, InputNode source) throws Exception;
+   
+   /**
+    * This <code>read</code> method will read the contents of the XML
+    * document from the provided source and populate the object with
+    * the values deserialized. This is used as a means of injecting an
+    * object with values deserialized from an XML document. If the
+    * XML source cannot be deserialized or there is a problem building
+    * the object graph an exception is thrown.
+    * 
+    * @param value this is the object to deserialize the XML in to
+    * @param source this provides the source of the XML document
+    * @param strict this determines whether to read in strict mode
+    * 
+    * @return the same instance provided is returned when finished  
+    * 
+    * @throws Exception if the object cannot be fully deserialized
+    */
+   public <T> T read(T value, String source, boolean strict) throws Exception;
+        
+   /**
+    * This <code>read</code> method will read the contents of the XML
+    * document from the provided source and populate the object with
+    * the values deserialized. This is used as a means of injecting an
+    * object with values deserialized from an XML document. If the
+    * XML source cannot be deserialized or there is a problem building
+    * the object graph an exception is thrown.
+    * 
+    * @param value this is the object to deserialize the XML in to
+    * @param source this provides the source of the XML document
+    * @param strict this determines whether to read in strict mode
+    * 
+    * @return the same instance provided is returned when finished 
+    * 
+    * @throws Exception if the object cannot be fully deserialized
+    */
+   public <T> T read(T value, File source, boolean strict) throws Exception;
+
+   /**
+    * This <code>read</code> method will read the contents of the XML
+    * document from the provided source and populate the object with
+    * the values deserialized. This is used as a means of injecting an
+    * object with values deserialized from an XML document. If the
+    * XML source cannot be deserialized or there is a problem building
+    * the object graph an exception is thrown.
+    * 
+    * @param value this is the object to deserialize the XML in to
+    * @param source this provides the source of the XML document
+    * @param strict this determines whether to read in strict mode
+    * 
+    * @return the same instance provided is returned when finished 
+    * 
+    * @throws Exception if the object cannot be fully deserialized
+    */
+   public <T> T read(T value, InputStream source, boolean strict) throws Exception;
+
+   /**
+    * This <code>read</code> method will read the contents of the XML
+    * document from the provided source and populate the object with
+    * the values deserialized. This is used as a means of injecting an
+    * object with values deserialized from an XML document. If the
+    * XML source cannot be deserialized or there is a problem building
+    * the object graph an exception is thrown.
+    * 
+    * @param value this is the object to deserialize the XML in to
+    * @param source this provides the source of the XML document
+    * @param strict this determines whether to read in strict mode
+    * 
+    * @return the same instance provided is returned when finished 
+    * 
+    * @throws Exception if the object cannot be fully deserialized
+    */   
+   public <T> T read(T value, Reader source, boolean strict) throws Exception;
+   
+   /**
+    * This <code>read</code> method will read the contents of the XML
+    * document from the provided source and populate the object with
+    * the values deserialized. This is used as a means of injecting an
+    * object with values deserialized from an XML document. If the
+    * XML source cannot be deserialized or there is a problem building
+    * the object graph an exception is thrown.
+    * 
+    * @param value this is the object to deserialize the XML in to
+    * @param source this provides the source of the XML document
+    * @param strict this determines whether to read in strict mode
+    * 
+    * @return the same instance provided is returned when finished 
+    * 
+    * @throws Exception if the object cannot be fully deserialized
+    */ 
+   public <T> T read(T value, InputNode source, boolean strict) throws Exception;
    
    /**
     * This <code>validate</code> method will validate the contents of
@@ -294,6 +469,96 @@ public interface Serializer {
     * @throws Exception if the class XML schema does not fully match
     */
    public boolean validate(Class type, InputNode source) throws Exception;
+   
+   /**
+    * This <code>validate</code> method will validate the contents of
+    * the XML document against the specified XML class schema. This is
+    * used to perform a read traversal of the class schema such that 
+    * the document can be tested against it. This is preferred to
+    * reading the document as it does not instantiate the objects or
+    * invoke any callback methods, thus making it a safe validation.
+    * 
+    * @param type this is the class type to be validated against XML
+    * @param source this provides the source of the XML document
+    * @param strict this determines whether to read in strict mode
+    * 
+    * @return true if the document matches the class XML schema 
+    * 
+    * @throws Exception if the class XML schema does not fully match
+    */
+   public boolean validate(Class type, String source, boolean strict) throws Exception;
+        
+   /**
+    * This <code>validate</code> method will validate the contents of
+    * the XML document against the specified XML class schema. This is
+    * used to perform a read traversal of the class schema such that 
+    * the document can be tested against it. This is preferred to
+    * reading the document as it does not instantiate the objects or
+    * invoke any callback methods, thus making it a safe validation.
+    * 
+    * @param type this is the class type to be validated against XML
+    * @param source this provides the source of the XML document
+    * @param strict this determines whether to read in strict mode
+    * 
+    * @return true if the document matches the class XML schema 
+    * 
+    * @throws Exception if the class XML schema does not fully match
+    */
+   public boolean validate(Class type, File source, boolean strict) throws Exception;
+
+   /**
+    * This <code>validate</code> method will validate the contents of
+    * the XML document against the specified XML class schema. This is
+    * used to perform a read traversal of the class schema such that 
+    * the document can be tested against it. This is preferred to
+    * reading the document as it does not instantiate the objects or
+    * invoke any callback methods, thus making it a safe validation.
+    * 
+    * @param type this is the class type to be validated against XML
+    * @param source this provides the source of the XML document
+    * @param strict this determines whether to read in strict mode
+    * 
+    * @return true if the document matches the class XML schema 
+    * 
+    * @throws Exception if the class XML schema does not fully match
+    */
+   public boolean validate(Class type, InputStream source, boolean strict) throws Exception;
+
+   /**
+    * This <code>validate</code> method will validate the contents of
+    * the XML document against the specified XML class schema. This is
+    * used to perform a read traversal of the class schema such that 
+    * the document can be tested against it. This is preferred to
+    * reading the document as it does not instantiate the objects or
+    * invoke any callback methods, thus making it a safe validation.
+    * 
+    * @param type this is the class type to be validated against XML
+    * @param source this provides the source of the XML document
+    * @param strict this determines whether to read in strict mode
+    * 
+    * @return true if the document matches the class XML schema 
+    * 
+    * @throws Exception if the class XML schema does not fully match
+    */  
+   public boolean validate(Class type, Reader source, boolean strict) throws Exception;
+   
+   /**
+    * This <code>validate</code> method will validate the contents of
+    * the XML document against the specified XML class schema. This is
+    * used to perform a read traversal of the class schema such that 
+    * the document can be tested against it. This is preferred to
+    * reading the document as it does not instantiate the objects or
+    * invoke any callback methods, thus making it a safe validation.
+    * 
+    * @param type this is the class type to be validated against XML
+    * @param source this provides the source of the XML document
+    * @param strict this determines whether to read in strict mode
+    * 
+    * @return true if the document matches the class XML schema 
+    * 
+    * @throws Exception if the class XML schema does not fully match
+    */
+   public boolean validate(Class type, InputNode source, boolean strict) throws Exception;
      
    /**
     * This <code>write</code> method will traverse the provided object

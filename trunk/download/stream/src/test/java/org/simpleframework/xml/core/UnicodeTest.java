@@ -2,6 +2,7 @@ package org.simpleframework.xml.core;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.StringWriter;
 
 import org.simpleframework.xml.Attribute;
@@ -214,7 +215,7 @@ public class UnicodeTest extends ValidationTestCase {
    public void testIncorrectEncoding() throws Exception {
       byte[] data = SOURCE.getBytes("UTF-8");
       InputStream source = new ByteArrayInputStream(data);
-      UnicodeExample example = persister.read(UnicodeExample.class, source, "ISO-8859-1");
+      UnicodeExample example = persister.read(UnicodeExample.class, new InputStreamReader(source, "ISO-8859-1"));
 
       assertFalse("Encoding of ISO-8859-1 did not work", isUnicode(example));
    }

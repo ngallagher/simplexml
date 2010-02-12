@@ -407,7 +407,7 @@ public class Persister implements Serializer {
     * @throws Exception if the object cannot be fully deserialized
     */
    public <T> T read(Class<? extends T> type, String source) throws Exception {
-      return (T)read(type, new StringReader(source));            
+      return read(type, source, true);            
    }
    
    /**
@@ -425,13 +425,7 @@ public class Persister implements Serializer {
     * @throws Exception if the object cannot be fully deserialized
     */
    public <T> T read(Class<? extends T> type, File source) throws Exception {
-      InputStream file = new FileInputStream(source);
-      
-      try {
-         return (T)read(type, file);
-      } finally {
-         file.close();          
-      }
+      return read(type, source, true);
    }
    
    /**
@@ -449,26 +443,7 @@ public class Persister implements Serializer {
     * @throws Exception if the object cannot be fully deserialized
     */
    public <T> T read(Class<? extends T> type, InputStream source) throws Exception {
-      return (T)read(type, NodeBuilder.read(source));           
-   }
-   
-   /**
-    * This <code>read</code> method will read the contents of the XML
-    * document from the provided source and convert it into an object
-    * of the specified type. If the XML source cannot be deserialized
-    * or there is a problem building the object graph an exception
-    * is thrown. The instance deserialized is returned.
-    * 
-    * @param type this is the class type to be deserialized from XML
-    * @param source this provides the source of the XML document
-    * @param charset this is the character set to read the XML with
-    * 
-    * @return the object deserialized from the XML document 
-    * 
-    * @throws Exception if the object cannot be fully deserialized
-    */   
-   public <T> T read(Class<? extends T> type, InputStream source, String charset) throws Exception {
-      return (T)read(type, new InputStreamReader(source, charset));           
+      return read(type, NodeBuilder.read(source), true);           
    }
    
    /**
@@ -486,7 +461,7 @@ public class Persister implements Serializer {
     * @throws Exception if the object cannot be fully deserialized
     */
    public <T> T read(Class<? extends T> type, Reader source) throws Exception {
-      return (T)read(type, NodeBuilder.read(source));
+      return read(type, NodeBuilder.read(source), true);
    }
    
    /**
@@ -504,26 +479,108 @@ public class Persister implements Serializer {
     * @throws Exception if the object cannot be fully deserialized
     */
    public <T> T read(Class<? extends T> type, InputNode source) throws Exception {
-      return (T)read(type, source, support);
+      return read(type, source, true);
    }
-
+   
    /**
     * This <code>read</code> method will read the contents of the XML
-    * document provided and convert it to an object of the specified
-    * type. If the XML document cannot be deserialized or there is a
-    * problem building the object graph an exception is thrown. The
-    * object graph deserialized is returned.
+    * document from the provided source and convert it into an object
+    * of the specified type. If the XML source cannot be deserialized
+    * or there is a problem building the object graph an exception
+    * is thrown. The instance deserialized is returned.
     * 
-    * @param type this is the XML schema class to be deserialized
-    * @param node the document the object is deserialized from
-    * @param support this is the support used to process strings
+    * @param type this is the class type to be deserialized from XML
+    * @param source this provides the source of the XML document
+    * @param strict this determines whether to read in strict mode
     * 
-    * @return the object deserialized from the XML document given
+    * @return the object deserialized from the XML document 
     * 
     * @throws Exception if the object cannot be fully deserialized
     */
-   private <T> T read(Class<? extends T> type, InputNode node, Support support) throws Exception {
-      return (T)read(type, node, new Source(strategy, support, style));
+   public <T> T read(Class<? extends T> type, String source, boolean strict) throws Exception {
+      return read(type, new StringReader(source), strict);            
+   }
+   
+   /**
+    * This <code>read</code> method will read the contents of the XML
+    * document from the provided source and convert it into an object
+    * of the specified type. If the XML source cannot be deserialized
+    * or there is a problem building the object graph an exception
+    * is thrown. The instance deserialized is returned.
+    * 
+    * @param type this is the class type to be deserialized from XML
+    * @param source this provides the source of the XML document
+    * @param strict this determines whether to read in strict mode
+    * 
+    * @return the object deserialized from the XML document 
+    * 
+    * @throws Exception if the object cannot be fully deserialized
+    */
+   public <T> T read(Class<? extends T> type, File source, boolean strict) throws Exception {
+      InputStream file = new FileInputStream(source);
+      
+      try {
+         return read(type, file, strict);
+      } finally {
+         file.close();          
+      }
+   }
+   
+   /**
+    * This <code>read</code> method will read the contents of the XML
+    * document from the provided source and convert it into an object
+    * of the specified type. If the XML source cannot be deserialized
+    * or there is a problem building the object graph an exception
+    * is thrown. The instance deserialized is returned.
+    * 
+    * @param type this is the class type to be deserialized from XML
+    * @param source this provides the source of the XML document
+    * @param strict this determines whether to read in strict mode
+    * 
+    * @return the object deserialized from the XML document 
+    * 
+    * @throws Exception if the object cannot be fully deserialized
+    */
+   public <T> T read(Class<? extends T> type, InputStream source, boolean strict) throws Exception {
+      return read(type, NodeBuilder.read(source), strict);           
+   }
+   
+   /**
+    * This <code>read</code> method will read the contents of the XML
+    * document from the provided source and convert it into an object
+    * of the specified type. If the XML source cannot be deserialized
+    * or there is a problem building the object graph an exception
+    * is thrown. The instance deserialized is returned.
+    * 
+    * @param type this is the class type to be deserialized from XML
+    * @param source this provides the source of the XML document
+    * @param strict this determines whether to read in strict mode
+    * 
+    * @return the object deserialized from the XML document 
+    * 
+    * @throws Exception if the object cannot be fully deserialized
+    */
+   public <T> T read(Class<? extends T> type, Reader source, boolean strict) throws Exception {
+      return read(type, NodeBuilder.read(source), strict);
+   }
+   
+   /**
+    * This <code>read</code> method will read the contents of the XML
+    * document from the provided source and convert it into an object
+    * of the specified type. If the XML source cannot be deserialized
+    * or there is a problem building the object graph an exception
+    * is thrown. The instance deserialized is returned.
+    * 
+    * @param type this is the class type to be deserialized from XML
+    * @param node this provides the source of the XML document
+    * @param strict this determines whether to read in strict mode
+    * 
+    * @return the object deserialized from the XML document 
+    * 
+    * @throws Exception if the object cannot be fully deserialized
+    */
+   public <T> T read(Class<? extends T> type, InputNode node, boolean strict) throws Exception {
+      return read(type, node, new Source(strategy, support, style, strict));
    }                      
            
    /**
@@ -534,7 +591,8 @@ public class Persister implements Serializer {
     * object graph deserialized is returned.
     * 
     * @param type this is the XML schema class to be deserialized
-    * @param context the contextual object used for derserialization 
+    * @param node this provides the source of the XML document
+    * @param context the contextual object used for deserialization 
     * 
     * @return the object deserialized from the XML document given
     * 
@@ -560,7 +618,7 @@ public class Persister implements Serializer {
     * @throws Exception if the object cannot be fully deserialized
     */
    public <T> T read(T value, String source) throws Exception{
-      return (T)read(value, new StringReader(source));            
+      return read(value, source, true);            
    }
         
    /**
@@ -579,13 +637,7 @@ public class Persister implements Serializer {
     * @throws Exception if the object cannot be fully deserialized
     */
    public <T> T read(T value, File source) throws Exception{
-      InputStream file = new FileInputStream(source);
-      
-      try {
-         return (T)read(value, file);
-      }finally {
-         file.close();           
-      }
+      return read(value, source, true);
    }
 
    /**
@@ -604,27 +656,7 @@ public class Persister implements Serializer {
     * @throws Exception if the object cannot be fully deserialized
     */
    public <T> T read(T value, InputStream source) throws Exception{
-      return (T)read(value, source, "utf-8");           
-   }
-   
-   /**
-    * This <code>read</code> method will read the contents of the XML
-    * document from the provided source and populate the object with
-    * the values deserialized. This is used as a means of injecting an
-    * object with values deserialized from an XML document. If the
-    * XML source cannot be deserialized or there is a problem building
-    * the object graph an exception is thrown.
-    * 
-    * @param value this is the object to deserialize the XML in to
-    * @param source this provides the source of the XML document
-    * @param charset this is the character set to read the XML with
-    * 
-    * @return the same instance provided is returned when finished 
-    * 
-    * @throws Exception if the object cannot be fully deserialized
-    */   
-   public <T> T read(T value, InputStream source, String charset) throws Exception{
-      return (T)read(value, new InputStreamReader(source, charset));           
+      return read(value, source, true);           
    }
 
    /**
@@ -643,7 +675,7 @@ public class Persister implements Serializer {
     * @throws Exception if the object cannot be fully deserialized
     */   
    public <T> T read(T value, Reader source) throws Exception{
-      return (T)read(value, NodeBuilder.read(source));
+      return read(value, source, true);
    }   
    
    /**
@@ -662,7 +694,53 @@ public class Persister implements Serializer {
     * @throws Exception if the object cannot be fully deserialized
     */ 
    public <T> T read(T value, InputNode source) throws Exception {
-      return (T)read(value, source, support);
+      return read(value, source, true);
+   }
+   
+   /**
+    * This <code>read</code> method will read the contents of the XML
+    * document from the provided source and populate the object with
+    * the values deserialized. This is used as a means of injecting an
+    * object with values deserialized from an XML document. If the
+    * XML source cannot be deserialized or there is a problem building
+    * the object graph an exception is thrown.
+    * 
+    * @param value this is the object to deserialize the XML in to
+    * @param source this provides the source of the XML document
+    * @param strict this determines whether to read in strict mode
+    * 
+    * @return the same instance provided is returned when finished  
+    * 
+    * @throws Exception if the object cannot be fully deserialized
+    */
+   public <T> T read(T value, String source, boolean strict) throws Exception{
+      return read(value, new StringReader(source), strict);            
+   }
+        
+   /**
+    * This <code>read</code> method will read the contents of the XML
+    * document from the provided source and populate the object with
+    * the values deserialized. This is used as a means of injecting an
+    * object with values deserialized from an XML document. If the
+    * XML source cannot be deserialized or there is a problem building
+    * the object graph an exception is thrown.
+    * 
+    * @param value this is the object to deserialize the XML in to
+    * @param source this provides the source of the XML document
+    * @param strict this determines whether to read in strict mode
+    * 
+    * @return the same instance provided is returned when finished 
+    * 
+    * @throws Exception if the object cannot be fully deserialized
+    */
+   public <T> T read(T value, File source, boolean strict) throws Exception{
+      InputStream file = new FileInputStream(source);
+      
+      try {
+         return read(value, file, strict);
+      }finally {
+         file.close();           
+      }
    }
 
    /**
@@ -674,16 +752,56 @@ public class Persister implements Serializer {
     * the object graph an exception is thrown.
     * 
     * @param value this is the object to deserialize the XML in to
+    * @param source this provides the source of the XML document
+    * @param strict this determines whether to read in strict mode
+    * 
+    * @return the same instance provided is returned when finished 
+    * 
+    * @throws Exception if the object cannot be fully deserialized
+    */
+   public <T> T read(T value, InputStream source, boolean strict) throws Exception{
+      return read(value, NodeBuilder.read(source), strict);           
+   }
+
+   /**
+    * This <code>read</code> method will read the contents of the XML
+    * document from the provided source and populate the object with
+    * the values deserialized. This is used as a means of injecting an
+    * object with values deserialized from an XML document. If the
+    * XML source cannot be deserialized or there is a problem building
+    * the object graph an exception is thrown.
+    * 
+    * @param value this is the object to deserialize the XML in to
+    * @param source this provides the source of the XML document
+    * @param strict this determines whether to read in strict mode
+    * 
+    * @return the same instance provided is returned when finished 
+    * 
+    * @throws Exception if the object cannot be fully deserialized
+    */   
+   public <T> T read(T value, Reader source, boolean strict) throws Exception{
+      return read(value, NodeBuilder.read(source), strict);
+   }   
+   
+   /**
+    * This <code>read</code> method will read the contents of the XML
+    * document from the provided source and populate the object with
+    * the values deserialized. This is used as a means of injecting an
+    * object with values deserialized from an XML document. If the
+    * XML source cannot be deserialized or there is a problem building
+    * the object graph an exception is thrown.
+    * 
+    * @param value this is the object to deserialize the XML in to
     * @param node this provides the source of the XML document
-    * @param support this is the support used to process strings
+    * @param strict this determines whether to read in strict mode
     * 
     * @return the same instance provided is returned when finished 
     * 
     * @throws Exception if the object cannot be fully deserialized
     */ 
-   private <T> T read(T value, InputNode node, Support support) throws Exception {
-      return (T)read(value, node, new Source(strategy, support, style));
-   }                      
+   public <T> T read(T value, InputNode node, boolean strict) throws Exception {
+      return read(value, node, new Source(strategy, support, style, strict));
+   } 
            
    /**
     * This <code>read</code> method will read the contents of the XML
@@ -721,7 +839,7 @@ public class Persister implements Serializer {
     * @throws Exception if the class XML schema does not fully match
     */
    public boolean validate(Class type, String source) throws Exception {
-      return validate(type, new StringReader(source));            
+      return validate(type, source, true);            
    }
    
    /**
@@ -740,13 +858,7 @@ public class Persister implements Serializer {
     * @throws Exception if the class XML schema does not fully match
     */
    public boolean validate(Class type, File source) throws Exception {
-      InputStream file = new FileInputStream(source);
-      
-      try {
-         return validate(type, file);
-      } finally {
-         file.close();          
-      }
+      return validate(type, source, true);
    }
    
    /**
@@ -765,27 +877,7 @@ public class Persister implements Serializer {
     * @throws Exception if the class XML schema does not fully match
     */
    public boolean validate(Class type, InputStream source) throws Exception {
-      return validate(type, NodeBuilder.read(source));           
-   }
-   
-   /**
-    * This <code>validate</code> method will validate the contents of
-    * the XML document against the specified XML class schema. This is
-    * used to perform a read traversal of the class schema such that 
-    * the document can be tested against it. This is preferred to
-    * reading the document as it does not instantiate the objects or
-    * invoke any callback methods, thus making it a safe validation.
-    * 
-    * @param type this is the class type to be validated against XML
-    * @param source this provides the source of the XML document
-    * @param charset this is the charset to read the XML document as
-    * 
-    * @return true if the document matches the class XML schema 
-    * 
-    * @throws Exception if the class XML schema does not fully match
-    */ 
-   public boolean validate(Class type, InputStream source, String charset) throws Exception {
-      return validate(type, new InputStreamReader(source, charset));           
+      return validate(type, source, true);           
    }
    
    /**
@@ -804,7 +896,7 @@ public class Persister implements Serializer {
     * @throws Exception if the class XML schema does not fully match
     */
    public boolean validate(Class type, Reader source) throws Exception {
-      return validate(type, NodeBuilder.read(source));
+      return validate(type, source, true);
    }
    
    /**
@@ -823,9 +915,95 @@ public class Persister implements Serializer {
     * @throws Exception if the class XML schema does not fully match
     */
    public boolean validate(Class type, InputNode source) throws Exception {
-      return validate(type, source, support);
+      return validate(type, source, true);
+   }         
+   
+   /**
+    * This <code>validate</code> method will validate the contents of
+    * the XML document against the specified XML class schema. This is
+    * used to perform a read traversal of the class schema such that 
+    * the document can be tested against it. This is preferred to
+    * reading the document as it does not instantiate the objects or
+    * invoke any callback methods, thus making it a safe validation.
+    * 
+    * @param type this is the class type to be validated against XML
+    * @param source this provides the source of the XML document
+    * @param strict this determines whether to read in strict mode
+    * 
+    * @return true if the document matches the class XML schema 
+    * 
+    * @throws Exception if the class XML schema does not fully match
+    */
+   public boolean validate(Class type, String source, boolean strict) throws Exception {
+      return validate(type, new StringReader(source), strict);            
    }
-
+   
+   /**
+    * This <code>validate</code> method will validate the contents of
+    * the XML document against the specified XML class schema. This is
+    * used to perform a read traversal of the class schema such that 
+    * the document can be tested against it. This is preferred to
+    * reading the document as it does not instantiate the objects or
+    * invoke any callback methods, thus making it a safe validation.
+    * 
+    * @param type this is the class type to be validated against XML
+    * @param source this provides the source of the XML document
+    * @param strict this determines whether to read in strict mode
+    * 
+    * @return true if the document matches the class XML schema 
+    * 
+    * @throws Exception if the class XML schema does not fully match
+    */
+   public boolean validate(Class type, File source, boolean strict) throws Exception {
+      InputStream file = new FileInputStream(source);
+      
+      try {
+         return validate(type, file, strict);
+      } finally {
+         file.close();          
+      }
+   }
+   
+   /**
+    * This <code>validate</code> method will validate the contents of
+    * the XML document against the specified XML class schema. This is
+    * used to perform a read traversal of the class schema such that 
+    * the document can be tested against it. This is preferred to
+    * reading the document as it does not instantiate the objects or
+    * invoke any callback methods, thus making it a safe validation.
+    * 
+    * @param type this is the class type to be validated against XML
+    * @param source this provides the source of the XML document
+    * @param strict this determines whether to read in strict mode
+    * 
+    * @return true if the document matches the class XML schema 
+    * 
+    * @throws Exception if the class XML schema does not fully match
+    */
+   public boolean validate(Class type, InputStream source, boolean strict) throws Exception {
+      return validate(type, NodeBuilder.read(source), strict);           
+   }
+   
+   /**
+    * This <code>validate</code> method will validate the contents of
+    * the XML document against the specified XML class schema. This is
+    * used to perform a read traversal of the class schema such that 
+    * the document can be tested against it. This is preferred to
+    * reading the document as it does not instantiate the objects or
+    * invoke any callback methods, thus making it a safe validation.
+    * 
+    * @param type this is the class type to be validated against XML
+    * @param source this provides the source of the XML document
+    * @param strict this determines whether to read in strict mode
+    * 
+    * @return true if the document matches the class XML schema 
+    * 
+    * @throws Exception if the class XML schema does not fully match
+    */
+   public boolean validate(Class type, Reader source, boolean strict) throws Exception {
+      return validate(type, NodeBuilder.read(source), strict);
+   }
+   
    /**
     * This <code>validate</code> method will validate the contents of
     * the XML document against the specified XML class schema. This is
@@ -836,14 +1014,14 @@ public class Persister implements Serializer {
     * 
     * @param type this is the class type to be validated against XML
     * @param node this provides the source of the XML document
-    * @param support this is the support used to process strings
+    * @param strict this determines whether to read in strict mode
     * 
     * @return true if the document matches the class XML schema 
     * 
     * @throws Exception if the class XML schema does not fully match
     */
-   private boolean validate(Class type, InputNode node, Support support) throws Exception {
-      return validate(type, node, new Source(strategy, support, style));
+   public boolean validate(Class type, InputNode node, boolean strict) throws Exception {
+      return validate(type, node, new Source(strategy, support, style, strict));
    }                      
            
    /**
@@ -856,7 +1034,7 @@ public class Persister implements Serializer {
     * 
     * @param type this is the class type to be validated against XML
     * @param node this provides the source of the XML document
-    * @param context the contextual object used for derserialization  
+    * @param context the contextual object used for deserialization  
     * 
     * @return true if the document matches the class XML schema 
     * 
