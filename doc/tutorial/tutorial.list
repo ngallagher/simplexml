@@ -16,6 +16,7 @@ archive/example_using_template_filters.html
 archive/receiving_persister_callbacks.html
 archive/maintaining_state_betwen_persister_callbacks.html
 archive/serializing_with_cdata_blocks.html
+archive/using_namespaces.html
 archive/resolving_object_reference_cycles.html
 archive/reusing_xml_elements.html
 archive/using_utility_collections.html
@@ -24,3 +25,4 @@ archive/serializing_java_langiage_types.html
 archive/styling_serialized_xml.html
 archive/version_tolerant_serialization.html
 archive/annotating_static_fields.html
+archive/overriding_serialization.html
