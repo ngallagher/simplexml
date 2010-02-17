@@ -41,8 +41,8 @@ public class RegistryStrategyTest extends ValidationTestCase {
       StringWriter writer = new StringWriter();
       PetShop shop = new PetShop();
       
-      registry.bind(Dog.class, DogConverter.class);
-      registry.bind(Cat.class, CatConverter.class);
+      registry.bind(Dog.class, DogConverter.class)
+              .bind(Cat.class, CatConverter.class);
    
       shop.addPet(new Dog("Lassie", 10));
       shop.addPet(new Cat("Kitty", 2));

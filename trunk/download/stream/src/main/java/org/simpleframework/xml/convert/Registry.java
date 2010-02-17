@@ -98,9 +98,14 @@ public class Registry {
     * 
     * @param type this is the object type to bind to a converter
     * @param converter this is the converter class to be used
+    * 
+    * @return this will return this registry instance to use
     */
-   public void bind(Class type, Class converter) throws Exception {
-      binder.bind(type, converter);
+   public Registry bind(Class type, Class converter) throws Exception {
+      if(type != null) {
+         binder.bind(type, converter);
+      }
+      return this;
    }
    
    /**
@@ -111,8 +116,13 @@ public class Registry {
     * 
     * @param type this is the object type to bind to a converter
     * @param converter this is the converter instance to be used
+    * 
+    * @return this will return this registry instance to use
     */
-   public void bind(Class type, Converter converter) throws Exception {
-      cache.cache(type, converter);
+   public Registry bind(Class type, Converter converter) throws Exception {
+      if(type != null) {
+         cache.cache(type, converter);
+      }
+      return this;
    }
 }
