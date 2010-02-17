@@ -1,149 +1,41 @@
 <a name='static'></a><b>Serializing static final fields</b>
 <p>
-Often there is a need to add elements and attributes to an XML document that does not change. In such 
+Often there is a need to add elements and attributes to an XML document that do not change. In such 
 an event it is often attractive to declare these fields as static final fields. When annotating 
 static final fields they form part of the XML schema and contribute to the validation of the document
 but do not get set when deserializing the XML in to a object instance. So should a required static
 final field not exist in the source XML then an exception is thrown when deserializing, much like what
-would happen if the field was mutable. For example take the code snippet below, which shows static
-final primitive fields and a static final composite object.
+would happen if the field was mutable. For example take the code snippet below, which shows an immutable
+static final field used with mutable fields.
 </p>
 <pre class="prettyprint">
 @Root
-@Namespace(reference = "http://www.domain.com/document")
-public class Document {
+public class Citation {
 
    @Element(name="author")
-   @Namespace(prefix="user", reference="http://www.domain.com/user")
    private static final String AUTHOR = "Niall Gallagher";
 
-   @Element(name="contact")
-   private static final String CONTACT = "niallg@users.sourceforge.net";
-      
-   @Element(name="detail")
-   private static final Detail DETAIL = new Detail(
-      "Stanford Press",
-      "2001",
-      "Palo Alto",
-      "1st",
-      "0-69-697269-4");
-
-   @ElementList(inline=true)
-   private List&lt;Section&gt; list;
-
-   @Attribute
+   @Element
    private String title;
-
-   private Document() {
-      super();
-   }
-
-   public Document(String title) {
-      this.list = new ArrayList&lt;Section&gt;()
-      this.title = title;
-   }
-
-   public void add(Section section) {
-      list.add(section);
-   }
-}
-
-@Root
-@Namespace(reference="http://www.domain.com/detail")
-public class Detail {
-      
-   @Element
-   private String publisher;
-      
-   @Element
+   
+   @Element   
    private String date;
-      
-   @Element
-   private String address;
-      
-   @Element
-   private String edition;
-      
-   @Element
-   private String ISBN;
-    
-   private Detail() {
-      super();
-   }
-      
-   public Detail(String publisher, String date, String address, String edition, String ISBN) {
-      this.publisher = publisher;
-      this.address = address;
-      this.edition = edition;
-      this.date = date;
-      this.ISBN = ISBN;
-   }
-}
 
-@Root
-@NamespaceList({
-   @Namespace(prefix="para", reference="http://www.domain.com/paragraph")
-})
-public class Section {
-
-   @Attribute
-   private String name;
-
-   @ElementList(inline = true)
-   private List&lt;Paragraph&gt; list;
-
-   private Section() {
-      super();
-   }
-
-   public Section(String name) {
-      this.list = new ArrayList&lt;Paragraph&gt;();
-      this.name = name;
-   }
-
-   public void add(Paragraph paragraph) {
-      list.add(paragraph);
-   }
-}
-
-@Root
-@Namespace(reference = "http://www.domain.com/paragraph")
-public class Paragraph {
-
-   private String text;
-
-   @Text
-   private String getContent() {
-      return text;
-   }
-
-   @Text
-   public void setContent(String text) {
-      this.text = text;
+   public Date getDate() {
+      return date;
    }
 }
 </pre>
 <p>
-The above annotated objects form an object model to describe a simple document structure. The document object itself contains static final fields that
+The above annotated object describes a simple citation. The citation object itself contains a static final field that
 will be written to the resulting XML document when serialized. However, on deserialization the values read from the XML will not change the annotated
-fields. Instead the deserialization process will simply validate the presence of the elements and attributes within the document. This results in 
-an object that will always write the same values for specific elements and attributes.
+final static field. Instead the deserialization process will simply validate the presence of the elements and attributes within the document. This results in 
+an object that will always write the same value for the annotated final static elements or attributes.
 </p>
 <pre class="prettyprint">
-&lt;document title=&quot;Secret Document&quot; xmlns=&quot;http://www.domain.com/document&quot;&gt;
-   &lt;user:author xmlns:user=&quot;http://www.domain.com/user&quot;&gt;Niall Gallagher&lt;/user:author&gt;
-   &lt;contact&gt;niallg@users.sourceforge.net&lt;/contact&gt;
-   &lt;detail xmlns=&quot;http://www.domain.com/detail&quot;&gt;
-      &lt;publisher&gt;Stanford Press&lt;/publisher&gt;
-      &lt;date&gt;2001&lt;/date&gt;
-      &lt;address&gt;Palo Alto&lt;/address&gt;
-      &lt;edition&gt;1st&lt;/edition&gt;
-      &lt;ISBN&gt;0-69-697269-4&lt;/ISBN&gt;
-   &lt;/detail&gt;
-   &lt;section name=&quot;Introduction&quot; xmlns:para=&quot;http://www.domain.com/paragraph&quot;&gt;
-      &lt;para:paragraph&gt;First paragraph of document&lt;/para:paragraph&gt;
-      &lt;para:paragraph&gt;Second paragraph in the document&lt;/para:paragraph&gt;
-      &lt;para:paragraph&gt;Third and final paragraph&lt;/para:paragraph&gt;
-   &lt;/section&gt;
-&lt;/document&gt;
+&lt;citation&gt;
+   &lt;author&gt;Niall Gallagher&lt;/author&gt;
+   &lt;title&gt;Simple XML Serialization&lt;/author&gt;
+   &lt;date&gt;12 January 2010&lt;/date&gt;
+&lt;/citation&gt;
 </pre>

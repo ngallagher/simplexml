@@ -54,6 +54,7 @@ public class Contact {
       return phone.home;
    }
 
+   @Root
    private static class Name {
     
       @Element
@@ -63,6 +64,7 @@ public class Contact {
       private String surname;
    }
 
+   @Root
    private static class Phone {
 
       @Element(required=false)
@@ -88,3 +90,22 @@ assert contact.getSurname().equals("Gallagher");
 assert contact.getMobilePhone().equals("123456789");
 assert contact.getHomePhone().equals("987654321");
 </pre>
+<p>
+Should there be more than a single object that requires loose mapping then using the 
+<a href="/download/stream/doc/javadoc/org/simpleframework/xml/Root.html">Root</a> annotation
+might not be the ideal solution. In such a scenario the persister itself can be asked to perform loose mapping. Simply pass a boolean to the
+read method indicating the type of mapping required. By default the persister uses strict mapping, which can be overridden on an object by
+object basis using the <a href="/download/stream/doc/javadoc/org/simpleframework/xml/Root.html">Root</a> annotation, as shown in the above example. 
+However, this default
+can be overridden as can be seen in the code snippet below.
+</p>
+<pre class="prettyprint">
+Contact contact = serializer.read(Contact.class, source, false);
+</pre>
+<p>
+Here the boolean passed to the overridden read method tells the serializer to perform a loose mapping. There is no need to specify
+anything in the annotations, the serializer will simply map every object loosely. This can be a much more convenient way to 
+perform loose mapping, as you only need to annotate your objects with the elements or attributes you are interested in, all other
+elements and attributes will be ignored during deserialization. Such a solution is best suited to external XML documents where your
+annotated objects do not define the schema.
+</p>
