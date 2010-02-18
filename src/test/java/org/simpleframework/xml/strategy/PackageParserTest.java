@@ -14,7 +14,13 @@ public class PackageParserTest extends TestCase {
    
    private static final int ITERATIONS = 100000;
    
-   /**
+   /*
+    * javax.xml.namespace.NamespaceContext.getNamespaceURI(String prefix)
+    * 
+    * e.g
+    * 
+    * String reference = context.getNamespaceURI("class")
+    * Class type = parser.parse(reference);
     * 
     * <element xmlns:class='http://util.java/ArrayList'>
     *    <name>name</name>
