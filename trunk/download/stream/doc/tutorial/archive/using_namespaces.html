@@ -1,0 +1,121 @@
+<a name='namesoace'></a><b>Using XML namespaces</b>
+<p>
+Namespaces are used to qualify an element or an attribute in an XML document. In order to use namespaces the
+<a href="/download/stream/doc/javadoc/org/simpleframework/xml/Namespace.html">Namespace</a> annotation can be 
+used. This allows the declaration of the namespace prefix and reference, often called the namespace URI. Namespace
+annotations can be used on fields, methods, and even classes. For example take the XML snippet below.
+</p>
+<pre class="prettyprint">
+&lt;parent xmlns='http://domain/parent'&gt;
+   &lt;pre:child xmlns:pre='http://domain/child'&gt;
+      &lt;name&gt;John Doe&lt;/name&gt;
+      &lt;address xmlns=''&gt;
+          &lt;street&gt;Sin City&lt;/street&gt;
+      &lt;/address&gt;
+   &lt;/pre:child&gt;
+&lt;/parent&gt;
+</pre>
+<p>
+In the above XML document, the root element is qualified with a default namespace. A default namespace is a
+namespace that is inherited by all child elements, for further details see
+<a href="http://www.w3.org/TR/xml-names/#defaulting">Section 6.2</a> of the namespaces in XML 1.0 specification. 
+In order to annotate a field, method, or class with a default namespace the 
+<a href="/download/stream/doc/javadoc/org/simpleframework/xml/Namespace.html">Namespace</a> annotation can
+be declared using only the reference attribute. For example, see the annotated class below that produces
+the above XML.
+</p>
+<pre class="prettyprint">
+@Root
+@Namespace(reference="http://domain/parent")
+public class Parent {
+
+   @Element
+   @Namespace(reference="http://domain/child", prefix="pre")
+   private Child child;
+    
+   public Child getChild() {
+      return child;
+   }
+}
+
+@Root
+public class Child {
+
+   @Element
+   private String name;
+
+   @Element
+   @Namespace
+   private Address address;
+
+   public Address getAddress() {
+      return address;
+   }
+}
+
+@Root
+public class Address {
+   
+   @Element
+   private String street;
+
+   public String getStreet() {
+      return street;
+   }
+}
+</pre>
+<p>
+The above code snippet also shows an annotation with both the namespace reference and prefix attributes
+declared. Such an annotation declaration will result in a namespace qualified with a prefix.
+As can be seen in the XML example a prefixed namespace qualifies the XML element with a 
+string prefix followed by a colon. 
+</p>
+<p>
+Should your document require more than one namespace declared in a single element the 
+<a href="/download/stream/doc/javadoc/org/simpleframework/xml/Namespace.html">NamespaceList</a> 
+annotation can be used. This allows multiple namespaces to be declared in a single element. 
+Declaring multiple namespaces in a single element can produce a cleaner more readable XML 
+document. Take the XML snippet below from the namespaces in XML 1.0 specification, which 
+shows an element with multiple namespaces.
+</p>
+<pre class="prettyprint">
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;book xmlns='urn:loc.gov:books' xmlns:isbn='urn:ISBN:0-395-36341-6'&gt;
+    &lt;title&gt;Cheaper by the Dozen&lt;/title&gt;
+    &lt;isbn:number&gt;1568491379&lt;/isbn:number&gt;
+&lt;/book&gt;
+</pre>
+<p>
+This XML snippet shows two namespaces declared in the root element. Here the root element
+will be qualified with the default namespace, and child elements can if desired be
+qualified by the prefixed namespace. To illustrate how such namespace declarations can be
+done, see the annotated class below.
+</p>
+<pre class="prettyprint">
+@Root
+@NamespaceList({
+@Namespace(reference="urn:loc.gov:books")
+@Namespace(reference="urn:ISBN:0-395-36341-6", prefix="isbn")
+})
+public class Book {
+
+   @Element
+   @Namespace(reference="urn:ISBN:0-395-36341-6")
+   private String number;
+
+   @Element
+   private String title;
+
+   public String getTitle() {
+      return title;
+   }
+}
+</pre>
+<p>
+As can be seen above, there is no need to redeclare the prefix attribute once it has 
+already been declared. This allows the annotation declarations to be less verbose
+and ensures a consistent use of a prefix for a given namespace reference. Also, once a 
+namespace has been declared and is in scope then it will not be declared a second time
+in the resulting XML, this ensures the resulting XML document does not contain redundant
+namespace declarations.
+</p>

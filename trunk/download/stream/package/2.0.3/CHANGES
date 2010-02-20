@@ -1,0 +1,2 @@
+Fix made so that references to existing collections are maintained
+Fix made so that primitives represented as objects maintain references

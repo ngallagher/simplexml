@@ -1,0 +1,5 @@
+mvn source:jar javadoc:jar repository:bundle-create
+https://sourceforge.net/project/admin/editpackages.php?group_id=112203
+sftp niallg,simple@web.sourceforge.net
+svn copy https://niallg@simple.svn.sourceforge.net/svnroot/simple/trunk https://niallg@simple.svn.sourceforge.net/svnroot/simple/branches/4.0.3/ssl -m "Create branch to work on SSL"
+scp -r -v build niallg,simple@web.sourceforge.net:/home/groups/s/si/simple/htdocs/.

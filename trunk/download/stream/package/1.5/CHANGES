@@ -1,0 +1,3 @@
+Added ElementMap annotation to support serialization of Map objects
+Change made to the default naming of transformed objects and collections
+Additional unit tests added for transformations an map serialization
