@@ -385,10 +385,10 @@ class Source implements Context {
    public Value getOverride(Type type, InputNode node) throws Exception {
       NodeMap<InputNode> map = node.getAttributes();
       
-      if(node.isRoot()) {
-         return strategy.getRoot(type, map, session);
+      if(map == null) {
+         throw new PersistenceException("No attributes for %s", node);
       }           
-      return strategy.getElement(type, map, session);
+      return strategy.read(type, map, session);
    } 
 
    /**    
@@ -409,10 +409,10 @@ class Source implements Context {
    public boolean setOverride(Type type, Object value, OutputNode node) throws Exception {
       NodeMap<OutputNode> map = node.getAttributes();
       
-      if(node.isRoot()) {
-         return strategy.setRoot(type, value, map, session);              
-      }           
-      return strategy.setElement(type, value, map, session);
+      if(map == null) {
+         throw new PersistenceException("No attributes for %s", node);
+      }          
+      return strategy.write(type, value, map, session);
    }
 
    /**

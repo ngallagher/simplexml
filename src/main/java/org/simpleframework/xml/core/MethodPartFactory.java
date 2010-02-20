@@ -40,7 +40,30 @@ import java.lang.reflect.Method;
  * @see org.simpleframework.xml.core.MethodScanner
  */
 final class MethodPartFactory {   
-
+   
+   /**
+    * This is used to acquire a <code>MethodPart</code> for the method
+    * provided. This will synthesize an XML annotation to be used for
+    * the method. If the method provided is not a setter or a getter
+    * then this will return null, otherwise it will return a part with
+    * a synthetic XML annotation. In order to be considered a valid
+    * method the Java Bean conventions must be followed by the method.
+    * 
+    * @param method this is the method to acquire the part for
+    * 
+    * @return this is the method part object for the method
+    * 
+    * @throws Exception if Java Bean conventions are not followed
+    */
+   public static MethodPart getInstance(Method method) throws Exception {
+      Annotation label = getAnnotation(method);
+      
+      if(label != null) {
+         return getInstance(method, label);
+      }
+      return null;
+   }
+   
    /**
     * This is used to acquire a <code>MethodPart</code> for the name
     * and annotation of the provided method. This will determine the
@@ -82,7 +105,7 @@ final class MethodPartFactory {
     * @throws Exception if Java Bean conventions are not followed
     */
    private static MethodName getName(Method method, Annotation label) throws Exception {
-      MethodType type = getPrefixType(method);
+      MethodType type = getMethodType(method);
       
       if(type == MethodType.GET) {
          return getRead(method, type);
@@ -107,7 +130,7 @@ final class MethodPartFactory {
     * 
     * @return this is the method name object for the method    
     */
-   private static MethodType getPrefixType(Method method) {
+   private static MethodType getMethodType(Method method) {
       String name = method.getName();      
       
       if(name.startsWith("get")) {
@@ -118,6 +141,75 @@ final class MethodPartFactory {
       }
       if(name.startsWith("set")) {
          return MethodType.SET;
+      }
+      return null;
+   }
+   
+   /**
+    * This is used to synthesize an XML annotation given a method. The
+    * provided method must follow the Java Bean conventions and either
+    * be a getter or a setter. If this criteria is satisfied then a
+    * suitable XML annotation is created to be used. Typically a match
+    * is performed on whether the method type is a Java collection or
+    * an array, if neither criteria are true a normal XML element is
+    * used. Synthesizing in this way ensures the best results.
+    * 
+    * @param method this is the method to extract the annotation for
+    * 
+    * @return an XML annotation or null if the method is not suitable
+    * 
+    * @throws Exception thrown if the annotation could not be created
+    */
+   private static Annotation getAnnotation(Method method) throws Exception {
+      Class type = getType(method);
+      
+      if(type != null) {
+         return AnnotationFactory.getInstance(type);
+      }
+      return null;
+   }
+   
+   /**
+    * This is used to extract the type from a method. Type type of a
+    * method is the return type for a getter and a parameter type for
+    * a setter. Such a parameter will only be returned if the method
+    * observes the Java Bean conventions for a property method.
+    * 
+    * @param method this is the method to acquire the type for
+    * 
+    * @return this returns the type associated with the method
+    * 
+    * @throws Exception thrown if the method type can not be found
+    */
+   private static Class getType(Method method) throws Exception {
+      MethodType type = getMethodType(method);
+      
+      if(type == MethodType.SET) {
+         return getParameterType(method);
+      }
+      if(type == MethodType.GET) {
+         return method.getReturnType();
+      }
+      return null;
+   }
+   
+   /**
+    * This is the parameter type associated with the provided method.
+    * The first parameter is returned if the provided method is a
+    * setter. If the method takes more than one parameter or if it
+    * takes no parameters then null is returned from this.
+    * 
+    * @param method this is the method to get the parameter type for
+    * 
+    * @return this returns the parameter type associated with it
+    * 
+    * @throws Exception if the parameter type can not be found
+    */
+   private static Class getParameterType(Method method) throws Exception {
+      Class[] list = method.getParameterTypes();
+      
+      if(list.length == 1) {
+         return method.getParameterTypes()[0];
       }
       return null;
    }
@@ -178,7 +270,7 @@ final class MethodPartFactory {
     * This is used to acquire the name of the method in a Java Bean
     * property style. Thus any "get", "is", or "set" prefix is 
     * removed from the name and the following character is changed
-    * to lower case if it does not represent an acroynm.
+    * to lower case if it does not represent an acronym.
     * 
     * @param name this is the name of the method to be converted
     * @param type this is the type of method the name represents

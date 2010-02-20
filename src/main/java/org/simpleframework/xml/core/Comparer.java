@@ -101,9 +101,11 @@ class Comparer {
    private boolean isIgnore(Method method) {
       String name = method.getName();
       
-      for(String value : ignore) {
-         if(name.equals(value)) {
-            return true;
+      if(ignore != null) {
+         for(String value : ignore) {
+            if(name.equals(value)) {
+               return true;
+            }
          }
       }
       return false;

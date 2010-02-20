@@ -55,6 +55,11 @@ class OutputElement implements OutputNode {
    private String reference;
    
    /**
+    * This is the comment that has been set on this element.
+    */
+   private String comment;
+   
+   /**
     * Represents the value that has been set for the element.
     */ 
    private String value;
@@ -188,12 +193,23 @@ class OutputElement implements OutputNode {
    /**
     * Returns the value for the node that this represents. This 
     * is a modifiable property for the node and can be changed,
-    * however once committed any change will be irrelevent.
+    * however once committed any change will be irrelevant.
     * 
     * @return the name of the value for this node instance
     */   
    public String getValue() {
       return value;
+   }
+   
+   /**
+    * This is used to get the text comment for the element. This can
+    * be null if no comment has been set. If no comment is set on 
+    * the node then no comment will be written to the resulting XML.
+    * 
+    * @return this is the comment associated with this element
+    */
+   public String getComment() {
+      return comment;
    }
    
    /**
@@ -246,6 +262,17 @@ class OutputElement implements OutputNode {
     */    
    public OutputNodeMap getAttributes() {
       return table;
+   }
+   
+   /**
+    * This is used to set a text comment to the element. This will
+    * be written just before the actual element is written. Only a
+    * single comment can be set for each output node written. 
+    * 
+    * @param comment this is the comment to set on the node
+    */
+   public void setComment(String comment) {
+      this.comment = comment;
    }
 
    /**

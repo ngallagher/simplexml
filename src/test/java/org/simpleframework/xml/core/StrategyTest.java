@@ -51,28 +51,16 @@ public class StrategyTest extends TestCase {
    }
 
    public class ExampleStrategy implements Strategy {
-
-      public int writeRootCount = 0;           
-
-      public int readRootCount = 0;
-
+      
       private StrategyTest test;
 
       public ExampleStrategy(StrategyTest test){
          this.test = test;              
       }
 
-      public Value getRoot(Type type, NodeMap root, Map map) throws Exception {
-         readRootCount++;
-         return getElement(type, root, map);              
-      }
-
-      public Value getElement(Type field, NodeMap node, Map map) throws Exception {
+      public Value read(Type field, NodeMap node, Map map) throws Exception {
          Node value = node.remove(ELEMENT_NAME);
-
-         if(readRootCount != 1) {
-            test.assertTrue("Root must only be read once", false);                 
-         }         
+         
          if(value == null) {
         	 return null;
          }
@@ -80,17 +68,9 @@ public class StrategyTest extends TestCase {
          Class type = Class.forName(name);
          
          return new SimpleType(type);
-      }         
+      }                      
 
-      public boolean setRoot(Type field, Object value, NodeMap root, Map map) throws Exception {                       
-         writeRootCount++;              
-         return setElement(field, value, root, map);              
-      }              
-
-      public boolean setElement(Type field, Object value, NodeMap node, Map map) throws Exception {
-         if(writeRootCount != 1) {
-            test.assertTrue("Root must be written only once", false);                 
-         }                 
+      public boolean write(Type field, Object value, NodeMap node, Map map) throws Exception {            
          if(field.getType() != value.getClass()) {                       
             node.put(ELEMENT_NAME, value.getClass().getName());
          }  
@@ -144,12 +124,7 @@ public class StrategyTest extends TestCase {
       assertTrue(example instanceof ExampleExample);
       assertEquals(example.getValue(), "attribute-example-text");
       assertEquals(example.getKey(), "attribute-example-key");
-      assertEquals(1, strategy.readRootCount);
-      assertEquals(0, strategy.writeRootCount);
       
       persister.write(example, System.err);
-      
-      assertEquals(1, strategy.readRootCount);
-      assertEquals(1, strategy.writeRootCount);
    }
 }

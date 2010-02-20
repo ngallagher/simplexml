@@ -141,6 +141,24 @@ public interface OutputNode extends Node {
    public NamespaceMap getNamespaces();
    
    /**
+    * This is used to get the text comment for the element. This can
+    * be null if no comment has been set. If no comment is set on 
+    * the node then no comment will be written to the resulting XML.
+    * 
+    * @return this is the comment associated with this element
+    */
+   public String getComment();
+   
+   /**
+    * This is used to set a text comment to the element. This will
+    * be written just before the actual element is written. Only a
+    * single comment can be set for each output node written. 
+    * 
+    * @param comment this is the comment to set on the node
+    */
+   public void setComment(String comment);
+   
+   /**
     * This is used to set a text value to the element. This should
     * be added to the element if the element contains no child
     * elements. If the value cannot be added an exception is thrown.
@@ -152,9 +170,9 @@ public interface OutputNode extends Node {
    public void setValue(String value);
    
    /**
-    * This method is used for convinience to add an attribute node 
+    * This method is used for convenience to add an attribute node 
     * to the attribute <code>NodeMap</code>. The attribute added
-    * can be removed from the element by useing the node map.
+    * can be removed from the element by using the node map.
     * 
     * @param name this is the name of the attribute to be added
     * @param value this is the value of the node to be added

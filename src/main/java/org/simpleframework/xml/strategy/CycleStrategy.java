@@ -18,6 +18,11 @@
 
 package org.simpleframework.xml.strategy;
 
+import static org.simpleframework.xml.strategy.Name.LABEL;
+import static org.simpleframework.xml.strategy.Name.LENGTH;
+import static org.simpleframework.xml.strategy.Name.MARK;
+import static org.simpleframework.xml.strategy.Name.REFER;
+
 import java.util.Map;
 
 import org.simpleframework.xml.stream.NodeMap;
@@ -55,39 +60,19 @@ import org.simpleframework.xml.stream.NodeMap;
 public class CycleStrategy implements Strategy {
    
    /**
-    * The default name of the attribute used for circular references.
-    */
-   private static final String REFER = "reference";
-   
-   /**
-    * The default name of the attribute used to identify an object.
-    */
-   private static final String MARK = "id";
-   
-   /**
-    * The default name of the attribute used to specify the length.
-    */
-   private static final String LENGTH = "length";
-   
-   /**
-    * The default name of the attribute used to specify the class.
-    */
-   private static final String LABEL = "class"; 
-   
-   /**
     * This is used to maintain session state for writing the graph.
     */
-   private WriteState write;
+   private final WriteState write;
    
    /**
     * This is used to maintain session state for reading the graph.
     */
-   private ReadState read;
+   private final ReadState read;
    
    /**
     * This is used to provide the names of the attributes to use.
     */
-   private Contract contract;
+   private final Contract contract;
    
    /**
     * Constructor for the <code>CycleStrategy</code> object. This is
@@ -145,25 +130,7 @@ public class CycleStrategy implements Strategy {
       this.contract = new Contract(mark, refer, label, length);
       this.write = new WriteState(contract);
       this.read = new ReadState(contract);
-   }
-
-   /**
-    * This method is used to read an object from the specified node.
-    * In order to get the root type the field and node map are 
-    * specified. The field represents the annotated method or field
-    * within the deserialized object. The node map is used to get
-    * the attributes used to describe the objects identity, or in
-    * the case of an existing object it contains an object reference.
-    * 
-    * @param type the method or field in the deserialized object
-    * @param node this is the XML element attributes to read
-    * @param map this is the session map used for deserialization
-    * 
-    * @return this returns an instance to insert into the object 
-    */
-   public Value getRoot(Type type, NodeMap node, Map map) throws Exception {
-      return getElement(type, node, map);
-   }  
+   } 
    
    /**
     * This method is used to read an object from the specified node.
@@ -179,17 +146,17 @@ public class CycleStrategy implements Strategy {
     * 
     * @return this returns an instance to insert into the object 
     */
-   public Value getElement(Type type, NodeMap node, Map map) throws Exception {
+   public Value read(Type type, NodeMap node, Map map) throws Exception {
       ReadGraph graph = read.find(map);
       
       if(graph != null) {
-         return graph.getElement(type, node);
+         return graph.read(type, node);
       }
       return null;
    }
    
    /**
-    * This is used to set the reference in to the XML element that 
+    * This is used to write the reference in to the XML element that 
     * is to be written. This will either insert an object identity if
     * the object has not previously been written, or, if the object
     * has already been written in a previous element, this will write
@@ -203,30 +170,11 @@ public class CycleStrategy implements Strategy {
     * 
     * @return returns true if the object has been fully serialized
     */
-   public boolean setRoot(Type type, Object value, NodeMap node, Map map){
-      return setElement(type, value, node, map);
-   }  
-   
-   /**
-    * This is used to set the reference in to the XML element that 
-    * is to be written. This will either insert an object identity if
-    * the object has not previously been written, or, if the object
-    * has already been written in a previous element, this will write
-    * the reference to that object. This allows all cycles within the
-    * graph to be serialized so that they can be fully deserialized. 
-    * 
-    * @param type the type of the field or method in the object
-    * @param value this is the actual object that is to be written
-    * @param node this is the XML element attribute map to use
-    * @param map this is the session map used for the serialization
-    * 
-    * @return returns true if the object has been fully serialized
-    */
-   public boolean setElement(Type type, Object value, NodeMap node, Map map){
+   public boolean write(Type type, Object value, NodeMap node, Map map){
       WriteGraph graph = write.find(map);
       
       if(graph != null) {
-         return graph.setElement(type, value, node);
+         return graph.write(type, value, node);
       }
       return false;
    }

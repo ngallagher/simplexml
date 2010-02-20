@@ -228,24 +228,40 @@ class NodeWriter {
    private OutputNode writeStart(OutputNode parent, String name) throws Exception {
       OutputNode node = new OutputElement(parent, this, name);
 
-      if(parent != null) {
-          writer.writeComment();
+      if(name == null) {
+         throw new NodeException("Can not have a null name");
       }          
       return stack.push(node);
    }
   
    /**
-    * This is used to write the XML element to the underiying buffer.
+    * This is used to write the XML element to the underlying buffer.
     * The element is written in the order of element prefix and name
     * followed by the attributes an finally the namespaces for the
     * element. Once this is finished the element is committed to 
     *
     * @param node this is the node that is to be fully written
     */ 
-   public void writeStart(OutputNode node) throws Exception {
+   private void writeStart(OutputNode node) throws Exception {
+      writeComment(node);
       writeName(node);
       writeAttributes(node);
       writeNamespaces(node);
+   }
+   
+   /**
+    * This is used to write a comment to the document. Comments
+    * appear just before the element name, this allows an logical
+    * association between the comment and the node to be made.
+    *
+    * @param node this is the node that is to have its name written
+    */   
+   private void writeComment(OutputNode node) throws Exception {
+      String comment = node.getComment();
+      
+      if(comment != null) {
+         writer.writeComment(comment);
+      }
    }
 
    /**
@@ -256,7 +272,7 @@ class NodeWriter {
     *
     * @param node this is the node that is to have its name written
     */   
-   public void writeName(OutputNode node) throws Exception {
+   private void writeName(OutputNode node) throws Exception {
       String prefix = node.getPrefix(verbose);
       String name = node.getName();
       

@@ -18,6 +18,9 @@
 
 package org.simpleframework.xml.strategy;
 
+import static org.simpleframework.xml.strategy.Name.LABEL;
+import static org.simpleframework.xml.strategy.Name.LENGTH;
+
 import java.lang.reflect.Array;
 import java.util.Map;
 
@@ -39,26 +42,21 @@ import org.simpleframework.xml.stream.NodeMap;
  * @see org.simpleframework.xml.strategy.CycleStrategy
  */
 public class TreeStrategy implements Strategy {
-
-   /**
-    * This is used to specify the size of an array element instance.
-    */
-   private static final String LENGTH = "length";
    
-   /**   
-    * This is the attribute that is used to determine the real type.
+   /**
+    * This is the loader that is used to load the specified class.
     */
-   private static final String LABEL = "class";
+   private final Loader loader;
    
    /**
     * This is the attribute that is used to determine an array size.
     */
-   private String length;
+   private final String length;
    
    /**   
     * This is the attribute that is used to determine the real type.
     */   
-   private String label;
+   private final String label;
    
    /**
     * Constructor for the <code>TreeStrategy</code> object. This 
@@ -80,9 +78,10 @@ public class TreeStrategy implements Strategy {
     * @param length this is used to determine the array length
     */
    public TreeStrategy(String label, String length) {
+      this.loader = new Loader();
       this.length = length;
       this.label = label;         
-   }
+   } 
    
    /**
     * This is used to resolve and load a class for the given element.
@@ -99,31 +98,12 @@ public class TreeStrategy implements Strategy {
     * 
     * @throws Exception thrown if the class cannot be resolved
     */
-   public Value getRoot(Type type, NodeMap node, Map map) throws Exception {
-      return getElement(type, node, map);
-   }  
-   
-   /**
-    * This is used to resolve and load a class for the given element.
-    * Resolution of the class to used is done by inspecting the
-    * XML element provided. If there is a "class" attribute on the
-    * element then its value is used to resolve the class to use.
-    * If no such attribute exists on the element this returns null.
-    * 
-    * @param type this is the type of the XML element expected
-    * @param node this is the element used to resolve an override
-    * @param map this is used to maintain contextual information
-    * 
-    * @return returns the class that should be used for the object
-    * 
-    * @throws Exception thrown if the class cannot be resolved
-    */
-   public Value getElement(Type type, NodeMap node, Map map) throws Exception {
-      Class actual = getValue(type, node);
+   public Value read(Type type, NodeMap node, Map map) throws Exception {
+      Class actual = readValue(type, node);
       Class expect = type.getType();
       
       if(expect.isArray()) {
-         return getArray(actual, node);   
+         return readArray(actual, node);   
       }
       if(expect != actual) {
          return new ObjectValue(actual);
@@ -145,7 +125,7 @@ public class TreeStrategy implements Strategy {
     * 
     * @throws Exception thrown if the class cannot be resolved
     */   
-   private Value getArray(Class type, NodeMap node) throws Exception {      
+   private Value readArray(Class type, NodeMap node) throws Exception {      
       Node entry = node.remove(length);
       int size = 0;
       
@@ -171,7 +151,7 @@ public class TreeStrategy implements Strategy {
     * 
     * @throws Exception thrown if the class cannot be resolved
     */   
-   private Class getValue(Type type, NodeMap node) throws Exception {      
+   private Class readValue(Type type, NodeMap node) throws Exception {      
       Node entry = node.remove(label);      
       Class expect = type.getType();
       
@@ -180,28 +160,10 @@ public class TreeStrategy implements Strategy {
       }
       if(entry != null) {
          String name = entry.getValue();
-         expect = getClass(name);
+         expect = loader.load(name);
       }    
       return expect;
-   }     
-   
-   /**
-    * This is used to attach a attribute to the provided element
-    * that is used to identify the class. The attribute name is
-    * "class" and has the value of the fully qualified class 
-    * name for the object provided. This will only be invoked
-    * if the object class is different from the field class.
-    *  
-    * @param type this is the declared class for the field used
-    * @param value this is the instance variable being serialized
-    * @param node this is the element used to represent the value
-    * @param map this is used to maintain contextual information
-    * 
-    * @return this returns true if serialization is complete
-    */
-   public boolean setRoot(Type type, Object value, NodeMap node, Map map){
-      return setElement(type, value, node, map);
-   }   
+   }       
    
    /**
     * This is used to attach a attribute to the provided element
@@ -217,13 +179,13 @@ public class TreeStrategy implements Strategy {
     * 
     * @return this returns true if serialization is complete
     */   
-   public boolean setElement(Type type, Object value, NodeMap node, Map map){
+   public boolean write(Type type, Object value, NodeMap node, Map map){
       Class actual = value.getClass();
       Class expect = type.getType();
       Class real = actual;
       
       if(actual.isArray()) {
-         real = setArray(expect, value, node);
+         real = writeArray(expect, value, node);
       }
       if(actual != expect) {
          node.put(label, real.getName());
@@ -242,56 +204,12 @@ public class TreeStrategy implements Strategy {
     * 
     * @return returns the array component type that is set
     */
-   private Class setArray(Class field, Object value, NodeMap node){
+   private Class writeArray(Class field, Object value, NodeMap node){
       int size = Array.getLength(value);
       
       if(length != null) {       
          node.put(length, String.valueOf(size));
       }
       return field.getComponentType();
-   }
-   
-   /**
-    * This method is used to acquire the class of the specified name.
-    * Loading is performed by the thread context class loader as this
-    * will ensure that the class loading strategy can be changed as
-    * requirements dictate. Typically the thread context class loader
-    * can handle all serialization requirements.
-    * 
-    * @param type this is the name of the class that is to be loaded
-    * 
-    * @return this returns the class that has been loaded by this
-    */
-   private Class getClass(String type) throws Exception {
-      ClassLoader loader = getClassLoader();
-      
-      if(loader == null) {
-         loader = getCallerClassLoader();
-      }
-      return loader.loadClass(type);      
-   }
-   
-   /**
-    * This is used to acquire the caller class loader for this object.
-    * Typically this is only used if the thread context class loader
-    * is set to null. This ensures that there is at least some class
-    * loader available to the strategy to load the class.
-    * 
-    * @return this returns the loader that loaded this class     
-    */
-   private ClassLoader getCallerClassLoader() throws Exception {
-      return getClass().getClassLoader();
-   }
-
-   /**
-    * This is used to acquire the thread context class loader. This
-    * is the default class loader used by the cycle strategy. When
-    * using the thread context class loader the caller can switch the
-    * class loader in use, which allows class loading customization.
-    * 
-    * @return this returns the loader used by the calling thread
-    */
-   private static ClassLoader getClassLoader() throws Exception {
-      return Thread.currentThread().getContextClassLoader();
    }
 }

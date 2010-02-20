@@ -47,11 +47,8 @@ public class ConversionTest extends ValidationTestCase {
          this.registry = registry;
          this.strategy = strategy;
       }
-      public Value getRoot(Type field, NodeMap<InputNode> node, Map map) throws Exception {
-         return getElement(field, node, map);
-      }
-      public Value getElement(Type field, NodeMap<InputNode> node, Map map) throws Exception {
-         Value value = strategy.getElement(field, node, map);
+      public Value read(Type field, NodeMap<InputNode> node, Map map) throws Exception {
+         Value value = strategy.read(field, node, map);
          Class type = value == null ? field.getType() : value.getType();
          Converter converter = registry.resolve(type);
          if(converter != null) {
@@ -61,11 +58,8 @@ public class ConversionTest extends ValidationTestCase {
          }
          return value;
       }
-      public boolean setRoot(Type field, Object value, NodeMap<OutputNode> node, Map map) throws Exception {
-         return setElement(field, value, node, map);
-      } 
-      public boolean setElement(Type field, Object value, NodeMap<OutputNode> node, Map map) throws Exception {
-         boolean reference = strategy.setElement(field, value, node, map);
+      public boolean write(Type field, Object value, NodeMap<OutputNode> node, Map map) throws Exception {
+         boolean reference = strategy.write(field, value, node, map);
          if(!reference) {
             Class type = value.getClass();
             Converter converter = registry.resolve(type);

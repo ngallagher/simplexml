@@ -38,8 +38,13 @@ class ReadState extends WeakCache<Object, ReadGraph>{
    /** 
     * This is the contract that specifies the attributes to use.
     */
-   private Contract contract;
-           
+   private final Contract contract;
+   
+   /**
+    * This is the loader used to load the classes for this.
+    */
+   private final Loader loader;
+   
    /**
     * Constructor for the <code>ReadState</code> object. This is used
     * to create graphs that are used for reading objects from the XML
@@ -49,6 +54,7 @@ class ReadState extends WeakCache<Object, ReadGraph>{
     * @param contract this is name scheme used by the cycle strategy 
     */
    public ReadState(Contract contract) {
+      this.loader = new Loader();
       this.contract = contract;
    }
 
@@ -82,26 +88,6 @@ class ReadState extends WeakCache<Object, ReadGraph>{
     * @return returns a graph used for reading the XML document
     */
    private ReadGraph create(Object map) throws Exception {
-      ClassLoader loader = getClassLoader();
-      
-      if(loader == null) {
-         loader = getCallerClassLoader();
-      }
-      return create(map, loader);
-   }
-   
-   /**
-    * This will acquire the graph using the specified session map. If
-    * a graph does not already exist mapped to the given session then
-    * one will be created and stored with the key provided. Once the
-    * specified key is garbage collected then so is the graph object.
-    * 
-    * @param map this is typically the persistence session map used 
-    * @param loader this is the class loader used by the read state
-    * 
-    * @return returns a graph used for reading the XML document
-    */
-   private ReadGraph create(Object map, ClassLoader loader) throws Exception {
       ReadGraph read = fetch(map);
       
       if(read == null) {
@@ -110,28 +96,4 @@ class ReadState extends WeakCache<Object, ReadGraph>{
       }
       return read;
    }   
-   
-   /**
-    * This is used to acquire the caller class loader for this object.
-    * Typically this is only used if the thread context class loader
-    * is set to null. This ensures that there is at least some class
-    * loader available to the strategy to load the class.
-    * 
-    * @return this returns the loader that loaded this class     
-    */
-   private ClassLoader getCallerClassLoader() {
-      return getClass().getClassLoader();
-   }
-   
-   /**
-    * This is used to acquire the thread context class loader. This
-    * is the default class loader used by the cycle strategy. When
-    * using the thread context class loader the caller can switch the
-    * class loader in use, which allows class loading customization.
-    * 
-    * @return this returns the loader used by the calling thread
-    */
-   private static ClassLoader getClassLoader() {
-      return Thread.currentThread().getContextClassLoader();
-   }
 }

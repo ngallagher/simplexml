@@ -45,22 +45,22 @@ class WriteGraph extends IdentityHashMap<Object, String> {
    /**
     * This is used to specify the length of array instances.
     */
-   private String length;
+   private final String length;
    
    /**
     * This is the label used to mark the type of an object.
     */
-   private String label;
+   private final String label;
    
    /**
     * This is the attribute used to mark the identity of an object.
     */
-   private String mark;
+   private final String mark;
    
    /**
     * This is the attribute used to refer to an existing instance.
     */
-   private String refer;
+   private final String refer;
    
    /**
     * Constructor for the <code>WriteGraph</code> object. This is
@@ -90,18 +90,18 @@ class WriteGraph extends IdentityHashMap<Object, String> {
     * 
     * @return returns true if the element has been fully written
     */
-   public boolean setElement(Type type, Object value, NodeMap node){
+   public boolean write(Type type, Object value, NodeMap node){
       Class actual = value.getClass();
       Class expect = type.getType();
       Class real = actual;
       
       if(actual.isArray()) {
-         real = setArray(actual, value, node);
+         real = writeArray(actual, value, node);
       }
       if(actual != expect) {
          node.put(label, real.getName());
       }       
-      return setReference(value, node);
+      return writeReference(value, node);
    }
    
    /**
@@ -116,19 +116,20 @@ class WriteGraph extends IdentityHashMap<Object, String> {
     * 
     * @return returns true if the element has been fully written
     */   
-   private boolean setReference(Object value, NodeMap node) {
+   private boolean writeReference(Object value, NodeMap node) {
       String name = get(value);
+      int size = size();
       
       if(name != null) {
          node.put(refer, name);
          return true;
       } 
-      String unique = getKey();      
+      String unique = String.valueOf(size);
       
       node.put(mark, unique);
       put(value, unique);
       
-      return false;     
+      return false;   
    }
    
    /**
@@ -142,23 +143,12 @@ class WriteGraph extends IdentityHashMap<Object, String> {
     * 
     * @return returns the array component type that is set
     */
-   private Class setArray(Class field, Object value, NodeMap node){
+   private Class writeArray(Class field, Object value, NodeMap node){
       int size = Array.getLength(value);
       
       if(!containsKey(value)) {       
          node.put(length, String.valueOf(size));
       }
       return field.getComponentType();
-   }
-   
-   /**
-    * This is used to generate a unique key, which is used to mark 
-    * the serialized object. This currently returns an incrementing 
-    * integer value as a string, but it can be any unique value.
-    * 
-    * @return a unique key used to identify an object instance
-    */
-   private String getKey() {      
-      return String.valueOf(size());      
    }
 }

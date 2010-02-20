@@ -40,27 +40,27 @@ class ReadGraph extends HashMap {
    /**
     * This is the class loader that is used to load the types used.
     */
-   private ClassLoader loader;
+   private final Loader loader;
    
    /**
     * This is used to represent the length of array object values.
     */
-   private String length;
+   private final String length;
    
    /**
     * This is the label used to mark the type of an object.
     */
-   private String label;
+   private final String label;
    
    /**
     * This is the attribute used to mark the identity of an object.
     */
-   private String mark;
+   private final String mark;
    
    /**
     * This is the attribute used to refer to an existing instance.
     */
-   private String refer;
+   private final String refer;
    
    /**
     * Constructor for the <code>ReadGraph</code> object. This is used
@@ -71,7 +71,7 @@ class ReadGraph extends HashMap {
     * @param contract this is the name scheme used by the strategy
     * @param loader this is the class loader to used for the graph 
     */
-   public ReadGraph(Contract contract, ClassLoader loader) {      
+   public ReadGraph(Contract contract, Loader loader) {      
       this.refer = contract.getReference();
       this.mark = contract.getIdentity();
       this.length = contract.getLength();
@@ -90,7 +90,7 @@ class ReadGraph extends HashMap {
     * 
     * @return this is used to return the type to acquire the value
     */
-   public Value getElement(Type type, NodeMap node) throws Exception {
+   public Value read(Type type, NodeMap node) throws Exception {
       Node entry = node.remove(label);
       Class expect = type.getType();
       
@@ -99,9 +99,9 @@ class ReadGraph extends HashMap {
       }
       if(entry != null) {      
          String name = entry.getValue();
-         expect = loader.loadClass(name);
+         expect = loader.load(name);
       }  
-      return getInstance(type, expect, node); 
+      return readInstance(type, expect, node); 
    }
    
    /**
@@ -116,18 +116,18 @@ class ReadGraph extends HashMap {
     * 
     * @return this is used to return the type to acquire the value
     */
-   private Value getInstance(Type type, Class real, NodeMap node) throws Exception {      
+   private Value readInstance(Type type, Class real, NodeMap node) throws Exception {      
       Node entry = node.remove(mark);
       
       if(entry == null) {
-         return getReference(type, real, node);
+         return readReference(type, real, node);
       }      
       String key = entry.getValue();
       
       if(containsKey(key)) {
          throw new CycleException("Element '%s' already exists", key);
       }
-      return getValue(type, real, node, key);
+      return readValue(type, real, node, key);
    }
    
    /**
@@ -142,11 +142,11 @@ class ReadGraph extends HashMap {
     * 
     * @return this is used to return the type to acquire the value
     */ 
-   private Value getReference(Type type, Class real, NodeMap node) throws Exception {
+   private Value readReference(Type type, Class real, NodeMap node) throws Exception {
       Node entry = node.remove(refer);
       
       if(entry == null) {
-         return getValue(type, real, node);
+         return readValue(type, real, node);
       }
       String key = entry.getValue();
       Object value = get(key); 
@@ -169,11 +169,11 @@ class ReadGraph extends HashMap {
     * 
     * @return this is used to return the type to acquire the value
     */
-   private Value getValue(Type type, Class real, NodeMap node) throws Exception {      
+   private Value readValue(Type type, Class real, NodeMap node) throws Exception {      
       Class expect = type.getType();
       
       if(expect.isArray()) {
-         return getArray(type, real, node);
+         return readArray(type, real, node);
       }
       return new ObjectValue(real);
    }
@@ -191,8 +191,8 @@ class ReadGraph extends HashMap {
     * 
     * @return this is used to return the type to acquire the value
     */
-   private Value getValue(Type type, Class real, NodeMap node, String key) throws Exception {
-      Value value = getValue(type, real, node);
+   private Value readValue(Type type, Class real, NodeMap node, String key) throws Exception {
+      Value value = readValue(type, real, node);
       
       if(key != null) {
          return new Allocate(value, this, key);
@@ -212,7 +212,7 @@ class ReadGraph extends HashMap {
     * 
     * @return this is used to return the type to acquire the value
     */  
-   private Value getArray(Type type, Class real, NodeMap node) throws Exception {
+   private Value readArray(Type type, Class real, NodeMap node) throws Exception {
       Node entry = node.remove(length);
       int size = 0;
       

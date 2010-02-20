@@ -41,7 +41,7 @@ public class CycleStrategyTest extends TestCase {
       CycleStrategy strategy = new CycleStrategy();
       InputNode event = NodeBuilder.read(reader);
       NodeMap attributes = event.getAttributes();
-      Value value = strategy.getElement(new Entry(String[].class), attributes, map);
+      Value value = strategy.read(new Entry(String[].class), attributes, map);
       
       assertEquals(12, value.getLength());
       assertEquals(null, value.getValue());
@@ -55,7 +55,7 @@ public class CycleStrategyTest extends TestCase {
       CycleStrategy strategy = new CycleStrategy();
       InputNode event = NodeBuilder.read(reader);
       NodeMap attributes = event.getAttributes();
-      Value value = strategy.getElement(new Entry(String.class), attributes, map);
+      Value value = strategy.read(new Entry(String.class), attributes, map);
       
       assertEquals(0, value.getLength());
       assertEquals(null, value.getValue());
@@ -66,7 +66,7 @@ public class CycleStrategyTest extends TestCase {
    public void testReference() throws Exception {
       StringReader reader = new StringReader(REFERENCE);
       Contract contract = new Contract("id", "reference", "class", "length");
-      ReadGraph graph = new ReadGraph(contract, getClass().getClassLoader());
+      ReadGraph graph = new ReadGraph(contract, new Loader());
       InputNode event = NodeBuilder.read(reader);
       NodeMap attributes = event.getAttributes();
       
@@ -74,7 +74,7 @@ public class CycleStrategyTest extends TestCase {
       graph.put("2", "second text");
       graph.put("3", "third text");
       
-      Value value = graph.getElement(new Entry(String.class), attributes);
+      Value value = graph.read(new Entry(String.class), attributes);
       
       assertEquals(0, value.getLength());
       assertEquals("first text", value.getValue());

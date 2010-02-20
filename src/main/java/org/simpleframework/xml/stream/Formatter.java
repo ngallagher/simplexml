@@ -65,6 +65,16 @@ class Formatter {
    private static final char[] AND = { '&', 'a', 'm', 'p', ';' };
    
    /**
+    * This is used to open a comment section within the document.
+    */
+   private static final char[] OPEN = { '<', '!', '-', '-', ' ' };
+   
+   /**
+    * This is used to close a comment section within the document.
+    */
+   private static final char[] CLOSE = { ' ', '-', '-', '>' };
+   
+   /**
     * Output buffer used to write the generated XML result to.
     */ 
    private OutputBuffer buffer;
@@ -124,9 +134,22 @@ class Formatter {
     * comment will typically be written at the start of an element
     * to describe the purpose of the element or include debug data
     * that can be used to determine any issues in serialization.
+    * 
+    * @param comment this is the comment that is to be written
     */  
-   public void writeComment() throws Exception {
-      return;
+   public void writeComment(String comment) throws Exception {
+      String text = indenter.top();
+      
+      if(last == Tag.START) {
+         append('>');
+      }
+      if(text != null) {
+         append(text);
+         append(OPEN);
+         append(comment);
+         append(CLOSE);
+      }
+      last = Tag.COMMENT;
    }
    
    /**
@@ -338,6 +361,17 @@ class Formatter {
    private void append(char ch) throws Exception {
       buffer.append(ch);           
    }
+   
+   /**
+    * This is used to buffer characters to the output stream without
+    * any translation. This is used when buffering the start tags so
+    * that they can be reset without affecting the resulting document.
+    *
+    * @param plain this is the string that is to be buffered
+    */     
+   private void append(char[] plain) throws Exception {
+      buffer.append(plain);
+   }
 
    /**
     * This is used to buffer characters to the output stream without
@@ -496,6 +530,7 @@ class Formatter {
     * is updated. This is needed to write well formed XML text.
     */ 
    private enum Tag {
+      COMMENT,
       START,
       TEXT,
       END                

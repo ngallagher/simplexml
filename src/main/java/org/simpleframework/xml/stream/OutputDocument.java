@@ -35,7 +35,7 @@ class OutputDocument implements OutputNode {
    private OutputNodeMap table;
         
    /**
-    * Represnets the writer that is used to create the element.
+    * Represents the writer that is used to create the element.
     */ 
    private NodeWriter writer;
    
@@ -48,6 +48,11 @@ class OutputDocument implements OutputNode {
     * This represents the namespace reference used by this.
     */  
    private String reference;
+   
+   /**
+    * This is the comment that is to be written for the node.
+    */
+   private String comment;
    
    /**
     * Represents the value that has been set on this document.
@@ -161,7 +166,7 @@ class OutputDocument implements OutputNode {
    
    /**
     * This returns the value that has been set for this document.
-    * The value returned is esentially a dummy value as this node
+    * The value returned is essentially a dummy value as this node
     * is never written to the resulting XML document.
     *
     * @return the value that has been set with this document
@@ -171,10 +176,21 @@ class OutputDocument implements OutputNode {
    }
    
    /**
+    * This is used to get the text comment for the element. This can
+    * be null if no comment has been set. If no comment is set on 
+    * the node then no comment will be written to the resulting XML.
+    * 
+    * @return this is the comment associated with this element
+    */
+   public String getComment() {
+      return comment;
+   }
+   
+   /**
     * This method is used to determine if this node is the root 
     * node for the XML document. The root node is the first node
     * in the document and has no sibling nodes. This will return
-    * true although the codument node is not strictly the root.
+    * true although the document node is not strictly the root.
     * 
     * @return returns true although this is not really a root
     */
@@ -211,9 +227,9 @@ class OutputDocument implements OutputNode {
    }
    
    /**
-    * This method is used for convinience to add an attribute node 
+    * This method is used for convenience to add an attribute node 
     * to the attribute <code>NodeMap</code>. The attribute added
-    * can be removed from the element by useing the node map.
+    * can be removed from the element by using the node map.
     * 
     * @param name this is the name of the attribute to be added
     * @param value this is the value of the node to be added
@@ -227,7 +243,7 @@ class OutputDocument implements OutputNode {
    /**
     * This returns a <code>NodeMap</code> which can be used to add
     * nodes to this node. The node map returned by this is a dummy
-    * map, as this output node is never writteh to the XML document.
+    * map, as this output node is never written to the XML document.
     *
     * @return returns the node map used to manipulate attributes
     */ 
@@ -237,13 +253,24 @@ class OutputDocument implements OutputNode {
 
    /**
     * This is used to set a text value to the element. This effect
-    * of adding this to the doucment node will not change what
+    * of adding this to the document node will not change what
     * is actually written to the generated XML document.
     * 
     * @param value this is the text value to add to this element
     */  
    public void setValue(String value) {
       this.value = value;
+   }
+   
+   /**
+    * This is used to set a text comment to the element. This will
+    * be written just before the actual element is written. Only a
+    * single comment can be set for each output node written. 
+    * 
+    * @param comment this is the comment to set on the node
+    */
+   public void setComment(String comment) {
+      this.comment = comment;
    }
    
    /**

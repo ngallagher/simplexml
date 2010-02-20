@@ -53,7 +53,7 @@ public class AnnotationTypeTest extends ValidationTestCase {
          this.strategy = new TreeStrategy();
       }
       
-      public Value getElement(Type type, NodeMap<InputNode> node, Map map) throws Exception {
+      public Value read(Type type, NodeMap<InputNode> node, Map map) throws Exception {
          Component component = type.getAnnotation(Component.class);
          
          if(component != null) {
@@ -64,14 +64,10 @@ public class AnnotationTypeTest extends ValidationTestCase {
                throw new IllegalStateException("Component name incorrect, expected '"+name+"' but was '"+value.getValue()+"'");
             }
          }
-         return strategy.getElement(type, node, map);
+         return strategy.read(type, node, map);
       }
 
-      public Value getRoot(Type type, NodeMap<InputNode> node, Map map) throws Exception {
-         return getElement(type, node, map);
-      }
-
-      public boolean setElement(Type type, Object value, NodeMap<OutputNode> node, Map map) throws Exception {
+      public boolean write(Type type, Object value, NodeMap<OutputNode> node, Map map) throws Exception {
          Component component = type.getAnnotation(Component.class);
          
          if(component != null) {
@@ -81,11 +77,7 @@ public class AnnotationTypeTest extends ValidationTestCase {
                node.put(KEY, name);
             }
          }
-         return strategy.setElement(type, value, node, map);
-      }
-
-      public boolean setRoot(Type type, Object value, NodeMap<OutputNode> node, Map map) throws Exception {
-         return setElement(type, value, node, map);
+         return strategy.write(type, value, node, map);
       }
    }
    

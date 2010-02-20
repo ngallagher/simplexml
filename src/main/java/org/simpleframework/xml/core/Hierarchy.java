@@ -56,5 +56,6 @@ class Hierarchy extends LinkedList<Class> {
          addFirst(type);         
          type = type.getSuperclass();
       }
+      remove(Object.class);
    }       
 }

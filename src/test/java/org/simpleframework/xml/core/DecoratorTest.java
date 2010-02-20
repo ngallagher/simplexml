@@ -52,21 +52,15 @@ public class DecoratorTest extends ValidationTestCase {
             this.interceptor = interceptor;
             this.strategy = strategy;
         }
-        public Value getRoot(Type field, NodeMap<InputNode> node, Map map) throws Exception {         
-            return getElement(field, node, map);
-        }
         /**
          * Here we intercept the call to get the element value from the
          * strategy so that we can change the attributes in the XML element
          * to match what was change on writing the element.
          * @param node this is the XML element to be modified
          */
-        public Value getElement(Type field, NodeMap<InputNode> node, Map map) throws Exception {
+        public Value read(Type field, NodeMap<InputNode> node, Map map) throws Exception {
             interceptor.read(field.getType(), node);            
-            return strategy.getElement(field, node, map);
-        }
-        public boolean setRoot(Type field, Object value, NodeMap<OutputNode> node, Map map) throws Exception {
-            return setElement(field, value, node, map);
+            return strategy.read(field, node, map);
         }
         /**
          * Here we change the XML element after it has been annotated by
@@ -74,8 +68,8 @@ public class DecoratorTest extends ValidationTestCase {
          * to the resulting XML document.
          * @param node this is the XML element that will be written
          */
-        public boolean setElement(Type field, Object value, NodeMap<OutputNode> node, Map map) throws Exception {
-            boolean result = strategy.setElement(field, value, node, map);           
+        public boolean write(Type field, Object value, NodeMap<OutputNode> node, Map map) throws Exception {
+            boolean result = strategy.write(field, value, node, map);           
             interceptor.write(field.getType(), node);
             return result;
         }              

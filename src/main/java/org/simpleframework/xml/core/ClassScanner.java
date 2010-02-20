@@ -22,6 +22,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Map;
 
+import org.simpleframework.xml.Default;
 import org.simpleframework.xml.Namespace;
 import org.simpleframework.xml.NamespaceList;
 import org.simpleframework.xml.Order;
@@ -86,6 +87,11 @@ class ClassScanner  {
    private Function resolve;
    
    /**
+    * This is used to determine if there is a default type for this.
+    */
+   private Default access;
+   
+   /**
     * This is the optional order annotation for the scanned class.
     */
    private Order order;
@@ -132,6 +138,18 @@ class ClassScanner  {
     */
    public Decorator getDecorator() {
       return decorator;
+   }
+  
+   /**
+    * This is used to provide the <code>Default</code> annotation
+    * that holds the default access type to use for the class. This
+    * is important in determining how the serializer will deal with
+    * methods or fields in the class that do not have annotations.
+    * 
+    * @return this returns the default annotation for access type
+    */
+   public Default getDefault() {
+      return access;
    }
    
    /**
@@ -266,20 +284,36 @@ class ClassScanner  {
       Class real = type;
       
       while(type != null) {
-         if(namespace == null) {
-            namespace(type);
-         }
-         if(root == null) {              
-            root(type);
-         }  
-         if(order == null) {
-            order(type);
-         }
+         global(type);
          scope(type);
          scan(real, type);
          type = type.getSuperclass();
       }      
       process(real); 
+   }
+   
+   /**
+    * This is used to acquire the annotations that apply globally to 
+    * the scanned class. Global annotations are annotations that
+    * are applied to the class, such annotations will be used to
+    * determine characteristics for the fields and methods of the
+    * class, which the serializer uses in the serialization process.  
+    * 
+    * @param type this is the type to extract the annotations from
+    */
+   private void global(Class type) throws Exception {
+      if(namespace == null) {
+         namespace(type);
+      }
+      if(root == null) {              
+         root(type);
+      }  
+      if(order == null) {
+         order(type);
+      }
+      if(access == null) {
+         access(type);
+      }
    }
 
    /**
@@ -326,6 +360,20 @@ class ClassScanner  {
    private void order(Class<?> type) {
       if(type.isAnnotationPresent(Order.class)) {
          order = type.getAnnotation(Order.class);
+      }
+   }
+   
+   /**
+    * This is used to extract the <code>Default</code> annotation from
+    * the class. If this annotation is present it provides the access
+    * type that should be used to determine default fields and methods.
+    * If it is not present no default annotations will be applied.
+    * 
+    * @param type this is the type to extract the annotation from
+    */
+   private void access(Class<?> type) {
+      if(type.isAnnotationPresent(Default.class)) {
+         access = type.getAnnotation(Default.class);
       }
    }
    

@@ -89,6 +89,17 @@ class Indenter {
       this.indent = format.getIndent();           
       this.cache = new Cache(size);
    }  
+   
+   /**
+    * This returns the current indent for this indenter. This should
+    * be used to write elements or comments that should be at the
+    * same indentation level as the XML element that will follow. 
+    * 
+    * @return this returns the current indentation level for this
+    */
+   public String top() {
+      return indent(index);
+   }
 
    /**
     * This is used to push an indent on to the cache. The first

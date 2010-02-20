@@ -25,13 +25,13 @@ import java.lang.annotation.Retention;
  * The <code>Transient</code> annotation is an optional annotation 
  * that can be used within an XML class schema to mark a method or
  * field as being transient, which indicates that it does not take
- * part in serialization or deserialization. This is used only as
- * a means to illustrate to the reader of your class that this has
- * no impact on the XML representation of the object. Fields or
- * methods annotated with this will be ignored, as will those that
- * contain no XML annotations. 
+ * part in serialization or deserialization. This is particularly
+ * useful when the <code>Default</code> annotation is applied to 
+ * a class, as it indicates no default serialization is to be used.
  * 
  * @author Niall Gallagher
+ * 
+ * @see org.simpleframework.xml.Default
  */
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Transient {        

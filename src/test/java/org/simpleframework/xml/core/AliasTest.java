@@ -45,11 +45,7 @@ public class AliasTest extends ValidationTestCase {
             backward.put(name, type);
         }
         
-        public Value getRoot(Type field, NodeMap<InputNode> node, Map map) throws Exception {
-            return getElement(field, node, map);
-        }
-        
-        public Value getElement(Type field, NodeMap<InputNode> node, Map map) throws Exception {
+        public Value read(Type field, NodeMap<InputNode> node, Map map) throws Exception {
             Node entry = node.remove("type");
             
             if(entry != null) {
@@ -61,15 +57,11 @@ public class AliasTest extends ValidationTestCase {
                 }
                 node.put("class", type.getName());
             }
-            return strategy.getElement(field, node, map);
+            return strategy.read(field, node, map);
         }
-
-        public boolean setRoot(Type field, Object value, NodeMap<OutputNode> node, Map map) throws Exception {
-            return setElement(field, value, node, map);
-        }
-
-        public boolean setElement(Type field, Object value, NodeMap<OutputNode> node, Map map) throws Exception {
-            boolean done = strategy.setElement(field, value, node, map);
+        
+        public boolean write(Type field, Object value, NodeMap<OutputNode> node, Map map) throws Exception {
+            boolean done = strategy.write(field, value, node, map);
             Node entry = node.remove("class");
             
             if(entry != null) {

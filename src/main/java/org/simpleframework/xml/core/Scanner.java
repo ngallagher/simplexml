@@ -22,6 +22,8 @@ import java.lang.annotation.Annotation;
 import java.util.List;
 
 import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.Default;
+import org.simpleframework.xml.DefaultType;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementArray;
 import org.simpleframework.xml.ElementList;
@@ -51,6 +53,11 @@ class Scanner {
     * This method acts as a pointer to the types commit process.
     */
    private ClassScanner scanner;
+   
+   /**
+    * This is the default access type to be used for this scanner.
+    */
+   private DefaultType access;
    
    /**
     * This is used to store all labels that are XML attributes.
@@ -379,6 +386,7 @@ class Scanner {
    private void scan(Class type) throws Exception {
       root(type);
       order(type);
+      access(type);
       field(type);
       method(type);
       validate(type);
@@ -575,6 +583,23 @@ class Scanner {
    }
    
    /**
+    * This is used to determine the access type for the class. The
+    * access type is specified by the <code>DefaultType</code>
+    * enumeration. Setting a default access tells this scanner to
+    * synthesize an XML annotation for all fields or methods that
+    * do not have associated annotations. 
+    * 
+    * @param type this is the type to acquire the default type for
+    */
+   private void access(Class<?> type) {
+      Default holder = scanner.getDefault();
+      
+      if(holder != null) {
+         access = holder.value();
+      }
+   }
+   
+   /**
     * This method is used to determine if a root annotation value is
     * an empty value. Rather than determining if a string is empty
     * be comparing it to an empty string this method allows for the
@@ -596,7 +621,7 @@ class Scanner {
     * @param type this is the object type that is to be scanned
     */    
    public void field(Class type) throws Exception {
-      ContactList list = new FieldScanner(type);
+      ContactList list = new FieldScanner(type, access);
       
       for(Contact contact : list) {
          scan(contact, contact.getAnnotation());
@@ -611,7 +636,7 @@ class Scanner {
     * @param type this is the object type that is to be scanned
     */ 
    public void method(Class type) throws Exception {
-      ContactList list = new MethodScanner(type);
+      ContactList list = new MethodScanner(type, access);
       
       for(Contact contact : list) {
          scan(contact, contact.getAnnotation());

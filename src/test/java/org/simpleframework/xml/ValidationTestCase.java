@@ -26,16 +26,23 @@ import org.custommonkey.xmlunit.XMLTestCase;
 import org.simpleframework.xml.core.Persister;
 import org.simpleframework.xml.strategy.CycleStrategy;
 import org.simpleframework.xml.strategy.Strategy;
+import org.simpleframework.xml.strategy.Type;
+import org.simpleframework.xml.strategy.Visitor;
+import org.simpleframework.xml.strategy.VisitorStrategy;
 import org.simpleframework.xml.stream.CamelCaseStyle;
 import org.simpleframework.xml.stream.Format;
 import org.simpleframework.xml.stream.HyphenStyle;
+import org.simpleframework.xml.stream.InputNode;
 import org.simpleframework.xml.stream.NodeAdapterBuilder;
+import org.simpleframework.xml.stream.NodeMap;
+import org.simpleframework.xml.stream.OutputNode;
 import org.simpleframework.xml.stream.Style;
 import org.w3c.dom.CDATASection;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
+
 
 public class ValidationTestCase extends XMLTestCase {
 
@@ -119,6 +126,8 @@ public class ValidationTestCase extends XMLTestCase {
        
         File hyphenFile = new File(directory, type.getClass().getSimpleName() + ".hyphen.xml");
         Strategy strategy = new CycleStrategy("ID", "REFERER");
+        Visitor visitor = new CommentVisitor();
+        strategy = new VisitorStrategy(visitor, strategy);
         Style style = new HyphenStyle();
         Format format = new Format(style);
         Persister hyphen = new Persister(strategy, format);
@@ -190,9 +199,9 @@ public class ValidationTestCase extends XMLTestCase {
        Document document = parse(sourceXml);
        ExpressionMatcher matcher = new ExpressionMatcher(pathExpression, match);
        if(!assertTrue) {
-          assertFalse("Document does have expression '"+pathExpression+"' with "+match.getDescription(), matcher.matches(document));
+          assertFalse("Document does have expression '"+pathExpression+"' with "+match.getDescription()+" for "+sourceXml, matcher.matches(document));
        } else {
-          assertTrue("Document does not match expression '"+pathExpression+"' with "+match.getDescription(), matcher.matches(document));
+          assertTrue("Document does not match expression '"+pathExpression+"' with "+match.getDescription()+" for "+sourceXml, matcher.matches(document));
        }
     }
     
@@ -426,6 +435,13 @@ public class ValidationTestCase extends XMLTestCase {
        Document doc = dbf.newDocumentBuilder().parse(
            new InputSource(new StringReader(xml)));
        print(doc.getDocumentElement());
+     }
+   
+     public static class CommentVisitor implements Visitor {
+        public void read(Type type, NodeMap<InputNode> node){}
+        public void write(Type type, NodeMap<OutputNode> node) throws Exception {
+           node.getNode().setComment(type.getType().getName());
+        }
      }
 
 }

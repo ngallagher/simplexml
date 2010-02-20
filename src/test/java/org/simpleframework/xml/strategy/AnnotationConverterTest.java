@@ -90,11 +90,8 @@ public class AnnotationConverterTest extends ValidationTestCase {
       public AnnotationStrategy(Strategy strategy) {
          this.strategy = strategy;
       }
-      public Value getRoot(Type type, NodeMap<InputNode> node, Map map) throws Exception {
-         return getElement(type, node, map);
-      }
-      public Value getElement(Type type, NodeMap<InputNode> node, Map map) throws Exception {
-         Value value = strategy.getElement(type, node, map);
+      public Value read(Type type, NodeMap<InputNode> node, Map map) throws Exception {
+         Value value = strategy.read(type, node, map);
          Convert convert = type.getAnnotation(Convert.class);
          InputNode parent = node.getNode();
          
@@ -111,10 +108,7 @@ public class AnnotationConverterTest extends ValidationTestCase {
          }
          return value;
       }
-      public boolean setRoot(Type type, Object value, NodeMap<OutputNode> node, Map map) throws Exception {
-         return setElement(type, value, node, map);
-      }
-      public boolean setElement(Type type, Object value, NodeMap<OutputNode> node, Map map) throws Exception {
+      public boolean write(Type type, Object value, NodeMap<OutputNode> node, Map map) throws Exception {
          Convert convert = type.getAnnotation(Convert.class);
          OutputNode parent = node.getNode();
          
@@ -129,7 +123,7 @@ public class AnnotationConverterTest extends ValidationTestCase {
             converter.write(parent, value);
             return true;
          }
-         return strategy.setElement(type, value, node, map);
+         return strategy.write(type, value, node, map);
       }
    }  
    

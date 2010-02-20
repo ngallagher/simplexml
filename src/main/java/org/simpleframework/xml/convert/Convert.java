@@ -44,8 +44,10 @@ import java.lang.annotation.RetentionPolicy;
  * <pre>
  * 
  *    &#64;Root
- *    &#64;Convert(TestConverter.class)
- *    public class Test
+ *    &#64;Convert(DemoConverter.class)
+ *    public class Demo {
+ *       ...
+ *    }
  * 
  * </pre>
  * For the above class the specified converter will be used. This is

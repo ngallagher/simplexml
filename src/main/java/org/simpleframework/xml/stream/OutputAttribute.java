@@ -140,6 +140,28 @@ class OutputAttribute implements OutputNode {
    public OutputNode getChild(String name) {
       return null;
    }
+   
+   /**
+    * This is used to get the text comment for the element. This can
+    * be null if no comment has been set. If no comment is set on 
+    * the node then no comment will be written to the resulting XML.
+    * 
+    * @return this is the comment associated with this element
+    */
+   public String getComment() {
+      return null;
+   }
+   
+   /**
+    * This is used to set a text comment to the element. This will
+    * be written just before the actual element is written. Only a
+    * single comment can be set for each output node written. 
+    * 
+    * @param comment this is the comment to set on the node
+    */
+   public void setComment(String comment) {
+      return;
+   } 
 
    /**
     * The <code>Mode</code> is used to indicate the output mode
@@ -180,7 +202,7 @@ class OutputAttribute implements OutputNode {
     */
    public void setData(boolean data) {
       return;           
-   }
+   } 
 
    /**
     * This is used to acquire the prefix for this output node. If

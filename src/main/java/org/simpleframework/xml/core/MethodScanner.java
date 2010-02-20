@@ -18,17 +18,21 @@
 
 package org.simpleframework.xml.core;
 
+import static org.simpleframework.xml.DefaultType.PROPERTY;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 
 import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.DefaultType;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementArray;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.ElementMap;
 import org.simpleframework.xml.Text;
+import org.simpleframework.xml.Transient;
 import org.simpleframework.xml.Version;
 
 /**
@@ -61,6 +65,11 @@ class MethodScanner extends ContactList {
    private final Hierarchy hierarchy;
    
    /**
+    * This is the default access type to be used for this scanner.
+    */
+   private final DefaultType access;
+   
+   /**
     * This is used to collect all the set methods from the object.
     */
    private final PartMap write;
@@ -86,9 +95,24 @@ class MethodScanner extends ContactList {
     * @throws Exception thrown if there was a problem scanning
     */
    public MethodScanner(Class type) throws Exception {
+      this(type, null);
+   }
+   
+   /**
+    * Constructor for the <code>MethodScanner</code> object. This is
+    * used to create an object that will scan the specified class
+    * such that all bean property methods can be paired under the
+    * XML annotation specified within the class.
+    * 
+    * @param type this is the type that is to be scanned for methods
+    * 
+    * @throws Exception thrown if there was a problem scanning
+    */
+   public MethodScanner(Class type, DefaultType access) throws Exception {
       this.hierarchy = new Hierarchy(type);
       this.write = new PartMap();
       this.read = new PartMap();
+      this.access = access;
       this.type = type;
       this.scan(type);
    }
@@ -105,7 +129,10 @@ class MethodScanner extends ContactList {
     */
    private void scan(Class type) throws Exception {
       for(Class next : hierarchy) {
-         scan(type, next);
+         scan(next, access);
+      }
+      for(Class next : hierarchy) {
+         scan(next, type);
       } 
       build();
       validate();
@@ -122,7 +149,7 @@ class MethodScanner extends ContactList {
     * 
     * @throws Exception thrown if the class schema is invalid
     */
-   private void scan(Class real, Class type) throws Exception {
+   private void scan(Class type, Class real) throws Exception {
       Method[] method = type.getDeclaredMethods();
 
       for(int i = 0; i < method.length; i++) {
@@ -146,6 +173,25 @@ class MethodScanner extends ContactList {
       
       for(int i = 0; i < list.length; i++) {
          scan(method, list[i]);                       
+      }  
+   }
+   
+   /**
+    * This is used to scan all the methods of the class in order to
+    * determine if it should have a default annotation. If the method
+    * should have a default XML annotation then it is added to the
+    * list of contacts to be used to form the class schema.
+    * 
+    * @param type this is the type to have its methods scanned
+    * @param access this is the default access type for the class
+    */
+   private void scan(Class type, DefaultType access) throws Exception {
+      Method[] method = type.getDeclaredMethods();
+
+      for(int i = 0; i < method.length; i++) {
+         if(access == PROPERTY) {
+            process(method[i]);
+         }
       }  
    }
    
@@ -175,7 +221,10 @@ class MethodScanner extends ContactList {
       }
       if(label instanceof Element) {
          process(method, label);
-      }         
+      }    
+      if(label instanceof Transient) {
+         remove(method, label);
+      }
       if(label instanceof Version) {
          process(method, label);
       }
@@ -211,6 +260,34 @@ class MethodScanner extends ContactList {
    } 
    
    /**
+    * This is used to classify the specified method into either a get
+    * or set method. If the method is neither then an exception is
+    * thrown to indicate that the XML annotations can only be used
+    * with methods following the Java Bean naming conventions. Once
+    * the method is classified is is added to either the read or 
+    * write map so that it can be paired after scanning is complete.
+    * 
+    * @param method this is the method that is to be classified
+    */  
+   private void process(Method method) throws Exception {
+      MethodPart part = MethodPartFactory.getInstance(method);
+      
+      if(part != null) {
+         MethodType type = part.getMethodType();     
+         
+         if(type == MethodType.GET) {
+            process(part, read);
+         }
+         if(type == MethodType.IS) {
+            process(part, read);
+         }
+         if(type == MethodType.SET) {
+            process(part, write);
+         }
+      }
+   }
+   
+   /**
     * This is used to determine whether the specified method can be
     * inserted into the given <code>PartMap</code>. This ensures 
     * that only the most specialized method is considered, which 
@@ -224,6 +301,48 @@ class MethodScanner extends ContactList {
       
       if(name != null) {
          map.put(name, method);
+      }
+   }
+   
+   /**
+    * This method is used to remove a particular method from the list
+    * of contacts. If the <code>Transient</code> annotation is used
+    * by any method then this method must be removed from the schema.
+    * In particular it is important to remove methods if there are
+    * defaults applied to the class.
+    * 
+    * @param method this is the method that is to be removed
+    * @param label this is the label associated with the method
+    */
+   private void remove(Method method, Annotation label) throws Exception {
+      MethodPart part = MethodPartFactory.getInstance(method, label);
+      MethodType type = part.getMethodType();     
+      
+      if(type == MethodType.GET) {
+         remove(part, read);
+      }
+      if(type == MethodType.IS) {
+         remove(part, read);
+      }
+      if(type == MethodType.SET) {
+         remove(part, write);
+      }
+   } 
+   
+   /**
+    * This is used to remove the method part from the specified map.
+    * Removal is performed using the name of the method part. If it
+    * has been scanned and added to the map then it will be removed
+    * and will not form part of the class schema.
+    * 
+    * @param part this is the part to be removed from the map 
+    * @param map this is the map to removed the method part from
+    */
+   private void remove(MethodPart part, PartMap map) throws Exception {
+      String name = part.getName();
+      
+      if(name != null) {
+         map.remove(name);
       }
    }
    

@@ -74,7 +74,20 @@ class OutputBuffer {
    }
    
    /** 
-    * This will add a <code>char</code> to the end of the buffer.
+    * This will add a <code>char</code> array to the buffer.
+    * The buffer will not overflow with repeated uses of the 
+    * <code>append</code>, it uses an <code>ensureCapacity</code> 
+    * method which will allow the buffer to dynamically grow in 
+    * size to accommodate large character arrays.
+    *
+    * @param value the character array to be appended to this
+    */   
+   public void append(char[] value){
+      text.append(value, 0, value.length);
+   }
+   
+   /** 
+    * This will add a <code>char</code> array to the buffer.
     * The buffer will not overflow with repeated uses of the 
     * <code>append</code>, it uses an <code>ensureCapacity</code> 
     * method which will allow the buffer to dynamically grow in 

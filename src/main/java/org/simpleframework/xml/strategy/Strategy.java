@@ -57,25 +57,6 @@ import org.simpleframework.xml.stream.OutputNode;
 public interface Strategy {
 
    /**
-    * This is used to resolve and load the root class type. To perform
-    * the resolution this method is given the root node map for the
-    * XML document. This is separate to the <code>getElement</code>
-    * because the root element may contain details like the location
-    * of the byte codes, much like the RMI codebase annotation, or
-    * the version of the package for example "some.package.v2". This 
-    * must return null if a type cannot be resolved.  
-    *  
-    * @param type this is the type of the root element expected
-    * @param node this is the node map used to resolve an override
-    * @param map this is used to maintain contextual information
-    * 
-    * @return the value that should be used to describe the instance 
-    * 
-    * @throws Exception thrown if the class cannot be resolved
-    */
-   public Value getRoot(Type type, NodeMap<InputNode> node, Map map) throws Exception;
-
-   /**
     * This is used to resolve and load a class for the given element.
     * The class should be of the same type or a subclass of the class
     * specified. It can be resolved using the details within the
@@ -92,27 +73,7 @@ public interface Strategy {
     * 
     * @throws Exception thrown if the class cannot be resolved
     */
-   public Value getElement(Type type, NodeMap<InputNode> node, Map map) throws Exception;
-
-   /**
-    * This is used to attach attributes values to the given node
-    * map during the serialization process. This method allows
-    * the strategy to augment the XML document so that it can be
-    * deserialized using a similar strategy. For example the 
-    * default strategy adds a "class" attribute to the node map.
-    * The root element is a special element in that it can add
-    * details regarding the code base location or version to use. 
-    *  
-    * @param type this is the declared class for the field used
-    * @param value this is the instance variable being serialized
-    * @param node this is the node map used to represent the value
-    * @param map this is used to maintain contextual information
-    * 
-    * @return this returns true if serialization is complete
-    * 
-    * @throws Exception thrown if the details cannot be set
-    */
-   public boolean setRoot(Type type, Object value, NodeMap<OutputNode> node, Map map) throws Exception;
+   public Value read(Type type, NodeMap<InputNode> node, Map map) throws Exception;
 
    /**
     * This is used to attach attribute values to the given node
@@ -130,6 +91,6 @@ public interface Strategy {
     * 
     * @throws Exception thrown if the details cannot be set
     */
-   public boolean setElement(Type type, Object value, NodeMap<OutputNode> node, Map map) throws Exception;
+   public boolean write(Type type, Object value, NodeMap<OutputNode> node, Map map) throws Exception;
 
 }

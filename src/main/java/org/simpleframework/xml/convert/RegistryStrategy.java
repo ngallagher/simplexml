@@ -87,7 +87,7 @@ public class RegistryStrategy implements Strategy {
    }
    
    /**
-    * This is used to get the <code>Value</code> which will be used 
+    * This is used to read the <code>Value</code> which will be used 
     * to represent the deserialized object. If there is an binding
     * present then the value will contain an object instance. If it
     * does not then it is up to the internal strategy to determine 
@@ -99,34 +99,17 @@ public class RegistryStrategy implements Strategy {
     * 
     * @return the value representing the deserialized value
     */
-   public Value getRoot(Type type, NodeMap<InputNode> node, Map map) throws Exception {
-      return getElement(type, node, map);
-   }
-   
-   /**
-    * This is used to get the <code>Value</code> which will be used 
-    * to represent the deserialized object. If there is an binding
-    * present then the value will contain an object instance. If it
-    * does not then it is up to the internal strategy to determine 
-    * what the returned value contains.
-    * 
-    * @param type this is the type that represents a method or field
-    * @param node this is the node representing the XML element
-    * @param map this is the session map that contain variables
-    * 
-    * @return the value representing the deserialized value
-    */
-   public Value getElement(Type type, NodeMap<InputNode> node, Map map) throws Exception {
-      Value value = strategy.getElement(type, node, map);
+   public Value read(Type type, NodeMap<InputNode> node, Map map) throws Exception {
+      Value value = strategy.read(type, node, map);
       
       if(isReference(value)) {
          return value;
       }
-      return getElement(type, node, value);
+      return read(type, node, value);
    }
   
    /**
-    * This is used to get the <code>Value</code> which will be used 
+    * This is used to read the <code>Value</code> which will be used 
     * to represent the deserialized object. If there is an binding
     * present then the value will contain an object instance. If it
     * does not then it is up to the internal strategy to determine 
@@ -138,8 +121,8 @@ public class RegistryStrategy implements Strategy {
     * 
     * @return the value representing the deserialized value
     */   
-   private Value getElement(Type type, NodeMap<InputNode> node, Value value) throws Exception {
-      Converter converter = getConverter(type, value);
+   private Value read(Type type, NodeMap<InputNode> node, Value value) throws Exception {
+      Converter converter = lookup(type, value);
       InputNode source = node.getNode();
       
       if(converter != null) {
@@ -168,30 +151,11 @@ public class RegistryStrategy implements Strategy {
     * 
     * @return this returns true if it was serialized, false otherwise
     */
-   public boolean setRoot(Type type, Object value, NodeMap<OutputNode> node, Map map) throws Exception {
-      return setElement(type, value, node, map);
-   } 
-   
-   /**
-    * This is used to serialize a representation of the object value
-    * provided. If there is a <code>Registry</code> binding present
-    * for the provided type then this will use the converter specified
-    * to serialize a representation of the object. If however there
-    * is no binding present then this will delegate to the internal 
-    * strategy. This returns true if the serialization has completed.
-    * 
-    * @param type this is the type that represents the field or method
-    * @param value this is the object instance to be serialized
-    * @param node this is the XML element to be serialized to
-    * @param map this is the session map used by the serializer
-    * 
-    * @return this returns true if it was serialized, false otherwise
-    */
-   public boolean setElement(Type type, Object value, NodeMap<OutputNode> node, Map map) throws Exception {
-      boolean reference = strategy.setElement(type, value, node, map);
+   public boolean write(Type type, Object value, NodeMap<OutputNode> node, Map map) throws Exception {
+      boolean reference = strategy.write(type, value, node, map);
       
       if(!reference) {
-         return setElement(type, value, node);
+         return write(type, value, node);
       }
       return reference;
    }
@@ -210,8 +174,8 @@ public class RegistryStrategy implements Strategy {
     * 
     * @return this returns true if it was serialized, false otherwise
     */
-   private boolean setElement(Type type, Object value, NodeMap<OutputNode> node) throws Exception {
-      Converter converter = getConverter(type, value);
+   private boolean write(Type type, Object value, NodeMap<OutputNode> node) throws Exception {
+      Converter converter = lookup(type, value);
       OutputNode source = node.getNode();
       
       if(converter != null) {
@@ -231,7 +195,7 @@ public class RegistryStrategy implements Strategy {
     * 
     * @return this returns the converter instance that is matched
     */
-   private Converter getConverter(Type type, Value value) throws Exception {
+   private Converter lookup(Type type, Value value) throws Exception {
       Class real = type.getType();
       
       if(value != null) {
@@ -250,7 +214,7 @@ public class RegistryStrategy implements Strategy {
     * 
     * @return this returns the converter instance that is matched
     */
-   private Converter getConverter(Type type, Object value) throws Exception {
+   private Converter lookup(Type type, Object value) throws Exception {
       Class real = type.getType();
       
       if(value != null) {
