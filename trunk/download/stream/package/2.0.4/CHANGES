@@ -1,2 +1,0 @@
-Fix made so that references to null can be supported for object graphs
-Ensure that the traverser can accept null objects from the graph 

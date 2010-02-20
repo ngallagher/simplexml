@@ -1,3 +1,0 @@
-Bug fix made to the weak cache so that a negitive hashes can be handled
-Bug fix made so that stattered elements are set when all values are collected
-Change made so that all values are read before any are set on the object

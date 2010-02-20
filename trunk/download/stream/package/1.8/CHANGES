@@ -1,3 +1,0 @@
-Styles added to the stream framework to enable styling of serialized XML
-Fix made to ensure primitives can be mixed with objects in collections
-Allow primitives to be overridden in XML to allow dymamic instantiation

@@ -1,4 +1,0 @@
-Change made to the map filter to enable templates to make use of any type
-Changes made to the exception messages to provide more line number information
-Added an element array annotation to allow serialization for object arrays
-Added unit testing for the serialization and derserialization of arrays
