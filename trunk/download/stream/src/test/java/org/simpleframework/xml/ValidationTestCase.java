@@ -440,7 +440,9 @@ public class ValidationTestCase extends XMLTestCase {
      public static class CommentVisitor implements Visitor {
         public void read(Type type, NodeMap<InputNode> node){}
         public void write(Type type, NodeMap<OutputNode> node) throws Exception {
-           node.getNode().setComment(type.getType().getName());
+           if(!node.getNode().isRoot()) {
+              node.getNode().setComment(type.getType().getName());
+           }
         }
      }
 
