@@ -7,13 +7,14 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
+import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Default;
 import org.simpleframework.xml.DefaultType;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementArray;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.ElementMap;
-import org.simpleframework.xml.Text;
+import org.simpleframework.xml.Root;
 
 public class MethodScannerDefaultTest extends TestCase {
 
@@ -76,11 +77,11 @@ public class MethodScannerDefaultTest extends TestCase {
       private Map<String, String> map;
       private String name;
       private int value;
-      @Text
+      @Attribute
       public String getName() {
          return name;
       }
-      @Text
+      @Attribute
       public void setName(String name) {
          this.name = name;
       }
@@ -133,8 +134,14 @@ public class MethodScannerDefaultTest extends TestCase {
       assertEquals(int.class, map.get("value").getType());      
       assertEquals(String.class, map.get("name").getType());
       
-      assertEquals(Text.class, map.get("name").getAnnotation().annotationType());
+      assertEquals(Attribute.class, map.get("name").getAnnotation().annotationType());
       assertEquals(Element.class, map.get("value").getAnnotation().annotationType());
+      
+      assertEquals(Attribute.class, map.get("name").getAnnotation(Attribute.class).annotationType());
+      assertEquals(Element.class, map.get("value").getAnnotation(Element.class).annotationType());
+      
+      assertNull(map.get("name").getAnnotation(Root.class));
+      assertNull(map.get("value").getAnnotation(Root.class));
    }
    
    public void testExtendedAnnotations() throws Exception {
@@ -150,10 +157,20 @@ public class MethodScannerDefaultTest extends TestCase {
       assertEquals(int.class, map.get("value").getType());      
       assertEquals(String.class, map.get("name").getType());
       
-      assertEquals(Text.class, map.get("name").getAnnotation().annotationType());
+      assertEquals(Attribute.class, map.get("name").getAnnotation().annotationType());
       assertEquals(Element.class, map.get("value").getAnnotation().annotationType());
       assertEquals(ElementMap.class, map.get("map").getAnnotation().annotationType());
       assertEquals(Element.class, map.get("array").getAnnotation().annotationType());
+      
+      assertEquals(Attribute.class, map.get("name").getAnnotation(Attribute.class).annotationType());
+      assertEquals(Element.class, map.get("value").getAnnotation(Element.class).annotationType());
+      assertEquals(ElementMap.class, map.get("map").getAnnotation(ElementMap.class).annotationType());
+      assertEquals(Element.class, map.get("array").getAnnotation(Element.class).annotationType());
+      
+      assertNull(map.get("name").getAnnotation(Root.class));
+      assertNull(map.get("value").getAnnotation(Root.class));
+      assertNull(map.get("map").getAnnotation(Root.class));
+      assertNull(map.get("array").getAnnotation(Root.class));
    }
    
    public void testMixedAnnotations() throws Exception {
@@ -169,10 +186,20 @@ public class MethodScannerDefaultTest extends TestCase {
       assertEquals(int.class, map.get("value").getType());      
       assertEquals(String.class, map.get("name").getType());
       
-      assertEquals(Text.class, map.get("name").getAnnotation().annotationType());
+      assertEquals(Attribute.class, map.get("name").getAnnotation().annotationType());
       assertEquals(Element.class, map.get("value").getAnnotation().annotationType());
       assertEquals(ElementMap.class, map.get("map").getAnnotation().annotationType());
       assertEquals(ElementArray.class, map.get("array").getAnnotation().annotationType());
+      
+      assertEquals(Attribute.class, map.get("name").getAnnotation(Attribute.class).annotationType());
+      assertEquals(Element.class, map.get("value").getAnnotation(Element.class).annotationType());
+      assertEquals(ElementMap.class, map.get("map").getAnnotation(ElementMap.class).annotationType());
+      assertEquals(ElementArray.class, map.get("array").getAnnotation(ElementArray.class).annotationType());
+      
+      assertNull(map.get("name").getAnnotation(Root.class));
+      assertNull(map.get("value").getAnnotation(Root.class));
+      assertNull(map.get("map").getAnnotation(Root.class));
+      assertNull(map.get("array").getAnnotation(Root.class));
    }
    
    public void testNoAnnotations() throws Exception {
@@ -201,6 +228,22 @@ public class MethodScannerDefaultTest extends TestCase {
       assertEquals(ElementList.class, map.get("list").getAnnotation().annotationType());
       assertEquals(ElementMap.class, map.get("map").getAnnotation().annotationType());
       assertEquals(ElementArray.class, map.get("array").getAnnotation().annotationType());
+      
+      assertEquals(Element.class, map.get("date").getAnnotation(Element.class).annotationType());
+      assertEquals(Element.class, map.get("customer").getAnnotation(Element.class).annotationType());
+      assertEquals(Element.class, map.get("name").getAnnotation(Element.class).annotationType());      
+      assertEquals(Element.class, map.get("price").getAnnotation(Element.class).annotationType());
+      assertEquals(ElementList.class, map.get("list").getAnnotation(ElementList.class).annotationType());
+      assertEquals(ElementMap.class, map.get("map").getAnnotation(ElementMap.class).annotationType());
+      assertEquals(ElementArray.class, map.get("array").getAnnotation(ElementArray.class).annotationType());
+      
+      assertNull(map.get("date").getAnnotation(Root.class));
+      assertNull(map.get("customer").getAnnotation(Root.class));
+      assertNull(map.get("name").getAnnotation(Root.class));
+      assertNull(map.get("price").getAnnotation(Root.class));
+      assertNull(map.get("list").getAnnotation(Root.class));
+      assertNull(map.get("map").getAnnotation(Root.class));
+      assertNull(map.get("array").getAnnotation(Root.class));
    }
    
    private static Map<String, Contact> getContacts(Class type, DefaultType defaultType) throws Exception {

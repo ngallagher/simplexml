@@ -193,6 +193,9 @@ class FieldContact implements Contact {
     * @return this provides the annotation associated with this
     */
    public <T extends Annotation> T getAnnotation(Class<T> type) {
+      if(type == label.annotationType()) {
+         return (T) label;
+      }
       return field.getAnnotation(type);
    }
 
