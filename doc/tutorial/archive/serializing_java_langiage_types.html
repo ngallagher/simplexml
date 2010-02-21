@@ -1,4 +1,4 @@
-<a name='javalanguage'></a><b>Serializing Java language types</b>
+<table border='0'><tr><td><img src='/images/home_bullet.gif' border='0'></td><td><a name='javalanguage'></a><b>Serializing Java language types</b></td></tr><tr><td><!-- padding --></td><td>
 <p>
 A common requirement of any serialization framework is to be able to serialize and deserialize existing types without modification. In particular types from the Java class libraries, like dates, locales, and files. For many of the Java class library types there is a corrosponding <a href="/download/stream/doc/javadoc/org/simpleframework/xml/transform/Transform.html">Transform</a> implementation, which enables the serialization and deserialization of that type. For example the <code>java.util.Date</code> type has a transform that accepts a date instance and transforms that into a string, which can be embedded in to the generated XML document during serialization. For deserialization the same transform is used, however this time it converts the string value back in to a date instance. The code snippet below demonstrates how a such transformations make it possible to use such a type when implementing your class XML schema.
 </p>
@@ -122,3 +122,4 @@ For the above code example the resulting XML generated would look like the XML d
    &lt;/points&gt;
 &lt;/graph&gt;
 </pre>
+</td></tr></table>
