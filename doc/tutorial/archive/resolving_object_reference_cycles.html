@@ -104,7 +104,7 @@ references to be recreated during deserialization. To further clarify take the f
 how to create a persister that can handle such references.
 </p>
 <pre class="prettyprint">
-Strategy strategy = new CyclicStrategy("id", "ref");
+Strategy strategy = new CycleStrategy("id", "ref");
 Serializer serializer = new Persister(strategy);
 File source = new File("example.xml");
 Parent parent = serializer.read(Parent.class, source);
