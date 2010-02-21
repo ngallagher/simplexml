@@ -15,6 +15,7 @@ import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementArray;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.ElementMap;
+import org.simpleframework.xml.Root;
 import org.simpleframework.xml.Transient;
 
 public class FieldScannerDefaultTest extends TestCase {
@@ -53,6 +54,14 @@ public class FieldScannerDefaultTest extends TestCase {
       assertEquals(Element.class, map.get("name").getAnnotation().annotationType());
       assertEquals(Attribute.class, map.get("value").getAnnotation().annotationType());
       assertEquals(ElementList.class, map.get("list").getAnnotation().annotationType());
+      
+      assertEquals(Element.class, map.get("name").getAnnotation(Element.class).annotationType());
+      assertEquals(Attribute.class, map.get("value").getAnnotation(Attribute.class).annotationType());
+      assertEquals(ElementList.class, map.get("list").getAnnotation(ElementList.class).annotationType());
+      
+      assertNull(map.get("name").getAnnotation(Root.class));
+      assertNull(map.get("value").getAnnotation(Root.class));
+      assertNull(map.get("list").getAnnotation(Root.class));
    }
    
    public void testNoAnnotations() throws Exception {
@@ -81,6 +90,22 @@ public class FieldScannerDefaultTest extends TestCase {
       assertEquals(ElementArray.class, map.get("array").getAnnotation().annotationType());
       assertEquals(ElementList.class, map.get("list").getAnnotation().annotationType());
       assertEquals(ElementMap.class, map.get("map").getAnnotation().annotationType());
+      
+      assertEquals(Element.class, map.get("name").getAnnotation(Element.class).annotationType());
+      assertEquals(Element.class, map.get("value").getAnnotation(Element.class).annotationType());
+      assertEquals(Element.class, map.get("date").getAnnotation(Element.class).annotationType());
+      assertEquals(Element.class, map.get("locale").getAnnotation(Element.class).annotationType());
+      assertEquals(ElementArray.class, map.get("array").getAnnotation(ElementArray.class).annotationType());
+      assertEquals(ElementList.class, map.get("list").getAnnotation(ElementList.class).annotationType());
+      assertEquals(ElementMap.class, map.get("map").getAnnotation(ElementMap.class).annotationType());
+      
+      assertNull(map.get("name").getAnnotation(Root.class));
+      assertNull(map.get("value").getAnnotation(Root.class));
+      assertNull(map.get("date").getAnnotation(Root.class));
+      assertNull(map.get("locale").getAnnotation(Root.class));
+      assertNull(map.get("array").getAnnotation(Root.class));
+      assertNull(map.get("list").getAnnotation(Root.class));
+      assertNull(map.get("map").getAnnotation(Root.class));
    }
    
    private static Map<String, Contact> getContacts(Class type, DefaultType defaultType) throws Exception {

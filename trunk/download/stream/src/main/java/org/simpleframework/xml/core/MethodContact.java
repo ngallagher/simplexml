@@ -125,19 +125,22 @@ class MethodContact implements Contact {
    /**
     * This is the annotation associated with the point of contact.
     * This will be an XML annotation that describes how the contact
-    * should be serializaed and deserialized from the object.
+    * should be serialized and deserialized from the object.
     * 
     * @param type this is the type of the annotation to acquire
     *
     * @return this provides the annotation associated with this
     */
    public <T extends Annotation> T getAnnotation(Class<T> type) {
-      T label = get.getAnnotation(type);
+      T result = get.getAnnotation(type);
       
-      if(label == null && set != null) {        
-         label = set.getAnnotation(type);
+      if(type == label.annotationType()) {
+         return (T) label;
       }
-      return label;
+      if(result == null && set != null) {        
+         return set.getAnnotation(type);
+      }
+      return result;
    }
 
    /**
@@ -178,7 +181,7 @@ class MethodContact implements Contact {
    /**
     * This is used to acquire the name of the method. This returns
     * the name of the method without the get, set or is prefix that
-    * represents the Java Bean method type. Also this decaptitalizes
+    * represents the Java Bean method type. Also this decapitalizes
     * the resulting name. The result is used to represent the XML
     * attribute of element within the class schema represented.
     * 
