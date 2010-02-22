@@ -180,7 +180,7 @@ class ElementMapLabel implements Label {
          items = contact.getDependents();
       }        
       if(items == null) {
-         throw new ElementException("Unable to determine type for %s", label);           
+         throw new ElementException("Unable to determine type for %s", contact);           
       }    
       if(items.length == 0) {
          return new ClassType(Object.class);

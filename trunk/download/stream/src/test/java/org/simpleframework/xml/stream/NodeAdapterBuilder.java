@@ -165,6 +165,9 @@ public class NodeAdapterBuilder {
             public int getLine(){
                return -1;
             }
+            public String toString(){
+               return "line -1";
+            }
          };
       }  
       public String getName() {
