@@ -362,7 +362,7 @@ final class Reflector {
       if(type instanceof GenericArrayType) {
          return getArrayClass(type);
       }      
-      return null;
+      return Object.class;
    }
    
    /**

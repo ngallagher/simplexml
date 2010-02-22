@@ -271,9 +271,6 @@ class Support implements Filter {
     * @return this returns true if no XML annotations were found
     */
    public boolean isPrimitive(Class type) throws Exception{
-      if(type == null) {
-         return false;
-      }
       if(type == String.class) {
          return true;
       }

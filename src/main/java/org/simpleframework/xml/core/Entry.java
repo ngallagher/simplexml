@@ -100,22 +100,29 @@ class Entry {
    }
    
    /**
-    * This is used to acquire the dependent key for the annotated
-    * map. This will simply return the type that the map object is
-    * composed to hold. This must be a serializable type, that is,
-    * it must be a composite or supported primitive type.
-    * 
-    * @return this returns the key object type for the map object
+    * Represents whether the key value is to be an attribute or an
+    * element. This allows the key to be embedded within the entry
+    * XML element allowing for a more compact representation. Only
+    * primitive key objects can be represented as an attribute. For
+    * example a <code>java.util.Date</code> or a string could be
+    * represented as an attribute key for the generated XML. 
+    *  
+    * @return true if the key is to be inlined as an attribute
     */
-   protected Type getKeyType() throws Exception  {
-      if(keyType == null) {
-         keyType = label.keyType();
-         
-         if(keyType == void.class) {
-            keyType = getDependent(0);
-         }
-      }
-      return new ClassType(keyType);
+   public boolean isAttribute() {
+      return attribute;
+   }
+   
+   /**
+    * Represents whether the value is to be written as an inline text
+    * value within the element. This is only possible if the key has
+    * been specified as an attribute. Also, the value can only be
+    * inline if there is no wrapping value XML element specified.
+    * 
+    * @return this returns true if the value can be written inline
+    */
+   public boolean isInline() throws Exception {
+      return isAttribute();
    }
    
    /**
@@ -137,19 +144,44 @@ class Entry {
       }
       return new CompositeKey(context, this, type);
    }   
-   
+  
    /**
-    * Represents whether the key value is to be an attribute or an
-    * element. This allows the key to be embedded within the entry
-    * XML element allowing for a more compact representation. Only
-    * primitive key objects can be represented as an attribute. For
-    * example a <code>java.util.Date</code> or a string could be
-    * represented as an attribute key for the generated XML. 
-    *  
-    * @return true if the key is to be inlined as an attribute
+    * This is used to get the value converter for the entry. This knows
+    * whether the value type is a primitive or composite object and will
+    * provide the appropriate converter implementation. This allows 
+    * the root composite map converter to concern itself with only the
+    * details of the surrounding entry object. 
+    * 
+    * @param context this is the root context for the serialization
+    * 
+    * @return returns the converter used for serializing the value
     */
-   public boolean isAttribute() {
-      return attribute;
+   public Converter getValue(Context context) throws Exception {
+      Type type = getValueType();
+      
+      if(context.isPrimitive(type)) {
+         return new PrimitiveValue(context, this, type);
+      }
+      return new CompositeValue(context, this, type);
+   }
+
+   /**
+    * This is used to acquire the dependent key for the annotated
+    * map. This will simply return the type that the map object is
+    * composed to hold. This must be a serializable type, that is,
+    * it must be a composite or supported primitive type.
+    * 
+    * @return this returns the key object type for the map object
+    */
+   protected Type getKeyType() throws Exception  {
+      if(keyType == null) {
+         keyType = label.keyType();
+         
+         if(keyType == void.class) {
+            keyType = getDependent(0);
+         }
+      }
+      return new ClassType(keyType);
    }
    
    /**
@@ -172,38 +204,6 @@ class Entry {
    }
    
    /**
-    * This is used to get the value converter for the entry. This knows
-    * whether the value type is a primitive or composite object and will
-    * provide the appropriate converter implementation. This allows 
-    * the root composite map converter to concern itself with only the
-    * details of the surrounding entry object. 
-    * 
-    * @param context this is the root context for the serialization
-    * 
-    * @return returns the converter used for serializing the value
-    */
-   public Converter getValue(Context context) throws Exception {
-      Type type = getValueType();
-      
-      if(context.isPrimitive(type)) {
-         return new PrimitiveValue(context, this, type);
-      }
-      return new CompositeValue(context, this, type);
-   }
-   
-   /**
-    * Represents whether the value is to be written as an inline text
-    * value within the element. This is only possible if the key has
-    * been specified as an attribute. Also, the value can only be
-    * inline if there is no wrapping value XML element specified.
-    * 
-    * @return this returns true if the value can be written inline
-    */
-   public boolean isInline() throws Exception {
-      return isAttribute();
-   }
-   
-   /**
     * Provides the dependent class for the map as taken from the 
     * specified index. This allows the entry to fall back on generic
     * declarations of the map if no explicit dependent types are 
@@ -217,7 +217,7 @@ class Entry {
       Class[] list = contact.getDependents();
       
       if(list.length < index) {
-         throw new PersistenceException("Could not find dependent at index %s", index);
+         throw new PersistenceException("Could not find type for %s at index %s", contact, index);
       }
       return list[index];
    }

@@ -229,7 +229,7 @@ class ElementListLabel implements Label {
          item = contact.getDependent();
       }        
       if(item == null) {
-         throw new ElementException("Unable to determine type for %s", label);           
+         throw new ElementException("Unable to determine type for %s", contact);           
       }     
       return new ClassType(item);
    }

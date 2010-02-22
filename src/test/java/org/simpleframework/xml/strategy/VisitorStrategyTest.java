@@ -17,32 +17,6 @@ import org.simpleframework.xml.stream.OutputNode;
 
 public class VisitorStrategyTest extends ValidationTestCase {
    
-   public static class Manipulator implements Visitor {
-      public void read(Type field, NodeMap<InputNode> node) throws Exception{
-          String namespace = node.getNode().getReference();
-          if(namespace != null && namespace.length() > 0) {
-              String type = new PackageParser().revert(namespace).getName();
-              if(type == null) {
-                  throw new PersistenceException("Could not match name %s", namespace);
-              }
-              node.put("class", type);
-          }
-      }
-      public void write(Type field, NodeMap<OutputNode> node) throws Exception {
-          OutputNode value = node.remove("class");
-          if(value != null) {
-              String type = value.getValue();
-              String name = new PackageParser().parse(type);
-              if(name == null) {
-                  throw new PersistenceException("Could not match class %s", type);
-              }
-              node.getNode().setComment(type);
-              node.getNode().getNamespaces().put(name, "class");
-              node.getNode().setReference(name);
-          }
-      }
-   }
-   
    @Root
    @Default
    private static class VisitorExample {
@@ -61,7 +35,7 @@ public class VisitorStrategyTest extends ValidationTestCase {
    }
    
    public void testStrategy() throws Exception {
-      Visitor visitor = new Manipulator();
+      Visitor visitor = new ClassToNamespaceVisitor();
       Strategy strategy = new VisitorStrategy(visitor);
       Persister persister = new Persister(strategy);
       VisitorExample item = new VisitorExample();
