@@ -5,11 +5,11 @@ Namespaces are used to qualify an element or an attribute in an XML document. In
 used. This allows the declaration of the namespace prefix and reference, often called the namespace URI. Namespace
 annotations can be used on fields, methods, and even classes. For example take the XML snippet below.
 </p>
-<pre class="prettyprint">
-&lt;parent xmlns='http://domain/parent'&gt;
-   &lt;pre:child xmlns:pre='http://domain/child'&gt;
+<pre class="sh_xml">
+&lt;parent xmlns="http://domain/parent"&gt;
+   &lt;pre:child xmlns:pre="http://domain/child"&gt;
       &lt;name&gt;John Doe&lt;/name&gt;
-      &lt;address xmlns=''&gt;
+      &lt;address xmlns=""&gt;
           &lt;street&gt;Sin City&lt;/street&gt;
       &lt;/address&gt;
    &lt;/pre:child&gt;
@@ -24,7 +24,7 @@ In order to annotate a field, method, or class with a default namespace the
 be declared using only the reference attribute. For example, see the annotated class below that produces
 the above XML.
 </p>
-<pre class="prettyprint">
+<pre class="sh_java">
 @Root
 @Namespace(reference="http://domain/parent")
 public class Parent {
@@ -78,9 +78,9 @@ Declaring multiple namespaces in a single element can produce a cleaner more rea
 document. Take the XML snippet below from the namespaces in XML 1.0 specification, which 
 shows an element with multiple namespaces.
 </p>
-<pre class="prettyprint">
+<pre class="sh_xml">
 &lt;?xml version=&quot;1.0&quot;?&gt;
-&lt;book xmlns='urn:loc.gov:books' xmlns:isbn='urn:ISBN:0-395-36341-6'&gt;
+&lt;book xmlns="urn:loc.gov:books" xmlns:isbn="urn:ISBN:0-395-36341-6"&gt;
     &lt;title&gt;Cheaper by the Dozen&lt;/title&gt;
     &lt;isbn:number&gt;1568491379&lt;/isbn:number&gt;
 &lt;/book&gt;
@@ -91,7 +91,7 @@ will be qualified with the default namespace, and child elements can if desired 
 qualified by the prefixed namespace. To illustrate how such namespace declarations can be
 done, see the annotated class below.
 </p>
-<pre class="prettyprint">
+<pre class="sh_java">
 @Root
 @NamespaceList({
 @Namespace(reference="urn:loc.gov:books")

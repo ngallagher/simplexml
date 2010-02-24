@@ -8,7 +8,7 @@ final field not exist in the source XML then an exception is thrown when deseria
 would happen if the field was mutable. For example take the code snippet below, which shows an immutable
 static final field used with mutable fields.
 </p>
-<pre class="prettyprint">
+<pre class="sh_java">
 @Root
 public class Citation {
 
@@ -32,7 +32,7 @@ will be written to the resulting XML document when serialized. However, on deser
 final static field. Instead the deserialization process will simply validate the presence of the elements and attributes within the document. This results in 
 an object that will always write the same value for the annotated final static elements or attributes.
 </p>
-<pre class="prettyprint">
+<pre class="sh_xml">
 &lt;citation&gt;
    &lt;author&gt;Niall Gallagher&lt;/author&gt;
    &lt;title&gt;Simple XML Serialization&lt;/author&gt;

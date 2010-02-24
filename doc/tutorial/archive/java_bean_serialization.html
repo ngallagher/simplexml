@@ -7,7 +7,7 @@ the serialization behaviour than using fields. It also allows for processing and
 as the object is being deserialized. Below is an example of how to annotate an objects methods for 
 use in the serialization process, this example mixes annotated fields with annotated methods.
 </p>
-<pre class="prettyprint">
+<pre class="sh_java">
 @Root
 public class Message {
 
@@ -61,7 +61,7 @@ described in a later section. The requirements for Java Bean method serializatio
 both the setter and getter must be annotated with the same annotation, and both annotations must
 contain identical attributes. The object class schema could produce the following XML document.
 </p>
-<pre class="prettyprint">
+<pre class="sh_xml">
 &lt;message version=&quot;1.2&quot;&gt;
    &lt;list&gt;
       &lt;entry name=&quot;a&quot;&gt;Example text one&lt;/entry&gt;

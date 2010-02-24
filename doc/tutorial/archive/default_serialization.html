@@ -7,7 +7,7 @@ specify whether it is the fields or methods that will have default annotations, 
 two objects with default annotations, one that will apply defaults to the object fields, and one that will apply
 defaults to the Java Bean methods of the object.
 </p>  
-<pre class="prettyprint">
+<pre class="sh_java">
 @Root
 @Default(DefaultType.FIELD)
 public class OrderItem {
@@ -54,8 +54,8 @@ annotation is used to specify that even though default annotations should be app
 annotated as transient should not be serialized. Below is the XML that could be produced using the above classes, notice
 that if defaults apply to Java Bean methods, the fields will not be defaulted, instead they will be ignored.
 </p>
-<pre class="prettyprint">
-&lt;orderItem price='10.99'&gt;
+<pre class="sh_xml">
+&lt;orderItem price="10.99"&gt;
     &lt;customer&gt;
         &lt;name&gt;Elvis Presley&lt;/name&gt;
     &lt;/customer&gt;

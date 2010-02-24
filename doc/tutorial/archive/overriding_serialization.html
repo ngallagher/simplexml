@@ -7,7 +7,7 @@ object can be implemented. A converter can be used to intercept the normal seria
 Interception of the normal serialization process can be done in several different ways, for
 example take the code snippet below.
 </p>
-<pre class="prettyprint">
+<pre class="sh_java">
 @Root
 public class Example {
 
@@ -45,7 +45,7 @@ annotation. The converter specified by the annotation will be used to intercept 
 normal serialization process and produce a customized XML element. Take the XML below,
 this is produced when the example object is serialized.
 </p>
-<pre class="prettyprint">
+<pre class="sh_xml">
 &lt;example&gt;
     &lt;external name=&quot;book&quot; value=&quot;Shantaram&quot;/&gt;
 &lt;/example&gt;
@@ -56,7 +56,7 @@ Interception of the normal serialization process is performed using a
 implementation and so does not form part of the core serialization process. Instead
 a specific strategy needs to be provided to the persister as is shown in the code snippet below. 
 </p>
-<pre class="prettyprint">
+<pre class="sh_java">
 Strategy strategy = new AnnotationStrategy();
 Serializer serializer = new Persister(strategy);
 
@@ -73,7 +73,7 @@ allows bindings to be registered between classes and converters, there is no nee
 was required for the previous example. Below is an example of how to establish bindings between a class and
 a converter.
 </p>
-<pre class="prettyprint">
+<pre class="sh_java">
 Registry registry = new Registry();
 Strategy strategy = new RegistryStrategy(registry);
 Serializer serializer = new Persister(strategy);
@@ -88,7 +88,7 @@ object so that nested serialization can be performed. This registry strategy als
 within Java collection objects can be serialized with registered converters. To illustrate how a
 complex converter could be registered take a look at the snippet below.
 </p>
-<pre class="prettyprint">
+<pre class="sh_java">
 Registry registry = new Registry();
 Strategy strategy = new RegistryStrategy(registry);
 Serializer serializer = new Persister(strategy);

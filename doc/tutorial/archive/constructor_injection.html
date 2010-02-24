@@ -6,7 +6,7 @@ object sets its internal state from the data provided to the constructor. This c
 with serialization, if you would like to serialize and deserialize objects but do not want to 
 provide setter methods this can be done, as illustrated in the example below.
 </p>
-<pre class="prettyprint">
+<pre class="sh_java">
 @Root
 public class OrderManager {
 
@@ -31,7 +31,9 @@ public class Order {
     @Element(name="product")
     private final String product;
 
-    public Order(@Attribute(name="name") String name, @Element(name="product") String product) {
+    public Order(@Attribute(name="name") String name, 
+                 @Element(name="product") String product) 
+    {
         this.product = product;
         this.name = name;
     }
@@ -52,7 +54,7 @@ the above example if the <code>getOrders</code> method was not annotated then th
 would be no way to determine how to write the order manager object. 
 Below is some example XML resulting from serialization of the order manager.
 </p>
-<pre class="prettyprint">
+<pre class="sh_xml">
 &lt;orderManager&gt;
     &lt;order name=&quot;AX101&quot;&gt;
         &lt;product&gt;Product A&lt;/product&gt;
