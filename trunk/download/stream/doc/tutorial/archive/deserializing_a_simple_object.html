@@ -5,7 +5,7 @@ deserialization process is just as simple. The persister is given the class repr
 of the XML document. To deserialize the object the read method is used, which produces an instance of the annotated object. Also,
 note that there is no need to cast the return value from the read method as the method is generic.
 </p>
-<pre class="prettyprint">
+<pre class="sh_java">
 Serializer serializer = new Persister();
 File source = new File("example.xml");
 

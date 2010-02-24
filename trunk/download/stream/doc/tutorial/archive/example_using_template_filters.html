@@ -8,7 +8,7 @@ object exposing the key value pairs to the templating system. The template syste
 to find replacement values for template variables within the XML document. To clarify take the following
 example.
 </p>
-<pre class="prettyprint">
+<pre class="sh_java">
 @Root
 public class Layout {
 
@@ -40,7 +40,7 @@ values are typically static values within the XML source. However using a templa
 deserialization process will attempt to substitute the keys with values from the filter. Take the XML 
 document below with two template variables declared ${home.path} and ${user.name}.
 </p>
-<pre class="prettyprint">
+<pre class="sh_xml">
 &lt;layout id="123"&gt;
    &lt;path&gt;${home.path}&lt;/path&gt;
    &lt;user&gt;${user.name}&lt;/user&gt;
@@ -50,7 +50,7 @@ To ensure that these values can be replaced with user specified mappings a map f
 is an example of how to create a persister that can be given user specified key value pairs. Here the
 above XML source is deserialized from a file and the annotated fields are given filter mappings if there
 is a mapping specified. 
-<pre class="prettyprint">
+<pre class="sh_java">
 Map map = new HashMap();
 
 map.put("home.path", "/home/john.doe");
@@ -70,7 +70,7 @@ variables with OS environment variables and JVM system properties. Also several 
 exist within the values. For example take the following XML document, which could be used in the 
 above example given that the mappings for ${first.name} and ${second.name} were added to the map filter.
 </p>
-<pre class="prettyprint">
+<pre class="sh_xml">
 &lt;layout id="123"&gt;
    &lt;path&gt;/home/${first.name}.${second.name}&lt;/path&gt;
    &lt;user&gt;${first.name}.${second.name}&lt;/user&gt;

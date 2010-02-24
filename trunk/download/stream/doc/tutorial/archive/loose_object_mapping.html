@@ -5,8 +5,8 @@ XML attributes an elements of interest. It would not be very convinient if you h
 that accurately mapped every attribute an element in an XML document if all you are interested in is
 perhaps an element and several attributes. Take the following XML document.
 </p>
-<pre class="prettyprint">
-&lt;contact id='71' version='1.0'&gt;
+<pre class="sh_xml">
+&lt;contact id="71" version="1.0"&gt;
    &lt;name&gt;
       &lt;first&gt;Niall&lt;/first&gt;
       &lt;surname&gt;Gallagher&lt;/surname&gt;
@@ -28,7 +28,7 @@ contacts and the name then it needs to be able to ignore the address details saf
 code shows how this can be done by setting strict to false within the <a href="/download/stream/doc/javadoc/org/simpleframework/xml/Root.html">Root</a>
 annotation.
 </p>
-<pre class="prettyprint">
+<pre class="sh_java">
 @Root(strict=false)
 public class Contact {
 
@@ -80,7 +80,7 @@ The above object can be used to parse the contact XML source. This simple ignore
 in the class schema. To further clarify the implementation of loose mappings take the example shown below. This shows how the entry 
 object is deserialized from the above document, which is contained within a file. Once deserialized the object values can be examined.
 </p>
-<pre class="prettyprint">
+<pre class="sh_java">
 Serializer serializer = new Persister();
 File source = new File("contact.xml");
 Contact contact = serializer.read(Contact.class, source);
@@ -99,7 +99,7 @@ object basis using the <a href="/download/stream/doc/javadoc/org/simpleframework
 However, this default
 can be overridden as can be seen in the code snippet below.
 </p>
-<pre class="prettyprint">
+<pre class="sh_java">
 Contact contact = serializer.read(Contact.class, source, false);
 </pre>
 <p>

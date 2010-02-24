@@ -8,7 +8,7 @@ could be intercepted and changed to a language neutral format that does not cont
 Below is an example of how to use a <a href="/download/stream/doc/javadoc/org/simpleframework/xml/strategy/Visitor.html">Visitor</a>
 to add debug comments to an obect which is to be serialized.
 </p>
-<pre class="prettyprint">
+<pre class="sh_java">
 @Root
 @Default
 public class CommentExample {
@@ -21,10 +21,6 @@ public class CommentExample {
 } 
 
 public class CommentVisitor implements Visitor {
-
-   public void read(Type type, NodeMap&lt;InputNode&gt; node) {
-      // ...
-   }
 
    public void write(Type type, NodeMap&lt;OutputNode&gt; node) {
       OutputNode element = node.getNode();
@@ -43,7 +39,7 @@ that represents the XML element for the provided map of attributes. If the eleme
 then every element will have an associated comment, which descrives the class it represents. Such a visitor can be useful when serializing 
 large document structures. The XML snippet below provides an example of what would be written.
 </p>
-<pre class="prettyprint">
+<pre class="sh_xml">
 &lt;commentExample&gt;
     &lt;!-- java.lang.String --&gt;
     &lt;name&gt;John Doe&lt;/name&gt;
