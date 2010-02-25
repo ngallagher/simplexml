@@ -33,7 +33,7 @@ import org.simpleframework.xml.stream.CamelCaseStyle;
 import org.simpleframework.xml.stream.Format;
 import org.simpleframework.xml.stream.HyphenStyle;
 import org.simpleframework.xml.stream.InputNode;
-import org.simpleframework.xml.stream.NodeAdapterBuilder;
+//import org.simpleframework.xml.stream.NodeAdapterBuilder;
 import org.simpleframework.xml.stream.NodeMap;
 import org.simpleframework.xml.stream.OutputNode;
 import org.simpleframework.xml.stream.Style;

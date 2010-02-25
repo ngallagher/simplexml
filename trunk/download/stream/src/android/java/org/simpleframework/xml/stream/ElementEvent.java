@@ -55,4 +55,8 @@ class ElementEvent extends ArrayList<Attribute> implements NodeEvent {
    public boolean isText() {
       return false;
    }
+   
+   public String toString() {
+      return NodeExtractor.dumpNode(element);
+   }
 }

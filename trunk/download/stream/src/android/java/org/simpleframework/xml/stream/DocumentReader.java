@@ -18,6 +18,14 @@ class DocumentReader implements EventReader {
       this.stack.push(document);
    }
    
+   public void dumpStack() {
+      Node node = stack.peek();
+      String name = node != null ? node.getNodeName() : null;
+      for(int i = stack.size() - 1; i >= 0; i--) {
+         System.err.println("   [STACK]["+name+"]" + NodeExtractor.dumpNode(stack.get(i)));
+      }
+   }
+   
    public NodeEvent next() {
       return next(false);
    }
@@ -30,7 +38,7 @@ class DocumentReader implements EventReader {
       Node node = queue.peek();
       
       if(node == null) {
-         return new EndEvent();
+         return new EndEvent(null);
       }
       return next(node, peek);
    }
@@ -43,7 +51,7 @@ class DocumentReader implements EventReader {
          if(!peek) {
             stack.pop();
          }
-         return new EndEvent();
+         return new EndEvent(top.getNodeName());
       }
       if(!peek) {
          queue.poll();
@@ -52,16 +60,18 @@ class DocumentReader implements EventReader {
    }
    
    private NodeEvent create(Node node, boolean peek) {
-      if(node instanceof Element) {
+      short type = node.getNodeType();
+      
+      if(type == Node.ELEMENT_NODE) {
          if(!peek) {
             stack.push(node);
          }
          return element(node);
       }
-      if(node instanceof Text) {
+      if(type == Node.TEXT_NODE) {
          return text(node);
       }
-      return next();
+      return next(); // THIS IS EVIL, IT BREAKS PEEK v NEXT
    }
    
    private NodeEvent text(Node node) {
