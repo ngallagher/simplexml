@@ -21,7 +21,7 @@ class StreamReader implements EventReader {
       } else if(event.isCharacters()) {
          return new CharacterEvent(event);
       } else if(event.isEndElement()) {
-         return new EndEvent(null);
+         return new EndEvent();
       }
       return next();
    }
@@ -34,7 +34,7 @@ class StreamReader implements EventReader {
       }else if(event.isCharacters()) {
          return new CharacterEvent(event);
       } else if(event.isEndElement()) {
-         return new EndEvent(null);
+         return new EndEvent();
       } else {
          reader.next();
       }

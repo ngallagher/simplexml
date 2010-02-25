@@ -228,9 +228,6 @@ public class NodeBuilder {
       }
       public InputNode getNext(String name) throws Exception {
          InputNode node = reader.readElement(this, name);
-         if(getName() != null && getName().equals("commandLine")) {
-            new Exception("Stack trace for commandLine").printStackTrace();
-         }
          dumpPath("{"+getName()+"}getNext("+name+")", node);
          return node;
       }
@@ -247,7 +244,6 @@ public class NodeBuilder {
             builder.append("/").append(next.getName());
          }
          System.err.println("["+from+"]" + name +" -->" +builder +" IS "+mark);
-         reader.dumpStack();
       }
       public void skip() throws Exception {
          reader.skipElement(this);           
@@ -259,19 +255,12 @@ public class NodeBuilder {
          return reader.isEmpty(this);           
       }
       public String toString() {
-         return String.valueOf(element) + "\n                    WITH PARENT " + parent;
+         return String.valueOf(element);
       }
    }
    private static class NodeReader {
       private final EventReader reader; 
       private final InputStack stack;
-      public void dumpStack(){
-         for(int i = stack.size() - 1; i >= 0; i--) {
-            InputNode node = stack.get(i);
-            System.err.println("        [INPUT-STACK] "+node.getName());
-         }
-         reader.dumpStack();
-      }
       public NodeReader(EventReader reader) {
          this.stack = new InputStack();
          this.reader = reader;            
@@ -304,37 +293,24 @@ public class NodeBuilder {
       }
       public InputNode readElement(InputNode from, String name) throws Exception {
          if(!stack.isRelevant(from)) {
-            if(from != null && from.getName().equals("commandLine")){
-               System.err.println("IRRELEVANT");
-            }
             return null; 
         }
         NodeEvent event = reader.peek();
         while(event != null) {
            if(event.isEnd()) { 
-              System.err.println("################################### GOT END FOR ["+event.getName()+"] from ["+from.getName()+"]");
               if(stack.top() == from) {
-                 if(from != null && from.getName().equals("commandLine")){
-                    System.err.println("GOT AN END EVENT ["+event.getName()+"]");
-                 }
                  return null;
               } else {
                  stack.pop();
               }
            } else if(event.isStart()) {
               if(isName(event, name)) {
-                 if(from != null && from.getName().equals("commandLine")){
-                    System.err.println("WE HAVE A MATCH");
-                 }
                  return readElement(from);
               }   
               break;
            }
            event = reader.next();
            event = reader.peek();
-        }
-        if(from != null && from.getName().equals("commandLine")){
-           System.err.println("NO MORE EVENTS");
         }
         return null;
       }
@@ -350,8 +326,7 @@ public class NodeBuilder {
          StringBuilder value = new StringBuilder();
          while(stack.top() == from) {         
             NodeEvent event = reader.peek();
-            if(!event.isText()) { // <--- THIS SHOULD PULL THE END!!!!
-               System.err.println(">>>>>>>>>>>>>>>>>> THIS IS OF TYPE ["+event.getClass()+"] TEXT FROM ["+from.getName()+"] is ["+value+"] WITH END ["+event.getName()+"] top is ["+stack.top().getName()+"]");
+            if(!event.isText()) {
                if(value.length() == 0) {
                   return null;
                }

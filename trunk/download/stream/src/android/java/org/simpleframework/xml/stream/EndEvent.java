@@ -4,14 +4,8 @@ import java.util.Iterator;
 
 class EndEvent implements NodeEvent {
    
-   private final String name;
-   
-   public EndEvent(String name) {
-      this.name = name;
-   }
-
    public String getName() {
-      return name;
+      return null;
    }
 
    public String getPrefix() {
