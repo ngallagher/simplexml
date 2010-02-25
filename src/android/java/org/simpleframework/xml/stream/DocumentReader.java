@@ -17,15 +17,7 @@ class DocumentReader implements EventReader {
       this.stack = new NodeStack();
       this.stack.push(document);
    }
-   
-   public void dumpStack() {
-      Node node = stack.peek();
-      String name = node != null ? node.getNodeName() : null;
-      for(int i = stack.size() - 1; i >= 0; i--) {
-         System.err.println("   [STACK]["+name+"]" + NodeExtractor.dumpNode(stack.get(i)));
-      }
-   }
-   
+
    public NodeEvent next() {
       return next(false);
    }
@@ -38,7 +30,7 @@ class DocumentReader implements EventReader {
       Node node = queue.peek();
       
       if(node == null) {
-         return new EndEvent(null);
+         return new EndEvent();
       }
       return next(node, peek);
    }
@@ -51,7 +43,7 @@ class DocumentReader implements EventReader {
          if(!peek) {
             stack.pop();
          }
-         return new EndEvent(top.getNodeName());
+         return new EndEvent();
       }
       if(!peek) {
          queue.poll();
