@@ -23,7 +23,6 @@ import java.io.Reader;
 import java.io.Writer;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -222,28 +221,10 @@ public class NodeBuilder {
          return reader.readValue(this);           
       }
       public InputNode getNext() throws Exception {
-         InputNode node = reader.readElement(this);
-         dumpPath("{"+getName()+"}getNext()", node);
-         return node;
+         return reader.readElement(this);
       }
       public InputNode getNext(String name) throws Exception {
-         InputNode node = reader.readElement(this, name);
-         dumpPath("{"+getName()+"}getNext("+name+")", node);
-         return node;
-      }
-      private void dumpPath(String from, InputNode node) throws Exception {
-         StringBuilder builder = new StringBuilder();
-         LinkedList<InputNode> path = new LinkedList<InputNode>();
-         String name = node != null ? node.getName() : null;
-         InputNode mark = node;
-         while(node != null) {
-            path.addFirst(node);
-            node = node.getParent();
-         }
-         for(InputNode next : path){
-            builder.append("/").append(next.getName());
-         }
-         System.err.println("["+from+"]" + name +" -->" +builder +" IS "+mark);
+         return reader.readElement(this, name);
       }
       public void skip() throws Exception {
          reader.skipElement(this);           
