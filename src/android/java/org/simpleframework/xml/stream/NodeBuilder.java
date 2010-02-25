@@ -1,5 +1,5 @@
 /*
- * NodeAdapterBuilder.java January 2010
+ * NodeBuilder.java January 2010
  *
  * Copyright (C) 2010, Niall Gallagher <niallg@users.sf.net>
  *
@@ -18,11 +18,19 @@
 
 package org.simpleframework.xml.stream;
 
+import java.io.InputStream;
+import java.io.Reader;
 import java.io.Writer;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
+
 
 /**
  * Read with only the DOM w3c libraries as an experiment to getting Simple
@@ -30,7 +38,23 @@ import org.w3c.dom.Document;
  * 
  * @author Niall Gallagher
  */
-public class NodeAdapterBuilder {
+public class NodeBuilder { 
+   public static InputNode read(InputStream stream) throws Exception {
+       DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+       builderFactory.setNamespaceAware(true);
+       InputSource source = new InputSource(stream);
+       DocumentBuilder builder = builderFactory.newDocumentBuilder();       
+       Document document = builder.parse(source);
+       return read(document);
+   }    
+   public static InputNode read(Reader reader) throws Exception {
+       DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+       builderFactory.setNamespaceAware(true);
+       InputSource source = new InputSource(reader);
+       DocumentBuilder builder = builderFactory.newDocumentBuilder();       
+       Document document = builder.parse(source);
+       return read(document);
+   }
    public static InputNode read(Document document) throws Exception{
       EventReader stream = new DocumentReader(document);
       NodeReader reader = new NodeReader(stream);
@@ -107,11 +131,14 @@ public class NodeAdapterBuilder {
     }
    private static class InputNodeMap extends LinkedHashMap<String, InputNode> implements NodeMap<InputNode> {
       private final InputNode source; 
+      private final NodeEvent event;
       protected InputNodeMap(InputNode source) {
-         this.source = source;            
+         this.source = source;  
+         this.event = null;
       }  
       public InputNodeMap(InputNode source, NodeEvent element) {
-         this.source = source;           
+         this.source = source;
+         this.event = element;
          this.put(element);   
       }
       public InputNode getNode() {
@@ -195,10 +222,32 @@ public class NodeAdapterBuilder {
          return reader.readValue(this);           
       }
       public InputNode getNext() throws Exception {
-         return reader.readElement(this);
+         InputNode node = reader.readElement(this);
+         dumpPath("{"+getName()+"}getNext()", node);
+         return node;
       }
       public InputNode getNext(String name) throws Exception {
-         return reader.readElement(this, name);
+         InputNode node = reader.readElement(this, name);
+         if(getName() != null && getName().equals("commandLine")) {
+            new Exception("Stack trace for commandLine").printStackTrace();
+         }
+         dumpPath("{"+getName()+"}getNext("+name+")", node);
+         return node;
+      }
+      private void dumpPath(String from, InputNode node) throws Exception {
+         StringBuilder builder = new StringBuilder();
+         LinkedList<InputNode> path = new LinkedList<InputNode>();
+         String name = node != null ? node.getName() : null;
+         InputNode mark = node;
+         while(node != null) {
+            path.addFirst(node);
+            node = node.getParent();
+         }
+         for(InputNode next : path){
+            builder.append("/").append(next.getName());
+         }
+         System.err.println("["+from+"]" + name +" -->" +builder +" IS "+mark);
+         reader.dumpStack();
       }
       public void skip() throws Exception {
          reader.skipElement(this);           
@@ -210,12 +259,19 @@ public class NodeAdapterBuilder {
          return reader.isEmpty(this);           
       }
       public String toString() {
-         return String.format("element %s", getName());
+         return String.valueOf(element) + "\n                    WITH PARENT " + parent;
       }
    }
    private static class NodeReader {
       private final EventReader reader; 
       private final InputStack stack;
+      public void dumpStack(){
+         for(int i = stack.size() - 1; i >= 0; i--) {
+            InputNode node = stack.get(i);
+            System.err.println("        [INPUT-STACK] "+node.getName());
+         }
+         reader.dumpStack();
+      }
       public NodeReader(EventReader reader) {
          this.stack = new InputStack();
          this.reader = reader;            
@@ -247,25 +303,38 @@ public class NodeAdapterBuilder {
          return null; 
       }
       public InputNode readElement(InputNode from, String name) throws Exception {
-         if(!stack.isRelevant(from)) {        
+         if(!stack.isRelevant(from)) {
+            if(from != null && from.getName().equals("commandLine")){
+               System.err.println("IRRELEVANT");
+            }
             return null; 
         }
         NodeEvent event = reader.peek();
         while(event != null) {
            if(event.isEnd()) { 
+              System.err.println("################################### GOT END FOR ["+event.getName()+"] from ["+from.getName()+"]");
               if(stack.top() == from) {
+                 if(from != null && from.getName().equals("commandLine")){
+                    System.err.println("GOT AN END EVENT ["+event.getName()+"]");
+                 }
                  return null;
               } else {
                  stack.pop();
               }
            } else if(event.isStart()) {
               if(isName(event, name)) {
+                 if(from != null && from.getName().equals("commandLine")){
+                    System.err.println("WE HAVE A MATCH");
+                 }
                  return readElement(from);
               }   
               break;
            }
            event = reader.next();
            event = reader.peek();
+        }
+        if(from != null && from.getName().equals("commandLine")){
+           System.err.println("NO MORE EVENTS");
         }
         return null;
       }
@@ -281,7 +350,8 @@ public class NodeAdapterBuilder {
          StringBuilder value = new StringBuilder();
          while(stack.top() == from) {         
             NodeEvent event = reader.peek();
-            if(!event.isText()) {
+            if(!event.isText()) { // <--- THIS SHOULD PULL THE END!!!!
+               System.err.println(">>>>>>>>>>>>>>>>>> THIS IS OF TYPE ["+event.getClass()+"] TEXT FROM ["+from.getName()+"] is ["+value+"] WITH END ["+event.getName()+"] top is ["+stack.top().getName()+"]");
                if(value.length() == 0) {
                   return null;
                }

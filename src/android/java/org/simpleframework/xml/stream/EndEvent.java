@@ -3,9 +3,15 @@ package org.simpleframework.xml.stream;
 import java.util.Iterator;
 
 class EndEvent implements NodeEvent {
+   
+   private final String name;
+   
+   public EndEvent(String name) {
+      this.name = name;
+   }
 
    public String getName() {
-      return null;
+      return name;
    }
 
    public String getPrefix() {

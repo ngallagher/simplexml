@@ -39,4 +39,8 @@ class TextEvent extends ArrayList<Attribute> implements NodeEvent {
    public boolean isText() {
       return true;
    }
+   
+   public String toString() {
+      return NodeExtractor.dumpNode(text);
+   }
 }

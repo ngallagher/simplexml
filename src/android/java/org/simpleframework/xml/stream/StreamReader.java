@@ -10,6 +10,8 @@ class StreamReader implements EventReader {
    public StreamReader(XMLEventReader reader) {
       this.reader = reader;
    }
+   
+   public void dumpStack(){}
 
    public NodeEvent next() throws Exception {
       XMLEvent event = reader.nextEvent();
@@ -19,7 +21,7 @@ class StreamReader implements EventReader {
       } else if(event.isCharacters()) {
          return new CharacterEvent(event);
       } else if(event.isEndElement()) {
-         return new EndEvent();
+         return new EndEvent(null);
       }
       return next();
    }
@@ -32,7 +34,7 @@ class StreamReader implements EventReader {
       }else if(event.isCharacters()) {
          return new CharacterEvent(event);
       } else if(event.isEndElement()) {
-         return new EndEvent();
+         return new EndEvent(null);
       } else {
          reader.next();
       }
