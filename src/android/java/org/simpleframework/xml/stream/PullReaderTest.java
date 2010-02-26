@@ -4,8 +4,8 @@ import java.io.StringReader;
 
 import junit.framework.TestCase;
 
-import org.xmlpull.mxp1.MXParser;
 import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserFactory;
 
 public class PullReaderTest extends TestCase {
    
@@ -19,7 +19,8 @@ public class PullReaderTest extends TestCase {
 
    
    public void testPull() throws Exception {
-      XmlPullParser parser = new MXParser();
+      XmlPullParserFactory factory = XmlPullParserFactory.newInstance(null, null);
+      XmlPullParser parser = factory.newPullParser();
       StringReader source = new StringReader(SOURCE);
       parser.setInput(source);
       PullReader reader = new PullReader(parser);
