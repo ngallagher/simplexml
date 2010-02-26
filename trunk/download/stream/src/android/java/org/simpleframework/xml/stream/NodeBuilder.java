@@ -24,39 +24,15 @@ import java.io.Writer;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
-import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
-
-
-/**
- * Read with only the DOM w3c libraries as an experiment to getting Simple
- * working with Google Android.
- * 
- * @author Niall Gallagher
- */
 public class NodeBuilder { 
    public static InputNode read(InputStream stream) throws Exception {
-       DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
-       builderFactory.setNamespaceAware(true);
-       InputSource source = new InputSource(stream);
-       DocumentBuilder builder = builderFactory.newDocumentBuilder();       
-       Document document = builder.parse(source);
-       return read(document);
+       EventReader event = EventProvider.provide(stream);
+       NodeReader reader = new NodeReader(event);
+       return reader.readRoot();
    }    
-   public static InputNode read(Reader reader) throws Exception {
-       DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
-       builderFactory.setNamespaceAware(true);
-       InputSource source = new InputSource(reader);
-       DocumentBuilder builder = builderFactory.newDocumentBuilder();       
-       Document document = builder.parse(source);
-       return read(document);
-   }
-   public static InputNode read(Document document) throws Exception{
-      EventReader stream = new DocumentReader(document);
-      NodeReader reader = new NodeReader(stream);
+   public static InputNode read(Reader stream) throws Exception {
+      EventReader event = EventProvider.provide(stream);
+      NodeReader reader = new NodeReader(event);
       return reader.readRoot();
    }
    public static OutputNode write(Writer writer) throws Exception{

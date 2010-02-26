@@ -36,13 +36,8 @@ public class NodeBuilderTest extends TestCase {
     "</root>";
    
     public void testNodeAdapter() throws Exception {         
-       DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
-       builderFactory.setNamespaceAware(true);
        Reader reader = new StringReader(SOURCE);
-       InputSource source = new InputSource(reader);
-       DocumentBuilder builder = builderFactory.newDocumentBuilder();       
-       Document document = builder.parse(source);
-       InputNode event = NodeBuilder.read(document);
+       InputNode event = NodeBuilder.read(reader);
        
        assertTrue(event.isRoot());
        assertEquals("root", event.getName());         
