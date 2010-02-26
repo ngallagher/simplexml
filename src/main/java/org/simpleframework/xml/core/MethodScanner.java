@@ -60,6 +60,11 @@ import org.simpleframework.xml.Version;
 class MethodScanner extends ContactList {
    
    /**
+    * This is a factory used for creating property method parts.
+    */
+   private final MethodPartFactory factory;
+   
+   /**
     * This is used to acquire the hierarchy for the class scanned.
     */
    private final Hierarchy hierarchy;
@@ -109,6 +114,7 @@ class MethodScanner extends ContactList {
     * @throws Exception thrown if there was a problem scanning
     */
    public MethodScanner(Class type, DefaultType access) throws Exception {
+      this.factory = new MethodPartFactory();
       this.hierarchy = new Hierarchy(type);
       this.write = new PartMap();
       this.read = new PartMap();
@@ -150,10 +156,10 @@ class MethodScanner extends ContactList {
     * @throws Exception thrown if the class schema is invalid
     */
    private void scan(Class type, Class real) throws Exception {
-      Method[] method = type.getDeclaredMethods();
+      Method[] list = type.getDeclaredMethods();
 
-      for(int i = 0; i < method.length; i++) {
-         scan(method[i]);              
+      for(Method method : list) {
+         scan(method);              
       }     
    }
    
@@ -171,8 +177,8 @@ class MethodScanner extends ContactList {
    private void scan(Method method) throws Exception {
       Annotation[] list = method.getDeclaredAnnotations();
       
-      for(int i = 0; i < list.length; i++) {
-         scan(method, list[i]);                       
+      for(Annotation label : list) {
+         scan(method, label);                       
       }  
    }
    
@@ -186,13 +192,17 @@ class MethodScanner extends ContactList {
     * @param access this is the default access type for the class
     */
    private void scan(Class type, DefaultType access) throws Exception {
-      Method[] method = type.getDeclaredMethods();
+      Method[] list = type.getDeclaredMethods();
 
-      for(int i = 0; i < method.length; i++) {
-         if(access == PROPERTY) {
-            process(method[i]);
-         }
-      }  
+      if(access == PROPERTY) {
+         for(Method method : list) {
+            Class value = factory.getType(method);
+            
+            if(value != null) {
+               process(method);
+            }
+         }  
+      }
    }
    
    /**
@@ -245,7 +255,7 @@ class MethodScanner extends ContactList {
     * @param label this is the annotation applied to the method
     */  
    private void process(Method method, Annotation label) throws Exception {
-      MethodPart part = MethodPartFactory.getInstance(method, label);
+      MethodPart part = factory.getInstance(method, label);
       MethodType type = part.getMethodType();     
       
       if(type == MethodType.GET) {
@@ -270,21 +280,18 @@ class MethodScanner extends ContactList {
     * @param method this is the method that is to be classified
     */  
    private void process(Method method) throws Exception {
-      MethodPart part = MethodPartFactory.getInstance(method);
+      MethodPart part = factory.getInstance(method);
+      MethodType type = part.getMethodType();     
       
-      if(part != null) {
-         MethodType type = part.getMethodType();     
-         
-         if(type == MethodType.GET) {
-            process(part, read);
-         }
-         if(type == MethodType.IS) {
-            process(part, read);
-         }
-         if(type == MethodType.SET) {
-            process(part, write);
-         }
+      if(type == MethodType.GET) {
+         process(part, read);
       }
+      if(type == MethodType.IS) {
+         process(part, read);
+      }
+      if(type == MethodType.SET) {
+         process(part, write);
+      }      
    }
    
    /**
@@ -315,7 +322,7 @@ class MethodScanner extends ContactList {
     * @param label this is the label associated with the method
     */
    private void remove(Method method, Annotation label) throws Exception {
-      MethodPart part = MethodPartFactory.getInstance(method, label);
+      MethodPart part = factory.getInstance(method, label);
       MethodType type = part.getMethodType();     
       
       if(type == MethodType.GET) {

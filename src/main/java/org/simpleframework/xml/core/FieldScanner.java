@@ -46,6 +46,11 @@ import org.simpleframework.xml.Version;
 class FieldScanner extends ContactList {
    
    /**
+    * This is used to create the synthetic annotations for fields.
+    */
+   private final AnnotationFactory factory;
+   
+   /**
     * This is used to acquire the hierarchy for the class scanned.
     */
    private final Hierarchy hierarchy;
@@ -80,6 +85,7 @@ class FieldScanner extends ContactList {
     * @param access this is the access type for the class
     */
    public FieldScanner(Class type, DefaultType access) throws Exception {
+      this.factory = new AnnotationFactory();
       this.hierarchy = new Hierarchy(type);
       this.done = new ContactMap();
       this.access = access;
@@ -116,10 +122,10 @@ class FieldScanner extends ContactList {
     * @param type this is one of the super classes for the object
     */  
    private void scan(Class type, Class real) {
-      Field[] field = type.getDeclaredFields();
+      Field[] list = type.getDeclaredFields();
       
-      for(int i = 0; i < field.length; i++) {                       
-         scan(field[i]);                      
+      for(Field field : list) {
+         scan(field);                      
       }   
    }
    
@@ -134,8 +140,8 @@ class FieldScanner extends ContactList {
    private void scan(Field field) {
       Annotation[] list = field.getDeclaredAnnotations();
       
-      for(int i = 0; i < list.length; i++) {
-         scan(field, list[i]);                       
+      for(Annotation label : list) {
+         scan(field, label);                       
       }  
    }
    
@@ -149,13 +155,13 @@ class FieldScanner extends ContactList {
     * @param access this is the default access type for the class
     */
    private void scan(Class type, DefaultType access) throws Exception {
-      Field[] field = type.getDeclaredFields();
+      Field[] list = type.getDeclaredFields();
       
-      for(int i = 0; i < field.length; i++) { 
-         Class real = field[i].getType();
+      for(Field field : list) {
+         Class real = field.getType();
          
          if(access == FIELD) {
-            process(field[i], real);
+            process(field, real);
          }
       }   
    }
@@ -206,7 +212,7 @@ class FieldScanner extends ContactList {
     * @param type this is the type to acquire the annotation
     */
    private void process(Field field, Class type) throws Exception {
-      Annotation label = AnnotationFactory.getInstance(type);
+      Annotation label = factory.getInstance(type);
       
       if(label != null) {
          process(field, label);

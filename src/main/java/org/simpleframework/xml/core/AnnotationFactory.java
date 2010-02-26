@@ -39,8 +39,8 @@ import org.simpleframework.xml.ElementMap;
  * 
  * @see org.simpleframework.xml.core.AnnotationHandler
  */
-class AnnotationFactory {
-
+class AnnotationFactory {  
+  
    /**
     * This is used to create an annotation for the provided type.
     * Annotations created are used to match the type provided. So
@@ -52,7 +52,7 @@ class AnnotationFactory {
     * 
     * @return this returns the synthetic annotation to be used
     */
-   public static Annotation getInstance(Class type) throws Exception { 
+   public Annotation getInstance(Class type) throws Exception { 
       ClassLoader loader = getClassLoader();
       
       if(Map.class.isAssignableFrom(type)) {
@@ -77,7 +77,7 @@ class AnnotationFactory {
     * 
     * @return this returns the synthetic annotation to be used
     */
-   private static Annotation getInstance(ClassLoader loader, Class label) throws Exception {
+   private Annotation getInstance(ClassLoader loader, Class label) throws Exception {
       AnnotationHandler handler = new AnnotationHandler(label);
       Class[] list = new Class[] {label};
       
@@ -92,7 +92,7 @@ class AnnotationFactory {
     * 
     * @return this returns the class loader that is to be used
     */
-   private static ClassLoader getClassLoader() throws Exception {
+   private ClassLoader getClassLoader() throws Exception {
       return AnnotationFactory.class.getClassLoader();
    }
 }

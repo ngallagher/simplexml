@@ -39,7 +39,22 @@ import java.lang.reflect.Method;
  * 
  * @see org.simpleframework.xml.core.MethodScanner
  */
-final class MethodPartFactory {   
+class MethodPartFactory {
+   
+   /**
+    * This is used to create the synthetic annotations for methods.
+    */
+   private final AnnotationFactory factory;
+   
+   /**
+    * Constructor for the <code>MethodPartFactory</code> object. This
+    * is used to create method parts based on the method signature 
+    * and the XML annotation is uses. The created part can be used to
+    * either set or get values depending on its type.
+    */
+   public MethodPartFactory() {
+      this.factory = new AnnotationFactory();
+   }
    
    /**
     * This is used to acquire a <code>MethodPart</code> for the method
@@ -55,7 +70,7 @@ final class MethodPartFactory {
     * 
     * @throws Exception if Java Bean conventions are not followed
     */
-   public static MethodPart getInstance(Method method) throws Exception {
+   public MethodPart getInstance(Method method) throws Exception {
       Annotation label = getAnnotation(method);
       
       if(label != null) {
@@ -79,7 +94,7 @@ final class MethodPartFactory {
     * 
     * @throws Exception if Java Bean conventions are not followed
     */
-   public static MethodPart getInstance(Method method, Annotation label) throws Exception {
+   public MethodPart getInstance(Method method, Annotation label) throws Exception {
       MethodName name = getName(method, label);
       MethodType type = name.getType();
       
@@ -104,7 +119,7 @@ final class MethodPartFactory {
     * 
     * @throws Exception if Java Bean conventions are not followed
     */
-   private static MethodName getName(Method method, Annotation label) throws Exception {
+   private MethodName getName(Method method, Annotation label) throws Exception {
       MethodType type = getMethodType(method);
       
       if(type == MethodType.GET) {
@@ -130,7 +145,7 @@ final class MethodPartFactory {
     * 
     * @return this is the method name object for the method    
     */
-   private static MethodType getMethodType(Method method) {
+   private MethodType getMethodType(Method method) {
       String name = method.getName();      
       
       if(name.startsWith("get")) {
@@ -142,7 +157,7 @@ final class MethodPartFactory {
       if(name.startsWith("set")) {
          return MethodType.SET;
       }
-      return null;
+      return MethodType.NONE;
    }
    
    /**
@@ -160,11 +175,11 @@ final class MethodPartFactory {
     * 
     * @throws Exception thrown if the annotation could not be created
     */
-   private static Annotation getAnnotation(Method method) throws Exception {
+   private Annotation getAnnotation(Method method) throws Exception {
       Class type = getType(method);
       
       if(type != null) {
-         return AnnotationFactory.getInstance(type);
+         return factory.getInstance(type);
       }
       return null;
    }
@@ -181,14 +196,14 @@ final class MethodPartFactory {
     * 
     * @throws Exception thrown if the method type can not be found
     */
-   private static Class getType(Method method) throws Exception {
+   public Class getType(Method method) throws Exception {
       MethodType type = getMethodType(method);
       
       if(type == MethodType.SET) {
          return getParameterType(method);
       }
       if(type == MethodType.GET) {
-         return method.getReturnType();
+         return getReturnType(method);
       }
       return null;
    }
@@ -205,11 +220,32 @@ final class MethodPartFactory {
     * 
     * @throws Exception if the parameter type can not be found
     */
-   private static Class getParameterType(Method method) throws Exception {
+   private Class getParameterType(Method method) throws Exception {
       Class[] list = method.getParameterTypes();
       
       if(list.length == 1) {
          return method.getParameterTypes()[0];
+      }
+      return null;
+   }
+   
+   /**
+    * This is the return type associated with the provided method.
+    * The return type of the method is provided only if the method
+    * adheres to the Java Bean conventions regarding getter methods.
+    * If the method takes a parameter then this will return null.
+    * 
+    * @param method this is the method to get the return type for
+    * 
+    * @return this returns the return type associated with it
+    * 
+    * @throws Exception if the return type can not be found
+    */
+   private Class getReturnType(Method method) throws Exception {
+      Class[] list = method.getParameterTypes();
+      
+      if(list.length == 0) {
+         return method.getReturnType();
       }
       return null;
    }
@@ -228,15 +264,18 @@ final class MethodPartFactory {
     * 
     * @throws Exception if Java Bean conventions are not followed
     */
-   private static MethodName getRead(Method method, MethodType type) throws Exception {
+   private MethodName getRead(Method method, MethodType type) throws Exception {
       Class[] list = method.getParameterTypes();
       String real = method.getName();
          
       if(list.length != 0) {
-         throw new MethodException("Get method %s in %s contains parameters", real, type);
+         throw new MethodException("Get method %s contains parameters", method);
       }
       String name = getTypeName(real, type);
       
+      if(name == null) {
+         throw new MethodException("Could not get name for %s", method);
+      }
       return new MethodName(method, type, name);
    }
 
@@ -254,15 +293,18 @@ final class MethodPartFactory {
     * 
     * @throws Exception if Java Bean conventions are not followed
     */
-   private static MethodName getWrite(Method method, MethodType type) throws Exception {
+   private MethodName getWrite(Method method, MethodType type) throws Exception {
       Class[] list = method.getParameterTypes();
       String real = method.getName();
       
       if(list.length != 1) {
-         throw new MethodException("Set method %s has invalid signature in %s", real, type);         
+         throw new MethodException("Set method %s has invalid signature", method);         
       }
       String name = getTypeName(real, type);
       
+      if(name == null) {
+         throw new MethodException("Could not get name for %s", method);
+      }
       return new MethodName(method, type, name);
    }
    
@@ -277,7 +319,7 @@ final class MethodPartFactory {
     * 
     * @return this returns the Java Bean name for the method
     */
-   private static String getTypeName(String name, MethodType type) {
+   private String getTypeName(String name, MethodType type) {
       int prefix = type.getPrefix();
       int size = name.length();
       
