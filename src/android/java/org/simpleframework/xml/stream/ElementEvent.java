@@ -7,14 +7,21 @@ import org.w3c.dom.NamedNodeMap;
 
 class ElementEvent extends ArrayList<Attribute> implements NodeEvent {
    
-   private final Element element;
+   private String name;
+   private String value;
    
-   public ElementEvent(Element element) {
-      this.element = element;
-      this.build();
+   public ElementEvent(String name, String value) {
+      this.name = name;
+      this.value = value;
    }
    
-   public void build(){
+   public ElementEvent(Element element) {
+      this.name = element.getLocalName();
+      this.value = element.getNodeValue();
+      this.build(element);
+   }
+   
+   public void build(Element element){
       NamedNodeMap list = element.getAttributes();
       int length = list.getLength();
       for(int i = 0; i < length; i++) {
@@ -29,19 +36,19 @@ class ElementEvent extends ArrayList<Attribute> implements NodeEvent {
    }
    
    public String getName() {
-      return element.getLocalName();
+      return name;
    }
    
    public String getValue() {
-      return element.getNodeValue();
+      return value;
    }
    
    public String getReference(){
-      return element.getNamespaceURI();
+      return null;
    }
    
    public String getPrefix(){
-      return element.getPrefix();
+      return null;
    }
    
    public boolean isEnd() {

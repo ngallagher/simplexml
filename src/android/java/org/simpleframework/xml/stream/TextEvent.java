@@ -6,10 +6,14 @@ import org.w3c.dom.Text;
 
 class TextEvent extends ArrayList<Attribute> implements NodeEvent {
 
-   private final Text text;
+   private final String text;
+   
+   public TextEvent(String text) {
+      this.text = text;
+   }
    
    public TextEvent(Text text) {
-      this.text = text;
+      this.text = text.getData();
    }
    
    public String getName() {
@@ -17,7 +21,7 @@ class TextEvent extends ArrayList<Attribute> implements NodeEvent {
    }
    
    public String getValue() {
-      return text.getData();
+      return text;
    }
    
    public String getReference() {
