@@ -46,7 +46,12 @@ enum MethodType {
    /**
     * This is used to represent a method that acts as a setter.
     */
-   SET(3);   
+   SET(3),  
+   
+   /**
+    * This is used to represent a a normal method to be ignored.
+    */
+   NONE(0);
    
    /**
     * This is the length of the prefix the method type uses.
