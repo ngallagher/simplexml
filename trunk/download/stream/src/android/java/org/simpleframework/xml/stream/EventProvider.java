@@ -7,7 +7,7 @@ public class EventProvider {
 
    public static EventReader provide(InputStream stream) throws Exception {
       try {
-         Class.forName("org.xmlpull.mxp1.MXParser");
+         Class.forName("org.xmlpull.v1.XmlPullParserFactory");
          return new PullProvider().provide(stream);
       } catch(Throwable e) {
          e.printStackTrace();
@@ -17,7 +17,7 @@ public class EventProvider {
    
    public static EventReader provide(Reader stream) throws Exception {
       try {
-         Class.forName("org.xmlpull.mxp1.MXParser");
+         Class.forName("org.xmlpull.v1.XmlPullParserFactory");
          return new PullProvider().provide(stream);
       } catch(Throwable e) {
          e.printStackTrace();
