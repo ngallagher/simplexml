@@ -18,8 +18,6 @@
 
 package org.simpleframework.xml.stream;
 
-import javax.xml.stream.events.StartElement;
-
 /**
  * The <code>InputElement</code> represents a self contained element
  * that will allow access to its child elements. If the next element
@@ -32,11 +30,6 @@ import javax.xml.stream.events.StartElement;
  * @see org.simpleframework.xml.stream.NodeReader
  */ 
 class InputElement implements InputNode {
-   
-   /**
-    * This is the XML element that this node provides access to.
-    */         
-   private final StartElement element;
    
    /**
     * This contains all the attributes associated with the element.
@@ -52,6 +45,11 @@ class InputElement implements InputNode {
     * This is the parent node for this XML input element node.
     */
    private final InputNode parent;
+   
+   /**
+    * This is the XML element that this node provides access to.
+    */         
+   private final EventNode node;
  
    /**
     * Constructor for the <code>InputElement</code> object. This 
@@ -60,15 +58,27 @@ class InputElement implements InputNode {
     * given are extracted and exposed via the attribute node map.
     *
     * @param parent this is the parent XML element for this 
-    * @param element this is the XML element wrapped
     * @param reader this is the reader used to read XML elements
+    * @param node this is the XML element wrapped by this node
     */ 
-   public InputElement(InputNode parent, NodeReader reader, StartElement element) {
-      this.map = new InputNodeMap(this, element);      
-      this.element = element;
+   public InputElement(InputNode parent, NodeReader reader, EventNode node) {
+      this.map = new InputNodeMap(this, node);      
       this.reader = reader;           
       this.parent = parent;
-   }  
+      this.node = node;
+   }
+   
+   /**
+    * This is used to return the source object for this node. This
+    * is used primarily as a means to determine which XML provider
+    * is parsing the source document and producing the nodes. It
+    * is useful to be able to determine the XML provider like this.
+    * 
+    * @return this returns the source of this input node
+    */
+   public Object getSource() {
+      return node.getSource();
+   }
    
    /**
     * This is used to acquire the <code>Node</code> that is the
@@ -91,7 +101,7 @@ class InputElement implements InputNode {
     * @return this returns the position of the XML read cursor
     */      
    public Position getPosition() {
-      return new InputPosition(element);           
+      return new InputPosition(node);           
    }   
 
    /**
@@ -102,7 +112,7 @@ class InputElement implements InputNode {
     * @return returns the name of the node that this represents
     */   
    public String getName() {
-      return element.getName().getLocalPart();           
+      return node.getName();           
    }
    
    /**
@@ -115,7 +125,7 @@ class InputElement implements InputNode {
     * @return this returns the prefix associated with this node
     */
    public String getPrefix() {
-      return element.getName().getPrefix();
+      return node.getPrefix();
    }
    
    /**
@@ -128,7 +138,7 @@ class InputElement implements InputNode {
     * @return this returns the associated namespace reference URI 
     */
    public String getReference() {
-      return element.getName().getNamespaceURI();
+      return node.getReference();
    }
    
    /**

@@ -57,6 +57,25 @@
             </fileset>
          </batchtest>
       </junit>
+      <junit printsummary="yes" haltonfailure="yes">
+         <classpath location="${build.path}/core"/>
+         <classpath location="${build.path}/test"/>
+         <classpath>
+            <fileset dir="${lib.path}">
+               <include name="**/*.jar"/>
+               <exclude name="**/stax-api-1.0.1.jar"/>
+               <exclude name="**/stax-1.2.0.jar"/>
+               <exclude name="**/wstx-asl-3.2.1.jar"/>
+            </fileset>
+         </classpath>
+         <formatter type="plain"/>
+         <batchtest fork="yes" todir="${report.path}">
+            <fileset dir="${build.path}/test">
+               <include name="**/*Test.class"/>
+               <exclude name="**/*TestSuite.class"/>
+            </fileset>
+         </batchtest>
+      </junit>
       <delete dir="${build.path}"/>
    </target>
 

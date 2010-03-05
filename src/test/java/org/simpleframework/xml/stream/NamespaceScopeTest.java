@@ -31,15 +31,15 @@ public class NamespaceScopeTest extends ValidationTestCase {
       String reference = node.getReference();
       String prefix = node.getPrefix();
       
-      assertEquals(prefix, "");
+      assertTrue(isEmpty(prefix));
       assertEquals(reference, "http://www.default.com/");
       
       node = node.getNext("entry");
       reference = node.getReference();
       prefix = node.getPrefix();
       
-      assertEquals(prefix, "");
-      assertEquals(reference, "");
+      assertTrue(isEmpty(prefix));
+      assertTrue(isEmpty(reference));
       
       node = node.getNext("book");
       reference = node.getReference();
@@ -52,8 +52,8 @@ public class NamespaceScopeTest extends ValidationTestCase {
       reference = author.getReference();
       prefix = author.getPrefix();
       
-      assertEquals(prefix, "");
-      assertEquals(reference, "");
+      assertTrue(isEmpty(prefix));
+      assertTrue(isEmpty(reference));
       
       InputNode title = node.getNext("title");
       reference = title.getReference();
@@ -75,7 +75,7 @@ public class NamespaceScopeTest extends ValidationTestCase {
       String reference = node.getReference();
       String prefix = node.getPrefix();
       
-      assertEquals(prefix, "");
+      assertTrue(isEmpty(prefix));
       assertEquals(reference, "http://www.default.com/");
       
       node = node.getNext("book");
@@ -89,21 +89,25 @@ public class NamespaceScopeTest extends ValidationTestCase {
       reference = author.getReference();
       prefix = author.getPrefix();
       
-      assertEquals(prefix, "");
+      assertTrue(isEmpty(prefix));
       assertEquals(reference, "http://www.default.com/");
       
       InputNode title = node.getNext("title");
       reference = title.getReference();
       prefix = title.getPrefix();
       
-      assertEquals(prefix, "");
+      assertTrue(isEmpty(prefix));
       assertEquals(reference, "http://www.default.com/");
       
       InputNode isbn = node.getNext("isbn");
       reference = isbn.getReference();
       prefix = isbn.getPrefix();
       
-      assertEquals(prefix, "");
+      assertTrue(isEmpty(prefix));
       assertEquals(reference, "http://www.default.com/");
+   }
+   
+   private boolean isEmpty(String name) {
+      return name == null || name.equals("");
    }
 }

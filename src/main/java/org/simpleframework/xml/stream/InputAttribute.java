@@ -18,9 +18,6 @@
 
 package org.simpleframework.xml.stream;
 
-import javax.xml.stream.events.Attribute;
-import javax.xml.namespace.QName;
-
 /**
  * The <code>InputAttribute</code> is used to represent an attribute
  * within an element. Rather than representing an attribute as a
@@ -37,11 +34,16 @@ class InputAttribute implements InputNode {
     * This is the parent node to this attribute instance.
     */
    private InputNode parent;
-	   
+   
    /**
-    * Represents the source attribute if one was specified.
-    */         
-   private Attribute source;
+    * This is the reference associated with this attribute node.
+    */
+   private String reference;
+   
+   /**
+    * This is the prefix associated with this attribute node.
+    */
+   private String prefix;
         
    /**
     * Represents the name of this input attribute instance.
@@ -51,35 +53,13 @@ class InputAttribute implements InputNode {
    /**
     * Represents the value for this input attribute instance.
     */ 
-   private String value;  
-        
+   private String value;    
+   
    /**
-    * Constructor for the <code>InputAttribute</code> object. This
-    * is used to wrap a an attribute as an input node object. The
-    * attribute can then be used in a similar manner to elements.
-    *
-    * @param parent this is the parent node to this attribute
-    * @param source this is the attribute that this will wrap
-    */   
-   public InputAttribute(InputNode parent, Attribute source) {
-      this(parent, source, source.getName());
-   }        
-
-   /**
-    * Constructor for the <code>InputAttribute</code> object. This
-    * is used to wrap a an attribute as an input node object. The
-    * attribute can then be used in a similar manner to elements.
-    *
-    * @param parent this is the parent node to this attribute
-    * @param source this is the attribute that this will wrap
-    * @param name this is the name of the XML attribute
-    */   
-   private InputAttribute(InputNode parent, Attribute source, QName name) {
-      this.name = name.getLocalPart();
-      this.value = source.getValue();
-      this.source = source;      
-   }
-
+    * This is the source associated with this input attribute.
+    */
+   private Object source;
+   
    /**
     * Constructor for the <code>InputAttribute</code> object. This
     * is used to create an input attribute using the provided name
@@ -90,9 +70,38 @@ class InputAttribute implements InputNode {
     * @param value this is the value for this attribute object
     */     
    public InputAttribute(InputNode parent, String name, String value) {
-	  this.parent = parent;
+      this.parent = parent;
       this.value = value;
       this.name = name;           
+   }
+   
+   /**
+    * Constructor for the <code>InputAttribute</code> object. This
+    * is used to create an input attribute using the provided name
+    * and value, all other values for this input node will be null.
+    * 
+    * @param parent this is the parent node to this attribute
+    * @param attribute this is the attribute containing the details
+    */     
+   public InputAttribute(InputNode parent, Attribute attribute) {
+      this.reference = attribute.getReference();
+      this.prefix = attribute.getPrefix();
+      this.source = attribute.getSource();
+      this.value = attribute.getValue();
+      this.name = attribute.getName();
+      this.parent = parent;           
+   }
+   
+   /**
+    * This is used to return the source object for this node. This
+    * is used primarily as a means to determine which XML provider
+    * is parsing the source document and producing the nodes. It
+    * is useful to be able to determine the XML provider like this.
+    * 
+    * @return this returns the source of this input node
+    */
+   public Object getSource() {
+      return source;
    }
    
    /**
@@ -116,7 +125,7 @@ class InputAttribute implements InputNode {
     * @return this returns the position of the XML read cursor
     */  
    public Position getPosition() {
-      return new InputPosition(source);           
+      return parent.getPosition();           
    }
 
    /**
@@ -139,7 +148,7 @@ class InputAttribute implements InputNode {
     * @return this returns the prefix associated with this node
     */
    public String getPrefix() {
-      return source.getName().getPrefix();
+      return prefix;
    }
    
    /**
@@ -152,7 +161,7 @@ class InputAttribute implements InputNode {
     * @return this returns the associated namespace reference URI 
     */
    public String getReference() {
-      return source.getName().getNamespaceURI();
+      return reference;
    }
 
    /**

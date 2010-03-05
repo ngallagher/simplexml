@@ -81,7 +81,7 @@ public class DataTest extends ValidationTestCase {
 	   serializer = new Persister();
 	}
 	
-   public void s_testData() throws Exception {    
+   public void testData() throws Exception {    
       Scrape scrape = serializer.read(Scrape.class, SOURCE);
       
       assertEquals(scrape.section, "one");

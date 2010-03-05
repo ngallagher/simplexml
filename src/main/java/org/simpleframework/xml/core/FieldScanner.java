@@ -157,13 +157,15 @@ class FieldScanner extends ContactList {
    private void scan(Class type, DefaultType access) throws Exception {
       Field[] list = type.getDeclaredFields();
       
-      for(Field field : list) {
-         Class real = field.getType();
-         
-         if(access == FIELD) {
-            process(field, real);
-         }
-      }   
+      if(access == FIELD) {
+         for(Field field : list) {
+            Class real = field.getType();
+            
+            if(real != null) {
+               process(field, real);
+            }
+         }   
+      }
    }
    
    /**

@@ -1,14 +1,24 @@
 package org.simpleframework.xml.stream;
 
-import org.simpleframework.xml.ValidationTestCase;
-import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 
-import org.simpleframework.xml.stream.NodeBuilder;
-import org.simpleframework.xml.stream.OutputNode;
+import org.simpleframework.xml.ValidationTestCase;
 
 public class NodeWriterTest extends ValidationTestCase {
 
+   public void testEarlyCommit() throws Exception {
+      StringWriter out = new StringWriter();           
+      OutputNode root = NodeBuilder.write(out);
+      boolean failure = false;
+      
+      try {
+         root.commit();
+      }catch(Exception e) {
+         e.printStackTrace();
+         failure = true;
+      }
+      assertTrue("Early commit should fail", failure);
+   }
    public void testBasicWrite() throws Exception {
       StringWriter out = new StringWriter();           
       OutputNode root = NodeBuilder.write(out).getChild("root");

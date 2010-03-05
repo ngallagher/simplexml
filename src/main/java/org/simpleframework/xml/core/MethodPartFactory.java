@@ -205,6 +205,9 @@ class MethodPartFactory {
       if(type == MethodType.GET) {
          return getReturnType(method);
       }
+      if(type == MethodType.IS) {
+         return getReturnType(method);
+      }
       return null;
    }
    
@@ -269,7 +272,7 @@ class MethodPartFactory {
       String real = method.getName();
          
       if(list.length != 0) {
-         throw new MethodException("Get method %s contains parameters", method);
+         throw new MethodException("Get method %s is not a valid property", method);
       }
       String name = getTypeName(real, type);
       
@@ -298,7 +301,7 @@ class MethodPartFactory {
       String real = method.getName();
       
       if(list.length != 1) {
-         throw new MethodException("Set method %s has invalid signature", method);         
+         throw new MethodException("Set method %s os not a valid property", method);         
       }
       String name = getTypeName(real, type);
       

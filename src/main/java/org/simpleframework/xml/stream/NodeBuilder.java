@@ -18,8 +18,6 @@
 
 package org.simpleframework.xml.stream;
 
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLEventReader;
 import java.io.InputStream;
 import java.io.Reader;
 import java.io.Writer;
@@ -39,12 +37,12 @@ import java.io.Writer;
 public final class NodeBuilder {
  
    /**
-    * This is the XML input factory used to create XML readers.
+    * This is the XML provider implementation that creates readers.
     */         
-   private static XMLInputFactory factory;
+   private static Provider provider;
 
    static {
-      factory = XMLInputFactory.newInstance();                    
+      provider = ProviderFactory.getInstance();                    
    }
 
    /**
@@ -57,7 +55,7 @@ public final class NodeBuilder {
     * @throws Exception thrown if there is an I/O exception
     */   
    public static InputNode read(InputStream source) throws Exception {
-      return read(factory.createXMLEventReader(source));   
+      return read(provider.provide(source));   
    }
         
    /**
@@ -70,7 +68,7 @@ public final class NodeBuilder {
     * @throws Exception thrown if there is an I/O exception
     */   
    public static InputNode read(Reader source) throws Exception {
-      return read(factory.createXMLEventReader(source));   
+      return read(provider.provide(source));   
    }
 
    /**
@@ -82,7 +80,7 @@ public final class NodeBuilder {
     *
     * @throws Exception thrown if there is an I/O exception
     */     
-   private static InputNode read(XMLEventReader source) throws Exception {
+   private static InputNode read(EventReader source) throws Exception {
       return new NodeReader(source).readRoot();           
    }
    

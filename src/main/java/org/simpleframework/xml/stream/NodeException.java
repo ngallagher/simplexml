@@ -20,9 +20,8 @@ package org.simpleframework.xml.stream;
 
 /**
  * The <code>NodeException</code> is thrown to indicate the state of
- * either the input node or output node being invalid. All messages
- * provided to this exception are formatted in a similar manner to 
- * the <code>PrintStream.printf</code> method.
+ * either the input node or output node being invalid. Typically
+ * this is thrown if some illegal operation is requested.
  * 
  * @author Niall Gallagher
  */

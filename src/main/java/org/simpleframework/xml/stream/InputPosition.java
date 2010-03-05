@@ -18,9 +18,6 @@
 
 package org.simpleframework.xml.stream;
 
-import javax.xml.stream.events.XMLEvent;
-import javax.xml.stream.Location;
-
 /**
  * The <code>InputPosition</code> object is used to acquire the line
  * number within the XML document. This allows debugging to be done
@@ -34,7 +31,7 @@ class InputPosition implements Position {
    /**
     * This is the XML event that the position is acquired for.
     */         
-   private XMLEvent source;
+   private EventNode source;
         
    /**
     * Constructor for the <code>InputPosition</code> object. This is
@@ -44,7 +41,7 @@ class InputPosition implements Position {
     *
     * @param source this is the XML event to get the position of
     */ 
-   public InputPosition(XMLEvent source) {
+   public InputPosition(EventNode source) {
       this.source = source;
    }
 
@@ -56,27 +53,8 @@ class InputPosition implements Position {
     *
     * @return this returns the line number of an XML event 
     */ 
-   public int getLine() {
-      Location line = getLocation();
-      
-      if(line != null) {
-         return line.getLineNumber();
-      }   
-      return -1;
-   }
-
-   /**
-    * This is used to acquire the location information from the
-    * provided XML event. This is called only if the provided XML
-    * event is not null. This provides the StAX line numbering.
-    * 
-    * @return this returns the StAX location information
-    */ 
-   private Location getLocation() {
-      if(source != null) {
-         return source.getLocation();
-      }
-      return null;
+   public int getLine() {  
+      return source.getLine();
    }
 
    /**

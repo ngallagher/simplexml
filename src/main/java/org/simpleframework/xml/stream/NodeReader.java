@@ -18,11 +18,6 @@
 
 package org.simpleframework.xml.stream;
 
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.Characters;
-import javax.xml.stream.events.XMLEvent;
-import javax.xml.stream.XMLEventReader;
-
 /**
  * The <code>NodeReader</code> object is used to read elements from
  * the specified XML event reader. This reads input node objects
@@ -42,7 +37,7 @@ class NodeReader {
    /**
     * Represents the XML event reader used to read all elements.
     */ 
-   private final XMLEventReader reader;     
+   private final EventReader reader;     
    
    /**
     * This stack enables the reader to keep track of elements.
@@ -55,7 +50,7 @@ class NodeReader {
     *
     * @param reader this is the event reader for the XML document
     */ 
-   public NodeReader(XMLEventReader reader) {
+   public NodeReader(EventReader reader) {
       this.stack = new InputStack();
       this.reader = reader;            
    }        
@@ -102,17 +97,17 @@ class NodeReader {
       if(!stack.isRelevant(from)) {         
          return null; 
       }
-      XMLEvent event = reader.nextEvent();
+      EventNode event = reader.next();
       
       while(event != null) {
-         if(event.isEndElement()) {
+         if(event.isEnd()) {
             if(stack.pop() == from) {
                return null;
             }               
-         } else if(event.isStartElement()) {
+         } else if(event.isStart()) {
             return readStart(from, event);                 
          }
-         event = reader.nextEvent();
+         event = reader.next();
       }
       return null; 
    }
@@ -133,22 +128,22 @@ class NodeReader {
       if(!stack.isRelevant(from)) {        
          return null; 
      }
-     XMLEvent event = reader.peek();
+     EventNode event = reader.peek();
           
      while(event != null) {
-        if(event.isEndElement()) { 
+        if(event.isEnd()) { 
            if(stack.top() == from) {
               return null;
            } else {
               stack.pop();
            }
-        } else if(event.isStartElement()) {
+        } else if(event.isStart()) {
            if(isName(event, name)) {
               return readElement(from);
            }   
            break;
         }
-        event = reader.nextEvent();
+        event = reader.next();
         event = reader.peek();
      }
      return null;
@@ -165,11 +160,13 @@ class NodeReader {
     *
     * @return this returns an input node for the given element
     */    
-   private InputNode readStart(InputNode from, XMLEvent event) throws Exception {
-      StartElement start = event.asStartElement();
-      InputElement input = new InputElement(from, this, start);
+   private InputNode readStart(InputNode from, EventNode event) throws Exception {
+      InputElement input = new InputElement(from, this, event);
                
-      return stack.push(input);
+      if(event.isStart()) {
+         return stack.push(input);
+      }
+      return input;
    }
 
    /**
@@ -182,10 +179,12 @@ class NodeReader {
     * 
     * @return true if the specified node has the given local name
     */
-   private boolean isName(XMLEvent node, String name) {
-      StartElement start = node.asStartElement();
-      String local = start.getName().getLocalPart();
+   private boolean isName(EventNode node, String name) {
+      String local = node.getName();
       
+      if(local == null) {
+         return false;
+      }
       return local.equals(name);
    }
    
@@ -203,19 +202,18 @@ class NodeReader {
       StringBuilder value = new StringBuilder();
       
       while(stack.top() == from) {         
-         XMLEvent event = reader.peek();
+         EventNode event = reader.peek();
          
-         if(!event.isCharacters()) {
+         if(!event.isText()) {
             if(value.length() == 0) {
                return null;
             }
             return value.toString();                    
          } 
-         Characters text = event.asCharacters();
-         String data = text.getData();
+         String data = event.getValue();
          
          value.append(data);
-         reader.nextEvent();         
+         reader.next();         
       }         
       return null;
    }  
@@ -234,9 +232,9 @@ class NodeReader {
     */
    public boolean isEmpty(InputNode from) throws Exception {
       if(stack.top() == from) {         
-         XMLEvent event = reader.peek();
+         EventNode event = reader.peek();
 
-         if(event.isEndElement()) {
+         if(event.isEnd()) {
             return true;
          }
       }

@@ -114,6 +114,16 @@ public interface InputNode extends Node {
    public InputNode getParent();
    
    /**
+    * This is used to return the source object for this node. This
+    * is used primarily as a means to determine which XML provider
+    * is parsing the source document and producing the nodes. It
+    * is useful to be able to determine the XML provider like this.
+    * 
+    * @return this returns the source of this input node
+    */
+   public Object getSource();
+   
+   /**
     * This returns the next child element within this element if
     * one exists. If all children have been read, or if there are
     * no child elements for this element then this returns null.

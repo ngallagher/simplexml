@@ -7,6 +7,16 @@ import org.simpleframework.xml.stream.OutputNode;
 
 public class ClassToNamespaceVisitor implements Visitor {
    
+   private final boolean comment;
+   
+   public ClassToNamespaceVisitor(){
+      this(true);
+   }
+   
+   public ClassToNamespaceVisitor(boolean comment){
+      this.comment = comment;
+   }
+   
    public void read(Type field, NodeMap<InputNode> node) throws Exception {
       String namespace = node.getNode().getReference();
       if(namespace != null && namespace.length() > 0) {
@@ -26,7 +36,9 @@ public class ClassToNamespaceVisitor implements Visitor {
          if(name == null) {
             throw new PersistenceException("Could not match class %s", type);
          }
-         node.getNode().setComment(type);
+         if(comment) {
+            node.getNode().setComment(type);
+         }
          node.getNode().getNamespaces().put(name, "class");
          node.getNode().setReference(name);
       }

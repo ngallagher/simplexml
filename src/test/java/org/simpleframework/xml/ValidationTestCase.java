@@ -119,16 +119,11 @@ public class ValidationTestCase extends XMLTestCase {
         
         domFile.close();      
         asciiFile.close();
-        
-        // TODO fix the DOM w3c node adapter builder, it sometimes gets incorrect events,
-        // TODO perhaps there is something wrong with the queue of nodes
-        //out.read(type.getClass(), NodeAdapterBuilder.read(doc));
-        //out.validate(type.getClass(), NodeAdapterBuilder.read(doc));
         out.validate(type.getClass(), text);
        
         File hyphenFile = new File(directory, type.getClass().getSimpleName() + ".hyphen.xml");
         Strategy strategy = new CycleStrategy("ID", "REFERER");
-        Visitor visitor = new CommentVisitor();
+        Visitor visitor = new DebugVisitor();
         strategy = new VisitorStrategy(visitor, strategy);
         Style style = new HyphenStyle();
         Format format = new Format(style);
@@ -439,8 +434,16 @@ public class ValidationTestCase extends XMLTestCase {
        print(doc.getDocumentElement());
      }
    
-     public static class CommentVisitor implements Visitor {
-        public void read(Type type, NodeMap<InputNode> node){}
+     public static class DebugVisitor implements Visitor {
+        public void read(Type type, NodeMap<InputNode> node){
+           InputNode element = node.getNode();
+           if(element.isRoot()) {
+              Object source = element.getSource();
+              Class sourceType = source.getClass();
+              Class itemType = type.getType();
+              System.out.printf(">>>>> ELEMENT=[%s]%n>>>>> TYPE=[%s]%n>>>>> SOURCE=[%s]%n", element, itemType, sourceType);
+           }
+        }
         public void write(Type type, NodeMap<OutputNode> node) throws Exception {
            if(!node.getNode().isRoot()) {
               node.getNode().setComment(type.getType().getName());

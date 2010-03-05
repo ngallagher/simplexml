@@ -18,8 +18,6 @@
 
 package org.simpleframework.xml.stream;
 
-import java.util.ArrayList;
-
 /**
  * The <code>InputStack</code> is used to keep track of the nodes 
  * that have been read from the document. This ensures that when
@@ -31,7 +29,7 @@ import java.util.ArrayList;
  *
  * @see org.simpleframework.xml.stream.InputNode
  */ 
-class InputStack extends ArrayList<InputNode> {
+class InputStack extends Stack<InputNode> {
 
    /**
     * Constructor for the <code>InputStack</code> object. This is
@@ -40,67 +38,6 @@ class InputStack extends ArrayList<InputNode> {
     */         
    public InputStack() {
       super(6);
-   }
-
-   /**
-    * This is used to remove the <code>InputNode</code> from the
-    * top of the input stack. This is used when an element has been
-    * ended and the input reader wants to block child creation.
-    *
-    * @return this returns the node from the top of the stack
-    */ 
-   public InputNode pop() {
-      int size = size();
-      
-      if(size <= 0) {
-         return null;               
-      }           
-      return remove(size - 1);
-   }
-   
-   /**
-    * This is used to acquired the <code>InputNode</code> from the
-    * top of the input stack. This is used when the reader wants to
-    * determine the current element read from the XML document.
-    *
-    * @return this returns the node from the top of the stack
-    */ 
-   public InputNode top() {
-      int size = size();
-      
-      if(size <= 0) {
-         return null;              
-      }           
-      return get(size - 1);
-   }
-   
-   /**
-    * This is used to acquire the <code>InputNode</code> from the
-    * bottom of the input stack. This is used when the reader wants
-    * to determine the root element for the read XML document.
-    *
-    * @return this returns the node from the bottom of the stack
-    */ 
-   public InputNode bottom() {
-      int size = size();
-      
-      if(size <= 0) {
-         return null;              
-      }           
-      return get(0);           
-   }
-   
-   /**
-    * This method is used to add an <code>InputNode</code> to the
-    * top of the stack. This is used when an element has been read
-    * from XML document, and allows the reader to determine if a
-    * child node can be added from a given input node.
-    *
-    * @param value this is the input node to add to the stack
-    */ 
-   public InputNode push(InputNode value) {
-      add(value);
-      return value;
    }
    
    /**
@@ -115,6 +52,6 @@ class InputStack extends ArrayList<InputNode> {
     * @return returns true if the node is relevant in the stack
     */
    public boolean isRelevant(InputNode value) {
-	   return contains(value) || isEmpty();
+      return contains(value) || isEmpty();
    }
 }

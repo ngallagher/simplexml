@@ -510,7 +510,7 @@ class Composite implements Converter {
       
       if(label == null) {
          if(map.isStrict(context) && revision.isEqual()) {              
-            throw new AttributeException("Attribute '%s' does not exist at %s", name, line);
+            throw new AttributeException("Attribute '%s' does not have a match at %s", name, line);
          }            
       } else {
          read(node, source, label);
@@ -542,7 +542,7 @@ class Composite implements Converter {
          Position line = node.getPosition();
          
          if(map.isStrict(context) && revision.isEqual()) {              
-            throw new ElementException("Element '%s' does not exist at %s", name, line);
+            throw new ElementException("Element '%s' does not have a match at %s", name, line);
          } else {
             node.skip();                 
          }

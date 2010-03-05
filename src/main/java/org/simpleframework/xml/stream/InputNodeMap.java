@@ -18,8 +18,6 @@
 
 package org.simpleframework.xml.stream;
 
-import javax.xml.stream.events.Attribute;
-import javax.xml.stream.events.StartElement;
 import java.util.LinkedHashMap;
 import java.util.Iterator;
 
@@ -60,9 +58,27 @@ class InputNodeMap extends LinkedHashMap<String, InputNode> implements NodeMap<I
     * @param source this is the node this node map belongs to
     * @param element the element to populate the node map with
     */ 
-   public InputNodeMap(InputNode source, StartElement element) {
+   public InputNodeMap(InputNode source, EventNode element) {
       this.source = source;           
-      this.put(element);   
+      this.build(element);   
+   }
+   
+   /**
+    * This is used to insert all attributes belonging to the start
+    * element to the map. All attributes acquired from the element
+    * are converted into <code>InputAttribute</code> objects so 
+    * that they can be used as input nodes by an input node.
+    *
+    * @param element the element to acquire attributes from
+    */ 
+   private void build(EventNode element) {
+      for(Attribute entry : element) {
+         InputAttribute value = new InputAttribute(source, entry);
+         
+         if(!entry.isReserved()) {
+            put(value.getName(), value);
+         }
+      }
    }
    
    /**
@@ -87,47 +103,7 @@ class InputNodeMap extends LinkedHashMap<String, InputNode> implements NodeMap<I
    public String getName() {
       return source.getName();           
    }   
-
-   /**
-    * This is used to insert all attributes belonging to the start
-    * element to the map. All attributes acquired from the element
-    * are converted into <code>InputAttribute</code> objects so 
-    * that they can be used as input nodes by an input node.
-    *
-    * @param element the element to acquire attributes from
-    */ 
-   private void put(StartElement element) {
-      Iterator list = element.getAttributes();
-      
-      while(list.hasNext()) {
-         Object event = list.next();
-         
-         if(event instanceof Attribute) {
-            put((Attribute)event);                 
-         }              
-      }           
-   }
-
-   /**
-    * This is used to insert an <code>Attribute</code> node to 
-    * the map. The inserted attribute is converted into an input
-    * node by wrapping it in an <code>InputAttribute</code> object.
-    * Once the node is inserted it can be acquired by its name.
-    *
-    * @param event this is the attribute to add to this node map
-    * 
-    * @return this returns the node that has just been added
-    */     
-   private InputNode put(Attribute event) {
-      InputNode node = new InputAttribute(source, event);
-      String name = node.getName();
-      
-      if(name != null) {
-         put(name, node);
-      }
-      return node;
-   }
-
+   
    /**
     * This is used to add a new <code>InputAttribute</code> node to
     * the map. The created node can be used by an input node to

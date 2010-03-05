@@ -10,7 +10,7 @@ import org.simpleframework.xml.ValidationTestCase;
 
 public class StackOverflowTest extends ValidationTestCase {
    
-   private static final int ITERATIONS = 5000;
+   private static final int ITERATIONS = 1000;
    
    private static final String NEW_BENEFIT = 
    "<newBenefit>"+
