@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<project name="Build Plugin" default="build" basedir=".">
+
+   <target name="layout">
+      <property name="source.path" value="src"/>
+      <property name="build.path" value="build"/>
+      <property name="jar.path" value="jar"/>
+      <property name="lib.path" value="lib"/>
+   </target>
+
+   <target name="clean" depends="layout">
+      <delete dir="${build.path}"/>
+      <delete dir="${jar.path}"/>
+   </target>
+
+   <target name="prepare" depends="clean">
+      <mkdir dir="${build.path}"/>
+      <mkdir dir="${jar.path}"/>
+   </target>
+
+   <target name="build" depends="prepare">
+      <javac srcdir="${source.path}" destdir="${build.path}" debug="true" debuglevel="lines,vars,source" encoding="UTF-8">
+         <classpath>
+            <fileset dir="${lib.path}">
+               <include name="**/*.jar"/>
+            </fileset>
+            <fileset dir="/Users/niall/Eclipse/galileo/plugins">
+               <include name="**/*.jar"/>
+            </fileset>
+         </classpath>  
+      </javac>
+      <copy todir="${build.path}">
+         <fileset file="plugin.xml"/>
+      </copy>
+      <jar jarfile="${jar.path}/com.rbsfm.build.plugin_1.0.0.jar" basedir="${build.path}" manifest="META-INF/MANIFEST.MF"/>
+      <copy todir="/Users/niall/Eclipse/galileo/dropins">
+         <fileset file="${jar.path}/com.rbsfm.build.plugin_1.0.0.jar"/>
+      </copy>
+      <delete dir="${build.path}"/>
+   </target>
+
+</project>
