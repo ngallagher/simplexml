@@ -8,7 +8,7 @@
                <with variable="activeMenuSelection">  
                   <iterate>  
                      <adapt type="org.eclipse.core.resources.IFile">
-                     	<test property="org.eclipse.core.resources.name" value="*.xml" />
+                     	<test property="org.eclipse.core.resources.name" value="build.xml" />
                      </adapt>
                   </iterate>  
                </with>  
@@ -19,7 +19,7 @@
                <with variable="activeMenuSelection">  
                   <iterate>  
                      <adapt type="org.eclipse.core.resources.IFile">
-                     	<test property="org.eclipse.core.resources.name" value="*.xml" />
+                     	<test property="org.eclipse.core.resources.path" value="/xml/output/*.xml" />
                      </adapt>
                   </iterate>  
                </with>  
