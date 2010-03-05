@@ -3,11 +3,21 @@
 <plugin>  
    <extension point="org.eclipse.ui.menus">  
       <menuContribution locationURI="popup:org.eclipse.jdt.ui.PackageExplorer">  
-         <command commandId="com.rbsfm.plugin.build.convert" label="Create HTML" style="push">  
+         <command commandId="com.rbsfm.plugin.build.publish" label="Publish Module" style="push">  
             <visibleWhen>  
                <with variable="activeMenuSelection">  
                   <iterate>  
-                     <!--adapt type="org.eclipse.jdt.core.ICompilationUnit"></adapt-->
+                     <adapt type="org.eclipse.core.resources.IFile">
+                     	<test property="org.eclipse.core.resources.name" value="*.xml" />
+                     </adapt>
+                  </iterate>  
+               </with>  
+            </visibleWhen>  
+         </command> 
+         <command commandId="com.rbsfm.plugin.build.assemble" label="Assemble Module" style="push">  
+            <visibleWhen>  
+               <with variable="activeMenuSelection">  
+                  <iterate>  
                      <adapt type="org.eclipse.core.resources.IFile">
                      	<test property="org.eclipse.core.resources.name" value="*.xml" />
                      </adapt>
@@ -18,11 +28,13 @@
       </menuContribution>  
    </extension>  
    <extension point="org.eclipse.ui.commands">  
-      <command id="com.rbsfm.plugin.build.convert" name="Convert">  
-      </command>  
+      <command id="com.rbsfm.plugin.build.publish" name="Publish"/>   
+   </extension>  
+   <extension point="org.eclipse.ui.commands">  
+      <command id="com.rbsfm.plugin.build.assemble" name="Assemble"/>  
    </extension>  
    <extension id="lars" name="lars" point="org.eclipse.ui.handlers">  
-      <handler class="com.rbsfm.plugin.build.handler.Convert" commandId="com.rbsfm.plugin.build.convert">  
-      </handler>  
+      <handler class="com.rbsfm.plugin.build.handler.PublishHandler" commandId="com.rbsfm.plugin.build.publish"/>  
+      <handler class="com.rbsfm.plugin.build.handler.AssembleHandler" commandId="com.rbsfm.plugin.build.assemble"/>  
    </extension>  
 </plugin>  
