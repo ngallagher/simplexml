@@ -1,5 +1,0 @@
-Improved class loading so that the thread context class loader is the default
-Additional weak concurrent cache added to map values to weakly referenced keys
-Caches keyed by class objects are now weak caches so reloading is not affected
-Enhancement added to the cyclic strategy so that it can be used concurrently
-

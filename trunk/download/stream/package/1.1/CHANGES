@@ -1,6 +1,0 @@
-Added a reflection caching mechanism to minimise reflection overheads 
-Implemented a parsing abstraction layer to make the framework parser egnostic
-Greatly improved the memory profile and performance of object to XML serialization
-Enhanced the configuration for XML serialization to enable customized indentation
-Doubled the performance of the deserialization process by replacing DOM with StAX
-Greatly improvemed the memory profile for deserialization of huge XML documents

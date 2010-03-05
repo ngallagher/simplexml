@@ -1,4 +1,0 @@
-Added namespace support with namespace anotations for the XML class schema
-Added support for versioning serialization with a version attribute annotation
-Moved the org.simpleframework.xml.load package to org.simpleframework.xml.core
-Enable transformation customization by allowing a matcher to be specified

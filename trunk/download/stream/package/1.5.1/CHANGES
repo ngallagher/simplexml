@@ -1,3 +1,0 @@
-Added the ability to scatter inline elements within a parent element
-Improved the performance of the character array transformation functionality
-Added additional unit tests to test scattering of inline list fields

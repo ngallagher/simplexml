@@ -1,5 +1,0 @@
-Enhancement made to the persister to support object XML injection
-Addition of empty attributes to support default XML values for null
-Bug fix made to the persister so that it closes all opened files
-The addition of a readResolve() equivelant for XML deserialization
-The addition of a writeReplace() equivelant for XML serialization
