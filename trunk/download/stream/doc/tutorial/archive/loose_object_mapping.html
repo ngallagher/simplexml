@@ -1,0 +1,112 @@
+<table border='0'><tr><td><img src='/images/home_bullet.gif' border='0'></td><td><a name='loosemap'></a><b>Loose object mapping</b></td></tr><tr><td><!-- padding --></td><td>
+<p>
+An important feature for any XML tool is the ability to sift through the source XML to find particular
+XML attributes an elements of interest. It would not be very convinient if you had to write an object
+that accurately mapped every attribute an element in an XML document if all you are interested in is
+perhaps an element and several attributes. Take the following XML document.
+</p>
+<pre class="sh_xml">
+&lt;contact id="71" version="1.0"&gt;
+   &lt;name&gt;
+      &lt;first&gt;Niall&lt;/first&gt;
+      &lt;surname&gt;Gallagher&lt;/surname&gt;
+   &lt;/name&gt;
+   &lt;address&gt;
+      &lt;house&gt;House 33&lt;/house&gt;
+      &lt;street&gt;Sesame Street&lt;/street&gt;
+      &lt;city&gt;City&lt;/city&gt;
+   &lt;/address&gt;
+   &lt;phone&gt;
+      &lt;mobile&gt;123456789&lt;/mobile&gt;
+      &lt;home&gt;987654321&lt;/home&gt;
+   &lt;/phone&gt;
+&lt;/example&gt; 
+</pre>
+<p>
+If my object only required the some of the details of the specified contact, for example the phone
+contacts and the name then it needs to be able to ignore the address details safely. The following
+code shows how this can be done by setting strict to false within the <a href="/download/stream/doc/javadoc/org/simpleframework/xml/Root.html">Root</a>
+annotation.
+</p>
+<pre class="sh_java">
+@Root(strict=false)
+public class Contact {
+
+   @Element
+   private Name name;
+
+   @Element
+   private Phone phone;
+
+   public String getName() {
+      return name.first;
+   }
+
+   public String getSurname() {
+      return name.surname;
+   }
+
+   public String getMobilePhone() {
+      return phone.mobile;
+   }
+
+   public String getHomePhone() {
+      return phone.home;
+   }
+
+   @Root
+   private static class Name {
+    
+      @Element
+      private String first;
+
+      @Element
+      private String surname;
+   }
+
+   @Root
+   private static class Phone {
+
+      @Element(required=false)
+      private String mobile;
+
+      @Element
+      private String home;
+   }
+}
+</pre>
+<p>
+The above object can be used to parse the contact XML source. This simple ignores any XML elements or attributes that do not appear
+in the class schema. To further clarify the implementation of loose mappings take the example shown below. This shows how the entry 
+object is deserialized from the above document, which is contained within a file. Once deserialized the object values can be examined.
+</p>
+<pre class="sh_java">
+Serializer serializer = new Persister();
+File source = new File("contact.xml");
+Contact contact = serializer.read(Contact.class, source);
+
+assert contact.getName().equals("Niall");
+assert contact.getSurname().equals("Gallagher");
+assert contact.getMobilePhone().equals("123456789");
+assert contact.getHomePhone().equals("987654321");
+</pre>
+<p>
+Should there be more than a single object that requires loose mapping then using the 
+<a href="/download/stream/doc/javadoc/org/simpleframework/xml/Root.html">Root</a> annotation
+might not be the ideal solution. In such a scenario the persister itself can be asked to perform loose mapping. Simply pass a boolean to the
+read method indicating the type of mapping required. By default the persister uses strict mapping, which can be overridden on an object by
+object basis using the <a href="/download/stream/doc/javadoc/org/simpleframework/xml/Root.html">Root</a> annotation, as shown in the above example. 
+However, this default
+can be overridden as can be seen in the code snippet below.
+</p>
+<pre class="sh_java">
+Contact contact = serializer.read(Contact.class, source, false);
+</pre>
+<p>
+Here the boolean passed to the overridden read method tells the serializer to perform a loose mapping. There is no need to specify
+anything in the annotations, the serializer will simply map every object loosely. This can be a much more convenient way to 
+perform loose mapping, as you only need to annotate your objects with the elements or attributes you are interested in, all other
+elements and attributes will be ignored during deserialization. Such a solution is best suited to external XML documents where your
+annotated objects do not define the schema.
+</p>
+</td></tr></table>

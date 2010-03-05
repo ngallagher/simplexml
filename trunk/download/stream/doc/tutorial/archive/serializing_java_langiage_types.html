@@ -1,0 +1,125 @@
+<table border='0'><tr><td><img src='/images/home_bullet.gif' border='0'></td><td><a name='javalanguage'></a><b>Serializing Java language types</b></td></tr><tr><td><!-- padding --></td><td>
+<p>
+A common requirement of any serialization framework is to be able to serialize and deserialize existing types without modification. In particular types from the Java class libraries, like dates, locales, and files. For many of the Java class library types there is a corrosponding <a href="/download/stream/doc/javadoc/org/simpleframework/xml/transform/Transform.html">Transform</a> implementation, which enables the serialization and deserialization of that type. For example the <code>java.util.Date</code> type has a transform that accepts a date instance and transforms that into a string, which can be embedded in to the generated XML document during serialization. For deserialization the same transform is used, however this time it converts the string value back in to a date instance. The code snippet below demonstrates how a such transformations make it possible to use such a type when implementing your class XML schema.
+</p>
+<pre class="sh_java">
+@Root
+public class DateList {
+
+   @Attribute
+   private Date created;
+
+   @ElementList
+   private List&lt;Date&gt; list;
+
+   public Date getCreationDate() {
+      retrun created;
+   }
+
+   public List&lt;Date&gt; getDates() {
+      return list;
+   }
+}
+</pre>
+<p>
+Here the date object is used like any other Java primitive, it can be used with any of the XML annotations. Such objects can also be used with the <a href="/download/stream/doc/javadoc/org/simpleframework/xml/graph/CycleStrategy.html">CycleStrategy</a> so that references to a single instance within your object graph can be maintained throughout serialization and deserialization operations. Below is an example of the XML document generated.
+</p>
+<pre class="sh_xml">
+&lt;dateList created=&quot;2007-01-03 18:05:11.234 GMT&quot;&gt;
+    &lt;list&gt;
+        &lt;date&gt;2007-01-03 18:05:11.234 GMT&lt;/date&gt;
+        &lt;date&gt;2007-01-03 18:05:11.234 GMT&lt;/date&gt;
+    &lt;/list&gt;
+&lt;/dateList&gt;
+</pre>
+Using standard Java types, such as the <code>Date</code> type, can be used with any of the XML annotations. The set of supported types is shown below. Of particular note are the primitive array types, which when used with the <a href="/download/stream/doc/javadoc/org/simpleframework/xml/ElementArray.html">ElementArray</a> annotation enable support for multidimentional arrays.
+<pre class="sh_java">
+char
+char[]
+java.lang.Character
+java.lang.Character[]
+int
+int[]
+java.lang.Integer 
+java.lang.Integer[]
+short
+short[]
+java.lang.Short
+java.lang.Short[]
+long        
+long[]
+java.lang.Long
+java.lang.Long[]
+double
+double[]
+java.lang.Double
+java.lang.Double[]
+byte
+byte[]
+java.lang.Byte
+java.lang.Byte[]
+float       
+float[]        
+java.lang.Float        
+java.lang.Float[]        
+boolean
+boolean[]
+java.lang.Boolean
+java.lang.Boolean[]
+java.lang.String
+java.lang.String[]
+java.util.Date
+java.util.Locale
+java.util.Currency
+java.util.TimeZone
+java.util.GregorianCalendar
+java.net.URL
+java.io.File
+java.math.BigInteger
+java.math.BigDecimal
+java.sql.Date
+java.sql.Time
+java.sql.Timestamp
+</pre>
+<p>
+For example take the following code snippet, here points on a graph are represented as a multidimentional array of integers. The array is annotated in such a way that it can be serialized and deserialized seamlessly. Each index of the array holds an array of type <code>int</code>, which is transformed using the <a href="/download/stream/doc/javadoc/org/simpleframework/xml/transform/Transformer.html">Transformer</a> in to a comma separated list of integer values. Obviously this is not of much use in a real world situation, however it does illustrate how the transformable types can be integrated seamlessly with existing XML annotations.
+</p>
+<pre class="sh_java">
+@Root
+public class Graph {
+
+   @ElementArray(entry="point")
+   private int[][] points;
+
+   public Graph() {
+      super();
+   }
+
+   @Validate
+   private void validate() throws Exception {
+      for(int[] array : points) {
+         if(array.length != 2) {
+            throw new InvalidPointException("Point can not have %s values", array.length);
+         }
+      }
+   }
+
+   public int[][] getPoints() {
+      return points;      
+   }
+}
+</pre>
+<p>
+For the above code example the resulting XML generated would look like the XML document below. Here each index of the element array represents an array of integers within the comma separated list. Such structures also work well with the cycle strategy in maintaining references.
+</p>
+<pre class="sh_xml">
+&lt;graph&gt;
+   &lt;points length="4"&gt;
+      &lt;point&gt;3, 5&lt;/point&gt;
+      &lt;point&gt;5, 6&lt;/point&gt;
+      &lt;point&gt;5, 1&lt;/point&gt;
+      &lt;point&gt;3, 2&lt;/point&gt;
+   &lt;/points&gt;
+&lt;/graph&gt;
+</pre>
+</td></tr></table>

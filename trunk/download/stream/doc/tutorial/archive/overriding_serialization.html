@@ -1,0 +1,99 @@
+<table border='0'><tr><td><img src='/images/home_bullet.gif' border='0'></td><td><a name='converters'></a><b>Overriding serialization with converters</b></td></tr><tr><td><!-- padding --></td><td>
+<p>
+Often times there is a need to serialize an object that can not be annotated. Such objects may
+exist in third party dependencies or packages. To serialize these objects a 
+<a href="/download/stream/doc/javadoc/org/simpleframework/xml/convert/Converter.html">Converter</a> 
+object can be implemented. A converter can be used to intercept the normal serialization process.
+Interception of the normal serialization process can be done in several different ways, for
+example take the code snippet below.
+</p>
+<pre class="sh_java">
+@Root
+public class Example {
+
+   @Element
+   @Convert(ExternalConverter.class)
+   private External external;
+    
+   public External getExternal() {
+      return external;
+   }
+}
+
+public class ExternalConverter implements Converter&lt;External&gt; {
+
+   public External read(InputNode node) {
+      String name = node.getAttribute("name");
+      String value = node.getAttribute("value");
+
+      return new External(name, value);
+   }
+
+   public void write(OutputNode node, External external) {
+      String name = external.getName();
+      String value = external.getValue();
+
+      node.setAttribute("name", name);
+      node.setAttribute("value", value);
+   }
+}
+</pre>
+<p>
+The above code snippet also shows a field annotated with the 
+<a href="/download/stream/doc/javadoc/org/simpleframework/xml/convert/Convert.html">Convert</a> 
+annotation. The converter specified by the annotation will be used to intercept the 
+normal serialization process and produce a customized XML element. Take the XML below,
+this is produced when the example object is serialized.
+</p>
+<pre class="sh_xml">
+&lt;example&gt;
+    &lt;external name=&quot;book&quot; value=&quot;Shantaram&quot;/&gt;
+&lt;/example&gt;
+</pre>
+<p>
+Interception of the normal serialization process is performed using a
+<a href="/download/stream/doc/javadoc/org/simpleframework/xml/strategy/Strategy.html">Strategy</a>
+implementation and so does not form part of the core serialization process. Instead
+a specific strategy needs to be provided to the persister as is shown in the code snippet below. 
+</p>
+<pre class="sh_java">
+Strategy strategy = new AnnotationStrategy();
+Serializer serializer = new Persister(strategy);
+
+serializer.read(Example.class, file);
+</pre>
+<p>
+Without the specification of the <a href="/download/stream/doc/javadoc/org/simpleframework/xml/convert/AnnotationStrategy.html">AnnotationStrategy</a>
+the interception could not be performed, as the core serialization process will not acknowledge the 
+<a href="/download/stream/doc/javadoc/org/simpleframework/xml/convert/Convert.html">Convert</a> annotation.
+So in effect this strategy extends the core serialization process in an independent and transparent manner.
+Another even more transparent way to intercept the normal serialization process is to use another
+strategy implementation. The <a href="/download/stream/doc/javadoc/org/simpleframework/xml/convert/RegistryStrategy.html">RegistryStrategy</a>
+allows bindings to be registered between classes and converters, there is no need for additional annotations as 
+was required for the previous example. Below is an example of how to establish bindings between a class and
+a converter.
+</p>
+<pre class="sh_java">
+Registry registry = new Registry();
+Strategy strategy = new RegistryStrategy(registry);
+Serializer serializer = new Persister(strategy);
+
+registry.bind(External.class, ExternalConverter.class);
+</pre> 
+<p>
+As many bindings as is required can be established with a registry. Also, if more complex converters
+are required a converter instance can be registered. Such a converter could have a reference to 
+the <a href="/download/stream/doc/javadoc/org/simpleframework/xml/core/Persister.html">Persister</a> 
+object so that nested serialization can be performed. This registry strategy also ensures that objects
+within Java collection objects can be serialized with registered converters. To illustrate how a
+complex converter could be registered take a look at the snippet below.
+</p>
+<pre class="sh_java">
+Registry registry = new Registry();
+Strategy strategy = new RegistryStrategy(registry);
+Serializer serializer = new Persister(strategy);
+ComplexConverter converter = new ComplexConverter(serializer);
+
+registry.bind(ComplexObject.class, converter);
+</pre>
+</td></tr></table>

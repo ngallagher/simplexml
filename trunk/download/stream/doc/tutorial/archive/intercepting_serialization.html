@@ -1,0 +1,57 @@
+<table border='0'><tr><td><img src='/images/home_bullet.gif' border='0'></td><td><a name='intercept'></a><b>Intercepting the serialization process</b></td></tr><tr><td><!-- padding --></td><td>
+<p>
+Interception of the serialization process can be useful in several scenarios, for example if attributes are to
+be added or removed from an XML element then that element can be intercepted and modified during the
+serialization process. One useful application of interception is to change attribute names or values. 
+For example, the "class" annotations added by the <a href="/download/stream/doc/javadoc/org/simpleframework/xml/strategy/TreeStrategy.html">TreeStrategy</a>  
+could be intercepted and changed to a language neutral format that does not contain the Java class name.
+Below is an example of how to use a <a href="/download/stream/doc/javadoc/org/simpleframework/xml/strategy/Visitor.html">Visitor</a>
+to add debug comments to an obect which is to be serialized.
+</p>
+<pre class="sh_java">
+@Root
+@Default
+public class CommentExample {
+
+    private String name;
+
+    private BigDecimal number;
+
+    private Date date;     
+} 
+
+public class CommentVisitor implements Visitor {
+
+   public void write(Type type, NodeMap&lt;OutputNode&gt; node) {
+      OutputNode element = node.getNode();
+      Class type = type.getType();
+      String comment = type.getName();
+
+      if(!element.isRoot()) {
+         element.setComment(comment);
+      }
+   }
+} 
+</pre>
+<p>
+The above visitor implementation will get the <a href="/download/stream/doc/javadoc/org/simpleframework/xml/stream/OutputNode.html">OutputNode</a>
+that represents the XML element for the provided map of attributes. If the element does not represent the root element in the XML document
+then every element will have an associated comment, which descrives the class it represents. Such a visitor can be useful when serializing 
+large document structures. The XML snippet below provides an example of what would be written.
+</p>
+<pre class="sh_xml">
+&lt;commentExample&gt;
+    &lt;!-- java.lang.String --&gt;
+    &lt;name&gt;John Doe&lt;/name&gt;
+    &lt;!-- java.math.BigDecimal --&gt;
+    &lt;number&gt;100.0&lt;/number&gt;
+    &lt;!-- java.lang.Integer --&gt;
+    &lt;value&gt;18&lt;/value&gt;
+&lt;/commentExample&gt;
+</pre>
+<p>
+To add a visitor to serialization the <a href="/download/stream/doc/javadoc/org/simpleframework/xml/strategy/VisitorStrategy.html">VisitorStrategy</a>
+must be used. This strategy takes a visitor implementation and if required a strategy to delegate to. As usual, this strategy implementation can 
+then be used to construct a persister, which can then serialize and deserialize objects.
+</p>
+</td></tr></table>

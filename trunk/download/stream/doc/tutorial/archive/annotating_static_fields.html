@@ -1,0 +1,42 @@
+<table border='0'><tr><td><img src='/images/home_bullet.gif' border='0'></td><td><a name='static'></a><b>Serializing static final fields</b></td></tr><tr><td><!-- padding --></td><td>
+<p>
+Often there is a need to add elements and attributes to an XML document that do not change. In such 
+an event it is often attractive to declare these fields as static final fields. When annotating 
+static final fields they form part of the XML schema and contribute to the validation of the document
+but do not get set when deserializing the XML in to a object instance. So should a required static
+final field not exist in the source XML then an exception is thrown when deserializing, much like what
+would happen if the field was mutable. For example take the code snippet below, which shows an immutable
+static final field used with mutable fields.
+</p>
+<pre class="sh_java">
+@Root
+public class Citation {
+
+   @Element(name="author")
+   private static final String AUTHOR = "Niall Gallagher";
+
+   @Element
+   private String title;
+   
+   @Element   
+   private String date;
+
+   public Date getDate() {
+      return date;
+   }
+}
+</pre>
+<p>
+The above annotated object describes a simple citation. The citation object itself contains a static final field that
+will be written to the resulting XML document when serialized. However, on deserialization the values read from the XML will not change the annotated
+final static field. Instead the deserialization process will simply validate the presence of the elements and attributes within the document. This results in 
+an object that will always write the same value for the annotated final static elements or attributes.
+</p>
+<pre class="sh_xml">
+&lt;citation&gt;
+   &lt;author&gt;Niall Gallagher&lt;/author&gt;
+   &lt;title&gt;Simple XML Serialization&lt;/author&gt;
+   &lt;date&gt;12 January 2010&lt;/date&gt;
+&lt;/citation&gt;
+</pre>
+</td></tr></table>

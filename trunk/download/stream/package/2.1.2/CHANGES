@@ -1,0 +1,2 @@
+Change made to the namespace logic so that XML inheritance is used
+Performance improvements made to both serialization and deserialization

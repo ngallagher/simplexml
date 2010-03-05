@@ -1,0 +1,4 @@
+Move org.simpleframework.xml.graph to org.simpleframework.xml.strategy
+Change the strategy to provide a definition rather than a factory
+Implement constructor injection to allow to serialization of immutables
+Refactor the deserialization process to perform instantiation internally

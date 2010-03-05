@@ -1,0 +1,3 @@
+Addition of validation methods to the serializer to validate XML documents
+Addition of validation for all converters so each annotation can be validated
+Change made to the validation test case to validate each object deserialized
