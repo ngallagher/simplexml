@@ -1,6 +1,7 @@
 package com.rbsfm.plugin.build.assemble;
 import java.util.ArrayList;
 import java.util.Iterator;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -12,13 +13,14 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import com.rbsfm.plugin.build.publish.ModulePublisher;
 import com.rbsfm.plugin.build.rpc.RpcHandler;
 public class ProjectAssemblyWindow extends Composite{
    // input fields; members so they can be referenced from event handlers
-   Text moduleField;
-   Text revisionField;
-   Text branchField;
-   Text branchRevisionField;
+   Text projectField;
+   Text tagField;
+   Text installField;
+   Text environmentsField;
    Text mailField;
    RpcHandler handler;
    ArrayList fields=new ArrayList(); // all fields
@@ -84,10 +86,10 @@ public class ProjectAssemblyWindow extends Composite{
       GridLayout entryLayout=new GridLayout(2,false);
       entryGroup.setLayout(entryLayout);
       entryGroup.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-      moduleField=createLabelledText(entryGroup,"Module: ",40,"Enter the module name");
-      revisionField=createLabelledText(entryGroup,"Revision: ",40,"Enter the revision");
-      branchField=createLabelledText(entryGroup,"Branch: ",20,"Enter the branch");
-      branchRevisionField=createLabelledText(entryGroup,"Branch Revision: ",20,"Enter the branch revision");
+      projectField=createLabelledText(entryGroup,"Project: ",40,"Enter the project name");
+      tagField=createLabelledText(entryGroup,"Tag: ",40,"Enter the tag");
+      installField=createLabelledText(entryGroup,"Install Name: ",20,"Enter install name");
+      environmentsField=createLabelledText(entryGroup,"Environments: ",20,"Enter a comma separated list of environments");
       mailField=createLabelledText(entryGroup,"Mail: ",20,"Enter your mail address");
       // create the button area
       Composite buttons=new Composite(this,SWT.NONE);
@@ -99,20 +101,20 @@ public class ProjectAssemblyWindow extends Composite{
       buttonLayout.spacing=5;
       buttons.setLayout(buttonLayout);
       // OK button prints input values
-      Button okButton=createButton(buttons,"&Publish","Publish",new MySelectionAdapter(){
-         public void widgetSelected(SelectionEvent e){
-            System.out.println("Module:         "+moduleField.getText());
-            System.out.println("Revision:      "+revisionField.getText());
-            System.out.println("Branch: "+branchField.getText());
-            System.out.println("Branch Revision:      "+branchRevisionField.getText());
-            System.out.println("Mail: "+mailField.getText());
+      Button okButton=createButton(buttons,"&Assemble","Assemble",new MySelectionAdapter(){
+         public void widgetSelected(SelectionEvent event){
+            try{
+               handler.assemble(projectField.getText(),tagField.getText(),installField.getText(),environmentsField.getText(),mailField.getText());
+            }catch(Exception e){
+               MessageDialog.openInformation(getShell(),"Error",e.getMessage());
+            }
          }
       });
       // Clear button resets input values
       Button clearButton=createButton(buttons,"&Clear","Clear inputs",new MySelectionAdapter(){
          public void widgetSelected(SelectionEvent e){
             clearFields();
-            moduleField.forceFocus();
+            projectField.forceFocus();
          }
       });
    }

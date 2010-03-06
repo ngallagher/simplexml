@@ -1,6 +1,8 @@
 package com.rbsfm.plugin.build.publish;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -12,6 +14,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.handlers.HandlerUtil;
 import com.rbsfm.plugin.build.ivy.Module;
 import com.rbsfm.plugin.build.repository.Repository;
 import com.rbsfm.plugin.build.rpc.RpcHandler;
@@ -25,21 +28,19 @@ public class ModulePublicationWindow extends Composite{
    Text mailField;
    RpcHandler handler;
    Repository repository;
-   ArrayList fields=new ArrayList(); // all fields
-   // reset all registered fields
+   File file;
+   ArrayList fields=new ArrayList();
    protected void clearFields(){
       for(Iterator i=fields.iterator();i.hasNext();){
          ((Text)i.next()).setText("");
       }
    }
-   /**
-    * Constructor.
-    */
-   public ModulePublicationWindow(Composite parent,Module module,RpcHandler handler,Repository repository){
+   public ModulePublicationWindow(Composite parent,Module module,RpcHandler handler,Repository repository,File file){
       super(parent,SWT.NONE); // must always supply parent and style
-      this.handler = handler;
-      this.module = module;
-      this.repository = repository;
+      this.handler=handler;
+      this.module=module;
+      this.repository=repository;
+      this.file=file;
       createGui();
    }
    // GUI creation helpers
@@ -111,12 +112,13 @@ public class ModulePublicationWindow extends Composite{
       buttons.setLayout(buttonLayout);
       // OK button prints input values
       Button okButton=createButton(buttons,"&Publish","Publish",new MySelectionAdapter(){
-         public void widgetSelected(SelectionEvent e){
-            System.out.println("Module:         "+moduleField.getText());
-            System.out.println("Revision:      "+revisionField.getText());
-            System.out.println("Branch: "+branchField.getText());
-            System.out.println("Branch Revision:      "+branchRevisionField.getText());
-            System.out.println("Mail: "+mailField.getText());
+         public void widgetSelected(SelectionEvent event){
+            ModulePublisher publisher=new ModulePublisher(handler,repository);
+            try{
+               publisher.publish(file,moduleField.getText(),revisionField.getText(),branchField.getText(),branchRevisionField.getText(),mailField.getText());
+            }catch(Exception e){
+               MessageDialog.openInformation(getShell(),"Error",e.getMessage());
+            }
          }
       });
       // Clear button resets input values

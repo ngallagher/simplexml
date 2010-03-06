@@ -1,4 +1,6 @@
 package com.rbsfm.plugin.build.assemble;
+import static com.rbsfm.plugin.build.Constants.HOST;
+import static com.rbsfm.plugin.build.Constants.PORT;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -18,7 +20,7 @@ public class ProjectAssemblyHandler extends AbstractHandler{
       if(firstElement instanceof IFile){
          IFile file=(IFile)firstElement;
          try{
-            final RpcHandler handler=new SocketRpcHandler("lonms04037.fm.rbsgrp.net",59009);
+            final RpcHandler handler=new SocketRpcHandler(HOST,PORT);
             ApplicationWindow window=new ApplicationWindow(HandlerUtil.getActiveShell(event)){
                protected Control createContents(Composite composite){
                   return new ProjectAssemblyWindow(composite,handler);
@@ -26,7 +28,7 @@ public class ProjectAssemblyHandler extends AbstractHandler{
             };
             window.open();
          }catch(Exception e){
-            throw new ExecutionException("Problem processing project", e);
+            throw new ExecutionException("Problem processing project",e);
          }
       }else{
          MessageDialog.openInformation(HandlerUtil.getActiveShell(event),"Information","Please select a project");
