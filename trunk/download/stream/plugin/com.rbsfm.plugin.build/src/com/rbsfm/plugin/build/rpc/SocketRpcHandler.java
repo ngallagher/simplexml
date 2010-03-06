@@ -3,18 +3,14 @@ import java.util.ArrayList;
 import java.util.List;
 public class SocketRpcHandler implements RpcHandler{
    private final SocketClient client;
-   private final String publishPath;
-   private final String assemblePath;
-   public SocketRpcHandler(String host,int port,String publishPath,String assemblePath) throws Exception{
+   public SocketRpcHandler(String host,int port) throws Exception{
       this.client=new SocketClient(host,port);
-      this.publishPath=publishPath;
-      this.assemblePath=assemblePath;
    }
    public void publish(String moduleName,String branch,String revision,String branchRevision,String mail) throws Exception{
-      client.post(publishPath,String.format("5|0|9|http://localhost:9999/ModulePublicationServer/|4D2BB86C9B694708FD0D5834CE6A80B1|com.rbsfm.fi.modulepublicationserver.client.ModulePublicationService|publish|com.rbsfm.fi.modulepublicationserver.client.ModulePublicationData|com.rbsfm.fi.modulepublicationserver.client.ModulePublicationDataImpl/2938065861|%s|%s-%s-%s|%s|1|2|3|4|1|5|6|0|7|8|0|0|9|0|0|0|0|0|",moduleName,revision,branch,branchRevision,mail));
+      client.post("/ModulePublicationServer/ModulePublicationService",String.format("5|0|9|http://localhost:9999/ModulePublicationServer/|4D2BB86C9B694708FD0D5834CE6A80B1|com.rbsfm.fi.modulepublicationserver.client.ModulePublicationService|publish|com.rbsfm.fi.modulepublicationserver.client.ModulePublicationData|com.rbsfm.fi.modulepublicationserver.client.ModulePublicationDataImpl/2938065861|%s|%s-%s-%s|%s|1|2|3|4|1|5|6|0|7|8|0|0|9|0|0|0|0|0|",moduleName,revision,branch,branchRevision,mail));
    }
    public void assemble(String projectName,String tag,String installName,String envs,String mail) throws Exception{
-      client.post(assemblePath,buildRpcForModulePublication(projectName,tag,installName,Environment.parse(envs),mail));
+      client.post("/ProjectAssemblyServer/ProjectAssemblyService",buildRpcForModulePublication(projectName,tag,installName,Environment.parse(envs),mail));
    }
    private String buildRpcForModulePublication(String projectName,String tag,String installName,List<Environment> envs,String mailAddress){
       int size=envs.size();

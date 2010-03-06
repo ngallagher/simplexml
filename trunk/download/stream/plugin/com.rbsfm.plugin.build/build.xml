@@ -32,6 +32,12 @@
       <copy todir="${build.path}">
          <fileset file="plugin.xml"/>
       </copy>
+      <mkdir dir="${build.dir}/lib"/>
+      <copy todir="${build.path}/lib">
+         <fileset dir="${lib.path}">
+            <include name="**/*.jar"/>
+         </fileset>
+      </copy>
       <jar jarfile="${jar.path}/com.rbsfm.build.plugin_1.0.0.jar" basedir="${build.path}" manifest="META-INF/MANIFEST.MF"/>
       <copy todir="/Users/niall/Eclipse/galileo/dropins">
          <fileset file="${jar.path}/com.rbsfm.build.plugin_1.0.0.jar"/>
