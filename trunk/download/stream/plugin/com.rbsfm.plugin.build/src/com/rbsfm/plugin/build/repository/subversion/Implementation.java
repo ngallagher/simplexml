@@ -52,13 +52,8 @@ class Implementation implements Repository {
       SVNURL repository = helper.getLocation(file);
       SVNRevision revision = SVNRevision.create(0);
       SVNLogClient client = clientManager.getLogClient();
-      client.doLog(
-            repository, // location
-            new String[] {}, revision, revision, SVNRevision.HEAD, true, true,
-            false, // merge information
-            Long.MAX_VALUE, // depth
-            null, // properties
-            log); // change log
+      client.doLog(repository, new String[] {}, revision, revision,
+            SVNRevision.HEAD, true, true, false, Long.MAX_VALUE, null, log);
       return Collections.unmodifiableList(log);
    }
 
