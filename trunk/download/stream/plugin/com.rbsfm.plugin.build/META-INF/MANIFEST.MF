@@ -14,4 +14,5 @@ Require-Bundle: org.eclipse.ui,org.eclipse.core.runtime,org.eclipse.core.resourc
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Import-Package: org.osgi.framework;version="1.3.0"
 Bundle-ActivationPolicy: lazy
-Bundle-ClassPath: .
+Bundle-ClassPath: .,
+ lib/svnkit.jar
