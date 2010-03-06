@@ -117,7 +117,8 @@ public class ModulePublicationWindow extends Composite{
             try{
                publisher.publish(file,moduleField.getText(),revisionField.getText(),branchField.getText(),branchRevisionField.getText(),mailField.getText());
             }catch(Exception e){
-               MessageDialog.openInformation(getShell(),"Error",e.getMessage());
+               MessageDialog.openInformation(getShell(),"Error",e.getClass()+": "+e.getMessage());
+               throw new RuntimeException(e);
             }
          }
       });

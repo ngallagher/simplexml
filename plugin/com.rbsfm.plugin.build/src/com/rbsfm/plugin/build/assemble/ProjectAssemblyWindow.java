@@ -81,7 +81,7 @@ public class ProjectAssemblyWindow extends Composite{
       setLayout(new GridLayout(1,true));
       // create the input area
       Group entryGroup=new Group(this,SWT.NONE);
-      entryGroup.setText("Module Details");
+      entryGroup.setText("Project Details");
       // use 2 columns, not same width
       GridLayout entryLayout=new GridLayout(2,false);
       entryGroup.setLayout(entryLayout);
@@ -106,7 +106,8 @@ public class ProjectAssemblyWindow extends Composite{
             try{
                handler.assemble(projectField.getText(),tagField.getText(),installField.getText(),environmentsField.getText(),mailField.getText());
             }catch(Exception e){
-               MessageDialog.openInformation(getShell(),"Error",e.getMessage());
+               MessageDialog.openInformation(getShell(),"Error",e.getClass()+": "+e.getMessage());
+               throw new RuntimeException(e);
             }
          }
       });
