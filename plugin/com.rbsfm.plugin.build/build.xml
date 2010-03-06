@@ -32,7 +32,7 @@
       <copy todir="${build.path}">
          <fileset file="plugin.xml"/>
       </copy>
-      <mkdir dir="${build.dir}/lib"/>
+      <mkdir dir="${build.path}/lib"/>
       <copy todir="${build.path}/lib">
          <fileset dir="${lib.path}">
             <include name="**/*.jar"/>
