@@ -12,6 +12,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import com.rbsfm.plugin.build.rpc.RpcHandler;
 public class ProjectAssemblyWindow extends Composite{
    // input fields; members so they can be referenced from event handlers
    Text moduleField;
@@ -19,6 +20,7 @@ public class ProjectAssemblyWindow extends Composite{
    Text branchField;
    Text branchRevisionField;
    Text mailField;
+   RpcHandler handler;
    ArrayList fields=new ArrayList(); // all fields
    // reset all registered fields
    protected void clearFields(){
@@ -26,17 +28,10 @@ public class ProjectAssemblyWindow extends Composite{
          ((Text)i.next()).setText("");
       }
    }
-   /**
-    * Constructor.
-    */
-   public ProjectAssemblyWindow(Composite parent){
-      this(parent,SWT.NONE); // must always supply parent
-   }
-   /**
-    * Constructor.
-    */
-   public ProjectAssemblyWindow(Composite parent,int style){
-      super(parent,style); // must always supply parent and style
+
+   public ProjectAssemblyWindow(Composite parent,RpcHandler handler){
+      super(parent,SWT.NONE); // must always supply parent and style
+      this.handler = handler;
       createGui();
    }
    // GUI creation helpers

@@ -4,10 +4,34 @@ import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 @Root
 public class Module{
-   public @Element Info info;
+   private @Element Info info;
    @Root
-   public static class Info{
-      public @Attribute String revision;
-      public @Attribute String name;
+   private static class Info{
+      private @Attribute String revision;
+      private @Attribute String module;
+   }
+   public String getModule(){
+      return info.module;
+   }
+   public String getRevision(){
+      String[] split=info.revision.split("-");
+      if(split.length>0){
+         return split[0];
+      }
+      return null;
+   }
+   public String getBranch(){
+      String[] split=info.revision.split("-");
+      if(split.length>1){
+         return split[1];
+      }
+      return null;
+   }
+   public String getBranchRevision(){
+      String[] split=info.revision.split("-");
+      if(split.length>2){
+         return split[2];
+      }
+      return null;
    }
 }
