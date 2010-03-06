@@ -1,4 +1,4 @@
-package com.rbsfm.plugin.build.handler;  
+package com.rbsfm.plugin.build.assemble;  
   
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -35,7 +35,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.handlers.HandlerUtil;
   
-public class PublishHandler extends AbstractHandler {  
+public class AssembleHandler extends AbstractHandler {  
     private QualifiedName path = new QualifiedName("html", "path");  
   
     public Object execute(ExecutionEvent event) throws ExecutionException {  
