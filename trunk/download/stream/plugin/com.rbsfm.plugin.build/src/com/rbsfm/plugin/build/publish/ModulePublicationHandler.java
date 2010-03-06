@@ -1,4 +1,10 @@
 package com.rbsfm.plugin.build.publish;
+import static com.rbsfm.plugin.build.Constants.HOST;
+import static com.rbsfm.plugin.build.Constants.LOGIN;
+import static com.rbsfm.plugin.build.Constants.PASSWORD;
+import static com.rbsfm.plugin.build.Constants.PORT;
+import static com.rbsfm.plugin.build.Constants.REPOSITORY;
+import java.io.File;
 import java.io.InputStream;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -23,18 +29,19 @@ public class ModulePublicationHandler extends AbstractHandler{
       if(firstElement instanceof IFile){
          IFile file=(IFile)firstElement;
          try{
+            final File resource=file.getFullPath().toFile();
             final InputStream source=file.getContents();
             final Module module=ModuleParser.parse(source);
-            final Repository repository=Subversion.login("svn://","gallane","password");
-            final RpcHandler handler=new SocketRpcHandler("lonms04037.fm.rbsgrp.net",59009);
+            final Repository repository=Subversion.login(REPOSITORY,LOGIN,PASSWORD);
+            final RpcHandler handler=new SocketRpcHandler(HOST,PORT);
             ApplicationWindow window=new ApplicationWindow(HandlerUtil.getActiveShell(event)){
                protected Control createContents(Composite composite){
-                  return new ModulePublicationWindow(composite,module,handler,repository);
+                  return new ModulePublicationWindow(composite,module,handler,repository,resource);
                }
             };
             window.open();
          }catch(Exception e){
-            throw new ExecutionException("Problem processing ivy.xml", e);
+            throw new ExecutionException("Problem processing ivy.xml",e);
          }
       }else{
          MessageDialog.openInformation(HandlerUtil.getActiveShell(event),"Information","Please select an ivy.xml file");

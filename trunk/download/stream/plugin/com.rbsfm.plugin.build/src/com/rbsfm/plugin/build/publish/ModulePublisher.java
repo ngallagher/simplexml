@@ -7,7 +7,7 @@ import com.rbsfm.plugin.build.rpc.RpcHandler;
 public class ModulePublisher{
    private final RpcHandler handler;
    private final Repository repository;
-   private ModulePublisher(RpcHandler handler,Repository repository) throws Exception{
+   public ModulePublisher(RpcHandler handler,Repository repository){
       this.handler=handler;
       this.repository=repository;
    }
