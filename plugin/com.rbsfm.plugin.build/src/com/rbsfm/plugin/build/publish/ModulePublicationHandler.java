@@ -20,7 +20,7 @@ import com.rbsfm.plugin.build.ivy.Module;
 import com.rbsfm.plugin.build.ivy.ModuleParser;
 import com.rbsfm.plugin.build.repository.Repository;
 import com.rbsfm.plugin.build.repository.svn.Subversion;
-import com.rbsfm.plugin.build.rpc.RpcHandler;
+import com.rbsfm.plugin.build.rpc.RequestHandler;
 import com.rbsfm.plugin.build.rpc.SocketRpcHandler;
 public class ModulePublicationHandler extends AbstractHandler{
    public Object execute(ExecutionEvent event) throws ExecutionException{
@@ -33,7 +33,7 @@ public class ModulePublicationHandler extends AbstractHandler{
             final InputStream source=file.getContents();
             final Module module=ModuleParser.parse(source);
             final Repository repository=Subversion.login(REPOSITORY,LOGIN,PASSWORD);
-            final RpcHandler handler=new SocketRpcHandler(HOST,PORT);
+            final RequestHandler handler=new SocketRpcHandler(HOST,PORT);
             ApplicationWindow window=new ApplicationWindow(HandlerUtil.getActiveShell(event)){
                protected Control createContents(Composite composite){
                   return new ModulePublicationWindow(composite,module,handler,repository,resource);
