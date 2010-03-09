@@ -1,5 +1,4 @@
 package com.rbsfm.plugin.build.assemble;
-import java.util.List;
 import java.util.Map;
 import com.rbsfm.plugin.build.rpc.RequestBuilder;
 public class ProjectAssemblyRequestBuilder implements RequestBuilder{

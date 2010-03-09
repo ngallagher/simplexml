@@ -5,14 +5,13 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.handlers.HandlerUtil;
-import com.rbsfm.plugin.build.svn.Repository;
-import com.rbsfm.plugin.build.svn.Scheme;
-import com.rbsfm.plugin.build.svn.Subversion;
+import com.rbsfm.plugin.build.Activator;
 public class ProjectAssemblyHandler extends AbstractHandler{
    public Object execute(ExecutionEvent event) throws ExecutionException{
       IStructuredSelection selection=(IStructuredSelection)HandlerUtil.getActiveMenuSelection(event);
@@ -20,11 +19,11 @@ public class ProjectAssemblyHandler extends AbstractHandler{
       if(firstElement instanceof IFile){
          IFile file=(IFile)firstElement;
          try{
-            final Repository repository=Subversion.login(Scheme.SVN,"gallane","password");
+            final IPreferenceStore store=Activator.getDefault().getPreferenceStore();
             final File resource=file.getFullPath().toFile();
             ApplicationWindow window=new ApplicationWindow(HandlerUtil.getActiveShell(event)){
                protected Control createContents(Composite composite){
-                  return new ProjectAssemblyWindow(composite,repository,resource);
+                  return new ProjectAssemblyWindow(composite,resource,store);
                }
             };
             window.open();
