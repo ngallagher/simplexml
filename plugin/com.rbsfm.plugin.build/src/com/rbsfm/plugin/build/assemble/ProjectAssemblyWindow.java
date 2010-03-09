@@ -9,11 +9,9 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
-import com.rbsfm.plugin.build.repository.Repository;
-import com.rbsfm.plugin.build.rpc.RequestHandler;
+import com.rbsfm.plugin.build.svn.Repository;
 import com.rbsfm.plugin.build.ui.BuildWindow;
 class ProjectAssemblyWindow extends BuildWindow{
-   private RequestHandler handler;
    private Repository repository;
    private Text projectField;
    private Text tagField;
@@ -21,9 +19,8 @@ class ProjectAssemblyWindow extends BuildWindow{
    private Text environmentsField;
    private Text mailField;
    private File file;
-   public ProjectAssemblyWindow(Composite parent,RequestHandler handler,Repository repository,File file){
+   public ProjectAssemblyWindow(Composite parent,Repository repository,File file){
       super(parent);
-      this.handler=handler;
       this.repository=repository;
       this.file = file;
       createGui();
@@ -49,9 +46,16 @@ class ProjectAssemblyWindow extends BuildWindow{
       buttons.setLayout(buttonLayout);
       createButton(buttons,"&Assemble","Assemble",new SelectionAdapter(){
          public void widgetSelected(SelectionEvent event){
-            ProjectAssembler assembler=new ProjectAssembler(handler,repository);
+            ProjectAssembler assembler=new ProjectAssembler(repository);
             try{
-               assembler.assemble(file,projectField.getText(),tagField.getText(),installField.getText(),environmentsField.getText(),mailField.getText());
+               String projectName=projectField.getText();
+               String installName=installField.getText();
+               String tagName=tagField.getText();
+               String environments=environmentsField.getText();
+               String mailAddress=mailField.getText();
+               String[] environmentList=environments.split("\\s*,\\s*");
+               
+               assembler.assemble(file,projectName,installName,tagName,environmentList,mailAddress);
             }catch(Exception e){
                MessageDialog.openInformation(getShell(),"Error",e.getClass()+": "+e.getMessage());
                throw new RuntimeException(e);

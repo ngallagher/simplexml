@@ -1,9 +1,4 @@
 package com.rbsfm.plugin.build.publish;
-import static com.rbsfm.plugin.build.Constants.HOST;
-import static com.rbsfm.plugin.build.Constants.LOGIN;
-import static com.rbsfm.plugin.build.Constants.PASSWORD;
-import static com.rbsfm.plugin.build.Constants.PORT;
-import static com.rbsfm.plugin.build.Constants.REPOSITORY;
 import java.io.File;
 import java.io.InputStream;
 import org.eclipse.core.commands.AbstractHandler;
@@ -18,10 +13,8 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.handlers.HandlerUtil;
 import com.rbsfm.plugin.build.ivy.Module;
 import com.rbsfm.plugin.build.ivy.ModuleParser;
-import com.rbsfm.plugin.build.repository.Repository;
-import com.rbsfm.plugin.build.repository.svn.Subversion;
-import com.rbsfm.plugin.build.rpc.RequestHandler;
-import com.rbsfm.plugin.build.rpc.SocketRpcHandler;
+import com.rbsfm.plugin.build.svn.Repository;
+import com.rbsfm.plugin.build.svn.Subversion;
 public class ModulePublicationHandler extends AbstractHandler{
    public Object execute(ExecutionEvent event) throws ExecutionException{
       IStructuredSelection selection=(IStructuredSelection)HandlerUtil.getActiveMenuSelection(event);
@@ -32,11 +25,10 @@ public class ModulePublicationHandler extends AbstractHandler{
             final File resource=file.getFullPath().toFile();
             final InputStream source=file.getContents();
             final Module module=ModuleParser.parse(source);
-            final Repository repository=Subversion.login(REPOSITORY,LOGIN,PASSWORD);
-            final RequestHandler handler=new SocketRpcHandler(HOST,PORT);
+            final Repository repository=Subversion.login("svn://","gallane","password");
             ApplicationWindow window=new ApplicationWindow(HandlerUtil.getActiveShell(event)){
                protected Control createContents(Composite composite){
-                  return new ModulePublicationWindow(composite,module,handler,repository,resource);
+                  return new ModulePublicationWindow(composite,module,repository,resource);
                }
             };
             window.open();

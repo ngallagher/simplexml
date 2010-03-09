@@ -1,7 +1,6 @@
-package com.rbsfm.plugin.build.repository.svn;
+package com.rbsfm.plugin.build.svn;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
-import com.rbsfm.plugin.build.repository.Location;
 public class LocationTypeTest{
    @Test
    public void parse() throws Exception{

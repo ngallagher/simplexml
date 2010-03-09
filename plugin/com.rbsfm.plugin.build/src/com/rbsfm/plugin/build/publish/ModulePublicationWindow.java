@@ -10,8 +10,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
 import com.rbsfm.plugin.build.ivy.Module;
-import com.rbsfm.plugin.build.repository.Repository;
-import com.rbsfm.plugin.build.rpc.RequestHandler;
+import com.rbsfm.plugin.build.svn.Repository;
 import com.rbsfm.plugin.build.ui.BuildWindow;
 public class ModulePublicationWindow extends BuildWindow{
    private Module module;
@@ -20,12 +19,10 @@ public class ModulePublicationWindow extends BuildWindow{
    private Text branchField;
    private Text branchRevisionField;
    private Text mailField;
-   private RequestHandler handler;
    private Repository repository;
    private File file;
-   public ModulePublicationWindow(Composite parent,Module module,RequestHandler handler,Repository repository,File file){
+   public ModulePublicationWindow(Composite parent,Module module,Repository repository,File file){
       super(parent); 
-      this.handler=handler;
       this.module=module;
       this.repository=repository;
       this.file=file;
@@ -52,9 +49,15 @@ public class ModulePublicationWindow extends BuildWindow{
       buttons.setLayout(buttonLayout);
       createButton(buttons,"&Publish","Publish",new SelectionAdapter(){
          public void widgetSelected(SelectionEvent event){
-            ModulePublisher publisher=new ModulePublisher(handler,repository);
+            ModulePublisher publisher=new ModulePublisher(repository);
             try{
-               publisher.publish(file,moduleField.getText(),revisionField.getText(),branchField.getText(),branchRevisionField.getText(),mailField.getText());
+               String moduleName = moduleField.getText();
+               String revision=moduleField.getText();
+               String branch=branchField.getText();
+               String branchRevision=branchRevisionField.getText();
+               String mailAddress=mailField.getText();
+               
+               publisher.publish(file,moduleName,revision,branch,branchRevision,mailAddress);
             }catch(Exception e){
                MessageDialog.openInformation(getShell(),"Error",e.getClass()+": "+e.getMessage());
                throw new RuntimeException(e);

@@ -3,12 +3,12 @@ import java.util.List;
 import java.util.Map;
 import com.rbsfm.plugin.build.rpc.RequestBuilder;
 public class ProjectAssemblyRequestBuilder implements RequestBuilder{
-   private final List<String> environmentList;
+   private final String[] environmentList;
    private final String projectName;
    private final String installName;
    private final String tagName;
    private final String mailAddress;
-   public ProjectAssemblyRequestBuilder(String projectName, String installName, String tagName, List<String> environmentList, String mailAddress) {
+   public ProjectAssemblyRequestBuilder(String projectName, String installName, String tagName, String[] environmentList, String mailAddress) {
       this.environmentList = environmentList;
       this.projectName = projectName;
       this.installName = installName;
@@ -32,7 +32,7 @@ public class ProjectAssemblyRequestBuilder implements RequestBuilder{
       header.put("Cache-Control","no-cache");
    }
    public void body(StringBuilder builder){
-      int size = environmentList.size();
+      int size = environmentList.length;
       
       builder.append(5);
       builder.append("|").append("0");

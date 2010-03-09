@@ -1,30 +1,28 @@
 package com.rbsfm.plugin.build.publish;
 import java.io.File;
-import com.google.gwt.http.client.Request;
-import com.google.gwt.http.client.RequestCallback;
-import com.google.gwt.http.client.Response;
-import com.rbsfm.plugin.build.repository.Location;
-import com.rbsfm.plugin.build.repository.Repository;
-import com.rbsfm.plugin.build.repository.Status;
-import com.rbsfm.plugin.build.rpc.RequestHandler;
-public class ModulePublisher implements RequestCallback{
-   private final RequestHandler handler;
+import com.rbsfm.plugin.build.rpc.Method;
+import com.rbsfm.plugin.build.rpc.Request;
+import com.rbsfm.plugin.build.rpc.RequestBuilder;
+import com.rbsfm.plugin.build.rpc.ResponseListener;
+import com.rbsfm.plugin.build.svn.Repository;
+import com.rbsfm.plugin.build.svn.Status;
+public class ModulePublisher implements ResponseListener{
    private final Repository repository;
-   public ModulePublisher(RequestHandler handler,Repository repository){
-      this.handler=handler;
+   public ModulePublisher(Repository repository){
       this.repository=repository;
    }
-   public void publish(File file,String moduleName,String revision,String branch,String branchRevision,String mail) throws Exception{
+   public void publish(File file,String moduleName,String revision,String branch,String branchRevision,String mailAddress) throws Exception{
+      RequestBuilder builder = new ModulePublicationRequestBuilder(moduleName,branch,revision,branchRevision,mailAddress);
+      Request request=new Request(builder,this);
       String tag=String.format("%s-%s-%s-%s",moduleName,revision,branch,branchRevision);
       Status status=repository.status(file);
       if(status==Status.MODIFIED){
          repository.commit(file);
       }
-      Location location=repository.tag(file,tag,false);
-      if(location!=null){
-         handler.publish(this,moduleName,branch,revision,branchRevision,mail);
-      }
+      repository.tag(file,tag,false);
+      request.execute(Method.POST);
+
    }
-   public void onError(Request request,Throwable exception){}
-   public void onResponseReceived(Request request,Response response){}
+   public void exception(Throwable exception){}
+   public void success(int status){}
 }
