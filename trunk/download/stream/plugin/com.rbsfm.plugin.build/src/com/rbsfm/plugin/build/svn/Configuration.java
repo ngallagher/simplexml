@@ -5,7 +5,7 @@ public interface Configuration{
    public final boolean INCLUDE_MERGED_REVISIONS=false;
    public final boolean DISCOVER_CHANGED_PATHS=false;
    public final boolean STOP_ON_COPY=true;
-   public final boolean ALLOW_UNVERSIONED_OBSTRUCTIONS=true;
+   public final boolean ALLOW_OBSTRUCTIONS=true;
    public final boolean DEPTH_IS_STICKY=true;
    public final boolean REMOTE_STATUS=true;
    public final boolean FORCE_COMMIT=false;
