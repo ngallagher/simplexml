@@ -1,6 +1,7 @@
 package com.rbsfm.plugin.build.assemble;
 import java.io.File;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
@@ -10,18 +11,20 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
 import com.rbsfm.plugin.build.svn.Repository;
+import com.rbsfm.plugin.build.svn.Scheme;
+import com.rbsfm.plugin.build.svn.Subversion;
 import com.rbsfm.plugin.build.ui.ButtonWindow;
 class ProjectAssemblyWindow extends ButtonWindow{
-   private Repository repository;
+   private IPreferenceStore store;
    private Text projectField;
    private Text tagField;
    private Text installField;
    private Text environmentsField;
    private Text mailField;
    private File file;
-   public ProjectAssemblyWindow(Composite parent,Repository repository,File file){
+   public ProjectAssemblyWindow(Composite parent,File file,IPreferenceStore store){
       super(parent);
-      this.repository=repository;
+      this.store=store;
       this.file = file;
       createGui();
    }
@@ -46,15 +49,19 @@ class ProjectAssemblyWindow extends ButtonWindow{
       buttons.setLayout(buttonLayout);
       createButton(buttons,"&Assemble","Assemble",new SelectionAdapter(){
          public void widgetSelected(SelectionEvent event){
-            ProjectAssembler assembler=new ProjectAssembler(repository,getShell());
             try{
+               String login = "gallane";
+               String password="password";
                String projectName=projectField.getText();
                String installName=installField.getText();
                String tagName=tagField.getText();
                String environments=environmentsField.getText();
                String mailAddress=mailField.getText();
                String[] environmentList=environments.split("\\s*,\\s*");
+               Repository repository=Subversion.login(Scheme.SVN,login,password);
+               ProjectAssembler assembler=new ProjectAssembler(repository,getShell());
                
+               store.putValue(login,password);
                assembler.assemble(file,projectName,installName,tagName,environmentList,mailAddress);
             }catch(Exception e){
                MessageDialog.openInformation(getShell(),"Error",e.getClass()+": "+e.getMessage());

@@ -1,6 +1,7 @@
 package com.rbsfm.plugin.build.publish;
 import java.io.File;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
@@ -11,20 +12,22 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
 import com.rbsfm.plugin.build.ivy.Module;
 import com.rbsfm.plugin.build.svn.Repository;
+import com.rbsfm.plugin.build.svn.Scheme;
+import com.rbsfm.plugin.build.svn.Subversion;
 import com.rbsfm.plugin.build.ui.ButtonWindow;
 public class ModulePublicationWindow extends ButtonWindow{
+   private IPreferenceStore store;
    private Module module;
    private Text moduleField;
    private Text revisionField;
    private Text branchField;
    private Text branchRevisionField;
    private Text mailField;
-   private Repository repository;
    private File file;
-   public ModulePublicationWindow(Composite parent,Module module,Repository repository,File file){
+   public ModulePublicationWindow(Composite parent,Module module,File file,IPreferenceStore store){
       super(parent); 
+      this.store=store;
       this.module=module;
-      this.repository=repository;
       this.file=file;
       createGui();
    }
@@ -49,14 +52,18 @@ public class ModulePublicationWindow extends ButtonWindow{
       buttons.setLayout(buttonLayout);
       createButton(buttons,"&Publish","Publish",new SelectionAdapter(){
          public void widgetSelected(SelectionEvent event){
-            ModulePublisher publisher=new ModulePublisher(repository,getShell());
             try{
+               String login = "gallane";
+               String password="password";
                String moduleName = moduleField.getText();
                String revision=revisionField.getText();
                String branch=branchField.getText();
                String branchRevision=branchRevisionField.getText();
                String mailAddress=mailField.getText();
+               Repository repository=Subversion.login(Scheme.SVN,login,password);
+               ModulePublisher publisher=new ModulePublisher(repository,getShell());
                
+               store.putValue(login,password);    
                publisher.publish(file,moduleName,revision,branch,branchRevision,mailAddress);
             }catch(Exception e){
                MessageDialog.openInformation(getShell(),"Error",e.getClass()+": "+e.getMessage());
