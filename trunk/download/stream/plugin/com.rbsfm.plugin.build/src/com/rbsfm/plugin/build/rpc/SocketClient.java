@@ -64,18 +64,4 @@ public class SocketClient{
       builder.append(body);
       return builder.toString().getBytes("ISO-8859-1");
    }
-   private static class Header{
-      private final String name;
-      private final String value;
-      public Header(String name,String value){
-         this.name=name;
-         this.value=value;
-      }
-      public String toString(){
-         return String.format("%s: %s",name,value);
-      }
-   }
-   private static enum Method {
-      POST, GET
-   }
 }
