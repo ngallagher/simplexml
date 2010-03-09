@@ -1,5 +1,5 @@
 package com.rbsfm.plugin.build.svn;
-import static com.rbsfm.plugin.build.svn.Configuration.ALLOW_UNVERSIONED_OBSTRUCTIONS;
+import static com.rbsfm.plugin.build.svn.Configuration.ALLOW_OBSTRUCTIONS;
 import static com.rbsfm.plugin.build.svn.Configuration.CHANGE_LOG_DEPTH;
 import static com.rbsfm.plugin.build.svn.Configuration.COMMIT_MESSAGE;
 import static com.rbsfm.plugin.build.svn.Configuration.COPY_MESSAGE;
@@ -14,6 +14,8 @@ import static com.rbsfm.plugin.build.svn.Configuration.KEEP_LOCKS;
 import static com.rbsfm.plugin.build.svn.Configuration.MAKE_PARENTS;
 import static com.rbsfm.plugin.build.svn.Configuration.REMOTE_STATUS;
 import static com.rbsfm.plugin.build.svn.Configuration.STOP_ON_COPY;
+import static com.rbsfm.plugin.build.svn.LocationType.BRANCHES;
+import static com.rbsfm.plugin.build.svn.LocationType.TAGS;
 import static org.tmatesoft.svn.core.SVNDepth.INFINITY;
 import static org.tmatesoft.svn.core.wc.SVNRevision.BASE;
 import static org.tmatesoft.svn.core.wc.SVNRevision.HEAD;
@@ -47,15 +49,16 @@ class Client implements Repository{
       this.context=context;
    }
    public Location tag(File file,String tag,boolean dryRun) throws Exception{
-      return copy(file,tag,dryRun,LocationType.BRANCHES);
+      return copy(file,tag,dryRun,TAGS);
    }
    public Location branch(File file,String branch,boolean dryRun) throws Exception{
-      return copy(file,branch,dryRun,LocationType.BRANCHES);
+      return copy(file,branch,dryRun,BRANCHES);
    }
    private Location copy(File file,String prefix,boolean dryRun,LocationType type) throws Exception{
       SVNCopyClient client=manager.getCopyClient();
       SVNURL current=context.getLocation(file);
-      Location location=LocationType.build(current.toDecodedString(),prefix,type);
+      String decoded=current.toDecodedString();
+      Location location=LocationType.build(decoded,prefix,type);
       String target=location.toString();
       if(!dryRun){
          SVNURL destination=SVNURL.parseURIDecoded(target);
@@ -121,7 +124,7 @@ class Client implements Repository{
       client.doUpdate(file,
             HEAD,
             INFINITY,
-            ALLOW_UNVERSIONED_OBSTRUCTIONS,
+            ALLOW_OBSTRUCTIONS,
             DEPTH_IS_STICKY);
       return true;
    }
