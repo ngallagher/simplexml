@@ -11,8 +11,8 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
 import com.rbsfm.plugin.build.ivy.Module;
 import com.rbsfm.plugin.build.svn.Repository;
-import com.rbsfm.plugin.build.ui.BuildWindow;
-public class ModulePublicationWindow extends BuildWindow{
+import com.rbsfm.plugin.build.ui.ButtonWindow;
+public class ModulePublicationWindow extends ButtonWindow{
    private Module module;
    private Text moduleField;
    private Text revisionField;
@@ -49,10 +49,10 @@ public class ModulePublicationWindow extends BuildWindow{
       buttons.setLayout(buttonLayout);
       createButton(buttons,"&Publish","Publish",new SelectionAdapter(){
          public void widgetSelected(SelectionEvent event){
-            ModulePublisher publisher=new ModulePublisher(repository);
+            ModulePublisher publisher=new ModulePublisher(repository,getShell());
             try{
                String moduleName = moduleField.getText();
-               String revision=moduleField.getText();
+               String revision=revisionField.getText();
                String branch=branchField.getText();
                String branchRevision=branchRevisionField.getText();
                String mailAddress=mailField.getText();
