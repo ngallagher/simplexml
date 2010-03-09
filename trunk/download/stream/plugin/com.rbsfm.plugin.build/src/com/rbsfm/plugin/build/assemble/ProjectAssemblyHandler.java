@@ -11,6 +11,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.handlers.HandlerUtil;
 import com.rbsfm.plugin.build.svn.Repository;
+import com.rbsfm.plugin.build.svn.Scheme;
 import com.rbsfm.plugin.build.svn.Subversion;
 public class ProjectAssemblyHandler extends AbstractHandler{
    public Object execute(ExecutionEvent event) throws ExecutionException{
@@ -19,7 +20,7 @@ public class ProjectAssemblyHandler extends AbstractHandler{
       if(firstElement instanceof IFile){
          IFile file=(IFile)firstElement;
          try{
-            final Repository repository=Subversion.login("svn://","gallane","password");
+            final Repository repository=Subversion.login(Scheme.SVN,"gallane","password");
             final File resource=file.getFullPath().toFile();
             ApplicationWindow window=new ApplicationWindow(HandlerUtil.getActiveShell(event)){
                protected Control createContents(Composite composite){
