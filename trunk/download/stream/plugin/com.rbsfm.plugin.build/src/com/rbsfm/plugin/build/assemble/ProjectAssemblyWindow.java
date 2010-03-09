@@ -10,8 +10,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
 import com.rbsfm.plugin.build.svn.Repository;
-import com.rbsfm.plugin.build.ui.BuildWindow;
-class ProjectAssemblyWindow extends BuildWindow{
+import com.rbsfm.plugin.build.ui.ButtonWindow;
+class ProjectAssemblyWindow extends ButtonWindow{
    private Repository repository;
    private Text projectField;
    private Text tagField;
@@ -46,7 +46,7 @@ class ProjectAssemblyWindow extends BuildWindow{
       buttons.setLayout(buttonLayout);
       createButton(buttons,"&Assemble","Assemble",new SelectionAdapter(){
          public void widgetSelected(SelectionEvent event){
-            ProjectAssembler assembler=new ProjectAssembler(repository);
+            ProjectAssembler assembler=new ProjectAssembler(repository,getShell());
             try{
                String projectName=projectField.getText();
                String installName=installField.getText();
