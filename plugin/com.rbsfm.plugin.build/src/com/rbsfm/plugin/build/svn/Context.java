@@ -10,11 +10,9 @@ import org.tmatesoft.svn.core.wc.SVNWCUtil;
 class Context{
    private final String login;
    private final String password;
-   private final String repository;
    private final Scheme scheme;
-   public Context(String repository,String login,String password) throws Exception{
-      this.scheme=Scheme.scheme(repository);
-      this.repository=repository;
+   public Context(Scheme scheme,String login,String password) throws Exception{
+      this.scheme=scheme;
       this.login=login;
       this.password=password;
    }
@@ -23,9 +21,6 @@ class Context{
    }
    public String getPassword(){
       return password;
-   }
-   public String getRepository(){
-      return repository;
    }
    public Scheme getScheme(){
       return scheme;

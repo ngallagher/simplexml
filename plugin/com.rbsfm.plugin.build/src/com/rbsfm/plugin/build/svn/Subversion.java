@@ -5,9 +5,9 @@ import org.tmatesoft.svn.core.internal.wc.DefaultSVNOptions;
 import org.tmatesoft.svn.core.wc.SVNClientManager;
 import org.tmatesoft.svn.core.wc.SVNWCUtil;
 public final class Subversion{
-   public static Repository login(String repository,String login,String password) throws Exception{
-      Context context=new Context(repository,login,password);
-      if(context.getScheme()==Scheme.HTTP){
+   public static Repository login(Scheme scheme,String login,String password) throws Exception{
+      Context context=new Context(scheme,login,password);
+      if(scheme==Scheme.HTTP){
          DAVRepositoryFactory.setup();
       }else{
          SVNRepositoryFactoryImpl.setup();

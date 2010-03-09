@@ -14,6 +14,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import com.rbsfm.plugin.build.ivy.Module;
 import com.rbsfm.plugin.build.ivy.ModuleParser;
 import com.rbsfm.plugin.build.svn.Repository;
+import com.rbsfm.plugin.build.svn.Scheme;
 import com.rbsfm.plugin.build.svn.Subversion;
 public class ModulePublicationHandler extends AbstractHandler{
    public Object execute(ExecutionEvent event) throws ExecutionException{
@@ -25,7 +26,7 @@ public class ModulePublicationHandler extends AbstractHandler{
             final File resource=file.getFullPath().toFile();
             final InputStream source=file.getContents();
             final Module module=ModuleParser.parse(source);
-            final Repository repository=Subversion.login("svn://","gallane","password");
+            final Repository repository=Subversion.login(Scheme.SVN,"gallane","password");
             ApplicationWindow window=new ApplicationWindow(HandlerUtil.getActiveShell(event)){
                protected Control createContents(Composite composite){
                   return new ModulePublicationWindow(composite,module,repository,resource);

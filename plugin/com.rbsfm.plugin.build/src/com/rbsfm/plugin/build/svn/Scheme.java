@@ -1,5 +1,5 @@
 package com.rbsfm.plugin.build.svn;
-enum Scheme {
+public enum Scheme {
    SVN("svn"), HTTP("http");
    public String scheme;
    private Scheme(String scheme){
