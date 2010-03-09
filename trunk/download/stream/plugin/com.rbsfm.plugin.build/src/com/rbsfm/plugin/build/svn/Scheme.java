@@ -1,5 +1,4 @@
-package com.rbsfm.plugin.build.repository.svn;
-import com.rbsfm.plugin.build.repository.RepositoryException;
+package com.rbsfm.plugin.build.svn;
 enum Scheme {
    SVN("svn"), HTTP("http");
    public String scheme;

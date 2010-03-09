@@ -1,4 +1,4 @@
-package com.rbsfm.plugin.build.repository;
+package com.rbsfm.plugin.build.svn;
 import java.io.File;
 import java.util.List;
 public interface Repository{

@@ -1,4 +1,4 @@
-package com.rbsfm.plugin.build.repository;
+package com.rbsfm.plugin.build.svn;
 import java.util.Date;
 public class Change{
    public final String author;

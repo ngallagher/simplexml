@@ -1,4 +1,4 @@
-package com.rbsfm.plugin.build.repository.svn;
+package com.rbsfm.plugin.build.svn;
 import java.io.File;
 import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.auth.ISVNAuthenticationManager;

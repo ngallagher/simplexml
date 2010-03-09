@@ -1,30 +1,25 @@
 package com.rbsfm.plugin.build.assemble;
 import java.io.File;
-import com.google.gwt.http.client.Request;
-import com.google.gwt.http.client.RequestCallback;
-import com.google.gwt.http.client.Response;
-import com.rbsfm.plugin.build.repository.Location;
-import com.rbsfm.plugin.build.repository.Repository;
-import com.rbsfm.plugin.build.repository.Status;
-import com.rbsfm.plugin.build.rpc.RequestHandler;
-public class ProjectAssembler implements RequestCallback{
-   private final RequestHandler handler;
+import com.rbsfm.plugin.build.rpc.Method;
+import com.rbsfm.plugin.build.rpc.Request;
+import com.rbsfm.plugin.build.rpc.RequestBuilder;
+import com.rbsfm.plugin.build.rpc.ResponseListener;
+import com.rbsfm.plugin.build.svn.Repository;
+import com.rbsfm.plugin.build.svn.Status;
+public class ProjectAssembler implements ResponseListener{
    private final Repository repository;
-   public ProjectAssembler(RequestHandler handler,Repository repository){
-      this.handler=handler;
+   public ProjectAssembler(Repository repository){
       this.repository=repository;
    }
-   public void assemble(File file,String moduleName,String revision,String branch,String branchRevision,String mail) throws Exception{
-      String tag=String.format("%s-%s-%s-%s",moduleName,revision,branch,branchRevision);
+   public void assemble(File file,String projectName, String installName, String tagName, String[] environmentList, String mailAddress) throws Exception{
+      RequestBuilder builder = new ProjectAssemblyRequestBuilder(projectName,installName,tagName,environmentList,mailAddress);
+      Request request = new Request(builder,this);
       Status status=repository.status(file);
       if(status==Status.MODIFIED){
          repository.commit(file);
       }
-      Location location=repository.tag(file,tag,false);
-      if(location!=null){
-         handler.publish(this,moduleName,branch,revision,branchRevision,mail);
-      }
+      request.execute(Method.POST);
    }
-   public void onError(Request request,Throwable exception){}
-   public void onResponseReceived(Request request,Response response){}
+   public void exception(Throwable cause){}
+   public void success(int status){}
 }

@@ -1,4 +1,4 @@
-package com.rbsfm.plugin.build.repository;
+package com.rbsfm.plugin.build.svn;
 public class Info{
    public final String location;
    public final String version;

@@ -1,6 +1,4 @@
-package com.rbsfm.plugin.build.repository.svn;
-import com.rbsfm.plugin.build.repository.Location;
-import com.rbsfm.plugin.build.repository.RepositoryException;
+package com.rbsfm.plugin.build.svn;
 enum LocationType {
    TAGS("tags"), BRANCHES("branches"), TRUNK("trunk");
    public final String type;
