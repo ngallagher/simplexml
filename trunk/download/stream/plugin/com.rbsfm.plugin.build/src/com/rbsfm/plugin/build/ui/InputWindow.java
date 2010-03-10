@@ -9,9 +9,9 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-public abstract class ButtonWindow extends Composite{
+public abstract class InputWindow extends Composite{
    private List<Text> fields;
-   public ButtonWindow(Composite parent){
+   public InputWindow(Composite parent){
       super(parent,SWT.NONE);
       this.fields=new ArrayList<Text>();
    }

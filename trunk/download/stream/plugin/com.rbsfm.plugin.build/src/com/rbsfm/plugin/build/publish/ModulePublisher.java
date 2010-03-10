@@ -7,12 +7,14 @@ import com.rbsfm.plugin.build.rpc.Request;
 import com.rbsfm.plugin.build.rpc.RequestBuilder;
 import com.rbsfm.plugin.build.rpc.ResponseListener;
 import com.rbsfm.plugin.build.svn.Repository;
+import com.rbsfm.plugin.build.svn.Scheme;
 import com.rbsfm.plugin.build.svn.Status;
+import com.rbsfm.plugin.build.svn.Subversion;
 public class ModulePublisher implements ResponseListener{
    private final Repository repository;
    private final Shell shell;
-   public ModulePublisher(Repository repository,Shell shell){
-      this.repository=repository;
+   public ModulePublisher(Shell shell,String login,String password)throws Exception{
+      this.repository=Subversion.login(Scheme.SVN,login,password);
       this.shell=shell;
    }
    public void publish(File file,String moduleName,String revision,String branch,String branchRevision,String mailAddress) throws Exception{
@@ -23,8 +25,12 @@ public class ModulePublisher implements ResponseListener{
       if(status==Status.MODIFIED){
          repository.commit(file,tag);
       }
-      repository.tag(file,tag,tag,false);
-      request.execute(Method.POST);
+      if(status==Status.STALE){
+         MessageDialog.openError(shell, "Error", "Can not publish as ivy.xml is not up to date");
+      }else {
+         repository.tag(file,tag,tag,false);
+         request.execute(Method.POST);
+      }
 
    }
    public void exception(Throwable cause){

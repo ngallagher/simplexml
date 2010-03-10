@@ -23,7 +23,7 @@ public class ProjectAssemblyHandler extends AbstractHandler{
             final File resource=file.getFullPath().toFile();
             ApplicationWindow window=new ApplicationWindow(HandlerUtil.getActiveShell(event)){
                protected Control createContents(Composite composite){
-                  return new ProjectAssemblyWindow(composite,resource,store);
+                  return new ProjectAssemblyWindow(composite,resource);
                }
             };
             window.open();
