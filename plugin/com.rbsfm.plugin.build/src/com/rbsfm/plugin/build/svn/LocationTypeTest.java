@@ -15,13 +15,13 @@ public class LocationTypeTest{
    }
    @Test
    public void build() throws Exception{
-      Location tag=LocationType.build("http://domain/project/trunk/resource","test",LocationType.TAGS);
-      assertEquals(tag.path,"/resource");
-      assertEquals(tag.root,"http://domain/project/tags");
-      assertEquals(tag.prefix,"test");
-      Location branch=LocationType.build("http://domain/project/branches/token/resource","branch",LocationType.BRANCHES);
-      assertEquals(branch.path,"/resource");
-      assertEquals(branch.root,"http://domain/project/branches");
-      assertEquals(branch.prefix,"branch");
+      Copy tag=LocationType.copy("http://domain/project/trunk/resource","test",LocationType.TAGS);
+      assertEquals(tag.to.path,"/resource");
+      assertEquals(tag.to.root,"http://domain/project/tags");
+      assertEquals(tag.to.prefix,"test");
+      Copy branch=LocationType.copy("http://domain/project/branches/token/resource","branch",LocationType.BRANCHES);
+      assertEquals(branch.to.path,"/resource");
+      assertEquals(branch.to.root,"http://domain/project/branches");
+      assertEquals(branch.to.prefix,"branch");
    }
 }

@@ -45,8 +45,8 @@ import org.tmatesoft.svn.core.wc.SVNWCClient;
 class Client implements Repository{
    private final SVNClientManager manager;
    private final Context context;
-   public Client(SVNClientManager manager,Context context) throws Exception{
-      this.manager=manager;
+   public Client(Context context) throws Exception{
+      this.manager=context.getClientManager();
       this.context=context;
    }
    public Location tag(File file,String tag,String message,boolean dryRun) throws Exception{
@@ -59,11 +59,10 @@ class Client implements Repository{
       SVNCopyClient client=manager.getCopyClient();
       Location from=context.getLocation(file);
       String absolute=from.getAbsolutePath();
-      Location location=LocationType.build(absolute,prefix,type);
-      String target=location.getParent();
-      if(!dryRun){
-         SVNURL destination=SVNURL.parseURIDecoded(target);
-         SVNURL current=SVNURL.parseURIDecoded(from.getParent());
+      Copy copy=LocationType.copy(absolute,prefix,type);
+      if(!dryRun && !exists(copy.from())){
+         SVNURL destination=SVNURL.parseURIDecoded(copy.to());
+         SVNURL current=SVNURL.parseURIDecoded(copy.from());
          SVNCopySource source=new SVNCopySource(HEAD,HEAD,current);
          SVNCommitInfo info=client.doCopy(new SVNCopySource[]{source},
                destination,
@@ -74,7 +73,23 @@ class Client implements Repository{
                null);
          info.getErrorMessage();
       }
-      return location;
+      return copy.to;
+   }
+   private boolean exists(String location)throws Exception{
+      ChangeLog log=new ChangeLog();
+      SVNLogClient client=manager.getLogClient();
+      client.doLog(SVNURL.parseURIEncoded(location),
+            new String[]{},
+            SVNRevision.create(0),
+            HEAD,
+            SVNRevision.create(0),           
+            STOP_ON_COPY,
+            DISCOVER_CHANGED_PATHS,
+            INCLUDE_MERGED_REVISIONS,
+            1,
+            null,
+            log);
+      return !log.isEmpty();
    }
    public boolean commit(File file,String message) throws Exception{
       SVNCommitClient client=manager.getCommitClient();
