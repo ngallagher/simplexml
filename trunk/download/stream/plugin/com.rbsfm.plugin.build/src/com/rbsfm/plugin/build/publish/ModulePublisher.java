@@ -11,6 +11,7 @@ import com.rbsfm.plugin.build.svn.Repository;
 import com.rbsfm.plugin.build.svn.Scheme;
 import com.rbsfm.plugin.build.svn.Status;
 import com.rbsfm.plugin.build.svn.Subversion;
+import com.rbsfm.plugin.build.ui.MessageFormatter;
 public class ModulePublisher implements ResponseListener{
    private final Repository repository;
    private final Shell shell;
@@ -35,7 +36,7 @@ public class ModulePublisher implements ResponseListener{
       }
    }
    public void exception(Throwable cause){
-      MessageDialog.openInformation(shell, "Error", "Failed to publish module");
+      MessageDialog.openInformation(shell, "Error", MessageFormatter.format(cause));
    }
    public void success(int status){
       MessageDialog.openInformation(shell, "Success", "Module has been published");
