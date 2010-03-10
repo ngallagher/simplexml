@@ -1,5 +1,7 @@
 package com.rbsfm.plugin.build.publish;
 import java.util.Map;
+import com.rbsfm.plugin.build.rpc.Method;
+import com.rbsfm.plugin.build.rpc.Request;
 import com.rbsfm.plugin.build.rpc.RequestBuilder;
 public class ModulePublicationRequestBuilder implements RequestBuilder{
    private final String moduleName;
@@ -61,5 +63,11 @@ public class ModulePublicationRequestBuilder implements RequestBuilder{
       builder.append("|").append(0);
       builder.append("|").append(0);
       builder.append("|").append(0);
+      builder.append("|");
+   }
+   public static void main(String[] list) throws Exception{
+      RequestBuilder builder = new ModulePublicationRequestBuilder(list[0],list[1],list[2],list[3],list[4]);
+      Request request = new Request(builder,null);
+      request.execute(Method.POST);
    }
 }

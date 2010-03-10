@@ -1,5 +1,8 @@
 package com.rbsfm.plugin.build.assemble;
 import java.util.Map;
+
+import com.rbsfm.plugin.build.rpc.Method;
+import com.rbsfm.plugin.build.rpc.Request;
 import com.rbsfm.plugin.build.rpc.RequestBuilder;
 public class ProjectAssemblyRequestBuilder implements RequestBuilder{
    private final String[] environmentList;
@@ -50,6 +53,7 @@ public class ProjectAssemblyRequestBuilder implements RequestBuilder{
       builder.append("|").append(installName);
       builder.append("|").append(projectName);
       builder.append("|").append(tagName);
+      builder.append("|").append("svn");
       builder.append("|").append(mailAddress);
       builder.append("|").append(1);
       builder.append("|").append(2);
@@ -70,11 +74,17 @@ public class ProjectAssemblyRequestBuilder implements RequestBuilder{
       builder.append("|").append(11 + size);
       builder.append("|").append(12 + size);
       builder.append("|").append(0);
-      builder.append("|").append(12 + size);
+      builder.append("|").append(13 + size);
       builder.append("|").append(0);
       builder.append("|").append(0);
       builder.append("|").append(0);
       builder.append("|").append(0);
       builder.append("|").append(0);
+      builder.append("|");
+   }
+   public static void main(String[] list) throws Exception{
+      RequestBuilder builder = new ProjectAssemblyRequestBuilder(list[0],list[1],list[2],list[3].split(","),list[4]);
+      Request request = new Request(builder,null);
+      request.execute(Method.POST);
    }
 }
