@@ -38,13 +38,14 @@ enum LocationType {
       }
       throw new RepositoryException("Invalid location %s",location);
    }
-   public static Location build(String location,String prefix,LocationType type) throws RepositoryException{
+   public static Copy copy(String location,String prefix,LocationType type) throws RepositoryException{
       LocationType current=type(location);
-      Location path=parse(location);
-      String root=path.root;
+      Location from=parse(location);
+      String root=from.root;
       if(type!=TRUNK){
          root=root.replaceAll(current.type,type.type);
       }
-      return new Location(path.path,root,prefix);
+      Location to=new Location(from.path,root,prefix);
+      return new Copy(from,to);
    }
 }
