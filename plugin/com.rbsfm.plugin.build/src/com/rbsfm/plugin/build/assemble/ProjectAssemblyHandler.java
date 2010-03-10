@@ -1,6 +1,7 @@
 package com.rbsfm.plugin.build.assemble;
 import java.io.File;
 import java.io.InputStream;
+import java.net.URI;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -14,26 +15,40 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.handlers.HandlerUtil;
 import com.rbsfm.plugin.build.ivy.Project;
 import com.rbsfm.plugin.build.ivy.ProjectParser;
+import com.rbsfm.plugin.build.ui.MessageFormatter;
+/**
+ * The <code>ProjectAssemblyHandler</code> object is the main point of entry
+ * for the project assembly command. This provides an event with the file 
+ * that has been selected to perform the operation. A window is opened by 
+ * this handler, any relevant information is parsed from the selected file 
+ * in order to populate the fields of the window.
+ * @author Niall Gallagher
+ * @see com.rbsfm.plugin.build.assemble.ProjectAssemblyWindow
+ */
 public class ProjectAssemblyHandler extends AbstractHandler{
    public Object execute(ExecutionEvent event) throws ExecutionException{
       IStructuredSelection selection = (IStructuredSelection)HandlerUtil.getActiveMenuSelection(event);
       Object firstElement = selection.getFirstElement();
+      Shell shell = HandlerUtil.getActiveShell(event);
       if(firstElement instanceof IFile){
          IFile file = (IFile)firstElement;
          try{
-            File resource = new File(file.getRawLocationURI());
+            URI location = file.getRawLocationURI();
             InputStream source = file.getContents();
             Project project = ProjectParser.parse(source);
-            Shell shell = HandlerUtil.getActiveShell(event);
-            PluginWindow window = new PluginWindow(shell, project, resource);
-            window.open();
-         }catch(Exception e){
-            throw new ExecutionException("Problem processing project", e);
+            open(shell, location, project);
+         }catch(Exception cause){
+            MessageDialog.openError(shell, "Error", MessageFormatter.format(cause));
          }
       }else{
-         MessageDialog.openInformation(HandlerUtil.getActiveShell(event), "Information", "Please select a project");
+         MessageDialog.openInformation(shell, "Information", "Please select a project");
       }
       return null;
+   }
+   private void open(Shell shell, URI location, Project project){
+      File resource = new File(location);
+      PluginWindow window = new PluginWindow(shell, project, resource);
+      window.open();
    }
    private static class PluginWindow extends ApplicationWindow{
       private final Project project;
