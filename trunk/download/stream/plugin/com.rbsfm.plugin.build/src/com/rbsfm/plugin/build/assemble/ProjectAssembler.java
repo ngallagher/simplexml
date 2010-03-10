@@ -20,7 +20,7 @@ public class ProjectAssembler implements ResponseListener{
       Request request = new Request(builder,this);
       Status status=repository.status(file);
       if(status==Status.MODIFIED){
-         repository.commit(file);
+         repository.commit(file,projectName);
       }
       request.execute(Method.POST);
    }

@@ -8,7 +8,16 @@ public class Location{
       this.path=path;
       this.root=root;
    }
-   public String toString(){
+   public String getParent(){
+      return String.format("%s/%s",root,prefix);
+   }
+   public String getAbsolutePath(){
       return String.format("%s/%s%s",root,prefix,path);
+   }
+   public String getRelativePath(){
+      return path;
+   }
+   public String getRoot(){
+      return root;
    }
 }

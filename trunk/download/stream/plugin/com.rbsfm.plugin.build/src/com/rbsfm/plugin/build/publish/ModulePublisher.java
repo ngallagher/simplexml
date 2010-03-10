@@ -21,9 +21,9 @@ public class ModulePublisher implements ResponseListener{
       String tag=String.format("%s-%s-%s-%s",moduleName,revision,branch,branchRevision);
       Status status=repository.status(file);
       if(status==Status.MODIFIED){
-         repository.commit(file);
+         repository.commit(file,tag);
       }
-      repository.tag(file,tag,false);
+      repository.tag(file,tag,tag,false);
       request.execute(Method.POST);
 
    }

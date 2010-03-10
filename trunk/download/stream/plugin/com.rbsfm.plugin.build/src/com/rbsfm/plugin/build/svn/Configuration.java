@@ -1,10 +1,8 @@
 package com.rbsfm.plugin.build.svn;
 public interface Configuration{
-   public final String COMMIT_MESSAGE="";
-   public final String COPY_MESSAGE="";
    public final boolean INCLUDE_MERGED_REVISIONS=false;
    public final boolean DISCOVER_CHANGED_PATHS=false;
-   public final boolean STOP_ON_COPY=true;
+   public final boolean STOP_ON_COPY=false;
    public final boolean ALLOW_OBSTRUCTIONS=true;
    public final boolean DEPTH_IS_STICKY=true;
    public final boolean REMOTE_STATUS=true;
