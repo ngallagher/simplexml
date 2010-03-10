@@ -3,9 +3,9 @@ import java.util.Date;
 public class Change{
    public final String author;
    public final String message;
-   public final Object version;
+   public final long version;
    public final Date date;
-   public Change(String author,String message,Object version,Date date){
+   public Change(String author,String message,long version,Date date){
       this.author=author;
       this.message=message;
       this.version=version;

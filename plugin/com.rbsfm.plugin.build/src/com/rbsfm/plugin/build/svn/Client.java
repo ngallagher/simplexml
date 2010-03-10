@@ -1,8 +1,6 @@
 package com.rbsfm.plugin.build.svn;
 import static com.rbsfm.plugin.build.svn.Configuration.ALLOW_OBSTRUCTIONS;
 import static com.rbsfm.plugin.build.svn.Configuration.CHANGE_LOG_DEPTH;
-import static com.rbsfm.plugin.build.svn.Configuration.COMMIT_MESSAGE;
-import static com.rbsfm.plugin.build.svn.Configuration.COPY_MESSAGE;
 import static com.rbsfm.plugin.build.svn.Configuration.DEPTH_IS_STICKY;
 import static com.rbsfm.plugin.build.svn.Configuration.DISCOVER_CHANGED_PATHS;
 import static com.rbsfm.plugin.build.svn.Configuration.FAIL_WHEN_EXISTS;
@@ -19,12 +17,14 @@ import static com.rbsfm.plugin.build.svn.LocationType.TAGS;
 import static org.tmatesoft.svn.core.SVNDepth.INFINITY;
 import static org.tmatesoft.svn.core.wc.SVNRevision.BASE;
 import static org.tmatesoft.svn.core.wc.SVNRevision.HEAD;
+import static org.tmatesoft.svn.core.wc.SVNStatusType.LOCK_LOCKED;
 import static org.tmatesoft.svn.core.wc.SVNStatusType.STATUS_CONFLICTED;
 import static org.tmatesoft.svn.core.wc.SVNStatusType.STATUS_MODIFIED;
+import static org.tmatesoft.svn.core.wc.SVNStatusType.STATUS_NORMAL;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 import org.tmatesoft.svn.core.ISVNLogEntryHandler;
 import org.tmatesoft.svn.core.SVNException;
@@ -48,36 +48,37 @@ class Client implements Repository{
       this.manager=manager;
       this.context=context;
    }
-   public Location tag(File file,String tag,boolean dryRun) throws Exception{
-      return copy(file,tag,dryRun,TAGS);
+   public Location tag(File file,String tag,String message,boolean dryRun) throws Exception{
+      return copy(file,tag,message,dryRun,TAGS);
    }
-   public Location branch(File file,String branch,boolean dryRun) throws Exception{
-      return copy(file,branch,dryRun,BRANCHES);
+   public Location branch(File file,String branch,String message,boolean dryRun) throws Exception{
+      return copy(file,branch,message,dryRun,BRANCHES);
    }
-   private Location copy(File file,String prefix,boolean dryRun,LocationType type) throws Exception{
+   private Location copy(File file,String prefix,String message,boolean dryRun,LocationType type) throws Exception{
       SVNCopyClient client=manager.getCopyClient();
-      SVNURL current=context.getLocation(file);
-      String decoded=current.toDecodedString();
-      Location location=LocationType.build(decoded,prefix,type);
-      String target=location.toString();
+      Location from=context.getLocation(file);
+      String absolute=from.getAbsolutePath();
+      Location location=LocationType.build(absolute,prefix,type);
+      String target=location.getParent();
       if(!dryRun){
          SVNURL destination=SVNURL.parseURIDecoded(target);
+         SVNURL current=SVNURL.parseURIDecoded(from.getParent());
          SVNCopySource source=new SVNCopySource(HEAD,HEAD,current);
          client.doCopy(new SVNCopySource[]{source},
                destination,
                IS_MOVE,
                MAKE_PARENTS,
                FAIL_WHEN_EXISTS,
-               COPY_MESSAGE,
+               message,
                null);
       }
       return location;
    }
-   public boolean commit(File file) throws Exception{
+   public boolean commit(File file,String message) throws Exception{
       SVNCommitClient client=manager.getCommitClient();
       client.doCommit(new File[]{file},
             KEEP_LOCKS,
-            COMMIT_MESSAGE,
+            message,
             null,
             new String[]{},
             KEEP_CHANGE_LIST,
@@ -89,24 +90,36 @@ class Client implements Repository{
       SVNWCClient client=context.getLocalClient();
       SVNInfo info=client.doInfo(file,BASE);
       String location=info.getURL().getURIEncodedPath();
-      return new Info(location,info.getRevision().toString(),info.getAuthor());
+      long revision=info.getRevision().getNumber();
+      return new Info(info.getAuthor(),location,revision);
    }
    public List<Change> log(File file) throws Exception{
+      return log(file,CHANGE_LOG_DEPTH);
+   }
+   public List<Change> log(File file, long depth) throws Exception{
       ChangeLog log=new ChangeLog();
-      SVNURL repository=context.getLocation(file);
+      Location repository=context.getLocation(file);
       SVNLogClient client=manager.getLogClient();
-      client.doLog(repository,
+      String location=repository.getAbsolutePath();
+      client.doLog(SVNURL.parseURIEncoded(location),
            new String[]{},
            SVNRevision.create(0),
-           SVNRevision.create(0),
            HEAD,
+           SVNRevision.create(0),           
            STOP_ON_COPY,
            DISCOVER_CHANGED_PATHS,
            INCLUDE_MERGED_REVISIONS,
-           CHANGE_LOG_DEPTH,
+           depth,
            null,
            log);
       return Collections.unmodifiableList(log);
+   }
+   private Change lastChange(File file)throws Exception{
+      List<Change> list=log(file,1);
+      if(!list.isEmpty()) {
+         return list.get(0);
+      }
+      return null;
    }
    public Status status(File file) throws Exception{
       SVNStatusClient client=manager.getStatusClient();
@@ -117,7 +130,20 @@ class Client implements Repository{
       if(status.getContentsStatus()==STATUS_CONFLICTED){
          return Status.CONFLICT;
       }
-      return Status.OK;
+      if(status.getContentsStatus()==STATUS_NORMAL){
+         Change change=lastChange(file);
+         Info info=info(file);
+         if(change!=null){
+            if(change.version>info.version) {
+               return Status.STALE;
+            }
+         }
+         return Status.NORMAL;
+      }
+      if(status.getContentsStatus()==LOCK_LOCKED){
+         return Status.LOCKED;
+      }
+      return Status.OTHER;
    }
    public boolean update(File file) throws Exception{
       SVNUpdateClient client=manager.getUpdateClient();
@@ -128,13 +154,13 @@ class Client implements Repository{
             DEPTH_IS_STICKY);
       return true;
    }
-   private class ChangeLog extends LinkedList<Change> implements ISVNLogEntryHandler{
+   private class ChangeLog extends ArrayList<Change> implements ISVNLogEntryHandler{
       public void handleLogEntry(SVNLogEntry entry) throws SVNException{
          String message=entry.getMessage();
          String author=entry.getAuthor();
          Date date=entry.getDate();
          long revision=entry.getRevision();
-         addFirst(new Change(author,message,revision,date));
+         add(new Change(author,message,revision,date));
       }
    }
 }

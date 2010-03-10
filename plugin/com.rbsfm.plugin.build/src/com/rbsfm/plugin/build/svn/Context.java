@@ -1,6 +1,5 @@
 package com.rbsfm.plugin.build.svn;
 import java.io.File;
-import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.auth.ISVNAuthenticationManager;
 import org.tmatesoft.svn.core.wc.ISVNOptions;
 import org.tmatesoft.svn.core.wc.SVNInfo;
@@ -30,9 +29,10 @@ class Context{
       ISVNAuthenticationManager manager=SVNWCUtil.createDefaultAuthenticationManager(login,password);
       return new SVNWCClient(manager,options);
    }
-   public SVNURL getLocation(File file) throws Exception{
+   public Location getLocation(File file) throws Exception{
       SVNWCClient client=getLocalClient();
       SVNInfo info=client.doInfo(file,SVNRevision.BASE);
-      return info.getURL();
+      String location=info.getURL().toDecodedString();
+      return LocationType.parse(location);
    }
 }
