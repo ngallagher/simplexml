@@ -1,6 +1,7 @@
 package com.rbsfm.plugin.build.publish;
 import java.io.File;
 import java.io.InputStream;
+import java.net.URI;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -14,26 +15,40 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.handlers.HandlerUtil;
 import com.rbsfm.plugin.build.ivy.Module;
 import com.rbsfm.plugin.build.ivy.ModuleParser;
+import com.rbsfm.plugin.build.ui.MessageFormatter;
+/**
+ * The <code>ModulePublicationHandler</code> object is the main point of entry
+ * for the module publication command. This provides an event with the file 
+ * that has been selected to perform the operation. A window is opened by this
+ * handler, any relevant information is parsed from the selected file in 
+ * order to populate the fields of the window.
+ * @author Niall Gallagher
+ * @see com.rbsfm.plugin.build.assemble.ModulePublicationWindow
+ */
 public class ModulePublicationHandler extends AbstractHandler{
    public Object execute(ExecutionEvent event) throws ExecutionException{
       IStructuredSelection selection = (IStructuredSelection)HandlerUtil.getActiveMenuSelection(event);
       Object firstElement = selection.getFirstElement();
+      Shell shell = HandlerUtil.getActiveShell(event);
       if(firstElement instanceof IFile){
          IFile file = (IFile)firstElement;
          try{
-            File resource = new File(file.getRawLocationURI());
+            URI location = file.getRawLocationURI();
             InputStream source = file.getContents();
             Module module = ModuleParser.parse(source);
-            Shell shell = HandlerUtil.getActiveShell(event);
-            PluginWindow window = new PluginWindow(shell, module, resource);
-            window.open();
-         }catch(Exception e){
-            throw new ExecutionException("Problem processing ivy.xml", e);
+            open(shell, location, module);
+         }catch(Exception cause){
+            MessageDialog.openError(shell, "Error", MessageFormatter.format(cause));
          }
       }else{
          MessageDialog.openInformation(HandlerUtil.getActiveShell(event), "Information", "Please select an ivy.xml file");
       }
       return null;
+   }
+   private void open(Shell shell, URI location, Module module){
+      File resource = new File(location);
+      PluginWindow window = new PluginWindow(shell, module, resource);
+      window.open();
    }
    private static class PluginWindow extends ApplicationWindow{
       private final Module module;
