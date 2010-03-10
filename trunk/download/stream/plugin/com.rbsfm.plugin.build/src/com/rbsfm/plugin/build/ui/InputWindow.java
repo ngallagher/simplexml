@@ -12,47 +12,47 @@ import org.eclipse.swt.widgets.Text;
 public abstract class InputWindow extends Composite{
    private List<Text> fields;
    public InputWindow(Composite parent){
-      super(parent,SWT.NONE);
-      this.fields=new ArrayList<Text>();
+      super(parent, SWT.NONE);
+      this.fields = new ArrayList<Text>();
    }
    protected void addTextField(Text text){
       fields.add(text);
    }
    protected void clearFields(){
-      for(Text text:fields){
+      for(Text text : fields){
          text.setText("");
       }
    }
-   protected Text createLabelledText(Composite parent,String label){
-      return createLabelledText(parent,label,20,null,null);
+   protected Text createLabelledText(Composite parent, String label){
+      return createLabelledText(parent, label, 20, null, null);
    }
-   protected Text createLabelledText(Composite parent,String label,int limit,String tip,String value){
-      Label l=new Label(parent,SWT.LEFT);
+   protected Text createLabelledText(Composite parent, String label, int limit, String tip, String value){
+      Label l = new Label(parent, SWT.LEFT);
       l.setText(label);
-      Text text=new Text(parent,SWT.SINGLE|SWT.BORDER);
-      if(limit>0){
+      Text text = new Text(parent, SWT.SINGLE | SWT.BORDER);
+      if(limit > 0){
          text.setTextLimit(limit);
       }
-      if(tip!=null){
+      if(tip != null){
          text.setToolTipText(tip);
       }
-      if(value!=null){
+      if(value != null){
          text.setText(value);
       }
-      text.setLayoutData(new GridData(SWT.FILL,SWT.CENTER,true,false));
+      text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
       fields.add(text);
       return text;
    }
-   protected Button createButton(Composite parent,String label,SelectionListener l){
-      return createButton(parent,label,l);
+   protected Button createButton(Composite parent, String label, SelectionListener l){
+      return createButton(parent, label, l);
    }
-   protected Button createButton(Composite parent,String label,String tip,SelectionListener l){
-      Button b=new Button(parent,SWT.NONE);
+   protected Button createButton(Composite parent, String label, String tip, SelectionListener l){
+      Button b = new Button(parent, SWT.NONE);
       b.setText(label);
-      if(tip!=null){
+      if(tip != null){
          b.setToolTipText(tip);
       }
-      if(l!=null){
+      if(l != null){
          b.addSelectionListener(l);
       }
       return b;

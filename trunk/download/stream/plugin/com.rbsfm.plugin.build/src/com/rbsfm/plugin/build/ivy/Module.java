@@ -14,22 +14,22 @@ public class Module{
       return info.module;
    }
    public String getRevision(){
-      String[] split=info.revision.split("-");
-      if(split.length>0){
+      String[] split = info.revision.split("-");
+      if(split.length > 0){
          return split[0];
       }
       return null;
    }
    public String getBranch(){
-      String[] split=info.revision.split("-");
-      if(split.length>1){
+      String[] split = info.revision.split("-");
+      if(split.length > 1){
          return split[1];
       }
       return null;
    }
    public String getBranchRevision(){
-      String[] split=info.revision.split("-");
-      if(split.length>2){
+      String[] split = info.revision.split("-");
+      if(split.length > 2){
          return split[2];
       }
       return null;

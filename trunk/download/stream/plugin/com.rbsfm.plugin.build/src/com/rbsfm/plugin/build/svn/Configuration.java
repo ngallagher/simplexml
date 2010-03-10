@@ -1,5 +1,5 @@
 package com.rbsfm.plugin.build.svn;
-public interface Configuration{
+interface Configuration{
    public final boolean INCLUDE_MERGED_REVISIONS=false;
    public final boolean DISCOVER_CHANGED_PATHS=false;
    public final boolean STOP_ON_COPY=false;

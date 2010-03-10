@@ -15,11 +15,25 @@ class Context{
    private final String password;
    private final Scheme scheme;
    public Context(Scheme scheme,String login,String password) throws Exception{
-      this.options=SVNWCUtil.createDefaultOptions(true);
-      this.manager=SVNClientManager.newInstance(options,login,password);
-      this.scheme=scheme;
-      this.login=login;
-      this.password=password;
+      this.options = SVNWCUtil.createDefaultOptions(true);
+      this.manager = SVNClientManager.newInstance(options, login, password);
+      this.scheme = scheme;
+      this.login = login;
+      this.password = password;
+   }
+   public SVNClientManager getClientManager(){
+      return manager;
+   }
+   public SVNWCClient getLocalClient(){
+      ISVNOptions options = SVNWCUtil.createDefaultOptions(true);
+      ISVNAuthenticationManager manager = SVNWCUtil.createDefaultAuthenticationManager(login, password);
+      return new SVNWCClient(manager, options);
+   }
+   public Location getLocation(File file) throws Exception{
+      SVNWCClient client = getLocalClient();
+      SVNInfo info = client.doInfo(file, SVNRevision.BASE);
+      String location = info.getURL().toDecodedString();
+      return LocationParser.parse(location);
    }
    public String getLogin(){
       return login;
@@ -29,19 +43,5 @@ class Context{
    }
    public Scheme getScheme(){
       return scheme;
-   }
-   public SVNClientManager getClientManager(){
-      return manager;
-   }
-   public SVNWCClient getLocalClient(){
-      ISVNOptions options=SVNWCUtil.createDefaultOptions(true);
-      ISVNAuthenticationManager manager=SVNWCUtil.createDefaultAuthenticationManager(login,password);
-      return new SVNWCClient(manager,options);
-   }
-   public Location getLocation(File file) throws Exception{
-      SVNWCClient client=getLocalClient();
-      SVNInfo info=client.doInfo(file,SVNRevision.BASE);
-      String location=info.getURL().toDecodedString();
-      return LocationType.parse(location);
    }
 }
