@@ -28,7 +28,7 @@ public class ModulePublicationHandler extends AbstractHandler{
             final Module module=ModuleParser.parse(source);
             ApplicationWindow window=new ApplicationWindow(HandlerUtil.getActiveShell(event)){
                protected Control createContents(Composite composite){
-                  return new ModulePublicationWindow(composite,module,resource,store);
+                  return new ModulePublicationWindow(composite,module,resource);
                }
             };
             window.open();

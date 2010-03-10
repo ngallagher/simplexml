@@ -1,7 +1,6 @@
 package com.rbsfm.plugin.build.assemble;
 import java.io.File;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
@@ -9,13 +8,10 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-import com.rbsfm.plugin.build.svn.Repository;
-import com.rbsfm.plugin.build.svn.Scheme;
-import com.rbsfm.plugin.build.svn.Subversion;
-import com.rbsfm.plugin.build.ui.ButtonWindow;
-class ProjectAssemblyWindow extends ButtonWindow{
-   private IPreferenceStore store;
+import com.rbsfm.plugin.build.ui.InputWindow;
+class ProjectAssemblyWindow extends InputWindow{
    private Text loginField;
    private Text passwordField;
    private Text projectField;
@@ -24,9 +20,8 @@ class ProjectAssemblyWindow extends ButtonWindow{
    private Text environmentsField;
    private Text mailField;
    private File file;
-   public ProjectAssemblyWindow(Composite parent,File file,IPreferenceStore store){
+   public ProjectAssemblyWindow(Composite parent,File file){
       super(parent);
-      this.store=store;
       this.file = file;
       createGui();
    }
@@ -64,19 +59,18 @@ class ProjectAssemblyWindow extends ButtonWindow{
       buttons.setLayout(buttonLayout);
       createButton(buttons,"&Assemble","Assemble",new SelectionAdapter(){
          public void widgetSelected(SelectionEvent event){
+            String login=loginField.getText();
+            String password=passwordField.getText();
+            Shell shell=getShell();
             try{
-               String login=loginField.getText();
-               String password=passwordField.getText();
+               ProjectAssembler assembler=new ProjectAssembler(shell,login,password);
                String projectName=projectField.getText();
                String installName=installField.getText();
                String tagName=tagField.getText();
                String environments=environmentsField.getText();
                String mailAddress=mailField.getText();
                String[] environmentList=environments.split("\\s*,\\s*");
-               Repository repository=Subversion.login(Scheme.SVN,login,password);
-               ProjectAssembler assembler=new ProjectAssembler(repository,getShell());
-               
-               //store.putValue(login,password);
+
                assembler.assemble(file,projectName,installName,tagName,environmentList,mailAddress);
             }catch(Exception e){
                MessageDialog.openInformation(getShell(),"Error",e.getClass()+": "+e.getMessage());
