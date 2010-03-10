@@ -23,7 +23,8 @@ public class ProjectAssembler implements ResponseListener{
       Status status=repository.status(file);      
       if(status==Status.MODIFIED){
          repository.commit(file,projectName);
-      }      
+      }    
+      MessageDialog.openInformation(shell,"Project","Publishing project "+projectName+" from "+tagName);
       request.execute(Method.POST);
    }
    public void exception(Throwable cause){

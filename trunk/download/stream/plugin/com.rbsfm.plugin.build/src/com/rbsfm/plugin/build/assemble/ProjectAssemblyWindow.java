@@ -1,5 +1,6 @@
 package com.rbsfm.plugin.build.assemble;
 import java.io.File;
+
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -10,6 +11,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+
+import com.rbsfm.plugin.build.ivy.Project;
 import com.rbsfm.plugin.build.ui.InputWindow;
 class ProjectAssemblyWindow extends InputWindow{
    private Text loginField;
@@ -19,9 +22,11 @@ class ProjectAssemblyWindow extends InputWindow{
    private Text installField;
    private Text environmentsField;
    private Text mailField;
+   private Project project;
    private File file;
-   public ProjectAssemblyWindow(Composite parent,File file){
+   public ProjectAssemblyWindow(Composite parent,Project project,File file){
       super(parent);
+      this.project=project;
       this.file = file;
       createGui();
    }
@@ -31,7 +36,7 @@ class ProjectAssemblyWindow extends InputWindow{
       GridLayout entryLayout=new GridLayout(2,false);
       entryGroup.setLayout(entryLayout);
       entryGroup.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
-      projectField=createLabelledText(entryGroup,"Project: ",40,"Enter the project name",null);
+      projectField=createLabelledText(entryGroup,"Project: ",40,"Enter the project name",project.getProject());
       tagField=createLabelledText(entryGroup,"Tag: ",40,"Enter the tag",null);
       installField=createLabelledText(entryGroup,"Install Name: ",40,"Enter install name",null);
       environmentsField=createLabelledText(entryGroup,"Environments: ",40,"Enter a comma separated list of environments",null);
