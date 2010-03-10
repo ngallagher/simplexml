@@ -27,6 +27,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import org.tmatesoft.svn.core.ISVNLogEntryHandler;
+import org.tmatesoft.svn.core.SVNCommitInfo;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.SVNLogEntry;
 import org.tmatesoft.svn.core.SVNURL;
@@ -64,13 +65,14 @@ class Client implements Repository{
          SVNURL destination=SVNURL.parseURIDecoded(target);
          SVNURL current=SVNURL.parseURIDecoded(from.getParent());
          SVNCopySource source=new SVNCopySource(HEAD,HEAD,current);
-         client.doCopy(new SVNCopySource[]{source},
+         SVNCommitInfo info=client.doCopy(new SVNCopySource[]{source},
                destination,
                IS_MOVE,
                MAKE_PARENTS,
                FAIL_WHEN_EXISTS,
                message,
                null);
+         info.getErrorMessage();
       }
       return location;
    }

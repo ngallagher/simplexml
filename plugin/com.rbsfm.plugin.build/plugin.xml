@@ -19,7 +19,7 @@
                <with variable="activeMenuSelection">  
                   <iterate>  
                      <adapt type="org.eclipse.core.resources.IFile">
-                     	<test property="org.eclipse.core.resources.path" value="/xml/output/*.xml"/>
+                     	<test property="org.eclipse.core.resources.path" value="/cpbuild/projects/*.xml"/>
                      </adapt>
                   </iterate>  
                </with>  

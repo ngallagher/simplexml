@@ -10,7 +10,7 @@ public interface Configuration{
    public final boolean KEEP_CHANGE_LIST=false;
    public final boolean KEEP_LOCKS=true;
    public final boolean MAKE_PARENTS=true;
-   public final boolean IS_MOVE=true;
+   public final boolean IS_MOVE=false;
    public final boolean FAIL_WHEN_EXISTS=true;
    public final int CHANGE_LOG_DEPTH=20;
 }

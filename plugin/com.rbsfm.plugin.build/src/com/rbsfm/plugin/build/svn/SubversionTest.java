@@ -65,13 +65,13 @@ public class SubversionTest {
    @Test
    public void tag()throws Exception{
       Repository repository=Subversion.login(Scheme.SVN, "gallane", "password");
-      File resource=new File("C:\\Temp\\cpbuild\\ivy.xml");
+      File resource=new File("C:\\work\\development\\head\\cpbuild\\ivy.xml");
       
       assertTrue(resource.exists());
       
       Status status=repository.status(resource);
       assertEquals(status,Status.NORMAL);
-      Location location=repository.tag(resource, "test-tag", "Test tag", false);
+      Location location=repository.branch(resource, "cpbuild-2009WK52-ceemea-2", "Copy back branch", false);
       assertEquals(location.prefix, "test-tag");
    }
 }
