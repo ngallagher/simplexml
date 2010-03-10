@@ -7,9 +7,9 @@ public class Project{
    private @Element Info info;
    @Root
    private static class Info{
-      private @Attribute String project;
+      private @Attribute String module;
    }
    public String getProject(){
-      return info.project;
+      return info.module;
    }
 }
