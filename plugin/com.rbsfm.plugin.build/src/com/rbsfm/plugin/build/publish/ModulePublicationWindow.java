@@ -72,7 +72,7 @@ public class ModulePublicationWindow extends InputWindow{
                String branchRevision=branchRevisionField.getText();
                String mailAddress=mailField.getText();
                ModulePublisher publisher=new ModulePublisher(shell,login,password);
-                 
+               
                publisher.publish(file,moduleName,revision,branch,branchRevision,mailAddress);
             }catch(Exception e){
                MessageDialog.openInformation(getShell(),"Error",e.getClass()+": "+e.getMessage());

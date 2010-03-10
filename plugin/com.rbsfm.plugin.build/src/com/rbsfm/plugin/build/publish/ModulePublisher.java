@@ -6,6 +6,7 @@ import com.rbsfm.plugin.build.rpc.Method;
 import com.rbsfm.plugin.build.rpc.Request;
 import com.rbsfm.plugin.build.rpc.RequestBuilder;
 import com.rbsfm.plugin.build.rpc.ResponseListener;
+import com.rbsfm.plugin.build.svn.Location;
 import com.rbsfm.plugin.build.svn.Repository;
 import com.rbsfm.plugin.build.svn.Scheme;
 import com.rbsfm.plugin.build.svn.Status;
@@ -28,7 +29,8 @@ public class ModulePublisher implements ResponseListener{
       if(status==Status.STALE){
          MessageDialog.openError(shell, "Error", "Can not publish as ivy.xml is not up to date");
       }else {
-         repository.tag(file,tag,tag,false);
+         Location location=repository.tag(file,tag,tag,true);
+         MessageDialog.openInformation(shell, "Tag created", location.prefix);
          request.execute(Method.POST);
       }
 
