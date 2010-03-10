@@ -1,30 +1,27 @@
 <?xml version="1.0"?>
 <project name="Build Plugin" default="build" basedir=".">
-
    <target name="layout">
+      <property name="eclipse.path" value="/Users/niall/Eclipse/galileo"/>
       <property name="source.path" value="src"/>
       <property name="build.path" value="build"/>
       <property name="jar.path" value="jar"/>
       <property name="lib.path" value="lib"/>
    </target>
-
    <target name="clean" depends="layout">
       <delete dir="${build.path}"/>
       <delete dir="${jar.path}"/>
    </target>
-
    <target name="prepare" depends="clean">
       <mkdir dir="${build.path}"/>
       <mkdir dir="${jar.path}"/>
    </target>
-
    <target name="build" depends="prepare">
       <javac srcdir="${source.path}" destdir="${build.path}" debug="true" debuglevel="lines,vars,source" encoding="UTF-8">
          <classpath>
             <fileset dir="${lib.path}">
                <include name="**/*.jar"/>
             </fileset>
-            <fileset dir="C:\Program Files\eclipse\eclipse\plugins">
+            <fileset dir="${eclipse.path}/plugins">
                <include name="**/*.jar"/>
             </fileset>
          </classpath>  
@@ -35,14 +32,25 @@
       <mkdir dir="${build.path}/lib"/>
       <copy todir="${build.path}/lib">
          <fileset dir="${lib.path}">
+            <exclude name="simple-4.1.18.jar"/>
+            <exclude name="junit-4.8.1.jar"/>
             <include name="**/*.jar"/>
          </fileset>
       </copy>
-      <jar jarfile="${jar.path}/com.rbsfm.build.plugin_1.0.0.jar" basedir="${build.path}" manifest="META-INF/MANIFEST.MF"/>
-      <copy todir="C:\Program Files\eclipse\eclipse\dropins">
+      <copy todir="${build.path}">
+         <fileset dir="${source.path}">
+            <include name="**/*.java"/>
+         </fileset>
+      </copy>
+      <jar jarfile="${jar.path}/com.rbsfm.build.plugin_1.0.0.jar" manifest="META-INF/MANIFEST.MF">
+         <fileset dir="${build.path}">
+            <exclude name="**/*Test.class"/>
+            <exclude name="**/*Test.java"/>
+         </fileset>
+      </jar>
+      <copy todir="${eclipse.path}/dropins">
          <fileset file="${jar.path}/com.rbsfm.build.plugin_1.0.0.jar"/>
       </copy>
       <delete dir="${build.path}"/>
    </target>
-
 </project>
