@@ -12,6 +12,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import com.rbsfm.plugin.build.ivy.Project;
 import com.rbsfm.plugin.build.ui.InputWindow;
+import com.rbsfm.plugin.build.ui.MessageFormatter;
 class ProjectAssemblyWindow extends InputWindow{
    private Text loginField;
    private Text passwordField;
@@ -74,9 +75,9 @@ class ProjectAssemblyWindow extends InputWindow{
                String mailAddress = mailField.getText();
                String[] environmentList = environments.split("\\s*,\\s*");
                assembler.assemble(file, projectName, installName, tagName, environmentList, mailAddress);
-            }catch(Exception e){
-               MessageDialog.openInformation(getShell(), "Error", e.getClass() + ": " + e.getMessage());
-               throw new RuntimeException(e);
+            }catch(Exception cause){
+               MessageDialog.openInformation(getShell(), "Error", MessageFormatter.format(cause));
+               throw new RuntimeException(cause);
             }
          }
       });

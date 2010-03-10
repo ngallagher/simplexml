@@ -12,6 +12,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import com.rbsfm.plugin.build.ivy.Module;
 import com.rbsfm.plugin.build.ui.InputWindow;
+import com.rbsfm.plugin.build.ui.MessageFormatter;
 public class ModulePublicationWindow extends InputWindow{
    private Module module;
    private Text loginField;
@@ -73,9 +74,9 @@ public class ModulePublicationWindow extends InputWindow{
                String branchRevision = branchRevisionField.getText();
                String mailAddress = mailField.getText();
                publisher.publish(file, moduleName, revision, branch, branchRevision, mailAddress);
-            }catch(Exception e){
-               MessageDialog.openInformation(getShell(), "Error", e.getClass() + ": " + e.getMessage());
-               throw new RuntimeException(e);
+            }catch(Exception cause){
+               MessageDialog.openInformation(getShell(), "Error", MessageFormatter.format(cause));
+               throw new RuntimeException(cause);
             }
          }
       });
