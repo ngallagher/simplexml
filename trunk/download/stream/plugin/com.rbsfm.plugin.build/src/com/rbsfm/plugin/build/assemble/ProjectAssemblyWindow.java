@@ -16,6 +16,8 @@ import com.rbsfm.plugin.build.svn.Subversion;
 import com.rbsfm.plugin.build.ui.ButtonWindow;
 class ProjectAssemblyWindow extends ButtonWindow{
    private IPreferenceStore store;
+   private Text loginField;
+   private Text passwordField;
    private Text projectField;
    private Text tagField;
    private Text installField;
@@ -28,8 +30,7 @@ class ProjectAssemblyWindow extends ButtonWindow{
       this.file = file;
       createGui();
    }
-   private void createGui(){
-      setLayout(new GridLayout(1,true));
+   private void createProjectDetails(){
       Group entryGroup=new Group(this,SWT.NONE);
       entryGroup.setText("Project Details");
       GridLayout entryLayout=new GridLayout(2,false);
@@ -40,6 +41,20 @@ class ProjectAssemblyWindow extends ButtonWindow{
       installField=createLabelledText(entryGroup,"Install Name: ",40,"Enter install name",null);
       environmentsField=createLabelledText(entryGroup,"Environments: ",40,"Enter a comma separated list of environments",null);
       mailField=createLabelledText(entryGroup,"Mail: ",40,"Enter your mail address",null);
+   }
+   private void createSubversion(){
+      Group subversionGroup=new Group(this,SWT.NONE);
+      subversionGroup.setText("Subversion");
+      GridLayout subversionLayout=new GridLayout(2,false);
+      subversionGroup.setLayout(subversionLayout);
+      subversionGroup.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+      loginField=createLabelledText(subversionGroup,"Login: ",40,"Enter your user name",System.getProperty("user.name"));
+      passwordField=createLabelledText(subversionGroup,"Password: ",40,"Enter your password","password");  
+   }
+   private void createGui(){
+      setLayout(new GridLayout(1,true));
+      createProjectDetails();
+      createSubversion();
       Composite buttons=new Composite(this,SWT.NONE);
       buttons.setLayoutData(new GridData(SWT.FILL,SWT.CENTER,true,false));
       FillLayout buttonLayout=new FillLayout();
@@ -50,8 +65,8 @@ class ProjectAssemblyWindow extends ButtonWindow{
       createButton(buttons,"&Assemble","Assemble",new SelectionAdapter(){
          public void widgetSelected(SelectionEvent event){
             try{
-               String login = "gallane";
-               String password="password";
+               String login=loginField.getText();
+               String password=passwordField.getText();
                String projectName=projectField.getText();
                String installName=installField.getText();
                String tagName=tagField.getText();
@@ -61,7 +76,7 @@ class ProjectAssemblyWindow extends ButtonWindow{
                Repository repository=Subversion.login(Scheme.SVN,login,password);
                ProjectAssembler assembler=new ProjectAssembler(repository,getShell());
                
-               store.putValue(login,password);
+               //store.putValue(login,password);
                assembler.assemble(file,projectName,installName,tagName,environmentList,mailAddress);
             }catch(Exception e){
                MessageDialog.openInformation(getShell(),"Error",e.getClass()+": "+e.getMessage());

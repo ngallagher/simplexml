@@ -18,6 +18,8 @@ import com.rbsfm.plugin.build.ui.ButtonWindow;
 public class ModulePublicationWindow extends ButtonWindow{
    private IPreferenceStore store;
    private Module module;
+   private Text loginField;
+   private Text passwordField;
    private Text moduleField;
    private Text revisionField;
    private Text branchField;
@@ -31,8 +33,7 @@ public class ModulePublicationWindow extends ButtonWindow{
       this.file=file;
       createGui();
    }
-   private void createGui(){ 
-      setLayout(new GridLayout(1,true));
+   private void createModuleDetails(){
       Group entryGroup=new Group(this,SWT.NONE);
       entryGroup.setText("Module Details");
       GridLayout entryLayout=new GridLayout(2,false);
@@ -43,6 +44,20 @@ public class ModulePublicationWindow extends ButtonWindow{
       branchField=createLabelledText(entryGroup,"Branch: ",40,"Enter the branch",module.getBranch());
       branchRevisionField=createLabelledText(entryGroup,"Branch Revision: ",40,"Enter the branch revision",module.getBranchRevision());
       mailField=createLabelledText(entryGroup,"Mail: ",40,"Enter your mail address",null);
+   }
+   private void createSubversion(){
+      Group subversionGroup=new Group(this,SWT.NONE);
+      subversionGroup.setText("Subversion");
+      GridLayout subversionLayout=new GridLayout(2,false);
+      subversionGroup.setLayout(subversionLayout);
+      subversionGroup.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+      loginField=createLabelledText(subversionGroup,"Login: ",40,"Enter your user name",System.getProperty("user.name"));
+      passwordField=createLabelledText(subversionGroup,"Password: ",40,"Enter your password","password");  
+   }
+   private void createGui(){ 
+      setLayout(new GridLayout(1,true));
+      createModuleDetails();
+      createSubversion();
       Composite buttons=new Composite(this,SWT.NONE);
       buttons.setLayoutData(new GridData(SWT.FILL,SWT.CENTER,true,false));
       FillLayout buttonLayout=new FillLayout();
@@ -53,8 +68,8 @@ public class ModulePublicationWindow extends ButtonWindow{
       createButton(buttons,"&Publish","Publish",new SelectionAdapter(){
          public void widgetSelected(SelectionEvent event){
             try{
-               String login = "gallane";
-               String password="password";
+               String login=loginField.getText();
+               String password=passwordField.getText();
                String moduleName = moduleField.getText();
                String revision=revisionField.getText();
                String branch=branchField.getText();
@@ -63,7 +78,7 @@ public class ModulePublicationWindow extends ButtonWindow{
                Repository repository=Subversion.login(Scheme.SVN,login,password);
                ModulePublisher publisher=new ModulePublisher(repository,getShell());
                
-               store.putValue(login,password);    
+               //store.putValue(login,password);    
                publisher.publish(file,moduleName,revision,branch,branchRevision,mailAddress);
             }catch(Exception e){
                MessageDialog.openInformation(getShell(),"Error",e.getClass()+": "+e.getMessage());
