@@ -8,6 +8,10 @@ public class Project{
    @Root
    private static class Info{
       private @Attribute String module;
+      private @Attribute String organisation;
+   }
+   public String getOrganisation(){
+      return info.organisation;
    }
    public String getProject(){
       return info.module;

@@ -9,6 +9,10 @@ public class Module{
    private static class Info{
       private @Attribute String revision;
       private @Attribute String module;
+      private @Attribute String organisation;
+   }
+   public String getOrganisation(){
+      return info.organisation;
    }
    public String getModule(){
       return info.module;
