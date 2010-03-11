@@ -72,9 +72,8 @@ class ProjectAssemblyWindow extends InputWindow{
                String installName = installField.getText();
                String tagName = tagField.getText();
                String environments = environmentsField.getText();
-               String mailAddress = mailField.getText();
-               String[] environmentList = environments.split("\\s*,\\s*");
-               assembler.assemble(file, projectName, installName, tagName, environmentList, mailAddress);
+               String mailAddress = mailField.getText();            
+               assembler.assemble(file, projectName, installName, tagName, environments, mailAddress);
             }catch(Exception cause){
                MessageDialog.openInformation(getShell(), "Error", MessageFormatter.format(cause));
                throw new RuntimeException(cause);
