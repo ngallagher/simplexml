@@ -26,8 +26,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import org.tmatesoft.svn.core.ISVNDirEntryHandler;
 import org.tmatesoft.svn.core.ISVNLogEntryHandler;
 import org.tmatesoft.svn.core.SVNCommitInfo;
+import org.tmatesoft.svn.core.SVNDirEntry;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.SVNLogEntry;
 import org.tmatesoft.svn.core.SVNURL;
@@ -102,7 +104,7 @@ class Client implements Repository{
    private Location copy(File file, String prefix, String message, Parent type, boolean dryRun) throws Exception{
       Location from = context.getLocation(file);
       Copy copy = LocationParser.copy(from, prefix, type);
-      if(!dryRun && !exists(copy.from())){
+      if(!dryRun && !exists(copy.to)){
          SVNCopyClient client = manager.getCopyClient();
          SVNURL destination = SVNURL.parseURIDecoded(copy.to());
          SVNURL current = SVNURL.parseURIDecoded(copy.from());
@@ -120,13 +122,12 @@ class Client implements Repository{
     * @param location this is an absolute path for some remote resource
     * @return this returns true if the specified absolute URI already exists
     */
-   private boolean exists(String location) throws Exception{
-      ChangeLog log = new ChangeLog();
+   private boolean exists(Location location) throws Exception{
+      DirectoryList list = new DirectoryList();
       SVNLogClient client = manager.getLogClient();
-      SVNURL address = SVNURL.parseURIEncoded(location);
-      SVNRevision revision = SVNRevision.create(0);
-      client.doLog(address, new String[]{}, revision, HEAD, revision, STOP_ON_COPY, DISCOVER_CHANGED_PATHS, INCLUDE_MERGED_REVISIONS, 1, null, log);
-      return !log.isEmpty();
+      SVNURL address = SVNURL.parseURIEncoded(location.root);
+      client.doList(address, HEAD, HEAD, false, false, list);      
+      return list.contains(location.prefix);
    }
    /**
     * This is used to commit any changes made in the working copy specified by
@@ -140,7 +141,7 @@ class Client implements Repository{
    public boolean commit(File file, String message) throws Exception{
       SVNCommitClient client = manager.getCommitClient();
       SVNCommitInfo info = client.doCommit(new File[]{file}, KEEP_LOCKS, message, null, new String[]{}, KEEP_CHANGE_LIST, FORCE_COMMIT, INFINITY);
-      return info.getErrorMessage() != null;
+      return info.getErrorMessage() == null;
    }
    /**
     * This acquires local information for the specified resource. The local
@@ -234,6 +235,11 @@ class Client implements Repository{
          Date date = entry.getDate();
          long revision = entry.getRevision();
          add(new Change(author, message, revision, date));
+      }
+   }
+   private class DirectoryList extends ArrayList<String> implements ISVNDirEntryHandler{
+      public void handleDirEntry(SVNDirEntry entry) throws SVNException{
+         add(entry.getName());
       }
    }
 }
