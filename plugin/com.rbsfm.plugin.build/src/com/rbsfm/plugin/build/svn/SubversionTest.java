@@ -7,6 +7,7 @@ import java.io.File;
 import java.util.List;
 import org.junit.Test;
 public class SubversionTest{
+   /*
    @Test
    public void status() throws Exception{
       Repository repository = Subversion.login(Scheme.SVN, "gallane", "password");
@@ -55,5 +56,15 @@ public class SubversionTest{
       assertEquals(status, Status.NORMAL);
       Location location = repository.branch(resource, "cpbuild-2009WK52-ceemea-2", "Copy back branch", false);
       assertEquals(location.prefix, "test-tag");
+   }*/
+   @Test
+   public void query() throws Exception {
+      Repository repository = Subversion.login(Scheme.SVN, "gallane", "password");
+      File resource = new File("C:\\work\\development\\head\\cpbuild\\ivy.xml");
+      assertTrue(resource.exists());
+      Status status = repository.status(resource);
+      assertEquals(status, Status.NORMAL);
+      boolean exists = repository.queryTag(resource, "ceemea-2009WK52-2");
+      assertTrue(exists);
    }
 }

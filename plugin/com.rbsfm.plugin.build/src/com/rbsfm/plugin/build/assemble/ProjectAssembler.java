@@ -6,6 +6,7 @@ import com.rbsfm.plugin.build.rpc.Method;
 import com.rbsfm.plugin.build.rpc.Request;
 import com.rbsfm.plugin.build.rpc.RequestBuilder;
 import com.rbsfm.plugin.build.rpc.ResponseListener;
+import com.rbsfm.plugin.build.svn.Location;
 import com.rbsfm.plugin.build.svn.Repository;
 import com.rbsfm.plugin.build.svn.Scheme;
 import com.rbsfm.plugin.build.svn.Status;
@@ -18,17 +19,22 @@ public class ProjectAssembler implements ResponseListener{
       this.repository = Subversion.login(Scheme.SVN, login, password);
       this.shell = shell;
    }
-   public void assemble(File file, String projectName, String installName, String tagName, String environments, String mailAddress) throws Exception{
+   public void assemble(File file, String projectName, String installName, String tag, String environments, String mailAddress) throws Exception{
       String[] environmentList = Environment.parse(environments);
       if(valid(environmentList)) {
-         RequestBuilder builder = new ProjectAssemblyRequestBuilder(projectName, installName, tagName, environmentList, mailAddress);
+         RequestBuilder builder = new ProjectAssemblyRequestBuilder(projectName, installName, tag, environmentList, mailAddress);
          Request request = new Request(builder, this, false);
          Status status = repository.status(file);
          if(status == Status.MODIFIED){
             repository.commit(file, projectName);
          }
-         repository.tag(file, tagName, tagName, false);
-         MessageDialog.openInformation(shell, "Project", "Publishing project " + projectName + " from " + tagName);
+         if(!repository.queryTag(file, tag)) {
+            Location location = repository.tag(file, tag, tag, false);
+            MessageDialog.openInformation(shell, "Tag created", location.prefix);
+         } else {
+            MessageDialog.openInformation(shell, "Tag", "Using existing tag "+ tag);
+         }
+         MessageDialog.openInformation(shell, "Project", "Publishing project " + projectName + " from " + tag);
          request.execute(Method.POST);
       }
    }

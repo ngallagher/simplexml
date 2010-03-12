@@ -129,6 +129,33 @@ class Client implements Repository{
       client.doList(address, HEAD, HEAD, false, false, list);      
       return list.contains(location.prefix);
    }
+   public boolean queryTag(File resource, String prefix) throws Exception{
+      return query(resource, prefix, Parent.TAGS);
+   }
+   public boolean queryBranch(File resource, String prefix) throws Exception{
+      return query(resource, prefix, Parent.BRANCHES);
+   }
+   /**
+    * This is used to determine if a resource exists within a tag identified
+    * by the specified prefix. A query is performed on the repository to
+    * investigate the existence of the resource in another tag. This can be
+    * useful when determining if a new tag should be created or whether the
+    * tag already exists. 
+    * @param resource this is an existing working copy resource to be used
+    * @param prefix this is the tag or branch prefix to be used
+    * @param type this is the parent type used to search branches or tags
+    * @return this returns true if the resource already exists
+    */
+   private boolean query(File resource, String prefix, Parent type) throws Exception{
+      DirectoryList list = new DirectoryList();
+      SVNLogClient client = manager.getLogClient();
+      Location location = context.getLocation(resource);
+      Copy copy = LocationParser.copy(location, prefix, type);
+      String query = copy.to.getAbsolutePath();
+      SVNURL address = SVNURL.parseURIEncoded(query);
+      client.doList(address, HEAD, HEAD, false, false, list);      
+      return !list.isEmpty();
+   }
    /**
     * This is used to commit any changes made in the working copy specified by
     * the file. If this returns false the changes may not have been made to the
