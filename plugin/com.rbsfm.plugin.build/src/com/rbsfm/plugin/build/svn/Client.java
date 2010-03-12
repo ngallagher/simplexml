@@ -76,11 +76,11 @@ class Client implements Repository{
       this.manager = context.getClientManager();
       this.context = context;
    }
-   public Location tag(File file, String tag, String message, boolean dryRun) throws Exception{
-      return copy(file, tag, message, TAGS, dryRun);
+   public Location tag(File resource, String tag, String message, boolean dryRun) throws Exception{
+      return copy(resource, tag, message, TAGS, dryRun);
    }
-   public Location branch(File file, String branch, String message, boolean dryRun) throws Exception{
-      return copy(file, branch, message, BRANCHES, dryRun);
+   public Location branch(File resource, String branch, String message, boolean dryRun) throws Exception{
+      return copy(resource, branch, message, BRANCHES, dryRun);
    }
    /**
     * This performs a copy of the specified working copy resource to either the
@@ -94,15 +94,15 @@ class Client implements Repository{
     * If the resulting branch or tag already exists the will return quietly.
     * When complete the location of the newly created copy of the resource is
     * returned. All copies are from the HEAD of the working copy.
-    * @param file this is the working copy that is to be branched by this
+    * @param resource this is the working copy that is to be branched by this
     * @param prefix this is the prefix of the branch or tag to be created
     * @param message the copy message that is used for the copy
     * @param dryRun if true the copy will not actually be performed
     * @param type the parent type used to determine the branch or tag path
     * @return this returns the new location of the resource that was copied
     */
-   private Location copy(File file, String prefix, String message, Parent type, boolean dryRun) throws Exception{
-      Location from = context.getLocation(file);
+   private Location copy(File resource, String prefix, String message, Parent type, boolean dryRun) throws Exception{
+      Location from = context.getLocation(resource);
       Copy copy = LocationParser.copy(from, prefix, type);
       if(!dryRun && !exists(copy.to)){
          SVNCopyClient client = manager.getCopyClient();
@@ -161,13 +161,13 @@ class Client implements Repository{
     * the file. If this returns false the changes may not have been made to the
     * file. The {@link status} method should be used to determine if the
     * resource still contains modifications.
-    * @param file this is the resource that is to be committed
+    * @param resource this is the resource that is to be committed
     * @param message this is the message that is used with the commit
     * @return returns true if the resource was committed without an error
     */
-   public boolean commit(File file, String message) throws Exception{
+   public boolean commit(File resource, String message) throws Exception{
       SVNCommitClient client = manager.getCommitClient();
-      SVNCommitInfo info = client.doCommit(new File[]{file}, KEEP_LOCKS, message, null, new String[]{}, KEEP_CHANGE_LIST, FORCE_COMMIT, INFINITY);
+      SVNCommitInfo info = client.doCommit(new File[]{resource}, KEEP_LOCKS, message, null, new String[]{}, KEEP_CHANGE_LIST, FORCE_COMMIT, INFINITY);
       return info.getErrorMessage() == null;
    }
    /**
@@ -175,31 +175,31 @@ class Client implements Repository{
     * information can be acquired without a connection to the repository.
     * Information provides the version the resource is currently at as well as
     * the absolute URI location of the resource.
-    * @param file this is the working copy to acquire the information for
-    * @return this returns the local information for the specified file
+    * @param resource this is the working copy to acquire the information for
+    * @return this returns the local information for the specified resource
     */
-   public Info info(File file) throws Exception{
+   public Info info(File resource) throws Exception{
       SVNWCClient client = context.getLocalClient();
-      SVNInfo info = client.doInfo(file, BASE);
+      SVNInfo info = client.doInfo(resource, BASE);
       String location = info.getURL().getURIEncodedPath();
       long revision = info.getRevision().getNumber();
       return new Info(info.getAuthor(), location, revision);
    }
-   public List<Change> log(File file) throws Exception{
-      return log(file, CHANGE_LOG_DEPTH);
+   public List<Change> log(File resource) throws Exception{
+      return log(resource, CHANGE_LOG_DEPTH);
    }
    /**
     * This is used to acquire the changes for the resource specified. To limit
     * the number of changes acquired a depth can be specified. This will not
     * stop at the copy revision, which ensures changes can be acquired up to the
     * initial revision of the resource.
-    * @param file this is the working copy resource to get the changes for
+    * @param resource this is the working copy resource to get the changes for
     * @param depth this is the maximum number of changes to be acquired
     * @return a list of the changes made during the lifetime of the resource
     */
-   public List<Change> log(File file, long depth) throws Exception{
+   public List<Change> log(File resource, long depth) throws Exception{
       ChangeLog log = new ChangeLog();
-      Location repository = context.getLocation(file);
+      Location repository = context.getLocation(resource);
       String location = repository.getAbsolutePath();
       if(depth > 0){
          SVNLogClient client = manager.getLogClient();
@@ -209,16 +209,16 @@ class Client implements Repository{
       }
       return Collections.unmodifiableList(log);
    }
-   private Change lastChange(File file) throws Exception{
-      List<Change> list = log(file, 1);
+   private Change lastChange(File resource) throws Exception{
+      List<Change> list = log(resource, 1);
       if(!list.isEmpty()){
          return list.get(0);
       }
       return null;
    }
-   public Status status(File file) throws Exception{
+   public Status status(File resource) throws Exception{
       SVNStatusClient client = manager.getStatusClient();
-      SVNStatus status = client.doStatus(file, REMOTE_STATUS);
+      SVNStatus status = client.doStatus(resource, REMOTE_STATUS);
       if(status.getContentsStatus() == STATUS_MODIFIED){
          return Status.MODIFIED;
       }
@@ -226,8 +226,8 @@ class Client implements Repository{
          return Status.CONFLICT;
       }
       if(status.getContentsStatus() == STATUS_NORMAL){
-         Change change = lastChange(file);
-         Info info = info(file);
+         Change change = lastChange(resource);
+         Info info = info(resource);
          if(change != null){
             if(change.version > info.version){
                return Status.STALE;
@@ -244,15 +244,15 @@ class Client implements Repository{
     * This is used to update the specified working copy to the HEAD. If the
     * resource is updated this returns true, if not this returns false. Any
     * resource that is currently on the HEAD returns false as its up to date.
-    * @param file this is the working copy that is to be updated to HEAD
+    * @param resource this is the working copy that is to be updated to HEAD
     * @return this returns true if the version of the resource has changed
     */
-   public boolean update(File file) throws Exception{
+   public boolean update(File resource) throws Exception{
       SVNUpdateClient client = manager.getUpdateClient();
       SVNWCClient local = context.getLocalClient();
-      SVNInfo info = local.doInfo(file, BASE);
+      SVNInfo info = local.doInfo(resource, BASE);
       long previous = info.getRevision().getNumber();
-      long current = client.doUpdate(file, HEAD, INFINITY, ALLOW_OBSTRUCTIONS, DEPTH_IS_STICKY);
+      long current = client.doUpdate(resource, HEAD, INFINITY, ALLOW_OBSTRUCTIONS, DEPTH_IS_STICKY);
       return previous != current;
    }
    private class ChangeLog extends ArrayList<Change> implements ISVNLogEntryHandler{
