@@ -27,6 +27,7 @@ public class ProjectAssembler implements ResponseListener{
          if(status == Status.MODIFIED){
             repository.commit(file, projectName);
          }
+         repository.tag(file, tagName, tagName, false);
          MessageDialog.openInformation(shell, "Project", "Publishing project " + projectName + " from " + tagName);
          request.execute(Method.POST);
       }
