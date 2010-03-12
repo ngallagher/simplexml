@@ -30,8 +30,12 @@ public class ModulePublisher implements ResponseListener{
       if(status == Status.STALE){
          MessageDialog.openError(shell, "Error", "Can not publish as ivy.xml is not up to date");
       }else{
-         Location location = repository.tag(file, tag, tag, false);
-         MessageDialog.openInformation(shell, "Tag created", location.prefix);
+         if(!repository.queryTag(file, tag)) {
+            Location location = repository.tag(file, tag, tag, false);
+            MessageDialog.openInformation(shell, "Tag created", location.prefix);
+         } else {
+            MessageDialog.openInformation(shell, "Tag", "Using existing tag "+ tag);
+         }
          request.execute(Method.POST);
       }
    }
