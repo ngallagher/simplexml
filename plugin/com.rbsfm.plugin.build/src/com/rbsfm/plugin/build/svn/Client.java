@@ -153,7 +153,11 @@ class Client implements Repository{
       Copy copy = LocationParser.copy(location, prefix, type);
       String query = copy.to.getAbsolutePath();
       SVNURL address = SVNURL.parseURIEncoded(query);
-      client.doList(address, HEAD, HEAD, false, false, list);      
+      try {
+         client.doList(address, HEAD, HEAD, false, false, list);
+      }catch(Throwable cause){
+         return false;
+      }
       return !list.isEmpty();
    }
    /**
