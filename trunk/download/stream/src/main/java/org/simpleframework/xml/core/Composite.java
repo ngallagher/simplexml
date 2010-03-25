@@ -504,13 +504,15 @@ class Composite implements Converter {
     * @throws Exception thrown if the the label object does not exist
     */
    private void readAttribute(InputNode node, Object source, LabelMap map) throws Exception {
-      Position line = node.getPosition();
       String name = node.getName();
       Label label = map.take(name);
       
       if(label == null) {
+         Position line = node.getPosition();
+         Class type = source.getClass();
+
          if(map.isStrict(context) && revision.isEqual()) {              
-            throw new AttributeException("Attribute '%s' does not have a match at %s", name, line);
+            throw new AttributeException("Attribute '%s' does not have a match in %s at %s", name, type, line);
          }            
       } else {
          read(node, source, label);
@@ -540,9 +542,10 @@ class Composite implements Converter {
       }
       if(label == null) {
          Position line = node.getPosition();
+         Class type = source.getClass();
          
          if(map.isStrict(context) && revision.isEqual()) {              
-            throw new ElementException("Element '%s' does not have a match at %s", name, line);
+            throw new ElementException("Element '%s' does not have a match in %s at %s", name, type, line);
          } else {
             node.skip();                 
          }
