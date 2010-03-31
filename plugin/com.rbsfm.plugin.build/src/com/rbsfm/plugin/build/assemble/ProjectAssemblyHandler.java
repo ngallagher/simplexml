@@ -22,7 +22,9 @@ import com.rbsfm.plugin.build.ui.MessageFormatter;
  * that has been selected to perform the operation. A window is opened by 
  * this handler, any relevant information is parsed from the selected file 
  * in order to populate the fields of the window.
+ * 
  * @author Niall Gallagher
+ * 
  * @see com.rbsfm.plugin.build.assemble.ProjectAssemblyWindow
  */
 public class ProjectAssemblyHandler extends AbstractHandler{

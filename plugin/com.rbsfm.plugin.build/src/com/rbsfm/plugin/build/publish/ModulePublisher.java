@@ -22,7 +22,13 @@ public class ModulePublisher implements ResponseListener{
    public void publish(File file, String moduleName, String revision, String branch, String branchRevision, String mailAddress) throws Exception{
       RequestBuilder builder = new ModulePublicationRequestBuilder(moduleName, branch, revision, branchRevision, mailAddress);
       Request request = new Request(builder, this, false);
-      String tag = String.format("%s-%s-%s-%s", moduleName, revision, branch, branchRevision);
+      String tag = String.format("%s-%s", moduleName, revision);
+      if(branch != null && branch.length() > 0){
+         tag = String.format("%s-%s", tag, branch);
+      }
+      if(branchRevision != null && branchRevision.length() > 0) {
+         tag = String.format("%s-%s", tag, branchRevision);
+      }
       Status status = repository.status(file);
       if(status == Status.MODIFIED){
          repository.commit(file, tag);

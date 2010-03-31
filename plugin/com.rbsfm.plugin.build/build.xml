@@ -16,7 +16,7 @@
       <mkdir dir="${jar.path}"/>
    </target>
    <target name="build" depends="prepare">
-      <javac srcdir="${source.path}" destdir="${build.path}" debug="true" debuglevel="lines,vars,source" encoding="UTF-8">
+      <javac srcdir="${source.path}" destdir="${build.path}" debug="true" debuglevel="lines,vars,source" encoding="UTF-8" source="1.5">
          <classpath>
             <fileset dir="${lib.path}">
                <include name="**/*.jar"/>
