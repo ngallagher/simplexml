@@ -43,7 +43,13 @@ public class ModulePublicationRequestBuilder implements RequestBuilder{
       builder.append("|").append("com.rbsfm.fi.modulepublicationserver.client.ModulePublicationData");
       builder.append("|").append("com.rbsfm.fi.modulepublicationserver.client.ModulePublicationDataImpl/2938065861");
       builder.append("|").append(moduleName);
-      builder.append("|").append(revision).append("-").append(branch).append("-").append(branchRevision);
+      builder.append("|").append(revision);
+      if(branch != null && branch.length() > 0) {
+         builder.append("-").append(branch);
+      }
+      if(branchRevision != null && branchRevision.length() > 0) {
+         builder.append("-").append(branchRevision);
+      }
       builder.append("|").append(mailAddress);
       builder.append("|").append(1);
       builder.append("|").append(2);
