@@ -16,7 +16,7 @@ public class ProjectAssembler implements ResponseListener{
    private final Repository repository;
    private final Shell shell;
    public ProjectAssembler(Shell shell,String login,String password) throws Exception{
-      this.repository = Subversion.login(Scheme.SVN, login, password);
+      this.repository = Subversion.login(Scheme.HTTP, login, password);
       this.shell = shell;
    }
    public void assemble(File file, String projectName, String installName, String tag, String environments, String mailAddress) throws Exception{

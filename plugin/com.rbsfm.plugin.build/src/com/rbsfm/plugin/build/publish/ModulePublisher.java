@@ -16,7 +16,7 @@ public class ModulePublisher implements ResponseListener{
    private final Repository repository;
    private final Shell shell;
    public ModulePublisher(Shell shell,String login,String password) throws Exception{
-      this.repository = Subversion.login(Scheme.SVN, login, password);
+      this.repository = Subversion.login(Scheme.HTTP, login, password);
       this.shell = shell;
    }
    public void publish(File file, String moduleName, String revision, String branch, String branchRevision, String mailAddress) throws Exception{
