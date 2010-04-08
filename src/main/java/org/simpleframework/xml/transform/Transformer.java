@@ -73,7 +73,7 @@ public class Transformer {
    /**
     * Constructor for the <code>Transformer</code> object. This is
     * used to create a transformer which will transform specified
-    * types using transforms loaded from the class path. Tramsforms
+    * types using transforms loaded from the class path. Transforms
     * are matched to types using the specified matcher object.
     * 
     * @param matcher this is used to match types to transforms
@@ -135,7 +135,7 @@ public class Transformer {
     * 
     * @return true if the type specified can be transformed by this
     */ 
-   public boolean valid(Class type) throws Exception {      
+   public boolean valid(Class type) throws Exception {   
       return lookup(type) != null;
    }
 

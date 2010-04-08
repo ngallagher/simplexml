@@ -106,13 +106,7 @@ class PrimitiveFactory extends Factory {
     * 
     * @return this returns an instance of the field type
     */         
-   public Object getInstance(String text, Class type) throws Exception {
-      if(type == String.class) {
-         return text;              
-      }    
-      if(type.isEnum()) {
-         return Enum.valueOf(type, text);              
-      }           
+   public Object getInstance(String text, Class type) throws Exception {          
       return support.read(text, type);
    }
    
