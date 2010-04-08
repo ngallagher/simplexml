@@ -100,6 +100,8 @@
 
    <target name="build" depends="-compile" description="Compile and build project archive">
       <jar jarfile="${jar.path}/simple-xml-${version}.jar" basedir="${main.build.path}"/>
+      <checksum file="${jar.path}/simple-xml-${version}.jar" algorithm="SHA1" fileext=".sha1"/>
+      <checksum file="${jar.path}/simple-xml-${version}.jar" algorithm="MD5" fileext=".md5"/>
       <delete dir="${build.path}"/>
    </target>
 
