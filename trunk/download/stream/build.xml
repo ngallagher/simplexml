@@ -9,6 +9,7 @@
       <property name="benchmark.source.path" value="src/benchmark/java"/>
       <property name="javadoc.path" value="doc/javadoc"/>
       <property name="tutorial.path" value="doc/tutorial"/>
+      <property name="target.path" value="target"/>      
       <property name="doc.path" value="doc"/>
       <property name="maven.path" value="maven"/> 
       <property name="script.path" value="script"/> 
@@ -335,6 +336,48 @@
       <exec executable="sh">
          <arg value="${root.path}/maven.sh"/>
       </exec>
+   </target>
+
+   <target name="maven-package" depends="-compile" description="Create maven bundle">
+      <copy todir="${root.path}" overwrite="true">
+         <fileset dir="${script.path}">
+            <include name="pom.xml"/>
+            <include name="maven-package.sh"/>
+            <include name="maven-metadata.xml"/>
+         </fileset>
+         <filterset>
+            <filtersfile file="${root.path}/build.properties"/>
+         </filterset>
+      </copy>
+      <exec executable="sh">
+         <arg value="${root.path}/maven-package.sh"/>
+      </exec>
+      <mkdir dir="${target.path}/maven"/>
+      <mkdir dir="${target.path}/maven/${version}"/>
+      <copy todir="${target.path}/maven/${version}">
+         <fileset dir="${target.path}">
+            <include name="simple-xml-${version}.jar"/>
+            <include name="simple-xml-${version}-sources.jar"/>
+         </fileset>
+         <fileset dir="${root.path}">
+            <include name="pom.xml"/>
+         </fileset>        
+      </copy>
+      <copy todir="${target.path}/maven">
+         <fileset dir="${root.path}">
+            <include name="maven-metadata.xml"/>             
+         </fileset>        
+      </copy>    
+      <move file="${target.path}/maven/${version}/pom.xml" tofile="${target.path}/maven/${version}/simple-xml-${version}.pom"/>
+      <checksum file="${target.path}/maven/${version}/simple-xml-${version}.jar" algorithm="SHA1" fileext=".sha1"/>
+      <checksum file="${target.path}/maven/${version}/simple-xml-${version}.jar" algorithm="MD5" fileext=".md5"/>      
+      <checksum file="${target.path}/maven/${version}/simple-xml-${version}-sources.jar" algorithm="SHA1" fileext=".sha1"/>
+      <checksum file="${target.path}/maven/${version}/simple-xml-${version}-sources.jar" algorithm="MD5" fileext=".md5"/> 
+      <checksum file="${target.path}/maven/${version}/simple-xml-${version}.pom" algorithm="SHA1" fileext=".sha1"/>
+      <checksum file="${target.path}/maven/${version}/simple-xml-${version}.pom" algorithm="MD5" fileext=".md5"/>
+      <checksum file="${target.path}/maven/maven-metadata.xml" algorithm="SHA1" fileext=".sha1"/>
+      <checksum file="${target.path}/maven/maven-metadata.xml" algorithm="MD5" fileext=".md5"/>       
+      <zip destfile="${root.path}/maven-${version}.zip" basedir="${target.path}/maven"/>      
    </target>
 
    <target name="javadoc" depends="clean" description="Generate source documentation">
