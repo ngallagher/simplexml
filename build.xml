@@ -363,11 +363,20 @@
             <include name="pom.xml"/>
          </fileset>        
       </copy>
+      <!--get src="http://www.simpleframework.org/maven/org/simpleframework/simple-xml/maven-metadata.xml" dest="${root.path}/maven-metadata.xml"/-->     
+      <replace file="${root.path}/maven-metadata.xml">
+         <replacetoken><![CDATA[</versions>]]></replacetoken>
+         <replacevalue><![CDATA[<version>@version@</version>
+            </versions>]]></replacevalue>
+      </replace> 
       <copy todir="${target.path}/maven">
          <fileset dir="${root.path}">
             <include name="maven-metadata.xml"/>             
-         </fileset>        
-      </copy>    
+         </fileset>   
+         <filterset>
+            <filtersfile file="${root.path}/build.properties"/>
+         </filterset>        
+      </copy>        
       <move file="${target.path}/maven/${version}/pom.xml" tofile="${target.path}/maven/${version}/simple-xml-${version}.pom"/>
       <checksum file="${target.path}/maven/${version}/simple-xml-${version}.jar" algorithm="SHA1" fileext=".sha1"/>
       <checksum file="${target.path}/maven/${version}/simple-xml-${version}.jar" algorithm="MD5" fileext=".md5"/>      
