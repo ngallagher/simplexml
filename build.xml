@@ -343,7 +343,6 @@
          <fileset dir="${script.path}">
             <include name="pom.xml"/>
             <include name="maven-package.sh"/>
-            <include name="maven-metadata.xml"/>
          </fileset>
          <filterset>
             <filtersfile file="${root.path}/build.properties"/>
