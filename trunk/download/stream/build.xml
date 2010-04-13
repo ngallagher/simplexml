@@ -351,6 +351,12 @@
       <exec executable="sh">
          <arg value="${root.path}/maven-package.sh"/>
       </exec>
+      <antcall target="package-maven"/>
+   </target>
+
+   <target name="package-maven" depends="-setup">
+      <delete dir="${target.path}/maven"/>       
+      <delete dir="${target.path}/maven/maven-metadata.xml"/>        
       <mkdir dir="${target.path}/maven"/>
       <mkdir dir="${target.path}/maven/${version}"/>
       <copy todir="${target.path}/maven/${version}">
@@ -361,21 +367,26 @@
          <fileset dir="${root.path}">
             <include name="pom.xml"/>
          </fileset>        
-      </copy>
-      <!--get src="http://www.simpleframework.org/maven/org/simpleframework/simple-xml/maven-metadata.xml" dest="${root.path}/maven-metadata.xml"/-->     
-      <replace file="${root.path}/maven-metadata.xml">
+      </copy>       
+      <!--get src="http://www.simpleframework.org/maven/org/simpleframework/simple-xml/maven-metadata.xml" dest="${root.path}/maven-metadata.xml"/-->
+      <copy todir="${target.path}" overwrite="true">
+         <fileset dir="${root.path}">
+            <include name="maven-metadata.xml"/>             
+         </fileset>   
+      </copy>      
+      <replace file="${target.path}/maven-metadata.xml">
          <replacetoken><![CDATA[</versions>]]></replacetoken>
-         <replacevalue><![CDATA[<version>@version@</version>
-            </versions>]]></replacevalue>
+         <replacevalue><![CDATA[  <version>@version@</version>
+    </versions>]]></replacevalue>
       </replace> 
       <copy todir="${target.path}/maven">
-         <fileset dir="${root.path}">
+         <fileset dir="${target.path}">
             <include name="maven-metadata.xml"/>             
          </fileset>   
          <filterset>
             <filtersfile file="${root.path}/build.properties"/>
          </filterset>        
-      </copy>        
+      </copy> 
       <move file="${target.path}/maven/${version}/pom.xml" tofile="${target.path}/maven/${version}/simple-xml-${version}.pom"/>
       <checksum file="${target.path}/maven/${version}/simple-xml-${version}.jar" algorithm="SHA1" fileext=".sha1"/>
       <checksum file="${target.path}/maven/${version}/simple-xml-${version}.jar" algorithm="MD5" fileext=".md5"/>      
