@@ -27,9 +27,15 @@ public abstract class InputWindow extends Composite{
       return createLabelledText(parent, label, 20, null, null);
    }
    protected Text createLabelledText(Composite parent, String label, int limit, String tip, String value){
+      return createLabelledText(parent, label, limit, tip, value, false);
+   }
+   protected Text createLabelledText(Composite parent, String label, int limit, String tip, String value, boolean password){
       Label l = new Label(parent, SWT.LEFT);
       l.setText(label);
       Text text = new Text(parent, SWT.SINGLE | SWT.BORDER);
+      if(password) {
+         text.setEchoChar('*');
+      }
       if(limit > 0){
          text.setTextLimit(limit);
       }

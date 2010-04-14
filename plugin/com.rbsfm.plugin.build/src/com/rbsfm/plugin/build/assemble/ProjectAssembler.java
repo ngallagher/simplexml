@@ -19,17 +19,17 @@ public class ProjectAssembler implements ResponseListener{
       this.repository = Subversion.login(Scheme.HTTP, login, password);
       this.shell = shell;
    }
-   public void assemble(File file, String projectName, String installName, String tag, String environments, String mailAddress) throws Exception{
+   public void assemble(File file, String projectName, String installName, String tag, String environments, String mailAddress, String id) throws Exception{
       String[] environmentList = Environment.parse(environments);
       if(valid(environmentList)) {
          RequestBuilder builder = new ProjectAssemblyRequestBuilder(projectName, installName, tag, environmentList, mailAddress);
          Request request = new Request(builder, this, false);
          Status status = repository.status(file);
          if(status == Status.MODIFIED){
-            repository.commit(file, projectName);
+            repository.commit(file, String.format("%s %s", id, projectName));
          }
          if(!repository.queryTag(file, tag)) {
-            Location location = repository.tag(file, tag, tag, false);
+            Location location = repository.tag(file, tag, String.format("%s %s", id, tag), false);
             MessageDialog.openInformation(shell, "Tag created", location.prefix);
          } else {
             MessageDialog.openInformation(shell, "Tag", "Using existing tag "+ tag);
