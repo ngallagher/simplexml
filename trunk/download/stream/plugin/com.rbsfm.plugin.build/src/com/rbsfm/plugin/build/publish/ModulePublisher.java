@@ -19,7 +19,7 @@ public class ModulePublisher implements ResponseListener{
       this.repository = Subversion.login(Scheme.HTTP, login, password);
       this.shell = shell;
    }
-   public void publish(File file, String moduleName, String revision, String branch, String branchRevision, String mailAddress) throws Exception{
+   public void publish(File file, String moduleName, String revision, String branch, String branchRevision, String mailAddress, String id) throws Exception{
       RequestBuilder builder = new ModulePublicationRequestBuilder(moduleName, branch, revision, branchRevision, mailAddress);
       Request request = new Request(builder, this, false);
       String tag = String.format("%s-%s", moduleName, revision);
@@ -31,13 +31,13 @@ public class ModulePublisher implements ResponseListener{
       }
       Status status = repository.status(file);
       if(status == Status.MODIFIED){
-         repository.commit(file, tag);
+         repository.commit(file, String.format("%s %s", id, tag));
       }
       if(status == Status.STALE){
          MessageDialog.openError(shell, "Error", "Can not publish as ivy.xml is not up to date");
       }else{
          if(!repository.queryTag(file, tag)) {
-            Location location = repository.tag(file, tag, tag, false);
+            Location location = repository.tag(file, tag, String.format("%s %s", id, tag), false);
             MessageDialog.openInformation(shell, "Tag created", location.prefix);
          } else {
             MessageDialog.openInformation(shell, "Tag", "Using existing tag "+ tag);

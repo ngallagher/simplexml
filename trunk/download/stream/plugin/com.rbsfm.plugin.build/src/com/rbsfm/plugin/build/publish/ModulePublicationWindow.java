@@ -22,6 +22,7 @@ public class ModulePublicationWindow extends InputWindow{
    private Text branchField;
    private Text branchRevisionField;
    private Text mailField;
+   private Text idField;
    private File file;
    public ModulePublicationWindow(Composite parent,Module module,File file){
       super(parent);
@@ -48,12 +49,21 @@ public class ModulePublicationWindow extends InputWindow{
       subversionGroup.setLayout(subversionLayout);
       subversionGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
       loginField = createLabelledText(subversionGroup, "Login: ", 40, "Enter your user name", System.getProperty("user.name"));
-      passwordField = createLabelledText(subversionGroup, "Password: ", 40, "Enter your password", "password");
+      passwordField = createLabelledText(subversionGroup, "Password: ", 40, "Enter your password", null, true);
+   }
+   private void createJIRA(){
+      Group subversionGroup = new Group(this, SWT.NONE);
+      subversionGroup.setText("JIRA");
+      GridLayout subversionLayout = new GridLayout(2, false);
+      subversionGroup.setLayout(subversionLayout);
+      subversionGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+      idField = createLabelledText(subversionGroup, "ID: ", 40, "Enter a JIRA ID", null);
    }
    private void createGui(){
       setLayout(new GridLayout(1, true));
       createModuleDetails();
       createSubversion();
+      createJIRA();
       Composite buttons = new Composite(this, SWT.NONE);
       buttons.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
       FillLayout buttonLayout = new FillLayout();
@@ -73,7 +83,8 @@ public class ModulePublicationWindow extends InputWindow{
                String branch = branchField.getText();
                String branchRevision = branchRevisionField.getText();
                String mailAddress = mailField.getText();
-               publisher.publish(file, moduleName, revision, branch, branchRevision, mailAddress);
+               String id = idField.getText();
+               publisher.publish(file, moduleName, revision, branch, branchRevision, mailAddress, id);
             }catch(Exception cause){
                MessageDialog.openInformation(getShell(), "Error", MessageFormatter.format(cause));
                throw new RuntimeException(cause);
