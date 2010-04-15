@@ -94,6 +94,17 @@ public class Formatter {
      return buffer.toString("UTF-8");     
   }
   
+  /**
+   * Scripts to execute the XML formatter.
+   * 
+   * #!/bin/bash
+   * xml.bat $1 $2 $3    
+   * 
+   * echo off
+   * java -jar c:/start/bin/xml.jar %1 %2 %3 %4
+   * 
+   * @param list arguments to the formatter
+   */
   public static void main(String list[]) throws Exception {   
      List<String> values = new ArrayList<String>();
      
