@@ -355,6 +355,14 @@
    </target>
 
    <target name="package-maven" depends="-setup">
+      <copy todir="${root.path}" overwrite="true">
+         <fileset dir="${script.path}">
+            <include name="pom.xml"/>
+         </fileset>
+         <filterset>
+            <filtersfile file="${root.path}/build.properties"/>
+         </filterset>
+      </copy>
       <delete dir="${target.path}/maven"/>       
       <delete dir="${target.path}/maven/maven-metadata.xml"/>        
       <mkdir dir="${target.path}/maven"/>
@@ -368,7 +376,7 @@
             <include name="pom.xml"/>
          </fileset>        
       </copy>       
-      <!--get src="http://www.simpleframework.org/maven/org/simpleframework/simple-xml/maven-metadata.xml" dest="${root.path}/maven-metadata.xml"/-->
+      <get src="http://www.simpleframework.org/maven/org/simpleframework/simple-xml/maven-metadata.xml" dest="${root.path}/maven-metadata.xml"/>
       <copy todir="${target.path}" overwrite="true">
          <fileset dir="${root.path}">
             <include name="maven-metadata.xml"/>             
