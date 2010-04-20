@@ -44,6 +44,11 @@ class AnnotationHandler implements InvocationHandler {
    private static final String STRING = "toString";
    
    /**
+    * This is used to ensure that all annotations are optional.
+    */
+   private static final String REQUIRED = "required";
+   
+   /**
     * This is used to perform a comparison of the annotations.
     */
    private static final String EQUAL = "equals";
@@ -94,6 +99,9 @@ class AnnotationHandler implements InvocationHandler {
       }
       if(name.equals(CLASS)) {
          return type;
+      }
+      if(name.equals(REQUIRED)) {
+    	  return false;
       }
       return method.getDefaultValue();
    }
@@ -167,7 +175,7 @@ class AnnotationHandler implements InvocationHandler {
 
       for(int i = 0; i < list.length; i++) {
          String attribute = list[i].getName();
-         Object value = list[i].getDefaultValue();
+         Object value = value(list[i]);
          
          if(i > 0) {
             builder.append(',');
@@ -178,5 +186,24 @@ class AnnotationHandler implements InvocationHandler {
          builder.append(value);
       }
       builder.append(')');
+   }
+   
+   /**
+    * This is used to extract the default value used for the provided
+    * annotation attribute. This will return the default value for 
+    * all attributes except that it makes the requirement optional.
+    * Making the requirement optional provides better functionality.
+    * 
+    * @param method this is the annotation representing the attribute
+    * 
+    * @return this returns the default value for the attribute
+    */
+   private Object value(Method method) {
+	   String name = method.getName();
+              
+       if(name.equals(REQUIRED)) {
+          return  false;
+       }
+	   return method.getDefaultValue();
    }
 }
