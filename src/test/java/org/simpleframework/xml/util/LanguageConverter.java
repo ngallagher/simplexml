@@ -254,7 +254,7 @@ public class LanguageConverter extends Replace {
       public String convert(String source, SourceDetails details) throws Exception {
          List<String> lines = stripLines(source);
          StringWriter writer = new StringWriter();
-         main: for(String line : lines) {
+         for(String line : lines) {
             for(String token : TOKENS.keySet()) {
                String value = TOKENS.get(token);
                if(line.startsWith("^") && line.matches(token)) {
