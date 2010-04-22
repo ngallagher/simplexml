@@ -29,6 +29,7 @@ public class LanguageConverter extends Replace {
       USING.put("import org.simpleframework.xml.util.*", "using SimpleFramework.Xml.Util;");
       USING.put("import org.simpleframework.xml.stream.*","using SimpleFramework.Xml.Stream;");
       USING.put("import org.simpleframework.xml.*","using SimpleFramework.Xml;");
+      USING.put("import java.util.*","using System.Collections.Generic;");
    }
    
    static {
@@ -51,6 +52,8 @@ public class LanguageConverter extends Replace {
       CONVERTERS.add(ReplacePatterns.class);
       CONVERTERS.add(ReplaceConventions.class);
       CONVERTERS.add(StripCrap.class);
+      CONVERTERS.add(ReplaceLicense.class);
+      CONVERTERS.add(SubstituteAnnotations.class);
    }
 
    public static void main(String list[]) throws Exception {
@@ -73,6 +76,9 @@ public class LanguageConverter extends Replace {
    private static class SourceDetails {
       
       private Set<String> using = new TreeSet<String>();
+      public SourceDetails() {
+         this.using.add("using System;");
+      }
       public Set<String> getUsing() {
          return using;
       }
@@ -112,12 +118,12 @@ public class LanguageConverter extends Replace {
          for(String line : lines) {
             if(!importsDone) {
                if(line.matches("^package.*")) {
+                  writer.append("\n#region Using directives\n");
                   for(String using : details.getUsing()) {
-                     writer.append("\n");
                      writer.append(using);
                      writer.append("\n");
                   }
-                  writer.append("\n \n");
+                  writer.append("\n#endregion\n");
                   importsDone = true;
                }
             }
@@ -215,6 +221,8 @@ public class LanguageConverter extends Replace {
          TOKENS.add("^\\s*\\/\\/\\/\\s*$");
          TOKENS.add("^\\s*$");
          TOKENS.add("^\\s+.*@author.*$");
+         TOKENS.add("^\\s+.*@throws.*$");
+         TOKENS.add("^\\s+.*@exception.*$");
       }
       public String convert(String source, SourceDetails details) throws Exception {
          List<String> lines = stripLines(source);
@@ -235,6 +243,18 @@ public class LanguageConverter extends Replace {
    private static class ReplacePatterns implements ConversionPhase {
       private static final Map<String, String> TOKENS = new LinkedHashMap<String, String>();      
       static {
+         TOKENS.put("<code>", "<c>");
+         TOKENS.put("</code>", "</c>");
+         TOKENS.put("<pre>", "</code>");
+         TOKENS.put("</pre>", "</code>");
+         TOKENS.put("\\(List ", "(IList ");
+         TOKENS.put(" List ", " IList ");
+         TOKENS.put(",List ", ",IList ");
+         TOKENS.put("HashMap ", "Dictionary ");
+         TOKENS.put("\\(Map ", "(IDictionary ");
+         TOKENS.put(" Map ", " IDictionary ");
+         TOKENS.put(",Map ", ",IDictionary ");
+         TOKENS.put("ArrayList ", "List ");
          TOKENS.put("static final", "const");
          TOKENS.put("final", "readonly");
          TOKENS.put("final class", "sealed class");
@@ -250,6 +270,8 @@ public class LanguageConverter extends Replace {
          TOKENS.put("org.simpleframework.xml.util", "SimpleFramework.Xml.Util");
          TOKENS.put("org.simpleframework.xml.stream","SimpleFramework.Xml.Stream");
          TOKENS.put("org.simpleframework.xml","SimpleFramework.Xml");
+         TOKENS.put("@Retention\\(RetentionPolicy.RUNTIME\\)", "[AttributeUsage(AttributeTargets.Class | AttributeTargets.Field | AttributeTargets.Method)]");
+
       }
       public String convert(String source, SourceDetails details) throws Exception {
          List<String> lines = stripLines(source);
@@ -343,14 +365,14 @@ public class LanguageConverter extends Replace {
          Pattern normalComment = Pattern.compile("^(\\s*)\\*.*$");
          Pattern parameterComment = Pattern.compile("^(\\s*)\\*.*@.*$");
          boolean endSummary = false;
-         writer.append(line.replaceAll("\\/\\*\\*", "///<summary>"));
+         writer.append(line.replaceAll("\\/\\*\\*", "/// <summary>"));
          writer.append("\n");
          while(lines.hasNext()) {
             String nextLine = lines.next();
             nextLine = nextLine.substring(1);
             if(nextLine.matches("^\\s*\\*\\/")) {
                if(!endSummary) {
-                  writer.append(nextLine.replaceAll("\\*\\/", "///</summary>"));
+                  writer.append(nextLine.replaceAll("\\*\\/", "/// </summary>"));
                } else {
                   writer.append(nextLine.replaceAll("\\*\\/", "///"));
                }
@@ -361,7 +383,7 @@ public class LanguageConverter extends Replace {
                Matcher parameterMatch = parameterComment.matcher(nextLine);
                if(parameterMatch.matches()) {
                   writer.append(parameterMatch.group(1));
-                  writer.append("///</summary>");
+                  writer.append("/// </summary>");
                   writer.append("\n");
                   writer.append(parameterMatch.group(1));
                   writer.append(nextLine.replaceAll("^\\s*\\*", "///"));
@@ -386,6 +408,77 @@ public class LanguageConverter extends Replace {
                }
             }  
          }
+      }
+   }
+   
+   private static class ReplaceLicense implements ConversionPhase {
+      public String convert(String source, SourceDetails details) throws Exception {
+         List<String> lines = stripLines(source);
+         Iterator<String> iterator = lines.iterator();
+         StringWriter writer = new StringWriter();
+         boolean licenseDone = false;
+         while(iterator.hasNext()) {
+            String line = iterator.next();
+            if(!licenseDone && line.matches("\\s*\\/\\*")) {
+               writer.append("#region License\n");
+               license(iterator, writer, line);
+               writer.append("#endregion\n");
+               licenseDone = true;
+            } else {
+               writer.append(line);
+               writer.append("\n");
+            }
+         }
+         return writer.toString();
+      }
+      private void license(Iterator<String> lines, StringWriter writer, String line) throws Exception {
+         Pattern comment = Pattern.compile("^(\\s*)\\*.*$");
+         writer.append(line.replaceAll("\\/\\*", "//"));
+         writer.append("\n");
+         while(lines.hasNext()) {
+            String nextLine = lines.next();
+            nextLine = nextLine.substring(1);
+            if(nextLine.matches("^\\s*\\*\\/")) {
+               writer.append(nextLine.replaceAll("\\*\\/", "//"));
+               writer.append("\n");
+               return;
+            }
+            Matcher matcher = comment.matcher(nextLine);
+            if(matcher.matches()) {
+               if(nextLine.matches(".*\\.java.*")) {
+                  nextLine = nextLine.replaceAll("\\.java", ".cs");
+               }
+               writer.append(matcher.group(1));
+               writer.append(nextLine.replaceAll("^\\s*\\*", "//"));
+               writer.append("\n");
+            }else {
+               throw new IllegalStateException("Comment does not end well " + nextLine);
+            }
+              
+         }
+      }
+   }
+  
+   private static class SubstituteAnnotations implements ConversionPhase {
+      public String convert(String source, SourceDetails details) throws Exception {
+         Pattern pattern = Pattern.compile("^(.+) @interface (.+)\\{.*");
+         List<String> lines = stripLines(source);
+         StringWriter writer = new StringWriter();
+         for(String line : lines) {
+            Matcher matcher = pattern.matcher(line);
+            if(matcher.matches()) {
+               String start = matcher.group(1);
+               String type = matcher.group(2);
+               writer.append(start);
+               writer.append(" class ");
+               writer.append(type);
+               writer.append(": System.Attribute {\n");
+            } else {
+               writer.append(line);
+               writer.append("\n");
+            }
+         }
+         return writer.toString();
       }
    }
 
