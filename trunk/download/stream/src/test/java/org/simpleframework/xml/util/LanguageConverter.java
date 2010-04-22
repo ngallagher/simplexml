@@ -49,6 +49,8 @@ public class LanguageConverter extends Replace {
       CONVERTERS.add(ReplaceComments.class);
       CONVERTERS.add(ReplaceDocumentation.class);
       CONVERTERS.add(ReplacePatterns.class);
+      CONVERTERS.add(ReplaceConventions.class);
+      CONVERTERS.add(StripCrap.class);
    }
 
    public static void main(String list[]) throws Exception {
@@ -165,18 +167,82 @@ public class LanguageConverter extends Replace {
       }
    }
    
+   private static class ReplaceConventions implements ConversionPhase {
+      private static final List<String> MODIFIERS = new ArrayList<String>();
+      static {
+         MODIFIERS.add("public static");
+         MODIFIERS.add("private static");
+         MODIFIERS.add("protected static");
+         MODIFIERS.add("public");
+         MODIFIERS.add("private");
+         MODIFIERS.add("protected");;
+      }
+      public String convert(String source, SourceDetails details) throws Exception {
+         List<String> lines = stripLines(source);
+         StringWriter writer = new StringWriter();
+         main: for(String line : lines) {
+            for(String modifier : MODIFIERS) {
+               Pattern methodMatch = Pattern.compile("^(\\s*)"+modifier+"\\s+([a-zA-Z]+)\\s+([a-z])([a-zA-Z]+)\\((.+)");
+               Matcher matcher = methodMatch.matcher(line);
+               if(matcher.matches()) {
+                  String indent = matcher.group(1);
+                  String type = matcher.group(2);
+                  String start = matcher.group(3);
+                  String remainder = matcher.group(4);
+                  String signature = matcher.group(5);
+                  writer.append(indent);
+                  writer.append("public ");
+                  writer.append(type);
+                  writer.append(" ");
+                  writer.append(start.toUpperCase());
+                  writer.append(remainder);
+                  writer.append("(");
+                  writer.append(signature);
+                  writer.append("\n");
+                  continue main;
+               }
+            }
+            writer.append(line);
+            writer.append("\n");
+         }
+         return writer.toString();
+      }
+   }
+  
+   private static class StripCrap implements ConversionPhase {
+      private static final List<String> TOKENS = new ArrayList<String>();      
+      static {
+         TOKENS.add("^\\s*\\/\\/\\/\\s*$");
+         TOKENS.add("^\\s*$");
+         TOKENS.add("^\\s+.*@author.*$");
+      }
+      public String convert(String source, SourceDetails details) throws Exception {
+         List<String> lines = stripLines(source);
+         StringWriter writer = new StringWriter();
+         main: for(String line : lines) {
+            for(String token : TOKENS) {
+               if(token.startsWith("^") && line.matches(token)) {
+                  continue main;
+               }
+            }
+            writer.append(line);
+            writer.append("\n");
+         }
+         return writer.toString();
+      }
+   }
+   
    private static class ReplacePatterns implements ConversionPhase {
       private static final Map<String, String> TOKENS = new LinkedHashMap<String, String>();      
       static {
-         TOKENS.put("^\\s*\\/\\/\\/\\s*$", null);
-         TOKENS.put("^\\s*$", null);
-         TOKENS.put("@author", null);
+         TOKENS.put("static final", "const");
          TOKENS.put("final", "readonly");
          TOKENS.put("final class", "sealed class");
          TOKENS.put("boolean", "bool");
          TOKENS.put("implements", ":");
          TOKENS.put("extends", ":");
          TOKENS.put("\\)\\s*throws\\s.*\\{", ") {");
+         TOKENS.put("\\)\\s*throws\\s.*;", ");");
          TOKENS.put("org.simpleframework.xml.convert","SimpleFramework.Xml.Util");
          TOKENS.put("org.simpleframework.xml.filter", "SimpleFramework.Xml.Filter");
          TOKENS.put("org.simpleframework.xml.strategy", "SimpleFramework.Xml.Strategy");
@@ -192,19 +258,9 @@ public class LanguageConverter extends Replace {
             for(String token : TOKENS.keySet()) {
                String value = TOKENS.get(token);
                if(line.startsWith("^") && line.matches(token)) {
-                  if(value != null) {
-                     line = line.replaceAll(token, value);
-                     writer.append(line);
-                     writer.append("\n");
-                  }
-                  continue main;
+                  line = line.replaceAll(token, value);
                } else if(line.matches(".*" +token+".*")) {
-                  if(value != null) {
-                     line = line.replaceAll(token, value);
-                     writer.append(line);
-                     writer.append("\n");
-                  }
-                  continue main;
+                  line = line.replaceAll(token, value);
                }
             }
             writer.append(line);
