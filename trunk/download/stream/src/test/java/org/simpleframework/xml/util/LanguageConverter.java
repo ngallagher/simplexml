@@ -5,12 +5,12 @@ import java.io.StringWriter;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -72,7 +72,7 @@ public class LanguageConverter extends Replace {
    
    private static class SourceDetails {
       
-      private Set<String> using = new HashSet<String>();
+      private Set<String> using = new TreeSet<String>();
       public Set<String> getUsing() {
          return using;
       }
