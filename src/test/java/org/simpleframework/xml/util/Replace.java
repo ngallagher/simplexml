@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 
-public class Replace {
+public class Replace extends LineStripper {
    
    private static final String LGPL = 
       " \\* This library is free software.*02111-1307\\s+USA\\s+\\*\\/";

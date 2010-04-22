@@ -97,7 +97,7 @@ public class DefaultAnnotationTest extends TestCase {
       private @Attribute int id;
       private String name;
       private String address;
-      public Customer(@Element(name="name") String name) {
+      public Customer(@Element(name="name", required=false) String name) {
          this.name = name;
       }
    }
