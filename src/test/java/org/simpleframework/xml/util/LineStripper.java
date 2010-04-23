@@ -44,12 +44,24 @@ public class LineStripper {
    }
    
    private static String nextLine(char[] text, int startFrom) {
-      for(int i = startFrom; i < text.length; i++) {
+     /* for(int i = startFrom; i < text.length; i++) {
          if(text[i] == '\r' || text[i] == '\n') {
             while(i < text.length && (text[i] == '\r' || text[i] == '\n')) {
                i++;
             }
             return new String(text, startFrom, i - startFrom);
+         }
+      }
+      */
+      for(int i = startFrom; i < text.length; i++) {
+         if(text[i] == '\r') {
+            if(i < text.length && text[i] == '\n') {
+               i++;
+            }
+            return new String(text, startFrom, i - startFrom);
+         }
+         if(text[i] == '\n') {
+            return new String(text, startFrom, ++i - startFrom);
          }
       }
       return new String(text, startFrom, text.length - startFrom);
