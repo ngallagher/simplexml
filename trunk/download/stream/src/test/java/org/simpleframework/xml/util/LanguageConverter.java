@@ -16,7 +16,8 @@ import java.util.regex.Pattern;
 
 public class LanguageConverter extends Replace {
 
-   private static final List<Class<? extends ConversionPhase>> CONVERTERS = new ArrayList<Class<? extends ConversionPhase>>();
+   private static final List<Class<? extends ConversionPhase>> STAGE_ONE = new ArrayList<Class<? extends ConversionPhase>>();
+   private static final List<Class<? extends SubstitutionPhase>> STAGE_TWO = new ArrayList<Class<? extends SubstitutionPhase>>();
    private static final Map<String, String> NAMESPACE = new LinkedHashMap<String, String>();
    private static final Map<String, String> USING = new LinkedHashMap<String, String>();
    private static final String INDENT = "   ";
@@ -43,52 +44,292 @@ public class LanguageConverter extends Replace {
    }
    
    static {
-      CONVERTERS.add(PopulateUsing.class);
-      CONVERTERS.add(AddUsing.class);
-      CONVERTERS.add(StripImports.class);
-      CONVERTERS.add(CreateNamespace.class);
-      CONVERTERS.add(ReplaceComments.class);
-      CONVERTERS.add(ReplaceDocumentation.class);
-      CONVERTERS.add(ReplacePatterns.class);
-      CONVERTERS.add(ReplaceConventions.class);
-      CONVERTERS.add(StripCrap.class);
-      CONVERTERS.add(ReplaceLicense.class);
-      CONVERTERS.add(SubstituteAnnotations.class);
+      STAGE_ONE.add(CanonicalizeFile.class);
+      STAGE_ONE.add(DefineType.class);
+      STAGE_ONE.add(PopulateUsing.class);
+      STAGE_ONE.add(AddUsing.class);
+      STAGE_ONE.add(StripImports.class);
+      STAGE_ONE.add(CreateNamespace.class);
+      STAGE_ONE.add(ReplaceComments.class);
+      STAGE_ONE.add(ReplaceDocumentation.class);
+      STAGE_ONE.add(ReplacePatterns.class);
+      STAGE_ONE.add(ReplaceConventions.class);
+      STAGE_ONE.add(StripCrap.class);
+      STAGE_ONE.add(ReplaceLicense.class);
+      STAGE_ONE.add(SubstituteAnnotations.class);
+      STAGE_ONE.add(GetAnnotationAttributes.class);
+      STAGE_ONE.add(SetAnnotationAttributes.class);
+   }
+   
+   static {
+      STAGE_TWO.add(SubstituteMethods.class);
    }
 
    public static void main(String list[]) throws Exception {
       List<File> files = getFiles(new File(list[0]));
+      List<String> newFiles = new ArrayList<String>();
+      SourceProject project = new SourceProject();
       for(File file : files) {
-         SourceDetails details = new SourceDetails();
+         SourceDetails details = new SourceDetails(file);
          String text = getFile(file);
-         for(Class<? extends ConversionPhase> phaseType : CONVERTERS) {
+         details.setText(text);
+         for(Class<? extends ConversionPhase> phaseType : STAGE_ONE) {
             Constructor<? extends ConversionPhase> factory = phaseType.getDeclaredConstructor();
             if(!factory.isAccessible()) {
                factory.setAccessible(true);
             }
             ConversionPhase phase = factory.newInstance();
-            text = phase.convert(text, details);
+            details.setText(phase.convert(details.getText(), details));
          }
-         save(new File(file.getCanonicalPath().replaceAll("\\.java", ".cs")), text);
+         project.addSource(details);
+      }
+      for(SourceDetails details : project.getDetails()) {
+         for(Class<? extends SubstitutionPhase> phaseType : STAGE_TWO) {
+            Constructor<? extends SubstitutionPhase> factory = phaseType.getDeclaredConstructor();
+            if(!factory.isAccessible()) {
+               factory.setAccessible(true);
+            }
+            SubstitutionPhase phase = factory.newInstance();
+            details.setText(phase.convert(details.getText(), details, project));
+         }
+      }
+      for(SourceDetails details : project.getDetails()) {
+         File saveAs = new File(details.getSource().getCanonicalPath().replaceAll("\\.java", ".cs"));
+         save(saveAs, details.getText());
+         newFiles.add(saveAs.getCanonicalPath().replaceAll("^.*src", "src"));
+      }
+      for(String entry : newFiles) {
+         System.out.println(" <Compile Include=\""+entry+"\"/>");
       }
    }
    
-   private static class SourceDetails {
-      
+   private static enum SourceType {
+      ANNOTATION,
+      INTERFACE,
+      CLASS,
+      ENUM
+   }
+   
+   private static class SourceDetails {     
       private Set<String> using = new TreeSet<String>();
-      public SourceDetails() {
+      private Map<String, String> attributes = new LinkedHashMap<String, String>();
+      private List<String> imports = new ArrayList<String>();
+      private List<String> methods = new ArrayList<String>();
+      private String packageName;
+      private SourceType type;
+      private String name;
+      private File source;
+      private String text;
+      public SourceDetails(File source) {
          this.using.add("using System;");
+         this.source = source;
+      }
+      public String getText() {
+         return text;
+      }
+      public void setText(String text) {
+         this.text = text;
+      }
+      public File getSource() {
+         return source;
+      }
+      public String getName() {
+         return name;
+      }
+      public void setName(String name) {
+         this.name = name;
+      }
+      public String getPackage() {
+         return packageName;
+      }
+      public void setPackage(String packageName) {
+         this.packageName = packageName;
+      }
+      public String getFullyQualifiedName() {
+         return String.format("%s.%s", packageName, name);
+      }
+      public SourceType getType() {
+         return type;
+      }
+      public void setType(SourceType type) {
+         this.type = type;
       }
       public Set<String> getUsing() {
          return using;
+      }
+      public void addMethod(String method) {
+         methods.add(method);
+      }
+      public List<String> getMethods() {
+         return methods;
+      }
+      public void addImport(String importClass) {
+         imports.add(importClass);
+      }
+      public List<String> getImports() {
+         return imports;
+      }
+      public Map<String, String> getAttributes() {
+         return attributes;
+      }
+      public void addAttribute(String type, String attribute) {
+         attributes.put(attribute, type);
       }
       public void addUsing(String usingValue) {
          using.add(usingValue);
       }
    }
    
+   private static class SourceProject {
+      private Map<String, List<SourceDetails>> packages = new HashMap<String, List<SourceDetails>>();
+      private List<SourceDetails> all = new ArrayList<SourceDetails>();
+      public List<SourceDetails> getDetails() {
+         return all;
+      }
+      public void addSource(SourceDetails details) {
+         String packageName = details.getPackage();
+         List<SourceDetails> packageFiles = packages.get(packageName);
+         if(packageFiles == null) {
+            packageFiles = new ArrayList<SourceDetails>();
+            packages.put(packageName, packageFiles);
+         }
+         packageFiles.add(details);
+         all.add(details);
+      }
+   }
+   
+   private static interface SubstitutionPhase {     
+      public String convert(String source, SourceDetails details, SourceProject project) throws Exception;
+   }
+   
    private static interface ConversionPhase {     
       public String convert(String source, SourceDetails details) throws Exception;
+   }
+   
+   public static class SubstituteMethods implements SubstitutionPhase {
+      public String convert(String source, SourceDetails details, SourceProject project) throws Exception {
+         List<String> lines = stripLines(source);
+         StringWriter writer = new StringWriter();
+         for(String line : lines) {
+            
+         }
+         return writer.toString();
+      }
+   }
+   
+   public static class CanonicalizeFile implements ConversionPhase {
+      public String convert(String source, SourceDetails details) throws Exception {
+         return source.replaceAll("\r\n", "\n").replaceAll("\r", "\n");
+      }
+   }
+   
+   public static class GetAnnotationAttributes implements ConversionPhase {
+      public String convert(String source, SourceDetails details) throws Exception {
+         Pattern pattern = Pattern.compile("^(\\s+)public\\s+(.*)\\s+([a-zA-Z]+)\\(\\)\\s+default\\s+.+;.*$");
+         List<String> lines = stripLines(source);
+         StringWriter writer = new StringWriter();
+         for(String line : lines) {
+            Matcher matcher = pattern.matcher(line);
+            if(matcher.matches()) {
+               String indent = matcher.group(1);
+               String type = matcher.group(2);
+               String method = matcher.group(3);   
+               String attribute = method.toLowerCase();
+               details.addAttribute(type, attribute);
+               writer.append(indent);
+               writer.append("public ");
+               writer.append(type);
+               writer.append(" ");
+               writer.append(method);
+               writer.append(" {\n");
+               writer.append(indent);
+               writer.append("   get {\n");
+               writer.append(indent);
+               writer.append("      return ").append(attribute).append(";\n");
+               writer.append(indent);
+               writer.append("   }\n");
+               writer.append(indent);
+               writer.append("   set {\n");
+               writer.append(indent);
+               writer.append("      ").append(attribute).append(" = value;\n");
+               writer.append(indent);
+               writer.append("   }\n");
+               writer.append(indent);
+               writer.append("}\n");
+            } else {
+               writer.append(line);
+               writer.append("\n");
+            }
+         }
+         return writer.toString();
+      }
+   }
+   
+   public static class SetAnnotationAttributes implements ConversionPhase {
+      public String convert(String source, SourceDetails details) throws Exception {
+         if(details.getType() == SourceType.ANNOTATION) {
+            Pattern pattern = Pattern.compile("^(\\s+)public\\s+class\\s+[a-zA-Z]+.*$");
+            List<String> lines = stripLines(source);
+            StringWriter writer = new StringWriter();
+            Map<String, String> attributes = details.getAttributes();
+            for(String line : lines) {
+               Matcher matcher = pattern.matcher(line);
+               if(matcher.matches()) {
+                  String indent = matcher.group(1);
+                  writer.append(line);
+                  writer.append("\n");
+                  for(String attribute : attributes.keySet()){
+                     String type = attributes.get(attribute);
+                     writer.append(indent);
+                     writer.append("   private ");
+                     writer.append(type);
+                     writer.append(" ");
+                     writer.append(attribute);
+                     writer.append(";\n");                     
+                  }
+               } else {
+                  writer.append(line);
+                  writer.append("\n");
+               }
+            }
+            return writer.toString();
+         }
+         return source;
+      }
+   }  
+   
+   private static class DefineType implements ConversionPhase {   
+      private static final Map<Pattern, SourceType> PATTERNS = new HashMap<Pattern, SourceType>();
+      static {
+         PATTERNS.put(Pattern.compile("^public\\s+class\\s+([a-zA-Z]*).*"), SourceType.CLASS);
+         PATTERNS.put(Pattern.compile("^public\\s+final\\s+class\\s+([a-zA-Z]*).*"), SourceType.CLASS);
+         PATTERNS.put(Pattern.compile("^class\\s+([a-zA-Z]*).*"), SourceType.CLASS);
+         PATTERNS.put(Pattern.compile("^public\\s+abstract\\s+class\\s+([a-zA-Z]*).*"), SourceType.CLASS);
+         PATTERNS.put(Pattern.compile("^abstract\\s+class\\s+([a-zA-Z]*).*"), SourceType.CLASS);
+         PATTERNS.put(Pattern.compile("^final\\s+class\\s+([a-zA-Z]*).*"), SourceType.CLASS);
+         PATTERNS.put(Pattern.compile("^public\\s+@interface\\s+([a-zA-Z]*).*"), SourceType.ANNOTATION);
+         PATTERNS.put(Pattern.compile("^@interface\\s+([a-zA-Z]*).*"), SourceType.ANNOTATION);
+         PATTERNS.put(Pattern.compile("^public\\s+interface\\s+([a-zA-Z]*).*"), SourceType.INTERFACE);
+         PATTERNS.put(Pattern.compile("^interface\\s+([a-zA-Z]*).*"), SourceType.INTERFACE);
+         PATTERNS.put(Pattern.compile("^public\\s+enum\\s+([a-zA-Z]*).*"), SourceType.ENUM);
+         PATTERNS.put(Pattern.compile("^enum\\s+([a-zA-Z]*).*"), SourceType.ENUM);
+      }
+      public String convert(String source, SourceDetails details) throws Exception{
+         List<String> lines = stripLines(source);
+         for(String line : lines) {
+            for(Pattern pattern : PATTERNS.keySet()) {
+               Matcher matcher = pattern.matcher(line);
+               if(matcher.matches()) {
+                  SourceType type = PATTERNS.get(pattern);
+                  String name = matcher.group(1);
+                  details.setType(type);
+                  details.setName(name);
+                  return source;
+               }
+            }
+         }
+         throw new IllegalStateException("File can not be classified " + details.getSource());
+      }
    }
    
    private static class PopulateUsing implements ConversionPhase {
@@ -112,18 +353,22 @@ public class LanguageConverter extends Replace {
    
    private static class AddUsing implements ConversionPhase {
       public String convert(String source, SourceDetails details) throws Exception {
+         Pattern pattern = Pattern.compile("^package\\s+([a-zA-Z\\.]*)\\s*;.*");
          List<String> lines = stripLines(source);
          StringWriter writer = new StringWriter();
          boolean importsDone = false;       
          for(String line : lines) {
             if(!importsDone) {
-               if(line.matches("^package.*")) {
+               Matcher matcher = pattern.matcher(line);
+               if(matcher.matches()) {
+                  String packageName = matcher.group(1);
                   writer.append("\n#region Using directives\n");
                   for(String using : details.getUsing()) {
                      writer.append(using);
                      writer.append("\n");
                   }
                   writer.append("\n#endregion\n");
+                  details.setPackage(packageName);
                   importsDone = true;
                }
             }
@@ -136,12 +381,16 @@ public class LanguageConverter extends Replace {
    
    private static class StripImports implements ConversionPhase {
       public String convert(String source, SourceDetails details) throws Exception {
+         Pattern pattern = Pattern.compile("^import\\s+([a-zA-Z\\.]*)\\s*;.*$");
          List<String> lines = stripLines(source);
          StringWriter writer = new StringWriter();      
          for(String line : lines) {
-            if(!line.matches("^import.*")) {
+            Matcher matcher = pattern.matcher(line);
+            if(!matcher.matches()) {
+               String importClass = matcher.group(1);
                writer.append(line);
                writer.append("\n");
+               details.addImport(importClass);
             }
          }
          return writer.toString();
@@ -188,7 +437,7 @@ public class LanguageConverter extends Replace {
          StringWriter writer = new StringWriter();
          main: for(String line : lines) {
             for(String modifier : MODIFIERS) {
-               Pattern methodMatch = Pattern.compile("^(\\s*)"+modifier+"\\s+([a-zA-Z]+)\\s+([a-z])([a-zA-Z]+)\\((.+)");
+               Pattern methodMatch = Pattern.compile("^(\\s*)"+modifier+"\\s+([a-zA-Z\\[\\]\\<\\>]+)\\s+([a-z])([a-zA-Z]+)\\((.+)");
                Matcher matcher = methodMatch.matcher(line);
                if(matcher.matches()) {
                   String indent = matcher.group(1);
@@ -196,15 +445,16 @@ public class LanguageConverter extends Replace {
                   String start = matcher.group(3);
                   String remainder = matcher.group(4);
                   String signature = matcher.group(5);
+                  String method = start.toUpperCase() + remainder;
                   writer.append(indent);
                   writer.append("public ");
                   writer.append(type);
                   writer.append(" ");
-                  writer.append(start.toUpperCase());
-                  writer.append(remainder);
+                  writer.append(method);
                   writer.append("(");
                   writer.append(signature);
                   writer.append("\n");
+                  details.addMethod(method);
                   continue main;
                }
             }
@@ -257,6 +507,8 @@ public class LanguageConverter extends Replace {
          TOKENS.put("ArrayList ", "List ");
          TOKENS.put("static final", "const");
          TOKENS.put("final", "readonly");
+         TOKENS.put("readonlyly", "finally");
+         TOKENS.put("readonly class", "sealed class");
          TOKENS.put("final class", "sealed class");
          TOKENS.put("boolean", "bool");
          TOKENS.put("implements", ":");
