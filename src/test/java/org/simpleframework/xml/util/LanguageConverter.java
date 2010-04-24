@@ -20,7 +20,19 @@ public class LanguageConverter extends Replace {
    private static final List<Class<? extends SubstitutionPhase>> STAGE_TWO = new ArrayList<Class<? extends SubstitutionPhase>>();
    private static final Map<String, String> NAMESPACE = new LinkedHashMap<String, String>();
    private static final Map<String, String> USING = new LinkedHashMap<String, String>();
+   private static final Map<String, String> FILES = new LinkedHashMap<String, String>();
    private static final String INDENT = "   ";
+   
+   static {
+      FILES.put("C:\\Users\\niall\\Workspace\\xml\\src\\main\\java\\org\\simpleframework\\xml", "C:\\Users\\niall\\Workspace\\SimpleFramework\\SimpleFramework\\SimpleFramework\\src\\main\\Xml");
+      FILES.put("C:\\Users\\niall\\Workspace\\xml\\src\\main\\java\\org\\simpleframework\\xml\\core", "C:\\Users\\niall\\Workspace\\SimpleFramework\\SimpleFramework\\SimpleFramework\\src\\main\\Xml\\Core");
+      FILES.put("C:\\Users\\niall\\Workspace\\xml\\src\\main\\java\\org\\simpleframework\\xml\\filter", "C:\\Users\\niall\\Workspace\\SimpleFramework\\SimpleFramework\\SimpleFramework\\src\\main\\Xml\\Filter");
+      FILES.put("C:\\Users\\niall\\Workspace\\xml\\src\\main\\java\\org\\simpleframework\\xml\\strategy", "C:\\Users\\niall\\Workspace\\SimpleFramework\\SimpleFramework\\SimpleFramework\\src\\main\\Xml\\Strategy");
+      FILES.put("C:\\Users\\niall\\Workspace\\xml\\src\\main\\java\\org\\simpleframework\\xml\\stream", "C:\\Users\\niall\\Workspace\\SimpleFramework\\SimpleFramework\\SimpleFramework\\src\\main\\Xml\\Stream");
+      FILES.put("C:\\Users\\niall\\Workspace\\xml\\src\\main\\java\\org\\simpleframework\\xml\\convert", "C:\\Users\\niall\\Workspace\\SimpleFramework\\SimpleFramework\\SimpleFramework\\src\\main\\Xml\\Convert");
+      FILES.put("C:\\Users\\niall\\Workspace\\xml\\src\\main\\java\\org\\simpleframework\\xml\\transform", "C:\\Users\\niall\\Workspace\\SimpleFramework\\SimpleFramework\\SimpleFramework\\src\\main\\Xml\\Transform");
+      FILES.put("C:\\Users\\niall\\Workspace\\xml\\src\\main\\java\\org\\simpleframework\\xml\\util", "C:\\Users\\niall\\Workspace\\SimpleFramework\\SimpleFramework\\SimpleFramework\\src\\main\\Xml\\Util");
+   }
 
    static {
       USING.put("import org.simpleframework.xml.convert.*","using SimpleFramework.Xml.Util;");
@@ -68,22 +80,23 @@ public class LanguageConverter extends Replace {
    }
 
    public static void main(String list[]) throws Exception {
-      List<File> files = getFiles(new File(list[0]));
-      List<String> newFiles = new ArrayList<String>();
       SourceProject project = new SourceProject();
-      for(File file : files) {
-         SourceDetails details = new SourceDetails(file);
-         String text = getFile(file);
-         details.setText(text);
-         for(Class<? extends ConversionPhase> phaseType : STAGE_ONE) {
-            Constructor<? extends ConversionPhase> factory = phaseType.getDeclaredConstructor();
-            if(!factory.isAccessible()) {
-               factory.setAccessible(true);
+      for(String from : FILES.keySet()) {
+         List<File> files = getFiles(new File(from));
+         for(File file : files) {
+            SourceDetails details = new SourceDetails(file);
+            String text = getFile(file);
+            details.setText(text);
+            for(Class<? extends ConversionPhase> phaseType : STAGE_ONE) {
+               Constructor<? extends ConversionPhase> factory = phaseType.getDeclaredConstructor();
+               if(!factory.isAccessible()) {
+                  factory.setAccessible(true);
+               }
+               ConversionPhase phase = factory.newInstance();
+               details.setText(phase.convert(details.getText(), details));
             }
-            ConversionPhase phase = factory.newInstance();
-            details.setText(phase.convert(details.getText(), details));
+            project.addSource(details);
          }
-         project.addSource(details);
       }
       for(SourceDetails details : project.getDetails()) {
          for(Class<? extends SubstitutionPhase> phaseType : STAGE_TWO) {
@@ -95,6 +108,7 @@ public class LanguageConverter extends Replace {
             details.setText(phase.convert(details.getText(), details, project));
          }
       }
+      List<String> newFiles = new ArrayList<String>();
       for(SourceDetails details : project.getDetails()) {
          File saveAs = new File(details.getSource().getCanonicalPath().replaceAll("\\.java", ".cs"));
          save(saveAs, details.getText());
@@ -411,7 +425,7 @@ public class LanguageConverter extends Replace {
                String indent = property.get.indent;
                int indentLength = indent.length();
                for(int j = 0; j <= property.get.lineCount; j++) {
-                  line = lines.get(i + j);
+                  line = lines.get(i++);
                   writer.append(indent);
                   writer.append("//");
                   if(line.length() < indentLength) {
@@ -423,7 +437,7 @@ public class LanguageConverter extends Replace {
             } else {
                Matcher setter = set.matcher(line);
                if(setter.matches()) {
-                  String name = setter.group(3);
+                  String name = setter.group(2);
                   Property property = properties.get(name);
                   if(!property.isDone()) {
                      write(property.set.indent, property, writer);
@@ -431,7 +445,7 @@ public class LanguageConverter extends Replace {
                   String indent = property.set.indent;
                   int indentLength = indent.length();
                   for(int j = 0; j <= property.set.lineCount; j++) {
-                     line = lines.get(i + j);
+                     line = lines.get(i++);
                      writer.append(indent);
                      writer.append("//");
                      if(line.length() < indentLength) {
@@ -526,8 +540,8 @@ public class LanguageConverter extends Replace {
                Matcher setter = set.matcher(line);
                if(setter.matches()) {
                   String indent = setter.group(1);
-                  String name = setter.group(2);
-                  String type = setter.group(3);
+                  String name = setter.group(3);
+                  String type = setter.group(2);
                   StringBuilder writer = new StringBuilder();
                   int lineCount = 0;
                   int braces = 0;
