@@ -50,15 +50,17 @@ public class LanguageConverter extends Replace {
       STAGE_ONE.add(AddUsing.class);
       STAGE_ONE.add(StripImports.class);
       STAGE_ONE.add(CreateNamespace.class);
+      STAGE_ONE.add(GetFields.class);
       STAGE_ONE.add(ReplaceComments.class);
       STAGE_ONE.add(ReplaceDocumentation.class);
-      STAGE_ONE.add(ReplacePatterns.class);
-      STAGE_ONE.add(ReplaceConventions.class);
+      STAGE_ONE.add(ReplaceKeyWords.class);
+      STAGE_ONE.add(ReplaceMethodConventions.class);
       STAGE_ONE.add(StripCrap.class);
       STAGE_ONE.add(ReplaceLicense.class);
       STAGE_ONE.add(SubstituteAnnotations.class);
-      STAGE_ONE.add(GetAnnotationAttributes.class);
+      STAGE_ONE.add(ConvertAnnotationAttributes.class);
       STAGE_ONE.add(SetAnnotationAttributes.class);
+      STAGE_ONE.add(ConvertClassBeanMethods.class);
    }
    
    static {
@@ -103,6 +105,17 @@ public class LanguageConverter extends Replace {
       }
    }
    
+   private static String convertMethod(String originalMethod) {
+      if(originalMethod != null && !Character.isUpperCase(originalMethod.charAt(0))){
+         StringBuilder builder = new StringBuilder(originalMethod.length());
+         char first = originalMethod.charAt(0);
+         builder.append(Character.toUpperCase(first));
+         builder.append(originalMethod.substring(1));
+         return builder.toString();
+      }
+      return originalMethod;
+   }
+   
    private static enum SourceType {
       ANNOTATION,
       INTERFACE,
@@ -113,6 +126,7 @@ public class LanguageConverter extends Replace {
    private static class SourceDetails {     
       private Set<String> using = new TreeSet<String>();
       private Map<String, String> attributes = new LinkedHashMap<String, String>();
+      private Map<String, String> fields = new LinkedHashMap<String, String>();
       private List<String> imports = new ArrayList<String>();
       private List<String> methods = new ArrayList<String>();
       private String packageName;
@@ -178,16 +192,24 @@ public class LanguageConverter extends Replace {
       public void addUsing(String usingValue) {
          using.add(usingValue);
       }
+      public Map<String, String> getFields() {
+         return fields;
+      }
+      public void addField(String name, String type) {
+         fields.put(name, type);
+      }
    }
    
    private static class SourceProject {
       private Map<String, List<SourceDetails>> packages = new HashMap<String, List<SourceDetails>>();
+      private Map<String, SourceDetails> names = new HashMap<String, SourceDetails>();
       private List<SourceDetails> all = new ArrayList<SourceDetails>();
       public List<SourceDetails> getDetails() {
          return all;
       }
       public void addSource(SourceDetails details) {
          String packageName = details.getPackage();
+         String name = details.getName();
          List<SourceDetails> packageFiles = packages.get(packageName);
          if(packageFiles == null) {
             packageFiles = new ArrayList<SourceDetails>();
@@ -195,23 +217,57 @@ public class LanguageConverter extends Replace {
          }
          packageFiles.add(details);
          all.add(details);
+         names.put(name, details);
+      }
+      public SourceDetails getDetails(String name) {
+         return names.get(name);
       }
    }
    
-   private static interface SubstitutionPhase {     
-      public String convert(String source, SourceDetails details, SourceProject project) throws Exception;
+   private static abstract class SubstitutionPhase {  
+      public Map<String, String> calculateSubstututions(SourceDetails details, SourceProject project) throws Exception {
+         Map<String, String> substitutes = new HashMap<String, String>();
+         for(String field : details.getFields().keySet()) {
+            String type = details.getFields().get(field);
+            SourceDetails fieldDetails = project.getDetails(type);
+            if(fieldDetails != null) {
+               populateFrom(fieldDetails, field, substitutes);
+            }
+         }
+         populateFrom(details, null, substitutes);
+         return substitutes;      
+      }
+      private void populateFrom(SourceDetails details, String field, Map<String, String> substitutes) {
+         List<String> methods = details.getMethods();
+         for(String originalMethod : details.getMethods()) {
+            substitutes.put(originalMethod+"\\(", convertMethod(originalMethod)+"\\(");
+         }
+         if(field != null && !field.equals("")) {
+            for(String originalMethod : methods) {
+               String originalToken = String.format("%s.%s\\(", field, originalMethod); 
+               String token = String.format("%s.%s\\(", field, convertMethod(originalMethod)); // create the substitute                  
+               substitutes.put(originalToken, token);
+            }
+         }
+      }
+      public abstract String convert(String source, SourceDetails details, SourceProject project) throws Exception;
    }
    
    private static interface ConversionPhase {     
       public String convert(String source, SourceDetails details) throws Exception;
    }
    
-   public static class SubstituteMethods implements SubstitutionPhase {
+   public static class SubstituteMethods extends SubstitutionPhase {
       public String convert(String source, SourceDetails details, SourceProject project) throws Exception {
          List<String> lines = stripLines(source);
+         Map<String, String> substitutions = calculateSubstututions(details, project);
          StringWriter writer = new StringWriter();
          for(String line : lines) {
-            
+            for(String substitute : substitutions.keySet()) {
+               line = line.replaceAll(substitute, substitutions.get(substitute));
+            }
+            writer.append(line);
+            writer.append("\n");
          }
          return writer.toString();
       }
@@ -219,11 +275,43 @@ public class LanguageConverter extends Replace {
    
    public static class CanonicalizeFile implements ConversionPhase {
       public String convert(String source, SourceDetails details) throws Exception {
+         if(source.indexOf('\t') != -1) {
+            throw new Exception("File contains tab "+details.getSource());
+         }
          return source.replaceAll("\r\n", "\n").replaceAll("\r", "\n");
       }
    }
    
-   public static class GetAnnotationAttributes implements ConversionPhase {
+   public static class GetFields implements ConversionPhase {
+      private static final List<String> MODIFIERS = new ArrayList<String>();
+      static {
+         MODIFIERS.add("private final");
+         MODIFIERS.add("private");
+         MODIFIERS.add("protected");
+         MODIFIERS.add("protected final");
+      }
+      public String convert(String source, SourceDetails details) throws Exception {
+         List<Pattern> patterns = new ArrayList<Pattern>();
+         for(String modifier : MODIFIERS) {
+            patterns.add(Pattern.compile("^\\s+"+modifier+"\\s+([a-zA-Z]+)\\s+([a-zA-Z]+)\\s*;.*$"));
+         }
+         List<String> lines = stripLines(source);
+         for(String line : lines) {
+            for(Pattern pattern : patterns) {
+               Matcher matcher = pattern.matcher(line);
+               if(matcher.matches()) {
+                  String type = matcher.group(1);
+                  String name = matcher.group(2);
+                  details.addField(name, type);
+                  break;
+               }
+            }
+         }
+         return source;
+      }
+   }
+   
+   public static class ConvertAnnotationAttributes implements ConversionPhase {
       public String convert(String source, SourceDetails details) throws Exception {
          Pattern pattern = Pattern.compile("^(\\s+)public\\s+(.*)\\s+([a-zA-Z]+)\\(\\)\\s+default\\s+.+;.*$");
          List<String> lines = stripLines(source);
@@ -262,6 +350,212 @@ public class LanguageConverter extends Replace {
             }
          }
          return writer.toString();
+      }
+   }
+   
+   private static class ConvertClassBeanMethods implements ConversionPhase {
+      private static final Pattern get = Pattern.compile("^(\\s+)public\\s+(.*)\\s+Get([a-zA-Z]+)\\(\\)\\s+\\{.*$");
+      private static final Pattern set = Pattern.compile("^(\\s+)public\\s+.*\\s+Set([a-zA-Z]+)\\((.*)\\s+[a-zA-Z]\\)\\s+\\{.*$");
+      private static final Pattern rightBrace = Pattern.compile("^.*\\{.*$");
+      private static final Pattern leftBrace = Pattern.compile("^.*\\}.*$");
+      private class MethodDetail {
+         public final String type;
+         public final String name;
+         public final String indent;
+         public final String content;
+         public final int lineCount;
+         public MethodDetail(String name, String type, String indent, String content, int lineCount) {
+            this.name = name;
+            this.type = type;
+            this.indent = indent;
+            this.content = content;
+            this.lineCount = lineCount;
+         }
+      }
+      private class Property {
+         private MethodDetail get;
+         private MethodDetail set;
+         private boolean done;
+         public boolean isDone() {
+            return done;
+         }
+         public void done() {
+            done = true;
+         }
+         public boolean verify() throws Exception {
+            if(get != null && set != null) {
+               if(get.name.equals(set.name)) {
+                  throw new IllegalStateException("Property names do not match for '"+get.name+"' and '"+set.name+"'");
+               }
+               if(get.type.equals(set.type)) {
+                  throw new IllegalStateException("Property types do not match for '"+get.type+"' and '"+set.type+"'");
+               }
+            }
+            return true;
+         }
+      }
+      public String convert(String source, SourceDetails details) throws Exception {
+         List<String> lines = stripLines(source);
+         Map<String, Property> properties = new HashMap<String, Property>();
+         StringWriter writer = new StringWriter();
+         extract(source, details, properties);
+         for(int i = 0; i < lines.size(); i++) {
+            String line = lines.get(i);
+            Matcher getter = get.matcher(line);
+            if(getter.matches()) {
+               String name = getter.group(3);
+               Property property = properties.get(name);
+               if(!property.isDone()) {
+                  write(property.get.indent, property, writer);
+               }
+               String indent = property.get.indent;
+               int indentLength = indent.length();
+               for(int j = 0; j <= property.get.lineCount; j++) {
+                  line = lines.get(i + j);
+                  writer.append(indent);
+                  writer.append("//");
+                  if(line.length() < indentLength) {
+                     throw new IllegalStateException("Line '"+line+"' is out of place in " + writer.toString());
+                  }
+                  writer.append(line.substring(indentLength));
+                  writer.append("\n");
+               }
+            } else {
+               Matcher setter = set.matcher(line);
+               if(setter.matches()) {
+                  String name = setter.group(3);
+                  Property property = properties.get(name);
+                  if(!property.isDone()) {
+                     write(property.set.indent, property, writer);
+                  }
+                  String indent = property.set.indent;
+                  int indentLength = indent.length();
+                  for(int j = 0; j <= property.set.lineCount; j++) {
+                     line = lines.get(i + j);
+                     writer.append(indent);
+                     writer.append("//");
+                     if(line.length() < indentLength) {
+                        throw new IllegalStateException("Line '"+line+"' is out of place in " + writer.toString());
+                     }
+                     writer.append(line.substring(indentLength));
+                     writer.append("\n");
+                  }
+               } else {
+                  writer.append(line);
+                  writer.append("\n");
+               }
+            }
+         }
+         return writer.toString();
+      }
+      public void write(String indent, Property property, StringWriter writer) throws Exception {
+         if(property.verify()) {
+            if(property.get != null) {
+               writer.append(property.get.indent);
+               writer.append("public ");
+               writer.append(property.get.type);
+               writer.append(" ");
+               writer.append(property.get.name);
+               writer.append(" {\n");
+               writer.append(property.get.indent);
+               writer.append("   get {\n");
+               List<String> lines = stripLines(property.get.content);
+               for(String line : lines) {
+                  writer.append("   ");
+                  writer.append(line);
+                  writer.append("\n");
+               }
+            }
+            if(property.set != null) {
+               writer.append(property.set.indent);
+               writer.append("public ");
+               writer.append(property.set.type);
+               writer.append(" ");
+               writer.append(property.set.name);
+               writer.append(" {\n");
+               writer.append(property.set.indent);
+               writer.append("   set {\n");
+               List<String> lines = stripLines(property.set.content);
+               for(String line : lines) {
+                  writer.append("   ");
+                  writer.append(line);
+                  writer.append("\n");
+               }
+            }
+            writer.append(indent);
+            writer.append("}");
+            writer.append("\n");
+         }
+         property.done();
+      }
+      public void extract(String source, SourceDetails details, Map<String, Property> properties) throws Exception {
+         List<String> lines = stripLines(source);
+         for(int i = 0; i < lines.size(); i++) {
+            String line = lines.get(i);        
+            Matcher getter = get.matcher(line);
+            if(getter.matches()) {
+               String indent = getter.group(1);
+               String type = getter.group(2);
+               String name = getter.group(3);
+               StringBuilder writer = new StringBuilder();
+               int lineCount = 0;
+               int braces = 0;
+               i++;
+               for(; braces >= 0 && i < lines.size(); i++) {
+                  line = lines.get(i);
+                  Matcher right = rightBrace.matcher(line);
+                  if(right.matches()) {
+                     braces++;
+                  } else {
+                     Matcher left = leftBrace.matcher(line);
+                     if(left.matches()) {
+                        braces--;
+                     }
+                  }
+                  writer.append(line);
+                  writer.append("\n");
+                  lineCount++;
+               }
+               Property property = properties.get(name);
+               if(property == null) {
+                  property = new Property();
+                  properties.put(name, property);
+               }
+               property.get = new MethodDetail(name, type, indent, writer.toString(), lineCount);
+            } else {
+               Matcher setter = set.matcher(line);
+               if(setter.matches()) {
+                  String indent = setter.group(1);
+                  String name = setter.group(2);
+                  String type = setter.group(3);
+                  StringBuilder writer = new StringBuilder();
+                  int lineCount = 0;
+                  int braces = 0;
+                  i++;
+                  for(; braces >= 0 && i < lines.size(); i++) {
+                     line = lines.get(i);
+                     Matcher right = rightBrace.matcher(line);
+                     if(right.matches()) {
+                        braces++;
+                     } else {
+                        Matcher left = leftBrace.matcher(line);
+                        if(left.matches()) {
+                           braces--;
+                        }
+                     }
+                     writer.append(line);
+                     writer.append("\n");
+                     lineCount++;
+                  }
+                  Property property = properties.get(name);
+                  if(property == null) {
+                     property = new Property();
+                     properties.put(name, property);
+                  }
+                  property.set = new MethodDetail(name, type, indent, writer.toString(), lineCount);
+               }
+            }
+         } 
       }
    }
    
@@ -386,11 +680,12 @@ public class LanguageConverter extends Replace {
          StringWriter writer = new StringWriter();      
          for(String line : lines) {
             Matcher matcher = pattern.matcher(line);
-            if(!matcher.matches()) {
+            if(matcher.matches()) {
                String importClass = matcher.group(1);
+               details.addImport(importClass);
+            } else {
                writer.append(line);
                writer.append("\n");
-               details.addImport(importClass);
             }
          }
          return writer.toString();
@@ -422,7 +717,7 @@ public class LanguageConverter extends Replace {
       }
    }
    
-   private static class ReplaceConventions implements ConversionPhase {
+   private static class ReplaceMethodConventions implements ConversionPhase {
       private static final List<String> MODIFIERS = new ArrayList<String>();
       static {
          MODIFIERS.add("public static");
@@ -437,15 +732,14 @@ public class LanguageConverter extends Replace {
          StringWriter writer = new StringWriter();
          main: for(String line : lines) {
             for(String modifier : MODIFIERS) {
-               Pattern methodMatch = Pattern.compile("^(\\s*)"+modifier+"\\s+([a-zA-Z\\[\\]\\<\\>]+)\\s+([a-z])([a-zA-Z]+)\\((.+)");
+               Pattern methodMatch = Pattern.compile("^(\\s*)"+modifier+"\\s+([a-zA-Z\\[\\]\\<\\>]+)\\s+([a-zA-Z]+)\\((.+)");
                Matcher matcher = methodMatch.matcher(line);
                if(matcher.matches()) {
                   String indent = matcher.group(1);
                   String type = matcher.group(2);
-                  String start = matcher.group(3);
-                  String remainder = matcher.group(4);
-                  String signature = matcher.group(5);
-                  String method = start.toUpperCase() + remainder;
+                  String originalMethod = matcher.group(3);;
+                  String signature = matcher.group(4);
+                  String method = convertMethod(originalMethod);
                   writer.append(indent);
                   writer.append("public ");
                   writer.append(type);
@@ -454,7 +748,7 @@ public class LanguageConverter extends Replace {
                   writer.append("(");
                   writer.append(signature);
                   writer.append("\n");
-                  details.addMethod(method);
+                  details.addMethod(originalMethod);
                   continue main;
                }
             }
@@ -490,7 +784,7 @@ public class LanguageConverter extends Replace {
       }
    }
    
-   private static class ReplacePatterns implements ConversionPhase {
+   private static class ReplaceKeyWords implements ConversionPhase {
       private static final Map<String, String> TOKENS = new LinkedHashMap<String, String>();      
       static {
          TOKENS.put("<code>", "<c>");
