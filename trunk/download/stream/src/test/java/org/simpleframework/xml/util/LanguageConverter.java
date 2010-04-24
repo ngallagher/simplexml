@@ -24,7 +24,7 @@ public class LanguageConverter extends Replace {
    private static final String INDENT = "   ";
    
    static {
-      FILES.put("C:\\Users\\niall\\Workspace\\xml\\src\\main\\java\\org\\simpleframework\\xml", "C:\\Users\\niall\\Workspace\\SimpleFramework\\SimpleFramework\\SimpleFramework\\src\\main\\Xml");
+      //FILES.put("C:\\Users\\niall\\Workspace\\xml\\src\\main\\java\\org\\simpleframework\\xml", "C:\\Users\\niall\\Workspace\\SimpleFramework\\SimpleFramework\\SimpleFramework\\src\\main\\Xml");
       FILES.put("C:\\Users\\niall\\Workspace\\xml\\src\\main\\java\\org\\simpleframework\\xml\\core", "C:\\Users\\niall\\Workspace\\SimpleFramework\\SimpleFramework\\SimpleFramework\\src\\main\\Xml\\Core");
       FILES.put("C:\\Users\\niall\\Workspace\\xml\\src\\main\\java\\org\\simpleframework\\xml\\filter", "C:\\Users\\niall\\Workspace\\SimpleFramework\\SimpleFramework\\SimpleFramework\\src\\main\\Xml\\Filter");
       FILES.put("C:\\Users\\niall\\Workspace\\xml\\src\\main\\java\\org\\simpleframework\\xml\\strategy", "C:\\Users\\niall\\Workspace\\SimpleFramework\\SimpleFramework\\SimpleFramework\\src\\main\\Xml\\Strategy");
@@ -535,6 +535,9 @@ public class LanguageConverter extends Replace {
                   property = new Property();
                   properties.put(name, property);
                }
+               if(property.get != null) {
+                  throw new IllegalStateException("The property '"+name+"' is defined twice in "+details.getFullyQualifiedName());
+               }
                property.get = new MethodDetail(name, type, indent, writer.toString(), lineCount);
             } else {
                Matcher setter = set.matcher(line);
@@ -565,6 +568,9 @@ public class LanguageConverter extends Replace {
                   if(property == null) {
                      property = new Property();
                      properties.put(name, property);
+                  }
+                  if(property.get != null) {
+                     throw new IllegalStateException("The property '"+name+"' is defined twice in "+details.getFullyQualifiedName());
                   }
                   property.set = new MethodDetail(name, type, indent, writer.toString(), lineCount);
                }
