@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.StringWriter;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -83,8 +84,10 @@ public class LanguageConverter extends Replace {
       SourceProject project = new SourceProject();
       for(String from : FILES.keySet()) {
          List<File> files = getFiles(new File(from));
+         String to = FILES.get(from);
+        // files = Collections.singletonList(new File("C:\\Users\\niall\\Workspace\\xml\\src\\main\\java\\org\\simpleframework\\xml\\core\\ParameterContact.java"));
          for(File file : files) {
-            SourceDetails details = new SourceDetails(file);
+            SourceDetails details = new SourceDetails(file, new File(to, file.getName().replaceAll("\\.java", ".cs")));
             String text = getFile(file);
             details.setText(text);
             for(Class<? extends ConversionPhase> phaseType : STAGE_ONE) {
@@ -110,7 +113,7 @@ public class LanguageConverter extends Replace {
       }
       List<String> newFiles = new ArrayList<String>();
       for(SourceDetails details : project.getDetails()) {
-         File saveAs = new File(details.getSource().getCanonicalPath().replaceAll("\\.java", ".cs"));
+         File saveAs = details.getDestination();
          save(saveAs, details.getText());
          newFiles.add(saveAs.getCanonicalPath().replaceAll("^.*src", "src"));
       }
@@ -119,13 +122,23 @@ public class LanguageConverter extends Replace {
       }
    }
    
-   private static String convertMethod(String originalMethod) {
-      if(originalMethod != null && !Character.isUpperCase(originalMethod.charAt(0))){
-         StringBuilder builder = new StringBuilder(originalMethod.length());
-         char first = originalMethod.charAt(0);
-         builder.append(Character.toUpperCase(first));
-         builder.append(originalMethod.substring(1));
-         return builder.toString();
+   private static String convertMethod(String originalMethod, MethodType type) {
+      if(type == null || type == MethodType.NORMAL) {
+         if(originalMethod != null && !Character.isUpperCase(originalMethod.charAt(0))){
+            StringBuilder builder = new StringBuilder(originalMethod.length());
+            char first = originalMethod.charAt(0);
+            builder.append(Character.toUpperCase(first));
+            builder.append(originalMethod.substring(1));
+            return builder.toString();
+         }
+      } else if(type == MethodType.GET) {
+         if(originalMethod != null){
+            return originalMethod.substring(3);
+         }
+      } else if(type == MethodType.SET) {
+         if(originalMethod != null){
+            return originalMethod.substring(3);
+         }
       }
       return originalMethod;
    }
@@ -142,14 +155,16 @@ public class LanguageConverter extends Replace {
       private Map<String, String> attributes = new LinkedHashMap<String, String>();
       private Map<String, String> fields = new LinkedHashMap<String, String>();
       private List<String> imports = new ArrayList<String>();
-      private List<String> methods = new ArrayList<String>();
+      private List<MethodSignature> methods = new ArrayList<MethodSignature>();
       private String packageName;
       private SourceType type;
       private String name;
+      private File destination;
       private File source;
       private String text;
-      public SourceDetails(File source) {
+      public SourceDetails(File source, File destination) {
          this.using.add("using System;");
+         this.destination = destination;
          this.source = source;
       }
       public String getText() {
@@ -157,6 +172,9 @@ public class LanguageConverter extends Replace {
       }
       public void setText(String text) {
          this.text = text;
+      }
+      public File getDestination() {
+         return destination;
       }
       public File getSource() {
          return source;
@@ -185,10 +203,10 @@ public class LanguageConverter extends Replace {
       public Set<String> getUsing() {
          return using;
       }
-      public void addMethod(String method) {
+      public void addMethod(MethodSignature method) {
          methods.add(method);
       }
-      public List<String> getMethods() {
+      public List<MethodSignature> getMethods() {
          return methods;
       }
       public void addImport(String importClass) {
@@ -211,6 +229,26 @@ public class LanguageConverter extends Replace {
       }
       public void addField(String name, String type) {
          fields.put(name, type);
+      }
+   }
+   
+   private static enum MethodType {
+      GET,
+      SET,
+      NORMAL
+   }
+   
+   private static class MethodSignature {
+      private final String name;
+      private final String value;
+      private final MethodType type;
+      public MethodSignature(String name, MethodType type, String value) {
+         this.name = name;
+         this.type = type;
+         this.value = value;
+      }
+      public String toString() {
+         return String.format("[%s][%s][%s]", name, type, value);
       }
    }
    
@@ -252,15 +290,29 @@ public class LanguageConverter extends Replace {
          return substitutes;      
       }
       private void populateFrom(SourceDetails details, String field, Map<String, String> substitutes) {
-         List<String> methods = details.getMethods();
-         for(String originalMethod : details.getMethods()) {
-            substitutes.put(originalMethod+"\\(", convertMethod(originalMethod)+"\\(");
+         List<MethodSignature> methods = details.getMethods();
+         for(MethodSignature originalMethod : details.getMethods()) {
+            if(originalMethod.type == MethodType.GET) {
+               substitutes.put(originalMethod.name+"\\(\\)", convertMethod(originalMethod.name, originalMethod.type));
+            } else if(originalMethod.type == MethodType.SET) {
+               substitutes.put(originalMethod.name+"\\([a-zA-Z\\s]+\\)", convertMethod(originalMethod.name, originalMethod.type) + " = "+originalMethod.value);
+            } else {
+               substitutes.put(originalMethod.name+"\\(", convertMethod(originalMethod.name, MethodType.NORMAL)+"\\(");
+            }
          }
          if(field != null && !field.equals("")) {
-            for(String originalMethod : methods) {
-               String originalToken = String.format("%s.%s\\(", field, originalMethod); 
-               String token = String.format("%s.%s\\(", field, convertMethod(originalMethod)); // create the substitute                  
-               substitutes.put(originalToken, token);
+            for(MethodSignature originalMethod : methods) {
+               String originalToken = String.format("%s.%s", field, originalMethod.name); 
+               if(originalMethod.type == MethodType.GET) {
+                  String token = String.format("%s.%s", field, convertMethod(originalMethod.name, originalMethod.type));   
+                  substitutes.put(originalToken+"\\(\\)", token);
+               } else if(originalMethod.type == MethodType.SET) {
+                  String token = String.format("%s.%s = %s", field, convertMethod(originalMethod.name, originalMethod.type), originalMethod.value);
+                  substitutes.put(originalToken+"\\([a-zA-Z\\s]+\\)", token);
+               } else {
+                  String token = String.format("%s.%s\\(", field, convertMethod(originalMethod.name, MethodType.NORMAL));
+                  substitutes.put(originalToken+"\\(", token);
+               }
             }
          }
       }
@@ -368,83 +420,78 @@ public class LanguageConverter extends Replace {
    }
    
    private static class ConvertClassBeanMethods implements ConversionPhase {
-      private static final Pattern get = Pattern.compile("^(\\s+)public\\s+(.*)\\s+Get([a-zA-Z]+)\\(\\)\\s+\\{.*$");
-      private static final Pattern set = Pattern.compile("^(\\s+)public\\s+.*\\s+Set([a-zA-Z]+)\\((.*)\\s+[a-zA-Z]\\)\\s+\\{.*$");
-      private static final Pattern rightBrace = Pattern.compile("^.*\\{.*$");
-      private static final Pattern leftBrace = Pattern.compile("^.*\\}.*$");
-      private class MethodDetail {
-         public final String type;
-         public final String name;
-         public final String indent;
-         public final String content;
-         public final int lineCount;
-         public MethodDetail(String name, String type, String indent, String content, int lineCount) {
-            this.name = name;
-            this.type = type;
-            this.indent = indent;
-            this.content = content;
-            this.lineCount = lineCount;
-         }
+      private static final Pattern RIGHT_BRACE = Pattern.compile("^.*\\{.*$");
+      private static final Pattern LEFT_BRACE = Pattern.compile("^.*\\}.*$");
+      private static final List<String> TYPE_MODIFIERS = new ArrayList<String>();
+      private static final List<String> METHOD_MODIFIERS = new ArrayList<String>();
+      static {
+         TYPE_MODIFIERS.add("class");
+         TYPE_MODIFIERS.add("public class");
+         TYPE_MODIFIERS.add("abstract class");
+         TYPE_MODIFIERS.add("sealed class");
+         TYPE_MODIFIERS.add("private sealed class");
+         TYPE_MODIFIERS.add("private class");
+         TYPE_MODIFIERS.add("private static sealed class");
+         TYPE_MODIFIERS.add("private static class");
+         TYPE_MODIFIERS.add("public sealed class");
+         TYPE_MODIFIERS.add("public static sealed class");
+         TYPE_MODIFIERS.add("public static class");
+         TYPE_MODIFIERS.add("protected sealed class");
+         TYPE_MODIFIERS.add("protected class");
+         TYPE_MODIFIERS.add("protected static sealed class");
+         TYPE_MODIFIERS.add("protected static class");
+         TYPE_MODIFIERS.add("static sealed class");
       }
-      private class Property {
-         private MethodDetail get;
-         private MethodDetail set;
-         private boolean done;
-         public boolean isDone() {
-            return done;
-         }
-         public void done() {
-            done = true;
-         }
-         public boolean verify() throws Exception {
-            if(get != null && set != null) {
-               if(get.name.equals(set.name)) {
-                  throw new IllegalStateException("Property names do not match for '"+get.name+"' and '"+set.name+"'");
+      static {
+         METHOD_MODIFIERS.add("public abstract");
+         METHOD_MODIFIERS.add("public");
+         METHOD_MODIFIERS.add("protected abstract");
+         METHOD_MODIFIERS.add("protected");
+         METHOD_MODIFIERS.add("private");
+      }
+      private Matcher match(String line, MethodType type) {
+         for(String modifier : METHOD_MODIFIERS) {
+            if(type == MethodType.GET) {
+               Pattern pattern = Pattern.compile("^(\\s+)"+modifier+"\\s+(.*)\\s+Get([a-zA-Z]+)\\(\\)\\s*.*$");
+               Matcher matcher = pattern.matcher(line);
+               if(matcher.matches()) {
+                  return matcher;
                }
-               if(get.type.equals(set.type)) {
-                  throw new IllegalStateException("Property types do not match for '"+get.type+"' and '"+set.type+"'");
+            } else if(type == MethodType.SET) {
+               Pattern pattern = Pattern.compile("^(\\s+)"+modifier+"\\s+void\\s+Set([a-zA-Z]+)\\((.*)\\s+([a-zA-Z]+)\\)\\s*.*$");
+               Matcher matcher = pattern.matcher(line);
+               if(matcher.matches()) {
+                  return matcher;
                }
             }
-            return true;
          }
+         return null;
       }
+      
       public String convert(String source, SourceDetails details) throws Exception {
-         List<String> lines = stripLines(source);
-         Map<String, Property> properties = new HashMap<String, Property>();
-         StringWriter writer = new StringWriter();
-         extract(source, details, properties);
-         for(int i = 0; i < lines.size(); i++) {
-            String line = lines.get(i);
-            Matcher getter = get.matcher(line);
-            if(getter.matches()) {
-               String name = getter.group(3);
-               Property property = properties.get(name);
-               if(!property.isDone()) {
-                  write(property.get.indent, property, writer);
-               }
-               String indent = property.get.indent;
-               int indentLength = indent.length();
-               for(int j = 0; j <= property.get.lineCount; j++) {
-                  line = lines.get(i++);
-                  writer.append(indent);
-                  writer.append("//");
-                  if(line.length() < indentLength) {
-                     throw new IllegalStateException("Line '"+line+"' is out of place in " + writer.toString());
+         if(details.getType() == SourceType.CLASS || details.getType() == SourceType.INTERFACE) {
+            List<String> lines = stripLines(source);
+            PropertyMap properties = new PropertyMap(details);
+            StringWriter writer = new StringWriter();
+            String qualifier = "";
+            extract(source, details, properties);
+            for(int i = 0; i < lines.size(); i++) {
+               String line = lines.get(i);
+               qualifier += qualifier(line);
+               Matcher getter = match(line, MethodType.GET);
+               if(getter != null) {
+                  String name = getter.group(3);
+                  String fullName = qualifier+"."+name;
+                  Property property = properties.getProperty(fullName);
+                  if(!property.isGettable()) {
+                     throw new IllegalStateException("The line '"+line+"' was not extracted from "+details.getFullyQualifiedName());
                   }
-                  writer.append(line.substring(indentLength));
-                  writer.append("\n");
-               }
-            } else {
-               Matcher setter = set.matcher(line);
-               if(setter.matches()) {
-                  String name = setter.group(2);
-                  Property property = properties.get(name);
                   if(!property.isDone()) {
-                     write(property.set.indent, property, writer);
+                     write(details, property.get().indent, property, writer);
                   }
-                  String indent = property.set.indent;
+                  String indent = property.get().indent;
                   int indentLength = indent.length();
-                  for(int j = 0; j <= property.set.lineCount; j++) {
+                  for(int j = 0; j <= property.get().lineCount; j++) {
                      line = lines.get(i++);
                      writer.append(indent);
                      writer.append("//");
@@ -455,45 +502,90 @@ public class LanguageConverter extends Replace {
                      writer.append("\n");
                   }
                } else {
-                  writer.append(line);
-                  writer.append("\n");
+                  Matcher setter = match(line, MethodType.SET);
+                  if(setter != null) {
+                     String name = setter.group(2);
+                     String fullName = qualifier+"."+name;
+                     Property property = properties.getProperty(fullName);
+                     if(!property.isSettable()) {
+                        throw new IllegalStateException("The line '"+line+"' was not extracted from "+details.getFullyQualifiedName());
+                     }
+                     if(!property.isDone()) {
+                        write(details, property.set().indent, property, writer);
+                     }
+                     if(property.set() == null) {
+                        throw new IllegalStateException("Can not find setter '"+fullName+"' from line '"+line+"' from "+writer.toString());
+                     }
+                     String indent = property.set().indent;
+                     int indentLength = indent.length();
+                     for(int j = 0; j <= property.set().lineCount; j++) {
+                        line = lines.get(i++);
+                        writer.append(indent);
+                        writer.append("//");
+                        if(line.length() < indentLength) {
+                           throw new IllegalStateException("Line '"+line+"' is out of place in " + writer.toString());
+                        }
+                        writer.append(line.substring(indentLength));
+                        writer.append("\n");
+                     }
+                  } else {
+                     writer.append(line);
+                     writer.append("\n");
+                  }
                }
             }
+            return writer.toString();
          }
-         return writer.toString();
+         return source;
       }
-      public void write(String indent, Property property, StringWriter writer) throws Exception {
+      private void write(SourceDetails details, String indent, Property property, StringWriter writer) throws Exception {
          if(property.verify()) {
             if(property.get != null) {
                writer.append(property.get.indent);
                writer.append("public ");
+               if(property.get.isAbstract && details.getType() == SourceType.CLASS) {
+                  writer.append("abstract ");
+               }
                writer.append(property.get.type);
                writer.append(" ");
                writer.append(property.get.name);
                writer.append(" {\n");
                writer.append(property.get.indent);
-               writer.append("   get {\n");
-               List<String> lines = stripLines(property.get.content);
-               for(String line : lines) {
-                  writer.append("   ");
-                  writer.append(line);
-                  writer.append("\n");
+               if(property.get.isAbstract) {
+                  writer.append("   get;\n");
+               } else {
+                  writer.append("   get {\n");
+                  List<String> lines = stripLines(property.get.content);
+                  for(String line : lines) {
+                     writer.append("   ");
+                     writer.append(line);
+                     writer.append("\n");
+                  }
                }
             }
             if(property.set != null) {
+               if(property.get == null) {
+                  writer.append(property.set.indent);
+                  writer.append("public ");
+                  if(property.set.isAbstract && details.getType() == SourceType.CLASS) {
+                     writer.append("abstract ");
+                  }
+                  writer.append(property.set.type);
+                  writer.append(" ");
+                  writer.append(property.set.name);
+                  writer.append(" {\n");
+               }
                writer.append(property.set.indent);
-               writer.append("public ");
-               writer.append(property.set.type);
-               writer.append(" ");
-               writer.append(property.set.name);
-               writer.append(" {\n");
-               writer.append(property.set.indent);
-               writer.append("   set {\n");
-               List<String> lines = stripLines(property.set.content);
-               for(String line : lines) {
-                  writer.append("   ");
-                  writer.append(line);
-                  writer.append("\n");
+               if(property.set.isAbstract) {
+                  writer.append("   set;\n");
+               } else {
+                  writer.append("   set {\n");
+                  List<String> lines = stripLines(property.set.content);
+                  for(String line : lines) {
+                     writer.append("   ");
+                     writer.append(line);
+                     writer.append("\n");
+                  }
                }
             }
             writer.append(indent);
@@ -502,80 +594,210 @@ public class LanguageConverter extends Replace {
          }
          property.done();
       }
-      public void extract(String source, SourceDetails details, Map<String, Property> properties) throws Exception {
+      private void extract(String source, SourceDetails details, PropertyMap properties) throws Exception {
          List<String> lines = stripLines(source);
+         String qualifier = "";
          for(int i = 0; i < lines.size(); i++) {
-            String line = lines.get(i);        
-            Matcher getter = get.matcher(line);
-            if(getter.matches()) {
+            String line = lines.get(i);
+            qualifier += qualifier(line);
+            Matcher getter = match(line, MethodType.GET);
+            if(getter != null) {
                String indent = getter.group(1);
                String type = getter.group(2);
                String name = getter.group(3);
                StringBuilder writer = new StringBuilder();
+               boolean isAbstract = false;
                int lineCount = 0;
                int braces = 0;
                i++;
-               for(; braces >= 0 && i < lines.size(); i++) {
-                  line = lines.get(i);
-                  Matcher right = rightBrace.matcher(line);
-                  if(right.matches()) {
-                     braces++;
-                  } else {
-                     Matcher left = leftBrace.matcher(line);
-                     if(left.matches()) {
-                        braces--;
-                     }
-                  }
-                  writer.append(line);
-                  writer.append("\n");
-                  lineCount++;
-               }
-               Property property = properties.get(name);
-               if(property == null) {
-                  property = new Property();
-                  properties.put(name, property);
-               }
-               if(property.get != null) {
-                  throw new IllegalStateException("The property '"+name+"' is defined twice in "+details.getFullyQualifiedName());
-               }
-               property.get = new MethodDetail(name, type, indent, writer.toString(), lineCount);
-            } else {
-               Matcher setter = set.matcher(line);
-               if(setter.matches()) {
-                  String indent = setter.group(1);
-                  String name = setter.group(3);
-                  String type = setter.group(2);
-                  StringBuilder writer = new StringBuilder();
-                  int lineCount = 0;
-                  int braces = 0;
-                  i++;
+               if(!line.matches(".*;\\s*$") && !line.matches(".*abstract.*")) { // abstract ends in ;
                   for(; braces >= 0 && i < lines.size(); i++) {
                      line = lines.get(i);
-                     Matcher right = rightBrace.matcher(line);
+                     Matcher right = RIGHT_BRACE.matcher(line);
                      if(right.matches()) {
                         braces++;
-                     } else {
-                        Matcher left = leftBrace.matcher(line);
-                        if(left.matches()) {
-                           braces--;
-                        }
+                     } 
+                     Matcher left = LEFT_BRACE.matcher(line);
+                     if(left.matches()) {
+                        braces--;
                      }
                      writer.append(line);
                      writer.append("\n");
                      lineCount++;
                   }
-                  Property property = properties.get(name);
-                  if(property == null) {
-                     property = new Property();
-                     properties.put(name, property);
+               } else {
+                  isAbstract = true;
+               }
+               String fullName = qualifier+"."+name;
+               if(properties.getProperty(fullName) != null && properties.getProperty(fullName).isGettable()) {
+                  throw new IllegalStateException("The property '"+fullName+"' is defined twice in "+details.getFullyQualifiedName());
+               }
+               properties.addGetProperty(fullName, new MethodDetail(name, type, indent, writer.toString(), lineCount, isAbstract));
+            } else {
+               Matcher setter = match(line, MethodType.SET);
+               if(setter != null) {
+                  String indent = setter.group(1);
+                  String name = setter.group(2);
+                  String type = setter.group(3);
+                  String value = setter.group(4);
+                  StringBuilder writer = new StringBuilder();
+                  boolean isAbstract = false;
+                  int lineCount = 0;
+                  int braces = 0;
+                  i++;
+                  if(!line.matches(".*;\\s*$") && !line.matches(".*abstract.*")) { // abstract ends in ;
+                     for(; braces >= 0 && i < lines.size(); i++) {
+                        line = lines.get(i);
+                        Matcher right = RIGHT_BRACE.matcher(line);
+                        if(right.matches()) {
+                           braces++;
+                        }
+                        Matcher left = LEFT_BRACE.matcher(line);
+                        if(left.matches()) {
+                           braces--;
+                        }
+                        writer.append(line);
+                        writer.append("\n");
+                        lineCount++;
+                     }
+                  } else {
+                     isAbstract = true;
                   }
-                  if(property.get != null) {
-                     throw new IllegalStateException("The property '"+name+"' is defined twice in "+details.getFullyQualifiedName());
+                  String fullName = qualifier+"."+name;
+                  if(properties.getProperty(fullName) != null && properties.getProperty(fullName).isSettable()) {
+                     throw new IllegalStateException("The property '"+fullName+"' is defined twice in "+details.getFullyQualifiedName());
                   }
-                  property.set = new MethodDetail(name, type, indent, writer.toString(), lineCount);
+                  String content = writer.toString();
+                  content = content.replaceAll(" value\\)", " _value)");
+                  content = content.replaceAll(" value;", " _value;");
+                  content = content.replaceAll(" value=", " _value=\\");
+                  content = content.replaceAll(" value\\.", " _value.");                 
+                  content = content.replaceAll("\\(value\\)", "(_value)");
+                  content = content.replaceAll("\\(value\\.", "(_value.");
+                  content = content.replaceAll("=value;", "=_value;");
+                  content = content.replaceAll("=value\\.", "=_value.");
+                  content = content.replaceAll(" "+value+"\\)", " value)");
+                  content = content.replaceAll(" "+value+";", " value;");
+                  content = content.replaceAll(" "+value+"=", " value=\\");
+                  content = content.replaceAll(" "+value+"\\.", " value.");                 
+                  content = content.replaceAll("\\("+value+"\\)", "(value)");
+                  content = content.replaceAll("\\("+value+"\\.", "(value.");
+                  content = content.replaceAll("="+value+";", "=value;");
+                  content = content.replaceAll("="+value+"\\.", "=value.");
+                  properties.addSetProperty(fullName, new MethodDetail(name, type, indent, content, lineCount, isAbstract));
                }
             }
          } 
+      }
+      private String qualifier(String line) {
+         for(String modifier : TYPE_MODIFIERS) {
+            Pattern pattern = Pattern.compile("^\\s*"+modifier+"\\s+([a-zA-Z]+).*$");
+            Matcher matcher = pattern.matcher(line);
+            if(matcher.matches()) {
+               return "."+matcher.group(1);
+            }
+         }
+         return "";
+      }
+      private class MethodDetail {
+         public final String type;
+         public final String name;
+         public final String indent;
+         public final String content;
+         public final int lineCount;
+         public final boolean isAbstract;
+         public MethodDetail(String name, String type, String indent, String content, int lineCount, boolean isAbstract) {
+            this.name = name;
+            this.type = type;
+            this.indent = indent;
+            this.content = content;
+            this.lineCount = lineCount;
+            this.isAbstract = isAbstract;
+         }
+         public String toString() {
+            return String.format("[%s][%s][%s]", name, type, isAbstract);
+         }
+      }
+      private class PropertyMap {
+         private Map<String, Property> properties = new HashMap<String, Property>();
+         private SourceDetails details;
+         public PropertyMap(SourceDetails details) {
+            this.details = details;
+         }
+         public Property getProperty(String name) {
+            return properties.get(name);
+         }
+         public void addSetProperty(String name, MethodDetail detail) {
+            Property property = properties.get(name);
+            if(property == null) {
+               property = new Property();
+               properties.put(name, property);
+            }
+            if(property.set() != null) {
+               throw new IllegalStateException("The property '"+name+"' is defined twice in "+details.getFullyQualifiedName());
+            }
+            if(detail == null) {
+               throw new IllegalStateException("Can not set a null property");
+            }
+            property.addSetMethod(detail);
+         }
+         public void addGetProperty(String name, MethodDetail detail) {
+            Property property = properties.get(name);
+            if(property == null) {
+               property = new Property();
+               properties.put(name, property);
+            }
+            if(property.get() != null) {
+               throw new IllegalStateException("The property '"+name+"' is defined twice in "+details.getFullyQualifiedName());
+            }
+            if(detail == null) {
+               throw new IllegalStateException("Can not set a null property");
+            }
+            property.addGetMethod(detail);
+         }
+      }
+      private class Property {
+         private MethodDetail get;
+         private MethodDetail set;
+         private boolean done;
+         public MethodDetail get() {
+            return get;
+         }
+         public MethodDetail set() {
+            return set;
+         }
+         public boolean isGettable() {
+            return get != null;
+         }
+         public boolean isSettable() {
+            return set != null;
+         }
+         public void addSetMethod(MethodDetail detail) {
+            this.set = detail;
+         }
+         public void addGetMethod(MethodDetail detail) {
+            this.get = detail;
+         }
+         public boolean isDone() {
+            return done;
+         }
+         public void done() {
+            done = true;
+         }
+         public boolean verify() throws Exception {
+            if(get != null && set != null) {
+               if(!get.name.equals(set.name)) {
+                  throw new IllegalStateException("Property names do not match for '"+get.name+"' and '"+set.name+"'");
+               }
+               if(!get.type.equals(set.type)) {
+                  throw new IllegalStateException("Property types do not match for '"+get.type+"' and '"+set.type+"'");
+               }
+            }
+            return true;
+         }
+         public String toString() {
+            return String.format("GET -> %s SET -> %s", get, set);
+         }
       }
    }
    
@@ -752,14 +974,14 @@ public class LanguageConverter extends Replace {
          StringWriter writer = new StringWriter();
          main: for(String line : lines) {
             for(String modifier : MODIFIERS) {
-               Pattern methodMatch = Pattern.compile("^(\\s*)"+modifier+"\\s+([a-zA-Z\\[\\]\\<\\>]+)\\s+([a-zA-Z]+)\\((.+)");
+               Pattern methodMatch = Pattern.compile("^(\\s*)"+modifier+"\\s+([a-zA-Z\\[\\]\\<\\>\\s]+)\\s+([a-zA-Z]+)\\((.*)\\).*$");
                Matcher matcher = methodMatch.matcher(line);
                if(matcher.matches()) {
                   String indent = matcher.group(1);
                   String type = matcher.group(2);
                   String originalMethod = matcher.group(3);;
                   String signature = matcher.group(4);
-                  String method = convertMethod(originalMethod);
+                  String method = convertMethod(originalMethod, MethodType.NORMAL);
                   writer.append(indent);
                   writer.append("public ");
                   writer.append(type);
@@ -767,8 +989,12 @@ public class LanguageConverter extends Replace {
                   writer.append(method);
                   writer.append("(");
                   writer.append(signature);
-                  writer.append("\n");
-                  details.addMethod(originalMethod);
+                  if(line.matches(".*;\\s*") || details.getType() == SourceType.INTERFACE) {
+                     writer.append(");\n");
+                  } else {
+                     writer.append(") {\n");
+                  }
+                  add(details, originalMethod, signature, type);
                   continue main;
                }
             }
@@ -776,6 +1002,23 @@ public class LanguageConverter extends Replace {
             writer.append("\n");
          }
          return writer.toString();
+      }
+      private void add(SourceDetails details, String originalMethod, String signature, String type) {
+         if(originalMethod.startsWith("get")) {
+            if(signature == null || signature.equals("")) {
+               details.addMethod(new MethodSignature(originalMethod, MethodType.GET, null));
+            } else {
+               details.addMethod(new MethodSignature(originalMethod, MethodType.NORMAL, null));
+            }
+         } else if(originalMethod.startsWith("set")) {
+            if(signature != null && signature.indexOf(" ") != -1 && signature.indexOf(",") == -1 && type.equals("void")) {
+               details.addMethod(new MethodSignature(originalMethod, MethodType.SET, signature.split("\\s+")[1]));
+            }else {
+               details.addMethod(new MethodSignature(originalMethod, MethodType.NORMAL, null));
+            }
+         } else {
+            details.addMethod(new MethodSignature(originalMethod, MethodType.NORMAL, null));
+         }
       }
    }
   
