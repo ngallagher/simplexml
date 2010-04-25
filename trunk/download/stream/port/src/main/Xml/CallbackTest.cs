@@ -24,21 +24,21 @@ namespace SimpleFramework.Xml.Core {
          public Entry() {
             super();
          }
-         @Validate
+         [Validate]
          public void Validate() {
             validated = true;
          }
-         @Commit
+         [Commit]
          public void Commit() {
             if(validated) {
                committed = true;
             }
          }
-         @Persist
+         [Persist]
          public void Persist() {
             persisted = true;
          }
-         @Complete
+         [Complete]
          public void Complete() {
             if(persisted) {
                completed = true;
@@ -82,21 +82,21 @@ namespace SimpleFramework.Xml.Core {
          public ExtendedEntry() {
             super();
          }
-         @Validate
+         [Validate]
          public void ExtendedValidate() {
             validated = true;
          }
-         @Commit
+         [Commit]
          public void ExtendedCommit() {
             if(validated) {
                committed = true;
             }
          }
-         @Persist
+         [Persist]
          public void ExtendedPersist() {
             persisted = true;
          }
-         @Complete
+         [Complete]
          public void ExtendedComplete() {
             if(persisted) {
                completed = true;
@@ -117,7 +117,7 @@ namespace SimpleFramework.Xml.Core {
       }
       private static class OverrideEntry : Entry {
          public bool validated;
-         @Override
+         [Override]
          public void Validate() {
             validated = true;
          }

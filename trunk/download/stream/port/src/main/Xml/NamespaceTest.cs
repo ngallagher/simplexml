@@ -5,20 +5,20 @@ using System;
 #endregion
 namespace SimpleFramework.Xml.Core {
    public class NamespaceTest : ValidationTestCase {
-      @Root
-      @NamespaceList({
+      [Root]
+      [NamespaceList]
          [Namespace(Prefix="tax", Reference="http://www.domain.com/tax")]
          [Namespace(Reference="http://www.domain.com/default")]
       })
       [Namespace(Prefix="per", Reference="http://www.domain.com/person")]
       private static class Person {
-         @Element
+         [Element]
          private Profession job;
-         @Element
+         [Element]
          private String name;
-         @Element
+         [Element]
          private String value;
-         @Attribute
+         [Attribute]
          private int age;
          private Person() {
             super();
@@ -40,18 +40,18 @@ namespace SimpleFramework.Xml.Core {
             return name;
          }
       }
-      @Root
+      [Root]
       [Namespace(Prefix="jb", Reference="http://www.domain.com/job")]
       private static class Profession {
-         @Element
+         [Element]
          private String title;
-         @Attribute
+         [Attribute]
          [Namespace(Reference="http://www.domain.com/tax")]
          private int salary;
-         @Attribute
+         [Attribute]
          private int experience;
-         @Namespace
-         @Element
+         [Namespace]
+         [Element]
          private Employer employer;
          private Profession() {
             super();
@@ -73,17 +73,17 @@ namespace SimpleFramework.Xml.Core {
             return title;
          }
       }
-      @Root
+      [Root]
       private static class Employer {
-         @Element
+         [Element]
          [Namespace(Reference="http://www.domain.com/employer")]
          private String name;
-         @Element
+         [Element]
          [Namespace(Prefix="count", Reference="http://www.domain.com/count")]
          private int employees;
-         @Element
+         [Element]
          private String address;
-         @Attribute
+         [Attribute]
          private bool international;
          private Employer() {
             super();

@@ -8,18 +8,18 @@ using System;
 #endregion
 namespace SimpleFramework.Xml.Util {
    public class ContactEntryTest : ValidationTestCase {
-      @Root
+      [Root]
       public static class EntryList {
          [ElementList(Inline=true)]
          private List<Entry> list;
-         @Element
+         [Element]
          [Convert(OtherEntryConverter.class)]
          private Entry other;
-         @Element
+         [Element]
          private Entry inheritConverter;
-         @Element
+         [Element]
          private Entry polymorhic;
-         @Element
+         [Element]
          [Convert(EntryListConverter.class)]
          private List<Entry> otherList;
          public EntryList() {

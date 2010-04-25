@@ -143,7 +143,7 @@ namespace SimpleFramework.Xml.Core {
          private String origin;
          [Element(Name="text")]
          private String text;
-         @Attribute
+         [Attribute]
          private String name;
          public String Name {
             get {

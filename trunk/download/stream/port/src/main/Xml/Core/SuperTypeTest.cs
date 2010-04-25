@@ -9,9 +9,9 @@ namespace SimpleFramework.Xml.Core {
       public static interface SuperType {
          public void DoSomething();
       }
-      @Root
+      [Root]
       public static class SubType1 : SuperType {
-         @Element
+         [Element]
          private String text;
          public void DoSomething() {
             System.out.println("SubType1: " + this);
@@ -20,9 +20,9 @@ namespace SimpleFramework.Xml.Core {
             return text;
          }
       }
-      @Root
+      [Root]
       public static class SubType2 : SuperType {
-         @Element
+         [Element]
          private SuperType superType;
          public void DoSomething() {
             System.out.println("SubType2: " + this);

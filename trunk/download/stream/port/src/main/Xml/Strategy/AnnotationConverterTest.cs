@@ -149,12 +149,12 @@ namespace SimpleFramework.Xml.Strategy {
       "    <chicken name='Hen' age='1' legs='2'/>"+
       "    <cow name='Bull' age='4' legs='4'/>"+
       "</farmExample>";
-      @Root
+      [Root]
       private static class FarmExample {
-         @Element
+         [Element]
          [Convert(ChickenConverter.class)]
          private Chicken chicken;
-         @Element
+         [Element]
          [Convert(CowConverter.class)]
          private Cow cow;
          public FarmExample(@Element(name="chicken") Chicken chicken, @Element(name="cow") Cow cow) {

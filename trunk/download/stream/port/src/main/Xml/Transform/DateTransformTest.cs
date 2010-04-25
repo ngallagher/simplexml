@@ -7,15 +7,15 @@ using System;
 #endregion
 package SimpleFramework.Xml.transform;
 public class DateTransformTest : ValidationTestCase {
-   @Root
+   [Root]
    public static class DateExample {
-      @ElementArray
+      [ElementArray]
       private Date[] array;
-      @Element
+      [Element]
       private Date element;
-      @Attribute
+      [Attribute]
       private Date attribute;
-      @ElementList
+      [ElementList]
       private List<Date> list;
       public DateExample() {
          super();

@@ -11,9 +11,9 @@ namespace SimpleFramework.Xml.Core {
          EXPERT,
          GURU
       }
-      @Root
+      [Root]
       private static class EnumSetExample {
-         @ElementList
+         [ElementList]
          private EnumSet<Qualification> set = EnumSet.noneOf(Qualification.class);
          public EnumSetExample() {
             super();

@@ -5,9 +5,9 @@ using System;
 #endregion
 namespace SimpleFramework.Xml.Core {
    public class ReplaceThisTest : ValidationTestCase {
-       @Root
+       [Root]
        public static class RealParent {
-           @Element
+           [Element]
            private ReplaceThisParent inner;
            public RealParent() {
                this.inner = new ReplaceThisParent();
@@ -23,7 +23,7 @@ namespace SimpleFramework.Xml.Core {
            //public ReplaceThisParent GetInner() {
            //    return inner;
            //}
-       @Root
+       [Root]
        public static class ReplaceThisParent {
            [ElementList(Required = false)]
            Set<String> children;
@@ -33,7 +33,7 @@ namespace SimpleFramework.Xml.Core {
            public ReplaceThisParent(Set<String> children) {
               this.children = children;
            }
-           @Replace
+           [Replace]
            public ReplaceThisParent ReplaceParent() {
               return new ReplaceThisParent(null);
            }

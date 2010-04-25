@@ -115,7 +115,7 @@ namespace SimpleFramework.Xml.Core {
                }
            }
        }
-       @Root
+       [Root]
        public static class FriendList {
            private readonly @ElementList List<Friend> list;
            public FriendList(@ElementList(name="list") List<Friend> list) {
@@ -129,7 +129,7 @@ namespace SimpleFramework.Xml.Core {
            //public List<Friend> GetFriends() {
            //    return list;
            //}
-       @Root
+       [Root]
        public static class Friend {
            private readonly @Element Member member;
            private readonly @ElementList List<Message> messages;
@@ -157,7 +157,7 @@ namespace SimpleFramework.Xml.Core {
            //public List<Message> GetMessages() {
            //    return messages;
            //}
-       @Root
+       [Root]
        public static class Member {
            private readonly @Element Address address;
            private readonly @Attribute String name;
@@ -188,17 +188,17 @@ namespace SimpleFramework.Xml.Core {
            //public int GetAge() {
            //    return age;
            //}
-       @Root
+       [Root]
        public static class GoldMember : Member{
            public GoldMember(@Attribute(name="name") String name, @Attribute(name="age") int age, @Element(name="address") Address address) {
                super(name, age, address);
            }
-           @Override
+           [Override]
            public bool IsPrivileged() {
                return true;
            }
        }
-       @Root
+       [Root]
        public static class Person {
            private readonly @Element Address address;
            private readonly @Attribute String name;
@@ -226,7 +226,7 @@ namespace SimpleFramework.Xml.Core {
            //public int GetAge() {
            //    return age;
            //}
-       @Root
+       [Root]
        public static class Address {
            private readonly @Element String street;
            private readonly @Element String city;
@@ -254,7 +254,7 @@ namespace SimpleFramework.Xml.Core {
            //public String GetCountry() {
            //    return country;
            //}
-       @Root
+       [Root]
        public static class Message {
            private String title;
            private String text;
@@ -265,7 +265,7 @@ namespace SimpleFramework.Xml.Core {
                this.title = title;
                this.text = text;
            }
-           @Attribute
+           [Attribute]
            public String Title {
               get {
                   return title;

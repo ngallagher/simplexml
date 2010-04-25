@@ -12,25 +12,25 @@ namespace SimpleFramework.Xml.Core {
       "        </c>\n"+
       "    </y:b>\n"+
       "</a>\n";
-      @Root
-      @NamespaceList({
+      [Root]
+      [NamespaceList]
       [Namespace(Prefix="x", Reference="http://domain/x")]
       [Namespace(Prefix="z", Reference="http://domain/z")})]
       [Namespace(Reference="http://domain/z")]
       private static class A {
-         @Element
+         [Element]
          [Namespace(Prefix="y", Reference="http://domain/y")]
          private B b;
       }
-      @Root
+      [Root]
       private static class B {
-         @Element
+         [Element]
          [Namespace(Reference="http://domain/c")]
          private C c;
       }
-      @Root
+      [Root]
       private static class C{
-         @Element
+         [Element]
          [Namespace(Reference="http://domain/z")]
          private String d;
       }

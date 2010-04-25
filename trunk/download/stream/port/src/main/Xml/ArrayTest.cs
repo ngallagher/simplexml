@@ -162,7 +162,7 @@ namespace SimpleFramework.Xml.Core {
       }
       [Root(Name="root")]
       private static class DefaultPrimitiveArrayExample {
-         @ElementArray
+         [ElementArray]
          private String[] array;
       }
       [Root(Name="root")]
@@ -172,7 +172,7 @@ namespace SimpleFramework.Xml.Core {
       }
       [Root(Name="root")]
       private static class DefaultCompositeArrayExample {
-         @ElementArray
+         [ElementArray]
          private Text[] array;
       }
       [Root(Name="root")]

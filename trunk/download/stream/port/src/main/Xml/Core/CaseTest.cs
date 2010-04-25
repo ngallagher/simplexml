@@ -47,7 +47,7 @@ namespace SimpleFramework.Xml.Core {
          private float version;
          [Attribute(Name="Name")]
          private String name;
-         @Attribute
+         [Attribute]
          private String URL; // Java Bean property is URL
       }
       [Root(Name="TextEntry")]
@@ -59,7 +59,7 @@ namespace SimpleFramework.Xml.Core {
       }
       [Root(Name="URLEntry")]
       private static class URLEntry {
-         @Text
+         [Text]
          private String location;
       }
       public void TestCase() {

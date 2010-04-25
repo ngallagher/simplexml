@@ -78,13 +78,13 @@ namespace SimpleFramework.Xml.Strategy {
          TWO,
          THREE
       }
-      @Root
+      [Root]
       private static class StringReferenceExample {
-         @Element
+         [Element]
          private String a;
-         @Element
+         [Element]
          private String b;
-         @Element
+         [Element]
          private String c;
          public StringReferenceExample() {
             super();
@@ -95,13 +95,13 @@ namespace SimpleFramework.Xml.Strategy {
             this.c = c;
          }
       }
-      @Root
+      [Root]
       private static class IntegerReferenceExample {
-         @Element
+         [Element]
          private Integer a;
-         @Element
+         [Element]
          private Integer b;
-         @Element
+         [Element]
          private Integer c;
          public IntegerReferenceExample() {
             super();

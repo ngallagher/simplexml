@@ -26,7 +26,7 @@ namespace SimpleFramework.Xml.Core {
          private String name;
          [Attribute(Name="value")]
          private String value;
-         @Commit
+         [Commit]
          public void Commit(Dictionary map) {
             map.put(name, value);
          }

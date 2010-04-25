@@ -6,9 +6,9 @@ using System;
 #endregion
 namespace SimpleFramework.Xml.Core {
    public class EntryTest : TestCase {
-      @Root
+      [Root]
       private static class CompositeKey {
-         @Attribute
+         [Attribute]
          private String value;
          public String Value {
             get {
@@ -18,7 +18,7 @@ namespace SimpleFramework.Xml.Core {
          //public String GetValue() {
          //   return value;
          //}
-      @ElementMap
+      [ElementMap]
       private Map<String, String> defaultMap;
       [ElementMap(KeyType=Integer.class, ValueType=Long.class)]
       private Dictionary annotatedMap;
@@ -28,7 +28,7 @@ namespace SimpleFramework.Xml.Core {
       private Map<String, String> attributeMap;
       [ElementMap(Entry="entry")]
       private Map<Double, String> entryMap;
-      @ElementMap
+      [ElementMap]
       private Map<CompositeKey, String> compositeMap;
       public void TestEntry() {
          Entry entry = GetEntry(EntryTest.class, "defaultMap");

@@ -14,23 +14,23 @@ namespace SimpleFramework.Xml.Core {
       "      <textEntry name='c' version='THREE'>Example 3</textEntry>\r\n"+
       "   </list>\r\n"+
       "</defaultTextList>";
-      @Root
+      [Root]
       private static class DefaultTextList {
-         @ElementList
+         [ElementList]
          private List<TextEntry> list;
-         @Attribute
+         [Attribute]
          private Version version;
          public TextEntry Get(int index) {
             return list.Get(index);
          }
       }
-      @Root
+      [Root]
       private static class TextEntry {
-         @Attribute
+         [Attribute]
          private String name;
-         @Attribute
+         [Attribute]
          private Version version;
-         @Text
+         [Text]
          private String text;
       }
       private enum Version {

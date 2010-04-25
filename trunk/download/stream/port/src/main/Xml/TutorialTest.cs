@@ -22,7 +22,7 @@ namespace SimpleFramework.Xml.Core {
       "      <para:paragraph>Third and readonly paragraph</para:paragraph>\n"+
       "   </section>\n"+
       "</document>\n";
-      @Root
+      [Root]
       [Namespace(Reference = "http://www.domain.com/document")]
       public static class Document {
          [Element(Name="author")]
@@ -39,7 +39,7 @@ namespace SimpleFramework.Xml.Core {
             "0-69-697269-4");
          [ElementList(Inline=true)]
          private List<Section> list;
-         @Attribute
+         [Attribute]
          private String title;
          private Document() {
             super();
@@ -52,18 +52,18 @@ namespace SimpleFramework.Xml.Core {
             list.Add(section);
          }
       }
-      @Root
+      [Root]
       [Namespace(Reference="http://www.domain.com/detail")]
       public static class Detail {
-         @Element
+         [Element]
          private String publisher;
-         @Element
+         [Element]
          private String date;
-         @Element
+         [Element]
          private String address;
-         @Element
+         [Element]
          private String edition;
-         @Element
+         [Element]
          private String ISBN;
          private Detail() {
             super();
@@ -76,11 +76,11 @@ namespace SimpleFramework.Xml.Core {
             this.ISBN = ISBN;
          }
       }
-      @Root
-      @NamespaceList({
+      [Root]
+      [NamespaceList]
       [Namespace(Prefix="para", Reference="http://www.domain.com/paragraph")})]
       public static class Section {
-         @Attribute
+         [Attribute]
          private String name;
          [ElementList(Inline = true)]
          private List<Paragraph> list;
@@ -95,11 +95,11 @@ namespace SimpleFramework.Xml.Core {
             list.Add(paragraph);
          }
       }
-      @Root
+      [Root]
       [Namespace(Reference = "http://www.domain.com/paragraph")]
       public static class Paragraph {
          private String text;
-         @Text
+         [Text]
          public String Content {
             get {
                return text;

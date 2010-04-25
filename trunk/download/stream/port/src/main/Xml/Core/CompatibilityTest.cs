@@ -59,13 +59,13 @@ namespace SimpleFramework.Xml.Core {
          //public String GetValue();
       [Root(Name="example")]
       public static class Example_v1 : Example {
-        @Version
+        [Version]
         private double version;
-        @Element
+        [Element]
         private String name;
-        @Element
+        [Element]
         private String value;
-        @ElementList
+        [ElementList]
         private List<String> list;
         public double Version {
            get {
@@ -125,13 +125,13 @@ namespace SimpleFramework.Xml.Core {
         [Version(Revision=2.0)]
         [Namespace(Prefix="ver", Reference="http://www.domain.com/version")]
         private double version;
-        @Element
+        [Element]
         private String name;
-        @Element
+        [Element]
         private String value;
-        @ElementMap
+        [ElementMap]
         private Map<String, String> map;
-        @Attribute
+        [Attribute]
         private String key;
         public double Version {
            get {
@@ -159,15 +159,15 @@ namespace SimpleFramework.Xml.Core {
         [Version(Revision=3.0)]
         [Namespace(Prefix="ver", Reference="http://www.domain.com/version")]
         private double version;
-        @Element
+        [Element]
         private String name;
-        @Element
+        [Element]
         private String value;
-        @ElementMap
+        [ElementMap]
         private Map<String, String> map;
-        @ElementList
+        [ElementList]
         private List<String> list;
-        @Attribute
+        [Attribute]
         private String key;
         public double Version {
            get {

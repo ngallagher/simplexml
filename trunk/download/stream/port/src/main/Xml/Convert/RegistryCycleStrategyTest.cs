@@ -8,7 +8,7 @@ using System;
 #endregion
 namespace SimpleFramework.Xml.Util {
    public class RegistryCycleStrategyTest : ValidationTestCase {
-      @Root
+      [Root]
       public static class PetBucket {
          [ElementList(Inline=true)]
          private List<Pet> list = new ArrayList<Pet>();

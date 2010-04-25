@@ -15,9 +15,9 @@ namespace SimpleFramework.Xml.Core {
       "<substituteExample>\n"+
       "   <substitute class='SimpleFramework.Xml.Core.SubstituteTest$YetAnotherSubstitute'>some example text</substitute>  \n\r"+
       "</substituteExample>";
-      @Root
+      [Root]
       private static class SubstituteExample {
-         @Element
+         [Element]
          public Substitute substitute;
          public SubstituteExample() {
             super();
@@ -26,23 +26,23 @@ namespace SimpleFramework.Xml.Core {
             this.substitute = substitute;
          }
       }
-      @Root
+      [Root]
       private static class Substitute {
-         @Text
+         [Text]
          public String text;
       }
       private static class SimpleSubstitute : Substitute {
-         @Replace
+         [Replace]
          public Substitute Replace() {
             return new OtherSubstitute("this is the other substitute", text);
          }
-         @Persist
+         [Persist]
          public void Persist() {
             throw new IllegalStateException("Simple substitute should never be written only read");
          }
       }
       private static class OtherSubstitute : Substitute {
-         @Attribute
+         [Attribute]
          public String name;
          public OtherSubstitute() {
             super();
@@ -56,21 +56,21 @@ namespace SimpleFramework.Xml.Core {
          public YetAnotherSubstitute() {
             super();
          }
-         @Validate
+         [Validate]
          public void Validate() {
             return;
          }
-         @Resolve
+         [Resolve]
          public Substitute Resolve() {
             return new LargeSubstitute(text, "John Doe", "Sesame Street", "Metropilis");
          }
       }
       private static class LargeSubstitute : Substitute {
-         @Attribute
+         [Attribute]
          private String name;
-         @Attribute
+         [Attribute]
          private String street;
-         @Attribute
+         [Attribute]
          private String city;
          public LargeSubstitute() {
             super();

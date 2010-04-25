@@ -51,13 +51,13 @@ namespace SimpleFramework.Xml.Util {
          STAGE_ONE.Add(ReplaceDocumentation.class);
          STAGE_ONE.Add(ReplaceKeyWords.class);
          STAGE_ONE.Add(ReplaceMethodConventions.class);
-         STAGE_ONE.Add(ReplaceAnnotations.class);
          STAGE_ONE.Add(StripCrap.class);
          STAGE_ONE.Add(ReplaceLicense.class);
          STAGE_ONE.Add(SubstituteAnnotations.class);
          STAGE_ONE.Add(ConvertAnnotationAttributes.class);
          STAGE_ONE.Add(SetAnnotationAttributes.class);
          STAGE_ONE.Add(ConvertClassBeanMethods.class);
+         STAGE_ONE.Add(ReplaceAnnotations.class);
       }
       static {
          STAGE_TWO.Add(SubstituteMethods.class);
@@ -960,15 +960,16 @@ namespace SimpleFramework.Xml.Util {
       }
       private static class ReplaceAnnotations : ConversionPhase {
          public String Convert(String source, SourceDetails details) {
-            Pattern pattern = Pattern.compile("(\\s+)@([a-zA-Z]+)\\((.*)\\).*");
+            Pattern withAttributes = Pattern.compile("(\\s+)@([a-zA-Z]+)\\((.*)\\).*");
+            Pattern withoutAttributes = Pattern.compile("(\\s+)@([a-zA-Z]+).*");
             List<String> lines = stripLines(source);
             StringWriter writer = new StringWriter();
             for(String line : lines) {
-               Matcher matcher = pattern.matcher(line);
-               if(matcher.matches()) {
-                 String indent = matcher.group(1);
-                 String name = matcher.group(2);
-                 String signature = matcher.group(3);
+               Matcher with = withAttributes.matcher(line);
+               if(with.matches()) {
+                 String indent = with.group(1);
+                 String name = with.group(2);
+                 String signature = with.group(3);
                  writer.append(indent);
                  writer.append("[");
                  writer.append(name);
@@ -985,8 +986,18 @@ namespace SimpleFramework.Xml.Util {
                  }
                  writer.append("]\n");
                } else {
-                 writer.append(line);
-                 writer.append("\n");
+                  Matcher without = withoutAttributes.matcher(line);
+                  if(without.matches()) {
+                     String indent = without.group(1);
+                     String name = without.group(2);
+                     writer.append(indent);
+                     writer.append("[");
+                     writer.append(name);
+                     writer.append("]\n");
+                  } else {
+                     writer.append(line);
+                     writer.append("\n");
+                  }
                }
             }
             return writer.ToString();

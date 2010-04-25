@@ -6,9 +6,9 @@ namespace SimpleFramework.Xml.Core {
    public class LiteralTest : ValidationTestCase {
       [Root(Strict=false)]
       private static class LiteralExample {
-         @Attribute
+         [Attribute]
          private String name;
-         @Attribute
+         [Attribute]
          private String key;
          [Text(Required=false)]
          private readonly Literal literal = new Literal(

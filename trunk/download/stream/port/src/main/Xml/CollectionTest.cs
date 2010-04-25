@@ -253,22 +253,22 @@ namespace SimpleFramework.Xml.Core {
             return list.Iterator();
          }
       }
-      @Root
+      [Root]
       private static class TypeFromFieldList : Iterable<Entry> {
-         @ElementList
+         [ElementList]
          private List<Entry> list;
-         @Attribute
+         [Attribute]
          private String name;
          public Iterator<Entry> Iterator() {
             return list.Iterator();
          }
       }
-      @Root
+      [Root]
       private static class TypeFromMethodList : Iterable<Entry> {
          private List<Entry> list;
-         @Attribute
+         [Attribute]
          private String name;
-         @ElementList
+         [ElementList]
          public List<Entry> List {
             get {
                return list;
@@ -286,7 +286,7 @@ namespace SimpleFramework.Xml.Core {
             return list.Iterator();
          }
       }
-      @Root
+      [Root]
       private static class PrimitiveCollection : Iterable<String> {
          [ElementList(Name="list", Type=String.class, Entry="text")]
          private List<String> list;
@@ -296,7 +296,7 @@ namespace SimpleFramework.Xml.Core {
             return list.Iterator();
          }
       }
-      @Root
+      [Root]
       private static class CompositeCollection : Iterable<Entry> {
          [ElementList(Name="list", Entry="text")]
          private List<Entry> list;
@@ -306,11 +306,11 @@ namespace SimpleFramework.Xml.Core {
             return list.Iterator();
          }
       }
-      @Root
+      [Root]
       private static class PrimitiveDefaultCollection : Iterable<String> {
-         @ElementList
+         [ElementList]
          private List<String> list;
-         @Attribute
+         [Attribute]
          private String name;
          public Iterator<String> Iterator() {
             return list.Iterator();

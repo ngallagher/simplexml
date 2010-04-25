@@ -8,11 +8,11 @@ using System;
 #endregion
 namespace SimpleFramework.Xml.Util {
    public class AnnotationCycleStrategyTest : ValidationTestCase {
-      @Root
+      [Root]
       public static class EntryListExample {
          [ElementList(Inline=true)]
          private List<Entry> list = new ArrayList<Entry>();
-         @Element
+         [Element]
          [Convert(OtherEntryConverter.class)]
          private Entry primary;
          public Entry Primary {

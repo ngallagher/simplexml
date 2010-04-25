@@ -24,21 +24,21 @@ namespace SimpleFramework.Xml.Core {
          private bool persisted;
          private bool completed;
          public Entry(){}
-         @Validate
+         [Validate]
          public void Validate(Dictionary map) {
             validated = true;
          }
-         @Commit
+         [Commit]
          public void Commit(Dictionary map) {
             if(validated) {
                committed = true;
             }
          }
-         @Persist
+         [Persist]
          public void Persist(Dictionary map) {
             persisted = true;
          }
-         @Complete
+         [Complete]
          public void Complete(Dictionary map) {
             if(persisted) {
                completed = true;

@@ -16,9 +16,9 @@ namespace SimpleFramework.Xml.Core {
            A,
            B
        }
-       @Root
+       [Root]
        public static class EnumBug {
-           @Element
+           [Element]
            private PartType type;
            public EnumBug(@Element(name="type") PartType type) {
               this.type = type;
@@ -31,9 +31,9 @@ namespace SimpleFramework.Xml.Core {
            //public PartType GetType() {
            //   return type;
            //}
-       @Root
+       [Root]
        public static class EnumVariableArgumentsBug {
-           @Element
+           [Element]
            private PartType[] types;
            public EnumVariableArgumentsBug(@Element(name="types") PartType... types) {
               this.types = types;

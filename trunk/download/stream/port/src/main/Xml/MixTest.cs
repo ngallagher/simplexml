@@ -6,13 +6,13 @@ using System;
 #endregion
 namespace SimpleFramework.Xml.Core {
    public class MixTest : ValidationTestCase {
-      @Root
+      [Root]
       private static class MixExample {
-         @ElementList
+         [ElementList]
          private List<Object> list;
-         @ElementMap
+         [ElementMap]
          private Map<Object, Object> map;
-         @Element
+         [Element]
          private Calendar calendar;
          public MixExample() {
             this.list = new ArrayList();
@@ -37,11 +37,11 @@ namespace SimpleFramework.Xml.Core {
             list.Add(object);
          }
       }
-      @Root
+      [Root]
       private static class Entry {
-         @Attribute
+         [Attribute]
          private String id;
-         @Text
+         [Text]
          private String text;
          public Entry() {
             super();

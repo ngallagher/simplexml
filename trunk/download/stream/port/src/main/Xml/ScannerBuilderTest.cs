@@ -11,11 +11,11 @@ namespace SimpleFramework.Xml.Util {
       public static class Three: System.Attribute {
       [AttributeUsage(AttributeTargets.Class | AttributeTargets.Field | AttributeTargets.Method)]
       public static class Four: System.Attribute {
-      @One
-      @Two
+      [One]
+      [Two]
       public class Base {}
-      @Three
-      @Four
+      [Three]
+      [Four]
       public class Extended : Base{}
       public void TestScannerBuilder() {
          ScannerBuilder builder = new ScannerBuilder();

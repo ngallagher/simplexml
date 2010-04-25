@@ -29,11 +29,11 @@ namespace SimpleFramework.Xml.Core {
       "     <substitute>d</substitute>\n"+
       "  </list>\r\n" +
       "</examplePrimitiveArray>";
-      @Root
+      [Root]
       private static class Entry {
-         @Attribute
+         [Attribute]
          private int id;
-         @Element
+         [Element]
          private String text;
          public String Text {
             get {
@@ -46,7 +46,7 @@ namespace SimpleFramework.Xml.Core {
             return id;
          }
       }
-      @Root
+      [Root]
       private static class ExampleArray {
          [ElementArray(Name="list", Entry="substitute")]
          private Entry[] list;
@@ -58,7 +58,7 @@ namespace SimpleFramework.Xml.Core {
          //public Entry[] GetArray() {
          //   return list;
          //}
-      @Root
+      [Root]
       private static class ExamplePrimitiveArray {
          [ElementArray(Name="list", Entry="substitute")]
          private Character[] list;

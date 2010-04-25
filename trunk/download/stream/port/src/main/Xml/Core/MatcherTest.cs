@@ -4,12 +4,12 @@ using System;
 #endregion
 namespace SimpleFramework.Xml.Core {
    public class MatcherTest : ValidationTestCase {
-      @Root
+      [Root]
       [Namespace(Prefix="foo", Reference="http://www.domain.com/value")]
       private static class Example {
-         @Element
+         [Element]
          private Integer value;
-         @Attribute
+         [Attribute]
          private Integer attr;
          public Example() {
             super();
@@ -19,7 +19,7 @@ namespace SimpleFramework.Xml.Core {
             this.attr = attr;
          }
       }
-      @Root
+      [Root]
       private static class EmptyStringExample {
          [Element(Required=false)]
          private String emptyValue;

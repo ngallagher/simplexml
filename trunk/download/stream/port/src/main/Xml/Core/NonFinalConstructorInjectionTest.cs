@@ -4,11 +4,11 @@ using System;
 #endregion
 namespace SimpleFramework.Xml.Core {
    public class NonFinalConstructorInjectionTest : ValidationTestCase {
-      @Root
+      [Root]
       private static class NonFinalExample {
-         @Element
+         [Element]
          private String name;
-         @Element
+         [Element]
          private String value;
          public NonFinalExample(@Element(name="name") String name, @Element(name="value") String value) {
             this.name = name;

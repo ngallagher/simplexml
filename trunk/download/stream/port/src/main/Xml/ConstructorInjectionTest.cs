@@ -29,9 +29,9 @@ namespace SimpleFramework.Xml.Core {
       "      <String>entry five</String>  \n\r"+
       "   </Array>\n\r"+
       "</ExampleArray>";
-      @Root
+      [Root]
       private static class Example {
-         @Element
+         [Element]
          private int integer;
          [Element(Required=false)]
          private String string;
@@ -50,7 +50,7 @@ namespace SimpleFramework.Xml.Core {
             this.string = string;
          }
       }
-      @Root
+      [Root]
       private static class ArrayExample {
          [ElementArray(Name="array")]
          private readonly String[] array;

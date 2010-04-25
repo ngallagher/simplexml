@@ -25,11 +25,11 @@ namespace SimpleFramework.Xml.Core {
          }
          //public String GetName();
       }
-      @Root
+      [Root]
       public static class CompositeEntry : Entry {
-         @Attribute
+         [Attribute]
          private String name;
-         @Text
+         [Text]
          private String value;
          public String Name {
             get {
@@ -42,15 +42,15 @@ namespace SimpleFramework.Xml.Core {
             return value;
          }
       }
-      @Root
+      [Root]
       private static class CompositeObject {
-         @ElementList
+         [ElementList]
          private List<Entry> interfaceList;
-         @ElementList
+         [ElementList]
          private List<Object> objectList;
-         @Element
+         [Element]
          private Entry interfaceEntry;
-         @Element
+         [Element]
          private Object objectEntry;
          public CompositeEntry Interface {
             get {

@@ -7,11 +7,11 @@ namespace SimpleFramework.Xml.Core {
    public class RedundantOrderTest : ValidationTestCase {
       [Order(Elements={"a", "b", "c"})]
       public static class ElementEntry {
-         @Element
+         [Element]
          private String a;
-         @Element
+         [Element]
          private String b;
-         @Transient
+         [Transient]
          private String c;
          private ElementEntry() {
             super();
@@ -24,11 +24,11 @@ namespace SimpleFramework.Xml.Core {
       }
       [Order(Attributes={"a", "b", "c"})]
       public static class AttributeEntry {
-         @Attribute
+         [Attribute]
          private String a;
-         @Attribute
+         [Attribute]
          private String b;
-         @Transient
+         [Transient]
          private String c;
          private AttributeEntry() {
             super();

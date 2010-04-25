@@ -23,7 +23,7 @@ namespace SimpleFramework.Xml.Util {
       private static class ContentType : Match {
          [Attribute(Name="value")]
          private String value;
-         @Attribute
+         [Attribute]
          private String pattern;
          public ContentType() {
             super();

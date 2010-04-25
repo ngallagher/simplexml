@@ -39,8 +39,8 @@ namespace SimpleFramework.Xml.Util {
             serializer.Write(value, node);
          }
       }
-      @Root
-      @Default
+      [Root]
+      [Default]
       private static class Entry {
          private String name;
          private String value;
@@ -49,8 +49,8 @@ namespace SimpleFramework.Xml.Util {
             this.value = value;
          }
       }
-      @Root
-      @Default
+      [Root]
+      [Default]
       private static class WrapperExample {
          [Convert(WrapperConverter.class)]
          private Wrapper wrapper;

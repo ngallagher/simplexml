@@ -4,10 +4,10 @@ using System;
 #endregion
 namespace SimpleFramework.Xml.Core {
    public class AnnotationHandlerTest : TestCase {
-      @ElementArray
-      @ElementList
-      @ElementMap
-      @Element
+      [ElementArray]
+      [ElementList]
+      [ElementMap]
+      [Element]
       public void TestHandler() {
          AnnotationHandler elementHandler = new AnnotationHandler(Element.class);
          Element element = getClass().getDeclaredMethod("testHandler").getAnnotation(Element.class);

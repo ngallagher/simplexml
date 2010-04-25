@@ -7,10 +7,10 @@ using System;
 #endregion
 namespace SimpleFramework.Xml.Util {
    public class RegistryStrategyTest : ValidationTestCase {
-      @Root
+      [Root]
       [Namespace(Prefix="a", Reference="http://domain/a")]
       private static class PetShop {
-         @ElementList
+         [ElementList]
          [Namespace(Prefix="b", Reference="http://domain/b")]
          private Dictionary<Pet> pets;
          public PetShop(){

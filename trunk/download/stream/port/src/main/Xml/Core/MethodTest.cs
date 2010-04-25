@@ -138,9 +138,9 @@ namespace SimpleFramework.Xml.Core {
          //public void SetShortValue(short shortValue) {
          //   this.shortValue = shortValue;
          //}
-      @Root
+      [Root]
       private static class ImplicitMethodNameExample : ExplicitMethodNameExample {
-         @Element
+         [Element]
          public bool BooleanValue {
             get {
                return boolValue;

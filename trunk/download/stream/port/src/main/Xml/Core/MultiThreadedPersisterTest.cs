@@ -5,8 +5,8 @@ using System;
 #endregion
 namespace SimpleFramework.Xml.Core {
    public class MultiThreadedPersisterTest : TestCase {
-      @Root
-      @Default
+      [Root]
+      [Default]
       private static class Example {
          private String name;
          private String value;

@@ -5,7 +5,7 @@ using System;
 #endregion
 namespace SimpleFramework.Xml.Core {
    public class MissingGenericsTest : TestCase {
-       @Root
+       [Root]
        private static class MissingGenerics {
            [SuppressWarnings("unchecked")]
            [ElementMap(KeyType=String.class, ValueType=String.class)]

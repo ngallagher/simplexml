@@ -14,9 +14,9 @@ namespace SimpleFramework.Xml.Core {
          Message example = serializer.read(Message.class, xml);
          System.out.println("message: "+example.Optional);
       }
-      @Root
+      [Root]
       public static class Message : Serializable{
-         @Element
+         [Element]
          private String necessary;
          [Element(Required=false)]
          private String optional;

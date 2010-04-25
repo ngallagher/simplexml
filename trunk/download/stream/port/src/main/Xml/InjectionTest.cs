@@ -14,17 +14,17 @@ namespace SimpleFramework.Xml.Core {
       "        This is an example message.\r\n"+
       "   </message>\r\n"+
       "</injectionExample>";
-      @Root
+      [Root]
       private static class InjectionExample {
-         @Attribute
+         [Attribute]
          private bool flag;
-         @Attribute
+         [Attribute]
          private int id;
-         @Element
+         [Element]
          private String text;
-         @Element
+         [Element]
          private String date;
-         @Element
+         [Element]
          private ExampleMessage message;
          private String name;
          public InjectionExample(String name) {
@@ -32,11 +32,11 @@ namespace SimpleFramework.Xml.Core {
          }
       }
       private static class ExampleMessage {
-         @Attribute
+         [Attribute]
          private bool trim;
-         @Text
+         [Text]
          private String text;
-         @Commit
+         [Commit]
          public void Prepare() {
             if(trim) {
                text = text.trim();
