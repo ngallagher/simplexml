@@ -24,14 +24,14 @@ public class LanguageConverter extends Replace {
    private static final String INDENT = "   ";
    
    static {
-      //FILES.put("C:\\Users\\niall\\Workspace\\xml\\src\\main\\java\\org\\simpleframework\\xml", "C:\\Users\\niall\\Workspace\\SimpleFramework\\SimpleFramework\\SimpleFramework\\src\\main\\Xml");
-      FILES.put("C:\\Users\\niall\\Workspace\\xml\\src\\main\\java\\org\\simpleframework\\xml\\core", "C:\\Users\\niall\\Workspace\\SimpleFramework\\SimpleFramework\\SimpleFramework\\src\\main\\Xml\\Core");
-      FILES.put("C:\\Users\\niall\\Workspace\\xml\\src\\main\\java\\org\\simpleframework\\xml\\filter", "C:\\Users\\niall\\Workspace\\SimpleFramework\\SimpleFramework\\SimpleFramework\\src\\main\\Xml\\Filter");
-      FILES.put("C:\\Users\\niall\\Workspace\\xml\\src\\main\\java\\org\\simpleframework\\xml\\strategy", "C:\\Users\\niall\\Workspace\\SimpleFramework\\SimpleFramework\\SimpleFramework\\src\\main\\Xml\\Strategy");
-      FILES.put("C:\\Users\\niall\\Workspace\\xml\\src\\main\\java\\org\\simpleframework\\xml\\stream", "C:\\Users\\niall\\Workspace\\SimpleFramework\\SimpleFramework\\SimpleFramework\\src\\main\\Xml\\Stream");
-      FILES.put("C:\\Users\\niall\\Workspace\\xml\\src\\main\\java\\org\\simpleframework\\xml\\convert", "C:\\Users\\niall\\Workspace\\SimpleFramework\\SimpleFramework\\SimpleFramework\\src\\main\\Xml\\Convert");
-      FILES.put("C:\\Users\\niall\\Workspace\\xml\\src\\main\\java\\org\\simpleframework\\xml\\transform", "C:\\Users\\niall\\Workspace\\SimpleFramework\\SimpleFramework\\SimpleFramework\\src\\main\\Xml\\Transform");
-      FILES.put("C:\\Users\\niall\\Workspace\\xml\\src\\main\\java\\org\\simpleframework\\xml\\util", "C:\\Users\\niall\\Workspace\\SimpleFramework\\SimpleFramework\\SimpleFramework\\src\\main\\Xml\\Util");
+      FILES.put("C:\\Users\\niall\\Workspace\\xml\\src\\test\\java\\org\\simpleframework\\xml", "C:\\Users\\niall\\Workspace\\SimpleFramework\\SimpleFramework\\SimpleFramework\\src\\main\\Xml");
+      FILES.put("C:\\Users\\niall\\Workspace\\xml\\src\\test\\java\\org\\simpleframework\\xml\\core", "C:\\Users\\niall\\Workspace\\SimpleFramework\\SimpleFramework\\SimpleFramework\\src\\main\\Xml\\Core");
+      FILES.put("C:\\Users\\niall\\Workspace\\xml\\src\\test\\java\\org\\simpleframework\\xml\\filter", "C:\\Users\\niall\\Workspace\\SimpleFramework\\SimpleFramework\\SimpleFramework\\src\\main\\Xml\\Filter");
+      FILES.put("C:\\Users\\niall\\Workspace\\xml\\src\\test\\java\\org\\simpleframework\\xml\\strategy", "C:\\Users\\niall\\Workspace\\SimpleFramework\\SimpleFramework\\SimpleFramework\\src\\main\\Xml\\Strategy");
+      FILES.put("C:\\Users\\niall\\Workspace\\xml\\src\\test\\java\\org\\simpleframework\\xml\\stream", "C:\\Users\\niall\\Workspace\\SimpleFramework\\SimpleFramework\\SimpleFramework\\src\\main\\Xml\\Stream");
+      FILES.put("C:\\Users\\niall\\Workspace\\xml\\src\\test\\java\\org\\simpleframework\\xml\\convert", "C:\\Users\\niall\\Workspace\\SimpleFramework\\SimpleFramework\\SimpleFramework\\src\\main\\Xml\\Convert");
+      FILES.put("C:\\Users\\niall\\Workspace\\xml\\src\\test\\java\\org\\simpleframework\\xml\\transform", "C:\\Users\\niall\\Workspace\\SimpleFramework\\SimpleFramework\\SimpleFramework\\src\\main\\Xml\\Transform");
+      FILES.put("C:\\Users\\niall\\Workspace\\xml\\src\\test\\java\\org\\simpleframework\\xml\\util", "C:\\Users\\niall\\Workspace\\SimpleFramework\\SimpleFramework\\SimpleFramework\\src\\main\\Xml\\Util");
    }
 
    static {
@@ -73,6 +73,7 @@ public class LanguageConverter extends Replace {
       STAGE_ONE.add(ConvertAnnotationAttributes.class);
       STAGE_ONE.add(SetAnnotationAttributes.class);
       STAGE_ONE.add(ConvertClassBeanMethods.class);
+      STAGE_ONE.add(ReplaceAnnotations.class);
    }
    
    static {
@@ -340,9 +341,9 @@ public class LanguageConverter extends Replace {
    
    public static class CanonicalizeFile implements ConversionPhase {
       public String convert(String source, SourceDetails details) throws Exception {
-         if(source.indexOf('\t') != -1) {
-            throw new Exception("File contains tab "+details.getSource());
-         }
+   //      if(source.indexOf('\t') != -1) {
+     //       throw new Exception("File contains tab "+details.getSource());
+       //  }
          return source.replaceAll("\r\n", "\n").replaceAll("\r", "\n");
       }
    }
@@ -427,7 +428,9 @@ public class LanguageConverter extends Replace {
          TYPE_MODIFIERS.add("class");
          TYPE_MODIFIERS.add("public class");
          TYPE_MODIFIERS.add("abstract class");
+         TYPE_MODIFIERS.add("static class");
          TYPE_MODIFIERS.add("sealed class");
+         TYPE_MODIFIERS.add("private static abstract class");
          TYPE_MODIFIERS.add("private sealed class");
          TYPE_MODIFIERS.add("private class");
          TYPE_MODIFIERS.add("private static sealed class");
@@ -629,7 +632,7 @@ public class LanguageConverter extends Replace {
                }
                String fullName = qualifier+"."+name;
                if(properties.getProperty(fullName) != null && properties.getProperty(fullName).isGettable()) {
-                  throw new IllegalStateException("The property '"+fullName+"' is defined twice in "+details.getFullyQualifiedName());
+                  throw new IllegalStateException("The property '"+fullName+"' is defined twice in "+details.getFullyQualifiedName()+" on line '"+line+"' in "+writer.toString());
                }
                properties.addGetProperty(fullName, new MethodDetail(name, type, indent, writer.toString(), lineCount, isAbstract));
             } else {
@@ -958,6 +961,53 @@ public class LanguageConverter extends Replace {
       }
    }
    
+
+   private static class ReplaceAnnotations implements ConversionPhase {
+      public String convert(String source, SourceDetails details) throws Exception {
+         Pattern withAttributes = Pattern.compile("(\\s+)@([a-zA-Z]+)\\((.*)\\).*");
+         Pattern withoutAttributes = Pattern.compile("(\\s+)@([a-zA-Z]+).*");
+         List<String> lines = stripLines(source);
+         StringWriter writer = new StringWriter();
+         for(String line : lines) {
+            Matcher with = withAttributes.matcher(line);
+            if(with.matches()) {
+              String indent = with.group(1);
+              String name = with.group(2);
+              String signature = with.group(3);
+              writer.append(indent);
+              writer.append("[");
+              writer.append(name);
+              if(signature != null && !signature.equals("")) {
+                 writer.append("(");
+                 String[] attributes = signature.split("\\s*,\\s*");
+                 String separator = "";
+                 for(String attribute : attributes) {
+                    writer.append(separator);
+                    writer.append(convertMethod(attribute, MethodType.NORMAL));
+                    separator = ", ";
+                 }
+                 writer.append(")");
+              }
+              writer.append("]\n");
+            } else {
+               Matcher without = withoutAttributes.matcher(line);
+               if(without.matches()) {
+                  String indent = without.group(1);
+                  String name = without.group(2);
+                  writer.append(indent);
+                  writer.append("[");
+                  writer.append(name);
+                  writer.append("]\n");
+               } else {
+                  writer.append(line);
+                  writer.append("\n");
+               }
+            }
+         }
+         return writer.toString();
+      }
+   }
+   
    private static class ReplaceMethodConventions implements ConversionPhase {
       private static final List<String> MODIFIERS = new ArrayList<String>();
       static {
@@ -1229,17 +1279,20 @@ public class LanguageConverter extends Replace {
             String line = iterator.next();
             if(!licenseDone && line.matches("\\s*\\/\\*")) {
                writer.append("#region License\n");
-               license(iterator, writer, line);
+               license(details, iterator, writer, line);
                writer.append("#endregion\n");
                licenseDone = true;
             } else {
+               if(!line.matches("^\\s*$")) {
+                  licenseDone = true; // no license found
+               }
                writer.append(line);
                writer.append("\n");
             }
          }
          return writer.toString();
       }
-      private void license(Iterator<String> lines, StringWriter writer, String line) throws Exception {
+      private void license(SourceDetails details, Iterator<String> lines, StringWriter writer, String line) throws Exception {
          Pattern comment = Pattern.compile("^(\\s*)\\*.*$");
          writer.append(line.replaceAll("\\/\\*", "//"));
          writer.append("\n");
@@ -1260,7 +1313,7 @@ public class LanguageConverter extends Replace {
                writer.append(nextLine.replaceAll("^\\s*\\*", "//"));
                writer.append("\n");
             }else {
-               throw new IllegalStateException("Comment does not end well " + nextLine);
+               throw new IllegalStateException("Comment does not end well '" + nextLine+"' in file "+details.getSource().getCanonicalPath());
             }
               
          }
