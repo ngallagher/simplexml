@@ -29,7 +29,7 @@ package org.simpleframework.xml.stream;
  * @author Niall Gallagher
  */ 
 class InputAttribute implements InputNode {
-	
+
    /**
     * This is the parent node to this attribute instance.
     */
@@ -113,7 +113,7 @@ class InputAttribute implements InputNode {
     * @return this returns the parent node for this node
     */
    public InputNode getParent() {
-	   return parent;
+      return parent;
    }
    
    /**

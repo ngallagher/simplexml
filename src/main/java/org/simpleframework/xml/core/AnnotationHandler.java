@@ -101,7 +101,7 @@ class AnnotationHandler implements InvocationHandler {
          return type;
       }
       if(name.equals(REQUIRED)) {
-    	  return false;
+         return false;
       }
       return method.getDefaultValue();
    }
@@ -199,11 +199,11 @@ class AnnotationHandler implements InvocationHandler {
     * @return this returns the default value for the attribute
     */
    private Object value(Method method) {
-	   String name = method.getName();
+      String name = method.getName();
               
-       if(name.equals(REQUIRED)) {
-          return  false;
-       }
-	   return method.getDefaultValue();
+      if(name.equals(REQUIRED)) {
+         return  false;
+      }
+      return method.getDefaultValue();
    }
 }

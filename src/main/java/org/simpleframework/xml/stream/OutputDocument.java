@@ -150,7 +150,7 @@ class OutputDocument implements OutputNode {
     * @return this will always return null for this output    
     */
    public OutputNode getParent() {
-	   return null;
+      return null;
    }
    
    /**
