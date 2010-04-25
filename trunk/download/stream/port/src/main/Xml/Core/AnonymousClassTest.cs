@@ -4,14 +4,14 @@ using System;
 #endregion
 namespace SimpleFramework.Xml.Core {
    public class AnonymousClassTest : ValidationTestCase {
-      @Root(name="anonymous")
+      [Root(Name="anonymous")]
       private static class Anonymous {
          @Element
-         @Namespace(prefix="prefix", reference="http://www.domain.com/reference")
+         [Namespace(Prefix="prefix", Reference="http://www.domain.com/reference")]
          private static Object anonymous = new Object() {
-            @Attribute(name="attribute")
+            [Attribute(Name="attribute")]
             private const String attribute = "example attribute";
-            @Element(name="element")
+            [Element(Name="element")]
             private const String element = "example element";
          };
       }

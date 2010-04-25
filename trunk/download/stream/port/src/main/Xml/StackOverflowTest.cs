@@ -21,9 +21,9 @@ namespace SimpleFramework.Xml.Core {
       "</benefitMutation>";
       @Root
       public static class Delivery {
-         @ElementList(inline = true, required = false, name = "newBenefit")
+         [ElementList(Inline = true, Required = false, Name = "newBenefit")]
          private List<NewBenefit> listNewBenefit = new ArrayList<NewBenefit>();
-         @ElementList(inline = true, required = false, name = "benefitMutation")
+         [ElementList(Inline = true, Required = false, Name = "benefitMutation")]
          private List<BenefitMutation> listBenefitMutation = new ArrayList<BenefitMutation>();
       }
       public static class NewBenefit {
@@ -35,7 +35,7 @@ namespace SimpleFramework.Xml.Core {
          private String type;
       }
       public static class BenefitMutation : NewBenefit {
-         @Element(required = false)
+         [Element(Required = false)]
          private String comment;
       }
       public void TestStackOverflow() {

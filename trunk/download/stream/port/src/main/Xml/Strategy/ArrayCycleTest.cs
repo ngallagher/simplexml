@@ -53,20 +53,20 @@ namespace SimpleFramework.Xml.Strategy {
       "      </entry>\n"+
       "   </list>\n"+
       "</value>\n";
-      @Root(name="root")
+      [Root(Name="root")]
       private static class ArrayCycleExample {
-         @ElementArray(name="one", entry="entry")
+         [ElementArray(Name="one", Entry="entry")]
          public Entry[] one;
-         @ElementArray(name="two", entry="entry")
+         [ElementArray(Name="two", Entry="entry")]
          public Entry[] two;
-         @ElementArray(name="three", entry="entry")
+         [ElementArray(Name="three", Entry="entry")]
          public Entry[] three;
-         @Element(name="example")
+         [Element(Name="example")]
          public ArrayCycleExample example;
       }
-      @Root(name="text")
+      [Root(Name="text")]
       private static class Entry {
-         @Attribute(name="value")
+         [Attribute(Name="value")]
          public String value;
          public Entry() {
             super();
@@ -75,24 +75,24 @@ namespace SimpleFramework.Xml.Strategy {
             this.value = value;
          }
       }
-      @Root(name="root")
+      [Root(Name="root")]
       private static class NestedArrayCycleExample {
-         @ElementArray(name="array", entry="entry")
+         [ElementArray(Name="array", Entry="entry")]
          public Value[] array;
       }
-      @Root(name="value")
+      [Root(Name="value")]
       private static class Value {
-         @ElementArray(name="list", entry="entry", required=false)
+         [ElementArray(Name="list", Entry="entry", Required=false)]
          private Value[] list;
       }
       private static class TextValue : Value {
-         @Attribute(name="name")
+         [Attribute(Name="name")]
          private String name;
-         @Element(name="text")
+         [Element(Name="text")]
          private String text;
       }
       private static class ElementValue : Value {
-         @Element(name="element")
+         [Element(Name="element")]
          private String element;
       }
       private Persister persister;

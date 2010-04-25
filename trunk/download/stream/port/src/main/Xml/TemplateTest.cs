@@ -20,32 +20,32 @@ namespace SimpleFramework.Xml.Core {
       "     <name>${name}</name> \n"+
       "   </details>\n"+
       "</test>";
-      @Root(name="var")
+      [Root(Name="var")]
       private static class Variable {
-         @Attribute(name="name")
+         [Attribute(Name="name")]
          private String name;
-         @Attribute(name="value")
+         [Attribute(Name="value")]
          private String value;
          @Commit
          public void Commit(Dictionary map) {
             map.put(name, value);
          }
       }
-      @Root(name="test")
+      [Root(Name="test")]
       private static class Example {
-         @Attribute(name="name")
+         [Attribute(Name="name")]
          private String name;
-         @ElementList(name="config", type=Variable.class)
+         [ElementList(Name="config", Type=Variable.class)]
          private List list;
-         @Element(name="details")
+         [Element(Name="details")]
          private Details details;
       }
       private static class Details {
-         @Element(name="title")
+         [Element(Name="title")]
          private String title;
-         @Element(name="mail")
+         [Element(Name="mail")]
          private String mail;
-         @Element(name="name")
+         [Element(Name="name")]
          private String name;
       }
    	private Persister serializer;

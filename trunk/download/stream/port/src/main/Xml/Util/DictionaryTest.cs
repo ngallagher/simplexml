@@ -22,9 +22,9 @@ namespace SimpleFramework.Xml.Util {
       "      </property>\n"+
       "   </list>\n"+
       "</test>";
-      @Root(name="property")
+      [Root(Name="property")]
       private static class Property : Entry {
-         @Element(name="text")
+         [Element(Name="text")]
          private String text;
          @Attribute
          private String name;
@@ -36,11 +36,11 @@ namespace SimpleFramework.Xml.Util {
          //public String GetName() {
          //   return name;
          //}
-      @Root(name="test")
+      [Root(Name="test")]
       private static class PropertySet : Iterable<Property> {
-         @ElementList(name="list", type=Property.class)
+         [ElementList(Name="list", Type=Property.class)]
          private Dictionary<Property> list;
-         @Attribute(name="name")
+         [Attribute(Name="name")]
          private String name;
          public Iterator<Property> Iterator() {
             return list.Iterator();

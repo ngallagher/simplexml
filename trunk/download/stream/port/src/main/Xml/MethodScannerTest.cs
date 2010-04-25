@@ -6,11 +6,11 @@ using System;
 #endregion
 namespace SimpleFramework.Xml.Core {
    public class MethodScannerTest : TestCase {
-      @Root(name="name")
+      [Root(Name="name")]
       public static class Example {
          private int version;
          private String name;
-         @Element(name="version")
+         [Element(Name="version")]
          public int Version {
             get {
                return version;
@@ -41,7 +41,7 @@ namespace SimpleFramework.Xml.Core {
          //}
       public static class IllegalOverload : Example {
          private int name;
-         @Attribute(name="name")
+         [Attribute(Name="name")]
          public int Name {
             set {
                this.name = value;
@@ -52,7 +52,7 @@ namespace SimpleFramework.Xml.Core {
          //}
       public static class NonMatchingMethods : Example {
          private int type;
-         @Attribute(name="type")
+         [Attribute(Name="type")]
          public int Type {
             set {
                this.type = value;
@@ -63,7 +63,7 @@ namespace SimpleFramework.Xml.Core {
          //}
       public static class NotBeanMethod : Example {
          private String type;
-         @Element(name="type")
+         [Element(Name="type")]
          public String Type {
             set {
                this.type = value;
@@ -95,7 +95,7 @@ namespace SimpleFramework.Xml.Core {
          //}
       public static class CollectionMethod : TextMethod {
          private Collection list;
-         @ElementList(name="list", type=Example.class)
+         [ElementList(Name="list", Type=Example.class)]
          public Collection List {
             get {
                return list;

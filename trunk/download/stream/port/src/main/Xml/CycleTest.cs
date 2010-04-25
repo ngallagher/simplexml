@@ -8,11 +8,11 @@ using System;
 namespace SimpleFramework.Xml.Strategy {
    public class CycleTest : ValidationTestCase {
       private const int ITERATIONS = 1000;
-      @Root(name="example")
+      [Root(Name="example")]
       public static class CycleExample {
-         @ElementList(name="list", type=Entry.class)
+         [ElementList(Name="list", Type=Entry.class)]
          private List<Entry> list;
-         @Element(name="cycle")
+         [Element(Name="cycle")]
          private CycleExample cycle;
          public CycleExample() {
             this.list = new ArrayList();
@@ -25,11 +25,11 @@ namespace SimpleFramework.Xml.Strategy {
             return list.Get(index);
          }
       }
-      @Root(name="entry")
+      [Root(Name="entry")]
       public static class Entry {
-         @Attribute(name="key")
+         [Attribute(Name="key")]
          private String name;
-         @Element(name="value")
+         [Element(Name="value")]
          private String value;
          protected Entry() {
             super();

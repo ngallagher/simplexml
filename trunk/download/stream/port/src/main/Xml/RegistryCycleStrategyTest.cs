@@ -10,7 +10,7 @@ namespace SimpleFramework.Xml.Util {
    public class RegistryCycleStrategyTest : ValidationTestCase {
       @Root
       public static class PetBucket {
-         @ElementList(inline=true)
+         [ElementList(Inline=true)]
          private List<Pet> list = new ArrayList<Pet>();
          public void AddPet(Pet pet) {
             list.add(pet);

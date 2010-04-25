@@ -25,10 +25,10 @@ namespace SimpleFramework.Xml.Core {
             get;
          }
          //public double GetVersion();
-      @Root(name="Example")
+      [Root(Name="Example")]
       private static abstract class Example : Versionable {
          @Version
-         @Namespace(prefix="prefix", reference="http://www.domain.com/reference")
+         [Namespace(Prefix="prefix", Reference="http://www.domain.com/reference")]
          private double version;
          public double Version {
             get {
@@ -40,7 +40,7 @@ namespace SimpleFramework.Xml.Core {
          //}
       }
       private static class Example1 : Example {
-         @Element(name="text")
+         [Element(Name="text")]
          private String text;
          public String Value {
             get {
@@ -51,11 +51,11 @@ namespace SimpleFramework.Xml.Core {
          //   return text;
          //}
       private static class Example2 : Example {
-         @Element(name="name")
+         [Element(Name="name")]
          private String name;
-         @Element(name="value")
+         [Element(Name="value")]
          private String value;
-         @Element(name="entry")
+         [Element(Name="entry")]
          private Entry entry;
          public String Value {
             get {
@@ -66,9 +66,9 @@ namespace SimpleFramework.Xml.Core {
          //   return value;
          //}
       private static class Entry {
-         @Attribute(name="name")
+         [Attribute(Name="name")]
          private String name;
-         @Element(name="value")
+         [Element(Name="value")]
          private String value;
       }
       public static class SimpleType : Value{

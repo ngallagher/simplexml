@@ -18,7 +18,7 @@ namespace SimpleFramework.Xml.Util {
       @Root
       private static class Farmer {
          @Text
-         @Namespace(prefix="man", reference="http://www.domain/com/man")
+         [Namespace(Prefix="man", Reference="http://www.domain/com/man")]
          private String name;
          @Attribute
          private int age;
@@ -33,16 +33,16 @@ namespace SimpleFramework.Xml.Util {
       @Root
       private static class FarmExample {
          @Element
-         @Namespace(prefix="c", reference="http://www.domain.com/test")
-         @Convert(ChickenConverter.class)
+         [Namespace(Prefix="c", Reference="http://www.domain.com/test")]
+         [Convert(ChickenConverter.class)]
          private Chicken chicken;
          @Element
-         @Convert(CowConverter.class)
+         [Convert(CowConverter.class)]
          private Cow cow;
          @Element
          private Farmer farmer;
-         @ElementList(inline=true, entry="time")
-         @Namespace(prefix="l", reference="http://www.domain.com/list")
+         [ElementList(Inline=true, Entry="time")]
+         [Namespace(Prefix="l", Reference="http://www.domain.com/list")]
          private List<Integer> list = new Vector<Integer>();
          public FarmExample(@Element(name="chicken") Chicken chicken, @Element(name="cow") Cow cow) {
             this.farmer = new Farmer("Old McDonald", 80);

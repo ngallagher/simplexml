@@ -49,7 +49,7 @@ namespace SimpleFramework.Xml.Strategy {
       private static class MapHolder {
          @Element
          @ElementMap
-         @Convert(MapConverter.class)
+         [Convert(MapConverter.class)]
          private Map<String, String> map = new HashMap<String, String>();
          public void Put(String name, String value) {
             map.Put(name, value);

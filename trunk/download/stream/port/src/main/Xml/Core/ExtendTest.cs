@@ -23,22 +23,22 @@ namespace SimpleFramework.Xml.Core {
       "   <name>some name</name> \n"+
       "   <third>added to schema</third>\n"+
       "</override>";
-      @Root(name="root")
+      [Root(Name="root")]
       private static class First {
-         @Attribute(name="id")
+         [Attribute(Name="id")]
          public int id;
-         @Element(name="text")
+         [Element(Name="text")]
          public String text;
       }
       private static class Second : First {
-         @Element(name="name")
+         [Element(Name="name")]
          public String name;
       }
-      @Root(name="override")
+      [Root(Name="override")]
       private static class Third : Second {
-         @Attribute(name="flag")
+         [Attribute(Name="flag")]
          public bool bool;
-         @Element(name="third")
+         [Element(Name="third")]
          public String third;
       }
    	private Persister serializer;

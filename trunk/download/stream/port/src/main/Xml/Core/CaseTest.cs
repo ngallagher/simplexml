@@ -35,29 +35,29 @@ namespace SimpleFramework.Xml.Core {
       "      <Text>example 6</Text>\n" +
       "   </TextEntry>\n" +
       "</Example>";
-      @Root(name="Example")
+      [Root(Name="Example")]
       private static class CaseExample {
-         @ElementList(name="List", entry="ListEntry")
+         [ElementList(Name="List", Entry="ListEntry")]
          private List<TextEntry> list;
-         @ElementList(name="URLList")
+         [ElementList(Name="URLList")]
          private List<URLEntry> domainList;
-         @ElementList(name="TextList", inline=true)
+         [ElementList(Name="TextList", Inline=true)]
          private List<TextEntry> textList;
-         @Attribute(name="Version")
+         [Attribute(Name="Version")]
          private float version;
-         @Attribute(name="Name")
+         [Attribute(Name="Name")]
          private String name;
          @Attribute
          private String URL; // Java Bean property is URL
       }
-      @Root(name="TextEntry")
+      [Root(Name="TextEntry")]
       private static class TextEntry {
-         @Attribute(name="id")
+         [Attribute(Name="id")]
          private int id;
-         @Element(name="Text")
+         [Element(Name="Text")]
          private String text;
       }
-      @Root(name="URLEntry")
+      [Root(Name="URLEntry")]
       private static class URLEntry {
          @Text
          private String location;

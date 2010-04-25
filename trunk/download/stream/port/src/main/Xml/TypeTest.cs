@@ -29,47 +29,47 @@ namespace SimpleFramework.Xml.Core {
       "     <Enum>TWO</Enum>\n"+
       "   </object>\n\r"+
       "</test>";
-      @Root(name="test")
+      [Root(Name="test")]
       private static class Entry {
-         @Element(name="primitive")
+         [Element(Name="primitive")]
          private PrimitiveEntry primitive;
-         @Element(name="object")
+         [Element(Name="object")]
          private ObjectEntry object;
       }
       private static class PrimitiveEntry {
-         @Element(name="bool")
+         [Element(Name="bool")]
          private bool boolValue;
-         @Element(name="byte")
+         [Element(Name="byte")]
          private byte byteValue;
-         @Element(name="short")
+         [Element(Name="short")]
          private short shortValue;
-         @Element(name="int")
+         [Element(Name="int")]
          private int intValue;
-         @Element(name="float")
+         [Element(Name="float")]
          private float floatValue;
-         @Element(name="long")
+         [Element(Name="long")]
          private long longValue;
-         @Element(name="double")
+         [Element(Name="double")]
          private double doubleValue;
       }
       private static class ObjectEntry {
-         @Element(name="Boolean")
+         [Element(Name="Boolean")]
          private Boolean boolValue;
-         @Element(name="Byte")
+         [Element(Name="Byte")]
          private Byte byteValue;
-         @Element(name="Short")
+         [Element(Name="Short")]
          private Short shortValue;
-         @Element(name="Integer")
+         [Element(Name="Integer")]
          private Integer intValue;
-         @Element(name="Float")
+         [Element(Name="Float")]
          private Float floatValue;
-         @Element(name="Long")
+         [Element(Name="Long")]
          private Long longValue;
-         @Element(name="Double")
+         [Element(Name="Double")]
          private Double doubleValue;
-         @Element(name="String")
+         [Element(Name="String")]
          private String stringValue;
-         @Element(name="Enum")
+         [Element(Name="Enum")]
          private TestEnum enumValue;
       }
       private static enum TestEnum {

@@ -4,24 +4,24 @@ using System;
 #endregion
 namespace SimpleFramework.Xml.Core {
    public class NamespaceInheritanceTest : ValidationTestCase {
-      @Namespace(reference="namespace1")
+      [Namespace(Reference="namespace1")]
       private static class Aaa {
-         @Element(name="bbb", required=false)
+         [Element(Name="bbb", Required=false)]
          public Bbb bbb;
       }
-      @Namespace(reference="namespace2")
+      [Namespace(Reference="namespace2")]
       private static class Bbb {
-         @Element(name="aaa", required=false)
+         [Element(Name="aaa", Required=false)]
          public Aaa aaa;
       }
-      @Namespace(prefix="aaa", reference="namespace1")
+      [Namespace(Prefix="aaa", Reference="namespace1")]
       private static class AaaWithPrefix {
-         @Element(name="bbb", required=false)
+         [Element(Name="bbb", Required=false)]
          public BbbWithPrefix bbb;
       }
-      @Namespace(prefix="bbb", reference="namespace2")
+      [Namespace(Prefix="bbb", Reference="namespace2")]
       private static class BbbWithPrefix {
-         @Element(name="aaa", required=false)
+         [Element(Name="aaa", Required=false)]
          public AaaWithPrefix aaa;
       }
       public void TestNamespace() {

@@ -137,11 +137,11 @@ namespace SimpleFramework.Xml.Core {
       "      </unicode>\n"+
       "   </list>\n"+
       "</example>\n";
-      @Root(name="unicode")
+      [Root(Name="unicode")]
       private static class Unicode : Entry {
-         @Attribute(name="origin")
+         [Attribute(Name="origin")]
          private String origin;
-         @Element(name="text")
+         [Element(Name="text")]
          private String text;
          @Attribute
          private String name;
@@ -153,9 +153,9 @@ namespace SimpleFramework.Xml.Core {
          //public String GetName() {
          //   return name;
          //}
-      @Root(name="example")
+      [Root(Name="example")]
       private static class UnicodeExample {
-         @ElementList(name="list", type=Unicode.class)
+         [ElementList(Name="list", Type=Unicode.class)]
          private Dictionary<Unicode> list;
          public Unicode Get(String name) {
             return list.Get(name);

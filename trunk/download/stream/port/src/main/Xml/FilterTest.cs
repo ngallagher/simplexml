@@ -19,19 +19,19 @@ namespace SimpleFramework.Xml.Core {
       "     replaced with the path ${example.path}"+
       "   </text>\n"+
       "</root>";
-      @Root(name="root")
+      [Root(Name="root")]
       private static class Entry {
-         @Attribute(name="number")
+         [Attribute(Name="number")]
          private int number;
-         @Attribute(name="flag")
+         [Attribute(Name="flag")]
          private bool bool;
-         @Element(name="constant")
+         [Element(Name="constant")]
          private String constant;
-         @Element(name="name")
+         [Element(Name="name")]
          private String name;
-         @Element(name="path")
+         [Element(Name="path")]
          private String path;
-         @Element(name="text")
+         [Element(Name="text")]
          private String text;
       }
       static {

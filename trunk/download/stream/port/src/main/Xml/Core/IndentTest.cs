@@ -14,20 +14,20 @@ namespace SimpleFramework.Xml.Core {
       "     <name>Name Surname</name> \n"+
       "   </details>\n"+
       "</contact>";
-      @Root(name="contact")
+      [Root(Name="contact")]
       private static class Contact {
-         @Attribute(name="id")
+         [Attribute(Name="id")]
          private String id;
-         @Element(name="details")
+         [Element(Name="details")]
          private Details details;
       }
-      @Root(name="details")
+      [Root(Name="details")]
       private static class Details {
-         @Element(name="title")
+         [Element(Name="title")]
          private String title;
-         @Element(name="mail")
+         [Element(Name="mail")]
          private String mail;
-         @Element(name="name")
+         [Element(Name="name")]
          private String name;
       }
       public void TestIndent() {

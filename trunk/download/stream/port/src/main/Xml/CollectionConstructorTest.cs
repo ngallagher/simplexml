@@ -26,9 +26,9 @@ namespace SimpleFramework.Xml.Core {
       "    <entry name='b' value='2'/>"+
       "  </example>"+
       "</composite>";
-      @Root(name="example")
+      [Root(Name="example")]
       private static class MapConstructor {
-         @ElementMap(name="list", entry="element", key="key", attribute=true, inline=true)
+         [ElementMap(Name="list", Entry="element", Key="key", Attribute=true, Inline=true)]
          private readonly Map<String, Entry> map;
          public MapConstructor(@ElementMap(name="list", entry="element", key="key", attribute=true, inline=true) Map<String, Entry> map) {
             this.map = map;
@@ -37,9 +37,9 @@ namespace SimpleFramework.Xml.Core {
             return map.Size();
          }
       }
-      @Root(name="example")
+      [Root(Name="example")]
       private static class CollectionConstructor {
-         @ElementList(name="list", inline=true)
+         [ElementList(Name="list", Inline=true)]
          private readonly Vector<Entry> vector;
          public CollectionConstructor(@ElementList(name="list", inline=true) Vector<Entry> vector) {
             this.vector = vector;
@@ -48,11 +48,11 @@ namespace SimpleFramework.Xml.Core {
             return vector.Size();
          }
       }
-      @Root(name="entry")
+      [Root(Name="entry")]
       private static class Entry {
-         @Attribute(name="name")
+         [Attribute(Name="name")]
          private readonly String name;
-         @Attribute(name="value")
+         [Attribute(Name="value")]
          private readonly String value;
          public Entry(@Attribute(name="name") String name, @Attribute(name="value") String value) {
             this.name = name;
@@ -69,15 +69,15 @@ namespace SimpleFramework.Xml.Core {
             return value;
          }
       }
-      @Root(name="example")
+      [Root(Name="example")]
       private static class ExtendedCollectionConstructor : CollectionConstructor {
          public ExtendedCollectionConstructor(@ElementList(name="list", inline=true) Vector<Entry> vector) {
             super(vector);
          }
       }
-      @Root(name="composite")
+      [Root(Name="composite")]
       private static class CollectionConstructorComposite {
-         @Element(name="example")
+         [Element(Name="example")]
          private CollectionConstructor collection;
          public CollectionConstructor Collection {
             get {

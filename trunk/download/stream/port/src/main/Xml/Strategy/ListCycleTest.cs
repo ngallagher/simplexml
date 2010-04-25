@@ -54,34 +54,34 @@ namespace SimpleFramework.Xml.Strategy {
       "   <string>entry five</string>  \n\r"+
       "   <example ref='main'/>\n"+
       "</inlinePrimitiveListExample>";
-      @Root(name="root")
+      [Root(Name="root")]
       private static class ListExample {
-         @ElementList(name="one", type=Entry.class)
+         [ElementList(Name="one", Type=Entry.class)]
          public List<Entry> one;
-         @ElementList(name="two", type=Entry.class)
+         [ElementList(Name="two", Type=Entry.class)]
          public List<Entry> two;
-         @ElementList(name="three", type=Entry.class)
+         [ElementList(Name="three", Type=Entry.class)]
          public List<Entry> three;
-         @Element(name="example")
+         [Element(Name="example")]
          public ListExample example;
       }
       @Root
       private static class InlineListExample {
-         @ElementList(inline=true)
+         [ElementList(Inline=true)]
          public List<Entry> list;
          @Element
          public InlineListExample example;
       }
       @Root
       private static class InlinePrimitiveListExample {
-         @ElementList(inline=true, data=true)
+         [ElementList(Inline=true, Data=true)]
          public List<String> list;
          @Element
          public InlinePrimitiveListExample example;
       }
-      @Root(name="text")
+      [Root(Name="text")]
       private static class Entry {
-         @Attribute(name="value")
+         [Attribute(Name="value")]
          public String value;
          public Entry() {
             super();
@@ -90,14 +90,14 @@ namespace SimpleFramework.Xml.Strategy {
             this.value = value;
          }
       }
-      @Root(name="root")
+      [Root(Name="root")]
       private static class NestedListExample {
-         @ElementList(name="list", type=Value.class)
+         [ElementList(Name="list", Type=Value.class)]
          public List<Value> list;
       }
-      @Root(name="value")
+      [Root(Name="value")]
       private static class Value {
-         @ElementList(name="list", type=Value.class, required=false)
+         [ElementList(Name="list", Type=Value.class, Required=false)]
          private List<Value> list;
       }
       private Persister persister;

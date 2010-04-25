@@ -9,13 +9,13 @@ namespace SimpleFramework.Xml.Core {
       "<root number='1234' flag='true'>\n"+
       "   <value>complete</value>  \n\r"+
       "</root>";
-      @Root(name="root")
+      [Root(Name="root")]
       private static class Entry {
-         @Attribute(name="number", required=false)
+         [Attribute(Name="number", Required=false)]
          private int number = 9999;
-         @Attribute(name="flag")
+         [Attribute(Name="flag")]
          private bool bool;
-         @Element(name="value", required=false)
+         [Element(Name="value", Required=false)]
          private String value = "default";
          private bool validated;
          private bool committed;

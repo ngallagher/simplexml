@@ -14,7 +14,7 @@ namespace SimpleFramework.Xml.Core {
        "</missingArrayLengthExample>";
        @Root
        private static class MissingArrayLengthExample {
-           @ElementArray(entry="item")
+           [ElementArray(Entry="item")]
            private String[] array;
        }
        public void TestMissingArrayLength() {

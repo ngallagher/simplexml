@@ -20,13 +20,13 @@ namespace SimpleFramework.Xml.Core {
          //}
       @ElementMap
       private Map<String, String> defaultMap;
-      @ElementMap(keyType=Integer.class, valueType=Long.class)
+      [ElementMap(KeyType=Integer.class, ValueType=Long.class)]
       private Dictionary annotatedMap;
-      @ElementMap(value="value")
+      [ElementMap(Value="value")]
       private Map<String, String> bodyMap;
-      @ElementMap(value="value", key="key", attribute=true)
+      [ElementMap(Value="value", Key="key", Attribute=true)]
       private Map<String, String> attributeMap;
-      @ElementMap(entry="entry")
+      [ElementMap(Entry="entry")]
       private Map<Double, String> entryMap;
       @ElementMap
       private Map<CompositeKey, String> compositeMap;

@@ -7,10 +7,10 @@ namespace SimpleFramework.Xml.Core {
    public class NamespaceTest : ValidationTestCase {
       @Root
       @NamespaceList({
-         @Namespace(prefix="tax", reference="http://www.domain.com/tax"),
-         @Namespace(reference="http://www.domain.com/default")
+         [Namespace(Prefix="tax", Reference="http://www.domain.com/tax")]
+         [Namespace(Reference="http://www.domain.com/default")]
       })
-      @Namespace(prefix="per", reference="http://www.domain.com/person")
+      [Namespace(Prefix="per", Reference="http://www.domain.com/person")]
       private static class Person {
          @Element
          private Profession job;
@@ -41,12 +41,12 @@ namespace SimpleFramework.Xml.Core {
          }
       }
       @Root
-      @Namespace(prefix="jb", reference="http://www.domain.com/job")
+      [Namespace(Prefix="jb", Reference="http://www.domain.com/job")]
       private static class Profession {
          @Element
          private String title;
          @Attribute
-         @Namespace(reference="http://www.domain.com/tax")
+         [Namespace(Reference="http://www.domain.com/tax")]
          private int salary;
          @Attribute
          private int experience;
@@ -76,10 +76,10 @@ namespace SimpleFramework.Xml.Core {
       @Root
       private static class Employer {
          @Element
-         @Namespace(reference="http://www.domain.com/employer")
+         [Namespace(Reference="http://www.domain.com/employer")]
          private String name;
          @Element
-         @Namespace(prefix="count", reference="http://www.domain.com/count")
+         [Namespace(Prefix="count", Reference="http://www.domain.com/count")]
          private int employees;
          @Element
          private String address;

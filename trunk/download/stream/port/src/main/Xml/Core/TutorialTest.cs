@@ -23,21 +23,21 @@ namespace SimpleFramework.Xml.Core {
       "   </section>\n"+
       "</document>\n";
       @Root
-      @Namespace(reference = "http://www.domain.com/document")
+      [Namespace(Reference = "http://www.domain.com/document")]
       public static class Document {
-         @Element(name="author")
-         @Namespace(prefix="user", reference="http://www.domain.com/user")
+         [Element(Name="author")]
+         [Namespace(Prefix="user", Reference="http://www.domain.com/user")]
          private const String AUTHOR = "Niall Gallagher";
-         @Element(name="contact")
+         [Element(Name="contact")]
          private const String CONTACT = "niallg@users.sourceforge.net";
-         @Element(name="detail")
+         [Element(Name="detail")]
          private const Detail DETAIL = new Detail(
             "Stanford Press",
             "2001",
             "Palo Alto",
             "1st",
             "0-69-697269-4");
-         @ElementList(inline=true)
+         [ElementList(Inline=true)]
          private List<Section> list;
          @Attribute
          private String title;
@@ -53,7 +53,7 @@ namespace SimpleFramework.Xml.Core {
          }
       }
       @Root
-      @Namespace(reference="http://www.domain.com/detail")
+      [Namespace(Reference="http://www.domain.com/detail")]
       public static class Detail {
          @Element
          private String publisher;
@@ -78,11 +78,11 @@ namespace SimpleFramework.Xml.Core {
       }
       @Root
       @NamespaceList({
-      @Namespace(prefix="para", reference="http://www.domain.com/paragraph")})
+      [Namespace(Prefix="para", Reference="http://www.domain.com/paragraph")})]
       public static class Section {
          @Attribute
          private String name;
-         @ElementList(inline = true)
+         [ElementList(Inline = true)]
          private List<Paragraph> list;
          private Section() {
             super();
@@ -96,7 +96,7 @@ namespace SimpleFramework.Xml.Core {
          }
       }
       @Root
-      @Namespace(reference = "http://www.domain.com/paragraph")
+      [Namespace(Reference = "http://www.domain.com/paragraph")]
       public static class Paragraph {
          private String text;
          @Text

@@ -20,7 +20,7 @@ namespace SimpleFramework.Xml.Util {
          //   return value;
          //}
       @Root
-      @Convert(ExtendedItemConverter.class)
+      [Convert(ExtendedItemConverter.class)]
       private static class ExtendedItem : Item {
          public ExtendedItem(int value) {
             super(value);
@@ -58,7 +58,7 @@ namespace SimpleFramework.Xml.Util {
          @Element
          private Item item; // handled by the registry
          @Element
-         @Convert(AnnotationItemConverter.class) // handled by annotation
+         [Convert(AnnotationItemConverter.class)]
          private Item overriddenItem;
          @Element
          private Item extendedItem; // handled by class annotation

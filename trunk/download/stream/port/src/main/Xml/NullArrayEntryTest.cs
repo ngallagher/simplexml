@@ -51,7 +51,7 @@ namespace SimpleFramework.Xml.Core {
       }
       @Root
       private static class ExampleArray {
-         @ElementArray(name="list", entry="substitute") // XXX bad error if the length= attribute is missing
+         [ElementArray(Name="list", Entry="substitute")]
          private Entry[] list;
          public Entry[] Array {
             get {
@@ -63,7 +63,7 @@ namespace SimpleFramework.Xml.Core {
          //}
       @Root
       private static class ExamplePrimitiveArray {
-         @ElementArray(name="list", entry="substitute") // XXX bad error if this was an array
+         [ElementArray(Name="list", Entry="substitute")]
          private String[] list;
          public String[] Array {
             get {

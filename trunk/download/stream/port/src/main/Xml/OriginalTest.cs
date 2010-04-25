@@ -45,7 +45,7 @@ namespace SimpleFramework.Xml.Core {
       "   </mapEntry>\n"+
       "</exampleWithOriginals>\n";
       @Root
-      @Namespace(prefix="entry", reference="http://domain/entry")
+      [Namespace(Prefix="entry", Reference="http://domain/entry")]
       private static class Entry {
          @Attribute
          private String name;
@@ -71,15 +71,15 @@ namespace SimpleFramework.Xml.Core {
       }
       /*
       @Root
-      @NamespaceList({@Namespace(prefix="root", reference="http://domain/entry")})
+      [NamespaceList({@Namespace(prefix="root", Reference="http://domain/entry")})]
       private static class ExampleWithOriginals {
          @ElementList
          private Collection<String> list = new CopyOnWriteArrayList<String>();
          @ElementMap
          private Map<String, Double> map = new ConcurrentHashMap<String, Double>();
-         @ElementList(inline=true, entry="listEntry")
+         [ElementList(Inline=true, Entry="listEntry")]
          private Collection<Entry> inlineList = new CopyOnWriteArrayList<Entry>();
-         @ElementMap(inline=true, entry="mapEntry")
+         [ElementMap(Inline=true, Entry="mapEntry")]
          private Map<Double, Entry> inlineMap = new ConcurrentHashMap<Double, Entry>();
          public ExampleWithOriginals() {
             this.list.add("original from constructor");

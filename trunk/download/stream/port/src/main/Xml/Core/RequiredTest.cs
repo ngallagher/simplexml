@@ -14,13 +14,13 @@ namespace SimpleFramework.Xml.Core {
       private const String OPTIONAL =
       "<?xml version=\"1.0\"?>\n"+
       "<root flag='true'/>";
-      @Root(name="root")
+      [Root(Name="root")]
       private static class Entry {
-         @Attribute(name="number", required=false)
+         [Attribute(Name="number", Required=false)]
          private int number = 9999;
-         @Attribute(name="flag")
+         [Attribute(Name="flag")]
          private bool bool;
-         @Element(name="value", required=false)
+         [Element(Name="value", Required=false)]
          private String value = "default";
          public int Number {
             get {

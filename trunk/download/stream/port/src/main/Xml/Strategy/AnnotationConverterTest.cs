@@ -152,10 +152,10 @@ namespace SimpleFramework.Xml.Strategy {
       @Root
       private static class FarmExample {
          @Element
-         @Convert(ChickenConverter.class)
+         [Convert(ChickenConverter.class)]
          private Chicken chicken;
          @Element
-         @Convert(CowConverter.class)
+         [Convert(CowConverter.class)]
          private Cow cow;
          public FarmExample(@Element(name="chicken") Chicken chicken, @Element(name="cow") Cow cow) {
             this.chicken = chicken;

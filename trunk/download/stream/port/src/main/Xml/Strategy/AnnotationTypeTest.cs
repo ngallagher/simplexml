@@ -18,10 +18,10 @@ namespace SimpleFramework.Xml.Strategy {
       }
       @Root
       private static class AnnotationExample {
-         @Component(name="name")
+         [Component(Name="name")]
          @Element
          private String name;
-         @Component(name="age")
+         [Component(Name="age")]
          @Attribute
          private int age;
          public AnnotationExample(@Element(name="name") String name, @Attribute(name="age") int age) {

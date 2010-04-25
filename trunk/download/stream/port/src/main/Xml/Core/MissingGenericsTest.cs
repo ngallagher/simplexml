@@ -7,13 +7,13 @@ namespace SimpleFramework.Xml.Core {
    public class MissingGenericsTest : TestCase {
        @Root
        private static class MissingGenerics {
-           @SuppressWarnings("unchecked")
-           @ElementMap(keyType=String.class, valueType=String.class)
+           [SuppressWarnings("unchecked")]
+           [ElementMap(KeyType=String.class, ValueType=String.class)]
            private Dictionary map = new HashMap();
-           @SuppressWarnings("unchecked")
-           @ElementList(type=String.class)
+           [SuppressWarnings("unchecked")]
+           [ElementList(Type=String.class)]
            private List list = new ArrayList();
-           @SuppressWarnings("unchecked")
+           [SuppressWarnings("unchecked")]
            public Dictionary Map {
               get {
                   return map;
@@ -30,7 +30,7 @@ namespace SimpleFramework.Xml.Core {
            //public List GetList() {
            //    return list;
            //}
-       @SuppressWarnings("unchecked")
+       [SuppressWarnings("unchecked")]
        public void TestMissingGenerics() {
            MissingGenerics example = new MissingGenerics();
            Persister persister = new Persister();

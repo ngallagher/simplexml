@@ -9,9 +9,9 @@ package SimpleFramework.Xml.transform;
 public class PrimitiveArrayTransformTest : ValidationTestCase {
    @Root
    public static class IntegerArrayExample {
-      @Attribute(required=false)
+      [Attribute(Required=false)]
       private int[] attribute;
-      @Element(required=false)
+      [Element(Required=false)]
       private int[] element;
       @ElementList
       private List<int[]> list;

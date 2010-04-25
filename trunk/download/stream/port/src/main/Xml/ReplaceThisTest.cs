@@ -25,7 +25,7 @@ namespace SimpleFramework.Xml.Core {
            //}
        @Root
        public static class ReplaceThisParent {
-           @ElementList(required = false)
+           [ElementList(Required = false)]
            Set<String> children;
            public ReplaceThisParent() {
                this.children = new TreeSet<String>();

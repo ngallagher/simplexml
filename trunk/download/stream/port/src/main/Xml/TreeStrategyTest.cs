@@ -94,50 +94,50 @@ namespace SimpleFramework.Xml.Strategy {
       "     </entry>\n"+
       "  </list>\n"+
       "</root>";
-      @Root(name="root")
+      [Root(Name="root")]
       public static class RootEntry {
-         @Attribute(name="number")
+         [Attribute(Name="number")]
          private int number;
-         @Attribute(name="flag")
+         [Attribute(Name="flag")]
          private bool bool;
-         @Element(name="constant")
+         [Element(Name="constant")]
          private String constant;
-         @Element(name="name")
+         [Element(Name="name")]
          private String name;
-         @Element(name="path")
+         [Element(Name="path")]
          private String path;
-         @Element(name="text")
+         [Element(Name="text")]
          private String text;
-         @Element(name="child")
+         [Element(Name="child")]
          private ChildEntry entry;
-         @ElementList(name="list", type=ElementEntry.class)
+         [ElementList(Name="list", Type=ElementEntry.class)]
          private Collection list;
       }
-      @Root(name="child")
+      [Root(Name="child")]
       public static class ChildEntry {
-         @Attribute(name="name")
+         [Attribute(Name="name")]
          private String name;
-         @Element(name="one")
+         [Element(Name="one")]
          private String one;
-         @Element(name="two")
+         [Element(Name="two")]
          private String two;
-         @Element(name="three")
+         [Element(Name="three")]
          private String three;
-         @Element(name="grand-child")
+         [Element(Name="grand-child")]
          private GrandChildEntry grandChild;
       }
-      @Root(name="grand-child")
+      [Root(Name="grand-child")]
       public static class GrandChildEntry {
-         @Element(name="entry-one")
+         [Element(Name="entry-one")]
          private ElementEntry entryOne;
-         @Element(name="entry-two")
+         [Element(Name="entry-two")]
          private ElementEntry entryTwo;
       }
-      @Root(name="entry")
+      [Root(Name="entry")]
       public static class ElementEntry {
-         @Attribute(name="key")
+         [Attribute(Name="key")]
          private String name;
-         @Element(name="value")
+         [Element(Name="value")]
          private String value;
       }
       private static class EmptyFilter : Filter {

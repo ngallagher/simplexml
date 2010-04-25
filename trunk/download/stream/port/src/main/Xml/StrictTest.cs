@@ -40,26 +40,26 @@ namespace SimpleFramework.Xml.Core {
       "      <integer>12345</integer>\n" +
       "   </object>\n" +
       "</object>\n";
-      @Root(name="root", strict=false)
+      [Root(Name="root", Strict=false)]
       private static class StrictExample {
-         @ElementArray(name="list", entry="item")
+         [ElementArray(Name="list", Entry="item")]
          private StrictEntry[] list;
-         @Element(name="object")
+         [Element(Name="object")]
          private StrictObject object;
       }
-      @Root(name="entry", strict=false)
+      [Root(Name="entry", Strict=false)]
       private static class StrictEntry {
-         @Element(name="value")
+         [Element(Name="value")]
          private String value;
       }
-      @Root(strict=false)
+      [Root(Strict=false)]
       private static class StrictObject {
-         @Element(name="integer")
+         [Element(Name="integer")]
          private int integer;
       }
-      @Root(name="object", strict=false)
+      [Root(Name="object", Strict=false)]
       private static class NamedStrictObject : StrictObject {
-         @Element(name="name")
+         [Element(Name="name")]
          private String name;
       }
       private Persister persister;

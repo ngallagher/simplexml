@@ -10,10 +10,10 @@ namespace SimpleFramework.Xml.Util {
    public class AnnotationCycleStrategyTest : ValidationTestCase {
       @Root
       public static class EntryListExample {
-         @ElementList(inline=true)
+         [ElementList(Inline=true)]
          private List<Entry> list = new ArrayList<Entry>();
          @Element
-         @Convert(OtherEntryConverter.class)
+         [Convert(OtherEntryConverter.class)]
          private Entry primary;
          public Entry Primary {
             get {

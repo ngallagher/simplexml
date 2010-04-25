@@ -6,18 +6,18 @@ using System;
 #endregion
 namespace SimpleFramework.Xml.Core {
    public class FieldScannerTest : TestCase {
-      @Root(name="name")
+      [Root(Name="name")]
       public static class Example {
-         @ElementList(name="list", type=Entry.class)
+         [ElementList(Name="list", Type=Entry.class)]
          private Collection<Entry> list;
-         @Attribute(name="version")
+         [Attribute(Name="version")]
          private int version;
-         @Attribute(name="name")
+         [Attribute(Name="name")]
          private String name;
       }
-      @Root(name="entry")
+      [Root(Name="entry")]
       public static class Entry {
-         @Attribute(name="text")
+         [Attribute(Name="text")]
          public String text;
       }
       public void TestExample() {

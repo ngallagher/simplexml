@@ -31,27 +31,27 @@ namespace SimpleFramework.Xml.Core {
       "</text>\r\n";
       private const String EMPTY_TEXT =
       "<text name='a' version='ONE'/>";
-      @Root(name="test")
+      [Root(Name="test")]
       private static class TextList {
-         @ElementArray(name="array", entry="entry")
+         [ElementArray(Name="array", Entry="entry")]
          private TextEntry[] array;
       }
-      @Root(name="text")
+      [Root(Name="text")]
       private static class TextEntry {
-         @Attribute(name="name")
+         [Attribute(Name="name")]
          private String name;
-         @Attribute(name="version")
+         [Attribute(Name="version")]
          private Version version;
-         @Text(data=true)
+         [Text(Data=true)]
          private String text;
       }
-      @Root(name="text")
+      [Root(Name="text")]
       private static class OptionalTextEntry {
-         @Attribute(name="name")
+         [Attribute(Name="name")]
          private String name;
-         @Attribute(name="version")
+         [Attribute(Name="version")]
          private Version version;
-         @Text(required=false)
+         [Text(Required=false)]
          private String text;
       }
       private static class DuplicateTextEntry : TextEntry {
@@ -59,13 +59,13 @@ namespace SimpleFramework.Xml.Core {
          private String duplicate;
       }
       private static class IllegalElementTextEntry : TextEntry {
-         @Element(name="illegal")
+         [Element(Name="illegal")]
          private String name;
       }
       private static class NonPrimitiveTextEntry {
-         @Attribute(name="name")
+         [Attribute(Name="name")]
          private String name;
-         @Attribute(name="version")
+         [Attribute(Name="version")]
          private Version version;
          @Text
          private List list;

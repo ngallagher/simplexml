@@ -14,16 +14,16 @@ namespace SimpleFramework.Xml.Core {
          THREE,
          FOUR
       }
-      @Root(name="example")
+      [Root(Name="example")]
       private static class NumberArray {
-         @Element(name="array")
+         [Element(Name="array")]
          private readonly Number[] array;
          private readonly int size;
          public NumberArray(@Element(name="array") Number[] array, @Attribute(name="size") int size) {
             this.array = array;
             this.size = size;
          }
-         @Attribute(name="size")
+         [Attribute(Name="size")]
          public int Length {
             get {
                return size;

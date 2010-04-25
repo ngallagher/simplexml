@@ -19,9 +19,9 @@ namespace SimpleFramework.Xml.Util {
       "      <match pattern='/html/*' value='text/html'/>\n"+
       "   </list>\n"+
       "</test>";
-      @Root(name="match")
+      [Root(Name="match")]
       private static class ContentType : Match {
-         @Attribute(name="value")
+         [Attribute(Name="value")]
          private String value;
          @Attribute
          private String pattern;
@@ -43,11 +43,11 @@ namespace SimpleFramework.Xml.Util {
             return String.format("%s=%s", pattern, value);
          }
       }
-      @Root(name="test")
+      [Root(Name="test")]
       private static class ContentResolver : Iterable<ContentType> {
-         @ElementList(name="list", type=ContentType.class)
+         [ElementList(Name="list", Type=ContentType.class)]
          private Resolver<ContentType> list;
-         @Attribute(name="name")
+         [Attribute(Name="name")]
          private String name;
          private ContentResolver() {
             this.list = new Resolver<ContentType>();

@@ -8,10 +8,10 @@ using System;
 namespace SimpleFramework.Xml.Util {
    public class RegistryStrategyTest : ValidationTestCase {
       @Root
-      @Namespace(prefix="a", reference="http://domain/a")
+      [Namespace(Prefix="a", Reference="http://domain/a")]
       private static class PetShop {
          @ElementList
-         @Namespace(prefix="b", reference="http://domain/b")
+         [Namespace(Prefix="b", Reference="http://domain/b")]
          private Dictionary<Pet> pets;
          public PetShop(){
             this.pets = new Dictionary<Pet>();

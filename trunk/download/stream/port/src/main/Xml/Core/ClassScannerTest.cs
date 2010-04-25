@@ -5,8 +5,8 @@ using System;
 namespace SimpleFramework.Xml.Core {
    public class ClassScannerTest : TestCase {
       @Root
-      @Order(elements={"a", "b"}, attributes={"A", "B"})
-      @Namespace(prefix="prefix", reference="http://domain/reference")
+      [Order(Elements={"a", "b"}, Attributes={"A", "B"})]
+      [Namespace(Prefix="prefix", Reference="http://domain/reference")]
       private static class Example {
          @Commit
          public void Commit() {

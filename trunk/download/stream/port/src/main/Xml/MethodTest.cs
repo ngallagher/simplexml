@@ -27,7 +27,7 @@ namespace SimpleFramework.Xml.Core {
       "   <longValue>1234567</longValue>\n"+
       "   <doubleValue>1234567.89</doubleValue>  \n\r"+
       "</implicitMethodNameExample>";
-      @Root(name="test")
+      [Root(Name="test")]
       private static class ExplicitMethodNameExample {
          protected bool boolValue;
          protected byte byteValue;
@@ -39,7 +39,7 @@ namespace SimpleFramework.Xml.Core {
          public ExplicitMethodNameExample() {
             super();
          }
-         @Element(name="bool")
+         [Element(Name="bool")]
          public bool BooleanValue {
             get {
                return boolValue;

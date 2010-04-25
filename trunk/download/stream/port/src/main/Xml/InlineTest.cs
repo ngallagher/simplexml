@@ -20,11 +20,11 @@ namespace SimpleFramework.Xml.Core {
       "   <string>Example 2</string>\r\n"+
       "   <string>Example 3</string>\r\n"+
       "</test>";
-      @Root(name="test")
+      [Root(Name="test")]
       private static class InlineTextList {
          @Element
          private String message;
-         @ElementList(inline=true)
+         [ElementList(Inline=true)]
          private List<TextEntry> list;
          @Attribute
          private Version version;
@@ -32,11 +32,11 @@ namespace SimpleFramework.Xml.Core {
             return list.Get(index);
          }
       }
-      @Root(name="test")
+      [Root(Name="test")]
       private static class InlinePrimitiveList {
          @Element
          private String message;
-         @ElementList(inline=true)
+         [ElementList(Inline=true)]
          private List<String> list;
          @Attribute
          private Version version;
@@ -44,7 +44,7 @@ namespace SimpleFramework.Xml.Core {
             return list.Get(index);
          }
       }
-      @Root(name="text")
+      [Root(Name="text")]
       private static class TextEntry {
          @Attribute
          private String name;
@@ -55,7 +55,7 @@ namespace SimpleFramework.Xml.Core {
       }
       @Root
       private static class SimpleInlineList {
-         @ElementList(inline=true)
+         [ElementList(Inline=true)]
          private ArrayList<SimpleEntry> list = new ArrayList<SimpleEntry>();
       }
       @Root
@@ -65,12 +65,12 @@ namespace SimpleFramework.Xml.Core {
       }
       @Root
       private static class SimplePrimitiveInlineList {
-         @ElementList(inline=true)
+         [ElementList(Inline=true)]
          private ArrayList<String> list = new ArrayList<String>();
       }
       @Root
       private static class SimpleNameInlineList {
-         @ElementList(inline=true, entry="item")
+         [ElementList(Inline=true, Entry="item")]
          private ArrayList<SimpleEntry> list = new ArrayList<SimpleEntry>();
       }
       private static enum Version {

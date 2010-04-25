@@ -5,7 +5,7 @@ using System;
 #endregion
 namespace SimpleFramework.Xml.Core {
    public class MethodScannerDefaultTest : TestCase {
-      @Default(DefaultType.PROPERTY)
+      [Default(DefaultType.PROPERTY)]
       public static class NoAnnotations {
          private String[] array;
          private Map<String, String> map;
@@ -83,7 +83,7 @@ namespace SimpleFramework.Xml.Core {
          //public void SetPrice(int price) {
          //   this.price = price;
          //}
-      @Default(DefaultType.PROPERTY)
+      [Default(DefaultType.PROPERTY)]
       public static class MixedAnnotations {
          private String[] array;
          private Map<String, String> map;
