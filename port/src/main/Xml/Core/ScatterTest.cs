@@ -32,11 +32,11 @@ namespace SimpleFramework.Xml.Core {
       "   <include name='4' file='4.txt'/>\r\n"+
       "   <exclude name='5' file='5.txt'/>\r\n"+
       "</test>";
-      @Root(name="test")
+      [Root(Name="test")]
       private static class InlineTextList {
          @Element
          private String message;
-         @ElementList(inline=true)
+         [ElementList(Inline=true)]
          private List<Double> numbers;
          @Transient
          private List<TextEntry> list;
@@ -67,11 +67,11 @@ namespace SimpleFramework.Xml.Core {
             return list.Get(index);
          }
       }
-      @Root(name="test")
+      [Root(Name="test")]
       private static class InlinePrimitiveList {
          @Element
          private String message;
-         @ElementList(inline=true)
+         [ElementList(Inline=true)]
          private List<String> list;
          @Attribute
          private Version version;
@@ -79,7 +79,7 @@ namespace SimpleFramework.Xml.Core {
             return list.Get(index);
          }
       }
-      @Root(name="text")
+      [Root(Name="text")]
       private static class TextEntry {
          @Attribute
          private String name;
@@ -90,7 +90,7 @@ namespace SimpleFramework.Xml.Core {
       }
       @Root
       private static class SimpleInlineList {
-         @ElementList(inline=true)
+         [ElementList(Inline=true)]
          private ArrayList<SimpleEntry> list = new ArrayList<SimpleEntry>();
       }
       @Root
@@ -100,14 +100,14 @@ namespace SimpleFramework.Xml.Core {
       }
       @Root
       private static class SimplePrimitiveInlineList {
-         @ElementList(inline=true)
+         [ElementList(Inline=true)]
          private ArrayList<String> list = new ArrayList<String>();
       }
-      @Root(name="test")
+      [Root(Name="test")]
       private static class InlineNamedList {
-         @ElementList(inline=true, entry="include")
+         [ElementList(Inline=true, Entry="include")]
          private Dictionary<FileMatch> includeList;
-         @ElementList(inline=true, entry="exclude")
+         [ElementList(Inline=true, Entry="exclude")]
          private Dictionary<FileMatch> excludeList;
          @Attribute
          private Version version;

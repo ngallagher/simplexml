@@ -71,7 +71,7 @@ namespace SimpleFramework.Xml.Core {
       }
       @Root
       private static class ExampleCollection {
-         @ElementList(name="list", entry="substitute")
+         [ElementList(Name="list", Entry="substitute")]
          private List<Entry> list;
          public List<Entry> List {
             get {
@@ -83,7 +83,7 @@ namespace SimpleFramework.Xml.Core {
          //}
       @Root
       private static class ExampleInlineCollection {
-         @ElementList(name="list", entry="substitute", inline=true)
+         [ElementList(Name="list", Entry="substitute", Inline=true)]
          private List<Entry> list;
          public List<Entry> List {
             get {
@@ -95,7 +95,7 @@ namespace SimpleFramework.Xml.Core {
          //}
       @Root
       private static class ExamplePrimitiveCollection {
-         @ElementList(name="list", entry="substitute")
+         [ElementList(Name="list", Entry="substitute")]
          private List<Character> list;
          public List<Character> List {
             get {
@@ -107,7 +107,7 @@ namespace SimpleFramework.Xml.Core {
          //}
       @Root
       private static class ExamplePrimitiveInlineCollection {
-         @ElementList(name="list", entry="substitute", inline=true)
+         [ElementList(Name="list", Entry="substitute", Inline=true)]
          private List<String> list;
          public List<String> List {
             get {

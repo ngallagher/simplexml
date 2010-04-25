@@ -8,16 +8,16 @@ namespace SimpleFramework.Xml.Core {
          "<example name='name'>"+
          "   <value>some text here</value>"+
          "</example>";
-      @Root(name="example")
+      [Root(Name="example")]
       private static class ReadOnlyFieldExample {
-         @Attribute(name="name") private readonly String name;
-         @Element(name="value") private readonly String value;
+         [Attribute(Name="name")]
+         [Element(Name="value")]
          public ReadOnlyFieldExample(@Attribute(name="name") String name, @Element(name="value") String value) {
             this.name = name;
             this.value = value;
          }
       }
-      @Root(name="example")
+      [Root(Name="example")]
       private static class ReadOnlyMethodExample {
          private readonly String name;
          private readonly String value;
@@ -25,7 +25,7 @@ namespace SimpleFramework.Xml.Core {
             this.name = name;
             this.value = value;
          }
-         @Attribute(name="name")
+         [Attribute(Name="name")]
          public String Name {
             get {
                return name;
@@ -42,7 +42,7 @@ namespace SimpleFramework.Xml.Core {
          //public String GetValue() {
          //   return value;
          //}
-      @Root(name="example")
+      [Root(Name="example")]
       private static class IllegalReadOnlyMethodExample {
          private readonly String name;
          private readonly String value;
@@ -50,7 +50,7 @@ namespace SimpleFramework.Xml.Core {
             this.name = name;
             this.value = value;
          }
-         @Attribute(name="name")
+         [Attribute(Name="name")]
          public String Name {
             get {
                return name;

@@ -14,24 +14,24 @@ namespace SimpleFramework.Xml.Core {
       "</a>\n";
       @Root
       @NamespaceList({
-      @Namespace(prefix="x", reference="http://domain/x"),
-      @Namespace(prefix="z", reference="http://domain/z")})
-      @Namespace(reference="http://domain/z")
+      [Namespace(Prefix="x", Reference="http://domain/x")]
+      [Namespace(Prefix="z", Reference="http://domain/z")})]
+      [Namespace(Reference="http://domain/z")]
       private static class A {
          @Element
-         @Namespace(prefix="y", reference="http://domain/y")
+         [Namespace(Prefix="y", Reference="http://domain/y")]
          private B b;
       }
       @Root
       private static class B {
          @Element
-         @Namespace(reference="http://domain/c")
+         [Namespace(Reference="http://domain/c")]
          private C c;
       }
       @Root
       private static class C{
          @Element
-         @Namespace(reference="http://domain/z")
+         [Namespace(Reference="http://domain/z")]
          private String d;
       }
       public void TestScope() {

@@ -6,12 +6,12 @@ using System;
 #endregion
 namespace SimpleFramework.Xml.Core {
    public class MethodContactTest : TestCase {
-      @Root(name="name")
+      [Root(Name="name")]
       public static class Example {
          private Collection<Entry> list;
          private float version;
          private String name;
-         @ElementList(name="list", type=Entry.class)
+         [ElementList(Name="list", Type=Entry.class)]
          public Collection<Entry> List {
             get {
                return list;
@@ -54,9 +54,9 @@ namespace SimpleFramework.Xml.Core {
          //public String GetName() {
          //   return name;
          //}
-      @Root(name="entry")
+      [Root(Name="entry")]
       public static class Entry {
-         @Attribute(name="text")
+         [Attribute(Name="text")]
          public String text;
       }
       public void TestContact() {

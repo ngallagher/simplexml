@@ -68,7 +68,7 @@ namespace SimpleFramework.Xml.Util {
          }
       }
       @Root
-      @Convert(EntryConverter.class)
+      [Convert(EntryConverter.class)]
       public static class Entry {
          private readonly String name;
          private readonly String value;
@@ -97,7 +97,7 @@ namespace SimpleFramework.Xml.Util {
                    entry.value.Equals(value);
          }
       }
-      @Convert(ExtendedEntryConverter.class)
+      [Convert(ExtendedEntryConverter.class)]
       public static class ExtendedEntry : Entry {
          private readonly int code;
          public ExtendedEntry(String name, String value, int code) {

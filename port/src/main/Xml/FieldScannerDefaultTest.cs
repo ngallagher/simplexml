@@ -5,7 +5,7 @@ using System;
 #endregion
 namespace SimpleFramework.Xml.Core {
    public class FieldScannerDefaultTest : TestCase {
-      @Default(DefaultType.FIELD)
+      [Default(DefaultType.FIELD)]
       private static class NoAnnotations {
          private String name;
          private int value;
@@ -15,7 +15,7 @@ namespace SimpleFramework.Xml.Core {
          private List<String> list;
          private Map<String, String> map;
       }
-      @Default(DefaultType.FIELD)
+      [Default(DefaultType.FIELD)]
       private static class MixedAnnotations {
          private String name;
          private @Attribute int value;

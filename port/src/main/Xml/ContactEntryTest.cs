@@ -10,17 +10,17 @@ namespace SimpleFramework.Xml.Util {
    public class ContactEntryTest : ValidationTestCase {
       @Root
       public static class EntryList {
-         @ElementList(inline=true)
+         [ElementList(Inline=true)]
          private List<Entry> list;
          @Element
-         @Convert(OtherEntryConverter.class)
+         [Convert(OtherEntryConverter.class)]
          private Entry other;
          @Element
          private Entry inheritConverter;
          @Element
          private Entry polymorhic;
          @Element
-         @Convert(EntryListConverter.class)
+         [Convert(EntryListConverter.class)]
          private List<Entry> otherList;
          public EntryList() {
             this("Default", "Value");

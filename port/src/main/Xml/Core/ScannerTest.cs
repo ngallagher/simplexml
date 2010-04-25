@@ -7,25 +7,25 @@ using System;
 #endregion
 namespace SimpleFramework.Xml.Core {
    public class ScannerTest : TestCase {
-      @Root(name="name")
+      [Root(Name="name")]
       public static class Example {
-         @ElementList(name="list", type=Entry.class)
+         [ElementList(Name="list", Type=Entry.class)]
          private Collection<Entry> list;
-         @Attribute(name="version")
+         [Attribute(Name="version")]
          private int version;
-         @Attribute(name="name")
+         [Attribute(Name="name")]
          private String name;
       }
-      @Root(name="entry")
+      [Root(Name="entry")]
       public static class Entry {
-         @Attribute(name="text")
+         [Attribute(Name="text")]
          public String text;
       }
-      @Root(name="name", strict=false)
+      [Root(Name="name", Strict=false)]
       public static class MixedExample : Example {
          private Entry entry;
          private String text;
-         @Element(name="entry", required=false)
+         [Element(Name="entry", Required=false)]
          public Entry Entry {
             get {
                return entry;
@@ -56,7 +56,7 @@ namespace SimpleFramework.Xml.Core {
          //}
       public static class DuplicateAttributeExample : Example {
          private String name;
-         @Attribute(name="name")
+         [Attribute(Name="name")]
          public String Name {
             get {
                return name;
@@ -73,7 +73,7 @@ namespace SimpleFramework.Xml.Core {
          //}
       public static class NonMatchingElementExample {
          private String name;
-         @Element(name="name", required=false)
+         [Element(Name="name", Required=false)]
          public String Name {
             get {
                return name;

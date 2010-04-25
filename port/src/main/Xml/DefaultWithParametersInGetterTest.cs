@@ -5,7 +5,7 @@ using System;
 namespace SimpleFramework.Xml.Core {
    public class DefaultWithParametersInGetterTest : ValidationTestCase {
       @Root
-      @Default(DefaultType.PROPERTY)
+      [Default(DefaultType.PROPERTY)]
       static class DefaultTestClass {
          private bool flag;
          private int foo;
@@ -34,7 +34,7 @@ namespace SimpleFramework.Xml.Core {
          //   this.flag = flag;
          //}
       @Root
-      @Default(DefaultType.PROPERTY)
+      [Default(DefaultType.PROPERTY)]
       static class DefaultTestClassWithInvalidTransient {
          private int foo;
          public int Foo {
@@ -53,7 +53,7 @@ namespace SimpleFramework.Xml.Core {
          }
       }
       @Root
-      @Default(DefaultType.PROPERTY)
+      [Default(DefaultType.PROPERTY)]
       static class DefaultTestClassWithInvalidElement {
          private String name;
          @Element

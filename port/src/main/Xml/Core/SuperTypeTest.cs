@@ -31,9 +31,9 @@ namespace SimpleFramework.Xml.Core {
             return "Inner: " + superType.ToString();
          }
       }
-      @Root(name="objects")
+      [Root(Name="objects")]
       public static class MyMap {
-         @ElementMap(entry="object", key="key", attribute=true, inline=true)
+         [ElementMap(Entry="object", Key="key", Attribute=true, Inline=true)]
          private Map<String, SuperType> map = new HashMap<String, SuperType>();
          public Map<String, SuperType> getInternalMap() {
             return map;

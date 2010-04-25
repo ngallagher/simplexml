@@ -33,9 +33,9 @@ namespace SimpleFramework.Xml.Core {
       private static class Example {
          @Element
          private int integer;
-         @Element(required=false)
+         [Element(Required=false)]
          private String string;
-         @Attribute(name="number", required=false)
+         [Attribute(Name="number", Required=false)]
          private long number;
          public Example(@Element(name="integer") int integer){
             this.integer = integer;
@@ -52,7 +52,7 @@ namespace SimpleFramework.Xml.Core {
       }
       @Root
       private static class ArrayExample {
-         @ElementArray(name="array")
+         [ElementArray(Name="array")]
          private readonly String[] array;
          public ArrayExample(@ElementArray(name="array") String[] array) {
             this.array = array;

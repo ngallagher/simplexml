@@ -5,7 +5,7 @@ using System;
 #endregion
 namespace SimpleFramework.Xml.Core {
    public class RedundantOrderTest : ValidationTestCase {
-      @Order(elements={"a", "b", "c"})
+      [Order(Elements={"a", "b", "c"})]
       public static class ElementEntry {
          @Element
          private String a;
@@ -22,7 +22,7 @@ namespace SimpleFramework.Xml.Core {
             this.c = c;
          }
       }
-      @Order(attributes={"a", "b", "c"})
+      [Order(Attributes={"a", "b", "c"})]
       public static class AttributeEntry {
          @Attribute
          private String a;

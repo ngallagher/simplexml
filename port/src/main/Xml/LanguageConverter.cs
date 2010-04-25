@@ -51,6 +51,7 @@ namespace SimpleFramework.Xml.Util {
          STAGE_ONE.Add(ReplaceDocumentation.class);
          STAGE_ONE.Add(ReplaceKeyWords.class);
          STAGE_ONE.Add(ReplaceMethodConventions.class);
+         STAGE_ONE.Add(ReplaceAnnotations.class);
          STAGE_ONE.Add(StripCrap.class);
          STAGE_ONE.Add(ReplaceLicense.class);
          STAGE_ONE.Add(SubstituteAnnotations.class);
@@ -954,6 +955,40 @@ namespace SimpleFramework.Xml.Util {
                writer.append("\n");
             }
             writer.append("}");
+            return writer.ToString();
+         }
+      }
+      private static class ReplaceAnnotations : ConversionPhase {
+         public String Convert(String source, SourceDetails details) {
+            Pattern pattern = Pattern.compile("(\\s+)@([a-zA-Z]+)\\((.*)\\).*");
+            List<String> lines = stripLines(source);
+            StringWriter writer = new StringWriter();
+            for(String line : lines) {
+               Matcher matcher = pattern.matcher(line);
+               if(matcher.matches()) {
+                 String indent = matcher.group(1);
+                 String name = matcher.group(2);
+                 String signature = matcher.group(3);
+                 writer.append(indent);
+                 writer.append("[");
+                 writer.append(name);
+                 if(signature != null && !signature.equals("")) {
+                    writer.append("(");
+                    String[] attributes = signature.split("\\s*,\\s*");
+                    String separator = "";
+                    for(String attribute : attributes) {
+                       writer.append(separator);
+                       writer.append(ConvertMethod(attribute, MethodType.NORMAL));
+                       separator = ", ";
+                    }
+                    writer.append(")");
+                 }
+                 writer.append("]\n");
+               } else {
+                 writer.append(line);
+                 writer.append("\n");
+               }
+            }
             return writer.ToString();
          }
       }

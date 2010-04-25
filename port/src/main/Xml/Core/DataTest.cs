@@ -35,20 +35,20 @@ namespace SimpleFramework.Xml.Core {
       "      </query>  \n"+
       "   </query-list> \n"+
       "</scrape>";
-      @Root(name="scrape")
+      [Root(Name="scrape")]
       private static class Scrape {
-         @Attribute(name="section")
+         [Attribute(Name="section")]
          private String section;
-         @Attribute(name="address")
+         [Attribute(Name="address")]
          private String address;
-         @ElementList(name="query-list", type=Query.class)
+         [ElementList(Name="query-list", Type=Query.class)]
          private Dictionary<Query> list;
       }
-      @Root(name="query")
+      [Root(Name="query")]
       private static class Query : Entry {
-         @Attribute(name="type")
+         [Attribute(Name="type")]
          private String type;
-         @Element(name="data", data=true)
+         [Element(Name="data", Data=true)]
          private String data;
          @Attribute
          private String name;

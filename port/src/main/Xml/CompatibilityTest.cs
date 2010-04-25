@@ -57,7 +57,7 @@ namespace SimpleFramework.Xml.Core {
             get;
          }
          //public String GetValue();
-      @Root(name="example")
+      [Root(Name="example")]
       public static class Example_v1 : Example {
         @Version
         private double version;
@@ -120,10 +120,10 @@ namespace SimpleFramework.Xml.Core {
       "    </entry>\n"+
       "  </map>\n"+
       "</example>";
-      @Root(name="example")
+      [Root(Name="example")]
       public static class Example_v2 : Example {
-        @Version(revision=2.0)
-        @Namespace(prefix="ver", reference="http://www.domain.com/version")
+        [Version(Revision=2.0)]
+        [Namespace(Prefix="ver", Reference="http://www.domain.com/version")]
         private double version;
         @Element
         private String name;
@@ -154,10 +154,10 @@ namespace SimpleFramework.Xml.Core {
            return value;
         }
       }
-      @Root(name="example")
+      [Root(Name="example")]
       public static class Example_v3 : Example {
-        @Version(revision=3.0)
-        @Namespace(prefix="ver", reference="http://www.domain.com/version")
+        [Version(Revision=3.0)]
+        [Namespace(Prefix="ver", Reference="http://www.domain.com/version")]
         private double version;
         @Element
         private String name;

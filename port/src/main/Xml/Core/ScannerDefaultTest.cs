@@ -7,7 +7,7 @@ using System;
 namespace SimpleFramework.Xml.Core {
    public class ScannerDefaultTest : TestCase {
       @Root
-      @Default(DefaultType.FIELD)
+      [Default(DefaultType.FIELD)]
       private static class OrderItem {
          private Customer customer;
          private String name;
@@ -29,7 +29,7 @@ namespace SimpleFramework.Xml.Core {
          //   this.price = price;
          //}
       @Root
-      @Default(DefaultType.PROPERTY)
+      [Default(DefaultType.PROPERTY)]
       private static class Customer {
          private String name;
          public String Name {
@@ -44,7 +44,7 @@ namespace SimpleFramework.Xml.Core {
          }
       }
       @Root
-      @Default(DefaultType.FIELD)
+      [Default(DefaultType.FIELD)]
       private static class DuplicateExample {
          private int id;
          @Attribute
@@ -63,7 +63,7 @@ namespace SimpleFramework.Xml.Core {
          //   this.id = id;
          //}
       @Root
-      @Default(DefaultType.PROPERTY)
+      [Default(DefaultType.PROPERTY)]
       private static class NonMatchingAnnotationExample {
          private String name;
          public String Name {

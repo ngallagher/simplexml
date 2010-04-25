@@ -4,13 +4,13 @@ using System;
 #endregion
 namespace SimpleFramework.Xml.Core {
    public class LiteralTest : ValidationTestCase {
-      @Root(strict=false)
+      [Root(Strict=false)]
       private static class LiteralExample {
          @Attribute
          private String name;
          @Attribute
          private String key;
-         @Text(required=false)
+         [Text(Required=false)]
          private readonly Literal literal = new Literal(
          "<literal id='a' value='a'>\n"+
          "   <child>some example text</child>\n"+

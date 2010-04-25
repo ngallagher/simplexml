@@ -12,11 +12,11 @@ namespace SimpleFramework.Xml.Core {
       "</defaultExample>";
       @Root
       private static class DefaultExample  {
-         @ElementList(empty=false, required=false)
+         [ElementList(Empty=false, Required=false)]
          private List<String> stringList;
-         @ElementMap(empty=false, required=false)
+         [ElementMap(Empty=false, Required=false)]
          private Map<String, String> stringMap;
-         @ElementArray(empty=false, required=false)
+         [ElementArray(Empty=false, Required=false)]
          private String[] stringArray;
          @Attribute
          private String name;

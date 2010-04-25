@@ -13,11 +13,11 @@ namespace SimpleFramework.Xml.Strategy {
       @Root
       @Default
       private static class CommentExample {
-         @Comment("This represents the name value")
+         [Comment("This represents the name value")]
          private String name;
-         @Comment("This is a value to be used")
+         [Comment("This is a value to be used")]
          private String value;
-         @Comment("Yet another comment")
+         [Comment("Yet another comment")]
          private Double price;
       }
       private static class CommentVisitor : Visitor {

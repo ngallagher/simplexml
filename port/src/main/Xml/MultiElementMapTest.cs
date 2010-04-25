@@ -28,23 +28,23 @@ namespace SimpleFramework.Xml.Core {
       "</properties>";
       @Root
       private static class Value {
-         @Element(name="bool", required=false)
+         [Element(Name="bool", Required=false)]
          private Boolean boolValue;
-         @Element(name="byte", required=false)
+         [Element(Name="byte", Required=false)]
          private Byte byteValue;
-         @Element(name="double", required=false)
+         [Element(Name="double", Required=false)]
          private Double doubleValue;
-         @Element(name="float", required=false)
+         [Element(Name="float", Required=false)]
          private Float floatValue;
-         @Element(name="int", required=false)
+         [Element(Name="int", Required=false)]
          private Integer intValue;
-         @Element(name="long", required=false)
+         [Element(Name="long", Required=false)]
          private Long longValue;
-         @Element(name="short", required=false)
+         [Element(Name="short", Required=false)]
          private Short shortValue;
-         @Element(name="dateTime", required=false)
+         [Element(Name="dateTime", Required=false)]
          private Date dateTime;
-         @Element(name="string", required=false)
+         [Element(Name="string", Required=false)]
          private String string;
          @Transient
          private Object value;
@@ -87,7 +87,7 @@ namespace SimpleFramework.Xml.Core {
       }
       @Root
       private static class Properties {
-         @ElementMap(key="key", value="value", inline=true)
+         [ElementMap(Key="key", Value="value", Inline=true)]
          private Map<String, Value> map;
          public Object Get(String name) {
             return map.Get(name).Get();

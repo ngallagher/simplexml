@@ -5,7 +5,7 @@ using System;
 namespace SimpleFramework.Xml.Core {
    public class MatcherTest : ValidationTestCase {
       @Root
-      @Namespace(prefix="foo", reference="http://www.domain.com/value")
+      [Namespace(Prefix="foo", Reference="http://www.domain.com/value")]
       private static class Example {
          @Element
          private Integer value;
@@ -21,9 +21,9 @@ namespace SimpleFramework.Xml.Core {
       }
       @Root
       private static class EmptyStringExample {
-         @Element(required=false)
+         [Element(Required=false)]
          private String emptyValue;
-         @Element(required=false)
+         [Element(Required=false)]
          private String nullValue;
          public EmptyStringExample() {
             super();

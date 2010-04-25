@@ -52,7 +52,7 @@ namespace SimpleFramework.Xml.Util {
       @Root
       @Default
       private static class WrapperExample {
-         @Convert(WrapperConverter.class)
+         [Convert(WrapperConverter.class)]
          private Wrapper wrapper;
          public WrapperExample(@Element(name="wrapper", required=false) Wrapper wrapper) {
             this.wrapper = wrapper;

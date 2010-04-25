@@ -7,7 +7,7 @@ using System;
 namespace SimpleFramework.Xml.Core {
    public class OrderTest : ValidationTestCase {
       @Root
-      @Order(elements={"first", "second", "third", "fourth"}, attributes={"one", "two", "three"})
+      [Order(Elements={"first", "second", "third", "fourth"}, Attributes={"one", "two", "three"})]
       private static class OrderExample {
          @Attribute
          private int one;

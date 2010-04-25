@@ -92,7 +92,7 @@ namespace SimpleFramework.Xml.Strategy {
       "</primitiveMap>";
       @Root
       private static class EntryMap {
-         @ElementMap(key="key", attribute=true)
+         [ElementMap(Key="key", Attribute=true)]
          private Map<String, MapEntry> map;
          public String GetValue(String name) {
             return map.get(name).value;
@@ -110,7 +110,7 @@ namespace SimpleFramework.Xml.Strategy {
       }
       @Root
       private static class StringMap {
-         @ElementMap(key="letter", attribute=true)
+         [ElementMap(Key="letter", Attribute=true)]
          private Map<String, String> map;
          public String GetValue(String name) {
             return map.get(name);

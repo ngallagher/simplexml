@@ -14,17 +14,17 @@ namespace SimpleFramework.Xml.Core {
       "</a>\n";
       @Root
       @NamespaceList({
-      @Namespace(prefix="x", reference="http://domain/x"),
-      @Namespace(prefix="y", reference="http://domain/y")})
+      [Namespace(Prefix="x", Reference="http://domain/x")]
+      [Namespace(Prefix="y", Reference="http://domain/y")})]
       private static class A {
          @Element
-         @Namespace(prefix="i", reference="http://domain/x") // ignore prefix as inherited
+         [Namespace(Prefix="i", Reference="http://domain/x")]
          private String b;
          @Element
-         @Namespace(prefix="j", reference="http://domain/y") // ignore prefix as inherited
+         [Namespace(Prefix="j", Reference="http://domain/y")]
          private String c;
          @Element
-         @Namespace(prefix="k", reference="http://domain/x") // ignore prefix as inherited
+         [Namespace(Prefix="k", Reference="http://domain/x")]
          private D d;
       }
       @Root

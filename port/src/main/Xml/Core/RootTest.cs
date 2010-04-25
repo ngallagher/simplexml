@@ -68,7 +68,7 @@ namespace SimpleFramework.Xml.Core {
             super();
          }
       }
-      @Root(name="explicitOverride")
+      [Root(Name="explicitOverride")]
       private static class ExtendedExplicitlyOverriddenRootExample : ExtendedRootExample {
          public ExtendedExplicitlyOverriddenRootExample() {
             super();

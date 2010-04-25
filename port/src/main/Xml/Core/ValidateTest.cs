@@ -40,18 +40,18 @@ namespace SimpleFramework.Xml.Core {
       "     <entry name='f' version='ONE'>Example 4</entry>\r\n"+
       "   </array>\n"+
       "</test>";
-      @Root(name="test")
+      [Root(Name="test")]
       private static class TextList {
-         @ElementArray(name="array", entry="entry")
+         [ElementArray(Name="array", Entry="entry")]
          private TextEntry[] array;
       }
-      @Root(name="text")
+      [Root(Name="text")]
       private static class TextEntry {
-         @Attribute(name="name")
+         [Attribute(Name="name")]
          private String name;
-         @Attribute(name="version")
+         [Attribute(Name="version")]
          private Version version;
-         @Text(data=true)
+         [Text(Data=true)]
          private String text;
       }
       private enum Version {

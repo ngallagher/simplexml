@@ -191,63 +191,63 @@ namespace SimpleFramework.Xml.Core {
       "      <string>three</string>  \n\r"+
       "   </list>\n"+
       "</primitiveDefaultCollection>";
-      @Root(name="entry")
+      [Root(Name="entry")]
       private static class Entry : Comparable {
-         @Attribute(name="id")
+         [Attribute(Name="id")]
          private int id;
-         @Element(name="text")
+         [Element(Name="text")]
          private String text;
          public int CompareTo(Object entry) {
             return id - ((Entry)entry).id;
          }
       }
-      @Root(name="extended-entry")
+      [Root(Name="extended-entry")]
       private static class ExtendedEntry : Entry {
-         @Element(name="description")
+         [Element(Name="description")]
          private String description;
       }
-      @Root(name="test")
+      [Root(Name="test")]
       private static class EntrySet : Iterable<Entry> {
-         @ElementList(name="list", type=Entry.class)
+         [ElementList(Name="list", Type=Entry.class)]
          private Set<Entry> list;
-         @Attribute(name="name")
+         [Attribute(Name="name")]
          private String name;
          public Iterator<Entry> Iterator() {
             return list.Iterator();
          }
       }
-      @Root(name="test")
+      [Root(Name="test")]
       private static class EntrySortedSet : Iterable<Entry> {
-         @ElementList(name="list", type=Entry.class)
+         [ElementList(Name="list", Type=Entry.class)]
          private SortedSet<Entry> list;
-         @Attribute(name="name")
+         [Attribute(Name="name")]
          private String name;
          public Iterator<Entry> Iterator() {
             return list.Iterator();
          }
       }
-      @Root(name="test")
+      [Root(Name="test")]
       private static class EntryList : Iterable<Entry> {
-         @ElementList(name="list", type=Entry.class)
+         [ElementList(Name="list", Type=Entry.class)]
          private List<Entry> list;
-         @Attribute(name="name")
+         [Attribute(Name="name")]
          private String name;
          public Iterator<Entry> Iterator() {
             return list.Iterator();
          }
       }
-      @Root(name="test")
+      [Root(Name="test")]
       public static class InvalidList {
-         @ElementList(name="list", type=Entry.class)
+         [ElementList(Name="list", Type=Entry.class)]
          private String list;
-         @Attribute(name="name")
+         [Attribute(Name="name")]
          private String name;
       }
-      @Root(name="test")
+      [Root(Name="test")]
       public static class UnknownCollectionList : Iterable<Entry> {
-         @ElementList(name="list", type=Entry.class)
+         [ElementList(Name="list", Type=Entry.class)]
          private UnknownCollection<Entry> list;
-         @Attribute(name="name")
+         [Attribute(Name="name")]
          private String name;
          public Iterator<Entry> Iterator() {
             return list.Iterator();
@@ -288,9 +288,9 @@ namespace SimpleFramework.Xml.Core {
       }
       @Root
       private static class PrimitiveCollection : Iterable<String> {
-         @ElementList(name="list", type=String.class, entry="text")
+         [ElementList(Name="list", Type=String.class, Entry="text")]
          private List<String> list;
-         @Attribute(name="name")
+         [Attribute(Name="name")]
          private String name;
          public Iterator<String> Iterator() {
             return list.Iterator();
@@ -298,9 +298,9 @@ namespace SimpleFramework.Xml.Core {
       }
       @Root
       private static class CompositeCollection : Iterable<Entry> {
-         @ElementList(name="list", entry="text")
+         [ElementList(Name="list", Entry="text")]
          private List<Entry> list;
-         @Attribute(name="name")
+         [Attribute(Name="name")]
          private String name;
          public Iterator<Entry> Iterator() {
             return list.Iterator();

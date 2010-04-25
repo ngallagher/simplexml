@@ -36,11 +36,11 @@ namespace SimpleFramework.Xml.Core {
          }
          //public int GetId();
       }
-      @Root(name="entry")
+      [Root(Name="entry")]
       private static class Entry : EntryInterface {
-         @Attribute(name="id")
+         [Attribute(Name="id")]
          private int id;
-         @Element(name="text")
+         [Element(Name="text")]
          private String text;
          public int Id {
             get {
@@ -53,11 +53,11 @@ namespace SimpleFramework.Xml.Core {
             return text;
          }
       }
-      @Root(name="root")
+      [Root(Name="root")]
       private static class EntryList {
-         @ElementList(name="list", type=Entry.class)
+         [ElementList(Name="list", Type=Entry.class)]
          private List list;
-         @Attribute(name="name")
+         [Attribute(Name="name")]
          private String name;
          public Entry GetEntry(int index) {
             return (Entry) list.get(index);

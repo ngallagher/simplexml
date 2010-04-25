@@ -8,7 +8,7 @@ namespace SimpleFramework.Xml.Core {
    public class InlineMapTest : ValidationTestCase {
       @Root
       private static class PrimitiveInlineMap {
-         @ElementMap(entry="entity", inline=true)
+         [ElementMap(Entry="entity", Inline=true)]
          private Map<String, BigDecimal> map;
          public PrimitiveInlineMap() {
             this.map = new HashMap<String, BigDecimal>();
@@ -19,7 +19,7 @@ namespace SimpleFramework.Xml.Core {
       }
       @Root
       private static class PrimitiveInlineAttributeMap {
-         @ElementMap(entry="entity", attribute=true, inline=true)
+         [ElementMap(Entry="entity", Attribute=true, Inline=true)]
          private Map<String, BigDecimal> map;
          public PrimitiveInlineAttributeMap() {
             this.map = new HashMap<String, BigDecimal>();
@@ -30,7 +30,7 @@ namespace SimpleFramework.Xml.Core {
       }
       @Root
       private static class PrimitiveInlineAttributeValueMap {
-         @ElementMap(entry="entity", value="value", attribute=true, inline=true)
+         [ElementMap(Entry="entity", Value="value", Attribute=true, Inline=true)]
          private Map<String, BigDecimal> map;
          public PrimitiveInlineAttributeValueMap() {
             this.map = new HashMap<String, BigDecimal>();

@@ -124,40 +124,40 @@ namespace SimpleFramework.Xml.Core {
       "      </entry>\n"+
       "   </list>\n"+
       "</root>";
-      @Root(name="entry")
+      [Root(Name="entry")]
       private static class Entry {
-         @Attribute(name="id", required=false)
+         [Attribute(Name="id", Required=false)]
          private int id;
-         @Element(name="text", required=true)
+         [Element(Name="text", Required=true)]
          private String text;
       }
-      @Root(name="root")
+      [Root(Name="root")]
       private static class EntryList {
-         @ElementList(name="list", type=Entry.class, required=false)
+         [ElementList(Name="list", Type=Entry.class, Required=false)]
          private List list;
-         @Attribute(name="name", required=true)
+         [Attribute(Name="name", Required=true)]
          private String name;
-         @Element(name="text", required=true)
+         [Element(Name="text", Required=true)]
          private String text;
       }
       private static class ListEntry {
-         @Attribute(name="id", required=false)
+         [Attribute(Name="id", Required=false)]
          private int id;
-         @Element(name="text", required=true)
+         [Element(Name="text", Required=true)]
          private String text;
       }
-      @Root(name="entry")
+      [Root(Name="entry")]
       private static class RootListEntry : ListEntry {
-         @Attribute(name="value", required=true)
+         [Attribute(Name="value", Required=true)]
          private String value;
       }
       private static class NoRootListEntry : ListEntry {
-         @Element(name="value", required=true)
+         [Element(Name="value", Required=true)]
          private String value;
       }
-      @Root(name="root")
+      [Root(Name="root")]
       private static class ListEntryList {
-         @ElementList(name="list", type=ListEntry.class, required=true)
+         [ElementList(Name="list", Type=ListEntry.class, Required=true)]
          private List list;
       }
    	private Persister serializer;

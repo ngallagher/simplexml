@@ -18,7 +18,7 @@ namespace SimpleFramework.Xml.Core {
       public static class Message : Serializable{
          @Element
          private String necessary;
-         @Element(required=false)
+         [Element(Required=false)]
          private String optional;
          public Message(@Element(name="necessary") String necessary){
             this.necessary = necessary;

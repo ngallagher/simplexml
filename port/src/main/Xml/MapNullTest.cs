@@ -187,7 +187,7 @@ namespace SimpleFramework.Xml.Core {
       }
       @Root
       private static class PrimitiveMap {
-         @ElementMap(name="table")
+         [ElementMap(Name="table")]
          private Map<String, BigDecimal> map;
          public PrimitiveMap() {
             this.map = new HashMap<String, BigDecimal>();

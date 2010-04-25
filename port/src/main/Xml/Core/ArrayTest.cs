@@ -115,19 +115,19 @@ namespace SimpleFramework.Xml.Core {
       "      <char>e</char>  \n\r"+
       "   </array>\n\r"+
       "</root>";
-      @Root(name="root")
+      [Root(Name="root")]
       private static class ArrayExample {
-         @ElementArray(name="array", entry="entry")
+         [ElementArray(Name="array", Entry="entry")]
          public Text[] array;
       }
-      @Root(name="root")
+      [Root(Name="root")]
       private static class BadArrayExample {
-         @ElementArray(name="array", entry="entry")
+         [ElementArray(Name="array", Entry="entry")]
          public Text array;
       }
-      @Root(name="text")
+      [Root(Name="text")]
       private static class Text {
-         @Attribute(name="value")
+         [Attribute(Name="value")]
          public String value;
          public Text() {
             super();
@@ -136,7 +136,7 @@ namespace SimpleFramework.Xml.Core {
             this.value = value;
          }
       }
-      @Root(name="text")
+      [Root(Name="text")]
       private static class ExtendedText  : Text {
          public ExtendedText() {
             super();
@@ -145,44 +145,44 @@ namespace SimpleFramework.Xml.Core {
             super(value);
          }
       }
-      @Root(name="root")
+      [Root(Name="root")]
       private static class PrimitiveArrayExample {
-         @ElementArray(name="array", entry="text")
+         [ElementArray(Name="array", Entry="text")]
          private String[] array;
       }
-      @Root(name="root")
+      [Root(Name="root")]
       private static class PrimitiveIntegerArrayExample {
-         @ElementArray(name="array", entry="text")
+         [ElementArray(Name="array", Entry="text")]
          private int[] array;
       }
-      @Root(name="root")
+      [Root(Name="root")]
       private static class PrimitiveMultidimensionalIntegerArrayExample {
-         @ElementArray(name="array", entry="text")
+         [ElementArray(Name="array", Entry="text")]
          private int[][] array;
       }
-      @Root(name="root")
+      [Root(Name="root")]
       private static class DefaultPrimitiveArrayExample {
          @ElementArray
          private String[] array;
       }
-      @Root(name="root")
+      [Root(Name="root")]
       private static class ParentCompositeArrayExample {
-         @ElementArray(name="array", entry="entry")
+         [ElementArray(Name="array", Entry="entry")]
          private Text[] array;
       }
-      @Root(name="root")
+      [Root(Name="root")]
       private static class DefaultCompositeArrayExample {
          @ElementArray
          private Text[] array;
       }
-      @Root(name="root")
+      [Root(Name="root")]
       private static class CharacterArrayExample {
-         @ElementArray(name="array", entry="char")
+         [ElementArray(Name="array", Entry="char")]
          private char[] array;
       }
-      @Root(name="root")
+      [Root(Name="root")]
       private static class DifferentArrayExample {
-         @ElementArray(name="array", entry="entry")
+         [ElementArray(Name="array", Entry="entry")]
          private Text[] array;
          public DifferentArrayExample() {
             this.array = new Text[] { new ExtendedText("one"), null, null, new ExtendedText("two"), null, new ExtendedText("three") };

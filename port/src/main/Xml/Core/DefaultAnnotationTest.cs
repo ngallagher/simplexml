@@ -34,7 +34,7 @@ namespace SimpleFramework.Xml.Core {
       private const String MISMATCH =
       "<typeMisMatch/>";
       @Root
-      @Default(DefaultType.PROPERTY)
+      [Default(DefaultType.PROPERTY)]
       private static class OrderList {
          private List<OrderItem> list;
          private String[] array;
@@ -81,7 +81,7 @@ namespace SimpleFramework.Xml.Core {
          //   this.list = list;
          //}
       @Root
-      @Default(DefaultType.FIELD)
+      [Default(DefaultType.FIELD)]
       private static class OrderItem {
          private Customer customer;
          private String name;
@@ -91,7 +91,7 @@ namespace SimpleFramework.Xml.Core {
          private @Transient String secret;
       }
       @Root
-      @Default(DefaultType.FIELD)
+      [Default(DefaultType.FIELD)]
       private static class Customer {
          private @Attribute int id;
          private String name;
@@ -101,7 +101,7 @@ namespace SimpleFramework.Xml.Core {
          }
       }
       @Root
-      @Default(DefaultType.PROPERTY)
+      [Default(DefaultType.PROPERTY)]
       private static class TypeMisMatch {
          public String name;
          public String Name {

@@ -24,22 +24,22 @@ namespace SimpleFramework.Xml.Core {
       "<test name='John Doe' address='NULL'>\n"+
       "  <description>Some description</description>\r\n"+
       "</test>";
-      @Root(name="test")
+      [Root(Name="test")]
       private static class RequiredElement {
-         @Element(name="empty")
+         [Element(Name="empty")]
          private String empty;
       }
-      @Root(name="test")
+      [Root(Name="test")]
       private static class OptionalElement {
-         @Element(name="empty", required=false)
+         [Element(Name="empty", Required=false)]
          private String empty;
       }
-      @Root(name="test")
+      [Root(Name="test")]
       private static class EmptyCollection {
-         @ElementList(required=false)
+         [ElementList(Required=false)]
          private Collection<String> empty;
       }
-      @Root(name="test")
+      [Root(Name="test")]
       private static class RequiredMethodElement {
          private String text;
          @Element
@@ -57,21 +57,21 @@ namespace SimpleFramework.Xml.Core {
          //public String GetEmpty() {
          //   return text;
          //}
-      @Root(name="test")
+      [Root(Name="test")]
       private static class RequiredAttribute {
-         @Attribute(name="attribute")
+         [Attribute(Name="attribute")]
          private String attribute;
       }
-      @Root(name="test")
+      [Root(Name="test")]
       private static class OptionalAttribute {
-         @Attribute(name="attribute", required=false)
+         [Attribute(Name="attribute", Required=false)]
          private String attribute;
       }
-      @Root(name="test")
+      [Root(Name="test")]
       private static class DefaultedAttribute {
-         @Attribute(empty="NULL")
+         [Attribute(Empty="NULL")]
          private String name;
-         @Attribute(empty="NULL")
+         [Attribute(Empty="NULL")]
          private String address;
          @Element
          private String description;

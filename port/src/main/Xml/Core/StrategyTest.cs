@@ -13,7 +13,7 @@ namespace SimpleFramework.Xml.Core {
       "<root key='attribute-example-key' example-attribute='SimpleFramework.Xml.Core.StrategyTest$ExampleExample'>\n"+
       "   <text>attribute-example-text</text>  \n\r"+
       "</root>";
-      @Root(name="root")
+      [Root(Name="root")]
       private static abstract class Example {
          public abstract String Value {
             get;
@@ -21,9 +21,9 @@ namespace SimpleFramework.Xml.Core {
          //public abstract String GetValue();
       }
       private static class ExampleExample : Example {
-         @Attribute(name="key")
+         [Attribute(Name="key")]
          public String key;
-         @Element(name="text")
+         [Element(Name="text")]
          public String text;
          public String Value {
             get {

@@ -14,10 +14,10 @@ namespace SimpleFramework.Xml.Core {
       "   </pre:b>\n"+
       "</a>";
       @Root
-      @Namespace(reference="http://domain/a")
+      [Namespace(Reference="http://domain/a")]
       private static class A {
          @Element
-         @Namespace(prefix="pre", reference="http://domain/b")
+         [Namespace(Prefix="pre", Reference="http://domain/b")]
          private B b;
       }
       @Root

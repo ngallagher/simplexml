@@ -33,7 +33,7 @@ namespace SimpleFramework.Xml.Core {
       }
       @Root
       private static class ErasureWithMapAttributeIllegalExample<T> {
-         @ElementMap(attribute=true)
+         [ElementMap(Attribute=true)]
          private Map<T, String> erasedToString = new HashMap<T, String>();
          public void AddItem(T key, String value) {
             erasedToString.put(key, value);
@@ -41,7 +41,7 @@ namespace SimpleFramework.Xml.Core {
       }
       @Root
       private static class ErasureWithMapInlineValueIsIgnoredExample<T> {
-         @ElementMap(attribute=true, inline=true, value="value", key="key")
+         [ElementMap(Attribute=true, Inline=true, Value="value", Key="key")]
          private Map<String, T> erasedToString = new LinkedHashMap<String, T>();
          public void AddItem(String key, T value) {
             erasedToString.put(key, value);
