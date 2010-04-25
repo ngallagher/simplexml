@@ -10,7 +10,7 @@ namespace SimpleFramework.Xml.Core {
       "<defaultExample name='test'>\n" +
       "  <text>some text</text>\n"+
       "</defaultExample>";
-      @Root
+      [Root]
       private static class DefaultExample  {
          [ElementList(Empty=false, Required=false)]
          private List<String> stringList;
@@ -18,9 +18,9 @@ namespace SimpleFramework.Xml.Core {
          private Map<String, String> stringMap;
          [ElementArray(Empty=false, Required=false)]
          private String[] stringArray;
-         @Attribute
+         [Attribute]
          private String name;
-         @Element
+         [Element]
          private String text;
          public DefaultExample() {
             super();

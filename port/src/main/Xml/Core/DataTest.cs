@@ -50,7 +50,7 @@ namespace SimpleFramework.Xml.Core {
          private String type;
          [Element(Name="data", Data=true)]
          private String data;
-         @Attribute
+         [Attribute]
          private String name;
          public String Name {
             get {

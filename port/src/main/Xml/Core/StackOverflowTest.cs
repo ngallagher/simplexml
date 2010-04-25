@@ -19,7 +19,7 @@ namespace SimpleFramework.Xml.Core {
       "   <type>A</type>"+
       "   <comment>comment</comment>"+
       "</benefitMutation>";
-      @Root
+      [Root]
       public static class Delivery {
          [ElementList(Inline = true, Required = false, Name = "newBenefit")]
          private List<NewBenefit> listNewBenefit = new ArrayList<NewBenefit>();
@@ -27,11 +27,11 @@ namespace SimpleFramework.Xml.Core {
          private List<BenefitMutation> listBenefitMutation = new ArrayList<BenefitMutation>();
       }
       public static class NewBenefit {
-         @Element
+         [Element]
          private String office;
-         @Element
+         [Element]
          private String recordNumber;
-         @Element
+         [Element]
          private String type;
       }
       public static class BenefitMutation : NewBenefit {

@@ -89,7 +89,7 @@ namespace SimpleFramework.Xml.Core {
          //   return name;
          //}
       public static class IllegalTextExample : MixedExample {
-         @Text
+         [Text]
          private String text;
       }
       public void TestExample() {

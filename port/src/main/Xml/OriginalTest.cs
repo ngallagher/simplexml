@@ -44,12 +44,12 @@ namespace SimpleFramework.Xml.Core {
       "      <entry name='c' value='3'/>\n"+
       "   </mapEntry>\n"+
       "</exampleWithOriginals>\n";
-      @Root
+      [Root]
       [Namespace(Prefix="entry", Reference="http://domain/entry")]
       private static class Entry {
-         @Attribute
+         [Attribute]
          private String name;
-         @Attribute
+         [Attribute]
          private String value;
          public Entry() {
             super();
@@ -70,12 +70,12 @@ namespace SimpleFramework.Xml.Core {
          }
       }
       /*
-      @Root
+      [Root]
       [NamespaceList({@Namespace(prefix="root", Reference="http://domain/entry")})]
       private static class ExampleWithOriginals {
-         @ElementList
+         [ElementList]
          private Collection<String> list = new CopyOnWriteArrayList<String>();
-         @ElementMap
+         [ElementMap]
          private Map<String, Double> map = new ConcurrentHashMap<String, Double>();
          [ElementList(Inline=true, Entry="listEntry")]
          private Collection<Entry> inlineList = new CopyOnWriteArrayList<Entry>();

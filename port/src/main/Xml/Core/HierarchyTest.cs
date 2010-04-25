@@ -6,9 +6,9 @@ using System;
 namespace SimpleFramework.Xml.Core {
    public class HierarchyTest : ValidationTestCase {
       public static class Basic {
-         @Element
+         [Element]
          private String a;
-         @Element
+         [Element]
          private String b;
          private long one;
          private Basic() {
@@ -19,7 +19,7 @@ namespace SimpleFramework.Xml.Core {
             this.a = a;
             this.b = b;
          }
-         @Element
+         [Element]
          public long One {
             get {
                return one;
@@ -35,7 +35,7 @@ namespace SimpleFramework.Xml.Core {
          //   this.one = one;
          //}
       public static class Abstract : Basic {
-         @Element
+         [Element]
          private int c;
          private Abstract() {
             super();
@@ -46,7 +46,7 @@ namespace SimpleFramework.Xml.Core {
          }
       }
       public static class Specialized : Abstract {
-         @Element
+         [Element]
          private int d;
          private double two;
          private Specialized() {
@@ -57,7 +57,7 @@ namespace SimpleFramework.Xml.Core {
             this.two = two;
             this.d = d;
          }
-         @Element
+         [Element]
          public double Two {
             get {
                return two;

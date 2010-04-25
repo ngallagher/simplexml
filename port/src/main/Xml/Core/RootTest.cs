@@ -21,14 +21,14 @@ namespace SimpleFramework.Xml.Core {
       "<explicitOverride version='1'>\n"+
       "  <text>Some text example</text>\n"+
       "</explicitOverride>";
-      @Root
+      [Root]
       private static class RootExample {
          private int version;
          private String text;
          public RootExample() {
             super();
          }
-         @Attribute
+         [Attribute]
          public int Version {
             get {
                return version;
@@ -62,7 +62,7 @@ namespace SimpleFramework.Xml.Core {
             super();
          }
       }
-      @Root
+      [Root]
       private static class ExtendedOverriddenRootExample : ExtendedRootExample {
          public ExtendedOverriddenRootExample() {
             super();

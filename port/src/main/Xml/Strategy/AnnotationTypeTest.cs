@@ -16,13 +16,13 @@ namespace SimpleFramework.Xml.Strategy {
       private static class Component : System.Attribute {
          public String Name();
       }
-      @Root
+      [Root]
       private static class AnnotationExample {
          [Component(Name="name")]
-         @Element
+         [Element]
          private String name;
          [Component(Name="age")]
-         @Attribute
+         [Attribute]
          private int age;
          public AnnotationExample(@Element(name="name") String name, @Attribute(name="age") int age) {
             this.name = name;

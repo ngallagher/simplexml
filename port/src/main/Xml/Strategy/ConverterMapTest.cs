@@ -44,11 +44,11 @@ namespace SimpleFramework.Xml.Strategy {
             }
          }
       }
-      @Root
-      @Default
+      [Root]
+      [Default]
       private static class MapHolder {
-         @Element
-         @ElementMap
+         [Element]
+         [ElementMap]
          [Convert(MapConverter.class)]
          private Map<String, String> map = new HashMap<String, String>();
          public void Put(String name, String value) {

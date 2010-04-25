@@ -6,7 +6,7 @@ using System;
 #endregion
 namespace SimpleFramework.Xml.Core {
    public class InlineMapTest : ValidationTestCase {
-      @Root
+      [Root]
       private static class PrimitiveInlineMap {
          [ElementMap(Entry="entity", Inline=true)]
          private Map<String, BigDecimal> map;
@@ -17,7 +17,7 @@ namespace SimpleFramework.Xml.Core {
             return map.get(name);
          }
       }
-      @Root
+      [Root]
       private static class PrimitiveInlineAttributeMap {
          [ElementMap(Entry="entity", Attribute=true, Inline=true)]
          private Map<String, BigDecimal> map;
@@ -28,7 +28,7 @@ namespace SimpleFramework.Xml.Core {
             return map.get(name);
          }
       }
-      @Root
+      [Root]
       private static class PrimitiveInlineAttributeValueMap {
          [ElementMap(Entry="entity", Value="value", Attribute=true, Inline=true)]
          private Map<String, BigDecimal> map;

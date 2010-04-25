@@ -19,7 +19,7 @@ namespace SimpleFramework.Xml.Util {
          //public int GetValue() {
          //   return value;
          //}
-      @Root
+      [Root]
       [Convert(ExtendedItemConverter.class)]
       private static class ExtendedItem : Item {
          public ExtendedItem(int value) {
@@ -53,14 +53,14 @@ namespace SimpleFramework.Xml.Util {
             node.setAttribute("type", getClass().getName());
          }
       }
-      @Root
+      [Root]
       private static class CombinationExample {
-         @Element
+         [Element]
          private Item item; // handled by the registry
-         @Element
+         [Element]
          [Convert(AnnotationItemConverter.class)]
          private Item overriddenItem;
-         @Element
+         [Element]
          private Item extendedItem; // handled by class annotation
          public CombinationExample(int item, int overriddenItem, int extendedItem) {
             this.item = new Item(item);

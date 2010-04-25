@@ -10,8 +10,8 @@ namespace SimpleFramework.Xml.Strategy {
       private static class Comment : System.Attribute {
          public String Value();
       }
-      @Root
-      @Default
+      [Root]
+      [Default]
       private static class CommentExample {
          [Comment("This represents the name value")]
          private String name;

@@ -15,12 +15,12 @@ namespace SimpleFramework.Xml.Util {
       "    <farmer age='80'>Old McDonald</farmer>"+
       "    <time>1</time>"+
       "</farmExample>";
-      @Root
+      [Root]
       private static class Farmer {
-         @Text
+         [Text]
          [Namespace(Prefix="man", Reference="http://www.domain/com/man")]
          private String name;
-         @Attribute
+         [Attribute]
          private int age;
          public Farmer() {
             super();
@@ -30,16 +30,16 @@ namespace SimpleFramework.Xml.Util {
             this.age = age;
          }
       }
-      @Root
+      [Root]
       private static class FarmExample {
-         @Element
+         [Element]
          [Namespace(Prefix="c", Reference="http://www.domain.com/test")]
          [Convert(ChickenConverter.class)]
          private Chicken chicken;
-         @Element
+         [Element]
          [Convert(CowConverter.class)]
          private Cow cow;
-         @Element
+         [Element]
          private Farmer farmer;
          [ElementList(Inline=true, Entry="time")]
          [Namespace(Prefix="l", Reference="http://www.domain.com/list")]

@@ -6,15 +6,15 @@ using System;
 #endregion
 package SimpleFramework.Xml.transform;
 public class StringArrayTransformTest : ValidationTestCase {
-   @Root
+   [Root]
    public static class StringArrayExample {
-      @Attribute
+      [Attribute]
       private String[] attribute;
-      @Element
+      [Element]
       private String[] element;
-      @ElementList
+      [ElementList]
       private List<String[]> list;
-      @ElementArray
+      [ElementArray]
       private String[][] array;
       public StringArrayExample() {
          super();

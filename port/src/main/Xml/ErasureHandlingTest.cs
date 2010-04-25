@@ -6,8 +6,8 @@ using System;
 #endregion
 namespace SimpleFramework.Xml.Core {
    public class ErasureHandlingTest : ValidationTestCase {
-      @Root
-      @Default
+      [Root]
+      [Default]
       private static class ErasureExample<T> {
          private Map<String, T> list = new LinkedHashMap<String, T>();
          private Map<T, T> doubleGeneric = new LinkedHashMap<T, T>();
@@ -21,8 +21,8 @@ namespace SimpleFramework.Xml.Core {
             doubleGeneric.put(key, item);
          }
       }
-      @Root
-      @Default
+      [Root]
+      [Default]
       private static class ErasureItem {
          private readonly String name;
          private readonly String value;
@@ -31,7 +31,7 @@ namespace SimpleFramework.Xml.Core {
             this.value = value;
          }
       }
-      @Root
+      [Root]
       private static class ErasureWithMapAttributeIllegalExample<T> {
          [ElementMap(Attribute=true)]
          private Map<T, String> erasedToString = new HashMap<T, String>();
@@ -39,7 +39,7 @@ namespace SimpleFramework.Xml.Core {
             erasedToString.put(key, value);
          }
       }
-      @Root
+      [Root]
       private static class ErasureWithMapInlineValueIsIgnoredExample<T> {
          [ElementMap(Attribute=true, Inline=true, Value="value", Key="key")]
          private Map<String, T> erasedToString = new LinkedHashMap<String, T>();

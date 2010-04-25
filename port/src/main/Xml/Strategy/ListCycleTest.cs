@@ -65,18 +65,18 @@ namespace SimpleFramework.Xml.Strategy {
          [Element(Name="example")]
          public ListExample example;
       }
-      @Root
+      [Root]
       private static class InlineListExample {
          [ElementList(Inline=true)]
          public List<Entry> list;
-         @Element
+         [Element]
          public InlineListExample example;
       }
-      @Root
+      [Root]
       private static class InlinePrimitiveListExample {
          [ElementList(Inline=true, Data=true)]
          public List<String> list;
-         @Element
+         [Element]
          public InlinePrimitiveListExample example;
       }
       [Root(Name="text")]

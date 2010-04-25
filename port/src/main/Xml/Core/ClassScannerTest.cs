@@ -4,15 +4,15 @@ using System;
 #endregion
 namespace SimpleFramework.Xml.Core {
    public class ClassScannerTest : TestCase {
-      @Root
+      [Root]
       [Order(Elements={"a", "b"}, Attributes={"A", "B"})]
       [Namespace(Prefix="prefix", Reference="http://domain/reference")]
       private static class Example {
-         @Commit
+         [Commit]
          public void Commit() {
             return;
          }
-         @Validate
+         [Validate]
          public void Validate() {
             return;
          }

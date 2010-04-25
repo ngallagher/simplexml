@@ -55,7 +55,7 @@ namespace SimpleFramework.Xml.Core {
          private String text;
       }
       private static class DuplicateTextEntry : TextEntry {
-         @Text
+         [Text]
          private String duplicate;
       }
       private static class IllegalElementTextEntry : TextEntry {
@@ -67,7 +67,7 @@ namespace SimpleFramework.Xml.Core {
          private String name;
          [Attribute(Name="version")]
          private Version version;
-         @Text
+         [Text]
          private List list;
       }
       private enum Version {

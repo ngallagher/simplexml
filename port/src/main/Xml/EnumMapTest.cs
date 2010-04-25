@@ -11,9 +11,9 @@ namespace SimpleFramework.Xml.Core {
          THREE,
          FOUR
       }
-      @Root
+      [Root]
       private static class EnumMapExample {
-         @ElementMap
+         [ElementMap]
          private EnumMap<Number, String> numbers = new EnumMap<Number, String>(Number.class);
          private EnumMapExample() {
             super();

@@ -9,11 +9,11 @@ namespace SimpleFramework.Xml.Core {
       "   <name>Some Name</name>"+
       "   <value>Some Value</value>"+
       "</example>";
-      @Root
+      [Root]
       private static class InjectExample {
-         @Element
+         [Element]
          private String name;
-         @Element
+         [Element]
          private String value;
          public String Name {
             get {

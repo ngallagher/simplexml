@@ -4,7 +4,7 @@ using System;
 #endregion
 namespace SimpleFramework.Xml.Core {
    public class DefaultWithParametersInGetterTest : ValidationTestCase {
-      @Root
+      [Root]
       [Default(DefaultType.PROPERTY)]
       static class DefaultTestClass {
          private bool flag;
@@ -33,7 +33,7 @@ namespace SimpleFramework.Xml.Core {
          //public void SetFlag(bool flag) {
          //   this.flag = flag;
          //}
-      @Root
+      [Root]
       [Default(DefaultType.PROPERTY)]
       static class DefaultTestClassWithInvalidTransient {
          private int foo;
@@ -47,20 +47,20 @@ namespace SimpleFramework.Xml.Core {
          //}
             this.foo = foo;
          }
-         @Transient
+         [Transient]
          public String GetWithParams(int foo) {
             return "foo";
          }
       }
-      @Root
+      [Root]
       [Default(DefaultType.PROPERTY)]
       static class DefaultTestClassWithInvalidElement {
          private String name;
-         @Element
+         [Element]
          public String GetName(int foo) {
             return name;
          }
-         @Element
+         [Element]
          public String Name {
             set {
                this.name = value;

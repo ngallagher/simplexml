@@ -7,21 +7,21 @@ using System;
 #endregion
 package SimpleFramework.Xml.transform;
 public class PrimitiveArrayTransformTest : ValidationTestCase {
-   @Root
+   [Root]
    public static class IntegerArrayExample {
       [Attribute(Required=false)]
       private int[] attribute;
       [Element(Required=false)]
       private int[] element;
-      @ElementList
+      [ElementList]
       private List<int[]> list;
-      @ElementArray
+      [ElementArray]
       private int[][] array;
-      @Element
+      [Element]
       private NonPrimitive test;
-      @ElementList
+      [ElementList]
       private List<NonPrimitive> testList;
-      @ElementArray
+      [ElementArray]
       private NonPrimitive[] testArray;
       public IntegerArrayExample() {
          super();
@@ -41,9 +41,9 @@ public class PrimitiveArrayTransformTest : ValidationTestCase {
          this.testArray = new NonPrimitive[1];
       }
    }
-   @Root
+   [Root]
    private static class NonPrimitive {
-      @Attribute
+      [Attribute]
       private String value = "text";
    }
    public void TestRead() {

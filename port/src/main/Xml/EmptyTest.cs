@@ -42,7 +42,7 @@ namespace SimpleFramework.Xml.Core {
       [Root(Name="test")]
       private static class RequiredMethodElement {
          private String text;
-         @Element
+         [Element]
          public String Empty {
             get {
                return text;
@@ -73,7 +73,7 @@ namespace SimpleFramework.Xml.Core {
          private String name;
          [Attribute(Empty="NULL")]
          private String address;
-         @Element
+         [Element]
          private String description;
       }
       private Persister persister;

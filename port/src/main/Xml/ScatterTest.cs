@@ -34,13 +34,13 @@ namespace SimpleFramework.Xml.Core {
       "</test>";
       [Root(Name="test")]
       private static class InlineTextList {
-         @Element
+         [Element]
          private String message;
          [ElementList(Inline=true)]
          private List<Double> numbers;
-         @Transient
+         [Transient]
          private List<TextEntry> list;
-         @Attribute
+         [Attribute]
          private Version version;
          public List<Double> Numbers {
             get {
@@ -69,11 +69,11 @@ namespace SimpleFramework.Xml.Core {
       }
       [Root(Name="test")]
       private static class InlinePrimitiveList {
-         @Element
+         [Element]
          private String message;
          [ElementList(Inline=true)]
          private List<String> list;
-         @Attribute
+         [Attribute]
          private Version version;
          public String Get(int index) {
             return list.Get(index);
@@ -81,24 +81,24 @@ namespace SimpleFramework.Xml.Core {
       }
       [Root(Name="text")]
       private static class TextEntry {
-         @Attribute
+         [Attribute]
          private String name;
-         @Attribute
+         [Attribute]
          private Version version;
-         @Text
+         [Text]
          private String text;
       }
-      @Root
+      [Root]
       private static class SimpleInlineList {
          [ElementList(Inline=true)]
          private ArrayList<SimpleEntry> list = new ArrayList<SimpleEntry>();
       }
-      @Root
+      [Root]
       private static class SimpleEntry {
-         @Attribute
+         [Attribute]
          private String content;
       }
-      @Root
+      [Root]
       private static class SimplePrimitiveInlineList {
          [ElementList(Inline=true)]
          private ArrayList<String> list = new ArrayList<String>();
@@ -109,7 +109,7 @@ namespace SimpleFramework.Xml.Core {
          private Dictionary<FileMatch> includeList;
          [ElementList(Inline=true, Entry="exclude")]
          private Dictionary<FileMatch> excludeList;
-         @Attribute
+         [Attribute]
          private Version version;
          public String GetInclude(String name) {
             FileMatch match = includeList.Get(name);
@@ -126,11 +126,11 @@ namespace SimpleFramework.Xml.Core {
             return null;
          }
       }
-      @Root
+      [Root]
       private static class FileMatch : Entry {
-         @Attribute
+         [Attribute]
          private String file;
-         @Attribute
+         [Attribute]
          private String name;
          public String Name {
             get {

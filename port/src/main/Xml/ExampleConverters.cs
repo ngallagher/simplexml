@@ -67,7 +67,7 @@ namespace SimpleFramework.Xml.Util {
             super(name, age, 4);
          }
       }
-      @Root
+      [Root]
       [Convert(EntryConverter.class)]
       public static class Entry {
          private readonly String name;

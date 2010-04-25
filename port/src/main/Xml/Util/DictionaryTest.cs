@@ -26,7 +26,7 @@ namespace SimpleFramework.Xml.Util {
       private static class Property : Entry {
          [Element(Name="text")]
          private String text;
-         @Attribute
+         [Attribute]
          private String name;
          public String Name {
             get {

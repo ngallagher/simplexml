@@ -78,7 +78,7 @@ namespace SimpleFramework.Xml.Core {
       }
       public static class TextMethod : Example {
          private long length;
-         @Text
+         [Text]
          public long Length {
             get {
                return length;

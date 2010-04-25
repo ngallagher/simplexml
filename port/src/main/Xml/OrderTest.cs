@@ -6,22 +6,22 @@ using System;
 #endregion
 namespace SimpleFramework.Xml.Core {
    public class OrderTest : ValidationTestCase {
-      @Root
+      [Root]
       [Order(Elements={"first", "second", "third", "fourth"}, Attributes={"one", "two", "three"})]
       private static class OrderExample {
-         @Attribute
+         [Attribute]
          private int one;
-         @Attribute
+         [Attribute]
          private double two;
-         @Attribute
+         [Attribute]
          private long three;
-         @Element
+         [Element]
          private String first;
-         @Element
+         [Element]
          private String fourth;
-         @Element
+         [Element]
          private String second;
-         @Element
+         [Element]
          private String third;
          public OrderExample() {
             super();

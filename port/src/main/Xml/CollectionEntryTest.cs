@@ -52,11 +52,11 @@ namespace SimpleFramework.Xml.Core {
       "     <substitute>d</substitute>\n"+
       "  </list>\r\n" +
       "</examplePrimitiveCollection>";
-      @Root
+      [Root]
       private static class Entry {
-         @Attribute
+         [Attribute]
          private int id;
-         @Element
+         [Element]
          private String text;
          public String Text {
             get {
@@ -69,7 +69,7 @@ namespace SimpleFramework.Xml.Core {
             return id;
          }
       }
-      @Root
+      [Root]
       private static class ExampleCollection {
          [ElementList(Name="list", Entry="substitute")]
          private List<Entry> list;
@@ -81,7 +81,7 @@ namespace SimpleFramework.Xml.Core {
          //public List<Entry> GetList() {
          //   return list;
          //}
-      @Root
+      [Root]
       private static class ExampleInlineCollection {
          [ElementList(Name="list", Entry="substitute", Inline=true)]
          private List<Entry> list;
@@ -93,7 +93,7 @@ namespace SimpleFramework.Xml.Core {
          //public List<Entry> GetList() {
          //   return list;
          //}
-      @Root
+      [Root]
       private static class ExamplePrimitiveCollection {
          [ElementList(Name="list", Entry="substitute")]
          private List<Character> list;
@@ -105,7 +105,7 @@ namespace SimpleFramework.Xml.Core {
          //public List<Character> GetList() {
          //   return list;
          //}
-      @Root
+      [Root]
       private static class ExamplePrimitiveInlineCollection {
          [ElementList(Name="list", Entry="substitute", Inline=true)]
          private List<String> list;

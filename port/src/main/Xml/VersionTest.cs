@@ -27,7 +27,7 @@ namespace SimpleFramework.Xml.Core {
          //public double GetVersion();
       [Root(Name="Example")]
       private static abstract class Example : Versionable {
-         @Version
+         [Version]
          [Namespace(Prefix="prefix", Reference="http://www.domain.com/reference")]
          private double version;
          public double Version {

@@ -29,20 +29,20 @@ namespace SimpleFramework.Xml.Core {
       "      <city>example city</city>\n"+
       "   </address>\n"+
       "</object>\n";
-      @Root
+      [Root]
       private static class ExampleObject {
-         @Element int integer;
-         @Attribute double version;
+         [Element]
+         [Attribute]
       }
-      @Root
+      [Root]
       private static class Address {
-         @Element String name;
-         @Element String address;
+         [Element]
+         [Element]
       }
-      @Root
+      [Root]
       private static class ExampleObjectWithAddress : ExampleObject {
-         @Element Address address;
-         @Element String name;
+         [Element]
+         [Element]
       }
       public void TestStrictMode() {
          bool failure = false;

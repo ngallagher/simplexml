@@ -6,14 +6,14 @@ using System;
 #endregion
 namespace SimpleFramework.Xml.Core {
    public class ScannerDefaultTest : TestCase {
-      @Root
+      [Root]
       [Default(DefaultType.FIELD)]
       private static class OrderItem {
          private Customer customer;
          private String name;
-         @Transient
+         [Transient]
          private double price; // should be transient to avoid having prices as an attribute and an element, which is legal
-         @Attribute
+         [Attribute]
          public double Price {
             get {
                return price;
@@ -28,7 +28,7 @@ namespace SimpleFramework.Xml.Core {
          //public void SetPrice(double price) {
          //   this.price = price;
          //}
-      @Root
+      [Root]
       [Default(DefaultType.PROPERTY)]
       private static class Customer {
          private String name;
@@ -43,11 +43,11 @@ namespace SimpleFramework.Xml.Core {
             this.name = name;
          }
       }
-      @Root
+      [Root]
       [Default(DefaultType.FIELD)]
       private static class DuplicateExample {
          private int id;
-         @Attribute
+         [Attribute]
          public int Id {
             get {
                return id;
@@ -62,7 +62,7 @@ namespace SimpleFramework.Xml.Core {
          //public void SetId(int id) {
          //   this.id = id;
          //}
-      @Root
+      [Root]
       [Default(DefaultType.PROPERTY)]
       private static class NonMatchingAnnotationExample {
          private String name;

@@ -7,8 +7,8 @@ using System;
 #endregion
 namespace SimpleFramework.Xml.Strategy {
    public class VisitorStrategyTest : ValidationTestCase {
-      @Root
-      @Default
+      [Root]
+      [Default]
       private static class VisitorExample {
          private List<String> items;
          private Map<String, String> map;

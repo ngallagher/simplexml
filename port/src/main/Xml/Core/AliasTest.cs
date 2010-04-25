@@ -48,10 +48,10 @@ namespace SimpleFramework.Xml.Core {
                return done;
            }
        }
-       @Root
+       [Root]
        [Namespace(Prefix="table", Reference="http://simpleframework.org/map")]
        private static class MultiValueMap {
-           @ElementMap
+           [ElementMap]
            private Map<String, Object> map;
            public MultiValueMap() {
                this.map = new HashMap<String, Object>();
@@ -63,7 +63,7 @@ namespace SimpleFramework.Xml.Core {
                return map.Get(name);
            }
        }
-       @Root
+       [Root]
        [Namespace(Prefix="item", Reference="http://simpleframework.org/entry")]
        private static class MultiValueEntry {
            [Attribute(Name="name")]

@@ -89,7 +89,7 @@ namespace SimpleFramework.Xml.Core {
          private Map<String, String> map;
          private String name;
          private int value;
-         @Attribute
+         [Attribute]
          public String Name {
             get {
                return name;
@@ -135,7 +135,7 @@ namespace SimpleFramework.Xml.Core {
          }
       }
       public static class ExtendedAnnotations : MixedAnnotations {
-         @Element
+         [Element]
          public String[] Array {
             get {
                return super.Array;

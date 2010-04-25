@@ -11,15 +11,15 @@ namespace SimpleFramework.Xml.Core {
       "   <text>entry text</text>  \n\r"+
       "   <name>some name</name> \n"+
       "</prologExample>";
-      @Root
+      [Root]
       private static class PrologExample {
-         @Attribute
+         [Attribute]
          public int id;
-         @Element
+         [Element]
          public String name;
-         @Element
+         [Element]
          public String text;
-         @Attribute
+         [Attribute]
          public bool flag;
       }
    	private Persister serializer;

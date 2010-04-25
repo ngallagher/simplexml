@@ -26,7 +26,7 @@ namespace SimpleFramework.Xml.Core {
       "        </value>\n"+
       "    </entry>\n"+
       "</properties>";
-      @Root
+      [Root]
       private static class Value {
          [Element(Name="bool", Required=false)]
          private Boolean boolValue;
@@ -46,9 +46,9 @@ namespace SimpleFramework.Xml.Core {
          private Date dateTime;
          [Element(Name="string", Required=false)]
          private String string;
-         @Transient
+         [Transient]
          private Object value;
-         @Validate
+         [Validate]
          public void Commit() {
             if(boolValue != null) {
                value = boolValue;
@@ -85,7 +85,7 @@ namespace SimpleFramework.Xml.Core {
             this.value = value;
          }
       }
-      @Root
+      [Root]
       private static class Properties {
          [ElementMap(Key="key", Value="value", Inline=true)]
          private Map<String, Value> map;

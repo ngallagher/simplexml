@@ -123,11 +123,11 @@ namespace SimpleFramework.Xml.Core {
       "      </entry>\r\n" +
       "   </table>\r\n" +
       "</primitiveMap>\r\n";
-      @Root
+      [Root]
       private static class MapEntry {
-         @Element
+         [Element]
          private String name;
-         @Element
+         [Element]
          private String value;
          public MapEntry() {
             super();
@@ -146,9 +146,9 @@ namespace SimpleFramework.Xml.Core {
             return false;
          }
       }
-      @Root
+      [Root]
       private static class ComplexMap {
-         @ElementMap
+         [ElementMap]
          private Map<CompositeKey, MapEntry> map;
          public ComplexMap() {
             this.map = new HashMap<CompositeKey, MapEntry>();
@@ -161,11 +161,11 @@ namespace SimpleFramework.Xml.Core {
             return null;
          }
       }
-      @Root
+      [Root]
       private static class CompositeKey {
-         @Element
+         [Element]
          private String name;
-         @Element
+         [Element]
          private String address;
          public CompositeKey() {
             super();
@@ -185,7 +185,7 @@ namespace SimpleFramework.Xml.Core {
             return false;
          }
       }
-      @Root
+      [Root]
       private static class PrimitiveMap {
          [ElementMap(Name="table")]
          private Map<String, BigDecimal> map;

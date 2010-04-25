@@ -90,7 +90,7 @@ namespace SimpleFramework.Xml.Strategy {
       "      </entry>\n"+
       "   </map>\n"+
       "</primitiveMap>";
-      @Root
+      [Root]
       private static class EntryMap {
          [ElementMap(Key="key", Attribute=true)]
          private Map<String, MapEntry> map;
@@ -101,14 +101,14 @@ namespace SimpleFramework.Xml.Strategy {
             return map.get(name);
          }
       }
-      @Root
+      [Root]
       private static class MapEntry {
-         @Element
+         [Element]
          private String name;
-         @Element
+         [Element]
          private String value;
       }
-      @Root
+      [Root]
       private static class StringMap {
          [ElementMap(Key="letter", Attribute=true)]
          private Map<String, String> map;
@@ -116,19 +116,19 @@ namespace SimpleFramework.Xml.Strategy {
             return map.get(name);
          }
       }
-      @Root
+      [Root]
       private static class ComplexMap {
-         @ElementMap
+         [ElementMap]
          private Map<CompositeKey, MapEntry> map;
          public String GetValue(CompositeKey key) {
             return map.get(key).value;
          }
       }
-      @Root
+      [Root]
       private static class CompositeKey {
-         @Element
+         [Element]
          private String name;
-         @Element
+         [Element]
          private String address;
          public CompositeKey() {
             super();
@@ -148,9 +148,9 @@ namespace SimpleFramework.Xml.Strategy {
             return false;
          }
       }
-      @Root
+      [Root]
       private static class BadMap {
-         @ElementMap
+         [ElementMap]
          private Map<CompositeKey, String> map;
          public BadMap() {
             this.map = new HashMap<CompositeKey, String>();
@@ -166,9 +166,9 @@ namespace SimpleFramework.Xml.Strategy {
          //public void SetValue(CompositeKey key, String value) {
          //   map.put(key, value);
          //}
-      @Root
+      [Root]
       private static class PrimitiveMap {
-         @ElementMap
+         [ElementMap]
          private Map<String, Double> map;
          public double GetValue(String name) {
             return map.get(name);

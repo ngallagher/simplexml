@@ -174,7 +174,7 @@ namespace SimpleFramework.Xml.Core {
             node.setAttribute(ELEMENT_AGE, String.valueOf(dog.Age));
          }
       }
-      @Root
+      [Root]
       private static class PetShop {
          private @ElementList Dictionary<Pet> pets;
          public PetShop(){

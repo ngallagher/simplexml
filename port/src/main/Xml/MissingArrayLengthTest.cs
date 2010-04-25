@@ -12,7 +12,7 @@ namespace SimpleFramework.Xml.Core {
        "   <item>three</item>" +
        " </array>"+
        "</missingArrayLengthExample>";
-       @Root
+       [Root]
        private static class MissingArrayLengthExample {
            [ElementArray(Entry="item")]
            private String[] array;

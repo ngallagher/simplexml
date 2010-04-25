@@ -5,7 +5,7 @@ using System;
 #endregion
 namespace SimpleFramework.Xml.Core {
    public class InlineListWithDataTest : ValidationTestCase {
-      @Root
+      [Root]
       private static class ListWithDataExample {
          private @ElementList(inline=true, data=true) List<String> list;
          public ListWithDataExample(){
@@ -22,7 +22,7 @@ namespace SimpleFramework.Xml.Core {
          //public List<String> GetList() {
          //   return list;
          //}
-      @Root
+      [Root]
       private static class MapWithDataExample {
          private @ElementMap(inline=true, data=true, attribute=true) Map<String, String> map;
          public MapWithDataExample(){

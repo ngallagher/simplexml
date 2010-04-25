@@ -243,39 +243,39 @@ namespace SimpleFramework.Xml.Core {
       "</index>\r\n";
       [Root(Name="index", Strict=false)]
       public static class IndexConfig {
-         @Attribute
+         [Attribute]
          private String id;
-         @Element
+         [Element]
          private String database;
-         @Element
+         [Element]
          private Query query;
          [ElementMap(Name="fields", Entry="field", Key="id", Attribute=true, KeyType=String.class, ValueType=Lucene.class)]
          private HashMap<String, Lucene> fields = new HashMap<String, Lucene>();
       }
-      @Root
+      [Root]
       public static class Field {
-         @Attribute
+         [Attribute]
          private String id;
-         @Element
+         [Element]
          private Lucene lucene;
       }
       [Root(Strict=false)]
       public static class Lucene {
-         @Element
+         [Element]
          private String index;
-         @Element
+         [Element]
          private bool store;
          [Element(Name="default")]
          private bool flag;
       }
-      @Root
+      [Root]
       private static class Query {
-         @Element
+         [Element]
          private String[] columns;
-         @Element
+         [Element]
          private String[] tables;
       }
-      @Root
+      [Root]
       private static class EntryMap {
          [ElementMap(Key="key", Attribute=true)]
          private Map<String, MapEntry> map;
@@ -283,11 +283,11 @@ namespace SimpleFramework.Xml.Core {
             return map.get(name).value;
          }
       }
-      @Root
+      [Root]
       private static class MapEntry {
-         @Element
+         [Element]
          private String name;
-         @Element
+         [Element]
          private String value;
          public MapEntry() {
             super();
@@ -297,7 +297,7 @@ namespace SimpleFramework.Xml.Core {
             this.value = value;
          }
       }
-      @Root
+      [Root]
       private static class StringMap {
          [ElementMap(Key="letter", Attribute=true, Data=true)]
          private Map<String, String> map;
@@ -305,9 +305,9 @@ namespace SimpleFramework.Xml.Core {
             return map.get(name);
          }
       }
-      @Root
+      [Root]
       private static class ComplexMap {
-         @ElementMap
+         [ElementMap]
          private Map<CompositeKey, MapEntry> map;
          public ComplexMap() {
             this.map = new HashMap<CompositeKey, MapEntry>();
@@ -316,11 +316,11 @@ namespace SimpleFramework.Xml.Core {
             return map.get(key).value;
          }
       }
-      @Root
+      [Root]
       private static class CompositeKey {
-         @Element
+         [Element]
          private String name;
-         @Element
+         [Element]
          private String address;
          public CompositeKey() {
             super();
@@ -340,7 +340,7 @@ namespace SimpleFramework.Xml.Core {
             return false;
          }
       }
-      @Root
+      [Root]
       private static class PrimitiveMap {
          [ElementMap(Name="table")]
          private Map<String, BigDecimal> map;
@@ -351,7 +351,7 @@ namespace SimpleFramework.Xml.Core {
             return map.get(name);
          }
       }
-      @Root
+      [Root]
       private static class PrimitiveValueOverrideMap {
          [ElementMap(Value="decimal")]
          private Map<String, BigDecimal> map;
@@ -359,7 +359,7 @@ namespace SimpleFramework.Xml.Core {
             return map.get(name);
          }
       }
-      @Root
+      [Root]
       private static class PrimitiveValueKeyOverrideMap {
          [ElementMap(Value="decimal", Key="text", Entry="item")]
          private Map<String, BigDecimal> map;
@@ -367,7 +367,7 @@ namespace SimpleFramework.Xml.Core {
             return map.get(name);
          }
       }
-      @Root
+      [Root]
       private static class ComplexValueKeyOverrideMap {
          [ElementMap(Key="key", Value="value", Entry="item")]
          private Map<CompositeKey, MapEntry> map;
@@ -378,7 +378,7 @@ namespace SimpleFramework.Xml.Core {
             return map.get(key).value;
          }
       }
-      @Root
+      [Root]
       private static class PrimitiveInlineMap {
          [ElementMap(Entry="entity", Inline=true)]
          private Map<String, BigDecimal> map;

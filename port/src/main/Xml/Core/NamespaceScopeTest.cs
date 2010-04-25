@@ -13,24 +13,24 @@ namespace SimpleFramework.Xml.Core {
       "      </d>\n"+
       "   </pre:b>\n"+
       "</a>";
-      @Root
+      [Root]
       [Namespace(Reference="http://domain/a")]
       private static class A {
-         @Element
+         [Element]
          [Namespace(Prefix="pre", Reference="http://domain/b")]
          private B b;
       }
-      @Root
+      [Root]
       private static class B {
-         @Element
+         [Element]
          private String c;
-         @Element
-         @Namespace
+         [Element]
+         [Namespace]
          private D d;
       }
-      @Root
+      [Root]
       private static class D{
-         @Element
+         [Element]
          private String e;
       }
       public void TestScope() {

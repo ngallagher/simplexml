@@ -6,17 +6,17 @@ using System;
 #endregion
 package SimpleFramework.Xml.transform;
 public class TimeTransformTest : ValidationTestCase {
-   @Root
+   [Root]
    public static class TimeExample {
-      @Attribute
+      [Attribute]
       private Date attribute;
-      @Element
+      [Element]
       private Date element;
-      @Element
+      [Element]
       private Time time;
-      @ElementList
+      [ElementList]
       private Collection<Time> list;
-      @ElementArray
+      [ElementArray]
       private Time[] array;
       public TimeExample() {
          super();

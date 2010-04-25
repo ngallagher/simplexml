@@ -8,9 +8,9 @@ namespace SimpleFramework.Xml.Core {
    public class EmptyMapEntryTest : ValidationTestCase {
       /// <summary>
      /// </summary>
-      @Root
+      [Root]
       public static class SimpleBug1 {
-          @Element
+          [Element]
           protected Mojo test1;
           public SimpleBug1() {
               test1 = new Mojo();
@@ -21,7 +21,7 @@ namespace SimpleFramework.Xml.Core {
               test1.data.put("", "");
           }
           public static class Mojo {
-              @ElementMap (empty=true) protected HashMap<String, Object> data;
+              [ElementMap]
               public Mojo() {
                   data = new HashMap<String, Object>();
               }

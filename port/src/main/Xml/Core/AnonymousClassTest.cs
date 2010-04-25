@@ -6,7 +6,7 @@ namespace SimpleFramework.Xml.Core {
    public class AnonymousClassTest : ValidationTestCase {
       [Root(Name="anonymous")]
       private static class Anonymous {
-         @Element
+         [Element]
          [Namespace(Prefix="prefix", Reference="http://www.domain.com/reference")]
          private static Object anonymous = new Object() {
             [Attribute(Name="attribute")]
