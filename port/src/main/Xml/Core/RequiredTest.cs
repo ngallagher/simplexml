@@ -45,16 +45,16 @@ namespace SimpleFramework.Xml.Core {
          persister = new Persister();
       }
       public void TestComplete() {
-         Entry entry = persister.read(Entry.class, new StringReader(COMPLETE));
-         assertEquals("complete", entry.Value);
-         assertEquals(1234, entry.Number);
-         assertEquals(true, entry.Flag);
+         Entry entry = persister.Read(Entry.class, new StringReader(COMPLETE));
+         AssertEquals("complete", entry.Value);
+         AssertEquals(1234, entry.Number);
+         AssertEquals(true, entry.Flag);
       }
       public void TestOptional() {
-         Entry entry = persister.read(Entry.class, new StringReader(OPTIONAL));
-         assertEquals("default", entry.Value);
-         assertEquals(9999, entry.Number);
-         assertEquals(true, entry.Flag);
+         Entry entry = persister.Read(Entry.class, new StringReader(OPTIONAL));
+         AssertEquals("default", entry.Value);
+         AssertEquals(9999, entry.Number);
+         AssertEquals(true, entry.Flag);
       }
    }
 }

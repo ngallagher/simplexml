@@ -46,28 +46,28 @@ namespace SimpleFramework.Xml.Core {
    	   serializer = new Persister();
    	}
       public void TestFirst() {
-         First first = serializer.read(First.class, new StringReader(FIRST));
-         assertEquals(first.id, 12);
-         assertEquals(first.text, "entry text");
+         First first = serializer.Read(First.class, new StringReader(FIRST));
+         AssertEquals(first.id, 12);
+         AssertEquals(first.text, "entry text");
       }
       public void TestSecond() {
-         Second second = serializer.read(Second.class, new StringReader(SECOND));
-         assertEquals(second.id, 12);
-         assertEquals(second.text, "entry text");
-         assertEquals(second.name, "some name");
+         Second second = serializer.Read(Second.class, new StringReader(SECOND));
+         AssertEquals(second.id, 12);
+         AssertEquals(second.text, "entry text");
+         AssertEquals(second.name, "some name");
       }
       public void TestThird() {
-         Third third = serializer.read(Third.class, new StringReader(THIRD));
-         assertEquals(third.id, 12);
-         assertEquals(third.text, "entry text");
-         assertEquals(third.name, "some name");
-         assertEquals(third.third, "added to schema");
+         Third third = serializer.Read(Third.class, new StringReader(THIRD));
+         AssertEquals(third.id, 12);
+         AssertEquals(third.text, "entry text");
+         AssertEquals(third.name, "some name");
+         AssertEquals(third.third, "added to schema");
          assertTrue(third.bool);
       }
       public void TestFailure() {
          bool fail = false;
          try {
-            Third third = serializer.read(Third.class, new StringReader(SECOND));
+            Third third = serializer.Read(Third.class, new StringReader(SECOND));
          }catch(Exception e) {
             fail = true;
          }

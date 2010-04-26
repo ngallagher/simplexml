@@ -94,7 +94,7 @@ namespace SimpleFramework.Xml.Core {
          if(next == null) {
             return null;
          }
-         if(next.isEmpty()) {
+         if(next.IsEmpty()) {
             return null;
          }
          return root.Read(next, expect);
@@ -135,7 +135,7 @@ namespace SimpleFramework.Xml.Core {
       /// </returns>
       public bool Validate(InputNode node) {
          Class expect = type.Type;
-         String name = entry.getValue();
+         String name = entry.GetValue();
          if(name == null) {
             name = context.GetName(expect);
          }
@@ -163,7 +163,7 @@ namespace SimpleFramework.Xml.Core {
          if(next == null) {
             return true;
          }
-         if(next.isEmpty()) {
+         if(next.IsEmpty()) {
             return true;
          }
          return root.Validate(next, expect);
@@ -181,7 +181,7 @@ namespace SimpleFramework.Xml.Core {
       /// </param>
       public void Write(OutputNode node, Object item) {
          Class expect = type.Type;
-         String key = entry.getValue();
+         String key = entry.GetValue();
          if(key == null) {
             key = context.GetName(expect);
          }

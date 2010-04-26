@@ -97,19 +97,19 @@ namespace SimpleFramework.Xml.Core {
          assertTrue(original.list.contains("b"));
          assertTrue(original.list.contains("c"));
          assertTrue(original.list.contains("d"));
-         assertEquals(original.map.get("original key"), 1.0);
-         assertEquals(original.map.get("a"), 1.0);
-         assertEquals(original.map.get("b"), 2.0);
-         assertEquals(original.map.get("c"), 3.0);
+         AssertEquals(original.map.get("original key"), 1.0);
+         AssertEquals(original.map.get("a"), 1.0);
+         AssertEquals(original.map.get("b"), 2.0);
+         AssertEquals(original.map.get("c"), 3.0);
          assertTrue(original.inlineList.contains(new Entry("original name", "original value")));
          assertTrue(original.inlineList.contains(new Entry("a", "1")));
          assertTrue(original.inlineList.contains(new Entry("b", "2")));
          assertTrue(original.inlineList.contains(new Entry("c", "3")));
          assertTrue(original.inlineList.contains(new Entry("d", "4")));
-         assertEquals(original.inlineMap.get(7.0), new Entry("an original name", "an original value"));
-         assertEquals(original.inlineMap.get(1.0), (new Entry("a", "1")));
-         assertEquals(original.inlineMap.get(2.0), (new Entry("b", "2")));
-         assertEquals(original.inlineMap.get(3.0), (new Entry("c", "3")));
+         AssertEquals(original.inlineMap.get(7.0), new Entry("an original name", "an original value"));
+         AssertEquals(original.inlineMap.get(1.0), (new Entry("a", "1")));
+         AssertEquals(original.inlineMap.get(2.0), (new Entry("b", "2")));
+         AssertEquals(original.inlineMap.get(3.0), (new Entry("c", "3")));
          validate(persister, original);
       }*/
       public void TestA() {

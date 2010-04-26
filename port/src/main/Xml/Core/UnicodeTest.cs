@@ -166,31 +166,31 @@ namespace SimpleFramework.Xml.Core {
          persister = new Persister();
       }
       public void TestUnicode() {
-         UnicodeExample example = persister.read(UnicodeExample.class, SOURCE);
+         UnicodeExample example = persister.Read(UnicodeExample.class, SOURCE);
          AssertUnicode(example);
-         validate(example, persister); // Ensure the deserialized object is valid
+         Validate(example, persister); // Ensure the deserialized object is valid
       }
       public void TestWriteUnicode() {
-         UnicodeExample example = persister.read(UnicodeExample.class, SOURCE);
+         UnicodeExample example = persister.Read(UnicodeExample.class, SOURCE);
          AssertUnicode(example);
-         validate(example, persister); // Ensure the deserialized object is valid
+         Validate(example, persister); // Ensure the deserialized object is valid
          StringWriter out = new StringWriter();
-         persister.write(example, out);
-         example = persister.read(UnicodeExample.class, out.toString());
+         persister.Write(example, out);
+         example = persister.Read(UnicodeExample.class, out.toString());
          AssertUnicode(example);
-         validate(example, persister);
+         Validate(example, persister);
       }
       public void TestUnicodeFromByteStream() {
          byte[] data = SOURCE.getBytes("UTF-8");
          InputStream source = new ByteArrayInputStream(data);
-         UnicodeExample example = persister.read(UnicodeExample.class, source);
+         UnicodeExample example = persister.Read(UnicodeExample.class, source);
          AssertUnicode(example);
-         validate(example, persister); // Ensure the deserialized object is valid
+         Validate(example, persister); // Ensure the deserialized object is valid
       }
       public void TestIncorrectEncoding() {
          byte[] data = SOURCE.getBytes("UTF-8");
          InputStream source = new ByteArrayInputStream(data);
-         UnicodeExample example = persister.read(UnicodeExample.class, new InputStreamReader(source, "ISO-8859-1"));
+         UnicodeExample example = persister.Read(UnicodeExample.class, new InputStreamReader(source, "ISO-8859-1"));
          assertFalse("Encoding of ISO-8859-1 did not work", IsUnicode(example));
       }
       public void AssertUnicode(UnicodeExample example) {

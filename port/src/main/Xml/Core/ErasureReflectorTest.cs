@@ -108,58 +108,58 @@ namespace SimpleFramework.Xml.Core {
          }
       }
       public void TesFieldReflection() {
-         assertEquals(Object.class, Reflector.getDependent(CollectionErasure.GetField("erased")));
-         assertEquals(String.class, Reflector.getDependent(CollectionErasure.GetField("string")));
-         assertEquals(Object.class, Reflector.getDependent(MapErasure.GetField("erasedToErased")));
-         assertEquals(Object.class, Reflector.getDependent(MapErasure.GetField("erasedToString")));
-         assertEquals(String.class, Reflector.getDependent(MapErasure.GetField("stringToErased")));
-         assertEquals(String.class, Reflector.getDependent(MapErasure.GetField("stringToString")));
-         assertEquals(Object.class, Reflector.getDependents(MapErasure.GetField("erasedToErased"))[0]);
-         assertEquals(Object.class, Reflector.getDependents(MapErasure.GetField("erasedToString"))[0]);
-         assertEquals(String.class, Reflector.getDependents(MapErasure.GetField("stringToErased"))[0]);
-         assertEquals(String.class, Reflector.getDependents(MapErasure.GetField("stringToString"))[0]);
-         assertEquals(Object.class, Reflector.getDependents(MapErasure.GetField("erasedToErased"))[1]);
-         assertEquals(String.class, Reflector.getDependents(MapErasure.GetField("erasedToString"))[1]);
-         assertEquals(Object.class, Reflector.getDependents(MapErasure.GetField("stringToErased"))[1]);
-         assertEquals(String.class, Reflector.getDependents(MapErasure.GetField("stringToString"))[1]);
+         AssertEquals(Object.class, Reflector.getDependent(CollectionErasure.GetField("erased")));
+         AssertEquals(String.class, Reflector.getDependent(CollectionErasure.GetField("string")));
+         AssertEquals(Object.class, Reflector.getDependent(MapErasure.GetField("erasedToErased")));
+         AssertEquals(Object.class, Reflector.getDependent(MapErasure.GetField("erasedToString")));
+         AssertEquals(String.class, Reflector.getDependent(MapErasure.GetField("stringToErased")));
+         AssertEquals(String.class, Reflector.getDependent(MapErasure.GetField("stringToString")));
+         AssertEquals(Object.class, Reflector.getDependents(MapErasure.GetField("erasedToErased"))[0]);
+         AssertEquals(Object.class, Reflector.getDependents(MapErasure.GetField("erasedToString"))[0]);
+         AssertEquals(String.class, Reflector.getDependents(MapErasure.GetField("stringToErased"))[0]);
+         AssertEquals(String.class, Reflector.getDependents(MapErasure.GetField("stringToString"))[0]);
+         AssertEquals(Object.class, Reflector.getDependents(MapErasure.GetField("erasedToErased"))[1]);
+         AssertEquals(String.class, Reflector.getDependents(MapErasure.GetField("erasedToString"))[1]);
+         AssertEquals(Object.class, Reflector.getDependents(MapErasure.GetField("stringToErased"))[1]);
+         AssertEquals(String.class, Reflector.getDependents(MapErasure.GetField("stringToString"))[1]);
       }
       public void TestMethodReflection() {
-         assertEquals(Object.class, Reflector.getReturnDependent(CollectionErasure.GetMethod("getErased")));
-         assertEquals(String.class, Reflector.getReturnDependent(CollectionErasure.GetMethod("getString")));
-         assertEquals(null, Reflector.getReturnDependent(CollectionErasure.GetMethod("setErased")));
-         assertEquals(null, Reflector.getReturnDependent(CollectionErasure.GetMethod("setString")));
-         assertEquals(Object.class, Reflector.getParameterDependent(CollectionErasure.Constructor, 0)); // Collection<T>
-         assertEquals(String.class, Reflector.getParameterDependent(CollectionErasure.Constructor, 1)); // Collection<String>
-         assertEquals(Object.class, Reflector.getParameterDependents(CollectionErasure.Constructor, 0)[0]); // Collection<T>
-         assertEquals(String.class, Reflector.getParameterDependents(CollectionErasure.Constructor, 1)[0]); // Collection<String>
-         assertEquals(Object.class, Reflector.getReturnDependent(MapErasure.GetMethod("getErasedToErased")));
-         assertEquals(Object.class, Reflector.getReturnDependent(MapErasure.GetMethod("getErasedToString")));
-         assertEquals(String.class, Reflector.getReturnDependent(MapErasure.GetMethod("getStringToErased")));
-         assertEquals(String.class, Reflector.getReturnDependent(MapErasure.GetMethod("getStringToString")));
-         assertEquals(null, Reflector.getReturnDependent(MapErasure.GetMethod("setErasedToErased")));
-         assertEquals(null, Reflector.getReturnDependent(MapErasure.GetMethod("setErasedToString")));
-         assertEquals(null, Reflector.getReturnDependent(MapErasure.GetMethod("setStringToErased")));
-         assertEquals(null, Reflector.getReturnDependent(MapErasure.GetMethod("setStringToString")));
-         assertEquals(Object.class, Reflector.getReturnDependents(MapErasure.GetMethod("getErasedToErased"))[0]);
-         assertEquals(Object.class, Reflector.getReturnDependents(MapErasure.GetMethod("getErasedToString"))[0]);
-         assertEquals(String.class, Reflector.getReturnDependents(MapErasure.GetMethod("getStringToErased"))[0]);
-         assertEquals(String.class, Reflector.getReturnDependents(MapErasure.GetMethod("getStringToString"))[0]);
-         assertEquals(Object.class, Reflector.getReturnDependents(MapErasure.GetMethod("getErasedToErased"))[1]);
-         assertEquals(String.class, Reflector.getReturnDependents(MapErasure.GetMethod("getErasedToString"))[1]);
-         assertEquals(Object.class, Reflector.getReturnDependents(MapErasure.GetMethod("getStringToErased"))[1]);
-         assertEquals(String.class, Reflector.getReturnDependents(MapErasure.GetMethod("getStringToString"))[1]);
-         assertEquals(Object.class, Reflector.getParameterDependent(MapErasure.Constructor, 0)); // Map<T, T>
-         assertEquals(Object.class, Reflector.getParameterDependent(MapErasure.Constructor, 1)); // Map<T, String>
-         assertEquals(String.class, Reflector.getParameterDependent(MapErasure.Constructor, 2)); // Map<String, T>
-         assertEquals(String.class, Reflector.getParameterDependent(MapErasure.Constructor, 3)); // Map<String, String>
-         assertEquals(Object.class, Reflector.getParameterDependents(MapErasure.Constructor, 0)[0]); // Map<T, T>
-         assertEquals(Object.class, Reflector.getParameterDependents(MapErasure.Constructor, 1)[0]); // Map<T, String>
-         assertEquals(String.class, Reflector.getParameterDependents(MapErasure.Constructor, 2)[0]); // Map<String, T>
-         assertEquals(String.class, Reflector.getParameterDependents(MapErasure.Constructor, 3)[0]); // Map<String, String>
-         assertEquals(Object.class, Reflector.getParameterDependents(MapErasure.Constructor, 0)[1]); // Map<T, T>
-         assertEquals(String.class, Reflector.getParameterDependents(MapErasure.Constructor, 1)[1]); // Map<T, String>
-         assertEquals(Object.class, Reflector.getParameterDependents(MapErasure.Constructor, 2)[1]); // Map<String, T>
-         assertEquals(String.class, Reflector.getParameterDependents(MapErasure.Constructor, 3)[1]); // Map<String, String>
+         AssertEquals(Object.class, Reflector.getReturnDependent(CollectionErasure.GetMethod("getErased")));
+         AssertEquals(String.class, Reflector.getReturnDependent(CollectionErasure.GetMethod("getString")));
+         AssertEquals(null, Reflector.getReturnDependent(CollectionErasure.GetMethod("setErased")));
+         AssertEquals(null, Reflector.getReturnDependent(CollectionErasure.GetMethod("setString")));
+         AssertEquals(Object.class, Reflector.getParameterDependent(CollectionErasure.Constructor, 0)); // Collection<T>
+         AssertEquals(String.class, Reflector.getParameterDependent(CollectionErasure.Constructor, 1)); // Collection<String>
+         AssertEquals(Object.class, Reflector.getParameterDependents(CollectionErasure.Constructor, 0)[0]); // Collection<T>
+         AssertEquals(String.class, Reflector.getParameterDependents(CollectionErasure.Constructor, 1)[0]); // Collection<String>
+         AssertEquals(Object.class, Reflector.getReturnDependent(MapErasure.GetMethod("getErasedToErased")));
+         AssertEquals(Object.class, Reflector.getReturnDependent(MapErasure.GetMethod("getErasedToString")));
+         AssertEquals(String.class, Reflector.getReturnDependent(MapErasure.GetMethod("getStringToErased")));
+         AssertEquals(String.class, Reflector.getReturnDependent(MapErasure.GetMethod("getStringToString")));
+         AssertEquals(null, Reflector.getReturnDependent(MapErasure.GetMethod("setErasedToErased")));
+         AssertEquals(null, Reflector.getReturnDependent(MapErasure.GetMethod("setErasedToString")));
+         AssertEquals(null, Reflector.getReturnDependent(MapErasure.GetMethod("setStringToErased")));
+         AssertEquals(null, Reflector.getReturnDependent(MapErasure.GetMethod("setStringToString")));
+         AssertEquals(Object.class, Reflector.getReturnDependents(MapErasure.GetMethod("getErasedToErased"))[0]);
+         AssertEquals(Object.class, Reflector.getReturnDependents(MapErasure.GetMethod("getErasedToString"))[0]);
+         AssertEquals(String.class, Reflector.getReturnDependents(MapErasure.GetMethod("getStringToErased"))[0]);
+         AssertEquals(String.class, Reflector.getReturnDependents(MapErasure.GetMethod("getStringToString"))[0]);
+         AssertEquals(Object.class, Reflector.getReturnDependents(MapErasure.GetMethod("getErasedToErased"))[1]);
+         AssertEquals(String.class, Reflector.getReturnDependents(MapErasure.GetMethod("getErasedToString"))[1]);
+         AssertEquals(Object.class, Reflector.getReturnDependents(MapErasure.GetMethod("getStringToErased"))[1]);
+         AssertEquals(String.class, Reflector.getReturnDependents(MapErasure.GetMethod("getStringToString"))[1]);
+         AssertEquals(Object.class, Reflector.getParameterDependent(MapErasure.Constructor, 0)); // Map<T, T>
+         AssertEquals(Object.class, Reflector.getParameterDependent(MapErasure.Constructor, 1)); // Map<T, String>
+         AssertEquals(String.class, Reflector.getParameterDependent(MapErasure.Constructor, 2)); // Map<String, T>
+         AssertEquals(String.class, Reflector.getParameterDependent(MapErasure.Constructor, 3)); // Map<String, String>
+         AssertEquals(Object.class, Reflector.getParameterDependents(MapErasure.Constructor, 0)[0]); // Map<T, T>
+         AssertEquals(Object.class, Reflector.getParameterDependents(MapErasure.Constructor, 1)[0]); // Map<T, String>
+         AssertEquals(String.class, Reflector.getParameterDependents(MapErasure.Constructor, 2)[0]); // Map<String, T>
+         AssertEquals(String.class, Reflector.getParameterDependents(MapErasure.Constructor, 3)[0]); // Map<String, String>
+         AssertEquals(Object.class, Reflector.getParameterDependents(MapErasure.Constructor, 0)[1]); // Map<T, T>
+         AssertEquals(String.class, Reflector.getParameterDependents(MapErasure.Constructor, 1)[1]); // Map<T, String>
+         AssertEquals(Object.class, Reflector.getParameterDependents(MapErasure.Constructor, 2)[1]); // Map<String, T>
+         AssertEquals(String.class, Reflector.getParameterDependents(MapErasure.Constructor, 3)[1]); // Map<String, String>
       }
    }
 }

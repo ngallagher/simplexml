@@ -38,7 +38,7 @@ namespace SimpleFramework.Xml.Core {
          Persister persister = new Persister();
          StringWriter writer = new StringWriter();
          A example = persister.read(A.class, SOURCE);
-         assertEquals(example.b.c.d, "d");
+         AssertEquals(example.b.c.d, "d");
          assertElementHasNamespace(SOURCE, "/a", "http://domain/z");
          assertElementHasNamespace(SOURCE, "/a/b", "http://domain/y");
          assertElementHasNamespace(SOURCE, "/a/b/c", "http://domain/c");

@@ -35,14 +35,14 @@ namespace SimpleFramework.Xml.Core {
                latch.await();
                for(int i = 0; i < 100; i++) {
                   StringWriter writer = new StringWriter();
-                  serializer.write(example, writer);
+                  serializer.Write(example, writer);
                   String text = writer.toString();
-                  Example copy = serializer.read(Example.class, text);
-                  Assert.assertEquals(example.name, copy.name);
-                  Assert.assertEquals(example.value, copy.value);
-                  Assert.assertEquals(example.number, copy.number);
-                  Assert.assertEquals(example.date, copy.date);
-                  Assert.assertEquals(example.locale, copy.locale);
+                  Example copy = serializer.Read(Example.class, text);
+                  Assert.AssertEquals(example.name, copy.name);
+                  Assert.AssertEquals(example.value, copy.value);
+                  Assert.AssertEquals(example.number, copy.number);
+                  Assert.AssertEquals(example.date, copy.date);
+                  Assert.AssertEquals(example.locale, copy.locale);
                   System.out.println(text);
                }
                queue.offer(Status.SUCCESS);
@@ -67,7 +67,7 @@ namespace SimpleFramework.Xml.Core {
             worker.start();
          }
          for(int i = 0; i < 20; i++) {
-            assertEquals("Serialization fails when used concurrently", status.take(), Status.SUCCESS);
+            AssertEquals("Serialization fails when used concurrently", status.take(), Status.SUCCESS);
          }
       }
    }

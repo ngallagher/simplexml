@@ -69,9 +69,9 @@ namespace SimpleFramework.Xml.Core {
          String text = writer.toString();
          System.out.println(text);
          ErasureExample<ErasureItem> exampleCopy = persister.read(ErasureExample.class, text);
-         assertEquals(exampleCopy.GetItem("a").name, "A");
-         assertEquals(exampleCopy.GetItem("b").name, "B");
-         assertEquals(exampleCopy.GetItem("c").name, "C");
+         AssertEquals(exampleCopy.GetItem("a").name, "A");
+         AssertEquals(exampleCopy.GetItem("b").name, "B");
+         AssertEquals(exampleCopy.GetItem("c").name, "C");
          validate(example, persister);
       }
       public void TestPrimitiveErasure() {
@@ -143,12 +143,12 @@ namespace SimpleFramework.Xml.Core {
          assertElementHasValue(text, "/erasureWithMapInlineValueIsIgnoredExample/entry[2]/value/value", "3");
          System.out.println(text);
          ErasureWithMapInlineValueIsIgnoredExample<ErasureItem> exampleCopy = persister.read(ErasureWithMapInlineValueIsIgnoredExample.class, text);
-         assertEquals(exampleCopy.GetItem("a").name, "A");
-         assertEquals(exampleCopy.GetItem("b").name, "B");
-         assertEquals(exampleCopy.GetItem("c").name, "C");
-         assertEquals(exampleCopy.GetItem("a").value, "1");
-         assertEquals(exampleCopy.GetItem("b").value, "2");
-         assertEquals(exampleCopy.GetItem("c").value, "3");
+         AssertEquals(exampleCopy.GetItem("a").name, "A");
+         AssertEquals(exampleCopy.GetItem("b").name, "B");
+         AssertEquals(exampleCopy.GetItem("c").name, "C");
+         AssertEquals(exampleCopy.GetItem("a").value, "1");
+         AssertEquals(exampleCopy.GetItem("b").value, "2");
+         AssertEquals(exampleCopy.GetItem("c").value, "3");
          validate(exampleCopy, persister);
       }
    }

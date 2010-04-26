@@ -60,7 +60,7 @@ namespace SimpleFramework.Xml.Core {
       /// <returns>
       /// this returns an instance of the resulting type
       /// </returns>
-      @Override
+      [Override]
       public Instance GetInstance(InputNode node) {
          Value value = getOverride(node);
          Class type = getType();

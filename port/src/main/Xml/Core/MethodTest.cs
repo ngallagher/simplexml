@@ -244,48 +244,48 @@ namespace SimpleFramework.Xml.Core {
          persister = new Persister();
       }
       public void TestExplicitMethodNameExample() {
-         ExplicitMethodNameExample entry = persister.read(ExplicitMethodNameExample.class, SOURCE_EXPLICIT);
-         assertEquals(entry.boolValue, true);
-         assertEquals(entry.byteValue, 16);
-         assertEquals(entry.shortValue, 120);
-         assertEquals(entry.intValue, 1234);
-         assertEquals(entry.floatValue, 1234.56f);
-         assertEquals(entry.longValue, 1234567l);
-         assertEquals(entry.doubleValue, 1234567.89d);
+         ExplicitMethodNameExample entry = persister.Read(ExplicitMethodNameExample.class, SOURCE_EXPLICIT);
+         AssertEquals(entry.boolValue, true);
+         AssertEquals(entry.byteValue, 16);
+         AssertEquals(entry.shortValue, 120);
+         AssertEquals(entry.intValue, 1234);
+         AssertEquals(entry.floatValue, 1234.56f);
+         AssertEquals(entry.longValue, 1234567l);
+         AssertEquals(entry.doubleValue, 1234567.89d);
          StringWriter buffer = new StringWriter();
-         persister.write(entry, buffer);
-         validate(entry, persister);
-         entry = persister.read(ExplicitMethodNameExample.class, buffer.toString());
-         assertEquals(entry.boolValue, true);
-         assertEquals(entry.byteValue, 16);
-         assertEquals(entry.shortValue, 120);
-         assertEquals(entry.intValue, 1234);
-         assertEquals(entry.floatValue, 1234.56f);
-         assertEquals(entry.longValue, 1234567l);
-         assertEquals(entry.doubleValue, 1234567.89d);
-         validate(entry, persister);
+         persister.Write(entry, buffer);
+         Validate(entry, persister);
+         entry = persister.Read(ExplicitMethodNameExample.class, buffer.toString());
+         AssertEquals(entry.boolValue, true);
+         AssertEquals(entry.byteValue, 16);
+         AssertEquals(entry.shortValue, 120);
+         AssertEquals(entry.intValue, 1234);
+         AssertEquals(entry.floatValue, 1234.56f);
+         AssertEquals(entry.longValue, 1234567l);
+         AssertEquals(entry.doubleValue, 1234567.89d);
+         Validate(entry, persister);
       }
       public void TestImplicitMethodNameExample() {
-         ImplicitMethodNameExample entry = persister.read(ImplicitMethodNameExample.class, SOURCE_IMPLICIT);
-         assertEquals(entry.boolValue, true);
-         assertEquals(entry.byteValue, 16);
-         assertEquals(entry.shortValue, 120);
-         assertEquals(entry.intValue, 1234);
-         assertEquals(entry.floatValue, 1234.56f);
-         assertEquals(entry.longValue, 1234567l);
-         assertEquals(entry.doubleValue, 1234567.89d);
+         ImplicitMethodNameExample entry = persister.Read(ImplicitMethodNameExample.class, SOURCE_IMPLICIT);
+         AssertEquals(entry.boolValue, true);
+         AssertEquals(entry.byteValue, 16);
+         AssertEquals(entry.shortValue, 120);
+         AssertEquals(entry.intValue, 1234);
+         AssertEquals(entry.floatValue, 1234.56f);
+         AssertEquals(entry.longValue, 1234567l);
+         AssertEquals(entry.doubleValue, 1234567.89d);
          StringWriter buffer = new StringWriter();
-         persister.write(entry, buffer);
-         validate(entry, persister);
-         entry = persister.read(ImplicitMethodNameExample.class, buffer.toString());
-         assertEquals(entry.boolValue, true);
-         assertEquals(entry.byteValue, 16);
-         assertEquals(entry.shortValue, 120);
-         assertEquals(entry.intValue, 1234);
-         assertEquals(entry.floatValue, 1234.56f);
-         assertEquals(entry.longValue, 1234567l);
-         assertEquals(entry.doubleValue, 1234567.89d);
-         validate(entry, persister);
+         persister.Write(entry, buffer);
+         Validate(entry, persister);
+         entry = persister.Read(ImplicitMethodNameExample.class, buffer.toString());
+         AssertEquals(entry.boolValue, true);
+         AssertEquals(entry.byteValue, 16);
+         AssertEquals(entry.shortValue, 120);
+         AssertEquals(entry.intValue, 1234);
+         AssertEquals(entry.floatValue, 1234.56f);
+         AssertEquals(entry.longValue, 1234567l);
+         AssertEquals(entry.doubleValue, 1234567.89d);
+         Validate(entry, persister);
       }
    }
 }

@@ -104,11 +104,11 @@ namespace SimpleFramework.Xml.Core {
       /// </returns>
       public Object Read(InputNode node) {
          Class expect = type.Type;
-         String name = entry.getKey();
+         String name = entry.Key;
          if(name == null) {
             name = context.GetName(expect);
          }
-         if(!entry.isAttribute()) {
+         if(!entry.IsAttribute()) {
             return ReadElement(node, name);
          }
          return ReadAttribute(node, name);
@@ -195,11 +195,11 @@ namespace SimpleFramework.Xml.Core {
       /// </returns>
       public bool Validate(InputNode node) {
          Class expect = type.Type;
-         String name = entry.getKey();
+         String name = entry.Key;
          if(name == null) {
             name = context.GetName(expect);
          }
-         if(!entry.isAttribute()) {
+         if(!entry.IsAttribute()) {
             return ValidateElement(node, name);
          }
          return ValidateAttribute(node, name);
@@ -263,7 +263,7 @@ namespace SimpleFramework.Xml.Core {
       /// this is the item that is to be written
       /// </param>
       public void Write(OutputNode node, Object item) {
-         if(!entry.isAttribute()) {
+         if(!entry.IsAttribute()) {
             WriteElement(node, item);
          } else if(item != null) {
             WriteAttribute(node, item);
@@ -282,7 +282,7 @@ namespace SimpleFramework.Xml.Core {
       /// </param>
       public void WriteElement(OutputNode node, Object item) {
          Class expect = type.Type;
-         String key = entry.getKey();
+         String key = entry.Key;
          if(key == null) {
             key = context.GetName(expect);
          }
@@ -308,7 +308,7 @@ namespace SimpleFramework.Xml.Core {
       public void WriteAttribute(OutputNode node, Object item) {
          Class expect = type.Type;
          String text = factory.GetText(item);
-         String key = entry.getKey();
+         String key = entry.Key;
          if(key == null) {
             key = context.GetName(expect);
          }

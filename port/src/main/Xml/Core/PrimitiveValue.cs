@@ -104,11 +104,11 @@ namespace SimpleFramework.Xml.Core {
       /// </returns>
       public Object Read(InputNode node) {
          Class expect = type.Type;
-         String name = entry.getValue();
+         String name = entry.GetValue();
          if(name == null) {
             name = context.GetName(expect);
          }
-         if(entry.isInline()) {
+         if(entry.IsInline()) {
             return root.Read(node);
          }
          return Read(node, name);
@@ -172,7 +172,7 @@ namespace SimpleFramework.Xml.Core {
       /// </returns>
       public bool Validate(InputNode node) {
          Class expect = type.Type;
-         String name = entry.getValue();
+         String name = entry.GetValue();
          if(name == null) {
             name = context.GetName(expect);
          }
@@ -195,7 +195,7 @@ namespace SimpleFramework.Xml.Core {
       /// </returns>
       public bool Validate(InputNode node, String key) {
          String name = style.GetAttribute(key);
-         if(!entry.isInline()) {
+         if(!entry.IsInline()) {
             node = node.getNext(name);
             if(node == null) {
                return true;
@@ -217,7 +217,7 @@ namespace SimpleFramework.Xml.Core {
       /// </param>
       public void Write(OutputNode node, Object item) {
          Class expect = type.Type;
-         String name = entry.getValue();
+         String name = entry.GetValue();
          if(name == null) {
             name = context.GetName(expect);
          }
@@ -240,7 +240,7 @@ namespace SimpleFramework.Xml.Core {
       /// </param>
       public void Write(OutputNode node, Object item, String key) {
          String name = style.GetAttribute(key);
-         if(!entry.isInline()) {
+         if(!entry.IsInline()) {
             node = node.getChild(name);
          }
          if(item != null) {

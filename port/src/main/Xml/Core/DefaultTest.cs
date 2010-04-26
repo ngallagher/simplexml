@@ -43,19 +43,19 @@ namespace SimpleFramework.Xml.Core {
          persister = new Persister();
       }
       public void TestList() {
-         DefaultTextList list = persister.read(DefaultTextList.class, SOURCE);
-         assertEquals(list.version, Version.ONE);
-         assertEquals(list.Get(0).version, Version.ONE);
-         assertEquals(list.Get(0).name, "a");
-         assertEquals(list.Get(0).text, "Example 1");
-         assertEquals(list.Get(1).version, Version.TWO);
-         assertEquals(list.Get(1).name, "b");
-         assertEquals(list.Get(1).text, "Example 2");
-         assertEquals(list.Get(2).version, Version.THREE);
-         assertEquals(list.Get(2).name, "c");
-         assertEquals(list.Get(2).text, "Example 3");
+         DefaultTextList list = persister.Read(DefaultTextList.class, SOURCE);
+         AssertEquals(list.version, Version.ONE);
+         AssertEquals(list.Get(0).version, Version.ONE);
+         AssertEquals(list.Get(0).name, "a");
+         AssertEquals(list.Get(0).text, "Example 1");
+         AssertEquals(list.Get(1).version, Version.TWO);
+         AssertEquals(list.Get(1).name, "b");
+         AssertEquals(list.Get(1).text, "Example 2");
+         AssertEquals(list.Get(2).version, Version.THREE);
+         AssertEquals(list.Get(2).name, "c");
+         AssertEquals(list.Get(2).text, "Example 3");
          StringWriter buffer = new StringWriter();
-         persister.write(list, buffer);
+         persister.Write(list, buffer);
          String text = buffer.toString();
          assertXpathExists("/defaultTextList/list[@class='java.util.ArrayList']", text);
          assertXpathExists("/defaultTextList/list/textEntry[@name='a']", text);
@@ -64,20 +64,20 @@ namespace SimpleFramework.Xml.Core {
          assertXpathEvaluatesTo("Example 1", "/defaultTextList/list/textEntry[1]", text);
          assertXpathEvaluatesTo("Example 2", "/defaultTextList/list/textEntry[2]", text);
          assertXpathEvaluatesTo("Example 3", "/defaultTextList/list/textEntry[3]", text);
-         validate(list, persister);
-         list = persister.read(DefaultTextList.class, text);
-         assertEquals(list.version, Version.ONE);
-         assertEquals(list.Get(0).version, Version.ONE);
-         assertEquals(list.Get(0).name, "a");
-         assertEquals(list.Get(0).text, "Example 1");
-         assertEquals(list.Get(1).version, Version.TWO);
-         assertEquals(list.Get(1).name, "b");
-         assertEquals(list.Get(1).text, "Example 2");
-         assertEquals(list.Get(2).version, Version.THREE);
-         assertEquals(list.Get(2).name, "c");
-         assertEquals(list.Get(2).text, "Example 3");
+         Validate(list, persister);
+         list = persister.Read(DefaultTextList.class, text);
+         AssertEquals(list.version, Version.ONE);
+         AssertEquals(list.Get(0).version, Version.ONE);
+         AssertEquals(list.Get(0).name, "a");
+         AssertEquals(list.Get(0).text, "Example 1");
+         AssertEquals(list.Get(1).version, Version.TWO);
+         AssertEquals(list.Get(1).name, "b");
+         AssertEquals(list.Get(1).text, "Example 2");
+         AssertEquals(list.Get(2).version, Version.THREE);
+         AssertEquals(list.Get(2).name, "c");
+         AssertEquals(list.Get(2).text, "Example 3");
          buffer = new StringWriter();
-         persister.write(list, buffer);
+         persister.Write(list, buffer);
          String copy = buffer.toString();
          assertXpathExists("/defaultTextList/list[@class='java.util.ArrayList']", copy);
          assertXpathExists("/defaultTextList/list/textEntry[@name='a']", copy);
@@ -87,7 +87,7 @@ namespace SimpleFramework.Xml.Core {
          assertXpathEvaluatesTo("Example 2", "/defaultTextList/list/textEntry[2]", copy);
          assertXpathEvaluatesTo("Example 3", "/defaultTextList/list/textEntry[3]", copy);
          assertXMLEqual(text, copy);
-         validate(list, persister);
+         Validate(list, persister);
       }
    }
 }

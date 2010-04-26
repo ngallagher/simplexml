@@ -49,12 +49,12 @@ namespace SimpleFramework.Xml.Core {
        public void TestEnum() {
            Serializer serializer = new Persister();
            EnumBug bug = serializer.read(EnumBug.class, SOURCE);
-           assertEquals(bug.Type, PartType.A);
+           AssertEquals(bug.Type, PartType.A);
        }
        public void TestVargsEnum() {
            Serializer serializer = new Persister();
            EnumVariableArgumentsBug bug = serializer.read(EnumVariableArgumentsBug.class, LIST);
-           assertEquals(bug.Types[0], PartType.A);
+           AssertEquals(bug.Types[0], PartType.A);
        }
    }
 }

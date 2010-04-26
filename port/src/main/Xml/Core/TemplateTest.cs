@@ -53,12 +53,12 @@ namespace SimpleFramework.Xml.Core {
    	   serializer = new Persister();
    	}
       public void TestTemplate() {
-         Example example = serializer.read(Example.class, EXAMPLE);
-         assertEquals(example.name, "test");
-         assertEquals(example.details.title, "Mr");
-         assertEquals(example.details.mail, "niallg@users.sf.net");
-         assertEquals(example.details.name, "Niall Gallagher");
-         validate(example, serializer);
+         Example example = serializer.Read(Example.class, EXAMPLE);
+         AssertEquals(example.name, "test");
+         AssertEquals(example.details.title, "Mr");
+         AssertEquals(example.details.mail, "niallg@users.sf.net");
+         AssertEquals(example.details.name, "Niall Gallagher");
+         Validate(example, serializer);
       }
    }
 }

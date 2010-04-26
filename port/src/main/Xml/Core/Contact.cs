@@ -92,7 +92,7 @@ namespace SimpleFramework.Xml.Core {
       /// <param name="value">
       /// this is the value to be set through the contact
       /// </param>
-      public void Set(Object source, Object value);
+      void Set(Object source, Object value);
       /// <summary>
       /// This is used to get the value from the specified object using
       /// the point of contact. Typically the value is retrieved from
@@ -105,7 +105,7 @@ namespace SimpleFramework.Xml.Core {
       /// <returns>
       /// this is the value acquired from the point of contact
       /// </returns>
-      public Object Get(Object source);
+      Object Get(Object source);
       /// <summary>
       /// This is used to determine if the annotated contact is for a
       /// read only variable. A read only variable is a field that
@@ -115,7 +115,7 @@ namespace SimpleFramework.Xml.Core {
       /// <returns>
       /// this returns true if the contact is a constant one
       /// </returns>
-      public bool IsReadOnly();
+      bool IsReadOnly();
       /// <summary>
       /// This is used to describe the contact as it exists within the
       /// owning class. This is used to provide error messages that can
@@ -124,6 +124,6 @@ namespace SimpleFramework.Xml.Core {
       /// <returns>
       /// this returns a string representation of the contact
       /// </returns>
-      public String ToString();
+      String ToString();
    }
 }

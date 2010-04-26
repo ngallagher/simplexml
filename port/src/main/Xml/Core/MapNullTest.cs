@@ -262,10 +262,10 @@ namespace SimpleFramework.Xml.Core {
          StringWriter out = new StringWriter();
          serializer.write(primitiveMap, out);
          primitiveMap = serializer.read(PrimitiveMap.class, out.toString());
-         assertEquals(primitiveMap.map.get(null), new BigDecimal(4));
-         assertEquals(primitiveMap.map.get("c"), null);
-         assertEquals(primitiveMap.map.get("a"), new BigDecimal(1));
-         assertEquals(primitiveMap.map.get("b"), new BigDecimal(2));
+         AssertEquals(primitiveMap.map.get(null), new BigDecimal(4));
+         AssertEquals(primitiveMap.map.get("c"), null);
+         AssertEquals(primitiveMap.map.get("a"), new BigDecimal(1));
+         AssertEquals(primitiveMap.map.get("b"), new BigDecimal(2));
          validate(primitiveMap, serializer);
          ComplexMap complexMap = new ComplexMap();
          complexMap.map.put(new CompositeKey("name.1", "address.1"), new MapEntry("1", "1"));
@@ -274,10 +274,10 @@ namespace SimpleFramework.Xml.Core {
          complexMap.map.put(new CompositeKey("name.4", "address.4"), null);
          validate(complexMap, serializer);
          ComplexMap emptyNull = serializer.read(ComplexMap.class, EMPTY_AS_NULL);
-         assertEquals(emptyNull.GetValue(new CompositeKey("name.1", "address.1")), "1");
-         assertEquals(emptyNull.GetValue(new CompositeKey("name.2", "address.2")), "2");
-         assertEquals(emptyNull.GetValue(null), "3");
-         assertEquals(emptyNull.GetValue(new CompositeKey("name.4", "address.4")), null);
+         AssertEquals(emptyNull.GetValue(new CompositeKey("name.1", "address.1")), "1");
+         AssertEquals(emptyNull.GetValue(new CompositeKey("name.2", "address.2")), "2");
+         AssertEquals(emptyNull.GetValue(null), "3");
+         AssertEquals(emptyNull.GetValue(new CompositeKey("name.4", "address.4")), null);
          validate(emptyNull, serializer);
       }
       // TODO test the null values and exceptions with the map

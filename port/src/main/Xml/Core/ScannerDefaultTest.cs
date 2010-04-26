@@ -98,8 +98,8 @@ namespace SimpleFramework.Xml.Core {
          Context context = new Source(strategy, support, style);
          LabelMap attributes = scanner.getAttributes(context);
          LabelMap elements = scanner.getElements(context);
-         assertEquals(attributes.get("id").getType(), int.class);
-         assertEquals(elements.get("id").getType(), int.class);
+         AssertEquals(attributes.get("id").getType(), int.class);
+         AssertEquals(elements.get("id").getType(), int.class);
       }
       public void TestScanner() {
          Scanner scanner = new Scanner(OrderItem.class);
@@ -109,8 +109,8 @@ namespace SimpleFramework.Xml.Core {
          Context context = new Source(strategy, support, style);
          LabelMap attributes = scanner.getAttributes(context);
          LabelMap elements = scanner.getElements(context);
-         assertEquals(attributes.get("price").getType(), double.class);
-         assertEquals(elements.get("customer").getType(), Customer.class);
+         AssertEquals(attributes.get("price").getType(), double.class);
+         AssertEquals(elements.get("customer").getType(), Customer.class);
       }
    }
 }

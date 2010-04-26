@@ -55,7 +55,7 @@ namespace SimpleFramework.Xml.Core {
          }
          builder.append("</delivery>");
          Delivery delivery = persister.read(Delivery.class, builder.toString());
-         assertEquals(delivery.listBenefitMutation.size() + delivery.listNewBenefit.size(), ITERATIONS);
+         AssertEquals(delivery.listBenefitMutation.size() + delivery.listNewBenefit.size(), ITERATIONS);
          validate(persister, delivery);
       }
    }

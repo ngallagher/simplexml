@@ -30,8 +30,8 @@ namespace SimpleFramework.Xml.Core {
          Persister persister = new Persister();
          InjectExample example = new InjectExample();
          persister.read(example, SOURCE);
-         assertEquals(example.Name, "Some Name");
-         assertEquals(example.Value, "Some Value");
+         AssertEquals(example.Name, "Some Name");
+         AssertEquals(example.Value, "Some Value");
       }
    }
 }

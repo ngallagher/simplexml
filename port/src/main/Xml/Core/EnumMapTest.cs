@@ -36,10 +36,10 @@ namespace SimpleFramework.Xml.Core {
          persister.write(example, System.out);
          persister.write(example, out);
          EnumMapExample other = persister.read(EnumMapExample.class, out.toString());
-         assertEquals(other.Get(Number.ONE), "1");
-         assertEquals(other.Get(Number.TWO), "2");
-         assertEquals(other.Get(Number.THREE), "3");
-         assertEquals(other.Get(Number.FOUR), null);
+         AssertEquals(other.Get(Number.ONE), "1");
+         AssertEquals(other.Get(Number.TWO), "2");
+         AssertEquals(other.Get(Number.THREE), "3");
+         AssertEquals(other.Get(Number.FOUR), null);
          persister.write(example, System.out);
          validate(persister, example);
       }

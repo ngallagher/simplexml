@@ -78,14 +78,14 @@ namespace SimpleFramework.Xml.Core {
       public void TestReadOnlyField() {
          Persister persister = new Persister();
          ReadOnlyFieldExample example = persister.read(ReadOnlyFieldExample.class, SOURCE);
-         assertEquals(example.name, "name");
-         assertEquals(example.value, "some text here");
+         AssertEquals(example.name, "name");
+         AssertEquals(example.value, "some text here");
       }
       public void TestReadOnlyMethod() {
          Persister persister = new Persister();
          ReadOnlyMethodExample example = persister.read(ReadOnlyMethodExample.class, SOURCE);
-         assertEquals(example.Name, "name");
-         assertEquals(example.Value, "some text here");
+         AssertEquals(example.Name, "name");
+         AssertEquals(example.Value, "some text here");
       }
       public void TestIllegalReadOnlyMethod() {
          bool failure = false;

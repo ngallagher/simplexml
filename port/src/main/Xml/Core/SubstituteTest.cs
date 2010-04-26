@@ -87,29 +87,29 @@ namespace SimpleFramework.Xml.Core {
          serializer = new Persister();
       }
       public void TestReplace() {
-         SubstituteExample example = serializer.read(SubstituteExample.class, REPLACE_SOURCE);
-         assertEquals(example.substitute.getClass(), SimpleSubstitute.class);
-         assertEquals(example.substitute.text, "some example text");
+         SubstituteExample example = serializer.Read(SubstituteExample.class, REPLACE_SOURCE);
+         AssertEquals(example.substitute.getClass(), SimpleSubstitute.class);
+         AssertEquals(example.substitute.text, "some example text");
          Validate(example, serializer);
          StringWriter out = new StringWriter();
-         serializer.write(example, out);
+         serializer.Write(example, out);
          String text = out.toString();
-         example = serializer.read(SubstituteExample.class, text);
-         assertEquals(example.substitute.getClass(), OtherSubstitute.class);
-         assertEquals(example.substitute.text, "some example text");
+         example = serializer.Read(SubstituteExample.class, text);
+         AssertEquals(example.substitute.getClass(), OtherSubstitute.class);
+         AssertEquals(example.substitute.text, "some example text");
          Validate(example, serializer);
       }
       public void TestResolve() {
-         SubstituteExample example = serializer.read(SubstituteExample.class, RESOLVE_SOURCE);
-         assertEquals(example.substitute.getClass(), LargeSubstitute.class);
-         assertEquals(example.substitute.text, "some example text");
+         SubstituteExample example = serializer.Read(SubstituteExample.class, RESOLVE_SOURCE);
+         AssertEquals(example.substitute.getClass(), LargeSubstitute.class);
+         AssertEquals(example.substitute.text, "some example text");
          Validate(example, serializer);
          StringWriter out = new StringWriter();
-         serializer.write(example, out);
+         serializer.Write(example, out);
          String text = out.toString();
-         example = serializer.read(SubstituteExample.class, text);
-         assertEquals(example.substitute.getClass(), LargeSubstitute.class);
-         assertEquals(example.substitute.text, "some example text");
+         example = serializer.Read(SubstituteExample.class, text);
+         AssertEquals(example.substitute.getClass(), LargeSubstitute.class);
+         AssertEquals(example.substitute.text, "some example text");
          Validate(example, serializer);
       }
    }

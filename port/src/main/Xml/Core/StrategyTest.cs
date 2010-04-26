@@ -101,8 +101,8 @@ namespace SimpleFramework.Xml.Core {
          Serializer persister = new Persister(strategy);
          Example example = persister.Read(Example.class, ELEMENT);
          assertTrue(example instanceof ExampleExample);
-         assertEquals(example.Value, "attribute-example-text");
-         assertEquals(example.Key, "attribute-example-key");
+         AssertEquals(example.Value, "attribute-example-text");
+         AssertEquals(example.Key, "attribute-example-key");
          persister.Write(example, System.err);
       }
    }

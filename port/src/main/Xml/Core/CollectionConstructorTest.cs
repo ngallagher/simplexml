@@ -90,18 +90,18 @@ namespace SimpleFramework.Xml.Core {
       public void TestCollectionConstructor() {
          Persister persister = new Persister();
          CollectionConstructor constructor = persister.read(CollectionConstructor.class, LIST);
-         assertEquals(constructor.Size(), 2);
+         AssertEquals(constructor.Size(), 2);
       }
       public void TestMapConstructor() {
          Persister persister = new Persister();
          MapConstructor constructor = persister.read(MapConstructor.class, MAP);
-         assertEquals(constructor.Size(), 2);
+         AssertEquals(constructor.Size(), 2);
       }
       public void TestCollectionConstructorComposite() {
          Persister persister = new Persister();
          CollectionConstructorComposite composite = persister.read(CollectionConstructorComposite.class, COMPOSITE);
-         assertEquals(composite.Collection.getClass(), ExtendedCollectionConstructor.class);
-         assertEquals(composite.Collection.Size(), 2);
+         AssertEquals(composite.Collection.getClass(), ExtendedCollectionConstructor.class);
+         AssertEquals(composite.Collection.Size(), 2);
       }
    }
 }

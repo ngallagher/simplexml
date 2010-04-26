@@ -79,26 +79,26 @@ namespace SimpleFramework.Xml.Core {
          this.persister = new Persister();
       }
       public void TestRoot() {
-         RootExample example = persister.read(RootExample.class, ROOT_EXAMPLE);
-         assertEquals(example.version, 1);
-         assertEquals(example.text, "Some text example");
-         validate(example, persister);
-         example = persister.read(ExtendedRootExample.class, ROOT_EXAMPLE);
-         assertEquals(example.version, 1);
-         assertEquals(example.text, "Some text example");
-         validate(example, persister);
-         example = persister.read(ExtendedRootExample.class, EXTENDED_ROOT_EXAMPLE);
-         assertEquals(example.version, 1);
-         assertEquals(example.text, "Some text example");
-         validate(example, persister);
-         example = persister.read(ExtendedOverriddenRootExample.class, EXTENDED_OVERRIDDEN_ROOT_EXAMPLE);
-         assertEquals(example.version, 1);
-         assertEquals(example.text, "Some text example");
-         validate(example, persister);
-         example = persister.read(ExtendedExplicitlyOverriddenRootExample.class, EXTENDED_EXPLICITLY_OVERRIDDEN_ROOT_EXAMPLE);
-         assertEquals(example.version, 1);
-         assertEquals(example.text, "Some text example");
-         validate(example, persister);
+         RootExample example = persister.Read(RootExample.class, ROOT_EXAMPLE);
+         AssertEquals(example.version, 1);
+         AssertEquals(example.text, "Some text example");
+         Validate(example, persister);
+         example = persister.Read(ExtendedRootExample.class, ROOT_EXAMPLE);
+         AssertEquals(example.version, 1);
+         AssertEquals(example.text, "Some text example");
+         Validate(example, persister);
+         example = persister.Read(ExtendedRootExample.class, EXTENDED_ROOT_EXAMPLE);
+         AssertEquals(example.version, 1);
+         AssertEquals(example.text, "Some text example");
+         Validate(example, persister);
+         example = persister.Read(ExtendedOverriddenRootExample.class, EXTENDED_OVERRIDDEN_ROOT_EXAMPLE);
+         AssertEquals(example.version, 1);
+         AssertEquals(example.text, "Some text example");
+         Validate(example, persister);
+         example = persister.Read(ExtendedExplicitlyOverriddenRootExample.class, EXTENDED_EXPLICITLY_OVERRIDDEN_ROOT_EXAMPLE);
+         AssertEquals(example.version, 1);
+         AssertEquals(example.text, "Some text example");
+         Validate(example, persister);
       }
    }
 }

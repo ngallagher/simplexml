@@ -166,7 +166,7 @@ namespace SimpleFramework.Xml.Core {
    	}
       public void TestValid() {
          try {
-            serializer.read(EntryList.class, VALID);
+            serializer.Read(EntryList.class, VALID);
          }catch(Exception e) {
             assertTrue(false);
          }
@@ -174,7 +174,7 @@ namespace SimpleFramework.Xml.Core {
       public void TestNoAttribute() {
          bool success = false;
          try {
-            serializer.read(EntryList.class, NO_NAME_ATTRIBUTE);
+            serializer.Read(EntryList.class, NO_NAME_ATTRIBUTE);
          }catch(ValueRequiredException e) {
             success = true;
          }
@@ -183,7 +183,7 @@ namespace SimpleFramework.Xml.Core {
       public void TestNoElement() {
          bool success = false;
          try {
-            serializer.read(EntryList.class, NO_TEXT_ELEMENT);
+            serializer.Read(EntryList.class, NO_TEXT_ELEMENT);
          }catch(ValueRequiredException e) {
             success = true;
          }
@@ -192,7 +192,7 @@ namespace SimpleFramework.Xml.Core {
       public void TestExtraAttribute() {
          bool success = false;
          try {
-            serializer.read(EntryList.class, EXTRA_ATTRIBUTE);
+            serializer.Read(EntryList.class, EXTRA_ATTRIBUTE);
          }catch(AttributeException e) {
             success = true;
          }
@@ -201,7 +201,7 @@ namespace SimpleFramework.Xml.Core {
       public void TestExtraElement() {
          bool success = false;
          try {
-            serializer.read(EntryList.class, EXTRA_ELEMENT);
+            serializer.Read(EntryList.class, EXTRA_ELEMENT);
          }catch(ElementException e) {
             success = true;
          }
@@ -212,7 +212,7 @@ namespace SimpleFramework.Xml.Core {
          try {
             Entry entry = new Entry();
             entry.id = 1;
-            serializer.write(entry, new StringWriter());
+            serializer.Write(entry, new StringWriter());
          } catch(ElementException e) {
             success = true;
          }
@@ -223,7 +223,7 @@ namespace SimpleFramework.Xml.Core {
          try {
             EntryList list = new EntryList();
             list.text = "some text";
-            serializer.write(list, new StringWriter());
+            serializer.Write(list, new StringWriter());
          } catch(AttributeException e) {
             success = true;
          }

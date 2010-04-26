@@ -98,9 +98,9 @@ namespace SimpleFramework.Xml.Core {
          Persister writer = new Persister(format);
          Persister reader = new Persister();
          CaseExample example = reader.read(CaseExample.class, SOURCE);
-         assertEquals(example.version, 1.0f);
-         assertEquals(example.name, "example");
-         assertEquals(example.URL, "http://domain.com/");
+         AssertEquals(example.version, 1.0f);
+         AssertEquals(example.name, "example");
+         AssertEquals(example.URL, "http://domain.com/");
          writer.write(example, System.err);
          validate(example, reader);
          validate(example, writer);

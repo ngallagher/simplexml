@@ -78,20 +78,20 @@ namespace SimpleFramework.Xml.Core {
          CompositeObject object = persister.read(CompositeObject.class, SOURCE);
          CompositeEntry objectEntry = object.Object;
          CompositeEntry interfaceEntry = object.Interface;
-         assertEquals(interfaceEntry.Name, "name.1");
-         assertEquals(interfaceEntry.Name, "name.1");
-         assertEquals(objectEntry.Name, "name.2");
-         assertEquals(objectEntry.Value, "value.2");
+         AssertEquals(interfaceEntry.Name, "name.1");
+         AssertEquals(interfaceEntry.Name, "name.1");
+         AssertEquals(objectEntry.Name, "name.2");
+         AssertEquals(objectEntry.GetValue(), "value.2");
          List<Entry> interfaceList = object.InterfaceList;
          List<Object> objectList = object.ObjectList;
-         assertEquals(interfaceList.get(0).Name, "a");
-         assertEquals(interfaceList.get(0).Value, "a");
-         assertEquals(interfaceList.get(1).Name, "b");
-         assertEquals(interfaceList.get(1).Value, "b");
-         assertEquals(((Entry)objectList.get(0)).Name, "a");
-         assertEquals(((Entry)objectList.get(0)).Name, "a");
-         assertEquals(((Entry)objectList.get(1)).Name, "b");
-         assertEquals(((Entry)objectList.get(1)).Name, "b");
+         AssertEquals(interfaceList.get(0).Name, "a");
+         AssertEquals(interfaceList.get(0).GetValue(), "a");
+         AssertEquals(interfaceList.get(1).Name, "b");
+         AssertEquals(interfaceList.get(1).GetValue(), "b");
+         AssertEquals(((Entry)objectList.get(0)).Name, "a");
+         AssertEquals(((Entry)objectList.get(0)).Name, "a");
+         AssertEquals(((Entry)objectList.get(1)).Name, "b");
+         AssertEquals(((Entry)objectList.get(1)).Name, "b");
       }
    }
 }

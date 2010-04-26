@@ -49,7 +49,7 @@ namespace SimpleFramework.Xml.Core {
          try {
             Persister persister = new Persister();
             ExampleObjectWithAddress object = persister.read(ExampleObjectWithAddress.class, SOURCE);
-            assertNull(object);
+            AssertNull(object);
          }catch(Exception e) {
             e.printStackTrace();
             failure = true;
@@ -59,11 +59,11 @@ namespace SimpleFramework.Xml.Core {
       public void TestNonStrictMode() {
          Persister persister = new Persister();
          ExampleObjectWithAddress object = persister.read(ExampleObjectWithAddress.class, SOURCE, false);
-         assertEquals(object.version, 1.0);
-         assertEquals(object.integer, 123);
-         assertEquals(object.address.name, "example name");
-         assertEquals(object.address.address, "example address");
-         assertEquals(object.name, "test");
+         AssertEquals(object.version, 1.0);
+         AssertEquals(object.integer, 123);
+         AssertEquals(object.address.name, "example name");
+         AssertEquals(object.address.address, "example address");
+         AssertEquals(object.name, "test");
          validate(object, persister);
       }
       public void TestNonStrictModeMissingName() {
@@ -71,7 +71,7 @@ namespace SimpleFramework.Xml.Core {
          try {
             Persister persister = new Persister();
             ExampleObjectWithAddress object = persister.read(ExampleObjectWithAddress.class, SOURCE_MISSING_NAME, false);
-            assertNull(object);
+            AssertNull(object);
          }catch(Exception e) {
             e.printStackTrace();
             failure = true;

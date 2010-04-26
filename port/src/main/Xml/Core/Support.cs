@@ -20,6 +20,7 @@
 #region Using directives
 using SimpleFramework.Xml.Filter;
 using SimpleFramework.Xml.Strategy;
+using SimpleFramework.Xml.Transform;
 using SimpleFramework.Xml;
 using System;
 #endregion

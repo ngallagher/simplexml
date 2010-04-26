@@ -50,12 +50,12 @@ namespace SimpleFramework.Xml.Core {
            persister.write(example, out);
            String text = out.toString();
            MissingGenerics recovered = persister.read(MissingGenerics.class, text);
-           assertEquals(recovered.Map.size(), 5);
-           assertEquals(recovered.Map.get("a"), "A");
-           assertEquals(recovered.Map.get("b"), "B");
-           assertEquals(recovered.Map.get("c"), "C");
-           assertEquals(recovered.Map.get("d"), "D");
-           assertEquals(recovered.Map.get("e"), "E");
+           AssertEquals(recovered.Map.size(), 5);
+           AssertEquals(recovered.Map.get("a"), "A");
+           AssertEquals(recovered.Map.get("b"), "B");
+           AssertEquals(recovered.Map.get("c"), "C");
+           AssertEquals(recovered.Map.get("d"), "D");
+           AssertEquals(recovered.Map.get("e"), "E");
            assertTrue(recovered.List.contains("1"));
            assertTrue(recovered.List.contains("2"));
            assertTrue(recovered.List.contains("3"));

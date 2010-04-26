@@ -1,6 +1,7 @@
 #region Using directives
 using SimpleFramework.Xml.Strategy;
 using SimpleFramework.Xml.Stream;
+using SimpleFramework.Xml;
 using System;
 #endregion
 namespace SimpleFramework.Xml.Core {
@@ -16,7 +17,7 @@ namespace SimpleFramework.Xml.Core {
          Primitive primitive = new Primitive(context, new ClassType(String.class));
          InputNode node = NodeBuilder.read(new StringReader(SOURCE));
          Object value = primitive.read(node);
-         assertEquals("some text", value);
+         AssertEquals("some text", value);
          InputNode newNode = NodeBuilder.read(new StringReader(SOURCE));
          assertTrue(primitive.validate(newNode));
       }
@@ -25,7 +26,7 @@ namespace SimpleFramework.Xml.Core {
          Primitive primitive = new Primitive(context, new ClassType(String.class));
          InputNode node = NodeBuilder.read(new StringReader(CYCLE_1));
          Object value = primitive.read(node);
-         assertEquals("some text", value);
+         AssertEquals("some text", value);
          // Need to use a different id for validate as reading has created the object
          // and an exception is thrown that the value already exists if id=1 is used
          InputNode newNode = NodeBuilder.read(new StringReader(CYCLE_2));

@@ -1,6 +1,7 @@
 #region Using directives
 using SimpleFramework.Xml.Strategy;
 using SimpleFramework.Xml.Stream;
+using SimpleFramework.Xml;
 using System;
 #endregion
 namespace SimpleFramework.Xml.Core {
@@ -17,7 +18,7 @@ namespace SimpleFramework.Xml.Core {
          PrimitiveArray primitive = new PrimitiveArray(context, new ClassType(String[].class), new ClassType(String.class), "entry");
          InputNode node = NodeBuilder.read(new StringReader(ZERO));
          Object value = primitive.read(node);
-         assertEquals(value.getClass(), String[].class);
+         AssertEquals(value.getClass(), String[].class);
          InputNode newNode = NodeBuilder.read(new StringReader(ZERO));
          assertTrue(primitive.validate(newNode));
       }
@@ -26,11 +27,11 @@ namespace SimpleFramework.Xml.Core {
          PrimitiveArray primitive = new PrimitiveArray(context, new ClassType(String[].class), new ClassType(String.class), "entry");
          InputNode node = NodeBuilder.read(new StringReader(TWO));
          Object value = primitive.read(node);
-         assertEquals(value.getClass(), String[].class);
+         AssertEquals(value.getClass(), String[].class);
          String[] list = (String[]) value;
-         assertEquals(list.length, 2);
-         assertEquals(list[0], "one");
-         assertEquals(list[1], "two");
+         AssertEquals(list.length, 2);
+         AssertEquals(list[0], "one");
+         AssertEquals(list[1], "two");
          InputNode newNode = NodeBuilder.read(new StringReader(TWO));
          assertTrue(primitive.validate(newNode));
       }

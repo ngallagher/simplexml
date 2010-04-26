@@ -95,9 +95,9 @@ namespace SimpleFramework.Xml.Core {
            String text = out.toString();//.replaceAll("entry", "table:entry");
            System.err.println(text);
            MultiValueMap read = persister.Read(MultiValueMap.class, text);
-           assertEquals(read.Get("integer"), 1);
-           assertEquals(read.Get("double"), 0.0d);
-           assertEquals(read.Get("string"), "test");
+           AssertEquals(read.Get("integer"), 1);
+           AssertEquals(read.Get("double"), 0.0d);
+           AssertEquals(read.Get("string"), "test");
            validate(persister, map);
            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
            // Ensure we know about namespaces
@@ -108,8 +108,8 @@ namespace SimpleFramework.Xml.Core {
            InputSource source = new InputSource(reader);
            Document doc = builder.parse(source);
            org.w3c.dom.Element element = doc.getDocumentElement();
-           assertEquals("multiValueMap", element.getLocalName());
-           assertEquals("http://simpleframework.org/map", element.getNamespaceURI());
+           AssertEquals("multiValueMap", element.getLocalName());
+           AssertEquals("http://simpleframework.org/map", element.getNamespaceURI());
        }
    }
 }

@@ -33,10 +33,10 @@ namespace SimpleFramework.Xml.Core {
       public void TestIndent() {
          Persister serializer = new Persister(new Format(5));
          Contact contact = serializer.read(Contact.class, EXAMPLE);
-         assertEquals(contact.id, "some id");
-         assertEquals(contact.details.title, "Some Title");
-         assertEquals(contact.details.mail, "email@domain.com");
-         assertEquals(contact.details.name, "Name Surname");
+         AssertEquals(contact.id, "some id");
+         AssertEquals(contact.details.title, "Some Title");
+         AssertEquals(contact.details.mail, "email@domain.com");
+         AssertEquals(contact.details.name, "Name Surname");
          StringWriter buffer = new StringWriter();
          serializer.write(contact, buffer);
          String text = buffer.toString();
@@ -47,10 +47,10 @@ namespace SimpleFramework.Xml.Core {
       public void TestNoIndent() {
          Persister serializer = new Persister(new Format(0));
          Contact contact = serializer.read(Contact.class, EXAMPLE);
-         assertEquals(contact.id, "some id");
-         assertEquals(contact.details.title, "Some Title");
-         assertEquals(contact.details.mail, "email@domain.com");
-         assertEquals(contact.details.name, "Name Surname");
+         AssertEquals(contact.id, "some id");
+         AssertEquals(contact.details.title, "Some Title");
+         AssertEquals(contact.details.mail, "email@domain.com");
+         AssertEquals(contact.details.name, "Name Surname");
          StringWriter buffer = new StringWriter();
          serializer.write(contact, buffer);
          String text = buffer.toString();

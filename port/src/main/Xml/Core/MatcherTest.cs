@@ -1,4 +1,5 @@
 #region Using directives
+using SimpleFramework.Xml.Transform;
 using SimpleFramework.Xml;
 using System;
 #endregion
@@ -91,8 +92,8 @@ namespace SimpleFramework.Xml.Core {
          String text = writer.toString();
          System.out.println(text);
          EmptyStringExample recovered = serializer.Read(EmptyStringExample.class, text);
-         assertEquals(recovered.emptyValue, original.emptyValue);
-         assertEquals(recovered.nullValue, original.nullValue);
+         AssertEquals(recovered.emptyValue, original.emptyValue);
+         AssertEquals(recovered.nullValue, original.nullValue);
       }
    }
 }

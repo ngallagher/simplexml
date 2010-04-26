@@ -67,34 +67,34 @@ namespace SimpleFramework.Xml.Core {
          persister = new Persister();
       }
       public void TestStrict() {
-         StrictExample example = persister.read(StrictExample.class, SOURCE);
-         assertEquals(example.list.length, 3);
-         assertEquals(example.list[0].value, "value 1");
-         assertEquals(example.list[1].value, "value 2");
-         assertEquals(example.list[2].value, "value 3");
-         assertEquals(example.object.integer, 123);
-         validate(example, persister);
+         StrictExample example = persister.Read(StrictExample.class, SOURCE);
+         AssertEquals(example.list.length, 3);
+         AssertEquals(example.list[0].value, "value 1");
+         AssertEquals(example.list[1].value, "value 2");
+         AssertEquals(example.list[2].value, "value 3");
+         AssertEquals(example.object.integer, 123);
+         Validate(example, persister);
       }
       //public void testUnnamedStrict() {
       //   bool success = false;
       //
       //   try {
-      //      persister.read(StrictObject.class, SIMPLE);
+      //      persister.Read(StrictObject.class, SIMPLE);
       //   } catch(RootException e) {
       //      success = true;
       //   }
       //   assertTrue(success);
       //}
       public void TestNamedStrict() {
-         StrictObject object = persister.read(NamedStrictObject.class, SIMPLE);
-         assertEquals(object.integer, 123);
-         validate(object, persister);
+         StrictObject object = persister.Read(NamedStrictObject.class, SIMPLE);
+         AssertEquals(object.integer, 123);
+         Validate(object, persister);
       }
       public void TestNamedStrictMissingName() {
          bool failure = false;
          try {
-            StrictObject object = persister.read(NamedStrictObject.class, SIMPLE_MISSING_NAME);
-            assertNotNull(object);
+            StrictObject object = persister.Read(NamedStrictObject.class, SIMPLE_MISSING_NAME);
+            AssertNotNull(object);
          }catch(Exception e) {
             e.printStackTrace();
             failure = true;

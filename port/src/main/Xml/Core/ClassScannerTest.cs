@@ -19,8 +19,8 @@ namespace SimpleFramework.Xml.Core {
       }
       public void TestClassScanner() {
          ClassScanner scanner = new ClassScanner(Example.class);
-         assertNotNull(scanner.getRoot());
-         assertNotNull(scanner.getOrder());
+         AssertNotNull(scanner.getRoot());
+         AssertNotNull(scanner.getOrder());
       }
    }
 }

@@ -99,9 +99,9 @@ namespace SimpleFramework.Xml.Core {
          Source source = new Source(strategy, context, style);
          Scanner scanner = new Scanner(Example.class);
          ArrayList<Class> types = new ArrayList<Class>();
-         assertEquals(scanner.getElements(source).size(), 1);
-         assertEquals(scanner.getAttributes(source).size(), 2);
-         assertNull(scanner.Text);
+         AssertEquals(scanner.getElements(source).size(), 1);
+         AssertEquals(scanner.getAttributes(source).size(), 2);
+         AssertNull(scanner.Text);
          assertTrue(scanner.isStrict());
          for(Label label : scanner.getElements(source)) {
             assertTrue(label.Name == Intern(label.Name));
@@ -124,9 +124,9 @@ namespace SimpleFramework.Xml.Core {
          Source source = new Source(strategy, context, style);
          Scanner scanner = new Scanner(MixedExample.class);
          ArrayList<Class> types = new ArrayList<Class>();
-         assertEquals(scanner.getElements(source).size(), 3);
-         assertEquals(scanner.getAttributes(source).size(), 2);
-         assertNull(scanner.Text);
+         AssertEquals(scanner.getElements(source).size(), 3);
+         AssertEquals(scanner.getAttributes(source).size(), 2);
+         AssertNull(scanner.Text);
          assertFalse(scanner.isStrict());
          for(Label label : scanner.getElements(source)) {
             assertTrue(label.Name == Intern(label.Name));

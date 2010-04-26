@@ -68,25 +68,25 @@ namespace SimpleFramework.Xml.Core {
       public void TestConstructor() {
          Persister persister = new Persister();
          Example example = persister.read(Example.class, SOURCE);
-         assertEquals(example.integer, 12);
-         assertEquals(example.number, 32);
-         assertEquals(example.string, "text");
+         AssertEquals(example.integer, 12);
+         AssertEquals(example.number, 32);
+         AssertEquals(example.string, "text");
          validate(persister, example);
       }
       public void TestPartialConstructor() {
          Persister persister = new Persister();
          Example example = persister.read(Example.class, PARTIAL);
-         assertEquals(example.integer, 12);
-         assertEquals(example.number, 0);
-         assertEquals(example.string, "text");
+         AssertEquals(example.integer, 12);
+         AssertEquals(example.number, 0);
+         AssertEquals(example.string, "text");
          validate(persister, example);
       }
       public void TestBareConstructor() {
          Persister persister = new Persister();
          Example example = persister.read(Example.class, BARE);
-         assertEquals(example.integer, 12);
-         assertEquals(example.number, 0);
-         assertEquals(example.string, null);
+         AssertEquals(example.integer, 12);
+         AssertEquals(example.number, 0);
+         AssertEquals(example.string, null);
          validate(persister, example);
       }
       public void TestArrayExample() {
@@ -94,12 +94,12 @@ namespace SimpleFramework.Xml.Core {
          Format format = new Format(style);
          Persister persister = new Persister(format);
          ArrayExample example = persister.read(ArrayExample.class, ARRAY);
-         assertEquals(example.Array.length, 5);
-         assertEquals(example.Array[0], "entry one");
-         assertEquals(example.Array[1], "entry two");
-         assertEquals(example.Array[2], "entry three");
-         assertEquals(example.Array[3], "entry four");
-         assertEquals(example.Array[4], "entry five");
+         AssertEquals(example.Array.length, 5);
+         AssertEquals(example.Array[0], "entry one");
+         AssertEquals(example.Array[1], "entry two");
+         AssertEquals(example.Array[2], "entry three");
+         AssertEquals(example.Array[3], "entry four");
+         AssertEquals(example.Array[4], "entry five");
          validate(persister, example);
       }
    }

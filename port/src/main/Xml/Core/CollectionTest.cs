@@ -331,7 +331,7 @@ namespace SimpleFramework.Xml.Core {
    	   serializer = new Persister();
    	}
       public void TestSet() {
-         EntrySet set = serializer.read(EntrySet.class, LIST);
+         EntrySet set = serializer.Read(EntrySet.class, LIST);
          int one = 0;
          int two = 0;
          int three = 0;
@@ -346,12 +346,12 @@ namespace SimpleFramework.Xml.Core {
                three++;
             }
          }
-         assertEquals(one, 1);
-         assertEquals(two, 1);
-         assertEquals(three, 1);
+         AssertEquals(one, 1);
+         AssertEquals(two, 1);
+         AssertEquals(three, 1);
       }
       public void TestSortedSet() {
-         EntrySortedSet set = serializer.read(EntrySortedSet.class, LIST);
+         EntrySortedSet set = serializer.Read(EntrySortedSet.class, LIST);
          int one = 0;
          int two = 0;
          int three = 0;
@@ -366,13 +366,13 @@ namespace SimpleFramework.Xml.Core {
                three++;
             }
          }
-         assertEquals(one, 1);
-         assertEquals(two, 1);
-         assertEquals(three, 1);
-         validate(set, serializer);
+         AssertEquals(one, 1);
+         AssertEquals(two, 1);
+         AssertEquals(three, 1);
+         Validate(set, serializer);
       }
       public void TestList() {
-         EntryList set = serializer.read(EntryList.class, LIST);
+         EntryList set = serializer.Read(EntryList.class, LIST);
          int one = 0;
          int two = 0;
          int three = 0;
@@ -387,13 +387,13 @@ namespace SimpleFramework.Xml.Core {
                three++;
             }
          }
-         assertEquals(one, 1);
-         assertEquals(two, 1);
-         assertEquals(three, 1);
-         validate(set, serializer);
+         AssertEquals(one, 1);
+         AssertEquals(two, 1);
+         AssertEquals(three, 1);
+         Validate(set, serializer);
       }
       public void TestHashSet() {
-         EntrySet set = serializer.read(EntrySet.class, HASH_SET);
+         EntrySet set = serializer.Read(EntrySet.class, HASH_SET);
          int one = 0;
          int two = 0;
          int three = 0;
@@ -408,13 +408,13 @@ namespace SimpleFramework.Xml.Core {
                three++;
             }
          }
-         assertEquals(one, 1);
-         assertEquals(two, 1);
-         assertEquals(three, 1);
-         validate(set, serializer);
+         AssertEquals(one, 1);
+         AssertEquals(two, 1);
+         AssertEquals(three, 1);
+         Validate(set, serializer);
       }
       public void TestTreeSet() {
-         EntrySortedSet set = serializer.read(EntrySortedSet.class, TREE_SET);
+         EntrySortedSet set = serializer.Read(EntrySortedSet.class, TREE_SET);
          int one = 0;
          int two = 0;
          int three = 0;
@@ -429,13 +429,13 @@ namespace SimpleFramework.Xml.Core {
                three++;
             }
          }
-         assertEquals(one, 1);
-         assertEquals(two, 1);
-         assertEquals(three, 1);
-         validate(set, serializer);
+         AssertEquals(one, 1);
+         AssertEquals(two, 1);
+         AssertEquals(three, 1);
+         Validate(set, serializer);
       }
       public void TestArrayList() {
-         EntryList list = serializer.read(EntryList.class, ARRAY_LIST);
+         EntryList list = serializer.Read(EntryList.class, ARRAY_LIST);
          int one = 0;
          int two = 0;
          int three = 0;
@@ -450,13 +450,13 @@ namespace SimpleFramework.Xml.Core {
                three++;
             }
          }
-         assertEquals(one, 1);
-         assertEquals(two, 1);
-         assertEquals(three, 1);
-         validate(list, serializer);
+         AssertEquals(one, 1);
+         AssertEquals(two, 1);
+         AssertEquals(three, 1);
+         Validate(list, serializer);
       }
       public void TestSortedSetToSet() {
-         EntrySet set = serializer.read(EntrySet.class, TREE_SET);
+         EntrySet set = serializer.Read(EntrySet.class, TREE_SET);
          int one = 0;
          int two = 0;
          int three = 0;
@@ -471,12 +471,12 @@ namespace SimpleFramework.Xml.Core {
                three++;
             }
          }
-         assertEquals(one, 1);
-         assertEquals(two, 1);
-         assertEquals(three, 1);
+         AssertEquals(one, 1);
+         AssertEquals(two, 1);
+         AssertEquals(three, 1);
       }
       public void TestExtendedEntry() {
-         EntrySet set = serializer.read(EntrySet.class, EXTENDED_ENTRY_LIST);
+         EntrySet set = serializer.Read(EntrySet.class, EXTENDED_ENTRY_LIST);
          int one = 0;
          int two = 0;
          int three = 0;
@@ -491,13 +491,13 @@ namespace SimpleFramework.Xml.Core {
                three++;
             }
          }
-         assertEquals(one, 1);
-         assertEquals(two, 1);
-         assertEquals(three, 1);
+         AssertEquals(one, 1);
+         AssertEquals(two, 1);
+         AssertEquals(three, 1);
          StringWriter out = new StringWriter();
-         serializer.write(set, out);
-         serializer.write(set, System.err);
-         EntrySet other = serializer.read(EntrySet.class, out.toString());
+         serializer.Write(set, out);
+         serializer.Write(set, System.err);
+         EntrySet other = serializer.Read(EntrySet.class, out.toString());
          for(Entry entry : set) {
             if(entry.id == 1 && entry.text.equals("one")) {
                one++;
@@ -509,13 +509,13 @@ namespace SimpleFramework.Xml.Core {
                three++;
             }
          }
-         assertEquals(one, 2);
-         assertEquals(two, 2);
-         assertEquals(three, 2);
-         serializer.write(other, System.err);
+         AssertEquals(one, 2);
+         AssertEquals(two, 2);
+         AssertEquals(three, 2);
+         serializer.Write(other, System.err);
       }
       public void TestTypeFromFieldList() {
-         TypeFromFieldList list = serializer.read(TypeFromFieldList.class, TYPE_FROM_FIELD_LIST);
+         TypeFromFieldList list = serializer.Read(TypeFromFieldList.class, TYPE_FROM_FIELD_LIST);
          int one = 0;
          int two = 0;
          int three = 0;
@@ -530,13 +530,13 @@ namespace SimpleFramework.Xml.Core {
                three++;
             }
          }
-         assertEquals(one, 1);
-         assertEquals(two, 1);
-         assertEquals(three, 1);
-         validate(list, serializer);
+         AssertEquals(one, 1);
+         AssertEquals(two, 1);
+         AssertEquals(three, 1);
+         Validate(list, serializer);
       }
       public void TestTypeFromMethodList() {
-         TypeFromMethodList list = serializer.read(TypeFromMethodList.class, TYPE_FROM_METHOD_LIST);
+         TypeFromMethodList list = serializer.Read(TypeFromMethodList.class, TYPE_FROM_METHOD_LIST);
          int one = 0;
          int two = 0;
          int three = 0;
@@ -551,13 +551,13 @@ namespace SimpleFramework.Xml.Core {
                three++;
             }
          }
-         assertEquals(one, 1);
-         assertEquals(two, 1);
-         assertEquals(three, 1);
-         validate(list, serializer);
+         AssertEquals(one, 1);
+         AssertEquals(two, 1);
+         AssertEquals(three, 1);
+         Validate(list, serializer);
       }
       public void TestPrimitiveCollection() {
-         PrimitiveCollection list = serializer.read(PrimitiveCollection.class, PRIMITIVE_LIST);
+         PrimitiveCollection list = serializer.Read(PrimitiveCollection.class, PRIMITIVE_LIST);
          int one = 0;
          int two = 0;
          int three = 0;
@@ -572,15 +572,15 @@ namespace SimpleFramework.Xml.Core {
                three++;
             }
          }
-         assertEquals(one, 1);
-         assertEquals(two, 1);
-         assertEquals(three, 1);
-         validate(list, serializer);
+         AssertEquals(one, 1);
+         AssertEquals(two, 1);
+         AssertEquals(three, 1);
+         Validate(list, serializer);
       }
       // XXX This test needs to inline the entry= attribute so that
       // XXX we can use it to name the inserted entries
       public void TestCompositeCollection() {
-         CompositeCollection list = serializer.read(CompositeCollection.class, COMPOSITE_LIST);
+         CompositeCollection list = serializer.Read(CompositeCollection.class, COMPOSITE_LIST);
          int one = 0;
          int two = 0;
          int three = 0;
@@ -595,13 +595,13 @@ namespace SimpleFramework.Xml.Core {
                three++;
             }
          }
-         assertEquals(one, 1);
-         assertEquals(two, 1);
-         assertEquals(three, 1);
-         validate(list, serializer);
+         AssertEquals(one, 1);
+         AssertEquals(two, 1);
+         AssertEquals(three, 1);
+         Validate(list, serializer);
       }
       public void TestPrimitiveDefaultCollection() {
-         PrimitiveDefaultCollection list = serializer.read(PrimitiveDefaultCollection.class, PRIMITIVE_DEFAULT_LIST);
+         PrimitiveDefaultCollection list = serializer.Read(PrimitiveDefaultCollection.class, PRIMITIVE_DEFAULT_LIST);
          int one = 0;
          int two = 0;
          int three = 0;
@@ -616,15 +616,15 @@ namespace SimpleFramework.Xml.Core {
                three++;
             }
          }
-         assertEquals(one, 1);
-         assertEquals(two, 1);
-         assertEquals(three, 1);
-         validate(list, serializer);
+         AssertEquals(one, 1);
+         AssertEquals(two, 1);
+         AssertEquals(three, 1);
+         Validate(list, serializer);
       }
       public void TestSetToSortedSet() {
          bool success = false;
          try {
-            EntrySortedSet set = serializer.read(EntrySortedSet.class, HASH_SET);
+            EntrySortedSet set = serializer.Read(EntrySortedSet.class, HASH_SET);
          } catch(InstantiationException e) {
             e.printStackTrace();
             success = true;
@@ -634,7 +634,7 @@ namespace SimpleFramework.Xml.Core {
       public void TestListToSet() {
          bool success = false;
          try {
-            EntrySet set = serializer.read(EntrySet.class, ARRAY_LIST);
+            EntrySet set = serializer.Read(EntrySet.class, ARRAY_LIST);
          } catch(InstantiationException e) {
             e.printStackTrace();
             success = true;
@@ -644,7 +644,7 @@ namespace SimpleFramework.Xml.Core {
       public void TestInvalidList() {
          bool success = false;
          try {
-            InvalidList set = serializer.read(InvalidList.class, LIST);
+            InvalidList set = serializer.Read(InvalidList.class, LIST);
          } catch(InstantiationException e) {
             e.printStackTrace();
             success = true;
@@ -654,7 +654,7 @@ namespace SimpleFramework.Xml.Core {
       public void TestUnknownCollectionList() {
          bool success = false;
          try {
-            UnknownCollectionList set = serializer.read(UnknownCollectionList.class, LIST);
+            UnknownCollectionList set = serializer.Read(UnknownCollectionList.class, LIST);
          } catch(InstantiationException e) {
             e.printStackTrace();
             success = true;
@@ -664,7 +664,7 @@ namespace SimpleFramework.Xml.Core {
       public void TestAbstractList() {
          bool success = false;
          try {
-            EntryList set = serializer.read(EntryList.class, ABSTRACT_LIST);
+            EntryList set = serializer.Read(EntryList.class, ABSTRACT_LIST);
          } catch(InstantiationException e) {
             e.printStackTrace();
             success = true;
@@ -674,7 +674,7 @@ namespace SimpleFramework.Xml.Core {
       public void TestNotACollection() {
          bool success = false;
          try {
-            EntryList set = serializer.read(EntryList.class, NOT_A_COLLECTION);
+            EntryList set = serializer.Read(EntryList.class, NOT_A_COLLECTION);
          } catch(InstantiationException e) {
             e.printStackTrace();
             success = true;
@@ -684,7 +684,7 @@ namespace SimpleFramework.Xml.Core {
       public void TestMissingCollection() {
          bool success = false;
          try {
-            EntrySet set = serializer.read(EntrySet.class, MISSING_COLLECTION);
+            EntrySet set = serializer.Read(EntrySet.class, MISSING_COLLECTION);
          } catch(ClassNotFoundException e) {
             e.printStackTrace();
             success = true;

@@ -41,7 +41,7 @@ namespace SimpleFramework.Xml.Core {
       /// <returns>
       /// this returns the named variable if it exists
       /// </returns>
-      public Variable Get(String name);
+      Variable Get(String name);
       /// <summary>
       /// This is used to remove the <c>Variable</c> from this
       /// criteria object. When removed, the variable will no longer be
@@ -54,7 +54,7 @@ namespace SimpleFramework.Xml.Core {
       /// <returns>
       /// this returns the named variable if it exists
       /// </returns>
-      public Variable Remove(String name);
+      Variable Remove(String name);
       /// <summary>
       /// This is used to create a <c>Variable</c> and set it for
       /// this criteria. The variable can be retrieved at a later stage
@@ -67,7 +67,7 @@ namespace SimpleFramework.Xml.Core {
       /// <param name="value">
       /// this is the value of the object to be read
       /// </param>
-      public void Set(Label label, Object value);
+      void Set(Label label, Object value);
       /// <summary>
       /// This is used to set the values for the methods and fields of
       /// the specified object. Invoking this performs the population
@@ -77,6 +77,6 @@ namespace SimpleFramework.Xml.Core {
       /// <param name="source">
       /// this is the object that is to be populated
       /// </param>
-      public void Commit(Object source);
+      void Commit(Object source);
    }
 }

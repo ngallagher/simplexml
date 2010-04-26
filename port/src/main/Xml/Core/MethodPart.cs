@@ -62,7 +62,7 @@ namespace SimpleFramework.Xml.Core {
       /// <returns>
       /// this provides the annotation associated with this
       /// </returns>
-      public <T : Annotation> T getAnnotation(Class<T> type);
+      <T : Annotation> T getAnnotation(Class<T> type);
       /// <summary>
       /// This will provide the contact type. The contact type is the
       /// class that is either the method return type or the single
@@ -132,6 +132,6 @@ namespace SimpleFramework.Xml.Core {
       /// <returns>
       /// this returns a string representation of the method
       /// </returns>
-      public String ToString();
+      String ToString();
    }
 }

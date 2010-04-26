@@ -30,7 +30,7 @@ namespace SimpleFramework.Xml.Core {
    /// the deserialization process to find the most suitable one to
    /// use when instantiating an object.
    /// </summary>
-   internal class Builder {
+   class Builder {
       /// <summary>
       /// This is the list of parameters in the order of declaration.
       /// </summary>
