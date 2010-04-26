@@ -1,4 +1,5 @@
 #region Using directives
+using SimpleFramework.Xml.Transform;
 using SimpleFramework.Xml;
 using System.Collections.Generic;
 using System;
@@ -11,7 +12,7 @@ public class GregorianCalendarTransformTest : TestCase {
       date.setTime(new Date());
       String value = format.write(date);
       GregorianCalendar copy = format.read(value);
-      assertEquals(date, copy);
+      AssertEquals(date, copy);
    }
 }
 }

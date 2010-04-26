@@ -100,51 +100,51 @@ namespace SimpleFramework.Xml.Strategy {
          persister = new Persister(new CycleStrategy("id", "ref"));
       }
       public void TestCycle() {
-         ArrayCycleExample example = persister.read(ArrayCycleExample.class, SOURCE);
-         assertEquals(example.one.length, 5);
-         assertEquals(example.one[0].value, "entry one");
-         assertEquals(example.one[1].value, "entry two");
-         assertEquals(example.one[2].value, "entry three");
-         assertEquals(example.one[3].value, "entry four");
-         assertEquals(example.one[4].value, "entry five");
-         assertEquals(example.two.length, 5);
-         assertEquals(example.two[0].value, "entry one");
-         assertEquals(example.two[1].value, "entry two");
-         assertEquals(example.two[2].value, "entry three");
-         assertEquals(example.two[3].value, "entry four");
-         assertEquals(example.two[4].value, "entry five");
-         assertEquals(example.three.length, 3);
-         assertEquals(example.three[0].value, "tom");
-         assertEquals(example.three[1].value, "dick");
-         assertEquals(example.three[2].value, "harry");
+         ArrayCycleExample example = persister.Read(ArrayCycleExample.class, SOURCE);
+         AssertEquals(example.one.length, 5);
+         AssertEquals(example.one[0].value, "entry one");
+         AssertEquals(example.one[1].value, "entry two");
+         AssertEquals(example.one[2].value, "entry three");
+         AssertEquals(example.one[3].value, "entry four");
+         AssertEquals(example.one[4].value, "entry five");
+         AssertEquals(example.two.length, 5);
+         AssertEquals(example.two[0].value, "entry one");
+         AssertEquals(example.two[1].value, "entry two");
+         AssertEquals(example.two[2].value, "entry three");
+         AssertEquals(example.two[3].value, "entry four");
+         AssertEquals(example.two[4].value, "entry five");
+         AssertEquals(example.three.length, 3);
+         AssertEquals(example.three[0].value, "tom");
+         AssertEquals(example.three[1].value, "dick");
+         AssertEquals(example.three[2].value, "harry");
          assertTrue(example.one == example.two);
          assertTrue(example == example.example);
          StringWriter out = new StringWriter();
-         persister.write(example, out);
-         example = persister.read(ArrayCycleExample.class, SOURCE);
-         assertEquals(example.one.length, 5);
-         assertEquals(example.one[0].value, "entry one");
-         assertEquals(example.one[1].value, "entry two");
-         assertEquals(example.one[2].value, "entry three");
-         assertEquals(example.one[3].value, "entry four");
-         assertEquals(example.one[4].value, "entry five");
-         assertEquals(example.two.length, 5);
-         assertEquals(example.two[0].value, "entry one");
-         assertEquals(example.two[1].value, "entry two");
-         assertEquals(example.two[2].value, "entry three");
-         assertEquals(example.two[3].value, "entry four");
-         assertEquals(example.two[4].value, "entry five");
-         assertEquals(example.three.length, 3);
-         assertEquals(example.three[0].value, "tom");
-         assertEquals(example.three[1].value, "dick");
-         assertEquals(example.three[2].value, "harry");
+         persister.Write(example, out);
+         example = persister.Read(ArrayCycleExample.class, SOURCE);
+         AssertEquals(example.one.length, 5);
+         AssertEquals(example.one[0].value, "entry one");
+         AssertEquals(example.one[1].value, "entry two");
+         AssertEquals(example.one[2].value, "entry three");
+         AssertEquals(example.one[3].value, "entry four");
+         AssertEquals(example.one[4].value, "entry five");
+         AssertEquals(example.two.length, 5);
+         AssertEquals(example.two[0].value, "entry one");
+         AssertEquals(example.two[1].value, "entry two");
+         AssertEquals(example.two[2].value, "entry three");
+         AssertEquals(example.two[3].value, "entry four");
+         AssertEquals(example.two[4].value, "entry five");
+         AssertEquals(example.three.length, 3);
+         AssertEquals(example.three[0].value, "tom");
+         AssertEquals(example.three[1].value, "dick");
+         AssertEquals(example.three[2].value, "harry");
          assertTrue(example.one == example.two);
          assertTrue(example == example.example);
-         validate(example, persister);
+         Validate(example, persister);
       }
       public void TestNestedExample() {
-         NestedArrayCycleExample root = persister.read(NestedArrayCycleExample.class, NESTED);
-         assertEquals(root.array.length, 2);
+         NestedArrayCycleExample root = persister.Read(NestedArrayCycleExample.class, NESTED);
+         AssertEquals(root.array.length, 2);
          assertTrue(root.array[0].list == root.array);
          assertTrue(root.array[1].list[0] instanceof TextValue);
          assertTrue(root.array[1].list == root.array[1].list[0].list);
@@ -153,15 +153,15 @@ namespace SimpleFramework.Xml.Strategy {
          assertTrue(root.array[1].list[2] instanceof ElementValue);
          ElementValue element = (ElementValue) root.array[1].list[2];
          TextValue text = (TextValue) root.array[1].list[0];
-         assertEquals(element.element, "Example element text");
-         assertEquals(text.name, "blah");
-         assertEquals(text.text, "Some text");
-         validate(root, persister);
+         AssertEquals(element.element, "Example element text");
+         AssertEquals(text.name, "blah");
+         AssertEquals(text.text, "Some text");
+         Validate(root, persister);
          StringWriter out = new StringWriter();
-         persister.write(root, out);
+         persister.Write(root, out);
          // Ensure references survive serialization
-         root = persister.read(NestedArrayCycleExample.class, out.toString());
-         assertEquals(root.array.length, 2);
+         root = persister.Read(NestedArrayCycleExample.class, out.toString());
+         AssertEquals(root.array.length, 2);
          assertTrue(root.array[0].list == root.array);
          assertTrue(root.array[1].list[0] instanceof TextValue);
          assertTrue(root.array[1].list == root.array[1].list[0].list);
@@ -170,17 +170,17 @@ namespace SimpleFramework.Xml.Strategy {
          assertTrue(root.array[1].list[2] instanceof ElementValue);
          element = (ElementValue) root.array[1].list[2];
          text = (TextValue) root.array[1].list[0];
-         assertEquals(element.element, "Example element text");
-         assertEquals(text.name, "blah");
-         assertEquals(text.text, "Some text");
+         AssertEquals(element.element, "Example element text");
+         AssertEquals(text.name, "blah");
+         AssertEquals(text.text, "Some text");
       }
       public void TestPromotion() {
-         Value example = persister.read(Value.class, PROMOTE);
-         assertEquals(example.list.length, 1);
+         Value example = persister.Read(Value.class, PROMOTE);
+         AssertEquals(example.list.length, 1);
          assertTrue(example.list instanceof ElementValue[]);
          ElementValue value = (ElementValue) example.list[0];
-         assertEquals(value.element, "Example text");
-         validate(example, persister);
+         AssertEquals(value.element, "Example text");
+         Validate(example, persister);
       }
    }
 }

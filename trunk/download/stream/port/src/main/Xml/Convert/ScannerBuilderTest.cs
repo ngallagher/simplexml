@@ -1,4 +1,5 @@
 #region Using directives
+using SimpleFramework.Xml;
 using System;
 #endregion
 namespace SimpleFramework.Xml.Util {
@@ -20,12 +21,12 @@ namespace SimpleFramework.Xml.Util {
       public void TestScannerBuilder() {
          ScannerBuilder builder = new ScannerBuilder();
          Scanner scanner = builder.build(Extended.class);
-         assertNull(scanner.scan(Convert.class));
-         assertNotNull(scanner.scan(One.class));
-         assertNotNull(scanner.scan(Two.class));
-         assertNotNull(scanner.scan(Three.class));
-         assertNotNull(scanner.scan(Four.class));
-         assertEquals(scanner.scan(Convert.class), null);
+         AssertNull(scanner.scan(Convert.class));
+         AssertNotNull(scanner.scan(One.class));
+         AssertNotNull(scanner.scan(Two.class));
+         AssertNotNull(scanner.scan(Three.class));
+         AssertNotNull(scanner.scan(Four.class));
+         AssertEquals(scanner.scan(Convert.class), null);
          assertTrue(One.class.isAssignableFrom(scanner.scan(One.class).getClass()));
          assertTrue(Two.class.isAssignableFrom(scanner.scan(Two.class).getClass()));
          assertTrue(Three.class.isAssignableFrom(scanner.scan(Three.class).getClass()));

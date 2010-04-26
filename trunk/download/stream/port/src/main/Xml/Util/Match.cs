@@ -44,4 +44,5 @@ namespace SimpleFramework.Xml.Util {
       public String Pattern {
          get;
       }
+      //public String GetPattern();
 }

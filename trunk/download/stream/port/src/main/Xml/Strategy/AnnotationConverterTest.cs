@@ -178,12 +178,12 @@ namespace SimpleFramework.Xml.Strategy {
          Serializer serializer = new Persister(converter);
          StringWriter writer = new StringWriter();
          FarmExample example = serializer.Read(FarmExample.class, SOURCE);
-         assertEquals(example.Cow.Name, "Bull");
-         assertEquals(example.Cow.Age, 4);
-         assertEquals(example.Cow.Legs, 4);
-         assertEquals(example.Chicken.Name, "Hen");
-         assertEquals(example.Chicken.Age, 1);
-         assertEquals(example.Chicken.Legs, 2);
+         AssertEquals(example.Cow.Name, "Bull");
+         AssertEquals(example.Cow.Age, 4);
+         AssertEquals(example.Cow.Legs, 4);
+         AssertEquals(example.Chicken.Name, "Hen");
+         AssertEquals(example.Chicken.Age, 1);
+         AssertEquals(example.Chicken.Legs, 2);
          serializer.Write(example, System.out);
          serializer.Write(example, writer);
          String text = writer.toString();

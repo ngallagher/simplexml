@@ -1,4 +1,5 @@
 #region Using directives
+using SimpleFramework.Xml.Transform;
 using SimpleFramework.Xml;
 using System;
 #endregion
@@ -9,7 +10,7 @@ public class BigIntegerTransformTest : TestCase {
       BigIntegerTransform format = new BigIntegerTransform();
       String value = format.write(integer);
       BigInteger copy = format.read(value);
-      assertEquals(integer, copy);
+      AssertEquals(integer, copy);
    }
 }
 }

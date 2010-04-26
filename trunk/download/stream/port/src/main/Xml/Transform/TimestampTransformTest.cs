@@ -1,4 +1,5 @@
 #region Using directives
+using SimpleFramework.Xml.Transform;
 using SimpleFramework.Xml;
 using System.Collections.Generic;
 using System;
@@ -11,8 +12,8 @@ public class TimestampTransformTest : TestCase {
       DateTransform format = new DateTransform(Timestamp.class);
       String value = format.write(date);
       Date copy = format.read(value);
-      assertEquals(date, copy);
-      assertEquals(copy.getTime(), now);
+      AssertEquals(date, copy);
+      AssertEquals(copy.getTime(), now);
       assertTrue(copy instanceof Timestamp);
    }
 }

@@ -1,4 +1,5 @@
 #region Using directives
+using SimpleFramework.Xml.Transform;
 using SimpleFramework.Xml;
 using System;
 #endregion
@@ -9,7 +10,7 @@ public class FileTransformTest : TestCase {
       FileTransform format = new FileTransform();
       String value = format.write(file);
       File copy = format.read(value);
-      assertEquals(file, copy);
+      AssertEquals(file, copy);
    }
 }
 }

@@ -53,7 +53,7 @@ namespace SimpleFramework.Xml {
       /// <returns>
       /// the object deserialized from the XML document
       /// </returns>
-      public <T> T read(Class<? : T> type, String source);
+      <T> T Read(Class<? : T> type, String source);
       /// <summary>
       /// This <c>read</c> method will read the contents of the XML
       /// document from the provided source and convert it into an object
@@ -70,7 +70,7 @@ namespace SimpleFramework.Xml {
       /// <returns>
       /// the object deserialized from the XML document
       /// </returns>
-      public <T> T read(Class<? : T> type, File source);
+      <T> T Read(Class<? : T> type, File source);
       /// <summary>
       /// This <c>read</c> method will read the contents of the XML
       /// document from the provided source and convert it into an object
@@ -87,7 +87,7 @@ namespace SimpleFramework.Xml {
       /// <returns>
       /// the object deserialized from the XML document
       /// </returns>
-      public <T> T read(Class<? : T> type, InputStream source);
+      <T> T Read(Class<? : T> type, InputStream source);
       /// <summary>
       /// This <c>read</c> method will read the contents of the XML
       /// document from the provided source and convert it into an object
@@ -104,7 +104,7 @@ namespace SimpleFramework.Xml {
       /// <returns>
       /// the object deserialized from the XML document
       /// </returns>
-      public <T> T read(Class<? : T> type, Reader source);
+      <T> T Read(Class<? : T> type, Reader source);
       /// <summary>
       /// This <c>read</c> method will read the contents of the XML
       /// document from the provided source and convert it into an object
@@ -121,27 +121,7 @@ namespace SimpleFramework.Xml {
       /// <returns>
       /// the object deserialized from the XML document
       /// </returns>
-      public <T> T read(Class<? : T> type, InputNode source);
-      /// <summary>
-      /// This <c>read</c> method will read the contents of the XML
-      /// document from the provided source and convert it into an object
-      /// of the specified type. If the XML source cannot be deserialized
-      /// or there is a problem building the object graph an exception
-      /// is thrown. The instance deserialized is returned.
-      /// </summary>
-      /// <param name="type">
-      /// this is the class type to be deserialized from XML
-      /// </param>
-      /// <param name="source">
-      /// this provides the source of the XML document
-      /// </param>
-      /// <param name="strict">
-      /// this determines whether to read in strict mode
-      /// </param>
-      /// <returns>
-      /// the object deserialized from the XML document
-      /// </returns>
-      public <T> T read(Class<? : T> type, String source, bool strict);
+      <T> T Read(Class<? : T> type, InputNode source);
       /// <summary>
       /// This <c>read</c> method will read the contents of the XML
       /// document from the provided source and convert it into an object
@@ -161,7 +141,7 @@ namespace SimpleFramework.Xml {
       /// <returns>
       /// the object deserialized from the XML document
       /// </returns>
-      public <T> T read(Class<? : T> type, File source, bool strict);
+      <T> T Read(Class<? : T> type, String source, bool strict);
       /// <summary>
       /// This <c>read</c> method will read the contents of the XML
       /// document from the provided source and convert it into an object
@@ -181,7 +161,7 @@ namespace SimpleFramework.Xml {
       /// <returns>
       /// the object deserialized from the XML document
       /// </returns>
-      public <T> T read(Class<? : T> type, InputStream source, bool strict);
+      <T> T Read(Class<? : T> type, File source, bool strict);
       /// <summary>
       /// This <c>read</c> method will read the contents of the XML
       /// document from the provided source and convert it into an object
@@ -201,7 +181,7 @@ namespace SimpleFramework.Xml {
       /// <returns>
       /// the object deserialized from the XML document
       /// </returns>
-      public <T> T read(Class<? : T> type, Reader source, bool strict);
+      <T> T Read(Class<? : T> type, InputStream source, bool strict);
       /// <summary>
       /// This <c>read</c> method will read the contents of the XML
       /// document from the provided source and convert it into an object
@@ -221,107 +201,16 @@ namespace SimpleFramework.Xml {
       /// <returns>
       /// the object deserialized from the XML document
       /// </returns>
-      public <T> T read(Class<? : T> type, InputNode source, bool strict);
+      <T> T Read(Class<? : T> type, Reader source, bool strict);
       /// <summary>
       /// This <c>read</c> method will read the contents of the XML
-      /// document from the provided source and populate the object with
-      /// the values deserialized. This is used as a means of injecting an
-      /// object with values deserialized from an XML document. If the
-      /// XML source cannot be deserialized or there is a problem building
-      /// the object graph an exception is thrown.
+      /// document from the provided source and convert it into an object
+      /// of the specified type. If the XML source cannot be deserialized
+      /// or there is a problem building the object graph an exception
+      /// is thrown. The instance deserialized is returned.
       /// </summary>
-      /// <param name="value">
-      /// this is the object to deserialize the XML in to
-      /// </param>
-      /// <param name="source">
-      /// this provides the source of the XML document
-      /// </param>
-      /// <returns>
-      /// the same instance provided is returned when finished
-      /// </returns>
-      public <T> T read(T value, String source);
-      /// <summary>
-      /// This <c>read</c> method will read the contents of the XML
-      /// document from the provided source and populate the object with
-      /// the values deserialized. This is used as a means of injecting an
-      /// object with values deserialized from an XML document. If the
-      /// XML source cannot be deserialized or there is a problem building
-      /// the object graph an exception is thrown.
-      /// </summary>
-      /// <param name="value">
-      /// this is the object to deserialize the XML in to
-      /// </param>
-      /// <param name="source">
-      /// this provides the source of the XML document
-      /// </param>
-      /// <returns>
-      /// the same instance provided is returned when finished
-      /// </returns>
-      public <T> T read(T value, File source);
-      /// <summary>
-      /// This <c>read</c> method will read the contents of the XML
-      /// document from the provided source and populate the object with
-      /// the values deserialized. This is used as a means of injecting an
-      /// object with values deserialized from an XML document. If the
-      /// XML source cannot be deserialized or there is a problem building
-      /// the object graph an exception is thrown.
-      /// </summary>
-      /// <param name="value">
-      /// this is the object to deserialize the XML in to
-      /// </param>
-      /// <param name="source">
-      /// this provides the source of the XML document
-      /// </param>
-      /// <returns>
-      /// the same instance provided is returned when finished
-      /// </returns>
-      public <T> T read(T value, InputStream source);
-      /// <summary>
-      /// This <c>read</c> method will read the contents of the XML
-      /// document from the provided source and populate the object with
-      /// the values deserialized. This is used as a means of injecting an
-      /// object with values deserialized from an XML document. If the
-      /// XML source cannot be deserialized or there is a problem building
-      /// the object graph an exception is thrown.
-      /// </summary>
-      /// <param name="value">
-      /// this is the object to deserialize the XML in to
-      /// </param>
-      /// <param name="source">
-      /// this provides the source of the XML document
-      /// </param>
-      /// <returns>
-      /// the same instance provided is returned when finished
-      /// </returns>
-      public <T> T read(T value, Reader source);
-      /// <summary>
-      /// This <c>read</c> method will read the contents of the XML
-      /// document from the provided source and populate the object with
-      /// the values deserialized. This is used as a means of injecting an
-      /// object with values deserialized from an XML document. If the
-      /// XML source cannot be deserialized or there is a problem building
-      /// the object graph an exception is thrown.
-      /// </summary>
-      /// <param name="value">
-      /// this is the object to deserialize the XML in to
-      /// </param>
-      /// <param name="source">
-      /// this provides the source of the XML document
-      /// </param>
-      /// <returns>
-      /// the same instance provided is returned when finished
-      /// </returns>
-      public <T> T read(T value, InputNode source);
-      /// <summary>
-      /// This <c>read</c> method will read the contents of the XML
-      /// document from the provided source and populate the object with
-      /// the values deserialized. This is used as a means of injecting an
-      /// object with values deserialized from an XML document. If the
-      /// XML source cannot be deserialized or there is a problem building
-      /// the object graph an exception is thrown.
-      /// </summary>
-      /// <param name="value">
-      /// this is the object to deserialize the XML in to
+      /// <param name="type">
+      /// this is the class type to be deserialized from XML
       /// </param>
       /// <param name="source">
       /// this provides the source of the XML document
@@ -330,9 +219,9 @@ namespace SimpleFramework.Xml {
       /// this determines whether to read in strict mode
       /// </param>
       /// <returns>
-      /// the same instance provided is returned when finished
+      /// the object deserialized from the XML document
       /// </returns>
-      public <T> T read(T value, String source, bool strict);
+      <T> T Read(Class<? : T> type, InputNode source, bool strict);
       /// <summary>
       /// This <c>read</c> method will read the contents of the XML
       /// document from the provided source and populate the object with
@@ -347,13 +236,82 @@ namespace SimpleFramework.Xml {
       /// <param name="source">
       /// this provides the source of the XML document
       /// </param>
-      /// <param name="strict">
-      /// this determines whether to read in strict mode
+      /// <returns>
+      /// the same instance provided is returned when finished
+      /// </returns>
+      <T> T Read(T value, String source);
+      /// <summary>
+      /// This <c>read</c> method will read the contents of the XML
+      /// document from the provided source and populate the object with
+      /// the values deserialized. This is used as a means of injecting an
+      /// object with values deserialized from an XML document. If the
+      /// XML source cannot be deserialized or there is a problem building
+      /// the object graph an exception is thrown.
+      /// </summary>
+      /// <param name="value">
+      /// this is the object to deserialize the XML in to
+      /// </param>
+      /// <param name="source">
+      /// this provides the source of the XML document
       /// </param>
       /// <returns>
       /// the same instance provided is returned when finished
       /// </returns>
-      public <T> T read(T value, File source, bool strict);
+      <T> T Read(T value, File source);
+      /// <summary>
+      /// This <c>read</c> method will read the contents of the XML
+      /// document from the provided source and populate the object with
+      /// the values deserialized. This is used as a means of injecting an
+      /// object with values deserialized from an XML document. If the
+      /// XML source cannot be deserialized or there is a problem building
+      /// the object graph an exception is thrown.
+      /// </summary>
+      /// <param name="value">
+      /// this is the object to deserialize the XML in to
+      /// </param>
+      /// <param name="source">
+      /// this provides the source of the XML document
+      /// </param>
+      /// <returns>
+      /// the same instance provided is returned when finished
+      /// </returns>
+      <T> T Read(T value, InputStream source);
+      /// <summary>
+      /// This <c>read</c> method will read the contents of the XML
+      /// document from the provided source and populate the object with
+      /// the values deserialized. This is used as a means of injecting an
+      /// object with values deserialized from an XML document. If the
+      /// XML source cannot be deserialized or there is a problem building
+      /// the object graph an exception is thrown.
+      /// </summary>
+      /// <param name="value">
+      /// this is the object to deserialize the XML in to
+      /// </param>
+      /// <param name="source">
+      /// this provides the source of the XML document
+      /// </param>
+      /// <returns>
+      /// the same instance provided is returned when finished
+      /// </returns>
+      <T> T Read(T value, Reader source);
+      /// <summary>
+      /// This <c>read</c> method will read the contents of the XML
+      /// document from the provided source and populate the object with
+      /// the values deserialized. This is used as a means of injecting an
+      /// object with values deserialized from an XML document. If the
+      /// XML source cannot be deserialized or there is a problem building
+      /// the object graph an exception is thrown.
+      /// </summary>
+      /// <param name="value">
+      /// this is the object to deserialize the XML in to
+      /// </param>
+      /// <param name="source">
+      /// this provides the source of the XML document
+      /// </param>
+      /// <returns>
+      /// the same instance provided is returned when finished
+      /// </returns>
+      <T> T Read(T value, InputNode source);
       /// <summary>
       /// This <c>read</c> method will read the contents of the XML
       /// document from the provided source and populate the object with
@@ -374,7 +332,7 @@ namespace SimpleFramework.Xml {
       /// <returns>
       /// the same instance provided is returned when finished
       /// </returns>
-      public <T> T read(T value, InputStream source, bool strict);
+      <T> T Read(T value, String source, bool strict);
       /// <summary>
       /// This <c>read</c> method will read the contents of the XML
       /// document from the provided source and populate the object with
@@ -395,7 +353,7 @@ namespace SimpleFramework.Xml {
       /// <returns>
       /// the same instance provided is returned when finished
       /// </returns>
-      public <T> T read(T value, Reader source, bool strict);
+      <T> T Read(T value, File source, bool strict);
       /// <summary>
       /// This <c>read</c> method will read the contents of the XML
       /// document from the provided source and populate the object with
@@ -416,7 +374,49 @@ namespace SimpleFramework.Xml {
       /// <returns>
       /// the same instance provided is returned when finished
       /// </returns>
-      public <T> T read(T value, InputNode source, bool strict);
+      <T> T Read(T value, InputStream source, bool strict);
+      /// <summary>
+      /// This <c>read</c> method will read the contents of the XML
+      /// document from the provided source and populate the object with
+      /// the values deserialized. This is used as a means of injecting an
+      /// object with values deserialized from an XML document. If the
+      /// XML source cannot be deserialized or there is a problem building
+      /// the object graph an exception is thrown.
+      /// </summary>
+      /// <param name="value">
+      /// this is the object to deserialize the XML in to
+      /// </param>
+      /// <param name="source">
+      /// this provides the source of the XML document
+      /// </param>
+      /// <param name="strict">
+      /// this determines whether to read in strict mode
+      /// </param>
+      /// <returns>
+      /// the same instance provided is returned when finished
+      /// </returns>
+      <T> T Read(T value, Reader source, bool strict);
+      /// <summary>
+      /// This <c>read</c> method will read the contents of the XML
+      /// document from the provided source and populate the object with
+      /// the values deserialized. This is used as a means of injecting an
+      /// object with values deserialized from an XML document. If the
+      /// XML source cannot be deserialized or there is a problem building
+      /// the object graph an exception is thrown.
+      /// </summary>
+      /// <param name="value">
+      /// this is the object to deserialize the XML in to
+      /// </param>
+      /// <param name="source">
+      /// this provides the source of the XML document
+      /// </param>
+      /// <param name="strict">
+      /// this determines whether to read in strict mode
+      /// </param>
+      /// <returns>
+      /// the same instance provided is returned when finished
+      /// </returns>
+      <T> T Read(T value, InputNode source, bool strict);
       /// <summary>
       /// This <c>validate</c> method will validate the contents of
       /// the XML document against the specified XML class schema. This is
@@ -434,7 +434,7 @@ namespace SimpleFramework.Xml {
       /// <returns>
       /// true if the document matches the class XML schema
       /// </returns>
-      public bool Validate(Class type, String source);
+      bool Validate(Class type, String source);
       /// <summary>
       /// This <c>validate</c> method will validate the contents of
       /// the XML document against the specified XML class schema. This is
@@ -452,7 +452,7 @@ namespace SimpleFramework.Xml {
       /// <returns>
       /// true if the document matches the class XML schema
       /// </returns>
-      public bool Validate(Class type, File source);
+      bool Validate(Class type, File source);
       /// <summary>
       /// This <c>validate</c> method will validate the contents of
       /// the XML document against the specified XML class schema. This is
@@ -470,7 +470,7 @@ namespace SimpleFramework.Xml {
       /// <returns>
       /// true if the document matches the class XML schema
       /// </returns>
-      public bool Validate(Class type, InputStream source);
+      bool Validate(Class type, InputStream source);
       /// <summary>
       /// This <c>validate</c> method will validate the contents of
       /// the XML document against the specified XML class schema. This is
@@ -488,7 +488,7 @@ namespace SimpleFramework.Xml {
       /// <returns>
       /// true if the document matches the class XML schema
       /// </returns>
-      public bool Validate(Class type, Reader source);
+      bool Validate(Class type, Reader source);
       /// <summary>
       /// This <c>validate</c> method will validate the contents of
       /// the XML document against the specified XML class schema. This is
@@ -506,7 +506,7 @@ namespace SimpleFramework.Xml {
       /// <returns>
       /// true if the document matches the class XML schema
       /// </returns>
-      public bool Validate(Class type, InputNode source);
+      bool Validate(Class type, InputNode source);
       /// <summary>
       /// This <c>validate</c> method will validate the contents of
       /// the XML document against the specified XML class schema. This is
@@ -527,7 +527,7 @@ namespace SimpleFramework.Xml {
       /// <returns>
       /// true if the document matches the class XML schema
       /// </returns>
-      public bool Validate(Class type, String source, bool strict);
+      bool Validate(Class type, String source, bool strict);
       /// <summary>
       /// This <c>validate</c> method will validate the contents of
       /// the XML document against the specified XML class schema. This is
@@ -548,7 +548,7 @@ namespace SimpleFramework.Xml {
       /// <returns>
       /// true if the document matches the class XML schema
       /// </returns>
-      public bool Validate(Class type, File source, bool strict);
+      bool Validate(Class type, File source, bool strict);
       /// <summary>
       /// This <c>validate</c> method will validate the contents of
       /// the XML document against the specified XML class schema. This is
@@ -569,7 +569,7 @@ namespace SimpleFramework.Xml {
       /// <returns>
       /// true if the document matches the class XML schema
       /// </returns>
-      public bool Validate(Class type, InputStream source, bool strict);
+      bool Validate(Class type, InputStream source, bool strict);
       /// <summary>
       /// This <c>validate</c> method will validate the contents of
       /// the XML document against the specified XML class schema. This is
@@ -590,7 +590,7 @@ namespace SimpleFramework.Xml {
       /// <returns>
       /// true if the document matches the class XML schema
       /// </returns>
-      public bool Validate(Class type, Reader source, bool strict);
+      bool Validate(Class type, Reader source, bool strict);
       /// <summary>
       /// This <c>validate</c> method will validate the contents of
       /// the XML document against the specified XML class schema. This is
@@ -611,7 +611,7 @@ namespace SimpleFramework.Xml {
       /// <returns>
       /// true if the document matches the class XML schema
       /// </returns>
-      public bool Validate(Class type, InputNode source, bool strict);
+      bool Validate(Class type, InputNode source, bool strict);
       /// <summary>
       /// This <c>write</c> method will traverse the provided object
       /// checking for field annotations in order to compose the XML data.
@@ -627,7 +627,7 @@ namespace SimpleFramework.Xml {
       /// <param name="out">
       /// this is where the serialized XML is written to
       /// </param>
-      public void Write(Object source, File out);
+      void Write(Object source, File out);
       /// <summary>
       /// This <c>write</c> method will traverse the provided object
       /// checking for field annotations in order to compose the XML data.
@@ -643,7 +643,7 @@ namespace SimpleFramework.Xml {
       /// <param name="out">
       /// this is where the serialized XML is written to
       /// </param>
-      public void Write(Object source, OutputStream out);
+      void Write(Object source, OutputStream out);
       /// <summary>
       /// This <c>write</c> method will traverse the provided object
       /// checking for field annotations in order to compose the XML data.
@@ -659,7 +659,7 @@ namespace SimpleFramework.Xml {
       /// <param name="out">
       /// this is where the serialized XML is written to
       /// </param>
-      public void Write(Object source, Writer out);
+      void Write(Object source, Writer out);
       /// <summary>
       /// This <c>write</c> method will traverse the provided object
       /// checking for field annotations in order to compose the XML data.
@@ -675,6 +675,6 @@ namespace SimpleFramework.Xml {
       /// <param name="root">
       /// this is where the serialized XML is written to
       /// </param>
-      public void Write(Object source, OutputNode root);
+      void Write(Object source, OutputNode root);
    }
 }

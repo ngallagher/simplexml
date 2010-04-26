@@ -178,10 +178,10 @@ namespace SimpleFramework.Xml.Strategy {
          Strategy strategy = new CycleStrategy();
          Serializer serializer = new Persister(strategy);
          EntryMap example = serializer.read(EntryMap.class, ENTRY_MAP);
-         assertEquals("example 1", example.GetValue("a"));
-         assertEquals("example 2", example.GetValue("b"));
-         assertEquals("example 1", example.GetValue("c"));
-         assertEquals("example 1", example.GetValue("d"));
+         AssertEquals("example 1", example.GetValue("a"));
+         AssertEquals("example 2", example.GetValue("b"));
+         AssertEquals("example 1", example.GetValue("c"));
+         AssertEquals("example 1", example.GetValue("d"));
          MapEntry a = example.GetEntry("a");
          MapEntry b = example.GetEntry("b");
          MapEntry c = example.GetEntry("c");
@@ -195,18 +195,18 @@ namespace SimpleFramework.Xml.Strategy {
          Strategy strategy = new CycleStrategy();
          Serializer serializer = new Persister(strategy);
          ComplexMap example = serializer.read(ComplexMap.class, COMPLEX_MAP);
-         assertEquals("example 2", example.GetValue(new CompositeKey("name 1", "address 1")));
-         assertEquals("example 2", example.GetValue(new CompositeKey("name 3", "address 3")));
-         assertEquals("example 4", example.GetValue(new CompositeKey("name 4", "address 4")));
+         AssertEquals("example 2", example.GetValue(new CompositeKey("name 1", "address 1")));
+         AssertEquals("example 2", example.GetValue(new CompositeKey("name 3", "address 3")));
+         AssertEquals("example 4", example.GetValue(new CompositeKey("name 4", "address 4")));
          validate(example, serializer);
       }
       public void TestPrimitiveMap() {
          Strategy strategy = new CycleStrategy();
          Serializer serializer = new Persister(strategy);
          PrimitiveMap example = serializer.read(PrimitiveMap.class, PRIMITIVE_MAP);
-         assertEquals(1.0, example.GetValue("one"));
-         assertEquals(1.0, example.GetValue("two"));
-         assertEquals(4.0, example.GetValue("three"));
+         AssertEquals(1.0, example.GetValue("one"));
+         AssertEquals(1.0, example.GetValue("two"));
+         AssertEquals(4.0, example.GetValue("three"));
          validate(example, serializer);
       }
    }

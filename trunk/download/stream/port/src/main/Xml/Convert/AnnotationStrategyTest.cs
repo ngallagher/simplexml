@@ -1,4 +1,5 @@
 #region Using directives
+using SimpleFramework.Xml.Convert;
 using SimpleFramework.Xml.Core;
 using SimpleFramework.Xml.Strategy;
 using SimpleFramework.Xml.Util;
@@ -75,12 +76,12 @@ namespace SimpleFramework.Xml.Util {
          example.Time.add(10);
          example.Time.add(11);
          example.Time.add(12);
-         assertEquals(example.Cow.getName(), "Bull");
-         assertEquals(example.Cow.getAge(), 4);
-         assertEquals(example.Cow.getLegs(), 4);
-         assertEquals(example.Chicken.getName(), "Hen");
-         assertEquals(example.Chicken.getAge(), 1);
-         assertEquals(example.Chicken.getLegs(), 2);
+         AssertEquals(example.Cow.getName(), "Bull");
+         AssertEquals(example.Cow.getAge(), 4);
+         AssertEquals(example.Cow.getLegs(), 4);
+         AssertEquals(example.Chicken.getName(), "Hen");
+         AssertEquals(example.Chicken.getAge(), 1);
+         AssertEquals(example.Chicken.getLegs(), 2);
          serializer.write(example, System.out);
          serializer.write(example, writer);
          String text = writer.toString();

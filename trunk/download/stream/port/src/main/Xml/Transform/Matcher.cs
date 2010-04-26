@@ -44,6 +44,6 @@ public interface Matcher {
    /// <returns>
    /// returns a transform for processing the type given
    /// </returns>
-   public Transform Match(Class type);
+   Transform Match(Class type);
 }
 }

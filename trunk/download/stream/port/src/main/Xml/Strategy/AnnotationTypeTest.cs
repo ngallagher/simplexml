@@ -67,8 +67,8 @@ namespace SimpleFramework.Xml.Strategy {
          assertXpathExists("/annotationExample[@age='10']", text);
          assertXpathExists("/annotationExample/name[@key='name']", text);
          AnnotationExample result = persister.Read(AnnotationExample.class, text);
-         assertEquals(example.name, result.name);
-         assertEquals(example.age, result.age);
+         AssertEquals(example.name, result.name);
+         AssertEquals(example.age, result.age);
          validate(result, persister);
       }
    }

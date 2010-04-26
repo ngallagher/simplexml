@@ -53,7 +53,7 @@ namespace SimpleFramework.Xml.Strategy {
       /// <returns>
       /// this provides the annotation associated with this
       /// </returns>
-      public <T : Annotation> T getAnnotation(Class<T> type);
+      <T : Annotation> T getAnnotation(Class<T> type);
       /// <summary>
       /// This is used to describe the type as it exists within the
       /// owning class. This is used to provide error messages that can
@@ -62,6 +62,6 @@ namespace SimpleFramework.Xml.Strategy {
       /// <returns>
       /// this returns a string representation of the type
       /// </returns>
-      public String ToString();
+      String ToString();
    }
 }

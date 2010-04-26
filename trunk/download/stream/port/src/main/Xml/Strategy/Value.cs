@@ -83,6 +83,6 @@ namespace SimpleFramework.Xml.Strategy {
       /// <returns>
       /// this returns true if this represents a reference
       /// </returns>
-      public bool IsReference();
+      bool IsReference();
    }
 }

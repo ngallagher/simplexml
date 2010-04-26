@@ -72,7 +72,7 @@ namespace SimpleFramework.Xml.Strategy {
       /// <returns>
       /// the value that should be used to describe the instance
       /// </returns>
-      public Value Read(Type type, NodeMap<InputNode> node, Dictionary map);
+      Value Read(Type type, NodeMap<InputNode> node, Dictionary map);
       /// <summary>
       /// This is used to attach attribute values to the given node
       /// map during the serialization process. This method allows
@@ -95,6 +95,6 @@ namespace SimpleFramework.Xml.Strategy {
       /// <returns>
       /// this returns true if serialization is complete
       /// </returns>
-      public bool Write(Type type, Object value, NodeMap<OutputNode> node, Dictionary map);
+      bool Write(Type type, Object value, NodeMap<OutputNode> node, Dictionary map);
    }
 }

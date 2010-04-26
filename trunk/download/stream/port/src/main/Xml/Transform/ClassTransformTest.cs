@@ -1,4 +1,5 @@
 #region Using directives
+using SimpleFramework.Xml;
 using System.Collections.Generic;
 using System;
 #endregion
@@ -9,7 +10,7 @@ public class ClassTransformTest : TestCase {
       ClassTransform transform = new ClassTransform();
       String value = transform.write(c);
       Class copy = transform.read(value);
-      assertEquals(c, copy);
+      AssertEquals(c, copy);
    }
 }
 }

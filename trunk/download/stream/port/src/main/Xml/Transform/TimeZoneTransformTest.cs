@@ -1,4 +1,5 @@
 #region Using directives
+using SimpleFramework.Xml.Transform;
 using SimpleFramework.Xml;
 using System.Collections.Generic;
 using System;
@@ -10,7 +11,7 @@ public class TimeZoneTransformTest : TestCase {
       TimeZoneTransform format = new TimeZoneTransform();
       String value = format.write(zone);
       TimeZone copy = format.read(value);
-      assertEquals(zone, copy);
+      AssertEquals(zone, copy);
    }
 }
 }

@@ -22,16 +22,16 @@ namespace SimpleFramework.Xml.Strategy {
        *
        */
       public void TestParser() {
-         assertEquals("http://util.java/HashMap", Parse(HashMap.class));
-         assertEquals("http://simpleframework.org/xml/Element", Parse(Element.class));
-         assertEquals("http://simpleframework.org/xml/ElementList", Parse(ElementList.class));
-         assertEquals("http://w3c.org/dom/Node", Parse(Node.class));
-         assertEquals("http://simpleframework.org/xml/strategy/PackageParser", Parse(PackageParser.class));
-         assertEquals(HashMap.class, Revert("http://util.java/HashMap"));
-         assertEquals(Element.class, Revert("http://simpleframework.org/xml/Element"));
-         assertEquals(ElementList.class, Revert("http://simpleframework.org/xml/ElementList"));
-         assertEquals(Node.class, Revert("http://w3c.org/dom/Node"));
-         assertEquals(PackageParser.class, Revert("http://simpleframework.org/xml/strategy/PackageParser"));
+         AssertEquals("http://util.java/HashMap", Parse(HashMap.class));
+         AssertEquals("http://simpleframework.org/xml/Element", Parse(Element.class));
+         AssertEquals("http://simpleframework.org/xml/ElementList", Parse(ElementList.class));
+         AssertEquals("http://w3c.org/dom/Node", Parse(Node.class));
+         AssertEquals("http://simpleframework.org/xml/strategy/PackageParser", Parse(PackageParser.class));
+         AssertEquals(HashMap.class, Revert("http://util.java/HashMap"));
+         AssertEquals(Element.class, Revert("http://simpleframework.org/xml/Element"));
+         AssertEquals(ElementList.class, Revert("http://simpleframework.org/xml/ElementList"));
+         AssertEquals(Node.class, Revert("http://w3c.org/dom/Node"));
+         AssertEquals(PackageParser.class, Revert("http://simpleframework.org/xml/strategy/PackageParser"));
          long start = System.currentTimeMillis();
          for(int i = 0; i < ITERATIONS; i++) {
             FastParse(ElementList.class);

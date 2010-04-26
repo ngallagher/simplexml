@@ -19,6 +19,7 @@
 #endregion
 #region Using directives
 using SimpleFramework.Xml.Util;
+using SimpleFramework.Xml;
 using System;
 #endregion
 package SimpleFramework.Xml.transform;
@@ -149,11 +150,11 @@ public class Transformer {
    /// this will return a transform for the specified type
    /// </returns>
    public Transform Lookup(Class type) {
-      Transform transform = cache.Fetch(type);
+      Transform transform = cache.fetch(type);
       if(transform != null) {
          return transform;
       }
-      if(error.Contains(type)) {
+      if(error.contains(type)) {
          return null;
       }
       return Match(type);
@@ -173,9 +174,9 @@ public class Transformer {
    public Transform Match(Class type) {
       Transform transform = matcher.Match(type);
       if(transform != null) {
-         cache.Cache(type, transform);
+         cache.cache(type, transform);
       } else {
-         error.Cache(type, this);
+         error.cache(type, this);
       }
       return transform;
    }

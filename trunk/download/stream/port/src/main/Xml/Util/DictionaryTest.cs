@@ -57,12 +57,12 @@ namespace SimpleFramework.Xml.Util {
    	   serializer = new Persister();
    	}
       public void TestDictionary() {
-         PropertySet set = (PropertySet) serializer.read(PropertySet.class, LIST);
-         assertEquals(3, set.Size());
-         assertEquals("one", set.Get("1").text);
-         assertEquals("two", set.Get("2").text);
-         assertEquals("three", set.Get("3").text);
-         validate(set, serializer);
+         PropertySet set = (PropertySet) serializer.Read(PropertySet.class, LIST);
+         AssertEquals(3, set.Size());
+         AssertEquals("one", set.Get("1").text);
+         AssertEquals("two", set.Get("2").text);
+         AssertEquals("three", set.Get("3").text);
+         Validate(set, serializer);
       }
    }
 }
