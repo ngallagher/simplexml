@@ -57,7 +57,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this will return the prefix that is is scope
       /// </returns>
-      public String Get(String reference);
+      String Get(String reference);
       /// <summary>
       /// This is used to remove the prefix that is matched to the
       /// given reference. If no prefix is matched to the reference then
@@ -70,7 +70,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this returns the prefix that was matched to this
       /// </returns>
-      public String Remove(String reference);
+      String Remove(String reference);
       /// <summary>
       /// This returns an iterator for the namespace of all the nodes
       /// in this <c>NamespaceMap</c>. This allows the namespaces
@@ -80,7 +80,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this returns the namespaces contained in this map
       /// </returns>
-      public Iterator<String> Iterator();
+      Iterator<String> Iterator();
       /// <summary>
       /// This is used to add the namespace reference to the namespace
       /// map. If the namespace has been added to a parent node then
@@ -93,7 +93,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this returns the prefix that has been replaced
       /// </returns>
-      public String Put(String reference);
+      String Put(String reference);
       /// <summary>
       /// This is used to add the namespace reference to the namespace
       /// map. If the namespace has been added to a parent node then
@@ -108,6 +108,6 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this returns the prefix that has been replaced
       /// </returns>
-      public String Put(String reference, String prefix);
+      String Put(String reference, String prefix);
    }
 }

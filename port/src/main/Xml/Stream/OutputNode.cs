@@ -37,7 +37,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// true if this is the root node within the document
       /// </returns>
-      public bool IsRoot();
+      bool IsRoot();
       /// <summary>
       /// This returns a <c>NodeMap</c> which can be used to add
       /// nodes to the element before that element has been committed.
@@ -115,7 +115,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this returns the prefix associated with this node
       /// </returns>
-      public String GetPrefix(bool inherit);
+      String GetPrefix(bool inherit);
       /// <summary>
       /// This is used to acquire the namespace URI reference associated
       /// with this node. Although it is recommended that the namespace
@@ -198,7 +198,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this returns the node that has just been added
       /// </returns>
-      public OutputNode SetAttribute(String name, String value);
+      OutputNode SetAttribute(String name, String value);
       /// <summary>
       /// This is used to acquire the <c>Node</c> that is the
       /// parent of this node. This will return the node that is
@@ -221,21 +221,21 @@ namespace SimpleFramework.Xml.Stream {
       /// <param name="name">
       /// this is the name of the child element to create
       /// </param>
-      public OutputNode GetChild(String name);
+      OutputNode GetChild(String name);
       /// <summary>
       /// This is used to remove any uncommitted changes. Removal of an
       /// output node can only be done if it has no siblings and has
       /// not yet been committed. If the node is committed then this
       /// will throw an exception to indicate that it cannot be removed.
       /// </summary>
-      public void Remove();
+      void Remove();
       /// <summary>
       /// The <c>commit</c> method is used flush and commit any
       /// child nodes that have been created by this node. This allows
       /// the output to be completed when building of the XML document
       /// has been completed. If output fails an exception is thrown.
       /// </summary>
-      public void Commit();
+      void Commit();
       /// <summary>
       /// This is used to determine whether the node has been committed.
       /// If the node has been committed, then this will return true.
@@ -244,6 +244,6 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// true if this node has already been committed
       /// </returns>
-      public bool IsCommitted();
+      bool IsCommitted();
    }
 }

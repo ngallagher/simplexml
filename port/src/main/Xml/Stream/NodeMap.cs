@@ -67,7 +67,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this will return the node mapped to the given name
       /// </returns>
-      public T Get(String name);
+      T Get(String name);
       /// <summary>
       /// This is used to remove the <c>Node</c> mapped to the
       /// given name.  This returns a name value pair that represents
@@ -80,7 +80,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this will return the node mapped to the given name
       /// </returns>
-      public T Remove(String name);
+      T Remove(String name);
       /// <summary>
       /// This returns an iterator for the names of all the nodes in
       /// this <c>NodeMap</c>. This allows the names to be
@@ -89,7 +89,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this returns the names of the nodes in the map
       /// </returns>
-      public Iterator<String> Iterator();
+      Iterator<String> Iterator();
       /// <summary>
       /// This is used to add a new <c>Node</c> to the map. The
       /// type of node that is created an added is left up to the map
@@ -105,6 +105,6 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this is the node that has been added to the map
       /// </returns>
-      public T Put(String name, String value);
+      T Put(String name, String value);
    }
 }

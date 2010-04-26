@@ -46,7 +46,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this is used to return the event reader implementation
       /// </returns>
-      public EventReader Provide(InputStream source);
+      EventReader Provide(InputStream source);
       /// <summary>
       /// This provides an <c>EventReader</c> that will read from
       /// the specified reader. When reading from a reader the character
@@ -58,6 +58,6 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this is used to return the event reader implementation
       /// </returns>
-      public EventReader Provide(Reader source);
+      EventReader Provide(Reader source);
    }
 }

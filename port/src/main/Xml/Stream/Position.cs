@@ -47,6 +47,6 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this returns a textual description of the position
       /// </returns>
-      public String ToString();
+      String ToString();
    }
 }

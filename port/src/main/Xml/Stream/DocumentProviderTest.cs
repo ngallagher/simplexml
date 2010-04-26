@@ -15,25 +15,25 @@ namespace SimpleFramework.Xml.Stream {
             Provider provider = new DocumentProvider();
             StringReader source = new StringReader(SOURCE);
             EventReader reader = provider.provide(source);
-            assertEquals(reader.peek().getName(), "root");
-            assertEquals(reader.next().getName(), "root");
+            AssertEquals(reader.peek().getName(), "root");
+            AssertEquals(reader.next().getName(), "root");
             assertTrue(reader.peek().isText());
             assertTrue(reader.next().isText());
             while(reader.peek().isText()) {
                assertTrue(reader.next().isText()); // remove text from the document
             }
-            assertEquals(reader.peek().getName(), "child");
-            assertEquals(reader.next().getName(), "child");
+            AssertEquals(reader.peek().getName(), "child");
+            AssertEquals(reader.next().getName(), "child");
             assertTrue(reader.peek().isText());
             assertTrue(reader.next().isText());
             while(reader.peek().isText()) {
                assertTrue(reader.next().isText()); // remove text from the document
             }
-            assertEquals(reader.peek().getName(), "leaf");
-            assertEquals(reader.next().getName(), "leaf");
+            AssertEquals(reader.peek().getName(), "leaf");
+            AssertEquals(reader.next().getName(), "leaf");
             assertTrue(reader.peek().isText());
-            assertEquals(reader.peek().getValue(), "leaf node");
-            assertEquals(reader.next().getValue(), "leaf node");
+            AssertEquals(reader.peek().getValue(), "leaf node");
+            AssertEquals(reader.next().getValue(), "leaf node");
             assertTrue(reader.next().isEnd());
             while(reader.peek().isText()) {
                assertTrue(reader.next().isText()); // remove text from the document

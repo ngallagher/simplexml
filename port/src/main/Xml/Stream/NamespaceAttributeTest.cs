@@ -1,4 +1,5 @@
 #region Using directives
+using SimpleFramework.Xml;
 using System;
 #endregion
 namespace SimpleFramework.Xml.Stream {
@@ -14,24 +15,24 @@ namespace SimpleFramework.Xml.Stream {
          InputNode root = NodeBuilder.read(new StringReader(SOURCE));
          InputNode child = root.getNext();
          NodeMap<InputNode> map = child.getAttributes();
-         assertEquals(root.getReference(), "default");
-         assertEquals(child.getReference(), "default");
-         assertEquals(map.get("attributeA").getValue(), "valueA");
-         assertEquals(map.get("attributeA").getPrefix(), "a");
-         assertEquals(map.get("attributeA").getReference(), "A");
-         assertEquals(map.get("attributeB").getValue(), "valueB");
-         assertEquals(map.get("attributeB").getPrefix(), "b");
-         assertEquals(map.get("attributeB").getReference(), "B");
+         AssertEquals(root.getReference(), "default");
+         AssertEquals(child.getReference(), "default");
+         AssertEquals(map.get("attributeA").getValue(), "valueA");
+         AssertEquals(map.get("attributeA").getPrefix(), "a");
+         AssertEquals(map.get("attributeA").getReference(), "A");
+         AssertEquals(map.get("attributeB").getValue(), "valueB");
+         AssertEquals(map.get("attributeB").getPrefix(), "b");
+         AssertEquals(map.get("attributeB").getReference(), "B");
          InputNode leaf = child.getNext();
-         assertEquals(leaf.getReference(), "default");
-         assertEquals(leaf.getAttribute("attributeC").getValue(), "c");
-         assertEquals(leaf.getAttribute("attributeC").getPrefix(), "b");
-         assertEquals(leaf.getAttribute("attributeC").getReference(), "B");
+         AssertEquals(leaf.getReference(), "default");
+         AssertEquals(leaf.getAttribute("attributeC").getValue(), "c");
+         AssertEquals(leaf.getAttribute("attributeC").getPrefix(), "b");
+         AssertEquals(leaf.getAttribute("attributeC").getReference(), "B");
          InputNode entry = root.getNext();
-         assertEquals(entry.getReference(), "A");
-         assertEquals(entry.getAttribute("attributeD").getValue(), "valueD");
-         assertEquals(entry.getAttribute("attributeD").getPrefix(), "b");
-         assertEquals(entry.getAttribute("attributeD").getReference(), "B");
+         AssertEquals(entry.getReference(), "A");
+         AssertEquals(entry.getAttribute("attributeD").getValue(), "valueD");
+         AssertEquals(entry.getAttribute("attributeD").getPrefix(), "b");
+         AssertEquals(entry.getAttribute("attributeD").getReference(), "B");
       }
    }
 }

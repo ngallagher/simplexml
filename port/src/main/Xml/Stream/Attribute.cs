@@ -100,6 +100,6 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this returns true if the attribute is reserved
       /// </returns>
-      public bool IsReserved();
+      bool IsReserved();
    }
 }
