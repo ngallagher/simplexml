@@ -41,7 +41,7 @@ namespace SimpleFramework.Xml.Core {
       /// <returns>
       /// this returns true if no XML annotations were found
       /// </returns>
-      public bool IsPrimitive();
+      bool IsPrimitive();
       /// <summary>
       /// This is used to create the object instance. It does this by
       /// either delegating to the default no argument constructor or by

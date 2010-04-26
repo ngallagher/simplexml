@@ -59,9 +59,9 @@ namespace SimpleFramework.Xml.Core {
            persister.write(parent, writer);
            String text = writer.toString();
            System.out.println(text);
-           assertEquals(text.indexOf("Tom"), -1);
-           assertEquals(text.indexOf("Dick"), -1);
-           assertEquals(text.indexOf("Harry"), -1);
+           AssertEquals(text.indexOf("Tom"), -1);
+           AssertEquals(text.indexOf("Dick"), -1);
+           AssertEquals(text.indexOf("Harry"), -1);
            validate(persister, parent);
        }
    }

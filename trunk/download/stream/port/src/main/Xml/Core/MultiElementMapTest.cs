@@ -96,9 +96,9 @@ namespace SimpleFramework.Xml.Core {
       public void TestProperties() {
          Persister persister = new Persister();
          Properties properties = persister.read(Properties.class, SOURCE);
-         assertEquals(true, properties.Get("bool-value"));
-         assertEquals("hello world", properties.Get("string-value"));
-         assertEquals(42, properties.Get("int-value"));
+         AssertEquals(true, properties.Get("bool-value"));
+         AssertEquals("hello world", properties.Get("string-value"));
+         AssertEquals(42, properties.Get("int-value"));
          validate(persister, properties);
       }
    }

@@ -35,12 +35,12 @@ namespace SimpleFramework.Xml.Core {
       public void TestArrayElement() {
          Persister persister = new Persister();
          NumberArray array = persister.read(NumberArray.class, SOURCE);
-         assertEquals(array.array.length, 3);
-         assertEquals(array.array[0], Number.ONE);
-         assertEquals(array.array[1], Number.TWO);
-         assertEquals(array.array[2], Number.FOUR);
-         assertEquals(array.Length, array.size);
-         assertEquals(array.array.length, array.size);
+         AssertEquals(array.array.length, 3);
+         AssertEquals(array.array[0], Number.ONE);
+         AssertEquals(array.array[1], Number.TWO);
+         AssertEquals(array.array[2], Number.FOUR);
+         AssertEquals(array.Length, array.size);
+         AssertEquals(array.array.length, array.size);
          validate(persister, array);
       }
    }

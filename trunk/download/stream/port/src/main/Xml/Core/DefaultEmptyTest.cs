@@ -33,11 +33,11 @@ namespace SimpleFramework.Xml.Core {
       public void TestDefaults() {
          Persister persister = new Persister();
          DefaultExample example = persister.read(DefaultExample.class, SOURCE);
-         assertEquals(example.name, "test");
-         assertEquals(example.text, "some text");
-         assertNotNull(example.stringList);
-         assertNotNull(example.stringMap);
-         assertNotNull(example.stringArray);
+         AssertEquals(example.name, "test");
+         AssertEquals(example.text, "some text");
+         AssertNotNull(example.stringList);
+         AssertNotNull(example.stringMap);
+         AssertNotNull(example.stringArray);
          persister.write(example, System.out);
          validate(persister, example);
          persister.write(new DefaultExample("name", "example text"), System.out);

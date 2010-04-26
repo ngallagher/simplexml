@@ -202,10 +202,10 @@ namespace SimpleFramework.Xml.Core {
          persister.Write(shop, System.out);
          String text = writer.toString();
          PetShop newShop = persister.Read(PetShop.class, text);
-         assertEquals("Lassie", newShop.GetPet("Lassie").Name);
-         assertEquals(10, newShop.GetPet("Lassie").Age);
-         assertEquals("Kitty", newShop.GetPet("Kitty").Name);
-         assertEquals(2, newShop.GetPet("Kitty").Age);
+         AssertEquals("Lassie", newShop.GetPet("Lassie").Name);
+         AssertEquals(10, newShop.GetPet("Lassie").Age);
+         AssertEquals("Kitty", newShop.GetPet("Kitty").Name);
+         AssertEquals(2, newShop.GetPet("Kitty").Age);
          assertXpathExists("/petShop/pets/pet[@name='Lassie']", text);
          assertXpathExists("/petShop/pets/pet[@age='10']", text);
          assertXpathExists("/petShop/pets/pet/name", text);

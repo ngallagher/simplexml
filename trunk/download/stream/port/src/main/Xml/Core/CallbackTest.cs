@@ -130,10 +130,10 @@ namespace SimpleFramework.Xml.Core {
          persister = new Persister();
       }
       public void TestReadCallbacks() {
-         Entry entry = persister.read(Entry.class, SOURCE);
-         assertEquals("complete", entry.Value);
-         assertEquals(1234, entry.Number);
-         assertEquals(true, entry.Flag);
+         Entry entry = persister.Read(Entry.class, SOURCE);
+         AssertEquals("complete", entry.Value);
+         AssertEquals(1234, entry.Number);
+         AssertEquals(true, entry.Flag);
          assertTrue(entry.IsValidated());
          assertTrue(entry.IsCommitted());
       }
@@ -141,17 +141,17 @@ namespace SimpleFramework.Xml.Core {
          Entry entry = new Entry();
          assertFalse(entry.IsCompleted());
          assertFalse(entry.IsPersisted());
-         persister.write(entry, System.out);
-         assertEquals("default", entry.Value);
-         assertEquals(9999, entry.Number);
+         persister.Write(entry, System.out);
+         AssertEquals("default", entry.Value);
+         AssertEquals(9999, entry.Number);
          assertTrue(entry.IsPersisted());
          assertTrue(entry.IsCompleted());
       }
       public void TestExtendedReadCallbacks() {
-         ExtendedEntry entry = persister.read(ExtendedEntry.class, SOURCE);
-         assertEquals("complete", entry.Value);
-         assertEquals(1234, entry.Number);
-         assertEquals(true, entry.Flag);
+         ExtendedEntry entry = persister.Read(ExtendedEntry.class, SOURCE);
+         AssertEquals("complete", entry.Value);
+         AssertEquals(1234, entry.Number);
+         AssertEquals(true, entry.Flag);
          assertFalse(entry.IsValidated());
          assertFalse(entry.IsCommitted());
          assertTrue(entry.IsExtendedValidated());
@@ -163,19 +163,19 @@ namespace SimpleFramework.Xml.Core {
          assertFalse(entry.IsPersisted());
          assertFalse(entry.IsExtendedCompleted());
          assertFalse(entry.IsExtendedPersisted());
-         persister.write(entry, System.out);
-         assertEquals("default", entry.Value);
-         assertEquals(9999, entry.Number);
+         persister.Write(entry, System.out);
+         AssertEquals("default", entry.Value);
+         AssertEquals(9999, entry.Number);
          assertFalse(entry.IsPersisted());
          assertFalse(entry.IsCompleted());
          assertTrue(entry.IsExtendedCompleted());
          assertTrue(entry.IsExtendedPersisted());
       }
       public void TestOverrideReadCallbacks() {
-         OverrideEntry entry = persister.read(OverrideEntry.class, SOURCE);
-         assertEquals("complete", entry.Value);
-         assertEquals(1234, entry.Number);
-         assertEquals(true, entry.Flag);
+         OverrideEntry entry = persister.Read(OverrideEntry.class, SOURCE);
+         AssertEquals("complete", entry.Value);
+         AssertEquals(1234, entry.Number);
+         AssertEquals(true, entry.Flag);
          assertFalse(entry.IsValidated());
          assertTrue(entry.IsOverrideValidated());
       }

@@ -65,9 +65,9 @@ namespace SimpleFramework.Xml.Core {
       public void TestCase() {
          Persister persister = new Persister();
          CaseExample example = persister.read(CaseExample.class, SOURCE);
-         assertEquals(example.version, 1.0f);
-         assertEquals(example.name, "example");
-         assertEquals(example.URL, "http://domain.com/");
+         AssertEquals(example.version, 1.0f);
+         AssertEquals(example.name, "example");
+         AssertEquals(example.URL, "http://domain.com/");
          validate(example, persister);
       }
    }

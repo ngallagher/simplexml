@@ -219,7 +219,7 @@ namespace SimpleFramework.Xml.Core {
          systemSerializer.Write(entry, System.out);
          StringWriter out = new StringWriter();
          systemSerializer.Write(entry, out);
-         validate(entry, systemSerializer);
+         Validate(entry, systemSerializer);
          entry = (RootEntry)systemSerializer.Read(RootEntry.class, out.toString());
          systemSerializer.Write(entry, System.out);
       }
@@ -234,7 +234,7 @@ namespace SimpleFramework.Xml.Core {
          systemSerializer.Write(entry, System.out);
          StringWriter out = new StringWriter();
          systemSerializer.Write(entry, out);
-         validate(entry, systemSerializer);
+         Validate(entry, systemSerializer);
          entry = (RootEntry)systemSerializer.Read(RootEntry.class, out.toString());
          systemSerializer.Write(entry, System.out);
       }
@@ -250,7 +250,7 @@ namespace SimpleFramework.Xml.Core {
          systemSerializer.Write(entry, System.out);
          StringWriter out = new StringWriter();
          systemSerializer.Write(entry, out);
-         validate(entry, systemSerializer);
+         Validate(entry, systemSerializer);
          entry = (RootEntry)systemSerializer.Read(RootEntry.class, out.toString());
          systemSerializer.Write(entry, System.out);
       }
@@ -267,7 +267,7 @@ namespace SimpleFramework.Xml.Core {
          systemSerializer.Write(entry, System.out);
          StringWriter out = new StringWriter();
          systemSerializer.Write(entry, out);
-         validate(entry, systemSerializer);
+         Validate(entry, systemSerializer);
          entry = (RootEntry)systemSerializer.Read(RootEntry.class, out.toString());
          systemSerializer.Write(entry, System.out);
       }

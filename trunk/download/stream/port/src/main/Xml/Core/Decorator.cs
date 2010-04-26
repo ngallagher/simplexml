@@ -42,7 +42,7 @@ namespace SimpleFramework.Xml.Core {
       /// <param name="node">
       /// this is the node that is to be decorated by this
       /// </param>
-      public void Decorate(OutputNode node);
+      void Decorate(OutputNode node);
       /// <summary>
       /// This method is used to decorate the provided node. This node
       /// can be either an XML element or an attribute. Decorations that
@@ -57,6 +57,6 @@ namespace SimpleFramework.Xml.Core {
       /// <param name="secondary">
       /// this is a secondary decorator to be applied
       /// </param>
-      public void Decorate(OutputNode node, Decorator secondary);
+      void Decorate(OutputNode node, Decorator secondary);
    }
 }

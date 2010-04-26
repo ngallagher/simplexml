@@ -1,5 +1,6 @@
 #region Using directives
 using SimpleFramework.Xml.Core;
+using SimpleFramework.Xml.Transform;
 using SimpleFramework.Xml;
 using System.Collections.Generic;
 using System;
@@ -80,49 +81,49 @@ namespace SimpleFramework.Xml.Core {
          persister = new Persister();
       }
       public void TestText() {
-         TextList list = persister.read(TextList.class, TEXT_LIST);
-         assertEquals(list.array[0].version, Version.ONE);
-         assertEquals(list.array[0].name, "a");
-         assertEquals(list.array[0].text, "Example 1");
-         assertEquals(list.array[1].version, Version.TWO);
-         assertEquals(list.array[1].name, "b");
-         assertEquals(list.array[1].text, "Example 2");
-         assertEquals(list.array[2].version, Version.THREE);
-         assertEquals(list.array[2].name, "c");
-         assertEquals(list.array[2].text, "Example 3");
+         TextList list = persister.Read(TextList.class, TEXT_LIST);
+         AssertEquals(list.array[0].version, Version.ONE);
+         AssertEquals(list.array[0].name, "a");
+         AssertEquals(list.array[0].text, "Example 1");
+         AssertEquals(list.array[1].version, Version.TWO);
+         AssertEquals(list.array[1].name, "b");
+         AssertEquals(list.array[1].text, "Example 2");
+         AssertEquals(list.array[2].version, Version.THREE);
+         AssertEquals(list.array[2].name, "c");
+         AssertEquals(list.array[2].text, "Example 3");
          StringWriter buffer = new StringWriter();
-         persister.write(list, buffer);
-         validate(list, persister);
-         list = persister.read(TextList.class, buffer.toString());
-         assertEquals(list.array[0].version, Version.ONE);
-         assertEquals(list.array[0].name, "a");
-         assertEquals(list.array[0].text, "Example 1");
-         assertEquals(list.array[1].version, Version.TWO);
-         assertEquals(list.array[1].name, "b");
-         assertEquals(list.array[1].text, "Example 2");
-         assertEquals(list.array[2].version, Version.THREE);
-         assertEquals(list.array[2].name, "c");
-         assertEquals(list.array[2].text, "Example 3");
-         validate(list, persister);
+         persister.Write(list, buffer);
+         Validate(list, persister);
+         list = persister.Read(TextList.class, buffer.toString());
+         AssertEquals(list.array[0].version, Version.ONE);
+         AssertEquals(list.array[0].name, "a");
+         AssertEquals(list.array[0].text, "Example 1");
+         AssertEquals(list.array[1].version, Version.TWO);
+         AssertEquals(list.array[1].name, "b");
+         AssertEquals(list.array[1].text, "Example 2");
+         AssertEquals(list.array[2].version, Version.THREE);
+         AssertEquals(list.array[2].name, "c");
+         AssertEquals(list.array[2].text, "Example 3");
+         Validate(list, persister);
       }
       public void TestData() {
-         TextEntry entry = persister.read(TextEntry.class, DATA_TEXT);
-         assertEquals(entry.version, Version.ONE);
-         assertEquals(entry.name, "a");
+         TextEntry entry = persister.Read(TextEntry.class, DATA_TEXT);
+         AssertEquals(entry.version, Version.ONE);
+         AssertEquals(entry.name, "a");
          assertTrue(entry.text != null);
          StringWriter buffer = new StringWriter();
-         persister.write(entry, buffer);
-         validate(entry, persister);
-         entry = persister.read(TextEntry.class, buffer.toString());
-         assertEquals(entry.version, Version.ONE);
-         assertEquals(entry.name, "a");
+         persister.Write(entry, buffer);
+         Validate(entry, persister);
+         entry = persister.Read(TextEntry.class, buffer.toString());
+         AssertEquals(entry.version, Version.ONE);
+         AssertEquals(entry.name, "a");
          assertTrue(entry.text != null);
-         validate(entry, persister);
+         Validate(entry, persister);
       }
       public void TestDuplicate() {
          bool success = false;
          try {
-            persister.read(DuplicateTextEntry.class, DUPLICATE_TEXT);
+            persister.Read(DuplicateTextEntry.class, DUPLICATE_TEXT);
          } catch(TextException e) {
             success = true;
          }
@@ -131,7 +132,7 @@ namespace SimpleFramework.Xml.Core {
       public void TestIllegalElement() {
          bool success = false;
          try {
-            persister.read(IllegalElementTextEntry.class, ILLEGAL_ELEMENT);
+            persister.Read(IllegalElementTextEntry.class, ILLEGAL_ELEMENT);
          } catch(TextException e) {
             success = true;
          }
@@ -140,30 +141,30 @@ namespace SimpleFramework.Xml.Core {
       public void TestEmpty() {
          bool success = false;
          try {
-            persister.read(TextEntry.class, EMPTY_TEXT);
+            persister.Read(TextEntry.class, EMPTY_TEXT);
          } catch(ValueRequiredException e) {
             success = true;
          }
          assertTrue(success);
       }
       public void TestOptional() {
-         OptionalTextEntry entry = persister.read(OptionalTextEntry.class, EMPTY_TEXT);
-         assertEquals(entry.version, Version.ONE);
-         assertEquals(entry.name, "a");
+         OptionalTextEntry entry = persister.Read(OptionalTextEntry.class, EMPTY_TEXT);
+         AssertEquals(entry.version, Version.ONE);
+         AssertEquals(entry.name, "a");
          assertTrue(entry.text == null);
          StringWriter buffer = new StringWriter();
-         persister.write(entry, buffer);
-         validate(entry, persister);
-         entry = persister.read(OptionalTextEntry.class, buffer.toString());
-         assertEquals(entry.version, Version.ONE);
-         assertEquals(entry.name, "a");
+         persister.Write(entry, buffer);
+         Validate(entry, persister);
+         entry = persister.Read(OptionalTextEntry.class, buffer.toString());
+         AssertEquals(entry.version, Version.ONE);
+         AssertEquals(entry.name, "a");
          assertTrue(entry.text == null);
-         validate(entry, persister);
+         Validate(entry, persister);
       }
       public void TestNonPrimitive() {
          bool success = false;
          try {
-            persister.read(NonPrimitiveTextEntry.class, DATA_TEXT);
+            persister.Read(NonPrimitiveTextEntry.class, DATA_TEXT);
          } catch(TextException e) {
             e.printStackTrace();
             success = true;

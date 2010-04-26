@@ -68,32 +68,32 @@ namespace SimpleFramework.Xml.Core {
    	   serializer = new Persister();
    	}
       public void TestComposite() {
-         Entry entry = serializer.read(Entry.class, new StringReader(ENTRY));
-         assertEquals(entry.id, 12);
-         assertEquals(entry.text, "entry text");
+         Entry entry = serializer.Read(Entry.class, new StringReader(ENTRY));
+         AssertEquals(entry.id, 12);
+         AssertEquals(entry.text, "entry text");
       }
       public void TestInterface() {
-         EntryInterface entry = serializer.read(EntryInterface.class, new StringReader(INTERFACE));
-         assertEquals(entry.Id, 12);
-         assertEquals(entry.Text, "entry text");
+         EntryInterface entry = serializer.Read(EntryInterface.class, new StringReader(INTERFACE));
+         AssertEquals(entry.Id, 12);
+         AssertEquals(entry.Text, "entry text");
       }
       public void TestList() {
-         EntryList list = serializer.read(EntryList.class, new StringReader(LIST));
-         assertEquals(list.name, "example");
+         EntryList list = serializer.Read(EntryList.class, new StringReader(LIST));
+         AssertEquals(list.name, "example");
          assertTrue(list.list instanceof Vector);
          Entry entry = list.GetEntry(0);
-         assertEquals(entry.id, 12);
-         assertEquals(entry.text, "some example text");
+         AssertEquals(entry.id, 12);
+         AssertEquals(entry.text, "some example text");
          entry = list.GetEntry(1);
-         assertEquals(entry.id, 34);
-         assertEquals(entry.text, "other example");
+         AssertEquals(entry.id, 34);
+         AssertEquals(entry.text, "other example");
          entry = list.GetEntry(2);
-         assertEquals(entry.id, 56);
-         assertEquals(entry.text, "readonly example");
+         AssertEquals(entry.id, 56);
+         AssertEquals(entry.text, "readonly example");
       }
       public void TestCopy() {
-         EntryList list = serializer.read(EntryList.class, new StringReader(LIST));
-         assertEquals(list.name, "example");
+         EntryList list = serializer.Read(EntryList.class, new StringReader(LIST));
+         AssertEquals(list.name, "example");
          assertTrue(list.list instanceof Vector);
          Entry entry = new Entry();
          entry.id = 1234;
@@ -102,16 +102,16 @@ namespace SimpleFramework.Xml.Core {
          list.name = "change";
          list.list.add(entry);
          StringWriter writer = new StringWriter();
-         serializer.write(list, writer);
-         serializer.write(list, System.out);
+         serializer.Write(list, writer);
+         serializer.Write(list, System.out);
          assertTrue(writer.toString().indexOf("java.util.ArrayList") > 0);
          assertTrue(writer.toString().indexOf("change") > 0);
-         list = serializer.read(EntryList.class, new StringReader(writer.toString()));
-         assertEquals(list.name, "change");
+         list = serializer.Read(EntryList.class, new StringReader(writer.toString()));
+         AssertEquals(list.name, "change");
          assertTrue(list.list instanceof ArrayList);
          entry = list.GetEntry(0);
-         assertEquals(entry.id, 1234);
-         assertEquals(entry.text, "replacement");
+         AssertEquals(entry.id, 1234);
+         AssertEquals(entry.text, "replacement");
       }
    }
 }

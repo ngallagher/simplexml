@@ -26,7 +26,7 @@ namespace SimpleFramework.Xml.Core {
          for(Contact contact : scanner) {
             list.add(contact.getType());
          }
-         assertEquals(scanner.size(), 3);
+         AssertEquals(scanner.size(), 3);
          assertTrue(list.contains(Collection.class));
          assertTrue(list.contains(String.class));
          assertTrue(list.contains(int.class));

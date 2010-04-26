@@ -87,8 +87,8 @@ namespace SimpleFramework.Xml.Core {
       /// </param>
       public CompositeInlineMap(Context context, Entry entry, Type type) {
          this.factory = new MapFactory(context, type);
-         this.value = entry.getValue(context);
-         this.key = entry.getKey(context);
+         this.value = entry.GetValue(context);
+         this.key = entry.GetKey(context);
          this.style = context.getStyle();
          this.entry = entry;
       }
@@ -157,7 +157,7 @@ namespace SimpleFramework.Xml.Core {
       /// </returns>
       public Object Read(InputNode node, Dictionary map) {
          InputNode from = node.getParent();
-         String name = node.Name;
+         String name = node.getName();
          while(node != null) {
             Object index = key.Read(node);
             Object item = value.Read(node);
@@ -185,7 +185,7 @@ namespace SimpleFramework.Xml.Core {
       /// </returns>
       public bool Validate(InputNode node) {
          InputNode from = node.getParent();
-         String name = node.Name;
+         String name = node.getName();
          while(node != null) {
             if(!key.Validate(node)) {
                return false;
@@ -238,7 +238,7 @@ namespace SimpleFramework.Xml.Core {
       /// this is the mode that has been inherited
       /// </param>
       public void Write(OutputNode node, Dictionary map, Mode mode) {
-         String root = entry.getEntry();
+         String root = entry.Entry;
          String name = style.GetElement(root);
          for(Object index : map.keySet()) {
             OutputNode next = node.getChild(name);

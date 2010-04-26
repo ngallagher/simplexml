@@ -79,10 +79,10 @@ namespace SimpleFramework.Xml.Core {
          persister = new Persister();
       }
       public void TestReadCallbacks() {
-         Entry entry = persister.read(Entry.class, SOURCE);
-         assertEquals("complete", entry.Value);
-         assertEquals(1234, entry.Number);
-         assertEquals(true, entry.Flag);
+         Entry entry = persister.Read(Entry.class, SOURCE);
+         AssertEquals("complete", entry.Value);
+         AssertEquals(1234, entry.Number);
+         AssertEquals(true, entry.Flag);
          assertTrue(entry.IsValidated());
          assertTrue(entry.IsCommitted());
       }
@@ -90,9 +90,9 @@ namespace SimpleFramework.Xml.Core {
          Entry entry = new Entry();
          assertFalse(entry.IsCompleted());
          assertFalse(entry.IsPersisted());
-         persister.write(entry, System.out);
-         assertEquals("default", entry.Value);
-         assertEquals(9999, entry.Number);
+         persister.Write(entry, System.out);
+         AssertEquals("default", entry.Value);
+         AssertEquals(9999, entry.Number);
          assertTrue(entry.IsPersisted());
          assertTrue(entry.IsCompleted());
       }

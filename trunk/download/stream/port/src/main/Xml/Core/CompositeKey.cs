@@ -92,11 +92,11 @@ namespace SimpleFramework.Xml.Core {
       public Object Read(InputNode node) {
          Position line = node.getPosition();
          Class expect = type.Type;
-         String name = entry.getKey();
+         String name = entry.Key;
          if(name == null) {
             name = context.GetName(expect);
          }
-         if(entry.isAttribute()) {
+         if(entry.IsAttribute()) {
             throw new ElementException("Can not have %s as an attribute at %s", expect, line);
          }
          return Read(node, name);
@@ -147,7 +147,7 @@ namespace SimpleFramework.Xml.Core {
          if(node == null) {
             return null;
          }
-         if(node.isEmpty()) {
+         if(node.IsEmpty()) {
             return null;
          }
          return root.Read(node, expect);
@@ -167,11 +167,11 @@ namespace SimpleFramework.Xml.Core {
       public bool Validate(InputNode node) {
          Position line = node.getPosition();
          Class expect = type.Type;
-         String name = entry.getKey();
+         String name = entry.Key;
          if(name == null) {
             name = context.GetName(expect);
          }
-         if(entry.isAttribute()) {
+         if(entry.IsAttribute()) {
             throw new ElementException("Can not have %s as an attribute at %s", expect, line);
          }
          return Validate(node, name);
@@ -198,7 +198,7 @@ namespace SimpleFramework.Xml.Core {
          if(next == null) {
             return true;
          }
-         if(next.isEmpty()) {
+         if(next.IsEmpty()) {
             return true;
          }
          return root.Validate(next, expect);
@@ -217,8 +217,8 @@ namespace SimpleFramework.Xml.Core {
       /// </param>
       public void Write(OutputNode node, Object item) {
          Class expect = type.Type;
-         String key = entry.getKey();
-         if(entry.isAttribute()) {
+         String key = entry.Key;
+         if(entry.IsAttribute()) {
             throw new ElementException("Can not have %s as an attribute", expect);
          }
          if(key == null) {

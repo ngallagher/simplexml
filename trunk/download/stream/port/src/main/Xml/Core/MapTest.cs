@@ -389,73 +389,73 @@ namespace SimpleFramework.Xml.Core {
       public void TestEntryMap() {
          Serializer serializer = new Persister();
          EntryMap example = serializer.read(EntryMap.class, ENTRY_MAP);
-         assertEquals("example 1", example.GetValue("a"));
-         assertEquals("example 2", example.GetValue("b"));
-         assertEquals("example 3", example.GetValue("c"));
-         assertEquals("example 4", example.GetValue("d"));
+         AssertEquals("example 1", example.GetValue("a"));
+         AssertEquals("example 2", example.GetValue("b"));
+         AssertEquals("example 3", example.GetValue("c"));
+         AssertEquals("example 4", example.GetValue("d"));
          validate(example, serializer);
       }
       public void TestStringMap() {
          Serializer serializer = new Persister();
          StringMap example = serializer.read(StringMap.class, STRING_MAP);
-         assertEquals("example 1", example.GetValue("a"));
-         assertEquals("example 2", example.GetValue("b"));
-         assertEquals("example 3", example.GetValue("c"));
-         assertEquals("example 4", example.GetValue("d"));
+         AssertEquals("example 1", example.GetValue("a"));
+         AssertEquals("example 2", example.GetValue("b"));
+         AssertEquals("example 3", example.GetValue("c"));
+         AssertEquals("example 4", example.GetValue("d"));
          validate(example, serializer);
       }
       public void TestComplexMap() {
          Serializer serializer = new Persister();
          ComplexMap example = serializer.read(ComplexMap.class, COMPLEX_MAP);
-         assertEquals("example 1", example.GetValue(new CompositeKey("name 1", "address 1")));
-         assertEquals("example 2", example.GetValue(new CompositeKey("name 2", "address 2")));
-         assertEquals("example 3", example.GetValue(new CompositeKey("name 3", "address 3")));
-         assertEquals("example 4", example.GetValue(new CompositeKey("name 4", "address 4")));
+         AssertEquals("example 1", example.GetValue(new CompositeKey("name 1", "address 1")));
+         AssertEquals("example 2", example.GetValue(new CompositeKey("name 2", "address 2")));
+         AssertEquals("example 3", example.GetValue(new CompositeKey("name 3", "address 3")));
+         AssertEquals("example 4", example.GetValue(new CompositeKey("name 4", "address 4")));
          validate(example, serializer);
       }
       public void TestPrimitiveMap() {
          Serializer serializer = new Persister();
          PrimitiveMap example = serializer.read(PrimitiveMap.class, PRIMITIVE_MAP);
-         assertEquals(new BigDecimal("1.0"), example.GetValue("one"));
-         assertEquals(new BigDecimal("2.0"), example.GetValue("two"));
-         assertEquals(new BigDecimal("3.0"), example.GetValue("three"));
-         assertEquals(new BigDecimal("4.0"), example.GetValue("four"));
+         AssertEquals(new BigDecimal("1.0"), example.GetValue("one"));
+         AssertEquals(new BigDecimal("2.0"), example.GetValue("two"));
+         AssertEquals(new BigDecimal("3.0"), example.GetValue("three"));
+         AssertEquals(new BigDecimal("4.0"), example.GetValue("four"));
          validate(example, serializer);
       }
       public void TestPrimitiveValueOverrideMap() {
          Serializer serializer = new Persister();
          PrimitiveValueOverrideMap example = serializer.read(PrimitiveValueOverrideMap.class, PRIMITIVE_VALUE_OVERRIDE_MAP);
-         assertEquals(new BigDecimal("1.0"), example.GetValue("one"));
-         assertEquals(new BigDecimal("2.0"), example.GetValue("two"));
-         assertEquals(new BigDecimal("3.0"), example.GetValue("three"));
-         assertEquals(new BigDecimal("4.0"), example.GetValue("four"));
+         AssertEquals(new BigDecimal("1.0"), example.GetValue("one"));
+         AssertEquals(new BigDecimal("2.0"), example.GetValue("two"));
+         AssertEquals(new BigDecimal("3.0"), example.GetValue("three"));
+         AssertEquals(new BigDecimal("4.0"), example.GetValue("four"));
          validate(example, serializer);
       }
       public void TestPrimitiveValueKeyOverrideMap() {
          Serializer serializer = new Persister();
          PrimitiveValueKeyOverrideMap example = serializer.read(PrimitiveValueKeyOverrideMap.class, PRIMITIVE_VALUE_KEY_OVERRIDE_MAP);
-         assertEquals(new BigDecimal("1.0"), example.GetValue("one"));
-         assertEquals(new BigDecimal("2.0"), example.GetValue("two"));
-         assertEquals(new BigDecimal("3.0"), example.GetValue("three"));
-         assertEquals(new BigDecimal("4.0"), example.GetValue("four"));
+         AssertEquals(new BigDecimal("1.0"), example.GetValue("one"));
+         AssertEquals(new BigDecimal("2.0"), example.GetValue("two"));
+         AssertEquals(new BigDecimal("3.0"), example.GetValue("three"));
+         AssertEquals(new BigDecimal("4.0"), example.GetValue("four"));
          validate(example, serializer);
       }
       public void TestComplexValueKeyOverrideMap() {
          Serializer serializer = new Persister();
          ComplexValueKeyOverrideMap example = serializer.read(ComplexValueKeyOverrideMap.class, COMPLEX_VALUE_KEY_OVERRIDE_MAP);
-         assertEquals("example 1", example.GetValue(new CompositeKey("name 1", "address 1")));
-         assertEquals("example 2", example.GetValue(new CompositeKey("name 2", "address 2")));
-         assertEquals("example 3", example.GetValue(new CompositeKey("name 3", "address 3")));
-         assertEquals("example 4", example.GetValue(new CompositeKey("name 4", "address 4")));
+         AssertEquals("example 1", example.GetValue(new CompositeKey("name 1", "address 1")));
+         AssertEquals("example 2", example.GetValue(new CompositeKey("name 2", "address 2")));
+         AssertEquals("example 3", example.GetValue(new CompositeKey("name 3", "address 3")));
+         AssertEquals("example 4", example.GetValue(new CompositeKey("name 4", "address 4")));
          validate(example, serializer);
       }
       public void TestPrimitiveInlineMap() {
          Serializer serializer = new Persister();
          PrimitiveInlineMap example = serializer.read(PrimitiveInlineMap.class, PRIMITIVE_INLINE_MAP);
-         assertEquals(new BigDecimal("1.0"), example.GetValue("one"));
-         assertEquals(new BigDecimal("2.0"), example.GetValue("two"));
-         assertEquals(new BigDecimal("3.0"), example.GetValue("three"));
-         assertEquals(new BigDecimal("4.0"), example.GetValue("four"));
+         AssertEquals(new BigDecimal("1.0"), example.GetValue("one"));
+         AssertEquals(new BigDecimal("2.0"), example.GetValue("two"));
+         AssertEquals(new BigDecimal("3.0"), example.GetValue("three"));
+         AssertEquals(new BigDecimal("4.0"), example.GetValue("four"));
          validate(example, serializer);
       }
       public void TestNullValue() {
@@ -468,10 +468,10 @@ namespace SimpleFramework.Xml.Core {
          StringWriter out = new StringWriter();
          serializer.write(primitiveMap, out);
          primitiveMap = serializer.read(PrimitiveMap.class, out.toString());
-         assertEquals(primitiveMap.map.get(null), new BigDecimal(4));
-         assertEquals(primitiveMap.map.get("c"), null);
-         assertEquals(primitiveMap.map.get("a"), new BigDecimal(1));
-         assertEquals(primitiveMap.map.get("b"), new BigDecimal(2));
+         AssertEquals(primitiveMap.map.get(null), new BigDecimal(4));
+         AssertEquals(primitiveMap.map.get("c"), null);
+         AssertEquals(primitiveMap.map.get("a"), new BigDecimal(1));
+         AssertEquals(primitiveMap.map.get("b"), new BigDecimal(2));
          validate(primitiveMap, serializer);
          ComplexMap complexMap = new ComplexMap();
          complexMap.map.put(new CompositeKey("name.1", "address.1"), new MapEntry("1", "1"));

@@ -27,16 +27,16 @@ namespace SimpleFramework.Xml.Core {
    	   serializer = new Persister(new Format(4, "<?xml version='1.0' encoding='UTF-8' standalone='yes'?>"));
    	}
       public void TestProlog() {
-         PrologExample example = serializer.read(PrologExample.class, SOURCE);
-         assertEquals(example.id, 12);
-         assertEquals(example.text, "entry text");
-         assertEquals(example.name, "some name");
+         PrologExample example = serializer.Read(PrologExample.class, SOURCE);
+         AssertEquals(example.id, 12);
+         AssertEquals(example.text, "entry text");
+         AssertEquals(example.name, "some name");
          assertTrue(example.flag);
          StringWriter buffer = new StringWriter();
-         serializer.write(example, buffer);
+         serializer.Write(example, buffer);
          String text = buffer.toString();
          assertTrue(text.startsWith("<?xml"));
-         validate(example, serializer);
+         Validate(example, serializer);
       }
    }
 }

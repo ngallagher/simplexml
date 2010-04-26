@@ -37,19 +37,19 @@ namespace SimpleFramework.Xml.Core {
           Serializer s = new Persister(resolver);
           StringWriter w = new StringWriter();
           SimpleBug1 bug1 = new SimpleBug1();
-          assertEquals(bug1.test1.data.get("key1"), "value1");
-          assertEquals(bug1.test1.data.get("key2"), "value1");
-          assertEquals(bug1.test1.data.get("key3"), "");
-          assertEquals(bug1.test1.data.get(""), "");
+          AssertEquals(bug1.test1.data.get("key1"), "value1");
+          AssertEquals(bug1.test1.data.get("key2"), "value1");
+          AssertEquals(bug1.test1.data.get("key3"), "");
+          AssertEquals(bug1.test1.data.get(""), "");
           s.write(bug1, w);
           System.err.println(w.toString());
           SimpleBug1 bug2 = s.read(SimpleBug1.class, w.toString());
-          assertEquals(bug1.test1.data.get("key1"), bug2.test1.data.get("key1"));
-          assertEquals(bug1.test1.data.get("key2"), bug2.test1.data.get("key2"));
-          assertEquals(bug2.test1.data.get("key1"), "value1");
-          assertEquals(bug2.test1.data.get("key2"), "value1");
-          assertNull(bug2.test1.data.get("key3"));
-          assertNull(bug2.test1.data.get(null));
+          AssertEquals(bug1.test1.data.get("key1"), bug2.test1.data.get("key1"));
+          AssertEquals(bug1.test1.data.get("key2"), bug2.test1.data.get("key2"));
+          AssertEquals(bug2.test1.data.get("key1"), "value1");
+          AssertEquals(bug2.test1.data.get("key2"), "value1");
+          AssertNull(bug2.test1.data.get("key3"));
+          AssertNull(bug2.test1.data.get(null));
           validate(s, bug1);
       }
    }

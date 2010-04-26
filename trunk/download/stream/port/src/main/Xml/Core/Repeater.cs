@@ -49,6 +49,6 @@ namespace SimpleFramework.Xml.Core {
       /// <returns>
       /// a fully deserialized object will all its fields
       /// </returns>
-      public Object Read(InputNode node, Object value);
+      Object Read(InputNode node, Object value);
    }
 }

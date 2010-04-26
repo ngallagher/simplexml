@@ -55,7 +55,7 @@ namespace SimpleFramework.Xml.Core {
       /// <returns>
       /// a type which is used to instantiate the collection
       /// </returns>
-      @Override
+      [Override]
       public Object Instance {
          get {
             Class type = ComponentType;

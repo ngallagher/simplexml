@@ -56,7 +56,7 @@ namespace SimpleFramework.Xml.Core {
       /// <returns>
       /// an instance of the type this object represents
       /// </returns>
-      public Object SetInstance(Object value);
+      Object SetInstance(Object value);
       /// <summary>
       /// This is used to determine if the type is a reference type.
       /// A reference type is a type that does not require any XML
@@ -66,7 +66,7 @@ namespace SimpleFramework.Xml.Core {
       /// <returns>
       /// this returns true if the object is a reference
       /// </returns>
-      public bool IsReference();
+      bool IsReference();
       /// <summary>
       /// This is the type of the object instance that will be created
       /// by the <c>getInstance</c> method. This allows the

@@ -43,7 +43,7 @@ namespace SimpleFramework.Xml.Core {
       /// <returns>
       /// a fully deserialized object will all its fields
       /// </returns>
-      public Object Read(InputNode node);
+      Object Read(InputNode node);
       /// <summary>
       /// The <c>read</c> method reads an object to a specific type
       /// from the provided node. If the node provided is an attribute
@@ -59,7 +59,7 @@ namespace SimpleFramework.Xml.Core {
       /// <returns>
       /// a fully deserialized object will all its fields
       /// </returns>
-      public Object Read(InputNode node, Object value);
+      Object Read(InputNode node, Object value);
       /// <summary>
       /// The <c>validate</c> method is used to validate the class
       /// XML schema against an input source. This will traverse the class
@@ -72,7 +72,7 @@ namespace SimpleFramework.Xml.Core {
       /// <returns>
       /// true if the document matches the class XML schema
       /// </returns>
-      public bool Validate(InputNode node);
+      bool Validate(InputNode node);
       /// <summary>
       /// The <c>write</c> method writes the fields from the given
       /// object to the XML element. After this has finished the element
@@ -84,6 +84,6 @@ namespace SimpleFramework.Xml.Core {
       /// <param name="node">
       /// this is the element that is to be populated
       /// </param>
-      public void Write(OutputNode node, Object object);
+      void Write(OutputNode node, Object object);
    }
 }

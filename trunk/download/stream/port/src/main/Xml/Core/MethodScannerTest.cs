@@ -116,7 +116,7 @@ namespace SimpleFramework.Xml.Core {
          for(Contact contact : scanner) {
             list.add(contact.getType());
          }
-         assertEquals(scanner.size(), 2);
+         AssertEquals(scanner.size(), 2);
          assertTrue(list.contains(String.class));
          assertTrue(list.contains(int.class));
       }
@@ -153,7 +153,7 @@ namespace SimpleFramework.Xml.Core {
          for(Contact contact : scanner) {
             list.add(contact.getType());
          }
-         assertEquals(scanner.size(), 3);
+         AssertEquals(scanner.size(), 3);
          assertTrue(list.contains(String.class));
          assertTrue(list.contains(int.class));
          assertTrue(list.contains(long.class));
@@ -164,7 +164,7 @@ namespace SimpleFramework.Xml.Core {
          for(Contact contact : scanner) {
             list.add(contact.getType());
          }
-         assertEquals(scanner.size(), 4);
+         AssertEquals(scanner.size(), 4);
          assertTrue(list.contains(String.class));
          assertTrue(list.contains(int.class));
          assertTrue(list.contains(long.class));

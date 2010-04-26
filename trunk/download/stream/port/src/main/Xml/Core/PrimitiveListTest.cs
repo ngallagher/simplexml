@@ -1,6 +1,7 @@
 #region Using directives
 using SimpleFramework.Xml.Strategy;
 using SimpleFramework.Xml.Stream;
+using SimpleFramework.Xml;
 using System.Collections.Generic;
 using System;
 #endregion
@@ -16,10 +17,10 @@ namespace SimpleFramework.Xml.Core {
          PrimitiveList primitive = new PrimitiveList(context, new ClassType(List.class), new ClassType(String.class), "entry");
          InputNode node = NodeBuilder.read(new StringReader(TWO));
          Object value = primitive.read(node);
-         assertEquals(value.getClass(), Vector.class);
+         AssertEquals(value.getClass(), Vector.class);
          Vector vector = (Vector) value;
-         assertEquals(vector.get(0), "one");
-         assertEquals(vector.get(1), "two");
+         AssertEquals(vector.get(0), "one");
+         AssertEquals(vector.get(1), "two");
          InputNode newNode = NodeBuilder.read(new StringReader(TWO));
          assertTrue(primitive.validate(newNode));
       }

@@ -60,7 +60,7 @@ namespace SimpleFramework.Xml.Core {
       /// <returns>
       /// this returns the string to use for default values
       /// </returns>
-      public Object GetEmpty(Context context);
+      Object GetEmpty(Context context);
       /// <summary>
       /// This method returns a <c>Converter</c> which can be used to
       /// convert an XML node into an object value and vice versa. The
@@ -73,7 +73,7 @@ namespace SimpleFramework.Xml.Core {
       /// <returns>
       /// this returns an object that is used for conversion
       /// </returns>
-      public Converter GetConverter(Context context);
+      Converter GetConverter(Context context);
       /// <summary>
       /// This is used to acquire the name of the element or attribute
       /// that is used by the class schema. The name is determined by
@@ -87,7 +87,7 @@ namespace SimpleFramework.Xml.Core {
       /// <returns>
       /// returns the name that is used for the XML property
       /// </returns>
-      public String GetName(Context context);
+      String GetName(Context context);
       /// <summary>
       /// This is used to acquire the name of the element or attribute
       /// that is used by the class schema. The name is determined by
@@ -175,7 +175,7 @@ namespace SimpleFramework.Xml.Core {
       /// <returns>
       /// this returns true if the element requires CDATA
       /// </returns>
-      public bool IsData();
+      bool IsData();
       /// <summary>
       /// Determines whether the XML attribute or element is required.
       /// This ensures that if an XML element is missing from a document
@@ -186,7 +186,7 @@ namespace SimpleFramework.Xml.Core {
       /// <returns>
       /// true if the label represents a some required data
       /// </returns>
-      public bool IsRequired();
+      bool IsRequired();
       /// <summary>
       /// This method is used to determine if the label represents an
       /// attribute. This is used to style the name so that elements
@@ -195,7 +195,7 @@ namespace SimpleFramework.Xml.Core {
       /// <returns>
       /// this is used to determine if this is an attribute
       /// </returns>
-      public bool IsAttribute();
+      bool IsAttribute();
       /// <summary>
       /// This is used to determine if the label is a collection. If the
       /// label represents a collection then any original assignment to
@@ -206,7 +206,7 @@ namespace SimpleFramework.Xml.Core {
       /// <returns>
       /// true if the label represents a collection value
       /// </returns>
-      public bool IsCollection();
+      bool IsCollection();
       /// <summary>
       /// This is used to determine whether the label represents an
       /// inline XML entity. The <c>ElementList</c> annotation
@@ -217,7 +217,7 @@ namespace SimpleFramework.Xml.Core {
       /// <returns>
       /// this returns true if the annotation is inline
       /// </returns>
-      public bool IsInline();
+      bool IsInline();
       /// <summary>
       /// This is used to describe the annotation and method or field
       /// that this label represents. This is used to provide error
@@ -228,6 +228,6 @@ namespace SimpleFramework.Xml.Core {
       /// <returns>
       /// this returns a string representation of the label
       /// </returns>
-      public String ToString();
+      String ToString();
    }
 }

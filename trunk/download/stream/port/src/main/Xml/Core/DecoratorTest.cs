@@ -331,18 +331,18 @@ namespace SimpleFramework.Xml.Core {
            serializer.Write(original, text);
            String result = text.toString();
            FriendList recovered = serializer.Read(FriendList.class, result);
-           assertEquals(original.Friends.getClass(), recovered.Friends.getClass());
-           assertEquals(original.Friends.get(0).Status, recovered.Friends.get(0).Status);
-           assertEquals(original.Friends.get(0).Member.Name, recovered.Friends.get(0).Member.Name);
-           assertEquals(original.Friends.get(0).Member.Age, recovered.Friends.get(0).Member.Age);
-           assertEquals(original.Friends.get(0).Member.Address.City, recovered.Friends.get(0).Member.Address.City);
-           assertEquals(original.Friends.get(0).Member.Address.Country, recovered.Friends.get(0).Member.Address.Country);
-           assertEquals(original.Friends.get(0).Member.Address.Street, recovered.Friends.get(0).Member.Address.Street);
-           assertEquals(original.Friends.get(1).Member.Name, recovered.Friends.get(1).Member.Name);
-           assertEquals(original.Friends.get(1).Member.Age, recovered.Friends.get(1).Member.Age);
-           assertEquals(original.Friends.get(1).Member.Address.City, recovered.Friends.get(1).Member.Address.City);
-           assertEquals(original.Friends.get(1).Member.Address.Country, recovered.Friends.get(1).Member.Address.Country);
-           assertEquals(original.Friends.get(1).Member.Address.Street, recovered.Friends.get(1).Member.Address.Street);
+           AssertEquals(original.Friends.getClass(), recovered.Friends.getClass());
+           AssertEquals(original.Friends.get(0).Status, recovered.Friends.get(0).Status);
+           AssertEquals(original.Friends.get(0).Member.Name, recovered.Friends.get(0).Member.Name);
+           AssertEquals(original.Friends.get(0).Member.Age, recovered.Friends.get(0).Member.Age);
+           AssertEquals(original.Friends.get(0).Member.Address.City, recovered.Friends.get(0).Member.Address.City);
+           AssertEquals(original.Friends.get(0).Member.Address.Country, recovered.Friends.get(0).Member.Address.Country);
+           AssertEquals(original.Friends.get(0).Member.Address.Street, recovered.Friends.get(0).Member.Address.Street);
+           AssertEquals(original.Friends.get(1).Member.Name, recovered.Friends.get(1).Member.Name);
+           AssertEquals(original.Friends.get(1).Member.Age, recovered.Friends.get(1).Member.Age);
+           AssertEquals(original.Friends.get(1).Member.Address.City, recovered.Friends.get(1).Member.Address.City);
+           AssertEquals(original.Friends.get(1).Member.Address.Country, recovered.Friends.get(1).Member.Address.Country);
+           AssertEquals(original.Friends.get(1).Member.Address.Street, recovered.Friends.get(1).Member.Address.Street);
            validate(serializer, original);
        }
    }

@@ -123,7 +123,7 @@ namespace SimpleFramework.Xml.Core {
          bool failure = false;
          try {
             TypeMisMatch type = persister.read(TypeMisMatch.class, SOURCE);
-            assertNull(type);
+            AssertNull(type);
          }catch(Exception e){
             e.printStackTrace();
             failure = true;
@@ -136,9 +136,9 @@ namespace SimpleFramework.Xml.Core {
          for(Contact contact : methodScanner) {
             map.put(contact.Name, contact);
          }
-         assertEquals(map.get("orders").getClass(), MethodContact.class);
-         assertEquals(map.get("orders").getType(), List.class);
-         assertEquals(map.get("orders").getAnnotation().annotationType(), ElementList.class);
+         AssertEquals(map.get("orders").getClass(), MethodContact.class);
+         AssertEquals(map.get("orders").getType(), List.class);
+         AssertEquals(map.get("orders").getAnnotation().annotationType(), ElementList.class);
          Scanner scanner = new Scanner(OrderList.class);
          Support support = new Support();
          Strategy strategy = new TreeStrategy();
@@ -146,34 +146,34 @@ namespace SimpleFramework.Xml.Core {
          Context context = new Source(strategy, support, style);
          LabelMap attributes = scanner.getAttributes(context);
          LabelMap elements = scanner.getElements(context);
-         assertEquals(elements.get("orders").getType(), List.class);
-         assertEquals(elements.get("orders").getContact().getAnnotation().annotationType(), ElementList.class);
-         assertEquals(attributes.get("array").getType(), String[].class);
-         assertEquals(attributes.get("array").getContact().getAnnotation().annotationType(), Attribute.class);
+         AssertEquals(elements.get("orders").getType(), List.class);
+         AssertEquals(elements.get("orders").getContact().getAnnotation().annotationType(), ElementList.class);
+         AssertEquals(attributes.get("array").getType(), String[].class);
+         AssertEquals(attributes.get("array").getContact().getAnnotation().annotationType(), Attribute.class);
          Persister persister = new Persister();
          OrderList list = persister.read(OrderList.class, SOURCE);
-         assertEquals(list.Array[0], "a");
-         assertEquals(list.Array[1], "b");
-         assertEquals(list.Array[2], "c");
-         assertEquals(list.Array[3], "d");
-         assertEquals(list.id, 100);
-         assertEquals(list.value, "Some Example Value");
-         assertEquals(list.Orders.get(0).name, "IR1234");
-         assertEquals(list.Orders.get(0).hidden, null);
-         assertEquals(list.Orders.get(0).secret, null);
-         assertEquals(list.Orders.get(0).value, 2);
-         assertEquals(list.Orders.get(0).price, 7.4);
-         assertEquals(list.Orders.get(0).customer.id, 1);
-         assertEquals(list.Orders.get(0).customer.name, "John Doe");
-         assertEquals(list.Orders.get(0).customer.address, "Sin City");
-         assertEquals(list.Orders.get(1).name, "TZ346");
-         assertEquals(list.Orders.get(0).hidden, null);
-         assertEquals(list.Orders.get(0).secret, null);
-         assertEquals(list.Orders.get(1).value, 2);
-         assertEquals(list.Orders.get(1).price, 10.4);
-         assertEquals(list.Orders.get(1).customer.id, 2);
-         assertEquals(list.Orders.get(1).customer.name, "Jane Doe");
-         assertEquals(list.Orders.get(1).customer.address, "Sesame Street");
+         AssertEquals(list.Array[0], "a");
+         AssertEquals(list.Array[1], "b");
+         AssertEquals(list.Array[2], "c");
+         AssertEquals(list.Array[3], "d");
+         AssertEquals(list.id, 100);
+         AssertEquals(list.value, "Some Example Value");
+         AssertEquals(list.Orders.get(0).name, "IR1234");
+         AssertEquals(list.Orders.get(0).hidden, null);
+         AssertEquals(list.Orders.get(0).secret, null);
+         AssertEquals(list.Orders.get(0).value, 2);
+         AssertEquals(list.Orders.get(0).price, 7.4);
+         AssertEquals(list.Orders.get(0).customer.id, 1);
+         AssertEquals(list.Orders.get(0).customer.name, "John Doe");
+         AssertEquals(list.Orders.get(0).customer.address, "Sin City");
+         AssertEquals(list.Orders.get(1).name, "TZ346");
+         AssertEquals(list.Orders.get(0).hidden, null);
+         AssertEquals(list.Orders.get(0).secret, null);
+         AssertEquals(list.Orders.get(1).value, 2);
+         AssertEquals(list.Orders.get(1).price, 10.4);
+         AssertEquals(list.Orders.get(1).customer.id, 2);
+         AssertEquals(list.Orders.get(1).customer.name, "Jane Doe");
+         AssertEquals(list.Orders.get(1).customer.address, "Sesame Street");
       }
    }
 }

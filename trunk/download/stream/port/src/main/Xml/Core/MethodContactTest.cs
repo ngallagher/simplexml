@@ -65,7 +65,7 @@ namespace SimpleFramework.Xml.Core {
          for(Contact contact : scanner) {
             types.add(contact.getType());
          }
-         assertEquals(scanner.size(), 3);
+         AssertEquals(scanner.size(), 3);
          assertTrue(types.contains(String.class));
          assertTrue(types.contains(float.class));
          assertTrue(types.contains(Collection.class));
@@ -73,19 +73,19 @@ namespace SimpleFramework.Xml.Core {
          Contact version = GetContact(float.class, contacts);
          Example example = new Example();
          version.set(example, 1.2f);
-         assertEquals(example.version, 1.2f);
-         assertNull(example.name);
-         assertNull(example.list);
+         AssertEquals(example.version, 1.2f);
+         AssertNull(example.name);
+         AssertNull(example.list);
          Contact name = GetContact(String.class, contacts);
          name.set(example, "name");
-         assertEquals(example.version, 1.2f);
-         assertEquals(example.name, "name");
-         assertNull(example.list);
+         AssertEquals(example.version, 1.2f);
+         AssertEquals(example.name, "name");
+         AssertNull(example.list);
          Contact list = GetContact(Collection.class, contacts);
          list.set(example, types);
-         assertEquals(example.version, 1.2f);
-         assertEquals(example.name, "name");
-         assertEquals(example.list, types);
+         AssertEquals(example.version, 1.2f);
+         AssertEquals(example.name, "name");
+         AssertEquals(example.list, types);
       }
       public Contact GetContact(Class type, ContactList from) {
          for(Contact contact : from) {

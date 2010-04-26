@@ -70,9 +70,9 @@ namespace SimpleFramework.Xml.Core {
          serializer.validate(MixExample.class, source.toString());
          MixExample other = serializer.read(MixExample.class, source.toString());
          serializer.write(other, System.out);
-         assertEquals(example.Get(0), "text");
-         assertEquals(example.Get(1), 1);
-         assertEquals(example.Get(2), true);
+         AssertEquals(example.Get(0), "text");
+         AssertEquals(example.Get(1), 1);
+         AssertEquals(example.Get(2), true);
          validate(example, serializer);
       }
    }

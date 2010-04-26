@@ -47,10 +47,10 @@ namespace SimpleFramework.Xml.Core {
          map.put("first", "first");
          map.put("second", "second");
          Iterator values = map.values().iterator();
-         assertEquals("first", values.next());
-         assertEquals("second", values.next());
-         assertEquals("third", values.next());
-         assertEquals("fourth", values.next());
+         AssertEquals("first", values.next());
+         AssertEquals("second", values.next());
+         AssertEquals("third", values.next());
+         AssertEquals("fourth", values.next());
       }
       public void TestSerializationOrder() {
          Serializer serializer = new Persister();

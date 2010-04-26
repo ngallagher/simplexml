@@ -83,7 +83,7 @@ namespace SimpleFramework.Xml.Core {
       public void TestRequiredEmpty() {
          bool success = false;
          try {
-            persister.read(RequiredElement.class, EMPTY_ELEMENT);
+            persister.Read(RequiredElement.class, EMPTY_ELEMENT);
          } catch(ValueRequiredException e) {
             e.printStackTrace();
             success = true;
@@ -93,7 +93,7 @@ namespace SimpleFramework.Xml.Core {
       public void TestRequiredEmptyMethod() {
          bool success = false;
          try {
-            persister.read(RequiredMethodElement.class, EMPTY_ELEMENT);
+            persister.Read(RequiredMethodElement.class, EMPTY_ELEMENT);
          } catch(ValueRequiredException e) {
             e.printStackTrace();
             success = true;
@@ -103,7 +103,7 @@ namespace SimpleFramework.Xml.Core {
       public void TestRequiredBlank() {
          bool success = false;
          try {
-            persister.read(RequiredElement.class, BLANK_ELEMENT);
+            persister.Read(RequiredElement.class, BLANK_ELEMENT);
          } catch(ValueRequiredException e) {
             e.printStackTrace();
             success = true;
@@ -113,7 +113,7 @@ namespace SimpleFramework.Xml.Core {
       public void TestOptionalEmpty() {
          bool success = false;
          try {
-            persister.read(RequiredElement.class, EMPTY_ELEMENT);
+            persister.Read(RequiredElement.class, EMPTY_ELEMENT);
          } catch(ValueRequiredException e) {
             e.printStackTrace();
             success = true;
@@ -121,39 +121,39 @@ namespace SimpleFramework.Xml.Core {
          assertTrue(success);
       }
       public void TestOptionalBlank() {
-         OptionalElement element = persister.read(OptionalElement.class, BLANK_ELEMENT);
-         assertNull(element.empty);
+         OptionalElement element = persister.Read(OptionalElement.class, BLANK_ELEMENT);
+         AssertNull(element.empty);
       }
       public void TestEmptyCollection() {
-         EmptyCollection element = persister.read(EmptyCollection.class, BLANK_ELEMENT);
-         assertNotNull(element.empty);
-         assertEquals(element.empty.size(), 0);
-         validate(element, persister);
+         EmptyCollection element = persister.Read(EmptyCollection.class, BLANK_ELEMENT);
+         AssertNotNull(element.empty);
+         AssertEquals(element.empty.size(), 0);
+         Validate(element, persister);
          element.empty = null;
-         validate(element, persister);
+         Validate(element, persister);
       }
       public void TestRequiredEmptyAttribute() {
-         RequiredAttribute entry = persister.read(RequiredAttribute.class, EMPTY_ATTRIBUTE);
-         assertEquals(entry.attribute, "");
+         RequiredAttribute entry = persister.Read(RequiredAttribute.class, EMPTY_ATTRIBUTE);
+         AssertEquals(entry.attribute, "");
       }
       public void TestOptionalEmptyAttribute() {
-         OptionalAttribute entry = persister.read(OptionalAttribute.class, EMPTY_ATTRIBUTE);
-         assertEquals(entry.attribute, "");
+         OptionalAttribute entry = persister.Read(OptionalAttribute.class, EMPTY_ATTRIBUTE);
+         AssertEquals(entry.attribute, "");
       }
       public void TestDefaultedAttribute() {
-         DefaultedAttribute entry = persister.read(DefaultedAttribute.class, DEFAULT_ATTRIBUTE);
-         assertEquals(entry.name, "John Doe");
-         assertEquals(entry.address, null);
-         assertEquals(entry.description, "Some description");
-         validate(entry, persister);
+         DefaultedAttribute entry = persister.Read(DefaultedAttribute.class, DEFAULT_ATTRIBUTE);
+         AssertEquals(entry.name, "John Doe");
+         AssertEquals(entry.address, null);
+         AssertEquals(entry.description, "Some description");
+         Validate(entry, persister);
          entry.name = null;
          StringWriter out = new StringWriter();
-         persister.write(entry, out);
+         persister.Write(entry, out);
          String result = out.toString();
          assertXpathExists("/test[@name='NULL']", result);
          assertXpathExists("/test[@address='NULL']", result);
          assertXpathEvaluatesTo("Some description", "/test/description", result);
-         validate(entry, persister);
+         Validate(entry, persister);
       }
    }
 }

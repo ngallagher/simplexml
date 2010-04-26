@@ -114,21 +114,21 @@ namespace SimpleFramework.Xml.Core {
          Serializer persister = new Persister();
          Example example = persister.read(Example1.class, VERSION_1);
          assertTrue(example instanceof Example1);
-         assertEquals(example.Value, "text value");
-         assertEquals(example.version, 1.0);
+         AssertEquals(example.GetValue(), "text value");
+         AssertEquals(example.version, 1.0);
          persister.write(example, System.out);
-         assertEquals(example.Value, "text value");
-         assertEquals(example.version, 1.0);
+         AssertEquals(example.GetValue(), "text value");
+         AssertEquals(example.version, 1.0);
       }
       public void testVersion2() {
          Serializer persister = new Persister();
          Example example = persister.read(Example2.class, VERSION_2);
          assertTrue(example instanceof Example2);
-         assertEquals(example.Value, "text value");
-         assertEquals(example.version, 2.0);
+         AssertEquals(example.GetValue(), "text value");
+         AssertEquals(example.version, 2.0);
          persister.write(example, System.out);
-         assertEquals(example.Value, "text value");
-         assertEquals(example.version, 2.0);
+         AssertEquals(example.GetValue(), "text value");
+         AssertEquals(example.version, 2.0);
       }
    }
 }

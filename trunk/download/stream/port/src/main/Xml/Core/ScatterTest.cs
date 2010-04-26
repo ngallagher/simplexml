@@ -150,79 +150,79 @@ namespace SimpleFramework.Xml.Core {
          persister = new Persister();
       }
       public void TestList() {
-         InlineTextList list = persister.read(InlineTextList.class, INLINE_LIST);
-         assertEquals(list.version, Version.ONE);
-         assertEquals(list.message, "Some example message");
-         assertEquals(list.Get(0).version, Version.ONE);
-         assertEquals(list.Get(0).name, "a");
-         assertEquals(list.Get(0).text, "Example 1");
-         assertEquals(list.Get(1).version, Version.TWO);
-         assertEquals(list.Get(1).name, "b");
-         assertEquals(list.Get(1).text, "Example 2");
-         assertEquals(list.Get(2).version, Version.THREE);
-         assertEquals(list.Get(2).name, "c");
-         assertEquals(list.Get(2).text, "Example 3");
+         InlineTextList list = persister.Read(InlineTextList.class, INLINE_LIST);
+         AssertEquals(list.version, Version.ONE);
+         AssertEquals(list.message, "Some example message");
+         AssertEquals(list.Get(0).version, Version.ONE);
+         AssertEquals(list.Get(0).name, "a");
+         AssertEquals(list.Get(0).text, "Example 1");
+         AssertEquals(list.Get(1).version, Version.TWO);
+         AssertEquals(list.Get(1).name, "b");
+         AssertEquals(list.Get(1).text, "Example 2");
+         AssertEquals(list.Get(2).version, Version.THREE);
+         AssertEquals(list.Get(2).name, "c");
+         AssertEquals(list.Get(2).text, "Example 3");
          assertTrue(list.Numbers.contains(1.0));
          assertTrue(list.Numbers.contains(2.0));
          assertTrue(list.Numbers.contains(3.0));
          StringWriter buffer = new StringWriter();
-         persister.write(list, buffer);
-         validate(list, persister);
-         list = persister.read(InlineTextList.class, buffer.toString());
-         assertEquals(list.version, Version.ONE);
-         assertEquals(list.message, "Some example message");
-         assertEquals(list.Get(0).version, Version.ONE);
-         assertEquals(list.Get(0).name, "a");
-         assertEquals(list.Get(0).text, "Example 1");
-         assertEquals(list.Get(1).version, Version.TWO);
-         assertEquals(list.Get(1).name, "b");
-         assertEquals(list.Get(1).text, "Example 2");
-         assertEquals(list.Get(2).version, Version.THREE);
-         assertEquals(list.Get(2).name, "c");
-         assertEquals(list.Get(2).text, "Example 3");
-         validate(list, persister);
+         persister.Write(list, buffer);
+         Validate(list, persister);
+         list = persister.Read(InlineTextList.class, buffer.toString());
+         AssertEquals(list.version, Version.ONE);
+         AssertEquals(list.message, "Some example message");
+         AssertEquals(list.Get(0).version, Version.ONE);
+         AssertEquals(list.Get(0).name, "a");
+         AssertEquals(list.Get(0).text, "Example 1");
+         AssertEquals(list.Get(1).version, Version.TWO);
+         AssertEquals(list.Get(1).name, "b");
+         AssertEquals(list.Get(1).text, "Example 2");
+         AssertEquals(list.Get(2).version, Version.THREE);
+         AssertEquals(list.Get(2).name, "c");
+         AssertEquals(list.Get(2).text, "Example 3");
+         Validate(list, persister);
       }
       public void TestPrimitiveList() {
-         InlinePrimitiveList list = persister.read(InlinePrimitiveList.class, INLINE_PRIMITIVE_LIST);
-         assertEquals(list.version, Version.ONE);
-         assertEquals(list.message, "Some example message");
-         assertEquals(list.Get(0), "Example 1");
-         assertEquals(list.Get(1), "Example 2");
-         assertEquals(list.Get(2), "Example 3");
+         InlinePrimitiveList list = persister.Read(InlinePrimitiveList.class, INLINE_PRIMITIVE_LIST);
+         AssertEquals(list.version, Version.ONE);
+         AssertEquals(list.message, "Some example message");
+         AssertEquals(list.Get(0), "Example 1");
+         AssertEquals(list.Get(1), "Example 2");
+         AssertEquals(list.Get(2), "Example 3");
          StringWriter buffer = new StringWriter();
-         persister.write(list, buffer);
-         validate(list, persister);
-         list = persister.read(InlinePrimitiveList.class, buffer.toString());
-         assertEquals(list.Get(0), "Example 1");
-         assertEquals(list.Get(1), "Example 2");
-         assertEquals(list.Get(2), "Example 3");
-         validate(list, persister);
+         persister.Write(list, buffer);
+         Validate(list, persister);
+         list = persister.Read(InlinePrimitiveList.class, buffer.toString());
+         AssertEquals(list.Get(0), "Example 1");
+         AssertEquals(list.Get(1), "Example 2");
+         AssertEquals(list.Get(2), "Example 3");
+         Validate(list, persister);
       }
       public void TestInlineNamedList() {
-         InlineNamedList list = persister.read(InlineNamedList.class, INLINE_NAMED_LIST);
-         assertEquals(list.GetInclude("1"), "1.txt");
-         assertEquals(list.GetInclude("2"), null);
-         assertEquals(list.GetInclude("3"), null);
-         assertEquals(list.GetInclude("4"), "4.txt");
-         assertEquals(list.GetInclude("5"), null);
-         assertEquals(list.GetExclude("1"), null);
-         assertEquals(list.GetExclude("2"), "2.txt");
-         assertEquals(list.GetExclude("3"), "3.txt");
-         assertEquals(list.GetExclude("4"), null);
-         assertEquals(list.GetExclude("5"), "5.txt");
-         validate(list, persister);
+         InlineNamedList list = persister.Read(InlineNamedList.class, INLINE_NAMED_LIST);
+         AssertEquals(list.GetInclude("1"), "1.txt");
+         AssertEquals(list.GetInclude("2"), null);
+         AssertEquals(list.GetInclude("3"), null);
+         AssertEquals(list.GetInclude("4"), "4.txt");
+         AssertEquals(list.GetInclude("5"), null);
+         AssertEquals(list.GetExclude("1"), null);
+         AssertEquals(list.GetExclude("2"), "2.txt");
+         AssertEquals(list.GetExclude("3"), "3.txt");
+         AssertEquals(list.GetExclude("4"), null);
+         AssertEquals(list.GetExclude("5"), "5.txt");
+         Validate(list, persister);
       }
       public void TestSimpleList() {
          SimpleInlineList list = new SimpleInlineList();
          SimpleEntry entry = new SimpleEntry();
          entry.content = "test";
          list.list.add(entry);
-         validate(list, persister);
+         Validate(list, persister);
       }
       public void TestSimplePrimitiveList() {
          SimplePrimitiveInlineList list = new SimplePrimitiveInlineList();
          list.list.add("test");
-         validate(list, persister);
+         Validate(list, persister);
       }
    }
 }

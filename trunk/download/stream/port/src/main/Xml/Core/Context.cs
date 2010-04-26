@@ -57,7 +57,7 @@ namespace SimpleFramework.Xml.Core {
       /// <returns>
       /// this returns true if the deserialization is strict
       /// </returns>
-      public bool IsStrict();
+      bool IsStrict();
       /// <summary>
       /// This is used to acquire the <c>Style</c> for the format.
       /// If no style has been set a default style is used, which does
@@ -106,7 +106,7 @@ namespace SimpleFramework.Xml.Core {
       /// <returns>
       /// this returns true if the type is a floating point
       /// </returns>
-      public bool IsFloat(Class type);
+      bool IsFloat(Class type);
       /// <summary>
       /// This is used to determine if the type specified is a floating
       /// point type. Types that are floating point are the double and
@@ -118,7 +118,7 @@ namespace SimpleFramework.Xml.Core {
       /// <returns>
       /// this returns true if the type is a floating point
       /// </returns>
-      public bool IsFloat(Type type);
+      bool IsFloat(Type type);
       /// <summary>
       /// This is used to determine whether the scanned class represents
       /// a primitive type. A primitive type is a type that contains no
@@ -131,7 +131,7 @@ namespace SimpleFramework.Xml.Core {
       /// <returns>
       /// this returns true if no XML annotations were found
       /// </returns>
-      public bool IsPrimitive(Class type);
+      bool IsPrimitive(Class type);
       /// <summary>
       /// This is used to determine whether the scanned type represents
       /// a primitive type. A primitive type is a type that contains no
@@ -144,7 +144,7 @@ namespace SimpleFramework.Xml.Core {
       /// <returns>
       /// this returns true if no XML annotations were found
       /// </returns>
-      public bool IsPrimitive(Type type);
+      bool IsPrimitive(Type type);
       /// <summary>
       /// This will create an <c>Instance</c> that can be used
       /// to instantiate objects of the specified class. This leverages
@@ -156,7 +156,7 @@ namespace SimpleFramework.Xml.Core {
       /// <returns>
       /// this will return an object for instantiating objects
       /// </returns>
-      public Instance GetInstance(Value value);
+      Instance GetInstance(Value value);
       /// <summary>
       /// This will create an <c>Instance</c> that can be used
       /// to instantiate objects of the specified class. This leverages
@@ -168,7 +168,7 @@ namespace SimpleFramework.Xml.Core {
       /// <returns>
       /// this will return an object for instantiating objects
       /// </returns>
-      public Instance GetInstance(Class type);
+      Instance GetInstance(Class type);
       /// <summary>
       /// This is used to acquire the name of the specified type using
       /// the <c>Root</c> annotation for the class. This will
@@ -182,7 +182,7 @@ namespace SimpleFramework.Xml.Core {
       /// <returns>
       /// this returns the name of the type from the root
       /// </returns>
-      public String GetName(Class type);
+      String GetName(Class type);
       /// <summary>
       /// This is used to acquire the <c>Caller</c> object. This
       /// is used to call the callback methods within the object. If the
@@ -195,7 +195,7 @@ namespace SimpleFramework.Xml.Core {
       /// <returns>
       /// this returns the caller for the specified type
       /// </returns>
-      public Caller GetCaller(Class type);
+      Caller GetCaller(Class type);
       /// <summary>
       /// This returns the version for the type specified. The version is
       /// used to determine how the deserialization process is performed.
@@ -208,7 +208,7 @@ namespace SimpleFramework.Xml.Core {
       /// <returns>
       /// the version that has been set for this XML schema class
       /// </returns>
-      public Version GetVersion(Class type);
+      Version GetVersion(Class type);
       /// <summary>
       /// This will acquire the <c>Decorator</c> for the type.
       /// A decorator is an object that adds various details to the
@@ -222,7 +222,7 @@ namespace SimpleFramework.Xml.Core {
       /// <returns>
       /// this returns the decorator associated with this
       /// </returns>
-      public Decorator GetDecorator(Class type);
+      Decorator GetDecorator(Class type);
       /// <summary>
       /// This creates a <c>Schema</c> object that can be used to
       /// examine the fields within the XML class schema. The schema
@@ -236,7 +236,7 @@ namespace SimpleFramework.Xml.Core {
       /// <returns>
       /// a new schema that can track visits within the schema
       /// </returns>
-      public Schema GetSchema(Class type);
+      Schema GetSchema(Class type);
       /// <summary>
       /// This is used to resolve and load a class for the given element.
       /// The class should be of the same type or a subclass of the class
@@ -255,7 +255,7 @@ namespace SimpleFramework.Xml.Core {
       /// <returns>
       /// returns the type that should be used for the object
       /// </returns>
-      public Value GetOverride(Type type, InputNode node);
+      Value GetOverride(Type type, InputNode node);
       /// <summary>
       /// This is used to attach elements or attributes to the given
       /// element during the serialization process. This method allows
@@ -275,7 +275,7 @@ namespace SimpleFramework.Xml.Core {
       /// <returns>
       /// this returns true if serialization has complete
       /// </returns>
-      public bool SetOverride(Type type, Object value, OutputNode node);
+      bool SetOverride(Type type, Object value, OutputNode node);
       /// <summary>
       /// This is used to acquire the attribute mapped to the specified
       /// key. In order for this to return a value it must have been
@@ -287,7 +287,7 @@ namespace SimpleFramework.Xml.Core {
       /// <returns>
       /// this returns the value mapped to the specified key
       /// </returns>
-      public Object GetAttribute(Object key);
+      Object GetAttribute(Object key);
       /// <summary>
       /// Replaces any template variables within the provided string.
       /// This is used in the deserialization process to replace
@@ -301,6 +301,6 @@ namespace SimpleFramework.Xml.Core {
       /// <returns>
       /// this returns the text will all variables replaced
       /// </returns>
-      public String GetProperty(String text);
+      String GetProperty(String text);
    }
 }

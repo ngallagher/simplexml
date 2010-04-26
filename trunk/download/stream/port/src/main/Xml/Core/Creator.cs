@@ -37,7 +37,7 @@ namespace SimpleFramework.Xml.Core {
       /// <returns>
       /// true if the class has a default constructor
       /// </returns>
-      public bool IsDefault();
+      bool IsDefault();
       /// <summary>
       /// This is used to instantiate the object using the default no
       /// argument constructor. If for some reason the object can not be
@@ -61,7 +61,7 @@ namespace SimpleFramework.Xml.Core {
       /// <returns>
       /// this returns the object that has been instantiated
       /// </returns>
-      public Object GetInstance(Criteria criteria);
+      Object GetInstance(Criteria criteria);
       /// <summary>
       /// This is used to acquire the named <c>Parameter</c> from
       /// the creator. A parameter is taken from the constructor which
@@ -74,7 +74,7 @@ namespace SimpleFramework.Xml.Core {
       /// <returns>
       /// this returns the named parameter for the creator
       /// </returns>
-      public Parameter GetParameter(String name);
+      Parameter GetParameter(String name);
       /// <summary>
       /// This is used to acquire all parameters annotated for the class
       /// schema. Providing all parameters ensures that they can be

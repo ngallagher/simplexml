@@ -87,8 +87,8 @@ namespace SimpleFramework.Xml.Core {
       /// </param>
       public CompositeMap(Context context, Entry entry, Type type) {
          this.factory = new MapFactory(context, type);
-         this.value = entry.getValue(context);
-         this.key = entry.getKey(context);
+         this.value = entry.GetValue(context);
+         this.key = entry.GetKey(context);
          this.style = context.getStyle();
          this.entry = entry;
       }
@@ -247,7 +247,7 @@ namespace SimpleFramework.Xml.Core {
       public void Write(OutputNode node, Object source) {
          Dictionary map = (Map) source;
          for(Object index : map.keySet()) {
-            String root = entry.getEntry();
+            String root = entry.Entry;
             String name = style.GetElement(root);
             OutputNode next = node.getChild(name);
             Object item = map.get(index);

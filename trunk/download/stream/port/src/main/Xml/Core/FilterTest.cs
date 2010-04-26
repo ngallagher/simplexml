@@ -49,42 +49,42 @@ namespace SimpleFramework.Xml.Core {
          mapSerializer = new Persister(map);
       }
       public void TestSystem() {
-         Entry entry = systemSerializer.read(Entry.class, new StringReader(ENTRY));
-         assertEquals(entry.number, 1234);
-         assertEquals(entry.bool, true);
-         assertEquals(entry.name, "some name");
-         assertEquals(entry.path, "/some/path");
-         assertEquals(entry.constant, "some constant");
+         Entry entry = systemSerializer.Read(Entry.class, new StringReader(ENTRY));
+         AssertEquals(entry.number, 1234);
+         AssertEquals(entry.bool, true);
+         AssertEquals(entry.name, "some name");
+         AssertEquals(entry.path, "/some/path");
+         AssertEquals(entry.constant, "some constant");
          assertTrue(entry.text.indexOf(entry.name) > 0);
          assertTrue(entry.text.indexOf(entry.path) > 0);
       }
       public void TestMap() {
-         Entry entry = mapSerializer.read(Entry.class, new StringReader(ENTRY));
-         assertEquals(entry.number, 1234);
-         assertEquals(entry.bool, true);
-         assertEquals(entry.name, "override name");
-         assertEquals(entry.path, "/some/override/path");
-         assertEquals(entry.constant, "some constant");
+         Entry entry = mapSerializer.Read(Entry.class, new StringReader(ENTRY));
+         AssertEquals(entry.number, 1234);
+         AssertEquals(entry.bool, true);
+         AssertEquals(entry.name, "override name");
+         AssertEquals(entry.path, "/some/override/path");
+         AssertEquals(entry.constant, "some constant");
          assertTrue(entry.text.indexOf(entry.name) > 0);
          assertTrue(entry.text.indexOf(entry.path) > 0);
       }
       public void TestEnvironmentFilter() {
          Filter filter = new EnvironmentFilter(null);
          Persister persister = new Persister(filter);
-         Entry entry = persister.read(Entry.class, new StringReader(ENTRY));
-         assertEquals(entry.number, 1234);
-         assertEquals(entry.bool, true);
-         assertEquals(entry.name, "${example.name}");
-         assertEquals(entry.path, "${example.path}");
+         Entry entry = persister.Read(Entry.class, new StringReader(ENTRY));
+         AssertEquals(entry.number, 1234);
+         AssertEquals(entry.bool, true);
+         AssertEquals(entry.name, "${example.name}");
+         AssertEquals(entry.path, "${example.path}");
          Filter systemFilter = new SystemFilter();
          Filter environmentFilter = new EnvironmentFilter(systemFilter);
          Persister environmentPersister = new Persister(environmentFilter);
-         Entry secondEntry = environmentPersister.read(Entry.class, new StringReader(ENTRY));
-         assertEquals(secondEntry.number, 1234);
-         assertEquals(secondEntry.bool, true);
-         assertEquals(secondEntry.name, "some name");
-         assertEquals(secondEntry.path, "/some/path");
-         assertEquals(secondEntry.constant, "some constant");
+         Entry secondEntry = environmentPersister.Read(Entry.class, new StringReader(ENTRY));
+         AssertEquals(secondEntry.number, 1234);
+         AssertEquals(secondEntry.bool, true);
+         AssertEquals(secondEntry.name, "some name");
+         AssertEquals(secondEntry.path, "/some/path");
+         AssertEquals(secondEntry.constant, "some constant");
       }
    }
 }

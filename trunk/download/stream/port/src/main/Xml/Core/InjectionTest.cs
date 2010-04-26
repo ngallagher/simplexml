@@ -49,21 +49,21 @@ namespace SimpleFramework.Xml.Core {
    	}
       public void TestFirst() {
          InjectionExample example = new InjectionExample("name");
-         assertEquals(example.flag, false);
-         assertEquals(example.id, 0);
-         assertEquals(example.text, null);
-         assertEquals(example.date, null);
-         assertEquals(example.name, "name");
-         assertEquals(example.message, null);
-         InjectionExample result = serializer.read(example, SOURCE);
-         assertEquals(example, result);
-         assertEquals(example.flag, true);
-         assertEquals(example.id, 12);
-         assertEquals(example.text, "entry text");
-         assertEquals(example.date, "01/10/1916");
-         assertEquals(example.name, "name");
-         assertEquals(example.message.trim, true);
-         assertEquals(example.message.text, "This is an example message.");
+         AssertEquals(example.flag, false);
+         AssertEquals(example.id, 0);
+         AssertEquals(example.text, null);
+         AssertEquals(example.date, null);
+         AssertEquals(example.name, "name");
+         AssertEquals(example.message, null);
+         InjectionExample result = serializer.Read(example, SOURCE);
+         AssertEquals(example, result);
+         AssertEquals(example.flag, true);
+         AssertEquals(example.id, 12);
+         AssertEquals(example.text, "entry text");
+         AssertEquals(example.date, "01/10/1916");
+         AssertEquals(example.name, "name");
+         AssertEquals(example.message.trim, true);
+         AssertEquals(example.message.text, "This is an example message.");
       }
    }
 }

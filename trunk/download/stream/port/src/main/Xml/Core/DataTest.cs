@@ -65,42 +65,42 @@ namespace SimpleFramework.Xml.Core {
    	   serializer = new Persister();
    	}
       public void TestData() {
-         Scrape scrape = serializer.read(Scrape.class, SOURCE);
-         assertEquals(scrape.section, "one");
-         assertEquals(scrape.address, "http://localhost:9090/");
-         assertEquals(scrape.list.get("title").type, "text");
+         Scrape scrape = serializer.Read(Scrape.class, SOURCE);
+         AssertEquals(scrape.section, "one");
+         AssertEquals(scrape.address, "http://localhost:9090/");
+         AssertEquals(scrape.list.get("title").type, "text");
          assertTrue(scrape.list.get("title").data.indexOf("<title>") > 0);
-         assertEquals(scrape.list.get("news").type, "image");
+         AssertEquals(scrape.list.get("news").type, "image");
          assertTrue(scrape.list.get("news").data.indexOf("<news>") > 0);
-         validate(scrape, serializer);
+         Validate(scrape, serializer);
          String news = scrape.list.get("news").data;
          String title = scrape.list.get("title").data;
          StringWriter out = new StringWriter();
-         serializer.write(scrape, out);
+         serializer.Write(scrape, out);
          String text = out.toString();
-         Scrape copy = serializer.read(Scrape.class, text);
-         assertEquals(news, copy.list.get("news").data);
-         assertEquals(title, copy.list.get("title").data);
+         Scrape copy = serializer.Read(Scrape.class, text);
+         AssertEquals(news, copy.list.get("news").data);
+         AssertEquals(title, copy.list.get("title").data);
       }
       public void TestDataFromByteStream() {
          byte[] data = SOURCE.getBytes("UTF-8");
          InputStream source = new ByteArrayInputStream(data);
-         Scrape scrape = serializer.read(Scrape.class, source);
-         assertEquals(scrape.section, "one");
-         assertEquals(scrape.address, "http://localhost:9090/");
-         assertEquals(scrape.list.get("title").type, "text");
+         Scrape scrape = serializer.Read(Scrape.class, source);
+         AssertEquals(scrape.section, "one");
+         AssertEquals(scrape.address, "http://localhost:9090/");
+         AssertEquals(scrape.list.get("title").type, "text");
          assertTrue(scrape.list.get("title").data.indexOf("<title>") > 0);
-         assertEquals(scrape.list.get("news").type, "image");
+         AssertEquals(scrape.list.get("news").type, "image");
          assertTrue(scrape.list.get("news").data.indexOf("<news>") > 0);
-         validate(scrape, serializer);
+         Validate(scrape, serializer);
          String news = scrape.list.get("news").data;
          String title = scrape.list.get("title").data;
          StringWriter out = new StringWriter();
-         serializer.write(scrape, out);
+         serializer.Write(scrape, out);
          String text = out.toString();
-         Scrape copy = serializer.read(Scrape.class, text);
-         assertEquals(news, copy.list.get("news").data);
-         assertEquals(title, copy.list.get("title").data);
+         Scrape copy = serializer.Read(Scrape.class, text);
+         AssertEquals(news, copy.list.get("news").data);
+         AssertEquals(title, copy.list.get("title").data);
       }
    }
 }
