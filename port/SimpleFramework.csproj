@@ -40,7 +40,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="src\main\Xml\TestRunner.cs" />
     <Compile Include="src\main\Xml\TestCase.cs" />
+    <Compile Include="src\main\Xml\TestSuite.cs" />
     <Compile Include="src\main\Xml\ValidationTestCase.cs" />
     <Compile Include="src\main\Xml\Core\AliasTest.cs" />
     <Compile Include="src\main\Xml\Core\AnnotationHandlerTest.cs" />
