@@ -115,7 +115,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this returns true if the event is an element close
       /// </returns>
-      public bool IsEnd();
+      bool IsEnd();
       /// <summary>
       /// This is true when the node represents a new element. This is
       /// the core event type as it contains the element name and any
@@ -125,7 +125,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this returns true if the event represents an element
       /// </returns>
-      public bool IsStart();
+      bool IsStart();
       /// <summary>
       /// This is true when the node represents a text token. Text
       /// tokens are required to provide a value only. So namespace
@@ -134,6 +134,6 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this returns true if this represents text
       /// </returns>
-      public bool IsText();
+      bool IsText();
    }
 }

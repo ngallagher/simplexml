@@ -13,13 +13,13 @@ namespace SimpleFramework.Xml.Stream {
          InputNode node = NodeBuilder.read(reader);
          NodeMap<InputNode> map = node.getAttributes();
          InputNode attr = map.get("name");
-         assertEquals("value", attr.getValue());
-         assertEquals("a", attr.getPrefix());
-         assertEquals("http://www.domain.com/a", attr.getReference());
+         AssertEquals("value", attr.getValue());
+         AssertEquals("a", attr.getPrefix());
+         AssertEquals("http://www.domain.com/a", attr.getReference());
          InputNode child = node.getNext();
-         assertEquals("this is the child", child.getValue());
-         assertEquals("a", child.getPrefix());
-         assertEquals("http://www.domain.com/a", child.getReference());
+         AssertEquals("this is the child", child.getValue());
+         AssertEquals("a", child.getPrefix());
+         AssertEquals("http://www.domain.com/a", child.getReference());
       }
       public void TestOutputNode() {
          StringWriter out = new StringWriter();

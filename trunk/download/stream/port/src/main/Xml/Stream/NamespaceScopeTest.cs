@@ -27,7 +27,7 @@ namespace SimpleFramework.Xml.Stream {
          String reference = node.getReference();
          String prefix = node.getPrefix();
          assertTrue(IsEmpty(prefix));
-         assertEquals(reference, "http://www.default.com/");
+         AssertEquals(reference, "http://www.default.com/");
          node = node.getNext("entry");
          reference = node.getReference();
          prefix = node.getPrefix();
@@ -36,8 +36,8 @@ namespace SimpleFramework.Xml.Stream {
          node = node.getNext("book");
          reference = node.getReference();
          prefix = node.getPrefix();
-         assertEquals(prefix, "p");
-         assertEquals(reference, "http://www.example.com/book");
+         AssertEquals(prefix, "p");
+         AssertEquals(reference, "http://www.example.com/book");
          InputNode author = node.getNext("author");
          reference = author.getReference();
          prefix = author.getPrefix();
@@ -46,40 +46,40 @@ namespace SimpleFramework.Xml.Stream {
          InputNode title = node.getNext("title");
          reference = title.getReference();
          prefix = title.getPrefix();
-         assertEquals(prefix, "p");
-         assertEquals(reference, "http://www.example.com/book");
+         AssertEquals(prefix, "p");
+         AssertEquals(reference, "http://www.example.com/book");
          InputNode isbn = node.getNext("isbn");
          reference = isbn.getReference();
          prefix = isbn.getPrefix();
-         assertEquals(prefix, "p");
-         assertEquals(reference, "http://www.example.com/book");
+         AssertEquals(prefix, "p");
+         AssertEquals(reference, "http://www.example.com/book");
       }
       public void TestDefaultFirst() {
          InputNode node = NodeBuilder.read(new StringReader(DEFAULT_FIRST));
          String reference = node.getReference();
          String prefix = node.getPrefix();
          assertTrue(IsEmpty(prefix));
-         assertEquals(reference, "http://www.default.com/");
+         AssertEquals(reference, "http://www.default.com/");
          node = node.getNext("book");
          reference = node.getReference();
          prefix = node.getPrefix();
-         assertEquals(prefix, "p");
-         assertEquals(reference, "http://www.example.com/book");
+         AssertEquals(prefix, "p");
+         AssertEquals(reference, "http://www.example.com/book");
          InputNode author = node.getNext("author");
          reference = author.getReference();
          prefix = author.getPrefix();
          assertTrue(IsEmpty(prefix));
-         assertEquals(reference, "http://www.default.com/");
+         AssertEquals(reference, "http://www.default.com/");
          InputNode title = node.getNext("title");
          reference = title.getReference();
          prefix = title.getPrefix();
          assertTrue(IsEmpty(prefix));
-         assertEquals(reference, "http://www.default.com/");
+         AssertEquals(reference, "http://www.default.com/");
          InputNode isbn = node.getNext("isbn");
          reference = isbn.getReference();
          prefix = isbn.getPrefix();
          assertTrue(IsEmpty(prefix));
-         assertEquals(reference, "http://www.default.com/");
+         AssertEquals(reference, "http://www.default.com/");
       }
       public bool IsEmpty(String name) {
          return name == null || name.equals("");

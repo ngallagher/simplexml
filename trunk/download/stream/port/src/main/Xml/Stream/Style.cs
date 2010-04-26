@@ -51,7 +51,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this returns the styled name of the XML element
       /// </returns>
-      public String GetElement(String name);
+      String GetElement(String name);
       /// <summary>
       /// This is used to generate the XML attribute representation of
       /// the specified name. Attribute names should ensure to keep the
@@ -64,6 +64,6 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this returns the styled name of the XML attribute
       /// </returns>
-      public String GetAttribute(String name);
+      String GetAttribute(String name);
    }
 }

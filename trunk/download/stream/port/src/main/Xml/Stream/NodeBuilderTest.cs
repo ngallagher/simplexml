@@ -1,4 +1,5 @@
 #region Using directives
+using SimpleFramework.Xml;
 using System;
 #endregion
 namespace SimpleFramework.Xml.Stream {
@@ -29,54 +30,54 @@ namespace SimpleFramework.Xml.Stream {
           Reader reader = new StringReader(SOURCE);
           InputNode event = NodeBuilder.read(reader);
           assertTrue(event.isRoot());
-          assertEquals("root", event.getName());
-          assertEquals("2.1", event.getAttribute("version").getValue());
-          assertEquals("234", event.getAttribute("id").getValue());
+          AssertEquals("root", event.getName());
+          AssertEquals("2.1", event.getAttribute("version").getValue());
+          AssertEquals("234", event.getAttribute("id").getValue());
           NodeMap attrList = event.getAttributes();
-          assertEquals("2.1", attrList.get("version").getValue());
-          assertEquals("234", attrList.get("id").getValue());
+          AssertEquals("2.1", attrList.get("version").getValue());
+          AssertEquals("234", attrList.get("id").getValue());
           InputNode list = event.getNext();
           assertFalse(list.isRoot());
-          assertEquals("list", list.getName());
-          assertEquals("sorted", list.getAttribute("type").getValue());
+          AssertEquals("list", list.getName());
+          AssertEquals("sorted", list.getAttribute("type").getValue());
           InputNode entry = list.getNext();
           InputNode value = list.getNext(); // same as entry.getNext()
-          assertEquals("entry", entry.getName());
-          assertEquals("1", entry.getAttribute("name").getValue());
-          assertEquals("value", value.getName());
-          assertEquals("value 1", value.getValue());
-          assertEquals(null, value.getAttribute("name"));
-          assertEquals(null, entry.getNext());
-          assertEquals(null, value.getNext());
+          AssertEquals("entry", entry.getName());
+          AssertEquals("1", entry.getAttribute("name").getValue());
+          AssertEquals("value", value.getName());
+          AssertEquals("value 1", value.getValue());
+          AssertEquals(null, value.getAttribute("name"));
+          AssertEquals(null, entry.getNext());
+          AssertEquals(null, value.getNext());
           entry = list.getNext();
           value = entry.getNext(); // same as list.getNext()
-          assertEquals("entry", entry.getName());
-          assertEquals("2", entry.getAttribute("name").getValue());
-          assertEquals("value", value.getName());
-          assertEquals("value 2", value.getValue());
-          assertEquals(null, value.getAttribute("name"));
-          assertEquals(null, entry.getNext());
+          AssertEquals("entry", entry.getName());
+          AssertEquals("2", entry.getAttribute("name").getValue());
+          AssertEquals("value", value.getName());
+          AssertEquals("value 2", value.getValue());
+          AssertEquals(null, value.getAttribute("name"));
+          AssertEquals(null, entry.getNext());
           entry = list.getNext();
           value = entry.getNext(); // same as list.getNext()
-          assertEquals("entry", entry.getName());
-          assertEquals("3", entry.getAttribute("name").getValue());
-          assertEquals("value", value.getName());
-          assertEquals("value 3", value.getValue());
-          assertEquals(null, value.getAttribute("name"));
-          assertEquals(null, entry.getNext());
-          assertEquals(null, list.getNext());
+          AssertEquals("entry", entry.getName());
+          AssertEquals("3", entry.getAttribute("name").getValue());
+          AssertEquals("value", value.getName());
+          AssertEquals("value 3", value.getValue());
+          AssertEquals(null, value.getAttribute("name"));
+          AssertEquals(null, entry.getNext());
+          AssertEquals(null, list.getNext());
           InputNode object = event.getNext();
           InputNode integer = event.getNext(); // same as object.getNext()
-          assertEquals("object", object.getName());
-          assertEquals("name", object.getAttribute("name").getValue());
-          assertEquals("integer", integer.getName());
-          assertEquals("123", integer.getValue());
+          AssertEquals("object", object.getName());
+          AssertEquals("name", object.getAttribute("name").getValue());
+          AssertEquals("integer", integer.getName());
+          AssertEquals("123", integer.getValue());
           object = object.getNext(); // same as event.getNext()
           integer = object.getNext();
-          assertEquals("object", object.getName());
-          assertEquals("key", object.getAttribute("name").getValue());
-          assertEquals("integer", integer.getName());
-          assertEquals("12345", integer.getValue());
+          AssertEquals("object", object.getName());
+          AssertEquals("key", object.getAttribute("name").getValue());
+          AssertEquals("integer", integer.getName());
+          AssertEquals("12345", integer.getValue());
        }
    }
 }

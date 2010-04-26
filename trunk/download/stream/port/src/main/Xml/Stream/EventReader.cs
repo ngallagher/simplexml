@@ -38,7 +38,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this returns the next event taken from the source XML
       /// </returns>
-      public EventNode Next();
+      EventNode Next();
       /// <summary>
       /// This is used to peek at the node from the document. This will
       /// scan through the document, ignoring any comments to find the
@@ -48,6 +48,6 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this returns the next event taken from the source XML
       /// </returns>
-      public EventNode Peek();
+      EventNode Peek();
    }
 }

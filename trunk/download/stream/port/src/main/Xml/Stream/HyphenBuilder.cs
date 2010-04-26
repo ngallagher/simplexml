@@ -106,7 +106,7 @@ namespace SimpleFramework.Xml.Stream {
          /// <param name="len">
          /// this is the length of the token to be parsed
          /// </param>
-         @Override
+         [Override]
          public void Parse(char[] text, int off, int len) {
             text[off] = toLower(text[off]);
          }
@@ -124,7 +124,7 @@ namespace SimpleFramework.Xml.Stream {
          /// <param name="len">
          /// this is the length of the token to be committed
          /// </param>
-         @Override
+         [Override]
          public void Commit(char[] text, int off, int len) {
             builder.append(text, off, len);
             if(off + len < count) {

@@ -39,7 +39,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// true if this is the root node within the document
       /// </returns>
-      public bool IsRoot();
+      bool IsRoot();
       /// <summary>
       /// This is used to determine if this node is an element. This
       /// allows users of the framework to make a distinction between
@@ -50,7 +50,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this returns true if the node is an element node
       /// </returns>
-      public bool IsElement();
+      bool IsElement();
       /// <summary>
       /// This is used to acquire the namespace prefix for the node.
       /// If there is no namespace prefix for the node then this will
@@ -100,7 +100,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this returns the value for the named attribute
       /// </returns>
-      public InputNode GetAttribute(String name);
+      InputNode GetAttribute(String name);
       /// <summary>
       /// This returns a map of the attributes contained within the
       /// element. If no elements exist within the element then this
@@ -158,14 +158,14 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// the next element if it has the name specified
       /// </returns>
-      public InputNode GetNext(String name);
+      InputNode GetNext(String name);
       /// <summary>
       /// This method is used to skip all child elements from this
       /// element. This allows elements to be effectively skipped such
       /// that when parsing a document if an element is not required
       /// then that element can be completely removed from the XML.
       /// </summary>
-      public void Skip();
+      void Skip();
       /// <summary>
       /// This is used to determine if this input node is empty. An
       /// empty node is one with no attributes or children. This can
@@ -175,6 +175,6 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this returns true if the node is an empty element
       /// </returns>
-      public bool IsEmpty();
+      bool IsEmpty();
    }
 }
