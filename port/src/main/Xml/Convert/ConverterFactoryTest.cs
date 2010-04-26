@@ -1,5 +1,6 @@
 #region Using directives
 using SimpleFramework.Xml.Stream;
+using SimpleFramework.Xml;
 using System;
 #endregion
 namespace SimpleFramework.Xml.Util {
@@ -25,9 +26,9 @@ namespace SimpleFramework.Xml.Util {
          assertTrue(a1 == a2);
          assertTrue(b1 == b2);
          assertTrue(c1 == c2);
-         assertEquals(a1.getClass(), A.class);
-         assertEquals(b1.getClass(), B.class);
-         assertEquals(c1.getClass(), C.class);
+         AssertEquals(a1.getClass(), A.class);
+         AssertEquals(b1.getClass(), B.class);
+         AssertEquals(c1.getClass(), C.class);
       }
    }
 }

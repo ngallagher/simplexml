@@ -1,4 +1,5 @@
 #region Using directives
+using SimpleFramework.Xml;
 using System.Collections.Generic;
 using System;
 #endregion
@@ -15,8 +16,8 @@ namespace SimpleFramework.Xml.Util {
          }
          for(int i = 0; i < LOAD_COUNT; i++) {
             String key = String.valueOf(i);
-            assertEquals(cache.fetch(key), key);
-            assertEquals(map.get(key), cache.fetch(key));
+            AssertEquals(cache.fetch(key), key);
+            AssertEquals(map.get(key), cache.fetch(key));
          }
       }
    }

@@ -1,4 +1,5 @@
 #region Using directives
+using SimpleFramework.Xml.Transform;
 using SimpleFramework.Xml;
 using System;
 #endregion
@@ -9,7 +10,7 @@ public class URLTransformTest : TestCase {
       URLTransform format = new URLTransform();
       String value = format.write(file);
       URL copy = format.read(value);
-      assertEquals(file, copy);
+      AssertEquals(file, copy);
    }
 }
 }

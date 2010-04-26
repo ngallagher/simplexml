@@ -1,4 +1,5 @@
 #region Using directives
+using SimpleFramework.Xml.Transform;
 using SimpleFramework.Xml;
 using System.Collections.Generic;
 using System;
@@ -10,7 +11,7 @@ public class CurrencyTransformTest : TestCase {
       CurrencyTransform format = new CurrencyTransform();
       String value = format.write(currency);
       Currency copy = format.read(value);
-      assertEquals(currency, copy);
+      AssertEquals(currency, copy);
    }
 }
 }

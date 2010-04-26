@@ -51,7 +51,7 @@ public interface Transform<T> {
    /// <returns>
    /// this returns an appropriate instanced to be used
    /// </returns>
-    public T Read(String value);
+    T Read(String value);
     /// <summary>
     /// This method is used to convert the provided value into an XML
     /// usable format. This is used in the serialization process when
@@ -64,6 +64,6 @@ public interface Transform<T> {
     /// <returns>
     /// this is the string representation of the given value
     /// </returns>
-    public String Write(T value);
+    String Write(T value);
 }
 }

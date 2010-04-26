@@ -1,4 +1,5 @@
 #region Using directives
+using SimpleFramework.Xml.Transform;
 using SimpleFramework.Xml;
 using System;
 #endregion
@@ -9,7 +10,7 @@ public class BigDecimalTransformTest : TestCase {
       BigDecimalTransform format = new BigDecimalTransform();
       String value = format.write(decimal);
       BigDecimal copy = format.read(value);
-      assertEquals(decimal, copy);
+      AssertEquals(decimal, copy);
    }
 }
 }

@@ -9,16 +9,37 @@ namespace SimpleFramework.Xml.Util {
       private const Map<String, String> NAMESPACE = new LinkedHashMap<String, String>();
       private const Map<String, String> USING = new LinkedHashMap<String, String>();
       private const Map<String, String> FILES = new LinkedHashMap<String, String>();
+      private static Map<String, String> IMPORT_TO_USING = new LinkedHashMap<String, String>();
       private const String INDENT = "   ";
+      static {
+         IMPORT_TO_USING.put("SimpleFramework.Xml.Core.*", "using SimpleFramework.Xml.Core;");
+         IMPORT_TO_USING.put("SimpleFramework.Xml.Util.*", "using SimpleFramework.Xml.Convert;");
+         IMPORT_TO_USING.put("SimpleFramework.Xml.Strategy.*", "using SimpleFramework.Xml.Strategy;");
+         IMPORT_TO_USING.put("SimpleFramework.Xml.Filter.*", "using SimpleFramework.Xml.Filter;");
+         IMPORT_TO_USING.put("SimpleFramework.Xml.Stream.*", "using SimpleFramework.Xml.Stream;");
+         IMPORT_TO_USING.put("SimpleFramework.Xml.transform.*", "using SimpleFramework.Xml.Transform;");
+         IMPORT_TO_USING.put("SimpleFramework.Xml.Util.*", "using SimpleFramework.Xml.Util;");
+         IMPORT_TO_USING.put("SimpleFramework.Xml.Util.*", "using SimpleFramework.Xml;");
+         IMPORT_TO_USING.put("java.util.*","using System.Collections.Generic;");
+         IMPORT_TO_USING.put("junit.framework.*", "using SimpleFramework.Xml;");
+      }
       static {
          FILES.put("C:\\Users\\niall\\Workspace\\xml\\src\\test\\java\\org\\simpleframework\\xml", "C:\\Users\\niall\\Workspace\\SimpleFramework\\SimpleFramework\\SimpleFramework\\src\\main\\Xml");
          FILES.put("C:\\Users\\niall\\Workspace\\xml\\src\\test\\java\\org\\simpleframework\\xml\\core", "C:\\Users\\niall\\Workspace\\SimpleFramework\\SimpleFramework\\SimpleFramework\\src\\main\\Xml\\Core");
-         FILES.put("C:\\Users\\niall\\Workspace\\xml\\src\\test\\java\\org\\simpleframework\\xml\\filter", "C:\\Users\\niall\\Workspace\\SimpleFramework\\SimpleFramework\\SimpleFramework\\src\\main\\Xml\\Filter");
+         //FILES.put("C:\\Users\\niall\\Workspace\\xml\\src\\test\\java\\org\\simpleframework\\xml\\filter", "C:\\Users\\niall\\Workspace\\SimpleFramework\\SimpleFramework\\SimpleFramework\\src\\main\\Xml\\Filter");
          FILES.put("C:\\Users\\niall\\Workspace\\xml\\src\\test\\java\\org\\simpleframework\\xml\\strategy", "C:\\Users\\niall\\Workspace\\SimpleFramework\\SimpleFramework\\SimpleFramework\\src\\main\\Xml\\Strategy");
          FILES.put("C:\\Users\\niall\\Workspace\\xml\\src\\test\\java\\org\\simpleframework\\xml\\stream", "C:\\Users\\niall\\Workspace\\SimpleFramework\\SimpleFramework\\SimpleFramework\\src\\main\\Xml\\Stream");
          FILES.put("C:\\Users\\niall\\Workspace\\xml\\src\\test\\java\\org\\simpleframework\\xml\\convert", "C:\\Users\\niall\\Workspace\\SimpleFramework\\SimpleFramework\\SimpleFramework\\src\\main\\Xml\\Convert");
          FILES.put("C:\\Users\\niall\\Workspace\\xml\\src\\test\\java\\org\\simpleframework\\xml\\transform", "C:\\Users\\niall\\Workspace\\SimpleFramework\\SimpleFramework\\SimpleFramework\\src\\main\\Xml\\Transform");
          FILES.put("C:\\Users\\niall\\Workspace\\xml\\src\\test\\java\\org\\simpleframework\\xml\\util", "C:\\Users\\niall\\Workspace\\SimpleFramework\\SimpleFramework\\SimpleFramework\\src\\main\\Xml\\Util");
+         FILES.put("C:\\Users\\niall\\Workspace\\xml\\src\\main\\java\\org\\simpleframework\\xml", "C:\\Users\\niall\\Workspace\\SimpleFramework\\SimpleFramework\\SimpleFramework\\src\\main\\Xml");
+         FILES.put("C:\\Users\\niall\\Workspace\\xml\\src\\main\\java\\org\\simpleframework\\xml\\core", "C:\\Users\\niall\\Workspace\\SimpleFramework\\SimpleFramework\\SimpleFramework\\src\\main\\Xml\\Core");
+         //FILES.put("C:\\Users\\niall\\Workspace\\xml\\src\\main\\java\\org\\simpleframework\\xml\\filter", "C:\\Users\\niall\\Workspace\\SimpleFramework\\SimpleFramework\\SimpleFramework\\src\\main\\Xml\\Filter");
+         FILES.put("C:\\Users\\niall\\Workspace\\xml\\src\\main\\java\\org\\simpleframework\\xml\\strategy", "C:\\Users\\niall\\Workspace\\SimpleFramework\\SimpleFramework\\SimpleFramework\\src\\main\\Xml\\Strategy");
+         FILES.put("C:\\Users\\niall\\Workspace\\xml\\src\\main\\java\\org\\simpleframework\\xml\\stream", "C:\\Users\\niall\\Workspace\\SimpleFramework\\SimpleFramework\\SimpleFramework\\src\\main\\Xml\\Stream");
+         FILES.put("C:\\Users\\niall\\Workspace\\xml\\src\\main\\java\\org\\simpleframework\\xml\\convert", "C:\\Users\\niall\\Workspace\\SimpleFramework\\SimpleFramework\\SimpleFramework\\src\\main\\Xml\\Convert");
+         FILES.put("C:\\Users\\niall\\Workspace\\xml\\src\\main\\java\\org\\simpleframework\\xml\\transform", "C:\\Users\\niall\\Workspace\\SimpleFramework\\SimpleFramework\\SimpleFramework\\src\\main\\Xml\\Transform");
+         FILES.put("C:\\Users\\niall\\Workspace\\xml\\src\\main\\java\\org\\simpleframework\\xml\\util", "C:\\Users\\niall\\Workspace\\SimpleFramework\\SimpleFramework\\SimpleFramework\\src\\main\\Xml\\Util");
       }
       static {
          USING.put("import SimpleFramework.Xml.Util.*","using SimpleFramework.Xml.Util;");
@@ -43,10 +64,11 @@ namespace SimpleFramework.Xml.Util {
          STAGE_ONE.Add(CanonicalizeFile.class);
          STAGE_ONE.Add(DefineType.class);
          STAGE_ONE.Add(PopulateUsing.class);
-         STAGE_ONE.Add(AddUsing.class);
          STAGE_ONE.Add(StripImports.class);
+         STAGE_ONE.Add(AddUsing.class);
          STAGE_ONE.Add(CreateNamespace.class);
          STAGE_ONE.Add(GetFields.class);
+         STAGE_ONE.Add(ConvertAnnotationAttributes.class);
          STAGE_ONE.Add(ReplaceComments.class);
          STAGE_ONE.Add(ReplaceDocumentation.class);
          STAGE_ONE.Add(ReplaceKeyWords.class);
@@ -54,22 +76,31 @@ namespace SimpleFramework.Xml.Util {
          STAGE_ONE.Add(StripCrap.class);
          STAGE_ONE.Add(ReplaceLicense.class);
          STAGE_ONE.Add(SubstituteAnnotations.class);
-         STAGE_ONE.Add(ConvertAnnotationAttributes.class);
          STAGE_ONE.Add(SetAnnotationAttributes.class);
          STAGE_ONE.Add(ConvertClassBeanMethods.class);
          STAGE_ONE.Add(ReplaceAnnotations.class);
       }
       static {
          STAGE_TWO.Add(SubstituteMethods.class);
+         //STAGE_TWO.Add(StripPublicFromInterfaces.class);
       }
       public void Main(String list[]) {
+         Set<String> filesDone = new HashSet<String>();
          SourceProject project = new SourceProject();
          for(String from : FILES.keySet()) {
-            List<File> files = getFiles(new File(from));
+            List<File> files = getFiles(new File(from), false);
             String to = FILES.get(from);
-           // files = Collections.singletonList(new File("C:\\Users\\niall\\Workspace\\xml\\src\\main\\java\\org\\simpleframework\\xml\\core\\ParameterContact.java"));
             for(File file : files) {
-               SourceDetails details = new SourceDetails(file, new File(to, file.Name.replaceAll("\\.java", ".cs")));
+               File result = new File(to, file.Name.replaceAll("\\.java", ".cs"));
+               if(filesDone.contains(file.getCanonicalPath())) {
+                  throw new IllegalStateException("File '"+file.getCanonicalPath()+"' has already been examined");
+               }
+               if(filesDone.contains(result.getCanonicalPath())) {
+                  throw new IllegalStateException("Result '"+result.getCanonicalPath()+"' has already been written");
+               }
+               filesDone.Add(file.getCanonicalPath());
+               filesDone.Add(result.getCanonicalPath());
+               SourceDetails details = new SourceDetails(file, result);
                String text = getFile(file);
                details.Text = text;
                for(Class<? : ConversionPhase> phaseType : STAGE_ONE) {
@@ -97,6 +128,9 @@ namespace SimpleFramework.Xml.Util {
          for(SourceDetails details : project.GetDetails()) {
             File saveAs = details.Destination;
             save(saveAs, details.Text);
+            if(!filesDone.contains(saveAs.getCanonicalPath())) {
+               throw new IllegalStateException("Can not save to '"+saveAs.getCanonicalPath()+"' it has not a valid path");
+            }
             newFiles.Add(saveAs.getCanonicalPath().replaceAll("^.*src", "src"));
          }
          for(String entry : newFiles) {
@@ -217,6 +251,11 @@ namespace SimpleFramework.Xml.Util {
          //public List<MethodSignature> GetMethods() {
          //   return methods;
          //}
+            for(String pattern : IMPORT_TO_USING.keySet()) {
+               if(importClass.matches(pattern)) {
+                  using.Add(IMPORT_TO_USING.get(pattern));
+               }
+            }
             imports.Add(importClass);
          }
          public List<String> Imports {
@@ -329,9 +368,6 @@ namespace SimpleFramework.Xml.Util {
          }
          public abstract String Convert(String source, SourceDetails details, SourceProject project);
       }
-      private static interface ConversionPhase {
-         public String Convert(String source, SourceDetails details);
-      }
       public static class SubstituteMethods : SubstitutionPhase {
          public String Convert(String source, SourceDetails details, SourceProject project) {
             List<String> lines = stripLines(source);
@@ -347,11 +383,35 @@ namespace SimpleFramework.Xml.Util {
             return writer.ToString();
          }
       }
+      public static class StripPublicFromInterfaces : SubstitutionPhase {
+         public String Convert(String source, SourceDetails details, SourceProject project) {
+            if(details.Type == SourceType.INTERFACE) {
+               Pattern pattern = Pattern.compile("^(\\s+)public\\s+(.*\\)\\s*;.*$)");
+               List<String> lines = stripLines(source);
+               StringWriter writer = new StringWriter();
+               for(String line : lines) {
+                  Matcher matcher = pattern.matcher(line);
+                  if(matcher.matches()) {
+                     String indent = matcher.group(1);
+                     String remainder = matcher.group(2);
+                     writer.append(indent);
+                     writer.append(remainder);
+                     writer.append("\n");
+                  } else {
+                     writer.append(line);
+                     writer.append("\n");
+                  }
+               }
+               return writer.ToString();
+            }
+            return source;
+         }
+      }
+      private static interface ConversionPhase {
+         public String Convert(String source, SourceDetails details);
+      }
       public static class CanonicalizeFile : ConversionPhase {
          public String Convert(String source, SourceDetails details) {
-      //      if(source.indexOf('\t') != -1) {
-        //       throw new Exception("File contains tab "+details.Source);
-          //  }
             return source.replaceAll("\r\n", "\n").replaceAll("\r", "\n");
          }
       }
@@ -400,7 +460,7 @@ namespace SimpleFramework.Xml.Util {
                   writer.append("public ");
                   writer.append(type);
                   writer.append(" ");
-                  writer.append(method);
+                  writer.append(ConvertMethod(method, MethodType.NORMAL));
                   writer.append(" {\n");
                   writer.append(indent);
                   writer.append("   get {\n");
@@ -1111,6 +1171,9 @@ namespace SimpleFramework.Xml.Util {
             TOKENS.put(":", ":");
             TOKENS.put("\\)\\s*throws\\s.*\\{", ") {");
             TOKENS.put("\\)\\s*throws\\s.*;", ");");
+            TOKENS.put("assertEquals\\(", "AssertEquals(");
+            TOKENS.put("assertNull\\(", "AssertNull(");
+            TOKENS.put("assertNotNull\\(", "AssertNotNull(");
             TOKENS.put("SimpleFramework.Xml.Util","SimpleFramework.Xml.Util");
             TOKENS.put("SimpleFramework.Xml.Filter", "SimpleFramework.Xml.Filter");
             TOKENS.put("SimpleFramework.Xml.Strategy", "SimpleFramework.Xml.Strategy");

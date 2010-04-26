@@ -19,6 +19,7 @@
 #endregion
 #region Using directives
 using SimpleFramework.Xml.Util;
+using SimpleFramework.Xml;
 using System;
 #endregion
 package SimpleFramework.Xml.transform;

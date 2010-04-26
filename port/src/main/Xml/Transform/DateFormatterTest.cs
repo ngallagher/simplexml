@@ -1,4 +1,5 @@
 #region Using directives
+using SimpleFramework.Xml;
 using System.Collections.Generic;
 using System;
 #endregion
@@ -12,7 +13,7 @@ public class DateFormatterTest : TestCase {
       Date date = new Date();
       String value = formatter.Write(date);
       Date copy = formatter.Read(value);
-      assertEquals(date, copy);
+      AssertEquals(date, copy);
    }
    public void TestPerformance() {
       CountDownLatch simpleDateFormatGate = new CountDownLatch(CONCURRENCY);
@@ -62,7 +63,7 @@ public class DateFormatterTest : TestCase {
             for(int i = 0; i < COUNT; i++) {
                String value = formatter.Write(date);
                Date copy = formatter.Read(value);
-               assertEquals(date, copy);
+               AssertEquals(date, copy);
             }
          }catch(Exception e) {
             assertTrue(false);
@@ -92,7 +93,7 @@ public class DateFormatterTest : TestCase {
             for(int i = 0; i < COUNT; i++) {
                String value = new SimpleDateFormat(format).format(date);
                Date copy = new SimpleDateFormat(format).parse(value);
-               assertEquals(date, copy);
+               AssertEquals(date, copy);
             }
          }catch(Exception e) {
             assertTrue(false);
@@ -123,7 +124,7 @@ public class DateFormatterTest : TestCase {
                synchronized(format) {
                   String value = format.format(date);
                   Date copy = format.parse(value);
-                  assertEquals(date, copy);
+                  AssertEquals(date, copy);
                }
             }
          }catch(Exception e) {

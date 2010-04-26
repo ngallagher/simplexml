@@ -1,5 +1,6 @@
 #region Using directives
 using SimpleFramework.Xml.Core;
+using SimpleFramework.Xml.Transform;
 using SimpleFramework.Xml;
 using System.Collections.Generic;
 using System;
@@ -38,8 +39,8 @@ public class TimeTransformTest : ValidationTestCase {
       DateTransform format = new DateTransform(Time.class);
       String value = format.write(date);
       Date copy = format.read(value);
-      assertEquals(date, copy);
-      assertEquals(copy.getTime(), now);
+      AssertEquals(date, copy);
+      AssertEquals(copy.getTime(), now);
    }
    public void TestPersistence() {
       long now = System.currentTimeMillis();

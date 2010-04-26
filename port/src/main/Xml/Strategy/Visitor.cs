@@ -55,7 +55,7 @@ namespace SimpleFramework.Xml.Strategy {
       /// <param name="node">
       /// this is the XML element to be intercepted
       /// </param>
-      public void Read(Type type, NodeMap<InputNode> node);
+      void Read(Type type, NodeMap<InputNode> node);
       /// <summary>
       /// This is used to intercept an XML element after it is written
       /// by the underlying <c>Strategy</c> implementation. When
@@ -70,6 +70,6 @@ namespace SimpleFramework.Xml.Strategy {
       /// <param name="node">
       /// this is the XML element to be intercepted
       /// </param>
-      public void Write(Type type, NodeMap<OutputNode> node);
+      void Write(Type type, NodeMap<OutputNode> node);
    }
 }

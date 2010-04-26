@@ -1,5 +1,6 @@
 #region Using directives
 using SimpleFramework.Xml.Stream;
+using SimpleFramework.Xml;
 using System.Collections.Generic;
 using System;
 #endregion
@@ -34,10 +35,10 @@ namespace SimpleFramework.Xml.Strategy {
          InputNode event = NodeBuilder.read(reader);
          NodeMap attributes = event.getAttributes();
          Value value = strategy.read(new Entry(String[].class), attributes, map);
-         assertEquals(12, value.getLength());
-         assertEquals(null, value.getValue());
-         assertEquals(String.class, value.Type);
-         assertEquals(false, value.isReference());
+         AssertEquals(12, value.getLength());
+         AssertEquals(null, value.getValue());
+         AssertEquals(String.class, value.Type);
+         AssertEquals(false, value.isReference());
       }
       public void TestObject() {
          Dictionary map = new HashMap();
@@ -46,10 +47,10 @@ namespace SimpleFramework.Xml.Strategy {
          InputNode event = NodeBuilder.read(reader);
          NodeMap attributes = event.getAttributes();
          Value value = strategy.read(new Entry(String.class), attributes, map);
-         assertEquals(0, value.getLength());
-         assertEquals(null, value.getValue());
-         assertEquals(String.class, value.Type);
-         assertEquals(false, value.isReference());
+         AssertEquals(0, value.getLength());
+         AssertEquals(null, value.getValue());
+         AssertEquals(String.class, value.Type);
+         AssertEquals(false, value.isReference());
       }
       public void TestReference() {
          StringReader reader = new StringReader(REFERENCE);
@@ -61,10 +62,10 @@ namespace SimpleFramework.Xml.Strategy {
          graph.put("2", "second text");
          graph.put("3", "third text");
          Value value = graph.read(new Entry(String.class), attributes);
-         assertEquals(0, value.getLength());
-         assertEquals("first text", value.getValue());
-         assertEquals(String.class, value.Type);
-         assertEquals(true, value.isReference());
+         AssertEquals(0, value.getLength());
+         AssertEquals("first text", value.getValue());
+         AssertEquals(String.class, value.Type);
+         AssertEquals(true, value.isReference());
       }
    }
 }

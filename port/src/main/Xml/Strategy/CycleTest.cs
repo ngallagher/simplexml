@@ -55,28 +55,28 @@ namespace SimpleFramework.Xml.Strategy {
          example.Add(one);
          example.Add(two);
          example.Add(threeDuplicate);
-         assertEquals(example.Get(0).value, "one");
-         assertEquals(example.Get(1).value, "two");
-         assertEquals(example.Get(2).value, "three");
-         assertEquals(example.Get(3).value, "one");
-         assertEquals(example.Get(4).value, "two");
-         assertEquals(example.Get(5).value, "three");
+         AssertEquals(example.Get(0).value, "one");
+         AssertEquals(example.Get(1).value, "two");
+         AssertEquals(example.Get(2).value, "three");
+         AssertEquals(example.Get(3).value, "one");
+         AssertEquals(example.Get(4).value, "two");
+         AssertEquals(example.Get(5).value, "three");
          assertTrue(example.Get(0) == example.Get(3));
          assertTrue(example.Get(1) == example.Get(4));
          assertFalse(example.Get(2) == example.Get(5));
          StringWriter out = new StringWriter();
-         persister.write(example, System.out);
-         persister.write(example, out);
-         example = persister.read(CycleExample.class, out.toString());
-         assertEquals(example.Get(0).value, "one");
-         assertEquals(example.Get(1).value, "two");
-         assertEquals(example.Get(2).value, "three");
-         assertEquals(example.Get(3).value, "one");
-         assertEquals(example.Get(4).value, "two");
+         persister.Write(example, System.out);
+         persister.Write(example, out);
+         example = persister.Read(CycleExample.class, out.toString());
+         AssertEquals(example.Get(0).value, "one");
+         AssertEquals(example.Get(1).value, "two");
+         AssertEquals(example.Get(2).value, "three");
+         AssertEquals(example.Get(3).value, "one");
+         AssertEquals(example.Get(4).value, "two");
          assertTrue(example.Get(0) == example.Get(3));
          assertTrue(example.Get(1) == example.Get(4));
          assertFalse(example.Get(2) == example.Get(5));
-         validate(example, persister);
+         Validate(example, persister);
       }
       public void TestMemory() {
          CycleExample example = new CycleExample();
@@ -91,15 +91,15 @@ namespace SimpleFramework.Xml.Strategy {
    	   example.Add(two);
    	   example.Add(threeDuplicate);
    	   StringWriter out = new StringWriter();
-   	   persister.write(example, System.out);
-   	   persister.write(example, out);
+   	   persister.Write(example, System.out);
+   	   persister.Write(example, out);
    	   for(int i = 0; i < ITERATIONS; i++) {
-   		  persister.write(example, new StringWriter());
+   		  persister.Write(example, new StringWriter());
    	   }
    	   for(int i = 0; i < ITERATIONS; i++) {
-   	      persister.read(CycleExample.class, out.toString());
+   	      persister.Read(CycleExample.class, out.toString());
    	   }
-   	   validate(example, persister);
+   	   Validate(example, persister);
       }
    }
 }

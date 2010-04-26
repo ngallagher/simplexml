@@ -1,4 +1,5 @@
 #region Using directives
+using SimpleFramework.Xml.Convert;
 using SimpleFramework.Xml.Core;
 using SimpleFramework.Xml.Strategy;
 using SimpleFramework.Xml.Util;
@@ -67,18 +68,18 @@ namespace SimpleFramework.Xml.Util {
          serializer.write(list, writer);
          String text = writer.toString();
          EntryList copy = serializer.read(EntryList.class, text);
-         assertEquals(copy.List.get(0).getName(), list.List.get(0).getName());
-         assertEquals(copy.List.get(0).getValue(), list.List.get(0).getValue());
-         assertEquals(copy.List.get(1).getName(), list.List.get(1).getName());
-         assertEquals(copy.List.get(1).getValue(), list.List.get(1).getValue());
-         assertEquals(copy.List.get(2).getName(), list.List.get(2).getName());
-         assertEquals(copy.List.get(2).getValue(), list.List.get(2).getValue());
-         assertEquals(copy.OtherList.get(0).getName(), list.OtherList.get(0).getName());
-         assertEquals(copy.OtherList.get(0).getValue(), list.OtherList.get(0).getValue());
-         assertEquals(copy.OtherList.get(1).getName(), list.OtherList.get(1).getName());
-         assertEquals(copy.OtherList.get(1).getValue(), list.OtherList.get(1).getValue());
-         assertEquals(copy.OtherList.get(2).getName(), list.OtherList.get(2).getName());
-         assertEquals(copy.OtherList.get(2).getValue(), list.OtherList.get(2).getValue());
+         AssertEquals(copy.List.get(0).getName(), list.List.get(0).getName());
+         AssertEquals(copy.List.get(0).Value, list.List.get(0).Value);
+         AssertEquals(copy.List.get(1).getName(), list.List.get(1).getName());
+         AssertEquals(copy.List.get(1).Value, list.List.get(1).Value);
+         AssertEquals(copy.List.get(2).getName(), list.List.get(2).getName());
+         AssertEquals(copy.List.get(2).Value, list.List.get(2).Value);
+         AssertEquals(copy.OtherList.get(0).getName(), list.OtherList.get(0).getName());
+         AssertEquals(copy.OtherList.get(0).Value, list.OtherList.get(0).Value);
+         AssertEquals(copy.OtherList.get(1).getName(), list.OtherList.get(1).getName());
+         AssertEquals(copy.OtherList.get(1).Value, list.OtherList.get(1).Value);
+         AssertEquals(copy.OtherList.get(2).getName(), list.OtherList.get(2).getName());
+         AssertEquals(copy.OtherList.get(2).Value, list.OtherList.get(2).Value);
          System.out.println(text);
       }
    }

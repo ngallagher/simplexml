@@ -157,67 +157,67 @@ namespace SimpleFramework.Xml.Strategy {
          systemSerializer = new Persister(strategy);
       }
       public void TestBasicDocument() {
-         RootEntry entry = (RootEntry)systemSerializer.read(RootEntry.class, BASIC_ENTRY);
+         RootEntry entry = (RootEntry)systemSerializer.Read(RootEntry.class, BASIC_ENTRY);
          long start = System.currentTimeMillis();
          for(int i = 0; i < ITERATIONS; i++) {
-            systemSerializer.read(RootEntry.class, BASIC_ENTRY);
+            systemSerializer.Read(RootEntry.class, BASIC_ENTRY);
          }
          long duration = System.currentTimeMillis() - start;
          System.err.printf("Took '%s' ms to process %s documents\n", duration, ITERATIONS);
-         systemSerializer.write(entry, System.out);
+         systemSerializer.Write(entry, System.out);
          StringWriter out = new StringWriter();
-         systemSerializer.write(entry, out);
-         validate(entry, systemSerializer);
-         entry = (RootEntry)systemSerializer.read(RootEntry.class, out.toString());
-         systemSerializer.write(entry, System.out);
+         systemSerializer.Write(entry, out);
+         Validate(entry, systemSerializer);
+         entry = (RootEntry)systemSerializer.Read(RootEntry.class, out.toString());
+         systemSerializer.Write(entry, System.out);
       }
       public void TestTemplateDocument() {
-         RootEntry entry = (RootEntry)systemSerializer.read(RootEntry.class, TEMPLATE_ENTRY);
+         RootEntry entry = (RootEntry)systemSerializer.Read(RootEntry.class, TEMPLATE_ENTRY);
          long start = System.currentTimeMillis();
          for(int i = 0; i < ITERATIONS; i++) {
-            systemSerializer.read(RootEntry.class, TEMPLATE_ENTRY);
+            systemSerializer.Read(RootEntry.class, TEMPLATE_ENTRY);
          }
          long duration = System.currentTimeMillis() - start;
          System.err.printf("Took '%s' ms to process %s documents with templates\n", duration, ITERATIONS);
-         systemSerializer.write(entry, System.out);
+         systemSerializer.Write(entry, System.out);
          StringWriter out = new StringWriter();
-         systemSerializer.write(entry, out);
-         validate(entry, systemSerializer);
-         entry = (RootEntry)systemSerializer.read(RootEntry.class, out.toString());
-         systemSerializer.write(entry, System.out);
+         systemSerializer.Write(entry, out);
+         Validate(entry, systemSerializer);
+         entry = (RootEntry)systemSerializer.Read(RootEntry.class, out.toString());
+         systemSerializer.Write(entry, System.out);
       }
       public void TestEmptyFilter() {
          systemSerializer = new Persister(strategy, new EmptyFilter());
-         RootEntry entry = (RootEntry)systemSerializer.read(RootEntry.class, TEMPLATE_ENTRY);
+         RootEntry entry = (RootEntry)systemSerializer.Read(RootEntry.class, TEMPLATE_ENTRY);
          long start = System.currentTimeMillis();
          for(int i = 0; i < ITERATIONS; i++) {
-            systemSerializer.read(RootEntry.class, TEMPLATE_ENTRY);
+            systemSerializer.Read(RootEntry.class, TEMPLATE_ENTRY);
          }
          long duration = System.currentTimeMillis() - start;
          System.err.printf("Took '%s' ms to process %s documents with an empty filter\n", duration, ITERATIONS);
-         systemSerializer.write(entry, System.out);
+         systemSerializer.Write(entry, System.out);
          StringWriter out = new StringWriter();
-         systemSerializer.write(entry, out);
-         validate(entry, systemSerializer);
-         entry = (RootEntry)systemSerializer.read(RootEntry.class, out.toString());
-         systemSerializer.write(entry, System.out);
+         systemSerializer.Write(entry, out);
+         Validate(entry, systemSerializer);
+         entry = (RootEntry)systemSerializer.Read(RootEntry.class, out.toString());
+         systemSerializer.Write(entry, System.out);
       }
       public void TestBasicWrite() {
-         RootEntry entry = (RootEntry)systemSerializer.read(RootEntry.class, BASIC_ENTRY);
+         RootEntry entry = (RootEntry)systemSerializer.Read(RootEntry.class, BASIC_ENTRY);
          long start = System.currentTimeMillis();
          entry.constant = ">><<"; // this should be escaped
          entry.text = "this is text>> some more<<"; // this should be escaped
          for(int i = 0; i < ITERATIONS; i++) {
-            systemSerializer.write(entry, new StringWriter());
+            systemSerializer.Write(entry, new StringWriter());
          }
          long duration = System.currentTimeMillis() - start;
          System.err.printf("Took '%s' ms to write %s documents\n", duration, ITERATIONS);
-         systemSerializer.write(entry, System.out);
+         systemSerializer.Write(entry, System.out);
          StringWriter out = new StringWriter();
-         systemSerializer.write(entry, out);
-         validate(entry, systemSerializer);
-         entry = (RootEntry)systemSerializer.read(RootEntry.class, out.toString());
-         systemSerializer.write(entry, System.out);
+         systemSerializer.Write(entry, out);
+         Validate(entry, systemSerializer);
+         entry = (RootEntry)systemSerializer.Read(RootEntry.class, out.toString());
+         systemSerializer.Write(entry, System.out);
       }
    }
 }

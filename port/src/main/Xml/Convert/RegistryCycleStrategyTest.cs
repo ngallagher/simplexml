@@ -1,4 +1,5 @@
 #region Using directives
+using SimpleFramework.Xml.Convert;
 using SimpleFramework.Xml.Core;
 using SimpleFramework.Xml.Strategy;
 using SimpleFramework.Xml.Util;
@@ -44,11 +45,11 @@ namespace SimpleFramework.Xml.Util {
          persister.write(bucket, System.out);
          String text = writer.toString();
          PetBucket copy = persister.read(PetBucket.class, text);
-         assertEquals(copy.Pets.get(0), bucket.Pets.get(0));
-         assertEquals(copy.Pets.get(1), bucket.Pets.get(1));
-         assertEquals(copy.Pets.get(2), bucket.Pets.get(2));
-         assertEquals(copy.Pets.get(3), bucket.Pets.get(3));
-         assertEquals(copy.Pets.get(4), bucket.Pets.get(4));
+         AssertEquals(copy.Pets.get(0), bucket.Pets.get(0));
+         AssertEquals(copy.Pets.get(1), bucket.Pets.get(1));
+         AssertEquals(copy.Pets.get(2), bucket.Pets.get(2));
+         AssertEquals(copy.Pets.get(3), bucket.Pets.get(3));
+         AssertEquals(copy.Pets.get(4), bucket.Pets.get(4));
          assertTrue(copy.Pets.get(0) == copy.Pets.get(4)); // cycle
          assertTrue(copy.Pets.get(1) == copy.Pets.get(3)); // cycle
          assertElementExists(text, "/petBucket");

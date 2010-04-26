@@ -41,6 +41,6 @@ namespace SimpleFramework.Xml.Util {
       /// <returns>
       /// this will return the annotation if it is found
       /// </returns>
-      public <T : Annotation> T scan(Class<T> type);
+      <T : Annotation> T scan(Class<T> type);
    }
 }

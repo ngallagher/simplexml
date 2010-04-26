@@ -1,4 +1,5 @@
 #region Using directives
+using SimpleFramework.Xml.Convert;
 using SimpleFramework.Xml.Core;
 using SimpleFramework.Xml.Strategy;
 using SimpleFramework.Xml.Util;
@@ -56,11 +57,11 @@ namespace SimpleFramework.Xml.Util {
          persister.write(list, System.out);
          String text = writer.toString();
          EntryListExample copy = persister.read(EntryListExample.class, text);
-         assertEquals(copy.Entries.get(0), list.Entries.get(0));
-         assertEquals(copy.Entries.get(1), list.Entries.get(1));
-         assertEquals(copy.Entries.get(2), list.Entries.get(2));
-         assertEquals(copy.Entries.get(3), list.Entries.get(3));
-         assertEquals(copy.Entries.get(4), list.Entries.get(4));
+         AssertEquals(copy.Entries.get(0), list.Entries.get(0));
+         AssertEquals(copy.Entries.get(1), list.Entries.get(1));
+         AssertEquals(copy.Entries.get(2), list.Entries.get(2));
+         AssertEquals(copy.Entries.get(3), list.Entries.get(3));
+         AssertEquals(copy.Entries.get(4), list.Entries.get(4));
          assertTrue(copy.Entries.get(2) == copy.Entries.get(4)); // cycle
          assertTrue(copy.Entries.get(1) == copy.Entries.get(3)); // cycle
          assertElementExists(text, "/entryListExample");

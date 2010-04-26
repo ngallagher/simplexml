@@ -56,7 +56,7 @@ namespace SimpleFramework.Xml.Util {
       /// <returns>
       /// the object instance resulting from the deserialization
       /// </returns>
-      public T Read(InputNode node);
+      T Read(InputNode node);
       /// <summary>
       /// This <c>write</c> method is used to serialize an object
       /// to XML. The serialization should be performed in such a way
@@ -70,6 +70,6 @@ namespace SimpleFramework.Xml.Util {
       /// <param name="value">
       /// this is the value that is to be serialized
       /// </param>
-      public void Write(OutputNode node, T value);
+      void Write(OutputNode node, T value);
    }
 }

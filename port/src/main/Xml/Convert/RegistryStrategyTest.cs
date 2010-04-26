@@ -1,4 +1,5 @@
 #region Using directives
+using SimpleFramework.Xml.Convert;
 using SimpleFramework.Xml.Core;
 using SimpleFramework.Xml.Strategy;
 using SimpleFramework.Xml.Util;
@@ -37,10 +38,10 @@ namespace SimpleFramework.Xml.Util {
          persister.write(shop, System.out);
          String text = writer.toString();
          PetShop newShop = persister.read(PetShop.class, text);
-         assertEquals("Lassie", newShop.GetPet("Lassie").getName());
-         assertEquals(10, newShop.GetPet("Lassie").getAge());
-         assertEquals("Kitty", newShop.GetPet("Kitty").getName());
-         assertEquals(2, newShop.GetPet("Kitty").getAge());
+         AssertEquals("Lassie", newShop.GetPet("Lassie").getName());
+         AssertEquals(10, newShop.GetPet("Lassie").getAge());
+         AssertEquals("Kitty", newShop.GetPet("Kitty").getName());
+         AssertEquals(2, newShop.GetPet("Kitty").getAge());
          assertElementExists(text, "/petShop");
          assertElementExists(text, "/petShop/pets");
          assertElementExists(text, "/petShop/pets/pet[0]");

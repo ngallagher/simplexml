@@ -20,7 +20,7 @@ namespace SimpleFramework.Xml.Util {
          " * permissions and limitations under the License.\n"+
          " */";
       public void Main(String[] list) {
-         List<File> files = GetFiles(new File(list[0]));
+         List<File> files = GetFiles(new File(list[0]), true);
          Pattern pattern = Pattern.compile(LGPL, Pattern.DOTALL | Pattern.MULTILINE);
          for(File file : files) {
             String text = GetFile(file);
@@ -47,12 +47,14 @@ namespace SimpleFramework.Xml.Util {
          }
          return out.toString("UTF-8");
       }
-      public List<File> GetFiles(File root) {
+      public List<File> GetFiles(File root, bool recursive) {
          List<File> files = new ArrayList<File>();
          File[] fileList = root.listFiles();
          for(File file : fileList) {
             if(file.isDirectory() && !file.getName().equals(".svn")) {
-               files.addAll(GetFiles(file));
+               if(recursive) {
+                  files.addAll(GetFiles(file, recursive));
+               }
             } else if(file.getName().endsWith(".java")){
                files.add(file);
             }
