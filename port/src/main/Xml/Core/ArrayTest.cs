@@ -181,7 +181,7 @@ namespace SimpleFramework.Xml.Core {
          private char[] array;
       }
       [Root(Name="root")]
-      private static class DifferentArrayExample {
+      private class DifferentArrayExample {
          [ElementArray(Name="array", Entry="entry")]
          private Text[] array;
          public DifferentArrayExample() {
