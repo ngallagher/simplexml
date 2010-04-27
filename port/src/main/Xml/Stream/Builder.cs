@@ -77,14 +77,14 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this returns the styled name of the XML attribute
       /// </returns>
-      public String GetAttribute(String name) {
-         String value = attributes[name];
+      public override String GetAttribute(String name) {
+         String value = attributes.Find(name);
          if(value != null) {
             return value;
          }
          value = style.GetAttribute(name);
          if(value != null) {
-            attributes[name] = value;
+            attributes.Add(name, value);
          }
          return value;
       }
@@ -100,14 +100,14 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this returns the styled name of the XML element
       /// </returns>
-      public String GetElement(String name) {
-         String value = elements[name];
+      public override String GetElement(String name) {
+         String value = elements.Find(name);
          if(value != null) {
             return value;
          }
          value = style.GetElement(name);
          if(value != null) {
-            elements[name] = value;
+            elements.Add(name, value);
          }
          return value;
       }
@@ -152,6 +152,13 @@ namespace SimpleFramework.Xml.Stream {
          /// XML attributes and elements and the styled values.
          /// </summary>
          public Cache()  {
+         }
+         public String Find(String name) {
+            bool exists = ContainsKey(name);
+            if(exists) {
+               return this[name];
+            }
+            return null;
          }
       }
    }

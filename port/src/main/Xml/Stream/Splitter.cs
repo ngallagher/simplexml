@@ -283,7 +283,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <param name="len">
       /// this is the length of the token to be parsed
       /// </param>
-      public virtual void Parse(char[] text, int off, int len);
+      public abstract void Parse(char[] text, int off, int len);
       /// <summary>
       /// This is used to commit the provided text in to the style that
       /// is required. Committing the text to the buffer assembles the
@@ -298,6 +298,6 @@ namespace SimpleFramework.Xml.Stream {
       /// <param name="len">
       /// this is the length of the token to be committed
       /// </param>
-      public virtual void Commit(char[] text, int off, int len);
+      public abstract void Commit(char[] text, int off, int len);
    }
 }
