@@ -75,7 +75,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this returns the styled name of the XML attribute
       /// </returns>
-      public String GetAttribute(String name) {
+      public override String GetAttribute(String name) {
          if(name != null) {
             return new Attribute(name, attribute).Process();
          }
@@ -93,7 +93,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this returns the styled name of the XML element
       /// </returns>
-      public String GetElement(String name) {
+      public override String GetElement(String name) {
          if(name != null) {
             return new Element(name, element).Process();
          }
