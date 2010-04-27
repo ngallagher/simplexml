@@ -18,6 +18,7 @@
 //
 #endregion
 #region Using directives
+using System.IO;
 using System;
 #endregion
 namespace SimpleFramework.Xml.Stream {
@@ -37,47 +38,47 @@ namespace SimpleFramework.Xml.Stream {
       /// <summary>
       /// Represents the prefix used when declaring an XML namespace.
       /// </summary>
-      private const char[] NAMESPACE = { 'x', 'm', 'l', 'n', 's' };
+      private const char[] Namespace = { 'x', 'm', 'l', 'n', 's' };
       /// <summary>
       /// Represents the XML escape sequence for the less than sign.
       /// </summary>
-      private const char[] LESS = { '&', 'l', 't', ';'};
+      private const char[] Less = { '&', 'l', 't', ';'};
       /// <summary>
       /// Represents the XML escape sequence for the greater than sign.
       /// </summary>
-      private const char[] GREATER = { '&', 'g', 't', ';' };
+      private const char[] Greater = { '&', 'g', 't', ';' };
       /// <summary>
       /// Represents the XML escape sequence for the double quote.
       /// </summary>
-      private const char[] DOUBLE = { '&', 'q', 'u', 'o', 't', ';' };
+      private const char[] Double = { '&', 'q', 'u', 'o', 't', ';' };
       /// <summary>
       /// Represents the XML escape sequence for the single quote.
       /// </summary>
-      private const char[] SINGLE = { '&', 'a', 'p', 'o', 's', ';' };
+      private const char[] Single = { '&', 'a', 'p', 'o', 's', ';' };
       /// <summary>
       /// Represents the XML escape sequence for the ampersand sign.
       /// </summary>
-      private const char[] AND = { '&', 'a', 'm', 'p', ';' };
+      private const char[] And = { '&', 'a', 'm', 'p', ';' };
       /// <summary>
       /// This is used to open a comment section within the document.
       /// </summary>
-      private const char[] OPEN = { '<', '!', '-', '-', ' ' };
+      private const char[] Open = { '<', '!', '-', '-', ' ' };
       /// <summary>
       /// This is used to close a comment section within the document.
       /// </summary>
-      private const char[] CLOSE = { ' ', '-', '-', '>' };
+      private const char[] Close = { ' ', '-', '-', '>' };
       /// <summary>
       /// Output buffer used to write the generated XML result to.
       /// </summary>
       private OutputBuffer buffer;
       /// <summary>
+      /// This is the writer that is used to write the XML document.
+      /// </summary>
+      private TextWriter result;
+      /// <summary>
       /// Creates the indentations that are used buffer the XML file.
       /// </summary>
       private Indenter indenter;
-      /// <summary>
-      /// This is the writer that is used to write the XML document.
-      /// </summary>
-      private Writer result;
       /// <summary>
       /// Represents the prolog to insert at the start of the document.
       /// </summary>
@@ -97,11 +98,11 @@ namespace SimpleFramework.Xml.Stream {
       /// <param name="format">
       /// this is the format object to use
       /// </param>
-      public Formatter(Writer result, Format format){
-          this.result = new BufferedWriter(result);
-          this.indenter = new Indenter(format);
-          this.buffer = new OutputBuffer();
-          this.prolog = format.getProlog();
+      public Formatter(TextWriter result, Format format){
+         this.indenter = new Indenter(format);
+         this.buffer = new OutputBuffer();
+         this.prolog = format.Prolog;
+         this.result = result;
       }
       /// <summary>
       /// This is used to write a prolog to the specified output. This is
@@ -126,16 +127,16 @@ namespace SimpleFramework.Xml.Stream {
       /// </param>
       public void WriteComment(String comment) {
          String text = indenter.Top();
-         if(last == Tag.START) {
+         if(last == Tag.Start) {
             Append('>');
          }
          if(text != null) {
             Append(text);
-            Append(OPEN);
+            Append(Open);
             Append(comment);
-            Append(CLOSE);
+            Append(Close);
          }
-         last = Tag.COMMENT;
+         last = Tag.Comment;
       }
       /// <summary>
       /// This method is used to write a start tag for an element. If a
@@ -148,7 +149,7 @@ namespace SimpleFramework.Xml.Stream {
       /// </param>
       public void WriteStart(String name, String prefix) {
          String text = indenter.Push();
-         if(last == Tag.START) {
+         if(last == Tag.Start) {
             Append('>');
          }
          Flush();
@@ -159,7 +160,7 @@ namespace SimpleFramework.Xml.Stream {
             Append(':');
          }
          Append(name);
-         last = Tag.START;
+         last = Tag.Start;
       }
       /// <summary>
       /// This is used to write a name value attribute pair. If the last
@@ -173,7 +174,7 @@ namespace SimpleFramework.Xml.Stream {
       /// this is the value to assigne to the attribute
       /// </param>
       public void WriteAttribute(String name, String value, String prefix) {
-         if(last != Tag.START) {
+         if(last != Tag.Start) {
             throw new NodeException("Start element required");
          }
          Write(' ');
@@ -195,11 +196,11 @@ namespace SimpleFramework.Xml.Stream {
       /// this is the prefix to used for the namespace
       /// </param>
       public void WriteNamespace(String reference, String prefix) {
-         if(last != Tag.START) {
+         if(last != Tag.Start) {
             throw new NodeException("Start element required");
          }
          Write(' ');
-         Write(NAMESPACE);
+         Write(Namespace);
          if(!IsEmpty(prefix)) {
             Write(':');
             Write(prefix);
@@ -218,7 +219,7 @@ namespace SimpleFramework.Xml.Stream {
       /// this is the text to write to the output
       /// </param>
       public void WriteText(String text) {
-         WriteText(text, Mode.ESCAPE);
+         WriteText(text, Mode.Escape);
       }
       /// <summary>
       /// This is used to write the specified text value to the writer.
@@ -229,15 +230,15 @@ namespace SimpleFramework.Xml.Stream {
       /// this is the text to write to the output
       /// </param>
       public void WriteText(String text, Mode mode) {
-         if(last == Tag.START) {
+         if(last == Tag.Start) {
             Write('>');
          }
-         if(mode == Mode.DATA) {
+         if(mode == Mode.Data) {
             Data(text);
          } else {
             Escape(text);
          }
-         last = Tag.TEXT;
+         last = Tag.Text;
       }
       /// <summary>
       /// This is used to write an end element tag to the writer. This
@@ -250,21 +251,21 @@ namespace SimpleFramework.Xml.Stream {
       /// </param>
       public void WriteEnd(String name, String prefix) {
          String text = indenter.Pop();
-         if(last == Tag.START) {
+         if(last == Tag.Start) {
             Write('/');
             Write('>');
          } else {
-            if(last != Tag.TEXT) {
+            if(last != Tag.Text) {
                Write(text);
             }
-            if(last != Tag.START) {
+            if(last != Tag.Start) {
                Write('<');
                Write('/');
                Write(name, prefix);
                Write('>');
             }
          }
-         last = Tag.END;
+         last = Tag.End;
       }
       /// <summary>
       /// This is used to write a character to the output stream without
@@ -384,9 +385,9 @@ namespace SimpleFramework.Xml.Stream {
       /// the text value to be escaped and written
       /// </param>
       public void Escape(String value) {
-         int size = value.length();
+         int size = value.Length;
          for(int i = 0; i < size; i++){
-            Escape(value.charAt(i));
+            Escape(value[i]);
          }
       }
       /// <summary>
@@ -430,7 +431,7 @@ namespace SimpleFramework.Xml.Stream {
       /// this is the decimal value of the given character
       /// </returns>
       public String Unicode(char ch) {
-         return Integer.toString(ch);
+         return Convert.ToDecimal(ch).ToString(); 
       }
       /// <summary>
       /// This method is used to determine if a root annotation value is
@@ -446,7 +447,7 @@ namespace SimpleFramework.Xml.Stream {
       /// </returns>
       public bool IsEmpty(String value) {
          if(value != null) {
-            return value.length() == 0;
+            return value.Length == 0;
          }
          return true;
       }
@@ -486,15 +487,15 @@ namespace SimpleFramework.Xml.Stream {
       public char[] Symbol(char ch) {
          switch(ch) {
          case '<':
-           return LESS;
+           return Less;
          case '>':
-           return GREATER;
+           return Greater;
          case '"':
-           return DOUBLE;
+           return Double;
          case '\'':
-           return SINGLE;
+           return Single;
          case '&':
-           return AND;
+           return And;
          }
          return null;
      }
@@ -505,10 +506,10 @@ namespace SimpleFramework.Xml.Stream {
       /// is updated. This is needed to write well formed XML text.
       /// </summary>
       private enum Tag {
-         COMMENT,
-         START,
-         TEXT,
-         END
+         Comment,
+         Start,
+         Text,
+         End
      }
    }
 }

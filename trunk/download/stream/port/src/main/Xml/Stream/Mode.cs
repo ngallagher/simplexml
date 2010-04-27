@@ -37,14 +37,14 @@ namespace SimpleFramework.Xml.Stream {
       /// <summary>
       /// Indicates that data written will be within a CDATA block.
       /// </summary>
-      DATA,
+      Data,
       /// <summary>
       /// Indicates that data written will be escaped if required.
       /// </summary>
-      ESCAPE,
+      Escape,
       /// <summary>
       /// Indicates that the mode will be inherited from its parent.
       /// </summary>
-      INHERIT;
+      Inherit
    }
 }

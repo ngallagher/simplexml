@@ -31,7 +31,7 @@ namespace SimpleFramework.Xml.Stream {
    /// <seealso>
    /// SimpleFramework.Xml.Stream.Node
    /// </seealso>
-   public interface NodeMap<T : Node> : Iterable<String> {
+   public abstract class NodeMap<T> where T : Node {
        /// <summary>
        /// This is used to acquire the actual node this map represents.
        /// The source node provides further details on the context of
@@ -41,7 +41,7 @@ namespace SimpleFramework.Xml.Stream {
        /// <returns>
        /// this returns the node that this map represents
        /// </returns>
-       public T Node {
+       public abstract T Node {
           get;
        }
        //public T GetNode();
@@ -52,7 +52,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this returns the name of the owning element
       /// </returns>
-      public String Name {
+      public abstract String Name {
          get;
       }
       //public String GetName();
@@ -67,7 +67,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this will return the node mapped to the given name
       /// </returns>
-      T Get(String name);
+      public abstract T Get(String name);
       /// <summary>
       /// This is used to remove the <c>Node</c> mapped to the
       /// given name.  This returns a name value pair that represents
@@ -80,16 +80,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this will return the node mapped to the given name
       /// </returns>
-      T Remove(String name);
-      /// <summary>
-      /// This returns an iterator for the names of all the nodes in
-      /// this <c>NodeMap</c>. This allows the names to be
-      /// iterated within a for each loop in order to extract nodes.
-      /// </summary>
-      /// <returns>
-      /// this returns the names of the nodes in the map
-      /// </returns>
-      Iterator<String> Iterator();
+      public abstract T Remove(String name);
       /// <summary>
       /// This is used to add a new <c>Node</c> to the map. The
       /// type of node that is created an added is left up to the map
@@ -105,6 +96,6 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this is the node that has been added to the map
       /// </returns>
-      T Put(String name, String value);
+      public abstract T Put(String name, String value);
    }
 }

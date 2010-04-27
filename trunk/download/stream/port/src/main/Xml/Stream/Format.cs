@@ -51,8 +51,7 @@ namespace SimpleFramework.Xml.Stream {
       /// object that is used to describe how the formatter should create
       /// the XML document. This constructor uses an indent size of three.
       /// </summary>
-      public Format() {
-         this(3);
+      public Format() : this(3) {
       }
       /// <summary>
       /// Constructor for the <c>Format</c> object. This creates an
@@ -63,8 +62,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <param name="indent">
       /// this is the number of spaces used in the indent
       /// </param>
-      public Format(int indent) {
-         this(indent, null, null);
+      public Format(int indent) : this(indent, null, null) {
       }
       /// <summary>
       /// Constructor for the <c>Format</c> object. This creates an
@@ -75,8 +73,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <param name="prolog">
       /// this is the prolog for the generated XML document
       /// </param>
-      public Format(String prolog) {
-         this(3, prolog);
+      public Format(String prolog) : this(3, prolog) {
       }
       /// <summary>
       /// Constructor for the <c>Format</c> object. This creates an
@@ -90,8 +87,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <param name="prolog">
       /// this is the prolog for the generated XML document
       /// </param>
-      public Format(int indent, String prolog) {
-         this(indent, prolog, null);
+      public Format(int indent, String prolog) : this(indent, prolog, null) {
       }
       /// <summary>
       /// Constructor for the <c>Format</c> object. This creates an
@@ -102,8 +98,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <param name="style">
       /// this is the style to apply to the format object
       /// </param>
-      public Format(Style  style) {
-         this(3, null, style);
+      public Format(Style  style) : this(3, null, style) {
       }
       /// <summary>
       /// Constructor for the <c>Format</c> object. This creates an
@@ -117,8 +112,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <param name="style">
       /// this is the style to apply to the format object
       /// </param>
-      public Format(int indent, Style  style) {
-         this(indent, null, style);
+      public Format(int indent, Style  style) : this(indent, null, style) {
       }
       /// <summary>
       /// Constructor for the <c>Format</c> object. This creates an
@@ -148,7 +142,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// returns the number of spaces to used for indenting
       /// </returns>
-      public int Indent {
+      public virtual int Indent {
          get {
             return indent;
          }
@@ -164,7 +158,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this returns the prolog for the start of the document
       /// </returns>
-      public String Prolog {
+      public virtual String Prolog {
          get {
             return prolog;
          }
@@ -180,7 +174,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this returns the style used for this format object
       /// </returns>
-      public Style Style {
+      public virtual Style Style {
          get {
             return style;
          }

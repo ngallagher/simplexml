@@ -18,6 +18,8 @@
 //
 #endregion
 #region Using directives
+using System.Text;
+using System.IO;
 using System;
 #endregion
 namespace SimpleFramework.Xml.Stream {
@@ -79,7 +81,7 @@ namespace SimpleFramework.Xml.Stream {
       /// the character array to be appended to this
       /// </param>
       public void Append(char[] value) {
-         text.Append(value, 0, value.length);
+         text.Append(value, 0, value.Length);
       }
       /// <summary>
       /// This will add a <c>char</c> array to the buffer.
@@ -127,8 +129,8 @@ namespace SimpleFramework.Xml.Stream {
       /// <param name="out">
       /// this is the writer to write the buffered text to
       /// </param>
-      public void Write(Writer out) {
-         out.Append(text);
+      public void Write(TextWriter writer) {
+         writer.Write(text);
       }
       /// <summary>
       /// This will empty the <c>OutputBuffer</c> so that it does
@@ -137,7 +139,7 @@ namespace SimpleFramework.Xml.Stream {
       /// is written out. This allows XML elements to be removed.
       /// </summary>
       public void Clear() {
-         text.setLength(0);
+         text.Clear();
       }
    }
 }

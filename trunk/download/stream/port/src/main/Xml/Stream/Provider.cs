@@ -18,6 +18,8 @@
 //
 #endregion
 #region Using directives
+using InputStream = System.IO.Stream;
+using System.IO;
 using System;
 #endregion
 namespace SimpleFramework.Xml.Stream {
@@ -33,7 +35,7 @@ namespace SimpleFramework.Xml.Stream {
    /// <seealso>
    /// SimpleFramework.Xml.Stream.NodeBuilder
    /// </seealso>
-   interface Provider {
+   abstract class Provider {
       /// <summary>
       /// This provides an <c>EventReader</c> that will read from
       /// the specified input stream. When reading from an input stream
@@ -46,7 +48,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this is used to return the event reader implementation
       /// </returns>
-      EventReader Provide(InputStream source);
+      public abstract EventReader Provide(InputStream source);
       /// <summary>
       /// This provides an <c>EventReader</c> that will read from
       /// the specified reader. When reading from a reader the character
@@ -58,6 +60,6 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this is used to return the event reader implementation
       /// </returns>
-      EventReader Provide(Reader source);
+      public abstract EventReader Provide(TextReader source);
    }
 }

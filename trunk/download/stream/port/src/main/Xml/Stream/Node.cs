@@ -26,7 +26,7 @@ namespace SimpleFramework.Xml.Stream {
    /// acts as the base form of data used within the framework. Each of
    /// the attributes and elements are represented as nodes.
    /// </summary>
-   public interface Node {
+   public abstract class Node {
       /// <summary>
       /// Returns the name of the node that this represents. This is
       /// an immutable property and should not change for any node.
@@ -34,7 +34,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// returns the name of the node that this represents
       /// </returns>
-      public String Name {
+      public abstract String Name {
          get;
       }
       //public String GetName();
@@ -44,7 +44,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// the name of the value for this node instance
       /// </returns>
-      public String Value {
+      public abstract String Value {
          get;
       }
       //public String GetValue();
@@ -56,7 +56,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this returns the parent node for this node
       /// </returns>
-      public Node Parent {
+      public abstract Node Parent {
          get;
       }
       //public Node GetParent();

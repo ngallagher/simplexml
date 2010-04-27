@@ -32,7 +32,7 @@ namespace SimpleFramework.Xml.Stream {
    /// <seealso>
    /// SimpleFramework.Xml.Stream.OutputNode
    /// </seealso>
-   class OutputStack : ArrayList<OutputNode> {
+   class OutputStack : List<OutputNode> {
       /// <summary>
       /// Represents the set of nodes that have not been committed.
       /// </summary>
@@ -120,6 +120,7 @@ namespace SimpleFramework.Xml.Stream {
          if(node != null){
             active.Remove(node);
          }
+         IEnumerable<String> e = null;
          return node;
       }
       /// <summary>

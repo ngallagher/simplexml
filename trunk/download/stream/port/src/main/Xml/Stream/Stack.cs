@@ -30,7 +30,7 @@ namespace SimpleFramework.Xml.Stream {
    /// that the stack is empty. This allows the stack to be peeked at
    /// even if it has not been populated with anything yet.
    /// </summary>
-   class Stack<T> : ArrayList<T> {
+   class Stack<T> : List<T> {
       /// <summary>
       /// Constructor for the <c>Stack</c> object. This is used
       /// to create a stack that can be used to keep track of values
@@ -40,8 +40,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <param name="size">
       /// this is the initial size of the stack to use
       /// </param>
-      public Stack(int size) {
-         super(size);
+      public Stack(int size) : base(size) {
       }
       /// <summary>
       /// This is used to remove the element from the top of this
@@ -52,11 +51,13 @@ namespace SimpleFramework.Xml.Stream {
       /// this returns the node element the top of the stack
       /// </returns>
       public T Pop() {
-         int size = size();
-         if(size <= 0) {
-            return null;
+         int size = Count;
+         if(Count <= 0) {
+            return default(T);
          }
-         return remove(size - 1);
+         T value = this[size - 1];
+         RemoveAt(size - 1);
+         return value;
       }
       /// <summary>
       /// This is used to peek at the element from the top of this
@@ -67,11 +68,11 @@ namespace SimpleFramework.Xml.Stream {
       /// this returns the node element the top of the stack
       /// </returns>
       public T Top() {
-         int size = size();
+         int size = Count;
          if(size <= 0) {
-            return null;
+            return default(T);
          }
-         return get(size - 1);
+         return this[size - 1];
       }
       /// <summary>
       /// This is used to acquire the node from the bottom of the stack.
@@ -82,11 +83,11 @@ namespace SimpleFramework.Xml.Stream {
       /// this returns the element from the bottom of the stack
       /// </returns>
       public T Bottom() {
-         int size = size();
+         int size = Count;
          if(size <= 0) {
-            return null;
+            return default(T);
          }
-         return get(0);
+         return this[0];
       }
       /// <summary>
       /// This method is used to add an element to the top of the stack.
@@ -100,7 +101,7 @@ namespace SimpleFramework.Xml.Stream {
       /// this returns the actual node that has just been added
       /// </returns>
       public T Push(T value) {
-         add(value);
+         Add(value);
          return value;
       }
    }

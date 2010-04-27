@@ -18,6 +18,7 @@
 //
 #endregion
 #region Using directives
+using System.Collections.Generic;
 using System;
 #endregion
 namespace SimpleFramework.Xml.Stream {
@@ -34,7 +35,7 @@ namespace SimpleFramework.Xml.Stream {
    /// <seealso>
    /// SimpleFramework.Xml.Stream.EventReader
    /// </seealso>
-   interface EventNode : Iterable<Attribute> {
+   abstract class EventNode : List<Attribute> {
       /// <summary>
       /// This is used to provide the line number the XML event was
       /// encountered at within the XML document. If there is no line
@@ -43,7 +44,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this returns the line number if it is available
       /// </returns>
-      public int Line {
+      public abstract int Line {
          get;
       }
       //public int GetLine();
@@ -55,7 +56,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this returns the name of this event or null
       /// </returns>
-      public String Name {
+      public abstract String Name {
          get;
       }
       //public String GetName();
@@ -67,7 +68,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this returns the value represented by this event
       /// </returns>
-      public String Value {
+      public abstract String Value {
          get;
       }
       //public String GetValue();
@@ -79,7 +80,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this will provide the associated namespace reference
       /// </returns>
-      public String Reference {
+      public abstract String Reference {
          get;
       }
       //public String GetReference();
@@ -91,7 +92,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this returns the namespace prefix for this event
       /// </returns>
-      public String Prefix {
+      public abstract String Prefix {
          get;
       }
       //public String GetPrefix();
@@ -115,7 +116,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this returns true if the event is an element close
       /// </returns>
-      bool IsEnd();
+      public abstract bool IsEnd();
       /// <summary>
       /// This is true when the node represents a new element. This is
       /// the core event type as it contains the element name and any
@@ -125,7 +126,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this returns true if the event represents an element
       /// </returns>
-      bool IsStart();
+      public abstract bool IsStart();
       /// <summary>
       /// This is true when the node represents a text token. Text
       /// tokens are required to provide a value only. So namespace
@@ -134,6 +135,6 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this returns true if this represents text
       /// </returns>
-      bool IsText();
+      public abstract bool IsText();
    }
 }
