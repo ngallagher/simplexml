@@ -38,7 +38,7 @@ namespace SimpleFramework.Xml.Stream {
    /// serialized in different ways, generating different styles of XML
    /// without having to modify the class schema for that object.
    /// </summary>
-   class HyphenBuilder : Style {
+   internal class HyphenBuilder : Style {
       /// <summary>
       /// This is used to generate the XML attribute representation of
       /// the specified name. Attribute names should ensure to keep the
@@ -53,7 +53,7 @@ namespace SimpleFramework.Xml.Stream {
       /// </returns>
       public String GetAttribute(String name) {
          if(name != null) {
-            return new Parser(name).process();
+            return new Parser(name).Process();
          }
          return null;
       }
@@ -71,7 +71,7 @@ namespace SimpleFramework.Xml.Stream {
       /// </returns>
       public String GetElement(String name) {
          if(name != null) {
-            return new Parser(name).process();
+            return new Parser(name).Process();
          }
          return null;
       }
@@ -89,8 +89,7 @@ namespace SimpleFramework.Xml.Stream {
          /// <param name="source">
          /// this is the original string to be parsed
          /// </param>
-         private Parser(String source) {
-            super(source);
+         public Parser(String source) : base(source) {
          }
          /// <summary>
          /// This is used to parse the provided text in to the style that
@@ -106,9 +105,8 @@ namespace SimpleFramework.Xml.Stream {
          /// <param name="len">
          /// this is the length of the token to be parsed
          /// </param>
-         [Override]
-         public void Parse(char[] text, int off, int len) {
-            text[off] = toLower(text[off]);
+         public override void Parse(char[] text, int off, int len) {
+            text[off] = ToLower(text[off]);
          }
          /// <summary>
          /// This is used to commit the provided text in to the style that
@@ -124,11 +122,10 @@ namespace SimpleFramework.Xml.Stream {
          /// <param name="len">
          /// this is the length of the token to be committed
          /// </param>
-         [Override]
-         public void Commit(char[] text, int off, int len) {
-            builder.append(text, off, len);
+         public override void Commit(char[] text, int off, int len) {
+            builder.Append(text, off, len);
             if(off + len < count) {
-               builder.append('-');
+               builder.Append('-');
             }
          }
       }
