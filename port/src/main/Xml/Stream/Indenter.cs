@@ -52,15 +52,6 @@ namespace SimpleFramework.Xml.Stream {
       private int index;
       /// <summary>
       /// Constructor for the <c>Indenter</c> object. This will
-      /// create an indent that uses three spaces for each indent that
-      /// is pushed on to the stack. This also uses a default cache
-      /// size of sixteen, which should be sufficient for most files.
-      /// </summary>
-      public Indenter() {
-         this(new Format());
-      }
-      /// <summary>
-      /// Constructor for the <c>Indenter</c> object. This will
       /// create an indent that uses the specified number of spaces to
       /// create each entry pushed on to the stack. This uses a cache
       /// size of sixteen, which should be sufficient for most files.
@@ -68,8 +59,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <param name="format">
       /// determines the number of spaces per indent
       /// </param>
-      public Indenter(Format format) {
-         this(format, 16);
+      public Indenter(Format format) : this(format, 16){
       }
       /// <summary>
       /// Constructor for the <c>Indenter</c> object. This will
@@ -84,8 +74,8 @@ namespace SimpleFramework.Xml.Stream {
       /// this is the initial size of the indent cache
       /// </param>
       private Indenter(Format format, int size) {
-         this.indent = format.getIndent();
          this.cache = new Cache(size);
+         this.indent = format.Indent;
       }
       /// <summary>
       /// This returns the current indent for this indenter. This should
@@ -227,8 +217,8 @@ namespace SimpleFramework.Xml.Stream {
          /// this is the indent to add to the position
          /// </param>
          public void Set(int index, String text) {
-            if(index >= list.length) {
-               reSize(index * 2);
+            if(index >= list.Length) {
+               Resize(index * 2);
             }
             if(index > count) {
                count = index;
@@ -247,7 +237,7 @@ namespace SimpleFramework.Xml.Stream {
          /// this is the indent retrieve from the given index
          /// </returns>
          public String Get(int index) {
-            if(index < list.length) {
+            if(index < list.Length) {
                return list[index];
             }
             return null;
@@ -261,9 +251,9 @@ namespace SimpleFramework.Xml.Stream {
          /// <param name="size">
          /// this is the size to expand the cache to
          /// </param>
-         public void ReSize(int size) {
+         public void Resize(int size) {
             String[] temp = new String[size];
-            for(int i = 0; i < list.length; i++){
+            for(int i = 0; i < list.Length; i++){
                temp[i] = list[i];
             }
             list = temp;

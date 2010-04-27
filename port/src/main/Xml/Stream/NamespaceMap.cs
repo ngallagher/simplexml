@@ -30,7 +30,7 @@ namespace SimpleFramework.Xml.Stream {
    /// the associated reference, then the parents prefix is the one that
    /// will be returned when requested from this map.
    /// </summary>
-   public interface NamespaceMap : Iterable<String> {
+   public abstract class NamespaceMap {
       /// <summary>
       /// This is the prefix that is associated with the source element.
       /// If the source element does not contain a namespace reference
@@ -41,7 +41,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this returns the prefix that is currently in scope
       /// </returns>
-      public String Prefix {
+      public abstract String Prefix {
          get;
       }
       //public String GetPrefix();
@@ -57,7 +57,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this will return the prefix that is is scope
       /// </returns>
-      String Get(String reference);
+      public abstract String Get(String reference);
       /// <summary>
       /// This is used to remove the prefix that is matched to the
       /// given reference. If no prefix is matched to the reference then
@@ -70,17 +70,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this returns the prefix that was matched to this
       /// </returns>
-      String Remove(String reference);
-      /// <summary>
-      /// This returns an iterator for the namespace of all the nodes
-      /// in this <c>NamespaceMap</c>. This allows the namespaces
-      /// to be iterated within a for each loop in order to extract the
-      /// prefix values associated with the map.
-      /// </summary>
-      /// <returns>
-      /// this returns the namespaces contained in this map
-      /// </returns>
-      Iterator<String> Iterator();
+      public abstract String Remove(String reference);
       /// <summary>
       /// This is used to add the namespace reference to the namespace
       /// map. If the namespace has been added to a parent node then
@@ -93,7 +83,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this returns the prefix that has been replaced
       /// </returns>
-      String Put(String reference);
+      public abstract String Put(String reference);
       /// <summary>
       /// This is used to add the namespace reference to the namespace
       /// map. If the namespace has been added to a parent node then
@@ -108,6 +98,6 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this returns the prefix that has been replaced
       /// </returns>
-      String Put(String reference, String prefix);
+      public abstract String Put(String reference, String prefix);
    }
 }

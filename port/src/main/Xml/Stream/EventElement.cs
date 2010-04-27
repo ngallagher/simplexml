@@ -32,7 +32,7 @@ namespace SimpleFramework.Xml.Stream {
    /// be the XML element events. Also, if available, the event will
    /// provide the line number the event was encountered in the XML.
    /// </summary>
-   abstract class EventElement : ArrayList<Attribute> : EventNode {
+   abstract class EventElement :  EventNode {
       /// <summary>
       /// This is used to provide the line number the XML event was
       /// encountered at within the XML document. If there is no line
@@ -41,7 +41,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this returns the line number if it is available
       /// </returns>
-      public int Line {
+      public override int Line {
          get {
             return -1;
          }
@@ -57,7 +57,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this returns the value represented by this event
       /// </returns>
-      public String Value {
+      public override String Value {
          get {
             return null;
          }
@@ -73,7 +73,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this returns true if the event is an element close
       /// </returns>
-      public bool IsEnd() {
+      public override bool IsEnd() {
          return false;
       }
       /// <summary>
@@ -85,7 +85,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this returns true if the event represents an element
       /// </returns>
-      public bool IsStart() {
+      public override bool IsStart() {
          return true;
       }
       /// <summary>
@@ -96,7 +96,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this returns true if this represents text
       /// </returns>
-      public bool IsText() {
+      public override bool IsText() {
          return false;
       }
    }

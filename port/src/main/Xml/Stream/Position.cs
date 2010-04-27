@@ -26,7 +26,7 @@ namespace SimpleFramework.Xml.Stream {
    /// of the read cursor within the XML file. This allows exceptions to
    /// be thrown with the line number so that the XML can be debugged.
    /// </summary>
-   public interface Position {
+   public abstract class Position {
       /// <summary>
       /// This is the actual line number within the read XML document.
       /// The line number allows any problems within the source XML
@@ -36,7 +36,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this returns the line number of an XML event
       /// </returns>
-      public int Line {
+      public abstract int Line {
          get;
       }
       //public int GetLine();
@@ -47,6 +47,6 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this returns a textual description of the position
       /// </returns>
-      String ToString();
+      public abstract String ToString();
    }
 }

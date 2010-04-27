@@ -1,5 +1,6 @@
 #region Using directives
 using SimpleFramework.Xml;
+using System.Xml;
 using System;
 #endregion
 namespace SimpleFramework.Xml.Stream {

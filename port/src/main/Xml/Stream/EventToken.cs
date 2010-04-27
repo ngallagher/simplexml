@@ -41,7 +41,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this returns the line number if it is available
       /// </returns>
-      public int Line {
+      public override int Line {
          get {
             return -1;
          }
@@ -57,7 +57,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this returns the name of this event or null
       /// </returns>
-      public String Name {
+      public override String Name {
          get {
             return null;
          }
@@ -73,7 +73,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this returns the value represented by this event
       /// </returns>
-      public String Value {
+      public override String Value {
          get {
             return null;
          }
@@ -89,7 +89,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this will provide the associated namespace reference
       /// </returns>
-      public String Reference {
+      public override String Reference {
          get {
             return null;
          }
@@ -105,7 +105,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this returns the namespace prefix for this event
       /// </returns>
-      public String Prefix {
+      public override String Prefix {
          get {
             return null;
          }
@@ -121,24 +121,10 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this will return the source object for this event
       /// </returns>
-      public Object Source {
+      public override Object Source {
          get {
             return null;
          }
-      }
-      //public Object GetSource() {
-      //   return null;
-      //}
-      /// This is used to acquire the <c>Attribute</c> objects
-      /// that are associated with this event. Attributes are typically
-      /// associated wit start events. So, if the node is not a start
-      /// event his may return a null value or an empty iterator.
-      /// </summary>
-      /// <returns>
-      /// this returns an iterator for iterating attributes
-      /// </returns>
-      public Iterator<Attribute> Iterator() {
-         return null;
       }
       /// <summary>
       /// This is true when the node represents an element close. Such
@@ -149,7 +135,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this returns true if the event is an element close
       /// </returns>
-      public bool IsEnd() {
+      public override bool IsEnd() {
          return false;
       }
       /// <summary>
@@ -161,7 +147,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this returns true if the event represents an element
       /// </returns>
-      public bool IsStart() {
+      public override bool IsStart() {
          return false;
       }
       /// <summary>
@@ -172,7 +158,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this returns true if this represents text
       /// </returns>
-      public bool IsText() {
+      public override bool IsText() {
          return false;
       }
    }

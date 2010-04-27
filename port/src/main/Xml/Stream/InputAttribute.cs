@@ -310,7 +310,7 @@ namespace SimpleFramework.Xml.Stream {
       /// this returns a text description of the attribute
       /// </returns>
       public String ToString() {
-         return String.format("attribute %s='%s'", name, value);
+         return String.Format("attribute %s='%s'", name, value);
       }
    }
 }
