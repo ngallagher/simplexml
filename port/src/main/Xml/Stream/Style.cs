@@ -38,7 +38,7 @@ namespace SimpleFramework.Xml.Stream {
    /// serialized in different ways, generating different styles of XML
    /// without having to modify the class schema for that object.
    /// </summary>
-   public interface Style {
+   public abstract class Style {
       /// <summary>
       /// This is used to generate the XML element representation of
       /// the specified name. Element names should ensure to keep the
@@ -51,7 +51,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this returns the styled name of the XML element
       /// </returns>
-      String GetElement(String name);
+      public virtual String GetElement(String name);
       /// <summary>
       /// This is used to generate the XML attribute representation of
       /// the specified name. Attribute names should ensure to keep the
@@ -64,6 +64,6 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this returns the styled name of the XML attribute
       /// </returns>
-      String GetAttribute(String name);
+      public virtual String GetAttribute(String name);
    }
 }

@@ -39,7 +39,7 @@ namespace SimpleFramework.Xml.Stream {
    /// serialized in different ways, generating different styles of XML
    /// without having to modify the class schema for that object.
    /// </summary>
-   class Builder : Style {
+   internal class Builder : Style {
       /// <summary>
       /// This is the cache for the constructed attribute values.
       /// </summary>
@@ -78,13 +78,13 @@ namespace SimpleFramework.Xml.Stream {
       /// this returns the styled name of the XML attribute
       /// </returns>
       public String GetAttribute(String name) {
-         String value = attributes.get(name);
+         String value = attributes[name];
          if(value != null) {
             return value;
          }
          value = style.GetAttribute(name);
          if(value != null) {
-            attributes.put(name, value);
+            attributes[name] = value;
          }
          return value;
       }
@@ -101,13 +101,13 @@ namespace SimpleFramework.Xml.Stream {
       /// this returns the styled name of the XML element
       /// </returns>
       public String GetElement(String name) {
-         String value = elements.get(name);
+         String value = elements[name];
          if(value != null) {
             return value;
          }
          value = style.GetElement(name);
          if(value != null) {
-            elements.put(name, value);
+            elements[name] = value;
          }
          return value;
       }
@@ -123,14 +123,9 @@ namespace SimpleFramework.Xml.Stream {
       /// <param name="value">
       /// the value that is to be used for that attribute
       /// </param>
-      public String name, String Attribute {
-         set {
-            attributes.put(name, _value);
-         }
+      public void SetAttribute(String name, String value) {
+         attributes[name] = value;
       }
-      //public void SetAttribute(String name, String value) {
-      //   attributes.put(name, value);
-      //}
       /// This is used to set the element values within this builder.
       /// Overriding the element values ensures that the default
       /// algorithm does not need to determine each of the values. It
@@ -142,27 +137,21 @@ namespace SimpleFramework.Xml.Stream {
       /// <param name="value">
       /// the value that is to be used for that element
       /// </param>
-      public String name, String Element {
-         set {
-            elements.put(name, _value);
-         }
+      public void SetElement(String name, String value) {
+         elements[name] = value;
       }
-      //public void SetElement(String name, String value) {
-      //   elements.put(name, value);
-      //}
       /// The <c>Cache</c> object is used to cache the values
       /// used to represent the styled attributes and elements. This
       /// is a concurrent hash map so that styles can be used by more
       /// than one thread simultaneously.
       /// </summary>
-      private class Cache : ConcurrentHashMap<String, String> {
+      private class Cache : Dictionary<String, String> {
          /// <summary>
          /// Constructor for the <c>Cache</c> object. This will
          /// create a concurrent cache that can translate between the
          /// XML attributes and elements and the styled values.
          /// </summary>
-         public Cache() {
-            super();
+         public Cache()  {
          }
       }
    }

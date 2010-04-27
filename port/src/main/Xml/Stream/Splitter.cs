@@ -18,6 +18,7 @@
 //
 #endregion
 #region Using directives
+using System.Text;
 using System;
 #endregion
 namespace SimpleFramework.Xml.Stream {
@@ -41,7 +42,7 @@ namespace SimpleFramework.Xml.Stream {
    /// <seealso>
    /// SimpleFramework.Xml.Stream.Style
    /// </seealso>
-   abstract class Splitter {
+   internal abstract class Splitter {
       /// <summary>
       /// This is the string builder used to build the processed text.
       /// </summary>
@@ -69,8 +70,8 @@ namespace SimpleFramework.Xml.Stream {
       /// </param>
       public Splitter(String source) {
          this.builder = new StringBuilder();
-         this.text = source.toCharArray();
-         this.count = text.length;
+         this.text = source.ToCharArray();
+         this.count = text.Length;
       }
       /// <summary>
       /// This is used to process the internal string and convert it in
@@ -95,11 +96,11 @@ namespace SimpleFramework.Xml.Stream {
                Number();
             }
          }
-         return builder.toString();
+         return builder.ToString();
       }
       /// <summary>
       /// This is used to extract a token from the source string. Once a
-      /// token has been extracted the <c>commit</c> method is
+      /// token has been extracted the <c>Commit</c> method is
       /// called to add it to the string being build. Each time this is
       /// called a token, if extracted, will be committed to the string.
       /// Before being committed the string is parsed for styling.
@@ -126,7 +127,7 @@ namespace SimpleFramework.Xml.Stream {
       }
       /// <summary>
       /// This is used to extract a acronym from the source string. Once
-      /// a token has been extracted the <c>commit</c> method is
+      /// a token has been extracted the <c>Commit</c> method is
       /// called to add it to the string being build. Each time this is
       /// called a token, if extracted, will be committed to the string.
       /// </summary>
@@ -159,7 +160,7 @@ namespace SimpleFramework.Xml.Stream {
       }
       /// <summary>
       /// This is used to extract a number from the source string. Once
-      /// a token has been extracted the <c>commit</c> method is
+      /// a token has been extracted the <c>Commit</c> method is
       /// called to add it to the string being build. Each time this is
       /// called a token, if extracted, will be committed to the string.
       /// </summary>
@@ -186,7 +187,7 @@ namespace SimpleFramework.Xml.Stream {
       }
       /// <summary>
       /// This is used to determine if the provided string evaluates to
-      /// a letter character. This delegates to <c>Character</c>
+      /// a letter character. This delegates to <c>System.Char</c>
       /// so that the full range of unicode characters are considered.
       /// </summary>
       /// <param name="ch">
@@ -196,11 +197,11 @@ namespace SimpleFramework.Xml.Stream {
       /// this returns true if the character is a letter
       /// </returns>
       public bool IsLetter(char ch) {
-         return Character.IsLetter(ch);
+         return Char.IsLetter(ch);
       }
       /// <summary>
       /// This is used to determine if the provided string evaluates to
-      /// a symbol character. This delegates to <c>Character</c>
+      /// a symbol character. This delegates to <c>System.Char</c>
       /// so that the full range of unicode characters are considered.
       /// </summary>
       /// <param name="ch">
@@ -210,7 +211,7 @@ namespace SimpleFramework.Xml.Stream {
       /// this returns true if the character is a symbol
       /// </returns>
       public bool IsSpecial(char ch) {
-         return !Character.isLetterOrDigit(ch);
+         return !Char.IsLetter(ch) && !Char.IsDigit(ch);
       }
       /// <summary>
       /// This is used to determine if the provided string evaluates to
@@ -224,11 +225,11 @@ namespace SimpleFramework.Xml.Stream {
       /// this returns true if the character is a digit
       /// </returns>
       public bool IsDigit(char ch) {
-         return Character.IsDigit(ch);
+         return Char.IsDigit(ch);
       }
       /// <summary>
       /// This is used to determine if the provided string evaluates to
-      /// an upper case letter. This delegates to <c>Character</c>
+      /// an upper case letter. This delegates to <c>System.Char</c>
       /// so that the full range of unicode characters are considered.
       /// </summary>
       /// <param name="ch">
@@ -238,11 +239,11 @@ namespace SimpleFramework.Xml.Stream {
       /// this returns true if the character is upper case
       /// </returns>
       public bool IsUpper(char ch) {
-         return Character.isUpperCase(ch);
+         return Char.IsUpper(ch);
       }
       /// <summary>
       /// This is used to convert the provided character to an upper
-      /// case character. This delegates to <c>Character</c> to
+      /// case character. This delegates to <c>System.Char</c> to
       /// perform the conversion so unicode characters are considered.
       /// </summary>
       /// <param name="ch">
@@ -252,11 +253,11 @@ namespace SimpleFramework.Xml.Stream {
       /// the character converted to upper case
       /// </returns>
       public char ToUpper(char ch) {
-         return Character.toUpperCase(ch);
+         return Char.ToUpper(ch);
       }
       /// <summary>
       /// This is used to convert the provided character to a lower
-      /// case character. This delegates to <c>Character</c> to
+      /// case character. This delegates to <c>System.Char</c> to
       /// perform the conversion so unicode characters are considered.
       /// </summary>
       /// <param name="ch">
@@ -266,7 +267,7 @@ namespace SimpleFramework.Xml.Stream {
       /// the character converted to lower case
       /// </returns>
       public char ToLower(char ch) {
-         return Character.toLowerCase(ch);
+         return Char.ToLower(ch);
       }
       /// <summary>
       /// This is used to parse the provided text in to the style that
@@ -282,7 +283,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <param name="len">
       /// this is the length of the token to be parsed
       /// </param>
-      public abstract void Parse(char[] text, int off, int len);
+      public virtual void Parse(char[] text, int off, int len);
       /// <summary>
       /// This is used to commit the provided text in to the style that
       /// is required. Committing the text to the buffer assembles the
@@ -297,6 +298,6 @@ namespace SimpleFramework.Xml.Stream {
       /// <param name="len">
       /// this is the length of the token to be committed
       /// </param>
-      public abstract void Commit(char[] text, int off, int len);
+      public virtual void Commit(char[] text, int off, int len);
    }
 }

@@ -54,8 +54,8 @@ namespace SimpleFramework.Xml.Stream {
       /// generated XML. By default the elements have an upper case
       /// initial character and a lower case attribute.
       /// </summary>
-      public CamelCaseStyle() {
-         this(true, false);
+      public CamelCaseStyle()
+         : this(true, false) {
       }
       /// <summary>
       /// Constructor for the <c>CamelCaseStyle</c> object. This
@@ -67,8 +67,8 @@ namespace SimpleFramework.Xml.Stream {
       /// <param name="element">
       /// if true the element will start as upper case
       /// </param>
-      public CamelCaseStyle(bool element) {
-         this(element, false);
+      public CamelCaseStyle(bool element)
+         : this(element, false) {
       }
       /// <summary>
       /// Constructor for the <c>CamelCaseStyle</c> object. This
@@ -113,14 +113,9 @@ namespace SimpleFramework.Xml.Stream {
       /// <param name="value">
       /// the value that is to be used for that attribute
       /// </param>
-      public String name, String Attribute {
-         set {
-            builder.SetAttribute(name, _value);
-         }
+      public void SetAttribute(String name, String value) {
+         builder.SetAttribute(name, value);
       }
-      //public void SetAttribute(String name, String value) {
-      //   builder.SetAttribute(name, value);
-      //}
       /// This is used to generate the XML element representation of
       /// the specified name. Element names should ensure to keep the
       /// uniqueness of the name such that two different names will
@@ -147,12 +142,8 @@ namespace SimpleFramework.Xml.Stream {
       /// <param name="value">
       /// the value that is to be used for that element
       /// </param>
-      public String name, String Element {
-         set {
-            builder.SetElement(name, _value);
-         }
+      public void SetElement(String name, String value) {
+         builder.SetElement(name, value);
       }
-      //public void SetElement(String name, String value) {
-      //   builder.SetElement(name, value);
-      //}
+   }
 }

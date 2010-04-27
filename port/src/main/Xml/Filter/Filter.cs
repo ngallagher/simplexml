@@ -47,6 +47,6 @@ namespace SimpleFramework.Xml.Filter {
       /// <returns>
       /// returns a replacement for the provided text value
       /// </returns>
-      public String Replace(String text);
+      String Replace(String text);
    }
 }

@@ -38,7 +38,7 @@ namespace SimpleFramework.Xml.Stream {
    /// serialized in different ways, generating different styles of XML
    /// without having to modify the class schema for that object.
    /// </summary>
-   class CamelCaseBuilder : Style {
+   internal class CamelCaseBuilder : Style {
       /// <summary>
       /// If true then the attribute will start with upper case.
       /// </summary>
@@ -77,7 +77,7 @@ namespace SimpleFramework.Xml.Stream {
       /// </returns>
       public String GetAttribute(String name) {
          if(name != null) {
-            return new Attribute(name).process();
+            return new Attribute(name, attribute).Process();
          }
          return null;
       }
@@ -95,7 +95,7 @@ namespace SimpleFramework.Xml.Stream {
       /// </returns>
       public String GetElement(String name) {
          if(name != null) {
-            return new Element(name).process();
+            return new Element(name, element).Process();
          }
          return null;
       }
@@ -105,6 +105,7 @@ namespace SimpleFramework.Xml.Stream {
       /// of the processed tokens for the styles elements and attributes.
       /// </summary>
       private class Attribute : Splitter {
+         private readonly bool parse;
          /// <summary>
          /// Constructor for the <c>Attribute</c> object. This will
          /// take the original string and parse it such that all of the
@@ -113,8 +114,8 @@ namespace SimpleFramework.Xml.Stream {
          /// <param name="source">
          /// this is the original string to be parsed
          /// </param>
-         private Attribute(String source) {
-            super(source);
+         public Attribute(String source, bool parse) : base(source) {
+            this.parse = parse;
          }
          /// <summary>
          /// This is used to parse the provided text in to the style that
@@ -130,10 +131,9 @@ namespace SimpleFramework.Xml.Stream {
          /// <param name="len">
          /// this is the length of the token to be parsed
          /// </param>
-         [Override]
-         public void Parse(char[] text, int off, int len) {
-            if(attribute) {
-               text[off] = toUpper(text[off]);
+         public override void Parse(char[] text, int off, int len) {
+            if(parse) {
+               text[off] = ToUpper(text[off]);
             }
          }
          /// <summary>
@@ -150,9 +150,8 @@ namespace SimpleFramework.Xml.Stream {
          /// <param name="len">
          /// this is the length of the token to be committed
          /// </param>
-         [Override]
-         public void Commit(char[] text, int off, int len) {
-            builder.append(text, off, len);
+         public override void Commit(char[] text, int off, int len) {
+            builder.Append(text, off, len);
          }
       }
       /// <summary>
@@ -160,7 +159,8 @@ namespace SimpleFramework.Xml.Stream {
       /// all of the words split from the original string and builds all
       /// of the processed tokens for the styles elements and attributes.
       /// </summary>
-      private class Element : Attribute {
+      private class Element : Splitter {
+         private readonly bool parse;
          /// <summary>
          /// Constructor for the <c>Element</c> object. This will
          /// take the original string and parse it such that all of the
@@ -169,8 +169,8 @@ namespace SimpleFramework.Xml.Stream {
          /// <param name="source">
          /// this is the original string to be parsed
          /// </param>
-         private Element(String source) {
-            super(source);
+         public Element(String source, bool parse) : base(source) {
+            this.parse = parse;
          }
          /// <summary>
          /// This is used to parse the provided text in to the style that
@@ -186,11 +186,27 @@ namespace SimpleFramework.Xml.Stream {
          /// <param name="len">
          /// this is the length of the token to be parsed
          /// </param>
-         [Override]
-         public void Parse(char[] text, int off, int len) {
-            if(element) {
-               text[off] = toUpper(text[off]);
+         public override void Parse(char[] text, int off, int len) {
+            if(parse) {
+               text[off] = ToUpper(text[off]);
             }
+         }
+         /// <summary>
+         /// This is used to commit the provided text in to the style that
+         /// is required. Committing the text to the buffer assembles the
+         /// tokens resulting in a complete token.
+         /// </summary>
+         /// <param name="text">
+         /// this is the text buffer to acquire the token from
+         /// </param>
+         /// <param name="off">
+         /// this is the offset in the buffer token starts at
+         /// </param>
+         /// <param name="len">
+         /// this is the length of the token to be committed
+         /// </param>
+         public override void Commit(char[] text, int off, int len) {
+            builder.Append(text, off, len);
          }
       }
    }
