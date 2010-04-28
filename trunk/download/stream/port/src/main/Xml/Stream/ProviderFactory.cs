@@ -46,18 +46,8 @@ namespace SimpleFramework.Xml.Stream {
       /// </returns>
       public Provider Instance {
          get {
-            try {
-               return new StreamProvider();
-            } catch(Throwable e) {
-               return new DocumentProvider();
-            }
+            return new StreamProvider();
          }
       }
-      //public Provider GetInstance() {
-      //   try {
-      //      return new StreamProvider();
-      //   } catch(Throwable e) {
-      //      return new DocumentProvider();
-      //   }
-      //}
+   }
 }

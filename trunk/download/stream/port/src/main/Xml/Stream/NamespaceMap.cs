@@ -20,6 +20,8 @@
 #region Using directives
 using System.Collections.Generic;
 using System;
+using Iterable = System.Collections.Generic.IEnumerable<String>;
+using Iterator = System.Collections.Generic.IEnumerator<String>;
 #endregion
 namespace SimpleFramework.Xml.Stream {
    /// <summary>
@@ -30,7 +32,7 @@ namespace SimpleFramework.Xml.Stream {
    /// the associated reference, then the parents prefix is the one that
    /// will be returned when requested from this map.
    /// </summary>
-   public abstract class NamespaceMap {
+   public abstract class NamespaceMap : Iterable {
       /// <summary>
       /// This is the prefix that is associated with the source element.
       /// If the source element does not contain a namespace reference

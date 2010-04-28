@@ -18,6 +18,9 @@
 //
 #endregion
 #region Using directives
+using InputStream = System.IO.Stream;
+using System.IO;
+using System.Xml;
 using System;
 #endregion
 namespace SimpleFramework.Xml.Stream {
@@ -33,17 +36,12 @@ namespace SimpleFramework.Xml.Stream {
    /// </seealso>
    class StreamProvider : Provider {
       /// <summary>
-      /// This is the factory that is used to create StAX parsers.
-      /// </summary>
-      private readonly XMLInputFactory factory;
-      /// <summary>
       /// Constructor for the <c>StreamProvider</c> object. This
       /// is used to instantiate a parser factory that will be used to
       /// create parsers when requested. Instantiating the factory up
       /// front also checks that the framework is fully supported.
       /// </summary>
       public StreamProvider() {
-         this.factory = XMLInputFactory.newInstance();
       }
       /// <summary>
       /// This provides an <c>EventReader</c> that will read from
@@ -58,7 +56,7 @@ namespace SimpleFramework.Xml.Stream {
       /// this is used to return the event reader implementation
       /// </returns>
       public EventReader Provide(InputStream source) {
-         return Provide(factory.createXMLEventReader(source));
+         return Provide(XmlReader.Create(source));
       }
       /// <summary>
       /// This provides an <c>EventReader</c> that will read from
@@ -71,8 +69,8 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this is used to return the event reader implementation
       /// </returns>
-      public EventReader Provide(Reader source) {
-         return Provide(factory.createXMLEventReader(source));
+      public EventReader Provide(TextReader source) {
+         return Provide(XmlReader.Create(source));
       }
       /// <summary>
       /// This provides an <c>EventReader</c> that will read from
@@ -85,7 +83,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this is used to return the event reader implementation
       /// </returns>
-      public EventReader Provide(XMLEventReader source) {
+      public EventReader Provide(XmlReader source) {
          return new StreamReader(source);
       }
    }
