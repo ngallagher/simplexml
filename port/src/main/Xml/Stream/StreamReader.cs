@@ -19,6 +19,7 @@
 #endregion
 #region Using directives
 using System.Collections.Generic;
+using System.Xml;
 using System;
 #endregion
 namespace SimpleFramework.Xml.Stream {
@@ -38,7 +39,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <summary>
       /// This is the reader that is used to parse the XML document.
       /// </summary>
-      private XMLEventReader reader;
+      private XmlReader reader;
       /// <summary>
       /// This is used to keep track of any events that were peeked.
       /// </summary>
@@ -52,7 +53,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <param name="reader">
       /// this is the reader used to parse the XML source
       /// </param>
-      public StreamReader(XMLEventReader reader) {
+      public StreamReader(XmlReader reader) {
          this.reader = reader;
       }
       /// <summary>
@@ -98,17 +99,22 @@ namespace SimpleFramework.Xml.Stream {
       /// this returns the next event taken from the document
       /// </returns>
       public EventNode Read() {
-         XMLEvent event = reader.nextEvent();
-         if(event.isStartElement()) {
-            return Start(event);
+         bool next = reader.Read();
+         if(next) {
+            return Convert();
          }
-         if(event.isCharacters()) {
-            return Text(event);
+         return End();
+      }
+
+      public EventNode Convert() {
+         XmlNodeType type = reader.NodeType;
+         if(type == XmlNodeType.Element) {
+            return Start();
          }
-         if(event.isEndElement()) {
+         if(type == XmlNodeType.EndElement) {
             return End();
          }
-         return Read();
+         return Text();
       }
       /// <summary>
       /// This is used to convert the provided event to a start event. The
@@ -116,15 +122,12 @@ namespace SimpleFramework.Xml.Stream {
       /// reader and used to provide an <c>InputNode</c> that can
       /// be used to represent an XML elements within the source document.
       /// </summary>
-      /// <param name="event">
-      /// the event that is to be converted to a start event
-      /// </param>
       /// <returns>
       /// this returns a start event created from the given event
       /// </returns>
-      public Start Start(XMLEvent event) {
-         Start node = new Start(event);
-         if(node.isEmpty()) {
+      public Start Start() {
+         Start node = new Start(reader);
+         if(reader.HasAttributes) {
             return Build(node);
          }
          return node;
@@ -136,22 +139,17 @@ namespace SimpleFramework.Xml.Stream {
       /// contain its associated attributes. Only attributes that are
       /// not reserved will be added to the start event.
       /// </summary>
-      /// <param name="event">
-      /// this is the start event that is to be populated
-      /// </param>
       /// <returns>
       /// this returns a start event with its attributes
       /// </returns>
-      public Start Build(Start event) {
-         Iterator<Attribute> list = event.Attributes;
-         while (list.hasNext()) {
-            Attribute node = list.Next();
-            Entry entry = Attribute(node);
-            if(!entry.IsReserved()) {
-               event.add(entry);
+      public Start Build(Start node) {
+         if(reader.HasAttributes) {
+            while (reader.MoveToNextAttribute()) {
+               Entry entry = Attribute();
+               node.Add(entry);
             }
          }
-         return event;
+         return node;
       }
       /// <summary>
       /// This is used to convert the provided object to an attribute. The
@@ -165,8 +163,8 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this returns an attribute created from the given object
       /// </returns>
-      public Entry Attribute(Attribute entry) {
-         return new Entry(entry);
+      public Entry Attribute() {
+         return new Entry(reader);
       }
       /// <summary>
       /// This is used to convert the provided event to a text event. The
@@ -180,8 +178,8 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this returns the text event created from the given event
       /// </returns>
-      public Text Text(XMLEvent event) {
-         return new Text(event);
+      public Text Text() {
+         return new Text(reader);
       }
       /// <summary>
       /// This is used to create an event to signify that an element has
@@ -203,11 +201,14 @@ namespace SimpleFramework.Xml.Stream {
       /// details can be used to represent the attribute so that should
       /// the core reader require these details they can be acquired.
       /// </summary>
-      private static class Entry : EventAttribute {
+      private class Entry : EventAttribute {
          /// <summary>
          /// This is the attribute object representing this attribute.
          /// </summary>
-         private readonly Attribute entry;
+         private readonly String name;
+         private readonly String value;
+         private readonly String prefix;
+         private readonly String reference;
          /// <summary>
          /// Constructor for the <c>Entry</c> object. This creates
          /// an attribute object that is used to extract the name, value
@@ -217,8 +218,11 @@ namespace SimpleFramework.Xml.Stream {
          /// <param name="entry">
          /// this is the node that represents the attribute
          /// </param>
-         public Entry(Attribute entry) {
-            this.entry = entry;
+         public Entry(XmlReader reader) {
+            this.reference = reader.NamespaceURI;
+            this.prefix = reader.Prefix;
+            this.value = reader.Value;
+            this.name = reader.Name;
          }
          /// <summary>
          /// This provides the name of the attribute. This will be the
@@ -231,7 +235,7 @@ namespace SimpleFramework.Xml.Stream {
          /// </returns>
          public String Name {
             get {
-               return entry.Name.getLocalPart();
+               return name;
             }
          }
          //public String GetName() {
@@ -247,7 +251,7 @@ namespace SimpleFramework.Xml.Stream {
          /// </returns>
          public String Prefix {
             get {
-               return entry.Name.Prefix;
+               return prefix;
             }
          }
          //public String GetPrefix() {
@@ -263,7 +267,7 @@ namespace SimpleFramework.Xml.Stream {
          /// </returns>
          public String Reference {
             get {
-               return entry.Name.getNamespaceURI();
+               return reference;
             }
          }
          //public String GetReference() {
@@ -278,7 +282,7 @@ namespace SimpleFramework.Xml.Stream {
          /// </returns>
          public String Value {
             get {
-               return entry.Value;
+               return value;
             }
          }
          //public String GetValue() {
@@ -305,12 +309,13 @@ namespace SimpleFramework.Xml.Stream {
          /// </returns>
          public Object Source {
             get {
-               return entry;
+               return null;
             }
          }
          //public Object GetSource() {
          //   return entry;
          //}
+      }
       /// <summary>
       /// The <c>Start</c> object is used to represent the start of
       /// an XML element. This will hold the attributes associated with
@@ -318,15 +323,17 @@ namespace SimpleFramework.Xml.Stream {
       /// and the namespace prefix. For debugging purposes the source XML
       /// element is provided for this start event.
       /// </summary>
-      private static class Start : EventElement {
+      private class Start : EventElement {
          /// <summary>
          /// This is the start element to be used by this start event.
          /// </summary>
-         private readonly StartElement element;
+         private readonly String name;
          /// <summary>
          /// This is the element location used to detmine line numbers.
          /// </summary>
-         private readonly Location location;
+         private readonly String value;
+         private readonly String prefix;
+         private readonly String reference;
          /// <summary>
          /// Constructor for the <c>Start</c> object. This will
          /// wrap the provided node and expose the required details such
@@ -336,9 +343,11 @@ namespace SimpleFramework.Xml.Stream {
          /// <param name="event">
          /// this is the element being wrapped by this
          /// </param>
-         public Start(XMLEvent event) {
-            this.element = event.asStartElement();
-            this.location = event.getLocation();
+         public Start(XmlReader reader) {
+            this.reference = reader.NamespaceURI;
+            this.prefix = reader.Prefix;
+            this.value = reader.Value;
+            this.name = reader.Name;
          }
          /// <summary>
          /// This is used to provide the line number the XML event was
@@ -350,7 +359,7 @@ namespace SimpleFramework.Xml.Stream {
          /// </returns>
          public int Line {
             get {
-               return location.getLineNumber();
+               return -1;
             }
          }
          //public int GetLine() {
@@ -365,7 +374,7 @@ namespace SimpleFramework.Xml.Stream {
          /// </returns>
          public String Name {
             get {
-               return element.Name.getLocalPart();
+               return name;
             }
          }
          //public String GetName() {
@@ -381,7 +390,7 @@ namespace SimpleFramework.Xml.Stream {
          /// </returns>
          public String Prefix {
             get {
-               return element.Name.Prefix;
+               return prefix;
             }
          }
          //public String GetPrefix() {
@@ -397,24 +406,12 @@ namespace SimpleFramework.Xml.Stream {
          /// </returns>
          public String Reference {
             get {
-               return element.Name.getNamespaceURI();
+               return reference;
             }
          }
          //public String GetReference() {
          //   return element.Name.getNamespaceURI();
          //}
-         /// This is used to acquire the attributes associated with the
-         /// element. Providing the attributes in this format allows
-         /// the reader to build a list of attributes for the event.
-         /// </summary>
-         /// <returns>
-         /// this returns the attributes associated with this
-         /// </returns>
-         public Iterator<Attribute> Attributes {
-            get {
-               return element.Attributes;
-            }
-         }
          //public Iterator<Attribute> GetAttributes() {
          //   return element.Attributes;
          //}
@@ -427,23 +424,24 @@ namespace SimpleFramework.Xml.Stream {
          /// </returns>
          public Object Source {
             get {
-               return element;
+               return null;
             }
          }
          //public Object GetSource() {
          //   return element;
          //}
+      }
       /// <summary>
       /// The <c>Text</c> object is used to represent a text event.
       /// If wraps a node that holds text consumed from the document.
       /// These are used by <c>InputNode</c> objects to extract the
       /// text values for elements For debugging this exposes the node.
       /// </summary>
-      private static class Text : EventToken {
+      private class Text : EventToken {
          /// <summary>
          /// This is the event that is used to represent the text value.
          /// </summary>
-         private readonly Characters text;
+         private readonly String text;
          /// <summary>
          /// Constructor for the <c>Text</c> object. This creates
          /// an event that provides text to the core reader. Text can be
@@ -452,8 +450,8 @@ namespace SimpleFramework.Xml.Stream {
          /// <param name="event">
          /// this is the node that represents the text value
          /// </param>
-         public Text(XMLEvent event) {
-            this.text = event.asCharacters();
+         public Text(XmlReader reader) {
+            this.text = reader.Value;
          }
          /// <summary>
          /// This is true as this event represents a text token. Text
@@ -476,7 +474,7 @@ namespace SimpleFramework.Xml.Stream {
          /// </returns>
          public String Value {
             get {
-               return text.getData();
+               return text;
             }
          }
          //public String GetValue() {
@@ -491,19 +489,20 @@ namespace SimpleFramework.Xml.Stream {
          /// </returns>
          public Object Source {
             get {
-               return text;
+               return null;
             }
          }
          //public Object GetSource() {
          //   return text;
          //}
+      }
       /// <summary>
       /// The <c>End</c> object is used to represent the end of an
       /// element. It is used by the core reader to determine which nodes
       /// are in context and which ones are out of context. This allows
       /// the input nodes to determine if it can read any more children.
       /// </summary>
-      private static class End : EventToken {
+      private class End : EventToken {
          /// <summary>
          /// This is true as this event represents an element end. Such
          /// events are required by the core reader to determine if a

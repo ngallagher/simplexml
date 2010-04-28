@@ -18,8 +18,9 @@
 //
 #endregion
 #region Using directives
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
+using Enumeration = System.Collections.Generic.Dictionary<String, String>.KeyCollection.Enumerator;
 #endregion
 namespace SimpleFramework.Xml.Stream {
    /// <summary>
@@ -33,11 +34,12 @@ namespace SimpleFramework.Xml.Stream {
    /// <seealso>
    /// SimpleFramework.Xml.Stream.OutputElement
    /// </seealso>
-   class PrefixResolver : LinkedHashMap<String, String> : NamespaceMap {
+   class PrefixResolver : NamespaceMap {
       /// <summary>
       /// Represents the actual XML element this is associated with.
       /// </summary>
       private readonly OutputNode source;
+      private readonly Dictionary<String, String> table;
       /// <summary>
       /// Constructor for the <c>PrefixResolver</c> object. This
       /// is used to create a resolver for namespace prefixes using
@@ -49,6 +51,7 @@ namespace SimpleFramework.Xml.Stream {
       /// this is the XML element this is associated to
       /// </param>
       public PrefixResolver(OutputNode source) {
+         this.table = new Dictionary<String, String>();
          this.source = source;
       }
       /// <summary>
@@ -63,7 +66,7 @@ namespace SimpleFramework.Xml.Stream {
       /// </returns>
       public String Prefix {
          get {
-            return source.GetPrefix();
+            return source.Prefix;
          }
       }
       //public String GetPrefix() {
@@ -102,7 +105,8 @@ namespace SimpleFramework.Xml.Stream {
          if(parent != null) {
             return null;
          }
-         return super.Put(reference, prefix);
+         table.Add(reference, prefix);
+         return parent;
       }
       /// <summary>
       /// This is used to remove the prefix that is matched to the
@@ -117,7 +121,9 @@ namespace SimpleFramework.Xml.Stream {
       /// this returns the prefix that was matched to this
       /// </returns>
       public String Remove(String reference) {
-         return super.Remove(reference);
+         String prefix = Remove(reference);
+         Remove(reference);
+         return prefix;
       }
       /// <summary>
       /// This acquires the prefix for the specified namespace reference.
@@ -133,9 +139,9 @@ namespace SimpleFramework.Xml.Stream {
       /// this will return the prefix that is is scope
       /// </returns>
       public String Get(String reference) {
-         int size = size();
+         int size = table.Count;
          if(size > 0) {
-            String prefix = super.Get(reference);
+            String prefix = table[reference];
             if(prefix != null) {
                return prefix;
             }
@@ -157,7 +163,7 @@ namespace SimpleFramework.Xml.Stream {
          NamespaceMap parent = source.Namespaces;
          if(parent != null) {
             String prefix = parent.Get(reference);
-            if(!containsValue(prefix)) {
+            if(!table.ContainsValue(prefix)) {
                return prefix;
             }
          }
@@ -172,8 +178,8 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// this returns the namespaces contained in this map
       /// </returns>
-      public Iterator<String> Iterator() {
-         return keySet().Iterator();
+      public Enumeration Iterator() {
+         return table.Keys.GetEnumerator();
       }
    }
 }

@@ -18,9 +18,9 @@
 #endregion
 #region Using directives
 using System;
+using Enumeration = System.Collections.Generic.IEnumerable<String>;
 #endregion
 namespace SimpleFramework.Xml.Stream {
-   import org.w3c.dom.Node;
    /// <summary>
    /// The <c>NodeStack</c> object is used to represent a stack
    /// of DOM nodes. Stacking DOM nodes is required to determine where
@@ -37,8 +37,8 @@ namespace SimpleFramework.Xml.Stream {
       /// initial size is enough to cope with typical XML documents it
       /// is set large enough to cope with reasonably deep elements.
       /// </summary>
-      public NodeStack() {
-         super(6);
+      public NodeStack() : base(6) {
       }
+      public abstract Enumeration iterator();
    }
 }

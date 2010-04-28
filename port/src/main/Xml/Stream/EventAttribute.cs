@@ -27,7 +27,7 @@ namespace SimpleFramework.Xml.Stream {
    /// the namespace reference and prefix. For debugging purposes the
    /// source object from the internal XML provider can be acquired.
    /// </summary>
-   abstract class EventAttribute : Attribute {
+   internal abstract class EventAttribute : Attribute {
       /// <summary>
       /// This is used to acquire the namespace prefix associated with
       /// this attribute. A prefix is used to qualify the attribute
