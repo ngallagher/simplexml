@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 
 namespace SimpleFramework.Xml {
-   public class ListMapTest : TestCase {
+   public class HashMapTest : TestCase {
       public void TestMap() {
-         Map<String, String> map = new ListMap<String, String>();
+         Map<String, String> map = new HashMap<String, String>();
          map["A"] = "a";
          map["B"] = "b";
          map["C"] = "c";
