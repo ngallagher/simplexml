@@ -6,17 +6,29 @@ using System.Text;
 namespace SimpleFramework.Xml {
    public class LinkedMap<K, V> : Map<K, V> {
 
-      private Map<K, Entry<K, V>> map;
-      private EntryList<K, V> list;
+      private Map<K, Entry> map;
+      private EntryList list;
       private bool cache;
 
       public LinkedMap() : this(false) {
       }
 
       public LinkedMap(bool cache) {
-         this.map = new HashMap<K, Entry<K, V>>();
-         this.list = new EntryList<K, V>(this);
+         this.map = new HashMap<K, Entry>();
+         this.list = new EntryList(map);
          this.cache = cache;
+      }
+
+      public override int Count {
+         get {
+            return map.Count;
+         }
+      }
+
+      public override bool Empty {
+         get {
+            return map.Empty;
+         }
       }
 
       public override K[] Keys {
@@ -31,8 +43,17 @@ namespace SimpleFramework.Xml {
          }
       }
 
+      public override V this[K key] {
+         get {
+            return Get(key);
+         }
+         set {
+            Put(key, value);
+         }
+      }
+
       public override V Get(K key) {
-         Entry<K, V> entry = map.Get(key);
+         Entry entry = map.Get(key);
 
          if(entry == null) {
             return default(V);
@@ -44,9 +65,9 @@ namespace SimpleFramework.Xml {
       }
 
       public override V Put(K key, V value) {
-         Entry<K, V> entry = list.Insert(key, value);
-         Entry<K, V> item = map.Put(key, entry);
-         Entry<K, V> tail = list.Tail;
+         Entry entry = list.Insert(key, value);
+         Entry item = map.Put(key, entry);
+         Entry tail = list.Tail;
 
          if(item == null) {
             bool trim = RemoveEldest(tail);
@@ -60,7 +81,7 @@ namespace SimpleFramework.Xml {
       }
 
       public override V Remove(K key) {
-         Entry<K, V> entry = map.Remove(key);
+         Entry entry = map.Remove(key);
 
          if(entry != null) {
             return entry.Delete();
@@ -68,7 +89,15 @@ namespace SimpleFramework.Xml {
          return default(V);
       }
 
-      private bool RemoveEldest(Entry<K, V> entry) {
+      public override bool Contains(K key) {
+         return map.Contains(key);
+      }
+      public override void Clear() {
+         list.Clear();
+         map.Clear();
+      }
+
+      private bool RemoveEldest(Entry entry) {
          V value = entry.Value;
          K key = entry.Key;
 
@@ -82,18 +111,18 @@ namespace SimpleFramework.Xml {
          return false;
       }
 
-      private sealed class EntryList<K, V> {
-         private Entry<K, V> head;
-         private Entry<K, V> tail;
-         private Map<K, V> map;
+      private sealed class EntryList {
+         private Map<K, Entry> map;
+         private Entry head;
+         private Entry tail;
 
-         public EntryList(Map<K, V> map) {
-            this.head = new Entry<K, V>(this);
+         public EntryList(Map<K, Entry> map) {
+            this.head = new Entry(this);
             this.map = map;
          }
 
 
-         public Entry<K, V> Head {
+         public Entry Head {
             get {
                return head;
             }
@@ -102,7 +131,7 @@ namespace SimpleFramework.Xml {
             }
          }
 
-         public Entry<K, V> Tail {
+         public Entry Tail {
             get {
                return tail;
             }
@@ -111,7 +140,7 @@ namespace SimpleFramework.Xml {
             }
          }
 
-         public virtual K[] Keys() {
+         public K[] Keys() {
             K[] list = new K[map.Count];
 
             if(map.Count > 0 ) {
@@ -120,7 +149,7 @@ namespace SimpleFramework.Xml {
             return list;
          }
 
-         public virtual V[] Values() {
+         public V[] Values() {
             V[] list = new V[map.Count];
 
             if(map.Count > 0) {
@@ -129,29 +158,36 @@ namespace SimpleFramework.Xml {
             return list;
          }
 
-         public virtual Entry<K, V> Insert(K key, V value) {
-            Entry<K, V> entry = new Entry<K, V>(this, key, value);
+         public Entry Insert(K key, V value) {
+            Entry entry = new Entry(this, key, value);
 
             if(head != null) {
                head.Next(entry);
             }
             return entry;
          }
+
+         public void Clear() {
+            if(head != null) {
+               head.Next(null);
+            }
+            tail = null;
+         }
       }
 
-      private sealed class Entry<K, V> {
-         private EntryList<K, V> list;
-         private Entry<K, V> head;
-         private Entry<K, V> next;
-         private Entry<K, V> previous;
+      private sealed class Entry {
+         private EntryList list;
+         private Entry head;
+         private Entry next;
+         private Entry previous;
          private K key;
          private V value;
 
-         public Entry(EntryList<K, V> list) {
+         public Entry(EntryList list) {
             this.head = list.Head;
             this.list = list;
          }
-         public Entry(EntryList<K, V> list, K key, V value) {
+         public Entry(EntryList list, K key, V value) {
             this.head = list.Head;
             this.list = list;
             this.key = key;
@@ -179,7 +215,7 @@ namespace SimpleFramework.Xml {
             }
             head.Next(this);
          }
-         public void Next(Entry<K, V> entry) {
+         public void Next(Entry entry) {
             if(next != null) {
                next.previous = entry;
             }
@@ -204,15 +240,28 @@ namespace SimpleFramework.Xml {
             }
             return value;
          }
-         public void Values(V[] list) {
-            for(int i = 0; i < list.Length; i++) {
-               list[i] = next.Value;
+         public void Values(V[] array) {
+            Entry entry = list.Tail;
+
+            for(int i = 0; i < array.Length; i++) {
+               if(entry != null) {
+                  array[i] = entry.value;
+                  entry = entry.previous;
+               }
             }
          }
-         public void Keys(K[] list) {
-            for(int i = 0; i < list.Length; i++) {
-               list[i] = next.Key;
+         public void Keys(K[] array) {
+            Entry entry = list.Tail;
+
+            for(int i = 0; i < array.Length; i++) {
+               if(entry != null) {
+                  array[i] = entry.key;
+                  entry = entry.previous;
+               }
             }
+         }
+         public override String ToString() {
+            return String.Format("{0}.{1}", key, value);
          }
       }
    }

@@ -51,5 +51,47 @@ namespace SimpleFramework.Xml {
          AssertEquals(keys[3], "B");
          AssertEquals(keys[4], "A"); 
       }
+
+      public void TestKeyOrder() {
+         LinkedMap<String, String> map = new LinkedMap<String, String>(true);
+         map.Put("A", "a");
+         map.Put("B", "b");
+         map.Put("C", "c");
+         map.Put("D", "d");
+         AssertEquals(map.Keys[0], "A");
+         AssertEquals(map.Keys[1], "B");
+         AssertEquals(map.Get("C"), "c");
+         map.Put("E", "e");
+         map.Put("F", "f");
+         AssertEquals(map.Keys[0], "A");
+         AssertEquals(map.Keys[1], "B");
+         AssertEquals(map.Keys[2], "D");
+         AssertEquals(map.Keys[3], "C");
+         AssertEquals(map.Keys[4], "E");
+         AssertEquals(map.Keys[5], "F");
+      }
+
+      public void TestClear() {
+         LinkedMap<String, String> map = new LinkedMap<String, String>(true);
+         map.Put("A", "a");
+         map.Put("B", "b");
+         AssertEquals(map.Count, 2);
+         AssertEquals(map.Keys[0], "A");
+         AssertEquals(map.Keys[1], "B");
+         map.Clear();
+         AssertEquals(map.Count, 0);
+         AssertEquals(map.Keys.Length, 0);
+         map.Put("C", "c");
+         map.Put("D", "d");
+         AssertEquals(map.Get("C"), "c");
+         AssertEquals(map.Get("D"), "d");
+         AssertEquals(map["D"], "d");
+         AssertEquals(map["C"], "c");
+         AssertEquals(map.Keys[0], "D");
+         AssertEquals(map.Keys[1], "C");
+         map.Clear();
+         AssertEquals(map.Count, 0);
+         AssertEquals(map.Keys.Length, 0);
+      }
    }
 }
