@@ -6,14 +6,12 @@ using System.Text;
 namespace SimpleFramework.Xml {
    public class HashMap<K, V> : Map<K, V> {
       private readonly Dictionary<K, V> table;
-      private readonly List<K> order;
       public HashMap() {
          this.table = new Dictionary<K, V>();
-         this.order = new List<K>();
       }
       public override int Count {
          get {
-            return order.Count;
+            return table.Count;
          }
       }
       public override bool Empty {
@@ -21,9 +19,14 @@ namespace SimpleFramework.Xml {
             return Count == 0;
          }
       }
-      public virtual K[] Keys {
+      public override K[] Keys {
          get {
-            return order.ToArray();
+            K[] list = new K[Count];
+
+            if(list.Length > 0) {
+               table.Keys.CopyTo(list, 0);
+            }
+            return list;
          }
       }
       public override V this[K key] {
@@ -47,7 +50,6 @@ namespace SimpleFramework.Xml {
 
          if(table != null) {
             table.Add(key, value);
-            order.Add(key);
          }
          return entry;
       }
@@ -56,7 +58,6 @@ namespace SimpleFramework.Xml {
 
          if(value != null) {
             table.Remove(key);
-            order.Remove(key);
          }
          return value;
       }
@@ -65,7 +66,6 @@ namespace SimpleFramework.Xml {
       }
       public override void Clear() {
          table.Clear();
-         order.Clear();
       }
    }
 }
