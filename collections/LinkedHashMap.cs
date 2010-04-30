@@ -285,7 +285,12 @@ namespace SimpleFramework.Xml {
             }
          }
 
-
+         /// <summary>
+         /// This is used to move this <c>Entry</c> to the top of the list.
+         /// Moving the entry to the top of the list is used when the map
+         /// is acting as a least recently used cache. It ensures that 
+         /// when an entry is accessed frequently it will not be removed.
+         /// </summary>
          public void First() {
             if(next != null) {
                next.previous = previous;
@@ -299,6 +304,15 @@ namespace SimpleFramework.Xml {
             head.Next(this);
          }
 
+         /// <summary>
+         /// This is used to position the provided <c>Entry</c> to the
+         /// entry after this node. Positioning a node in this manner is
+         /// used to add new nodes to the head of the linked list. If 
+         /// the provided entry is null this cuts the list at this node.
+         /// </summary>
+         /// <param name="entry">
+         /// The node that is to be positioned after this node.
+         /// </param>
          public void Next(Entry entry) {
             if(next != null) {
                next.previous = entry;
@@ -313,6 +327,15 @@ namespace SimpleFramework.Xml {
             next = entry;
          }
 
+         /// <summary>
+         /// This is used to delete the node from the list. When deleting 
+         /// the entry from the list this will repair the list and join
+         /// it at this point. Removing the node is required if there is
+         /// a removal from the source map.
+         /// </summary>
+         /// <returns>
+         /// Returns the value of the entry that is to be deleted.
+         /// </returns>
          public V Delete() {
             if(next != null) {
                next.previous = previous;
@@ -326,6 +349,15 @@ namespace SimpleFramework.Xml {
             return value;
          }
 
+         /// <summary>
+         /// This is used to acquire the values for each mapping within the
+         /// list. Acquiring the value mappings in this way ensures that the
+         /// array of values will be in the order they have been added to
+         /// the linked list.
+         /// </summary>
+         /// <param name="array">
+         /// Returns an ordered array of values from the mappings created.
+         /// </param>
          public void Values(V[] array) {
             Entry entry = list.Tail;
 
@@ -337,6 +369,15 @@ namespace SimpleFramework.Xml {
             }
          }
 
+         /// <summary>
+         /// This is used to acquire the keys for each mapping within the
+         /// list. Acquiring the key mappings in this way ensures that the
+         /// array of values will be in the order they have been added to
+         /// the linked list.
+         /// </summary>
+         /// <param name="array">
+         /// Returns an ordered array of keys from the mappings created.
+         /// </param>
          public void Keys(K[] array) {
             Entry entry = list.Tail;
 
@@ -346,10 +387,6 @@ namespace SimpleFramework.Xml {
                   entry = entry.previous;
                }
             }
-         }
-
-         public override String ToString() {
-            return String.Format("{0}.{1}", key, value);
          }
       }
    }
