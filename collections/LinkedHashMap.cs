@@ -56,13 +56,20 @@ namespace SimpleFramework.Xml {
       private readonly bool cache;
 
       /// <summary>
-      /// Constructor for the <c>LinkedHashMap</c> object.
+      /// Constructor for the <c>LinkedHashMap</c> object. This is used 
+      /// to create a map that will provide the keys and values in the 
+      /// same order as insertion. Providing ordered keys in this manner
+      /// ensures the entries can be traversed in a predictable way.
       /// </summary>
       public LinkedHashMap() : this(false) {
       }
 
       /// <summary>
-      /// Constructor for the <c>LinkedHashMap</c> object.
+      /// Constructor for the <c>LinkedHashMap</c> object. Here a bool 
+      /// can be specified to determine whether the map should be used as
+      /// a least recently used cache. When the bool is set to true then
+      /// the <c>RemoveEldest</c> method is called each time a new entry
+      /// is added to the map. This alows various cache strategies.
       /// </summary>
       /// <param name="cache">
       /// If this is true then this map is to be used as a cache map
@@ -136,6 +143,18 @@ namespace SimpleFramework.Xml {
          map.Clear();
       }
 
+      /// <summary>
+      /// This is used to determine if the eldest entry is to be removed
+      /// from the list. To ensure this can be used like a least recently
+      /// used cache the <c>LinkedHashMap</c> should be extended such 
+      /// that this will return true if the map reaches a certain size.
+      /// </summary>
+      /// <param name="entry">
+      /// Represents the eldest entry within this linked hash map.
+      /// </param>
+      /// <returns>
+      /// If true then the eldest entry will be removed from this map.
+      /// </returns>
       private bool RemoveEldest(Entry entry) {
          V value = entry.Value;
          K key = entry.Key;
