@@ -37,7 +37,7 @@ namespace SimpleFramework.Xml {
          }
       }
 
-      public V[] Values {
+      public override V[] Values {
          get {
             return list.Values();
          }

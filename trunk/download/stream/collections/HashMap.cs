@@ -29,6 +29,16 @@ namespace SimpleFramework.Xml {
             return list;
          }
       }
+      public override V[] Values {
+         get {
+            V[] list = new V[Count];
+
+            if(list.Length > 0) {
+               table.Values.CopyTo(list, 0);
+            }
+            return list;
+         }
+      }
       public override V this[K key] {
          get {
             return Get(key);
