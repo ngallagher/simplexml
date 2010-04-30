@@ -39,14 +39,6 @@ namespace SimpleFramework.Xml {
             return list;
          }
       }
-      public override V this[K key] {
-         get {
-            return Get(key);
-         }
-         set {
-            Put(key, value);
-         }
-      }
       public override V Get(K key) {
          bool exists = Contains(key);
 
