@@ -73,7 +73,7 @@ namespace SimpleFramework.Xml {
             bool trim = RemoveEldest(tail);
 
             if(trim == true) {
-               tail.Delete();
+               Remove(tail.Key);
             }
             return default(V);
          }

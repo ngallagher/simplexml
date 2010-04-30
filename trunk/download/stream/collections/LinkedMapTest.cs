@@ -93,5 +93,36 @@ namespace SimpleFramework.Xml {
          AssertEquals(map.Count, 0);
          AssertEquals(map.Keys.Length, 0);
       }
+
+      public void TestRemoveEldest() {
+         LinkedMap<String, String> map = new LeastRecentlyUsedMap<String, String>(2);
+         map.Put("A", "a");
+         map.Put("B", "b");
+         map.Put("C", "c");
+         map.Put("D", "d");
+         AssertEquals(map.Count, 2);
+         AssertEquals(map.Keys[0], "C");
+         AssertEquals(map.Keys[1], "D");
+         map.Put("E", "e");
+         map.Put("F", "f");
+         AssertEquals(map.Count, 2);
+         AssertEquals(map["E"], "e");
+         AssertEquals(map["F"], "f");
+         AssertNull(map["C"]);
+         AssertNull(map["D"]);
+         AssertEquals(map.Keys[0], "E");
+         AssertEquals(map.Keys[1], "F");
+      }
+
+      private class LeastRecentlyUsedMap<K, V> : LinkedMap<K, V> {
+         private readonly int capacity;
+         public LeastRecentlyUsedMap(int capacity) : base(true) {
+            this.capacity = capacity;
+         }
+
+         protected override bool RemoveEldest(K key, V value) {
+            return Count > capacity;
+         }
+      }
    }
 }
