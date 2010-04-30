@@ -1,6 +1,6 @@
 ﻿#region License
 //
-// LinkedMap.cs May 2010
+// LinkedHashMap.cs May 2010
 //
 // Copyright (C) 2010, Niall Gallagher <niallg@users.sf.net>
 //
@@ -20,20 +20,18 @@
 #region Using directives
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 #endregion
 namespace SimpleFramework.Xml {
-   public class LinkedMap<K, V> : Map<K, V> {
+   public class LinkedHashMap<K, V> : Map<K, V> {
 
       private Map<K, Entry> map;
       private EntryList list;
       private bool cache;
 
-      public LinkedMap() : this(false) {
+      public LinkedHashMap() : this(false) {
       }
 
-      public LinkedMap(bool cache) {
+      public LinkedHashMap(bool cache) {
          this.map = new HashMap<K, Entry>();
          this.list = new EntryList(map);
          this.cache = cache;

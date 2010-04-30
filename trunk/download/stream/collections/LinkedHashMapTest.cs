@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 
 namespace SimpleFramework.Xml {
-   public class LinkedMapTest : TestCase {
+   public class LinkedHashMapTest : TestCase {
       public void TestOrder() {
-         LinkedMap<String, String> map = new LinkedMap<String, String>();
+         LinkedHashMap<String, String> map = new LinkedHashMap<String, String>();
          map.Put("A", "a");
          map.Put("B", "b");
          map.Put("C", "c");
@@ -27,7 +27,7 @@ namespace SimpleFramework.Xml {
       }
 
       public void TestCache() {
-         LinkedMap<String, String> map = new LinkedMap<String, String>(true);
+         LinkedHashMap<String, String> map = new LinkedHashMap<String, String>(true);
          map.Put("A", "a");
          map.Put("B", "b");
          map.Put("C", "c");
@@ -53,7 +53,7 @@ namespace SimpleFramework.Xml {
       }
 
       public void TestKeyOrder() {
-         LinkedMap<String, String> map = new LinkedMap<String, String>(true);
+         LinkedHashMap<String, String> map = new LinkedHashMap<String, String>(true);
          map.Put("A", "a");
          map.Put("B", "b");
          map.Put("C", "c");
@@ -72,7 +72,7 @@ namespace SimpleFramework.Xml {
       }
 
       public void TestClear() {
-         LinkedMap<String, String> map = new LinkedMap<String, String>(true);
+         LinkedHashMap<String, String> map = new LinkedHashMap<String, String>(true);
          map.Put("A", "a");
          map.Put("B", "b");
          AssertEquals(map.Count, 2);
@@ -95,7 +95,7 @@ namespace SimpleFramework.Xml {
       }
 
       public void TestRemoveEldest() {
-         LinkedMap<String, String> map = new LeastRecentlyUsedMap<String, String>(2);
+         LinkedHashMap<String, String> map = new LeastRecentlyUsedMap<String, String>(2);
          map.Put("A", "a");
          map.Put("B", "b");
          map.Put("C", "c");
@@ -114,7 +114,7 @@ namespace SimpleFramework.Xml {
          AssertEquals(map.Keys[1], "F");
       }
 
-      private class LeastRecentlyUsedMap<K, V> : LinkedMap<K, V> {
+      private class LeastRecentlyUsedMap<K, V> : LinkedHashMap<K, V> {
          private readonly int capacity;
          public LeastRecentlyUsedMap(int capacity) : base(true) {
             this.capacity = capacity;

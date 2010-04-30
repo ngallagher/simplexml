@@ -8,7 +8,7 @@ namespace SimpleFramework.Xml {
       public Type[] Suite() {
          return new Type[] {
             typeof(HashMapTest),
-            typeof(LinkedMapTest)
+            typeof(LinkedHashMapTest)
 
          };
       }

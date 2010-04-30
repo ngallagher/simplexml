@@ -17,10 +17,13 @@
 // permissions and limitations under the License.
 //
 #endregion
+
 #region Using directives
 using System;
 #endregion
+
 namespace SimpleFramework.Xml {
+
    /// <summary>
    /// The <c>Map</c> class represents a data structure that maintains 
    /// mappings between key value pairs. Unlike the <c>Dictionary</c> that
@@ -37,6 +40,7 @@ namespace SimpleFramework.Xml {
    /// ordered map and a least recently used cache if required.
    /// </summary>
    public abstract class Map<K, V> {
+
       /// <summary>
       /// This is used to determine the number of mappings that have been
       /// inserted in to the map. If count is zero <c>Empty</c> will be
@@ -48,6 +52,7 @@ namespace SimpleFramework.Xml {
       public abstract int Count {
          get;
       }
+
       /// <summary>
       /// This is used to determine if the map is empty or not. This is 
       /// used to indicate whether there are any mappings within the map.
@@ -61,6 +66,7 @@ namespace SimpleFramework.Xml {
             return Count == 0;
          }
       }
+
       /// <summary>
       /// This is used to return an array of keys. Depending on the map
       /// implementation keys may be returned in a random order or in an
@@ -73,6 +79,7 @@ namespace SimpleFramework.Xml {
       public abstract K[] Keys {
          get;
       }
+
       /// <summary>
       /// This is used to return an array of values. Depending on the map
       /// implementation values may be returned in a random order This is 
@@ -84,6 +91,7 @@ namespace SimpleFramework.Xml {
       public abstract V[] Values {
          get;
       }
+
       /// <summary>
       /// Provides an indexer used to get and set values for this map. 
       /// This indexer offers a more convenient way to get and set mappings
@@ -104,6 +112,7 @@ namespace SimpleFramework.Xml {
             Put(key, value);
          }
       }
+
       /// <summary>
       /// This is used to acquire the value associated with the specified
       /// key. If there is no mapping within the <c>Map</c> this returns 
@@ -117,6 +126,7 @@ namespace SimpleFramework.Xml {
       /// This is used to acquire the value associated with the key.
       /// </returns>
       public abstract V Get(K key);
+
       /// <summary>
       /// This is used to remove a mapping from the <c>Map</c>. This acts
       /// much like a take method would for a cache, in that it will 
@@ -130,6 +140,7 @@ namespace SimpleFramework.Xml {
       /// This returns the value associated with the mapping if it exists.
       /// </returns>
       public abstract V Remove(K key);
+
       /// <summary>
       /// This is used to establish a mapping within the map. If a mapping
       /// already exists with the specified key then this will return the
@@ -146,6 +157,7 @@ namespace SimpleFramework.Xml {
       /// Returns the value previously associated with the key, or null.
       /// </returns>
       public abstract V Put(K key, V value);
+
       /// <summary>
       /// This is used to determine if a mapping exists within the map. If
       /// this returns true then the <c>Keys</c> property will return the
@@ -159,6 +171,7 @@ namespace SimpleFramework.Xml {
       /// This will return true if the mapping exists within the instance.
       /// </returns>
       public abstract bool Contains(K key);
+
       /// <summary>
       /// This is used to clear the <c>Map</c> instance. Clearing the map
       /// instance ensures that there are no mappings maintained. Further
