@@ -27,14 +27,14 @@ namespace SimpleFramework.Xml {
       public HashMap() {
          this.table = new Dictionary<K, V>();
       }
-      public override int Count {
+      public override int Size {
          get {
             return table.Count;
          }
       }
       public override K[] Keys {
          get {
-            K[] list = new K[Count];
+            K[] list = new K[Size];
 
             if(list.Length > 0) {
                table.Keys.CopyTo(list, 0);
@@ -44,7 +44,7 @@ namespace SimpleFramework.Xml {
       }
       public override V[] Values {
          get {
-            V[] list = new V[Count];
+            V[] list = new V[Size];
 
             if(list.Length > 0) {
                table.Values.CopyTo(list, 0);

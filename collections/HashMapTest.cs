@@ -11,7 +11,7 @@ namespace SimpleFramework.Xml {
          map["B"] = "b";
          map["C"] = "c";
          AssertFalse(map.Empty);
-         AssertEquals(map.Count, 3);
+         AssertEquals(map.Size, 3);
          AssertEquals(map["A"], "a");
          AssertEquals(map["B"], "b");
          AssertEquals(map["C"], "c");
@@ -24,7 +24,7 @@ namespace SimpleFramework.Xml {
          AssertEquals(map.Keys[2], order[2]);
          map.Clear();
          AssertTrue(map.Empty);
-         AssertEquals(map.Count, 0);
+         AssertEquals(map.Size, 0);
          AssertEquals(map.Keys.Length, 0);
       }
    }
