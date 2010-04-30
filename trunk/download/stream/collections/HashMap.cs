@@ -14,11 +14,6 @@ namespace SimpleFramework.Xml {
             return table.Count;
          }
       }
-      public override bool Empty {
-         get {
-            return Count == 0;
-         }
-      }
       public override K[] Keys {
          get {
             K[] list = new K[Count];

@@ -45,12 +45,6 @@ namespace SimpleFramework.Xml {
          }
       }
 
-      public override bool Empty {
-         get {
-            return map.Empty;
-         }
-      }
-
       public override K[] Keys {
          get {
             return list.Keys();
@@ -60,15 +54,6 @@ namespace SimpleFramework.Xml {
       public override V[] Values {
          get {
             return list.Values();
-         }
-      }
-
-      public override V this[K key] {
-         get {
-            return Get(key);
-         }
-         set {
-            Put(key, value);
          }
       }
 
