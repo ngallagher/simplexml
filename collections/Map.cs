@@ -56,8 +56,10 @@ namespace SimpleFramework.Xml {
       /// <returns>
       /// True if there are no mappings within the map, false otherwise.
       /// </returns>
-      public abstract bool Empty {
-         get;
+      public virtual bool Empty {
+         get {
+            return Count == 0;
+         }
       }
       /// <summary>
       /// This is used to return an array of keys. Depending on the map
@@ -94,14 +96,74 @@ namespace SimpleFramework.Xml {
       /// <returns>
       /// An array of values that have been mapped within this instance.
       /// </returns>
-      public abstract V this[K key] {
-         get;
-         set;
+      public virtual V this[K key] {
+         get {
+            return Get(key);
+         }
+         set {
+            Put(key, value);
+         }
       }
+      /// <summary>
+      /// This is used to acquire the value associated with the specified
+      /// key. If there is no mapping within the <c>Map</c> this returns 
+      /// null. Given that mappings can be made to a null value this can
+      /// not be used to determine if a mapping exists within the instance.
+      /// </summary>
+      /// <param name="key">
+      /// This is the key that is used to acquire the mapped value.
+      /// </param>
+      /// <returns>
+      /// This is used to acquire the value associated with the key.
+      /// </returns>
       public abstract V Get(K key);
+      /// <summary>
+      /// This is used to remove a mapping from the <c>Map</c>. This acts
+      /// much like a take method would for a cache, in that it will 
+      /// the value of the mapping that has just been removed. If the
+      /// mapping did not exist then this method will return null.
+      /// </summary>
+      /// <param name="key">
+      /// This is the key to be searched for within this map instance.
+      /// </param>
+      /// <returns>
+      /// This returns the value associated with the mapping if it exists.
+      /// </returns>
       public abstract V Remove(K key);
+      /// <summary>
+      /// This is used to establish a mapping within the map. If a mapping
+      /// already exists with the specified key then this will return the
+      /// value that was previously associated with the key. Once mapped
+      /// the <c>Get</c> method or indexer can be used to get the value.
+      /// </summary>
+      /// <param name="key">
+      /// This is the key that is used to establish the mapping.
+      /// </param>
+      /// <param name="value">
+      /// This is the value that will be associated with the given key.
+      /// </param>
+      /// <returns>
+      /// Returns the value previously associated with the key, or null.
+      /// </returns>
       public abstract V Put(K key, V value);
+      /// <summary>
+      /// This is used to determine if a mapping exists within the map. If
+      /// this returns true then the <c>Keys</c> property will return the
+      /// specified key within the array of keys. However, if the key is 
+      /// mapped to null then the <c>Get</c> method will return null.
+      /// </summary>
+      /// <param name="key">
+      /// This is the key to be searched for within this map instance.
+      /// </param>
+      /// <returns>
+      /// This will return true if the mapping exists within the instance.
+      /// </returns>
       public abstract bool Contains(K key);
+      /// <summary>
+      /// This is used to clear the <c>Map</c> instance. Clearing the map
+      /// instance ensures that there are no mappings maintained. Further
+      /// attempts to get via the <c>Get</c> method will return null.
+      /// </summary>
       public abstract void Clear();
    }
 }
