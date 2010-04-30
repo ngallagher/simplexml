@@ -80,24 +80,62 @@ namespace SimpleFramework.Xml {
          this.cache = cache;
       }
 
+      /// <summary>
+      /// This is used to determine the number of mappings that have been
+      /// inserted in to the map. If size is zero <c>Empty</c> will be
+      /// true. This can be used to iterate over the key and value arrays.
+      /// </summary>
+      /// <returns>
+      /// The name number of mappings that have been added to the map.
+      /// </returns>
       public override int Size {
          get {
             return map.Size;
          }
       }
 
+      /// <summary>
+      /// This is used to acquire the keys for each mapping within the
+      /// list. Acquiring the key mappings in this way ensures that the
+      /// array of values will be in the order they have been added to
+      /// the linked list.
+      /// </summary>
+      /// <returns>
+      /// Provides an ordered array of keys from the mappings created.
+      /// </returns>
       public override K[] Keys {
          get {
             return list.Keys();
          }
       }
 
+      /// <summary>
+      /// This is used to acquire the values for each mapping within the
+      /// list. Acquiring the value mappings in this way ensures that the
+      /// array of values will be in the order they have been added to
+      /// the linked list.
+      /// </summary>
+      /// <returns>
+      /// Provides an ordered array of values from the mappings created.
+      /// </returns>
       public override V[] Values {
          get {
             return list.Values();
          }
       }
 
+      /// <summary>
+      /// This is used to acquire the value associated with the specified
+      /// key. If there is no mapping within the <c>Map</c> this returns 
+      /// null. Given that mappings can be made to a null value this can
+      /// not be used to determine if a mapping exists within the instance.
+      /// </summary>
+      /// <param name="key">
+      /// This is the key that is used to acquire the mapped value.
+      /// </param>
+      /// <returns>
+      /// This is used to acquire the value associated with the key.
+      /// </returns>
       public override V Get(K key) {
          Entry entry = map.Get(key);
 
@@ -110,6 +148,21 @@ namespace SimpleFramework.Xml {
          return entry.Value;
       }
 
+      /// <summary>
+      /// This is used to establish a mapping within the map. If a mapping
+      /// already exists with the specified key then this will return the
+      /// value that was previously associated with the key. Once mapped
+      /// the <c>Get</c> method or indexer can be used to get the value.
+      /// </summary>
+      /// <param name="key">
+      /// This is the key that is used to establish the mapping.
+      /// </param>
+      /// <param name="value">
+      /// This is the value that will be associated with the given key.
+      /// </param>
+      /// <returns>
+      /// Returns the value previously associated with the key, or null.
+      /// </returns>
       public override V Put(K key, V value) {
          Entry entry = list.Insert(key, value);
          Entry item = map.Put(key, entry);
@@ -126,6 +179,18 @@ namespace SimpleFramework.Xml {
          return item.Delete();
       }
 
+      /// <summary>
+      /// This is used to remove a mapping from the <c>Map</c>. This acts
+      /// much like a take method would for a cache, in that it will 
+      /// the value of the mapping that has just been removed. If the
+      /// mapping did not exist then this method will return null.
+      /// </summary>
+      /// <param name="key">
+      /// This is the key to be searched for within this map instance.
+      /// </param>
+      /// <returns>
+      /// This returns the value associated with the mapping if it exists.
+      /// </returns>
       public override V Remove(K key) {
          Entry entry = map.Remove(key);
 
@@ -135,9 +200,27 @@ namespace SimpleFramework.Xml {
          return default(V);
       }
 
+      /// <summary>
+      /// This is used to determine if a mapping exists within the map. If
+      /// this returns true then the <c>Keys</c> property will return the
+      /// specified key within the array of keys. However, if the key is 
+      /// mapped to null then the <c>Get</c> method will return null.
+      /// </summary>
+      /// <param name="key">
+      /// This is the key to be searched for within this map instance.
+      /// </param>
+      /// <returns>
+      /// This will return true if the mapping exists within the instance.
+      /// </returns>
       public override bool Contains(K key) {
          return map.Contains(key);
       }
+
+      /// <summary>
+      /// This is used to clear the <c>Map</c> instance. Clearing the map
+      /// instance ensures that there are no mappings maintained. Further
+      /// attempts to get via the <c>Get</c> method will return null.
+      /// </summary>
       public override void Clear() {
          list.Clear();
          map.Clear();
