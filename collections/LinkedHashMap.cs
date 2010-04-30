@@ -17,16 +17,18 @@
 // permissions and limitations under the License.
 //
 #endregion
+
 #region Using directives
 using System;
 using System.Collections.Generic;
 #endregion
+
 namespace SimpleFramework.Xml {
    public class LinkedHashMap<K, V> : Map<K, V> {
 
-      private Map<K, Entry> map;
-      private EntryList list;
-      private bool cache;
+      private readonly Map<K, Entry> map;
+      private readonly EntryList list;
+      private readonly bool cache;
 
       public LinkedHashMap() : this(false) {
       }
@@ -178,34 +180,112 @@ namespace SimpleFramework.Xml {
          }
       }
 
+      /// <summary>
+      /// The <c>Entry</c> represents a link within the linked list that is
+      /// used to bind this hash map together. Each entry contains the key
+      /// and value associated with the mapping. As well as maintain the
+      /// key value pair, it also contains links for a bi-directional linked
+      /// list. Maintaining a doubly linked list allows entries to be added
+      /// and replaced with a constant time operation regardless of the 
+      /// number of links within the list. 
+      /// </summary>
       private sealed class Entry {
+
+         /// <summary>
+         /// This is the linked list that is used to manage the entries.
+         /// </summary>
          private EntryList list;
+
+         /// <summary>
+         /// This represents a pointer to the first entry of the list.
+         /// </summary>
          private Entry head;
+
+         /// <summary>
+         /// This represents the next entry in the list relative to this.
+         /// </summary>
          private Entry next;
+
+         /// <summary>
+         /// This represents the previous entry relative to this one.
+         /// </summary>
          private Entry previous;
+
+         /// <summary>
+         /// This is the key associated with this key value pair.
+         /// </summary>
          private K key;
+
+         /// <summary>
+         /// This represents the value that has been mapped to the key.
+         /// </summary>
          private V value;
 
+         /// <summary>
+         /// Constructor for the <c>Entry</c> object. This is a constructor
+         /// for the list entry that is used to create an entry without a 
+         /// key value pair. Typically this is used to create the head of
+         /// the linked list.
+         /// </summary>
+         /// <param name="list">
+         /// This represents the source object for the linked list entry.
+         /// </param>
          public Entry(EntryList list) {
             this.head = list.Head;
             this.list = list;
          }
+
+         /// <summary>
+         /// Constructor for the <c>Entry</c> object. This is a constructor 
+         /// for the list entry that is used to create an entry that has
+         /// a key value pair. A typical entry within this linked list is
+         /// created using this constructor.
+         /// </summary>
+         /// <param name="list">
+         /// This represents the source object for the linked list entry.
+         /// </param>
+         /// <param name="key">
+         /// This is the key that identifies this entry within the map.
+         /// </param>
+         /// <param name="value">
+         /// This is the value that is linked to the associated entry key.
+         /// </param>
          public Entry(EntryList list, K key, V value) {
             this.head = list.Head;
             this.list = list;
             this.key = key;
             this.value = value;
          }
+
+         /// <summary>
+         /// Provides the key associated with this <c>Entry</c> in the list.
+         /// If this is the head of the list this returns null, otherwise
+         /// this will return the key associated with this list entry.
+         /// </summary>
+         /// <return>
+         /// This is used to return the key associated with this entry.
+         /// </return>
          public K Key {
             get {
                return key;
             }
          }
+
+         /// <summary>
+         /// Provides the value associated with this <c>Entry</c> in the 
+         /// list. If this is the head of the list this returns null. This
+         /// can also return null if the entry is a mapping for a null.
+         /// </summary>
+         /// <return>
+         /// This is used to return the value associated with this entry.
+         /// </return>
          public V Value {
             get {
                return value;
             }
          }
+
+
          public void First() {
             if(next != null) {
                next.previous = previous;
@@ -218,6 +298,7 @@ namespace SimpleFramework.Xml {
             }
             head.Next(this);
          }
+
          public void Next(Entry entry) {
             if(next != null) {
                next.previous = entry;
@@ -231,6 +312,7 @@ namespace SimpleFramework.Xml {
             }
             next = entry;
          }
+
          public V Delete() {
             if(next != null) {
                next.previous = previous;
@@ -243,6 +325,7 @@ namespace SimpleFramework.Xml {
             }
             return value;
          }
+
          public void Values(V[] array) {
             Entry entry = list.Tail;
 
@@ -253,6 +336,7 @@ namespace SimpleFramework.Xml {
                }
             }
          }
+
          public void Keys(K[] array) {
             Entry entry = list.Tail;
 
@@ -263,6 +347,7 @@ namespace SimpleFramework.Xml {
                }
             }
          }
+
          public override String ToString() {
             return String.Format("{0}.{1}", key, value);
          }
