@@ -14,6 +14,9 @@ namespace SimpleFramework.Xml {
       public abstract K[] Keys {
          get;
       }
+      public abstract K[] Values {
+         get;
+      }
       public abstract V this[K key] {
          get;
          set;
