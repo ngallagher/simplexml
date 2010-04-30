@@ -37,9 +37,9 @@ namespace SimpleFramework.Xml {
          this.cache = cache;
       }
 
-      public override int Count {
+      public override int Size {
          get {
-            return map.Count;
+            return map.Size;
          }
       }
 
@@ -144,18 +144,18 @@ namespace SimpleFramework.Xml {
          }
 
          public K[] Keys() {
-            K[] list = new K[map.Count];
+            K[] list = new K[map.Size];
 
-            if(map.Count > 0 ) {
+            if(map.Size > 0 ) {
                head.Keys(list);
             }
             return list;
          }
 
          public V[] Values() {
-            V[] list = new V[map.Count];
+            V[] list = new V[map.Size];
 
-            if(map.Count > 0) {
+            if(map.Size > 0) {
                head.Values(list);
             }
             return list;

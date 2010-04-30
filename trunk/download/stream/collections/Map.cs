@@ -43,13 +43,13 @@ namespace SimpleFramework.Xml {
 
       /// <summary>
       /// This is used to determine the number of mappings that have been
-      /// inserted in to the map. If count is zero <c>Empty</c> will be
+      /// inserted in to the map. If size is zero <c>Empty</c> will be
       /// true. This can be used to iterate over the key and value arrays.
       /// </summary>
       /// <returns>
       /// The name number of mappings that have been added to the map.
       /// </returns>
-      public abstract int Count {
+      public abstract int Size {
          get;
       }
 
@@ -63,7 +63,7 @@ namespace SimpleFramework.Xml {
       /// </returns>
       public virtual bool Empty {
          get {
-            return Count == 0;
+            return Size == 0;
          }
       }
 

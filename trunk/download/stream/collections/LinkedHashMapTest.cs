@@ -75,11 +75,11 @@ namespace SimpleFramework.Xml {
          LinkedHashMap<String, String> map = new LinkedHashMap<String, String>(true);
          map.Put("A", "a");
          map.Put("B", "b");
-         AssertEquals(map.Count, 2);
+         AssertEquals(map.Size, 2);
          AssertEquals(map.Keys[0], "A");
          AssertEquals(map.Keys[1], "B");
          map.Clear();
-         AssertEquals(map.Count, 0);
+         AssertEquals(map.Size, 0);
          AssertEquals(map.Keys.Length, 0);
          map.Put("C", "c");
          map.Put("D", "d");
@@ -90,7 +90,7 @@ namespace SimpleFramework.Xml {
          AssertEquals(map.Keys[0], "D");
          AssertEquals(map.Keys[1], "C");
          map.Clear();
-         AssertEquals(map.Count, 0);
+         AssertEquals(map.Size, 0);
          AssertEquals(map.Keys.Length, 0);
       }
 
@@ -100,12 +100,12 @@ namespace SimpleFramework.Xml {
          map.Put("B", "b");
          map.Put("C", "c");
          map.Put("D", "d");
-         AssertEquals(map.Count, 2);
+         AssertEquals(map.Size, 2);
          AssertEquals(map.Keys[0], "C");
          AssertEquals(map.Keys[1], "D");
          map.Put("E", "e");
          map.Put("F", "f");
-         AssertEquals(map.Count, 2);
+         AssertEquals(map.Size, 2);
          AssertEquals(map["E"], "e");
          AssertEquals(map["F"], "f");
          AssertNull(map["C"]);
@@ -121,7 +121,7 @@ namespace SimpleFramework.Xml {
          }
 
          protected override bool RemoveEldest(K key, V value) {
-            return Count > capacity;
+            return Size > capacity;
          }
       }
    }
