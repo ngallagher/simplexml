@@ -40,8 +40,7 @@ namespace SimpleFramework.Xml {
       /// <summary>
       /// This is used to determine the number of mappings that have been
       /// inserted in to the map. If count is zero <c>Empty</c> will be
-      /// true. This can be used to iterate over the key and value arrays
-      /// that are returned from the <c>Keys</c> and <c>Values</c> methods.
+      /// true. This can be used to iterate over the key and value arrays.
       /// </summary>
       /// <returns>
       /// The name number of mappings that have been added to the map.
@@ -55,23 +54,46 @@ namespace SimpleFramework.Xml {
       /// To empty the map the <c>Clear</c> method can be used. 
       /// </summary>
       /// <returns>
-      /// The name number of mappings that have been added to the map.
+      /// True if there are no mappings within the map, false otherwise.
       /// </returns>
       public abstract bool Empty {
          get;
       }
       /// <summary>
-      /// This is used to return an array of keys. 
+      /// This is used to return an array of keys. Depending on the map
+      /// implementation keys may be returned in a random order or in an
+      /// ordered manner. Keys are returned as an array so that can be
+      /// used in a <c>foreach</c> loop. 
       /// </summary>
       /// <returns>
-      /// The name number of mappings that have been added to the map.
+      /// An array of keys representing the keys for each mapping.
       /// </returns>
       public abstract K[] Keys {
          get;
       }
+      /// <summary>
+      /// This is used to return an array of values. Depending on the map
+      /// implementation values may be returned in a random order This is 
+      /// provided for convenient use in a <c>foreach</c> loop.
+      /// </summary>
+      /// <returns>
+      /// An array of values that have been mapped within this instance.
+      /// </returns>
       public abstract V[] Values {
          get;
       }
+      /// <summary>
+      /// Provides an indexer used to get and set values for this map. 
+      /// This indexer offers a more convenient way to get and set mappings
+      /// than the <c>Get</c> and <c>Put</c> methods. If no mappin exists
+      /// for the specified key then this will return a null value.
+      /// </summary>
+      /// <param name="key">
+      /// The key is used to identify the mapping within this instance.
+      /// </param>
+      /// <returns>
+      /// An array of values that have been mapped within this instance.
+      /// </returns>
       public abstract V this[K key] {
          get;
          set;
