@@ -24,15 +24,49 @@ using System.Collections.Generic;
 #endregion
 
 namespace SimpleFramework.Xml {
+
+   /// <summary>
+   /// The <c>LinkedHashMap</c> object represents an ordered map that can
+   /// be used as conventional map or a least recently used cache. Using
+   /// this implementation offers advantages such as the ability to order
+   /// the keys by insertion. Order is reflected in the <c>Keys</c> method
+   /// and can be used within a <c>foreach</c> loop to traverse the key
+   /// value pairs in a predictable manner. 
+   /// <p>
+   /// This offers a substitute for the <c>LinkedHashMap</c> available in
+   /// the Java collections framework. It is used to aid the porting of
+   /// Java projects to .NET where the linked hash map is heavily used.
+   /// Operations on this map are constant time regardless of size.
+   /// </summary>
    public class LinkedHashMap<K, V> : Map<K, V> {
 
+      /// <summary>
+      /// This is the map that maintains the mappings for this instance.
+      /// </summary>
       private readonly Map<K, Entry> map;
+
+      /// <summary>
+      /// This is the linked list that is used to bind the entries.
+      /// </summary>
       private readonly EntryList list;
+
+      /// <summary>
+      /// This determines if this is a least recently used cache map.
+      /// </summary>
       private readonly bool cache;
 
+      /// <summary>
+      /// Constructor for the <c>LinkedHashMap</c> object.
+      /// </summary>
       public LinkedHashMap() : this(false) {
       }
 
+      /// <summary>
+      /// Constructor for the <c>LinkedHashMap</c> object.
+      /// </summary>
+      /// <param name="cache">
+      /// If this is true then this map is to be used as a cache map
+      /// </param>
       public LinkedHashMap(bool cache) {
          this.map = new HashMap<K, Entry>();
          this.list = new EntryList(map);
@@ -112,30 +146,80 @@ namespace SimpleFramework.Xml {
          return false;
       }
 
+      /// <summary>
+      /// This is used to determine if the eldest entry is to be removed
+      /// from the list. To ensure this can be used like a least recently
+      /// used cache the <c>LinkedHashMap</c> should be extended such 
+      /// that this will return true if the map reaches a certain size.
+      /// </summary>
+      /// <param name="key">
+      /// Represents the key for the eldest entry within this map.
+      /// </param>
+      /// <param name="value">
+      /// Represents the value for the eldest entry within this map.
+      /// </param>
+      /// <returns>
+      /// If true then the eldest entry will be removed from this map.
+      /// </returns>
       protected virtual bool RemoveEldest(K key, V value) {
          return false;
       }
 
+      /// <summary>
+      /// The <c>EntryList</c> object represents a linked list that is used
+      /// to bind the hash map together. Maintaining a linked list is done
+      /// so that acquiring the eldest entry is a constant time operation.
+      /// Also, moving the entry to the top of the list and removing entries
+      /// is constant time. Finally, building the key and value arrays can
+      /// be done in an expected order according to addition to the map.
+      /// </summary>
       private sealed class EntryList {
+
+         /// <summary>
+         /// Represents the map that is used to maintain the entries.
+         /// </summary>
          private Map<K, Entry> map;
+
+         /// <summary>
+         /// Represents a pointer to the first entry within the linked list.
+         /// </summary>
          private Entry head;
+
+         /// <summary>
+         /// Represents the last entry within this linked list instance.
+         /// </summary>
          private Entry tail;
 
+         /// <summary>
+         /// Constructor for the <c>EntryList</c> object. This creates a
+         /// linked list that binds the entries that are maintained within
+         /// the provided map. The map is required so that access to the
+         /// number of entries is maintained in a single place.
+         /// </summary>
+         /// <param name="map">
+         /// Represents the map that this list is binding entries for.
+         /// </param>
          public EntryList(Map<K, Entry> map) {
             this.head = new Entry(this);
             this.map = map;
          }
 
-
+         /// <summary>
+         /// The head represents a pointer to the first entry within this
+         /// list. Acquiring the head is used when the list needs to be
+         /// traversed. The head is a fixed pointer that can not be set.
+         /// </summary>
          public Entry Head {
             get {
                return head;
             }
-            set {
-               head = value;
-            }
          }
 
+         /// <summary>
+         /// The tail represents a pointer to the last entry within this
+         /// list. Acquiring the tail is used when the list needs to be
+         /// traversed. The tail can be set an also nulled for deletion.
+         /// </summary>
          public Entry Tail {
             get {
                return tail;
@@ -145,6 +229,15 @@ namespace SimpleFramework.Xml {
             }
          }
 
+         /// <summary>
+         /// This is used to acquire the keys for each mapping within the
+         /// list. Acquiring the key mappings in this way ensures that the
+         /// array of values will be in the order they have been added to
+         /// the linked list.
+         /// </summary>
+         /// <returns>
+         /// Provides an ordered array of keys from the mappings created.
+         /// </returns>
          public K[] Keys() {
             K[] list = new K[map.Size];
 
@@ -154,6 +247,15 @@ namespace SimpleFramework.Xml {
             return list;
          }
 
+         /// <summary>
+         /// This is used to acquire the values for each mapping within the
+         /// list. Acquiring the value mappings in this way ensures that the
+         /// array of values will be in the order they have been added to
+         /// the linked list.
+         /// </summary>
+         /// <returns>
+         /// Provides an ordered array of values from the mappings created.
+         /// </returns>
          public V[] Values() {
             V[] list = new V[map.Size];
 
@@ -163,6 +265,21 @@ namespace SimpleFramework.Xml {
             return list;
          }
 
+         /// <summary>
+         /// This is used to insert the provided key value pair as an entry
+         /// to the linked list. The created <c>Entry</c> is positioned at
+         /// the top of the list. Positioning in this way ensures that key
+         /// value pairs can be acquired in the order they were inserted.
+         /// </summary>
+         /// <param name="key">
+         /// Represents the key that is used to establish the mapping.
+         /// </param>
+         /// <param name="value">
+         /// Represents the value that is to be mapped to the provided key.
+         /// </param>
+         /// <returns>
+         /// Returns the entry that is created for this key value pair.
+         /// </returns>
          public Entry Insert(K key, V value) {
             Entry entry = new Entry(this, key, value);
 
@@ -172,6 +289,12 @@ namespace SimpleFramework.Xml {
             return entry;
          }
 
+         /// <summary>
+         /// This is used to clear the linked list. Clearing the list is
+         /// done by cutting the list at the head and nulling the tail of
+         /// of the list. This ensures it is eligible for collection by 
+         /// the garbage collector and that traversal can not be done.
+         /// </summary>
          public void Clear() {
             if(head != null) {
                head.Next(null);
@@ -262,9 +385,6 @@ namespace SimpleFramework.Xml {
          /// If this is the head of the list this returns null, otherwise
          /// this will return the key associated with this list entry.
          /// </summary>
-         /// <return>
-         /// This is used to return the key associated with this entry.
-         /// </return>
          public K Key {
             get {
                return key;
@@ -276,9 +396,6 @@ namespace SimpleFramework.Xml {
          /// list. If this is the head of the list this returns null. This
          /// can also return null if the entry is a mapping for a null.
          /// </summary>
-         /// <return>
-         /// This is used to return the value associated with this entry.
-         /// </return>
          public V Value {
             get {
                return value;
@@ -356,7 +473,7 @@ namespace SimpleFramework.Xml {
          /// the linked list.
          /// </summary>
          /// <param name="array">
-         /// Returns an ordered array of values from the mappings created.
+         /// Provides an ordered array of values from the mappings created.
          /// </param>
          public void Values(V[] array) {
             Entry entry = list.Tail;
@@ -376,7 +493,7 @@ namespace SimpleFramework.Xml {
          /// the linked list.
          /// </summary>
          /// <param name="array">
-         /// Returns an ordered array of keys from the mappings created.
+         /// Provides an ordered array of keys from the mappings created.
          /// </param>
          public void Keys(K[] array) {
             Entry entry = list.Tail;
