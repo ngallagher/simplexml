@@ -225,16 +225,16 @@ namespace SimpleFramework.Xml {
       /// then this returns <c>true</c>.
       /// </summary>
       /// <param name="text">
-      /// This is the buffer that is to be resolved.
+      /// This is the buffer that is to be resolved as a match.
       /// </param>
       /// <param name="off">
-      /// This is the read offset for the text buffer.
+      /// This is the read offset for the text buffer array.
       /// </param>
       /// <param name="wild">
-      /// This is the pattern that will be used.
+      /// This is the pattern that will be used to find the match.
       /// </param>
       /// <param name="pos">
-      /// This is the read offset for the wild buffer.
+      /// This is the read offset for the wild buffer array.
       /// </param>
       private bool Match(char[] text, int off, char[] wild, int pos) {
          while(pos < wild.Length && off < text.Length) { /* examine chars */
