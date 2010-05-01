@@ -146,7 +146,7 @@ namespace SimpleFramework.Xml {
       /// Returns the value previously associated with the key, or null.
       /// </returns>
       public override V Put(K key, V value) {
-         V entry = Get(key);
+         V entry = Remove(key);
 
          if(table != null) {
             table.Add(key, value);

@@ -40,18 +40,25 @@ namespace SimpleFramework.Xml {
             throw new SystemException("Value is not null");
          }
       }
+      public virtual void SetUp() { }
+      public virtual void TearDown() { }
       protected internal void Run() {
          Type type = GetType();
          foreach (MemberInfo info in type.GetMethods()) {
             if (info.Name.StartsWith("Test") || info.Name.StartsWith("test")) {
-               type.InvokeMember(info.Name,
-                  BindingFlags.Public |
-                  BindingFlags.DeclaredOnly |
-                  BindingFlags.Instance |
-                  BindingFlags.InvokeMethod,
-                  null,
-                  this,
-                  null);
+               SetUp();
+               try {
+                  type.InvokeMember(info.Name,
+                     BindingFlags.Public |
+                     BindingFlags.DeclaredOnly |
+                     BindingFlags.Instance |
+                     BindingFlags.InvokeMethod,
+                     null,
+                     this,
+                     null);
+               } finally {
+                  TearDown();
+               }
             }
          }
       }
