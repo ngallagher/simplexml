@@ -156,6 +156,9 @@ namespace SimpleFramework.Xml {
                list.Add(match);
             }
          }
+         if(list.Count > 1) {
+            list.Reverse();
+         }
          return list;
       }
 
@@ -171,9 +174,9 @@ namespace SimpleFramework.Xml {
       /// <returns>
       /// True of the removal of the match was successful.
       /// </returns>
-      public override bool Remove(T match) {
+      public new void RemoveAt(int index) {
          cache.Clear();
-         return base.Remove(match);
+         base.RemoveAt(index);
       }
 
       /// <summary>
@@ -182,7 +185,7 @@ namespace SimpleFramework.Xml {
       /// cache is cleared. This is used to that the set can be reused
       /// and have new pattern matches inserted into it for resolution.
       /// </summary>
-      public override void Clear() {
+      public new void Clear() {
          cache.Clear();
          base.Clear();
       }

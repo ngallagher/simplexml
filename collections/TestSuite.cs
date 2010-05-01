@@ -9,7 +9,8 @@ namespace SimpleFramework.Xml {
          return new Type[] {
             typeof(HashMapTest),
             typeof(LinkedHashMapTest),
-            typeof(HashCacheTest)
+            typeof(HashCacheTest),
+            typeof(ResolverTest)
          };
       }
    }
