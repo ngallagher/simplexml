@@ -212,8 +212,24 @@ namespace SimpleFramework.Xml {
       /// <returns>
       /// This will return true if the mapping exists within the instance.
       /// </returns>
-      public override bool Contains(K key) {
-         return map.Contains(key);
+      public override bool ContainsKey(K key) {
+         return map.ContainsKey(key);
+      }
+
+      /// <summary>
+      /// This is used to determine if a value exists within the map. If
+      /// this returns true then the <c>Values</c> property will return the
+      /// specified value within the array of keys. The map may contain 
+      /// may equal values within the map.
+      /// </summary>
+      /// <param name="value">
+      /// This is the value to be searched for within this map instance.
+      /// </param>
+      /// <returns>
+      /// This will return true if the value exists within the instance.
+      /// </returns>
+      public override bool ContainsValue(V value) {
+         return map.ContainsValue(value);
       }
 
       /// <summary>

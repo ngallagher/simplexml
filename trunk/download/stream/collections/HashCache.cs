@@ -294,9 +294,9 @@ namespace SimpleFramework.Xml {
          /// <returns>
          /// True if the specified key is within the cache.
          /// </returns>
-         public override bool Contains(K key) {
+         public override bool ContainsKey(K key) {
             lock(this) {
-               return base.Contains(key);
+               return base.ContainsKey(key);
             }
          }
       }
