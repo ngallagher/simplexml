@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System;
 #endregion
 
-namespace SimpleFramework.Xml.Util {
+namespace SimpleFramework.Xml {
 
    /// <summary>
    /// The <c>HashCache</c> object is an implementation of a cache
@@ -73,8 +73,8 @@ namespace SimpleFramework.Xml.Util {
       /// <param name="value">
       /// This is the value that is to be cached.
       /// </param>
-      public void Cache(K key, V value) {
-         Map(key).Cache(key, value);
+      public override V Insert(K key, V value) {
+         return Get(key).Insert(key, value);
       }
 
       /// <summary>
@@ -88,8 +88,8 @@ namespace SimpleFramework.Xml.Util {
       /// <returns>
       /// This returns the value mapped to the specified key.
       /// </returns>
-      public V Take(K key) {
-         return Map(key).Take(key);
+      public override V Take(K key) {
+         return Get(key).Take(key);
       }
 
       /// <summary>
@@ -103,8 +103,8 @@ namespace SimpleFramework.Xml.Util {
       /// <returns>
       /// This returns the value mapped to the specified key.
       /// </returns>
-      public V Fetch(K key) {
-         return Map(key).Fetch(key);
+      public override V Fetch(K key) {
+         return Get(key).Fetch(key);
       }
 
       /// <summary>
@@ -118,8 +118,8 @@ namespace SimpleFramework.Xml.Util {
       /// <returns>
       /// True if the specified key is within the cache.
       /// </returns>
-      public bool Contains(K key) {
-         return Map(key).Contains(key);
+      public override bool Contains(K key) {
+         return Get(key).Contains(key);
       }
 
       /// <summary>
@@ -133,7 +133,7 @@ namespace SimpleFramework.Xml.Util {
       /// <returns>
       /// This returns the segment used to get acquire value.
       /// </returns>
-      public Segment Map(K key) {
+      private Segment Get(K key) {
          return list.Get(key);
       }
 
@@ -243,9 +243,9 @@ namespace SimpleFramework.Xml.Util {
          /// <param name="value">
          /// This is the value that is to be cached.
          /// </param>
-         public void Cache(K key, V value) {
+         public V Insert(K key, V value) {
             lock(this) {
-               Put(key, value);
+               return Put(key, value);
             }
          }
 
@@ -294,9 +294,9 @@ namespace SimpleFramework.Xml.Util {
          /// <returns>
          /// True if the specified key is within the cache.
          /// </returns>
-         public bool Contains(K key) {
+         public override bool Contains(K key) {
             lock(this) {
-               return Contains(key);
+               return base.Contains(key);
             }
          }
       }

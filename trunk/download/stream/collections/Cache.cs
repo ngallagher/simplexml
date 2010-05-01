@@ -22,7 +22,7 @@
 using System;
 #endregion
 
-namespace SimpleFramework.Xml.Util {
+namespace SimpleFramework.Xml {
 
    /// <summary>
    /// The <c>Cache</c> interface is used to represent a cache
@@ -30,7 +30,7 @@ namespace SimpleFramework.Xml.Util {
    /// methods to ensure that implementations can focus on performance
    /// concerns rather than how to manage the cached values.
    /// </summary>
-   public interface Cache<K, V> {
+   public abstract class Cache<K, V> {
 
       /// <summary>
       /// This method is used to insert a key value mapping in to the
@@ -44,7 +44,7 @@ namespace SimpleFramework.Xml.Util {
       /// <param name="value">
       /// This is the value that is to be cached.
       /// </param>
-      public void Cache(K key, V value);
+      public abstract V Insert(K key, V value);
 
       /// <summary>
       /// This is used to exclusively take the value mapped to the
@@ -57,7 +57,7 @@ namespace SimpleFramework.Xml.Util {
       /// <returns>
       /// This returns the value mapped to the specified key.
       /// </returns>
-      public V Take(K key);
+      public abstract V Take(K key);
 
       /// <summary>
       /// This method is used to get the value from the cache that is
@@ -70,7 +70,7 @@ namespace SimpleFramework.Xml.Util {
       /// <returns>
       /// This returns the value mapped to the specified key.
       /// </returns>
-      public V Fetch(K key);
+      public abstract V Fetch(K key);
 
       /// <summary>
       /// This is used to determine whether the specified key exists
@@ -83,6 +83,6 @@ namespace SimpleFramework.Xml.Util {
       /// <returns>
       /// True if the specified key is within the cache.
       /// </returns>
-      public bool Contains(K key);
+      public abstract bool Contains(K key);
    }
 }
