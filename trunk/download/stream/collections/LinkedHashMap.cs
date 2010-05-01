@@ -88,22 +88,36 @@ namespace SimpleFramework.Xml {
       /// <returns>
       /// The name number of mappings that have been added to the map.
       /// </returns>
-      public override int Size {
+      public virtual int Size {
          get {
             return map.Size;
          }
       }
 
       /// <summary>
+      /// This is used to determine if the map is empty or not. This is 
+      /// used to indicate whether there are any mappings within the map.
+      /// To empty the map the <c>Clear</c> method can be used. 
+      /// </summary>
+      /// <returns>
+      /// True if there are no mappings within the map, false otherwise.
+      /// </returns>
+      public virtual bool Empty {
+         get {
+            return Size == 0;
+         }
+      }
+
+      /// <summary>
       /// This is used to acquire the keys for each mapping within the
       /// list. Acquiring the key mappings in this way ensures that the
-      /// array of values will be in the order they have been added to
+      /// list of values will be in the order they have been added to
       /// the linked list.
       /// </summary>
       /// <returns>
-      /// Provides an ordered array of keys from the mappings created.
+      /// Provides an ordered list of keys from the mappings created.
       /// </returns>
-      public override K[] Keys {
+      public virtual List<K> Keys {
          get {
             return list.Keys();
          }
@@ -112,15 +126,36 @@ namespace SimpleFramework.Xml {
       /// <summary>
       /// This is used to acquire the values for each mapping within the
       /// list. Acquiring the value mappings in this way ensures that the
-      /// array of values will be in the order they have been added to
+      /// list of values will be in the order they have been added to
       /// the linked list.
       /// </summary>
       /// <returns>
-      /// Provides an ordered array of values from the mappings created.
+      /// Provides an ordered list of values from the mappings created.
       /// </returns>
-      public override V[] Values {
+      public virtual List<V> Values {
          get {
             return list.Values();
+         }
+      }
+
+      /// <summary>
+      /// Provides an indexer used to get and set values for this map. 
+      /// This indexer offers a more convenient way to get and set mappings
+      /// than the <c>Get</c> and <c>Put</c> methods. If no mappin exists
+      /// for the specified key then this will return a null value.
+      /// </summary>
+      /// <param name="key">
+      /// The key is used to identify the mapping within this instance.
+      /// </param>
+      /// <returns>
+      /// An array of values that have been mapped within this instance.
+      /// </returns>
+      public virtual V this[K key] {
+         get {
+            return Get(key);
+         }
+         set {
+            Put(key, value);
          }
       }
 
@@ -136,7 +171,7 @@ namespace SimpleFramework.Xml {
       /// <returns>
       /// This is used to acquire the value associated with the key.
       /// </returns>
-      public override V Get(K key) {
+      public virtual V Get(K key) {
          Entry entry = map.Get(key);
 
          if(entry == null) {
@@ -163,7 +198,7 @@ namespace SimpleFramework.Xml {
       /// <returns>
       /// Returns the value previously associated with the key, or null.
       /// </returns>
-      public override V Put(K key, V value) {
+      public virtual V Put(K key, V value) {
          Entry entry = list.Insert(key, value);
          Entry item = map.Put(key, entry);
          Entry tail = list.Tail;
@@ -191,7 +226,7 @@ namespace SimpleFramework.Xml {
       /// <returns>
       /// This returns the value associated with the mapping if it exists.
       /// </returns>
-      public override V Remove(K key) {
+      public virtual V Remove(K key) {
          Entry entry = map.Remove(key);
 
          if(entry != null) {
@@ -212,7 +247,7 @@ namespace SimpleFramework.Xml {
       /// <returns>
       /// This will return true if the mapping exists within the instance.
       /// </returns>
-      public override bool ContainsKey(K key) {
+      public virtual bool ContainsKey(K key) {
          return map.ContainsKey(key);
       }
 
@@ -228,8 +263,8 @@ namespace SimpleFramework.Xml {
       /// <returns>
       /// This will return true if the value exists within the instance.
       /// </returns>
-      public override bool ContainsValue(V value) {
-         return map.ContainsValue(value);
+      public virtual bool ContainsValue(V value) {
+         return list.Contains(value);
       }
 
       /// <summary>
@@ -237,7 +272,7 @@ namespace SimpleFramework.Xml {
       /// instance ensures that there are no mappings maintained. Further
       /// attempts to get via the <c>Get</c> method will return null.
       /// </summary>
-      public override void Clear() {
+      public virtual void Clear() {
          list.Clear();
          map.Clear();
       }
@@ -350,14 +385,14 @@ namespace SimpleFramework.Xml {
          /// <summary>
          /// This is used to acquire the keys for each mapping within the
          /// list. Acquiring the key mappings in this way ensures that the
-         /// array of values will be in the order they have been added to
+         /// list of values will be in the order they have been added to
          /// the linked list.
          /// </summary>
          /// <returns>
-         /// Provides an ordered array of keys from the mappings created.
+         /// This returns the list that is populated with the keys.
          /// </returns>
-         public K[] Keys() {
-            K[] list = new K[map.Size];
+         public List<K> Keys() {
+            List<K> list = new List<K>(map.Size);
 
             if(map.Size > 0 ) {
                head.Keys(list);
@@ -368,14 +403,14 @@ namespace SimpleFramework.Xml {
          /// <summary>
          /// This is used to acquire the values for each mapping within the
          /// list. Acquiring the value mappings in this way ensures that the
-         /// array of values will be in the order they have been added to
+         /// list of values will be in the order they have been added to
          /// the linked list.
          /// </summary>
          /// <returns>
-         /// Provides an ordered array of values from the mappings created.
+         /// This returns the list that is populated with the values.
          /// </returns>
-         public V[] Values() {
-            V[] list = new V[map.Size];
+         public List<V> Values() {
+            List<V> list = new List<V>(map.Size);
 
             if(map.Size > 0) {
                head.Values(list);
@@ -405,6 +440,21 @@ namespace SimpleFramework.Xml {
                head.Next(entry);
             }
             return entry;
+         }
+
+         /// <summary>
+         /// This is used to search the linked list for the given value. 
+         /// If the value is found then this will return true. The list is
+         /// searched from the head to the tail to find the value.
+         /// </summary>
+         /// <param name="value">
+         /// This is the value to search the linked list for.
+         /// </param>
+         /// <returns>
+         /// True if the value is found in one of the list entries.
+         /// </returns>
+         public bool Contains(V value) {
+            return head.Contains(value);
          }
 
          /// <summary>
@@ -587,18 +637,18 @@ namespace SimpleFramework.Xml {
          /// <summary>
          /// This is used to acquire the values for each mapping within the
          /// list. Acquiring the value mappings in this way ensures that the
-         /// array of values will be in the order they have been added to
+         /// list of values will be in the order they have been added to
          /// the linked list.
          /// </summary>
-         /// <param name="array">
-         /// Provides an ordered array of values from the mappings created.
+         /// <param name="values">
+         /// This is the list that is to be populated with the values.
          /// </param>
-         public void Values(V[] array) {
+         public void Values(List<V> values) {
             Entry entry = list.Tail;
 
-            for(int i = 0; i < array.Length; i++) {
+            for(int i = 0; i < values.Capacity; i++) {
                if(entry != null) {
-                  array[i] = entry.value;
+                  values[i] = entry.value;
                   entry = entry.previous;
                }
             }
@@ -607,21 +657,45 @@ namespace SimpleFramework.Xml {
          /// <summary>
          /// This is used to acquire the keys for each mapping within the
          /// list. Acquiring the key mappings in this way ensures that the
-         /// array of values will be in the order they have been added to
+         /// list of values will be in the order they have been added to
          /// the linked list.
          /// </summary>
-         /// <param name="array">
-         /// Provides an ordered array of keys from the mappings created.
+         /// <param name="keys">
+         /// This is the list that is to be populated with the keys.
          /// </param>
-         public void Keys(K[] array) {
+         public void Keys(List<K> keys) {
             Entry entry = list.Tail;
 
-            for(int i = 0; i < array.Length; i++) {
+            for(int i = 0; i < keys.Capacity; i++) {
                if(entry != null) {
-                  array[i] = entry.key;
+                  keys[i] = entry.key;
                   entry = entry.previous;
                }
             }
+         }
+
+         /// <summary>
+         /// This is used to search the linked list for the given value. 
+         /// If the value is found then this will return true. The list is
+         /// searched from the head to the tail to find the value.
+         /// </summary>
+         /// <param name="value">
+         /// This is the value to search the linked list for.
+         /// </param>
+         /// <returns>
+         /// True if the value is found in one of the list entries.
+         /// </returns>
+         public bool Contains(V value) {
+            Entry entry = head;
+
+            while(entry != null) {
+               if(entry.value != null) {
+                  if(entry.value.Equals(value))
+                     return true;
+               }
+               entry = entry.next;
+            }
+            return false;
          }
       }
    }

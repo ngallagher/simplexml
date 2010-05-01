@@ -40,15 +40,6 @@ namespace SimpleFramework.Xml.Stream {
    class StreamProvider : Provider {
 
       /// <summary>
-      /// Constructor for the <c>StreamProvider</c> object. This
-      /// is used to instantiate a parser factory that will be used to
-      /// create parsers when requested. Instantiating the factory up
-      /// front also checks that the framework is fully supported.
-      /// </summary>
-      public StreamProvider() {
-      }
-
-      /// <summary>
       /// This provides an <c>EventReader</c> that will read from
       /// the specified input stream. When reading from an input stream
       /// the character encoding should be taken from the XML prolog or
@@ -60,7 +51,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// This is used to return the event reader implementation.
       /// </returns>
-      public override EventReader Provide(InputStream source) {
+      public EventReader Provide(InputStream source) {
          return Provide(XmlReader.Create(source));
       }
 
@@ -75,7 +66,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// This is used to return the event reader implementation.
       /// </returns>
-      public override EventReader Provide(TextReader source) {
+      public EventReader Provide(TextReader source) {
          return Provide(XmlReader.Create(source));
       }
 

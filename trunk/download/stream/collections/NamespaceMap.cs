@@ -33,7 +33,7 @@ namespace SimpleFramework.Xml.Stream {
    /// the associated reference, then the parents prefix is the one that
    /// will be returned when requested from this map.
    /// </summary>
-   public abstract class NamespaceMap  {
+   public interface NamespaceMap  {
 
       /// <summary>
       /// This is the prefix that is associated with the source element.
@@ -45,7 +45,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// This returns the prefix that is currently in scope.
       /// </returns>
-      public abstract String Prefix {
+      String Prefix {
          get;
       }
 
@@ -58,7 +58,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// This returns the namespaces contained in this map.
       /// </returns>
-      public abstract String[] References {
+      List<String> References {
          get;
       }
 
@@ -74,7 +74,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// This will return the prefix that is is scope.
       /// </returns>
-      public abstract String Get(String reference);
+      String Get(String reference);
 
       /// <summary>
       /// This is used to remove the prefix that is matched to the
@@ -88,7 +88,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// This returns the prefix that was matched to this.
       /// </returns>
-      public abstract String Remove(String reference);
+      String Remove(String reference);
 
       /// <summary>
       /// This is used to add the namespace reference to the namespace
@@ -102,7 +102,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// This returns the prefix that has been replaced.
       /// </returns>
-      public abstract String Put(String reference);
+      String Put(String reference);
 
       /// <summary>
       /// This is used to add the namespace reference to the namespace
@@ -118,6 +118,6 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// This returns the prefix that has been replaced.
       /// </returns>
-      public abstract String Put(String reference, String prefix);
+      String Put(String reference, String prefix);
    }
 }

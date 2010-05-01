@@ -75,7 +75,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// This returns the styled name of the XML attribute.
       /// </returns>
-      public override String GetAttribute(String name) {
+      public virtual String GetAttribute(String name) {
          return builder.GetAttribute(name);
       }
 
@@ -91,7 +91,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <param name="value">
       /// The value that is to be used for that attribute.
       /// </param>
-      public void SetAttribute(String name, String value) {
+      public virtual void SetAttribute(String name, String value) {
          builder.SetAttribute(name, value);
       }
 
@@ -106,7 +106,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// This returns the styled name of the XML element.
       /// </returns>
-      public override String GetElement(String name) {
+      public virtual String GetElement(String name) {
          return builder.GetElement(name);
       }
 
@@ -122,7 +122,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <param name="value">
       /// The value that is to be used for that element.
       /// </param>
-      public void SetElement(String name, String value) {
+      public virtual void SetElement(String name, String value) {
          builder.SetElement(name, value);
       }
    }

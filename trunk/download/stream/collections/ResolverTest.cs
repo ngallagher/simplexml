@@ -17,7 +17,7 @@ namespace SimpleFramework.Xml {
                return value;
             }
          }
-         public override String Pattern {
+         public  String Pattern {
             get {
                return pattern;
             }

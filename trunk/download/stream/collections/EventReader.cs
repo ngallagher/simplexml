@@ -31,7 +31,7 @@ namespace SimpleFramework.Xml.Stream {
    /// implementations. In essence it is similar to the Streaming API for
    /// XML, however other implementations can easily be adapted.
    /// </summary>
-   abstract class EventReader {
+   interface EventReader {
 
       /// <summary>
       /// This is used to take the next node from the document. This will
@@ -42,7 +42,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// This returns the next event taken from the source XML.
       /// </returns>
-      public abstract EventNode Next();
+      EventNode Next();
 
       /// <summary>
       /// This is used to peek at the node from the document. This will
@@ -53,6 +53,6 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// This returns the next event taken from the source XML.
       /// </returns>
-      public abstract EventNode Peek();
+      EventNode Peek();
    }
 }

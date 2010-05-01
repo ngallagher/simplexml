@@ -33,6 +33,34 @@ namespace SimpleFramework.Xml.Stream {
    abstract class EventAttribute : Attribute {
 
       /// <summary>
+      /// This provides the name of the attribute. This should be the
+      /// name of the XML attribute without any namespace prefix. If
+      /// the name begins with "xml" then this attribute is reserved.
+      /// according to the namespaces for XML 1.0 specification.
+      /// </summary>
+      /// <returns>
+      /// This returns the name of this attribute object.
+      /// </returns>
+      public virtual String Name {
+         get {
+            return null;
+         }
+      }
+
+      /// This returns the value of the event. Typically this will be
+      /// the text value that the attribute contains. If the attribute
+      /// does not contain a value then this returns null.
+      /// </summary>
+      /// <returns>
+      /// This returns the value represented by this attribute.
+      /// </returns>
+      public virtual String Value {
+         get {
+            return null;
+         }
+      }
+
+      /// <summary>
       /// This is used to acquire the namespace prefix associated with
       /// this attribute. A prefix is used to qualify the attribute
       /// within a namespace. So, if this has a prefix then it should
@@ -41,7 +69,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// This returns the namespace prefix for the attribute.
       /// </returns>
-      public override String Prefix {
+      public virtual String Prefix {
          get {
             return null;
          }
@@ -55,7 +83,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// This provides the associated namespace reference.
       /// </returns>
-      public override String Reference {
+      public virtual String Reference {
          get {
             return null;
          }
@@ -69,7 +97,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// This will return the source object for this event.
       /// </returns>
-      public override Object Source {
+      public virtual Object Source {
          get {
             return null;
          }
@@ -83,7 +111,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// This returns true if the attribute is reserved.
       /// </returns>
-      public override bool IsReserved() {
+      public virtual bool IsReserved() {
          return false;
       }
    }

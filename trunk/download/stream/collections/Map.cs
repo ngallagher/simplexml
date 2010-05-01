@@ -19,6 +19,7 @@
 #endregion
 
 #region Using directives
+using System.Collections.Generic;
 using System;
 #endregion
 
@@ -39,7 +40,7 @@ namespace SimpleFramework.Xml {
    /// and <c>LinkedMap</c>, which provides a means to implement both an
    /// ordered map and a least recently used cache if required.
    /// </summary>
-   public abstract class Map<K, V> {
+   public interface Map<K, V> {
 
       /// <summary>
       /// This is used to determine the number of mappings that have been
@@ -49,7 +50,7 @@ namespace SimpleFramework.Xml {
       /// <returns>
       /// The name number of mappings that have been added to the map.
       /// </returns>
-      public abstract int Size {
+      int Size {
          get;
       }
 
@@ -61,34 +62,32 @@ namespace SimpleFramework.Xml {
       /// <returns>
       /// True if there are no mappings within the map, false otherwise.
       /// </returns>
-      public virtual bool Empty {
-         get {
-            return Size == 0;
-         }
+      bool Empty {
+         get;
       }
 
       /// <summary>
-      /// This is used to return an array of keys. Depending on the map
+      /// This is used to return a list of keys. Depending on the map
       /// implementation keys may be returned in a random order or in an
       /// ordered manner. Keys are returned as an array so that can be
       /// used in a <c>foreach</c> loop. 
       /// </summary>
       /// <returns>
-      /// An array of keys representing the keys for each mapping.
+      /// A list of keys representing the keys for each mapping.
       /// </returns>
-      public abstract K[] Keys {
+      List<K> Keys {
          get;
       }
 
       /// <summary>
-      /// This is used to return an array of values. Depending on the map
+      /// This is used to return a list of values. Depending on the map
       /// implementation values may be returned in a random order This is 
       /// provided for convenient use in a <c>foreach</c> loop.
       /// </summary>
       /// <returns>
-      /// An array of values that have been mapped within this instance.
+      /// A list of values that have been mapped within this instance.
       /// </returns>
-      public abstract V[] Values {
+      List<V> Values {
          get;
       }
 
@@ -104,13 +103,9 @@ namespace SimpleFramework.Xml {
       /// <returns>
       /// An array of values that have been mapped within this instance.
       /// </returns>
-      public virtual V this[K key] {
-         get {
-            return Get(key);
-         }
-         set {
-            Put(key, value);
-         }
+      V this[K key] {
+         get;
+         set;
       }
 
       /// <summary>
@@ -125,7 +120,7 @@ namespace SimpleFramework.Xml {
       /// <returns>
       /// This is used to acquire the value associated with the key.
       /// </returns>
-      public abstract V Get(K key);
+      V Get(K key);
 
       /// <summary>
       /// This is used to remove a mapping from the <c>Map</c>. This acts
@@ -139,7 +134,7 @@ namespace SimpleFramework.Xml {
       /// <returns>
       /// This returns the value associated with the mapping if it exists.
       /// </returns>
-      public abstract V Remove(K key);
+      V Remove(K key);
 
       /// <summary>
       /// This is used to establish a mapping within the map. If a mapping
@@ -156,7 +151,7 @@ namespace SimpleFramework.Xml {
       /// <returns>
       /// Returns the value previously associated with the key, or null.
       /// </returns>
-      public abstract V Put(K key, V value);
+      V Put(K key, V value);
 
       /// <summary>
       /// This is used to determine if a mapping exists within the map. If
@@ -170,7 +165,7 @@ namespace SimpleFramework.Xml {
       /// <returns>
       /// This will return true if the mapping exists within the instance.
       /// </returns>
-      public abstract bool ContainsKey(K key);
+      bool ContainsKey(K key);
 
       /// <summary>
       /// This is used to determine if a value exists within the map. If
@@ -184,13 +179,13 @@ namespace SimpleFramework.Xml {
       /// <returns>
       /// This will return true if the value exists within the instance.
       /// </returns>
-      public abstract bool ContainsValue(V value);
+      bool ContainsValue(V value);
 
       /// <summary>
       /// This is used to clear the <c>Map</c> instance. Clearing the map
       /// instance ensures that there are no mappings maintained. Further
       /// attempts to get via the <c>Get</c> method will return null.
       /// </summary>
-      public abstract void Clear();
+      void Clear();
    }
 }

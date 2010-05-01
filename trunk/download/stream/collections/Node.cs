@@ -29,7 +29,7 @@ namespace SimpleFramework.Xml.Stream {
    /// acts as the base form of data used within the framework. Each
    /// of the attributes and elements are represented as nodes.
    /// </summary>
-   public abstract class Node {
+   public interface Node {
 
       /// <summary>
       /// Returns the name of the node that this represents. This is
@@ -38,7 +38,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// Returns the name of the node that this represents.
       /// </returns>
-      public abstract String Name {
+      String Name {
          get;
       }
 
@@ -48,7 +48,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// The name of the value for this node instance.
       /// </returns>
-      public abstract String Value {
+      String Value {
          get;
       }
 
@@ -60,8 +60,8 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// This returns the parent node for this node.
       /// </returns>
-      public abstract Node Parent {
-         get;
-      }
+      ///Node Parent {
+      ///   get;
+      ///}
    }
 }

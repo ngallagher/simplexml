@@ -48,7 +48,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// This returns the provider that has been instantiate.
       /// </returns>
-      public Provider Instance {
+      public static Provider Instance {
          get {
             return new StreamProvider();
          }

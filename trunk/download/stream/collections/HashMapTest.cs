@@ -25,7 +25,7 @@ namespace SimpleFramework.Xml {
          map.Clear();
          AssertTrue(map.Empty);
          AssertEquals(map.Size, 0);
-         AssertEquals(map.Keys.Length, 0);
+         AssertEquals(map.Keys.Count, 0);
       }
    }
 }

@@ -19,8 +19,8 @@ namespace SimpleFramework.Xml {
          AssertEquals(map.Get("E"), "e");
          AssertEquals(map.Remove("D"), "d");
          AssertEquals(map.Remove("B"), "b");
-         String[] keys = map.Keys;
-         AssertEquals(keys.Length, 3);
+         List<String> keys = map.Keys;
+         AssertEquals(keys.Count, 3);
          AssertEquals(keys[0], "A");
          AssertEquals(keys[1], "C");
          AssertEquals(keys[2], "E");    
@@ -33,7 +33,7 @@ namespace SimpleFramework.Xml {
          map.Put("C", "c");
          map.Put("D", "d");
          map.Put("E", "e");
-         String[] keys = map.Keys;
+         List<String> keys = map.Keys;
          AssertEquals(keys[0], "A");
          AssertEquals(keys[1], "B");
          AssertEquals(keys[2], "C");
@@ -80,7 +80,7 @@ namespace SimpleFramework.Xml {
          AssertEquals(map.Keys[1], "B");
          map.Clear();
          AssertEquals(map.Size, 0);
-         AssertEquals(map.Keys.Length, 0);
+         AssertEquals(map.Keys.Count, 0);
          map.Put("C", "c");
          map.Put("D", "d");
          AssertEquals(map.Get("C"), "c");
@@ -91,7 +91,7 @@ namespace SimpleFramework.Xml {
          AssertEquals(map.Keys[1], "C");
          map.Clear();
          AssertEquals(map.Size, 0);
-         AssertEquals(map.Keys.Length, 0);
+         AssertEquals(map.Keys.Count, 0);
       }
 
       public void TestRemoveEldest() {

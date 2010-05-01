@@ -73,9 +73,9 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// This returns the prefix that is currently in scope.
       /// </returns>
-      public override String Prefix {
+      public virtual String Prefix {
          get {
-            return source.Prefix;
+            return source.GetPrefix();
          }
       }
 
@@ -88,7 +88,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// This returns the namespaces contained in this map.
       /// </returns>
-      public override String[] References {
+      public virtual List<String> References {
          get {
             return table.Keys;
          }
@@ -105,7 +105,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// This returns the prefix that has been replaced.
       /// </returns>
-      public override String Put(String reference) {
+      public virtual String Put(String reference) {
          return Put(reference, "");
       }
 
@@ -123,7 +123,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// This returns the prefix that has been replaced.
       /// </returns>
-      public override String Put(String reference, String prefix) {
+      public virtual String Put(String reference, String prefix) {
          String parent = Resolve(reference);
 
          if(parent != null) {
@@ -144,7 +144,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// This returns the prefix that was matched to this.
       /// </returns>
-      public override String Remove(String reference) {
+      public virtual String Remove(String reference) {
          return table.Remove(reference);
       }
 
@@ -161,7 +161,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// This will return the prefix that is is scope.
       /// </returns>
-      public override String Get(String reference) {
+      public virtual String Get(String reference) {
          int size = table.Size;
 
          if(size > 0) {

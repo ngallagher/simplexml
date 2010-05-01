@@ -64,48 +64,83 @@ namespace SimpleFramework.Xml {
       /// <returns>
       /// The name number of mappings that have been added to the map.
       /// </returns>
-      public override int Size {
+      public virtual int Size {
          get {
             return table.Count;
          }
       }
 
       /// <summary>
-      /// This is used to return an array of keys. Depending on the map
+      /// This is used to determine if the map is empty or not. This is 
+      /// used to indicate whether there are any mappings within the map.
+      /// To empty the map the <c>Clear</c> method can be used. 
+      /// </summary>
+      /// <returns>
+      /// True if there are no mappings within the map, false otherwise.
+      /// </returns>
+      public virtual bool Empty {
+         get {
+            return Size == 0;
+         }
+      }
+
+      /// <summary>
+      /// This is used to return a list of keys. Depending on the map
       /// implementation keys may be returned in a random order or in an
-      /// ordered manner. Keys are returned as an array so that can be
+      /// ordered manner. Keys are returned as a list so that can be
       /// used in a <c>foreach</c> loop. 
       /// </summary>
       /// <returns>
-      /// An array of keys representing the keys for each mapping.
+      /// An list of keys representing the keys for each mapping.
       /// </returns>
-      public override K[] Keys {
+      public virtual List<K> Keys {
          get {
-            K[] list = new K[Size];
+            List<K> list = new List<K>(Size);
 
-            if(list.Length > 0) {
-               table.Keys.CopyTo(list, 0);
+            foreach(K key in table.Keys) {
+               list.Add(key);
             }
             return list;
          }
       }
 
       /// <summary>
-      /// This is used to return an array of values. Depending on the map
+      /// This is used to return a list of values. Depending on the map
       /// implementation values may be returned in a random order This is 
       /// provided for convenient use in a <c>foreach</c> loop.
       /// </summary>
       /// <returns>
-      /// An array of values that have been mapped within this instance.
+      /// A list of values that have been mapped within this instance.
       /// </returns>
-      public override V[] Values {
+      public virtual List<V> Values {
          get {
-            V[] list = new V[Size];
+            List<V> list = new List<V>(Size);
 
-            if(list.Length > 0) {
-               table.Values.CopyTo(list, 0);
+            foreach(V value in table.Values) {
+               list.Add(value);
             }
             return list;
+         }
+      }
+
+      /// <summary>
+      /// Provides an indexer used to get and set values for this map. 
+      /// This indexer offers a more convenient way to get and set mappings
+      /// than the <c>Get</c> and <c>Put</c> methods. If no mappin exists
+      /// for the specified key then this will return a null value.
+      /// </summary>
+      /// <param name="key">
+      /// The key is used to identify the mapping within this instance.
+      /// </param>
+      /// <returns>
+      /// An array of values that have been mapped within this instance.
+      /// </returns>
+      public virtual V this[K key] {
+         get {
+            return Get(key);
+         }
+         set {
+            Put(key, value);
          }
       }
 
@@ -121,8 +156,8 @@ namespace SimpleFramework.Xml {
       /// <returns>
       /// This is used to acquire the value associated with the key.
       /// </returns>
-      public override V Get(K key) {
-         bool exists = Contains(key);
+      public virtual V Get(K key) {
+         bool exists = ContainsKey(key);
 
          if(exists == true) {
             return table[key];
@@ -145,7 +180,7 @@ namespace SimpleFramework.Xml {
       /// <returns>
       /// Returns the value previously associated with the key, or null.
       /// </returns>
-      public override V Put(K key, V value) {
+      public virtual V Put(K key, V value) {
          V entry = Remove(key);
 
          if(table != null) {
@@ -166,7 +201,7 @@ namespace SimpleFramework.Xml {
       /// <returns>
       /// This returns the value associated with the mapping if it exists.
       /// </returns>
-      public override V Remove(K key) {
+      public virtual V Remove(K key) {
          V value = Get(key);
 
          if(value != null) {
@@ -187,7 +222,7 @@ namespace SimpleFramework.Xml {
       /// <returns>
       /// This will return true if the mapping exists within the instance.
       /// </returns>
-      public override bool ContainsKey(K key) {
+      public virtual bool ContainsKey(K key) {
          return table.ContainsKey(key);
       }
 
@@ -203,7 +238,7 @@ namespace SimpleFramework.Xml {
       /// <returns>
       /// This will return true if the value exists within the instance.
       /// </returns>
-      public override bool ContainsValue(V value) {
+      public virtual bool ContainsValue(V value) {
          return table.ContainsValue(value);
       }
 
@@ -212,7 +247,7 @@ namespace SimpleFramework.Xml {
       /// instance ensures that there are no mappings maintained. Further
       /// attempts to get via the <c>Get</c> method will return null.
       /// </summary>
-      public override void Clear() {
+      public virtual void Clear() {
          table.Clear();
       }
    }
