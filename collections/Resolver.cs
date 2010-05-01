@@ -163,6 +163,20 @@ namespace SimpleFramework.Xml {
       }
 
       /// <summary>
+      /// This inserts the <c>Match</c> implementation into the set
+      /// so that it can be used for resolutions. The last added match 
+      /// is the first resolved. Because this changes the state of the
+      /// resolver this clears the cache as it may affect resolutions.
+      /// </summary>
+      /// <param name="match">
+      /// This is the match that is to be inserted to this.
+      /// </param>
+      public new void Add(T match) {
+         cache.Clear();
+         base.Add(match);
+      }
+
+      /// <summary>
       /// This is used to remove the <c>Match</c> implementation
       /// from the resolver. This clears the cache as the removal of
       /// a match may affect the resoultions existing in the cache. The
@@ -171,9 +185,6 @@ namespace SimpleFramework.Xml {
       /// <param name="match">
       /// This is the match that is to be removed.
       /// </param>
-      /// <returns>
-      /// True of the removal of the match was successful.
-      /// </returns>
       public new void RemoveAt(int index) {
          cache.Clear();
          base.RemoveAt(index);

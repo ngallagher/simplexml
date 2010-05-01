@@ -20,13 +20,13 @@ namespace SimpleFramework.Xml {
       public void AssertEquals(Object a, Object b) {
          if (a != b) {
             if ((a == null && b != null) || (a != null && b == null)) {
-               throw new SystemException("Values are not equal as on is null");
+               throw new SystemException("Values are not equal as one is null");
             }
             if (a.GetType() != b.GetType()) {
-               throw new SystemException("Comparing objects of different types");
+               throw new SystemException("Comparing objects of different types '"+a.GetType()+"' and '"+b.GetType()+"'");
             }
             if (!a.Equals(b)) {
-               throw new SystemException("Values are not equal");
+               throw new SystemException("Values are not equal '"+a+"' and '"+b+"'");
             }
          }
       }
