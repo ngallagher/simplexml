@@ -293,20 +293,26 @@ namespace SimpleFramework.Xml {
          /// constructor that creates the linked hash map such that
          /// it will purge the entries that are oldest within the map.
          /// </summary>
-         public Cache(Resolver<T> resolver) {
+         /// <param name="resolver">
+         /// This is the source resolver for this cache instance.
+         /// </param> 
+         public Cache(Resolver<T> resolver) : base(true) {
             this.capacity = resolver.Capacity;
          }
 
          /// <summary>
-         /// This is used to remove the eldest entry from the LRU cache.
-         /// The eldest entry is removed from the cache if the size of
-         /// the map grows larger than the maximum entiries permitted.
+         /// This is used to determine if the eldest entry is to be removed
+         /// from the list. The cache has a limit to the number of matches
+         /// it caches to ensure there is no possibility of a memory leak.
          /// </summary>
          /// <param name="key">
+         /// Represents the key for the eldest entry within this map.
          /// </param>
          /// <param name="value">
+         /// Represents the value for the eldest entry within this map.
          /// </param>
          /// <returns>
+         /// If true then the eldest entry will be removed from this map.
          /// </returns>
          protected override bool RemoveEldest(String key, List<T> value) {
             return Size > 1024;                                    
