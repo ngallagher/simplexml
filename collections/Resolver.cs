@@ -208,10 +208,10 @@ namespace SimpleFramework.Xml {
       /// also used as the initializing driver for the recursive method.
       /// </summary>
       /// <param name="text">
-      /// this is the buffer that is to be resolved
+      /// This is the buffer that is to be resolved.
       /// </param>
       /// <param name="wild">
-      /// this is the pattern that will be used
+      /// This is the pattern that will be used.
       /// </param>
       private bool Match(char[] text, char[] wild) {
          return Match(text, 0, wild, 0);
@@ -225,16 +225,16 @@ namespace SimpleFramework.Xml {
       /// then this returns <c>true</c>.
       /// </summary>
       /// <param name="text">
-      /// this is the buffer that is to be resolved
+      /// This is the buffer that is to be resolved.
       /// </param>
       /// <param name="off">
-      /// this is the read offset for the text buffer
+      /// This is the read offset for the text buffer.
       /// </param>
       /// <param name="wild">
-      /// this is the pattern that will be used
+      /// This is the pattern that will be used.
       /// </param>
       /// <param name="pos">
-      /// this is the read offset for the wild buffer
+      /// This is the read offset for the wild buffer.
       /// </param>
       private bool Match(char[] text, int off, char[] wild, int pos) {
          while(pos < wild.Length && off < text.Length) { /* examine chars */
