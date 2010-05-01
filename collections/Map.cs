@@ -170,7 +170,21 @@ namespace SimpleFramework.Xml {
       /// <returns>
       /// This will return true if the mapping exists within the instance.
       /// </returns>
-      public abstract bool Contains(K key);
+      public abstract bool ContainsKey(K key);
+
+      /// <summary>
+      /// This is used to determine if a value exists within the map. If
+      /// this returns true then the <c>Values</c> property will return the
+      /// specified value within the array of keys. The map may contain 
+      /// may equal values within the map.
+      /// </summary>
+      /// <param name="value">
+      /// This is the value to be searched for within this map instance.
+      /// </param>
+      /// <returns>
+      /// This will return true if the value exists within the instance.
+      /// </returns>
+      public abstract bool ContainsValue(V value);
 
       /// <summary>
       /// This is used to clear the <c>Map</c> instance. Clearing the map
