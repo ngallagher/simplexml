@@ -38,7 +38,7 @@ namespace SimpleFramework.Xml.Stream {
    /// <seealso>
    /// SimpleFramework.Xml.Stream.NodeBuilder
    /// </seealso>
-   abstract class Provider {
+   interface Provider {
 
       /// <summary>
       /// This provides an <c>EventReader</c> that will read from
@@ -52,7 +52,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// This is used to return the event reader implementation.
       /// </returns>
-      public abstract EventReader Provide(InputStream source);
+      EventReader Provide(InputStream source);
 
       /// <summary>
       /// This provides an <c>EventReader</c> that will read from
@@ -60,11 +60,11 @@ namespace SimpleFramework.Xml.Stream {
       /// encoding should be the same as the source XML document.
       /// </summary>
       /// <param name="source">
-      /// this is the reader to read the document with
+      /// This is the reader to read the document with.
       /// </param>
       /// <returns>
-      /// this is used to return the event reader implementation
+      /// This is used to return the event reader implementation.
       /// </returns>
-      public abstract EventReader Provide(TextReader source);
+      EventReader Provide(TextReader source);
    }
 }

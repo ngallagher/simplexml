@@ -72,7 +72,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// This returns the next event taken from the document.
       /// </returns>
-      public override EventNode Peek() {
+      public virtual EventNode Peek() {
          if(peek == null) {
             peek = Next();
          }
@@ -88,7 +88,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// This returns the next event taken from the source XML.
       /// </returns>
-      public override EventNode Next() {
+      public virtual EventNode Next() {
          EventNode next = peek;
 
          if(next == null) {
@@ -173,7 +173,10 @@ namespace SimpleFramework.Xml.Stream {
          if(reader.HasAttributes) {
             while(reader.MoveToNextAttribute()) {
                Entry entry = Attribute();
-               node.Add(entry);
+
+               if(entry != null) {
+                  node.Add(entry);
+               }
             }
          }
          return node;

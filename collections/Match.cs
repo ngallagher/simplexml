@@ -34,7 +34,7 @@ namespace SimpleFramework.Xml {
    /// to add more XML attributes and elements, which can be retrieved
    /// when the <c>Match</c> object is retrieve from a resolver.
    /// </summary>
-   public abstract class Match {
+   public interface Match {
 
       /// <summary>
       /// This is the pattern string that is used by the resolver. A
@@ -45,7 +45,7 @@ namespace SimpleFramework.Xml {
       /// <returns>
       /// this returns the pattern that is to be matched
       /// </returns>
-      public abstract String Pattern {
+      String Pattern {
          get;
       }
    }

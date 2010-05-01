@@ -17,11 +17,14 @@
 // permissions and limitations under the License.
 //
 #endregion
+
 #region Using directives
 using System.Collections.Generic;
 using System;
 #endregion
+
 namespace SimpleFramework.Xml.Stream {
+
    /// <summary>
    /// The <c>Builder</c> class is used to represent an XML style
    /// that can be applied to a serialized object. A style can be used to
@@ -39,32 +42,37 @@ namespace SimpleFramework.Xml.Stream {
    /// serialized in different ways, generating different styles of XML
    /// without having to modify the class schema for that object.
    /// </summary>
-   internal class Builder : Style {
+   class Builder : Style {
+
       /// <summary>
       /// This is the cache for the constructed attribute values.
       /// </summary>
       private readonly Cache attributes;
+
       /// <summary>
       /// This is the cache for the constructed element values.
       /// </summary>
       private readonly Cache elements;
+
       /// <summary>
       /// This is the style object used to create the values used.
       /// </summary>
       private readonly Style style;
+
       /// <summary>
       /// Constructor for the <c>Builder</c> object. This will cache
       /// values constructed from the inner style object, which allows the
       /// results from the style to retrieved quickly the second time.
       /// </summary>
       /// <param name="style">
-      /// this is the internal style object to be used
+      /// This is the internal style object to be used.
       /// </param>
       public Builder(Style style) {
          this.attributes = new Cache();
          this.elements = new Cache();
          this.style = style;
       }
+
       /// <summary>
       /// This is used to generate the XML attribute representation of
       /// the specified name. Attribute names should ensure to keep the
@@ -72,22 +80,25 @@ namespace SimpleFramework.Xml.Stream {
       /// be styled in to two different strings.
       /// </summary>
       /// <param name="name">
-      /// this is the attribute name that is to be styled
+      /// This is the attribute name that is to be styled.
       /// </param>
       /// <returns>
-      /// this returns the styled name of the XML attribute
+      /// This returns the styled name of the XML attribute.
       /// </returns>
-      public override String GetAttribute(String name) {
-         String value = attributes.Find(name);
+      public virtual String GetAttribute(String name) {
+         String value = attributes.Fetch(name);
+
          if(value != null) {
             return value;
          }
          value = style.GetAttribute(name);
+
          if(value != null) {
-            attributes.Add(name, value);
+            attributes.Insert(name, value);
          }
          return value;
       }
+
       /// <summary>
       /// This is used to generate the XML element representation of
       /// the specified name. Element names should ensure to keep the
@@ -95,22 +106,25 @@ namespace SimpleFramework.Xml.Stream {
       /// be styled in to two different strings.
       /// </summary>
       /// <param name="name">
-      /// this is the element name that is to be styled
+      /// This is the element name that is to be styled.
       /// </param>
       /// <returns>
-      /// this returns the styled name of the XML element
+      /// This returns the styled name of the XML element.
       /// </returns>
-      public override String GetElement(String name) {
-         String value = elements.Find(name);
+      public virtual String GetElement(String name) {
+         String value = elements.Fetch(name);
+
          if(value != null) {
             return value;
          }
          value = style.GetElement(name);
+
          if(value != null) {
-            elements.Add(name, value);
+            elements.Insert(name, value);
          }
          return value;
       }
+
       /// <summary>
       /// This is used to set the attribute values within this builder.
       /// Overriding the attribute values ensures that the default
@@ -118,47 +132,43 @@ namespace SimpleFramework.Xml.Stream {
       /// allows special behaviour that the user may require for XML.
       /// </summary>
       /// <param name="name">
-      /// the name of the XML attribute to be overridden
+      /// The name of the XML attribute to be overridden.
       /// </param>
       /// <param name="value">
-      /// the value that is to be used for that attribute
+      /// The value that is to be used for that attribute.
       /// </param>
-      public void SetAttribute(String name, String value) {
-         attributes[name] = value;
+      public virtual void SetAttribute(String name, String value) {
+         attributes.Insert(name, value);
       }
+
       /// This is used to set the element values within this builder.
       /// Overriding the element values ensures that the default
       /// algorithm does not need to determine each of the values. It
       /// allows special behaviour that the user may require for XML.
       /// </summary>
       /// <param name="name">
-      /// the name of the XML element to be overridden
+      /// The name of the XML element to be overridden.
       /// </param>
       /// <param name="value">
-      /// the value that is to be used for that element
+      /// The value that is to be used for that element.
       /// </param>
-      public void SetElement(String name, String value) {
-         elements[name] = value;
+      public virtual void SetElement(String name, String value) {
+         elements.Insert(name, value);
       }
+
       /// The <c>Cache</c> object is used to cache the values
       /// used to represent the styled attributes and elements. This
       /// is a concurrent hash map so that styles can be used by more
       /// than one thread simultaneously.
       /// </summary>
-      private class Cache : Dictionary<String, String> {
+      private class Cache : HashCache<String, String> {
+
          /// <summary>
          /// Constructor for the <c>Cache</c> object. This will
          /// create a concurrent cache that can translate between the
          /// XML attributes and elements and the styled values.
          /// </summary>
          public Cache()  {
-         }
-         public String Find(String name) {
-            bool exists = ContainsKey(name);
-            if(exists) {
-               return this[name];
-            }
-            return null;
          }
       }
    }

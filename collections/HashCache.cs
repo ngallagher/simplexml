@@ -73,7 +73,7 @@ namespace SimpleFramework.Xml {
       /// <param name="value">
       /// This is the value that is to be cached.
       /// </param>
-      public override V Insert(K key, V value) {
+      public virtual V Insert(K key, V value) {
          return Get(key).Insert(key, value);
       }
 
@@ -88,7 +88,7 @@ namespace SimpleFramework.Xml {
       /// <returns>
       /// This returns the value mapped to the specified key.
       /// </returns>
-      public override V Take(K key) {
+      public virtual V Take(K key) {
          return Get(key).Take(key);
       }
 
@@ -103,7 +103,7 @@ namespace SimpleFramework.Xml {
       /// <returns>
       /// This returns the value mapped to the specified key.
       /// </returns>
-      public override V Fetch(K key) {
+      public virtual V Fetch(K key) {
          return Get(key).Fetch(key);
       }
 
@@ -118,8 +118,8 @@ namespace SimpleFramework.Xml {
       /// <returns>
       /// True if the specified key is within the cache.
       /// </returns>
-      public override bool Contains(K key) {
-         return Get(key).Contains(key);
+      public virtual bool Contains(K key) {
+         return Get(key).ContainsKey(key);
       }
 
       /// <summary>

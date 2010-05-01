@@ -34,7 +34,7 @@ namespace SimpleFramework.Xml.Stream {
    /// <seealso>
    /// SimpleFramework.Xml.Stream.EventNode
    /// </seealso>
-   abstract class Attribute {
+   interface Attribute {
 
       /// <summary>
       /// This provides the name of the attribute. This should be the
@@ -45,7 +45,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// This returns the name of this attribute object.
       /// </returns>
-      public abstract String Name {
+      String Name {
          get;
       }
 
@@ -56,7 +56,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// This returns the value represented by this attribute.
       /// </returns>
-      public abstract String Value {
+      String Value {
          get;
       }
 
@@ -68,7 +68,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// This provides the associated namespace reference.
       /// </returns>
-      public abstract String Reference {
+      String Reference {
          get;
       }
 
@@ -80,7 +80,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// This returns the namespace prefix for the attribute.
       /// </returns>
-      public abstract String Prefix {
+      String Prefix {
          get;
       }
 
@@ -92,7 +92,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// This will return the source object for this event.
       /// </returns>
-      public abstract Object Source {
+      Object Source {
          get;
       }
 
@@ -104,6 +104,6 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// This returns true if the attribute is reserved.
       /// </returns>
-      public abstract bool IsReserved();
+      bool IsReserved();
    }
 }

@@ -30,7 +30,7 @@ namespace SimpleFramework.Xml {
    /// methods to ensure that implementations can focus on performance
    /// concerns rather than how to manage the cached values.
    /// </summary>
-   public abstract class Cache<K, V> {
+   public interface Cache<K, V> {
 
       /// <summary>
       /// This method is used to insert a key value mapping in to the
@@ -44,7 +44,7 @@ namespace SimpleFramework.Xml {
       /// <param name="value">
       /// This is the value that is to be cached.
       /// </param>
-      public abstract V Insert(K key, V value);
+      V Insert(K key, V value);
 
       /// <summary>
       /// This is used to exclusively take the value mapped to the
@@ -57,7 +57,7 @@ namespace SimpleFramework.Xml {
       /// <returns>
       /// This returns the value mapped to the specified key.
       /// </returns>
-      public abstract V Take(K key);
+      V Take(K key);
 
       /// <summary>
       /// This method is used to get the value from the cache that is
@@ -70,7 +70,7 @@ namespace SimpleFramework.Xml {
       /// <returns>
       /// This returns the value mapped to the specified key.
       /// </returns>
-      public abstract V Fetch(K key);
+      V Fetch(K key);
 
       /// <summary>
       /// This is used to determine whether the specified key exists
@@ -83,6 +83,6 @@ namespace SimpleFramework.Xml {
       /// <returns>
       /// True if the specified key is within the cache.
       /// </returns>
-      public abstract bool Contains(K key);
+      bool Contains(K key);
    }
 }

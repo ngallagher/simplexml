@@ -30,20 +30,7 @@ namespace SimpleFramework.Xml.Stream {
    /// the output node objects represents a element, and can be used
    /// to add attributes to that element as well as child elements.
    /// </summary>
-   public abstract class OutputNode : Node {
-
-      /// This is used to acquire the prefix for this output node. If
-      /// the output node is an element then this will search its parent
-      /// nodes until the prefix that is currently in scope is found.
-      /// If however this node is an attribute then the hierarchy of
-      /// nodes is not searched as attributes to not inherit namespaces.
-      /// </summary>
-      /// <returns>
-      /// This returns the prefix associated with this node.
-      /// </returns>
-      public abstract String Prefix {
-         get;
-      }
+   public interface OutputNode : Node {
 
       /// <summary>
       /// This is used to acquire the namespace URI reference associated
@@ -54,7 +41,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// This returns the namespace URI reference for this.
       /// </returns>
-      public abstract String Reference {
+      String Reference {
          get;
          set;
       }
@@ -69,7 +56,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// This returns the mode of this output node object.
       /// </returns>
-      public abstract Mode Mode {
+      Mode Mode {
          get;
          set;
       }
@@ -83,7 +70,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <param name="data">
       /// If true the value is written as a CDATA block.
       /// </param>
-      public abstract bool Data {
+      bool Data {
          set;
       }
 
@@ -94,7 +81,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// This is the comment associated with this element.
       /// </returns>
-      public abstract String Comment {
+      String Comment {
          get;
          set;
       }
@@ -106,7 +93,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <param name="value">
       /// This is the text value to add to this element.
       /// </param>
-      public abstract String Value {
+      String Value {
          get;
          set;
       }
@@ -120,7 +107,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// This returns the parent node for this node.
       /// </returns>
-      public abstract OutputNode Parent {
+      OutputNode Parent {
          get;
       }
 
@@ -133,7 +120,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// This returns the namespaces associated with the node.
       /// </returns>
-      public abstract NamespaceMap Namespaces {
+      NamespaceMap Namespaces {
          get;
       }
 
@@ -146,9 +133,20 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// Returns the node map used to manipulate attributes.
       /// </returns>
-      public abstract NodeMap<OutputNode> Attributes {
+      NodeMap<OutputNode> Attributes {
          get;
       }
+
+      /// This is used to acquire the prefix for this output node. If
+      /// the output node is an element then this will search its parent
+      /// nodes until the prefix that is currently in scope is found.
+      /// If however this node is an attribute then the hierarchy of
+      /// nodes is not searched as attributes to not inherit namespaces.
+      /// </summary>
+      /// <returns>
+      /// This returns the prefix associated with this node.
+      /// </returns>
+      String GetPrefix();
 
       /// This is used to acquire the prefix for this output node. If
       /// the output node is an element then this will search its parent
@@ -162,7 +160,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// This returns the prefix associated with this node.
       /// </returns>
-      public abstract String GetPrefix(bool inherit);
+      String GetPrefix(bool inherit);
 
       /// This method is used for convenience to add an attribute node
       /// to the attribute <c>NodeMap</c>. The attribute added
@@ -177,7 +175,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// This returns the node that has just been added.
       /// </returns>
-      public abstract OutputNode SetAttribute(String name, String value);
+      OutputNode SetAttribute(String name, String value);
 
       /// This is used to create a child element within the element that
       /// this object represents. When a new child is created with this
@@ -188,7 +186,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <param name="name">
       /// This is the name of the child element to create.
       /// </param>
-      public abstract OutputNode GetChild(String name);
+      OutputNode GetChild(String name);
 
       /// <summary>
       /// This is used to remove any uncommitted changes. Removal of an
@@ -196,7 +194,7 @@ namespace SimpleFramework.Xml.Stream {
       /// not yet been committed. If the node is committed then this
       /// will throw an exception to indicate that it cannot be removed.
       /// </summary>
-      public abstract void Remove();
+      void Remove();
 
       /// <summary>
       /// The <c>commit</c> method is used flush and commit any
@@ -204,7 +202,7 @@ namespace SimpleFramework.Xml.Stream {
       /// the output to be completed when building of the XML document
       /// has been completed. If output fails an exception is thrown.
       /// </summary>
-      public abstract void Commit();
+      void Commit();
 
       /// <summary>
       /// This is used to determine whether the node has been committed.
@@ -214,7 +212,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// True if this node has already been committed.
       /// </returns>
-      public abstract bool IsCommitted();
+      bool IsCommitted();
 
       /// <summary>
       /// This method is used to determine if this node is the root
@@ -225,6 +223,6 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// True if this is the root node within the document.
       /// </returns>
-      public abstract bool IsRoot();
+      bool IsRoot();
    }
 }

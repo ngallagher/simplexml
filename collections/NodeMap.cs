@@ -34,7 +34,7 @@ namespace SimpleFramework.Xml.Stream {
    /// <seealso>
    /// SimpleFramework.Xml.Stream.Node
    /// </seealso>
-   public abstract class NodeMap<T> where T : Node {
+   public interface NodeMap<T> where T : Node {
 
        /// <summary>
        /// This is used to acquire the actual node this map represents.
@@ -45,7 +45,7 @@ namespace SimpleFramework.Xml.Stream {
        /// <returns>
        /// This returns the node that this map represents.
        /// </returns>
-       public abstract T Node {
+       T Node {
           get;
        }
 
@@ -56,7 +56,19 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// This returns the name of the owning element.
       /// </returns>
-      public abstract String Name {
+      String Name {
+         get;
+      }
+
+      /// <summary>
+      /// This is used to acquire a list of the node names. This can be
+      /// used to conveniently iterate over the nodes that have been
+      /// added to this node map. This names are in order of addition.
+      /// </summary>
+      /// <returns>
+      /// This will return an ordered list of the nodes in the map.
+      /// </returns>
+      List<String> Names {
          get;
       }
 
@@ -71,7 +83,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// This will return the node mapped to the given name.
       /// </returns>
-      public abstract T Get(String name);
+      T Get(String name);
 
       /// <summary>
       /// This is used to remove the <c>Node</c> mapped to the
@@ -85,7 +97,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// This will return the node mapped to the given name.
       /// </returns>
-      public abstract T Remove(String name);
+      T Remove(String name);
 
       /// <summary>
       /// This is used to add a new <c>Node</c> to the map. The
@@ -102,6 +114,6 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// This is the node that has been added to the map.
       /// </returns>
-      public abstract T Put(String name, String value);
+      T Put(String name, String value);
    }
 }

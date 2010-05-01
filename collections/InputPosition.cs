@@ -1,6 +1,6 @@
 #region License
 //
-// Position.cs July 2006
+// InputPosition.cs July 2006
 //
 // Copyright (C) 2006, Niall Gallagher <niallg@users.sf.net>
 //
@@ -17,20 +17,33 @@
 // permissions and limitations under the License.
 //
 #endregion
-
 #region Using directives
 using System;
 #endregion
-
 namespace SimpleFramework.Xml.Stream {
-
    /// <summary>
-   /// The <c>Position</c> object is used to acquire the position
-   /// of the read cursor within the XML file. This allows exceptions to
-   /// be thrown with the line number so that the XML can be debugged.
+   /// The <c>InputPosition</c> object is used to acquire the line
+   /// number within the XML document. This allows debugging to be done
+   /// when a problem occurs with the source document. This object can
+   /// be converted to a string using the <c>toString</c> method.
    /// </summary>
-   public interface Position {
-
+   class InputPosition : Position {
+      /// <summary>
+      /// This is the XML event that the position is acquired for.
+      /// </summary>
+      private EventNode source;
+      /// <summary>
+      /// Constructor for the <c>InputPosition</c> object. This is
+      /// used to create a position description if the provided event
+      /// is not null. This will return -1 if the specified event does
+      /// not provide any location information.
+      /// </summary>
+      /// <param name="source">
+      /// this is the XML event to get the position of
+      /// </param>
+      public InputPosition(EventNode source) {
+         this.source = source;
+      }
       /// <summary>
       /// This is the actual line number within the read XML document.
       /// The line number allows any problems within the source XML
@@ -38,19 +51,25 @@ namespace SimpleFramework.Xml.Stream {
       /// This will return -1 if the line number cannot be determined.
       /// </summary>
       /// <returns>
-      /// This returns the line number of an XML event.
+      /// this returns the line number of an XML event
       /// </returns>
-      int Line {
-         get;
+      public int Line {
+         get {
+            return source.Line;
+         }
       }
-
+      //public int GetLine() {
+      //   return source.Line;
+      //}
       /// This provides a textual description of the position the
       /// read cursor is at within the XML document. This allows the
       /// position to be embedded within the exception thrown.
       /// </summary>
       /// <returns>
-      /// This returns a textual description of the position.
+      /// this returns a textual description of the position
       /// </returns>
-      String ToString();
+      public String ToString() {
+         return String.Format("line %s", Line);
+      }
    }
 }
