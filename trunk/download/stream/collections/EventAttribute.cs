@@ -41,7 +41,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// This returns the namespace prefix for the attribute.
       /// </returns>
-      public virtual String Prefix {
+      public override String Prefix {
          get {
             return null;
          }
@@ -55,7 +55,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// This provides the associated namespace reference.
       /// </returns>
-      public virtual String Reference {
+      public override String Reference {
          get {
             return null;
          }
@@ -69,7 +69,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// This will return the source object for this event.
       /// </returns>
-      public virtual Object Source {
+      public override Object Source {
          get {
             return null;
          }
@@ -83,7 +83,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// This returns true if the attribute is reserved.
       /// </returns>
-      public virtual bool IsReserved() {
+      public override bool IsReserved() {
          return false;
       }
    }
