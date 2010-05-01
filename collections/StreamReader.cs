@@ -114,7 +114,7 @@ namespace SimpleFramework.Xml.Stream {
          if(next) {
             return Convert();
          }
-         return End();
+         return Close();
       }
 
       /// <summary>
@@ -130,15 +130,15 @@ namespace SimpleFramework.Xml.Stream {
          XmlNodeType type = reader.NodeType;
 
          if(type == XmlNodeType.Element) {
-            return Start();
+            return Open();
          }
          if(type == XmlNodeType.EndElement) {
-            return End();
+            return Close();
          }
          if(type == XmlNodeType.Comment) {
             return Read();
          }
-         return Text();
+         return Value();
       }
 
       /// <summary>
@@ -150,7 +150,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// This returns a start event created from the given event.
       /// </returns>
-      private Start Start() {
+      private Start Open() {
          Start node = new Start(reader);
 
          if(reader.HasAttributes) {
@@ -207,7 +207,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// This returns the text event created from the given event.
       /// </returns>
-      private Text Text() {
+      private Text Value() {
          return new Text(reader);
       }
 
@@ -221,7 +221,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// This returns an end event to signify an element close.
       /// </returns>
-      private End End() {
+      private End Close() {
          return new End();
       }
 

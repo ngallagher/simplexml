@@ -60,7 +60,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// This is used to return the event reader implementation.
       /// </returns>
-      public EventReader Provide(InputStream source) {
+      public override EventReader Provide(InputStream source) {
          return Provide(XmlReader.Create(source));
       }
 
@@ -75,7 +75,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// This is used to return the event reader implementation.
       /// </returns>
-      public EventReader Provide(TextReader source) {
+      public override EventReader Provide(TextReader source) {
          return Provide(XmlReader.Create(source));
       }
 
@@ -90,7 +90,7 @@ namespace SimpleFramework.Xml.Stream {
       /// <returns>
       /// This is used to return the event reader implementation.
       /// </returns>
-      public EventReader Provide(XmlReader source) {
+      private EventReader Provide(XmlReader source) {
          return new StreamReader(source);
       }
    }
