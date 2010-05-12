@@ -38,7 +38,7 @@ public class ErasureHandlingTest extends ValidationTestCase {
    private static class ErasureItem {
       private final String name;
       private final String value;
-      public ErasureItem(@Element(name="name", required=false) String name, @Element(name="value", required=false) String value) {
+      public ErasureItem(@Element(name="name") String name, @Element(name="value") String value) {
          this.name = name;
          this.value = value;
       }

@@ -56,6 +56,11 @@ class ElementListParameter implements Parameter {
    private final String name;
    
    /**
+    * This is the type of the label represented by this.
+    */
+   private final Class type;
+   
+   /**
     * This is the index that the parameter was declared at.
     */
    private final int index;
@@ -72,6 +77,7 @@ class ElementListParameter implements Parameter {
    public ElementListParameter(Constructor factory, ElementList value, int index) throws Exception {
       this.contact = new Contact(value, factory, index);
       this.label = new ElementListLabel(contact, value);
+      this.type = label.getType();
       this.name = label.getName();
       this.factory = factory;
       this.index = index;
@@ -120,6 +126,30 @@ class ElementListParameter implements Parameter {
     */
    public int getIndex() {
       return index;
+   }
+   
+   /**
+    * This is used to determine if the parameter is required. If 
+    * an attribute is not required then it can be null. Which 
+    * means that we can inject a null value. Also, this means we
+    * can match constructors in a more flexible manner.
+    * 
+    * @return this returns true if the parameter is required
+    */
+   public boolean isRequired() {
+      return label.isRequired();
+   }
+   
+   /**
+    * This is used to determine if the parameter is primitive. A
+    * primitive parameter must not be null. As there is no way to
+    * provide the value to the constructor. A default value is 
+    * not a good solution as it affects the constructor score.
+    * 
+    * @return this returns true if the parameter is primitive
+    */
+   public boolean isPrimitive() {
+      return type.isPrimitive();
    }
    
    /**

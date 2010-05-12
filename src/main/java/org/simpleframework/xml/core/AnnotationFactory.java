@@ -40,6 +40,32 @@ import org.simpleframework.xml.ElementMap;
  * @see org.simpleframework.xml.core.AnnotationHandler
  */
 class AnnotationFactory {  
+   
+   /**
+    * This is used to determine if the defaults are required.
+    */
+   private final boolean required;
+   
+   /**
+    * Constructor for the <code>AnnotationFactory</code> object. This
+    * is used to create a factory for annotations used to provide
+    * the default annotations for generated labels. By default this
+    * will set the requirement of annotations to true.
+    */
+   public AnnotationFactory() {
+      this(true);
+   }
+   
+   /**
+    * Constructor for the <code>AnnotationFactory</code> object. This
+    * is used to create a factory for annotations used to provide
+    * the default annotations for generated labels.
+    * 
+    * @param required used to determine if the annotation is required
+    */
+   public AnnotationFactory(boolean required) {
+      this.required = required;
+   }
   
    /**
     * This is used to create an annotation for the provided type.
@@ -78,7 +104,7 @@ class AnnotationFactory {
     * @return this returns the synthetic annotation to be used
     */
    private Annotation getInstance(ClassLoader loader, Class label) throws Exception {
-      AnnotationHandler handler = new AnnotationHandler(label);
+      AnnotationHandler handler = new AnnotationHandler(label, required);
       Class[] list = new Class[] {label};
       
       return (Annotation) Proxy.newProxyInstance(loader, list, handler);
