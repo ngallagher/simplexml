@@ -139,6 +139,9 @@ class AnnotationHandler implements InvocationHandler {
       Annotation left = (Annotation) proxy;
       Annotation right = (Annotation) list[0];
 
+      if(left.annotationType() != right.annotationType()) {
+         throw new PersistenceException("Annotation %s is not the same as %s", left, right);
+      }
       return comparer.equals(left, right);
    }
 
