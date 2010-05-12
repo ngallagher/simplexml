@@ -33,7 +33,7 @@ public class Replace extends LineStripper {
       
 
    public static void main(String[] list) throws Exception{
-      List<File> files = getFiles(new File(list[0]));
+      List<File> files = getFiles(new File(list[0]), true);
       Pattern pattern = Pattern.compile(LGPL, Pattern.DOTALL | Pattern.MULTILINE);
       for(File file : files) {
          String text = getFile(file);
@@ -61,12 +61,14 @@ public class Replace extends LineStripper {
       }
       return out.toString("UTF-8");
    }
-   public static List<File> getFiles(File root) {
+   public static List<File> getFiles(File root, boolean recursive) {
       List<File> files = new ArrayList<File>();
       File[] fileList = root.listFiles();
       for(File file : fileList) {
          if(file.isDirectory() && !file.getName().equals(".svn")) {
-            files.addAll(getFiles(file));
+            if(recursive) {
+               files.addAll(getFiles(file, recursive));
+            }
          } else if(file.getName().endsWith(".java")){
             files.add(file);
          }

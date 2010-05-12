@@ -85,7 +85,20 @@ class FieldScanner extends ContactList {
     * @param access this is the access type for the class
     */
    public FieldScanner(Class type, DefaultType access) throws Exception {
-      this.factory = new AnnotationFactory();
+      this(type, access, true);
+   }
+   
+   /**
+    * Constructor for the <code>FieldScanner</code> object. This is
+    * used to perform a scan on the specified class in order to find
+    * all fields that are labeled with an XML annotation.
+    * 
+    * @param type this is the schema class that is to be scanned
+    * @param access this is the access type for the class
+    * @param required this is used to determine the requirement
+    */
+   public FieldScanner(Class type, DefaultType access, boolean required) throws Exception {
+      this.factory = new AnnotationFactory(required);
       this.hierarchy = new Hierarchy(type);
       this.done = new ContactMap();
       this.access = access;

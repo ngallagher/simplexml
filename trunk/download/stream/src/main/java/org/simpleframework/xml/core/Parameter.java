@@ -68,4 +68,24 @@ interface Parameter {
     * @return this returns the index for the parameter
     */
    public int getIndex();
+   
+   /**
+    * This is used to determine if the parameter is required. If 
+    * an attribute is not required then it can be null. Which 
+    * means that we can inject a null value. Also, this means we
+    * can match constructors in a more flexible manner.
+    * 
+    * @return this returns true if the parameter is required
+    */
+   public boolean isRequired();
+   
+   /**
+    * This is used to determine if the parameter is primitive. A
+    * primitive parameter must not be null. As there is no way to
+    * provide the value to the constructor. A default value is 
+    * not a good solution as it affects the constructor score.
+    * 
+    * @return this returns true if the parameter is primitive
+    */
+   public boolean isPrimitive();
 }

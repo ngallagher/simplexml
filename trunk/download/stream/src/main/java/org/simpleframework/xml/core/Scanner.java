@@ -100,6 +100,11 @@ class Scanner {
    private boolean primitive;
    
    /**
+    * This is used to determine if the defaults are required.
+    */
+   private boolean required;
+   
+   /**
     * Constructor for the <code>Scanner</code> object. This is used 
     * to scan the provided class for annotations that are used to
     * build a schema for an XML file to follow. 
@@ -595,6 +600,7 @@ class Scanner {
       Default holder = scanner.getDefault();
       
       if(holder != null) {
+         required = holder.required();
          access = holder.value();
       }
    }
@@ -621,7 +627,7 @@ class Scanner {
     * @param type this is the object type that is to be scanned
     */    
    public void field(Class type) throws Exception {
-      ContactList list = new FieldScanner(type, access);
+      ContactList list = new FieldScanner(type, access, required);
       
       for(Contact contact : list) {
          scan(contact, contact.getAnnotation());
@@ -636,7 +642,7 @@ class Scanner {
     * @param type this is the object type that is to be scanned
     */ 
    public void method(Class type) throws Exception {
-      ContactList list = new MethodScanner(type, access);
+      ContactList list = new MethodScanner(type, access, required);
       
       for(Contact contact : list) {
          scan(contact, contact.getAnnotation());

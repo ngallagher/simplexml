@@ -247,7 +247,7 @@ public class MethodScannerDefaultTest extends TestCase {
    }
    
    private static Map<String, Contact> getContacts(Class type, DefaultType defaultType) throws Exception {
-      MethodScanner scanner = new MethodScanner(type, defaultType);
+      MethodScanner scanner = new MethodScanner(type, defaultType, true);
       Map<String, Contact> map = new HashMap<String, Contact>();
       
       for(Contact contact : scanner) {

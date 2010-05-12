@@ -5,6 +5,7 @@ import java.io.StringWriter;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -21,17 +22,39 @@ public class LanguageConverter extends Replace {
    private static final Map<String, String> NAMESPACE = new LinkedHashMap<String, String>();
    private static final Map<String, String> USING = new LinkedHashMap<String, String>();
    private static final Map<String, String> FILES = new LinkedHashMap<String, String>();
+   private static Map<String, String> IMPORT_TO_USING = new LinkedHashMap<String, String>();
    private static final String INDENT = "   ";
+   
+   static {
+      IMPORT_TO_USING.put("org.simpleframework.xml.core.*", "using SimpleFramework.Xml.Core;");
+      IMPORT_TO_USING.put("org.simpleframework.xml.convert.*", "using SimpleFramework.Xml.Convert;");
+      IMPORT_TO_USING.put("org.simpleframework.xml.strategy.*", "using SimpleFramework.Xml.Strategy;");
+      IMPORT_TO_USING.put("org.simpleframework.xml.filter.*", "using SimpleFramework.Xml.Filter;");
+      IMPORT_TO_USING.put("org.simpleframework.xml.stream.*", "using SimpleFramework.Xml.Stream;");
+      IMPORT_TO_USING.put("org.simpleframework.xml.transform.*", "using SimpleFramework.Xml.Transform;");
+      IMPORT_TO_USING.put("org.simpleframework.xml.util.*", "using SimpleFramework.Xml.Util;");
+      IMPORT_TO_USING.put("org.simpleframework.xml.util.*", "using SimpleFramework.Xml;");
+      IMPORT_TO_USING.put("java.util.*","using System.Collections.Generic;");
+      IMPORT_TO_USING.put("junit.framework.*", "using SimpleFramework.Xml;");
+   }
    
    static {
       FILES.put("C:\\Users\\niall\\Workspace\\xml\\src\\test\\java\\org\\simpleframework\\xml", "C:\\Users\\niall\\Workspace\\SimpleFramework\\SimpleFramework\\SimpleFramework\\src\\main\\Xml");
       FILES.put("C:\\Users\\niall\\Workspace\\xml\\src\\test\\java\\org\\simpleframework\\xml\\core", "C:\\Users\\niall\\Workspace\\SimpleFramework\\SimpleFramework\\SimpleFramework\\src\\main\\Xml\\Core");
-      FILES.put("C:\\Users\\niall\\Workspace\\xml\\src\\test\\java\\org\\simpleframework\\xml\\filter", "C:\\Users\\niall\\Workspace\\SimpleFramework\\SimpleFramework\\SimpleFramework\\src\\main\\Xml\\Filter");
+      //FILES.put("C:\\Users\\niall\\Workspace\\xml\\src\\test\\java\\org\\simpleframework\\xml\\filter", "C:\\Users\\niall\\Workspace\\SimpleFramework\\SimpleFramework\\SimpleFramework\\src\\main\\Xml\\Filter");
       FILES.put("C:\\Users\\niall\\Workspace\\xml\\src\\test\\java\\org\\simpleframework\\xml\\strategy", "C:\\Users\\niall\\Workspace\\SimpleFramework\\SimpleFramework\\SimpleFramework\\src\\main\\Xml\\Strategy");
       FILES.put("C:\\Users\\niall\\Workspace\\xml\\src\\test\\java\\org\\simpleframework\\xml\\stream", "C:\\Users\\niall\\Workspace\\SimpleFramework\\SimpleFramework\\SimpleFramework\\src\\main\\Xml\\Stream");
       FILES.put("C:\\Users\\niall\\Workspace\\xml\\src\\test\\java\\org\\simpleframework\\xml\\convert", "C:\\Users\\niall\\Workspace\\SimpleFramework\\SimpleFramework\\SimpleFramework\\src\\main\\Xml\\Convert");
       FILES.put("C:\\Users\\niall\\Workspace\\xml\\src\\test\\java\\org\\simpleframework\\xml\\transform", "C:\\Users\\niall\\Workspace\\SimpleFramework\\SimpleFramework\\SimpleFramework\\src\\main\\Xml\\Transform");
-      FILES.put("C:\\Users\\niall\\Workspace\\xml\\src\\test\\java\\org\\simpleframework\\xml\\util", "C:\\Users\\niall\\Workspace\\SimpleFramework\\SimpleFramework\\SimpleFramework\\src\\main\\Xml\\Util");
+      //FILES.put("C:\\Users\\niall\\Workspace\\xml\\src\\test\\java\\org\\simpleframework\\xml\\util", "C:\\Users\\niall\\Workspace\\SimpleFramework\\SimpleFramework\\SimpleFramework\\src\\main\\Xml\\Util");
+      FILES.put("C:\\Users\\niall\\Workspace\\xml\\src\\main\\java\\org\\simpleframework\\xml", "C:\\Users\\niall\\Workspace\\SimpleFramework\\SimpleFramework\\SimpleFramework\\src\\main\\Xml");
+      FILES.put("C:\\Users\\niall\\Workspace\\xml\\src\\main\\java\\org\\simpleframework\\xml\\core", "C:\\Users\\niall\\Workspace\\SimpleFramework\\SimpleFramework\\SimpleFramework\\src\\main\\Xml\\Core");
+      //FILES.put("C:\\Users\\niall\\Workspace\\xml\\src\\main\\java\\org\\simpleframework\\xml\\filter", "C:\\Users\\niall\\Workspace\\SimpleFramework\\SimpleFramework\\SimpleFramework\\src\\main\\Xml\\Filter");
+      FILES.put("C:\\Users\\niall\\Workspace\\xml\\src\\main\\java\\org\\simpleframework\\xml\\strategy", "C:\\Users\\niall\\Workspace\\SimpleFramework\\SimpleFramework\\SimpleFramework\\src\\main\\Xml\\Strategy");
+      FILES.put("C:\\Users\\niall\\Workspace\\xml\\src\\main\\java\\org\\simpleframework\\xml\\stream", "C:\\Users\\niall\\Workspace\\SimpleFramework\\SimpleFramework\\SimpleFramework\\src\\main\\Xml\\Stream");
+      FILES.put("C:\\Users\\niall\\Workspace\\xml\\src\\main\\java\\org\\simpleframework\\xml\\convert", "C:\\Users\\niall\\Workspace\\SimpleFramework\\SimpleFramework\\SimpleFramework\\src\\main\\Xml\\Convert");
+      FILES.put("C:\\Users\\niall\\Workspace\\xml\\src\\main\\java\\org\\simpleframework\\xml\\transform", "C:\\Users\\niall\\Workspace\\SimpleFramework\\SimpleFramework\\SimpleFramework\\src\\main\\Xml\\Transform");
+      //FILES.put("C:\\Users\\niall\\Workspace\\xml\\src\\main\\java\\org\\simpleframework\\xml\\util", "C:\\Users\\niall\\Workspace\\SimpleFramework\\SimpleFramework\\SimpleFramework\\src\\main\\Xml\\Util");
    }
 
    static {
@@ -59,18 +82,18 @@ public class LanguageConverter extends Replace {
       STAGE_ONE.add(CanonicalizeFile.class);
       STAGE_ONE.add(DefineType.class);
       STAGE_ONE.add(PopulateUsing.class);
-      STAGE_ONE.add(AddUsing.class);
       STAGE_ONE.add(StripImports.class);
+      STAGE_ONE.add(AddUsing.class);
       STAGE_ONE.add(CreateNamespace.class);
       STAGE_ONE.add(GetFields.class);
       STAGE_ONE.add(ReplaceComments.class);
       STAGE_ONE.add(ReplaceDocumentation.class);
       STAGE_ONE.add(ReplaceKeyWords.class);
+      STAGE_ONE.add(ConvertAnnotationAttributes.class);
       STAGE_ONE.add(ReplaceMethodConventions.class);
       STAGE_ONE.add(StripCrap.class);
       STAGE_ONE.add(ReplaceLicense.class);
       STAGE_ONE.add(SubstituteAnnotations.class);
-      STAGE_ONE.add(ConvertAnnotationAttributes.class);
       STAGE_ONE.add(SetAnnotationAttributes.class);
       STAGE_ONE.add(ConvertClassBeanMethods.class);
       STAGE_ONE.add(ReplaceAnnotations.class);
@@ -78,16 +101,26 @@ public class LanguageConverter extends Replace {
    
    static {
       STAGE_TWO.add(SubstituteMethods.class);
+      STAGE_TWO.add(StripPublicFromInterfaces.class);
    }
 
    public static void main(String list[]) throws Exception {
+      Set<String> filesDone = new HashSet<String>();
       SourceProject project = new SourceProject();
       for(String from : FILES.keySet()) {
-         List<File> files = getFiles(new File(from));
+         List<File> files = getFiles(new File(from), false);
          String to = FILES.get(from);
-        // files = Collections.singletonList(new File("C:\\Users\\niall\\Workspace\\xml\\src\\main\\java\\org\\simpleframework\\xml\\core\\ParameterContact.java"));
          for(File file : files) {
-            SourceDetails details = new SourceDetails(file, new File(to, file.getName().replaceAll("\\.java", ".cs")));
+            File result = new File(to, file.getName().replaceAll("\\.java", ".cs"));
+            if(filesDone.contains(file.getCanonicalPath())) {
+               throw new IllegalStateException("File '"+file.getCanonicalPath()+"' has already been examined");
+            }
+            if(filesDone.contains(result.getCanonicalPath())) {
+               throw new IllegalStateException("Result '"+result.getCanonicalPath()+"' has already been written");
+            }
+            filesDone.add(file.getCanonicalPath());
+            filesDone.add(result.getCanonicalPath());
+            SourceDetails details = new SourceDetails(file, result);
             String text = getFile(file);
             details.setText(text);
             for(Class<? extends ConversionPhase> phaseType : STAGE_ONE) {
@@ -115,6 +148,9 @@ public class LanguageConverter extends Replace {
       for(SourceDetails details : project.getDetails()) {
          File saveAs = details.getDestination();
          save(saveAs, details.getText());
+         if(!filesDone.contains(saveAs.getCanonicalPath())) {
+            throw new IllegalStateException("Can not save to '"+saveAs.getCanonicalPath()+"' it has not a valid path");
+         }
          newFiles.add(saveAs.getCanonicalPath().replaceAll("^.*src", "src"));
       }
       for(String entry : newFiles) {
@@ -210,6 +246,11 @@ public class LanguageConverter extends Replace {
          return methods;
       }
       public void addImport(String importClass) {
+         for(String pattern : IMPORT_TO_USING.keySet()) {
+            if(importClass.matches(pattern)) {
+               using.add(IMPORT_TO_USING.get(pattern));
+            }
+         }
          imports.add(importClass);
       }
       public List<String> getImports() {
@@ -319,10 +360,6 @@ public class LanguageConverter extends Replace {
       public abstract String convert(String source, SourceDetails details, SourceProject project) throws Exception;
    }
    
-   private static interface ConversionPhase {     
-      public String convert(String source, SourceDetails details) throws Exception;
-   }
-   
    public static class SubstituteMethods extends SubstitutionPhase {
       public String convert(String source, SourceDetails details, SourceProject project) throws Exception {
          List<String> lines = stripLines(source);
@@ -339,11 +376,37 @@ public class LanguageConverter extends Replace {
       }
    }
    
+   public static class StripPublicFromInterfaces extends SubstitutionPhase {
+      public String convert(String source, SourceDetails details, SourceProject project) throws Exception {
+         if(details.getType() == SourceType.INTERFACE) {
+            Pattern pattern = Pattern.compile("^(\\s+)public\\s+(.*\\)\\s*;.*$)");
+            List<String> lines = stripLines(source);
+            StringWriter writer = new StringWriter();
+            for(String line : lines) {
+               Matcher matcher = pattern.matcher(line);
+               if(matcher.matches()) {
+                  String indent = matcher.group(1);
+                  String remainder = matcher.group(2);
+                  writer.append(indent);
+                  writer.append(remainder);
+                  writer.append("\n");
+               } else {
+                  writer.append(line);
+                  writer.append("\n");
+               }
+            }
+            return writer.toString();
+         }
+         return source;
+      }
+   }
+   
+   private static interface ConversionPhase {     
+      public String convert(String source, SourceDetails details) throws Exception;
+   }
+   
    public static class CanonicalizeFile implements ConversionPhase {
       public String convert(String source, SourceDetails details) throws Exception {
-   //      if(source.indexOf('\t') != -1) {
-     //       throw new Exception("File contains tab "+details.getSource());
-       //  }
          return source.replaceAll("\r\n", "\n").replaceAll("\r", "\n");
       }
    }
@@ -394,7 +457,7 @@ public class LanguageConverter extends Replace {
                writer.append("public ");
                writer.append(type);
                writer.append(" ");
-               writer.append(method);
+               writer.append(convertMethod(method, MethodType.NORMAL));
                writer.append(" {\n");
                writer.append(indent);
                writer.append("   get {\n");
@@ -1121,6 +1184,9 @@ public class LanguageConverter extends Replace {
          TOKENS.put("extends", ":");
          TOKENS.put("\\)\\s*throws\\s.*\\{", ") {");
          TOKENS.put("\\)\\s*throws\\s.*;", ");");
+         TOKENS.put("assertEquals\\(", "AssertEquals(");
+         TOKENS.put("assertNull\\(", "AssertNull(");
+         TOKENS.put("assertNotNull\\(", "AssertNotNull(");
          TOKENS.put("org.simpleframework.xml.convert","SimpleFramework.Xml.Util");
          TOKENS.put("org.simpleframework.xml.filter", "SimpleFramework.Xml.Filter");
          TOKENS.put("org.simpleframework.xml.strategy", "SimpleFramework.Xml.Strategy");

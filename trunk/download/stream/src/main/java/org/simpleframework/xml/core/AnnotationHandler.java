@@ -44,7 +44,7 @@ class AnnotationHandler implements InvocationHandler {
    private static final String STRING = "toString";
    
    /**
-    * This is used to ensure that all annotations are optional.
+    * This is used to determine if annotations are optional.
     */
    private static final String REQUIRED = "required";
    
@@ -62,6 +62,23 @@ class AnnotationHandler implements InvocationHandler {
     * This is annotation type associated with this handler. 
     */
    private final Class type;
+   
+   /**
+    * This is used to determine if the annotation is required.
+    */
+   private final boolean required;
+   
+   /**
+    * Constructor for the <code>AnnotationHandler</code> object. This 
+    * is used to create a handler for invocations on a synthetic 
+    * annotation. The annotation type wrapped must be provided. By
+    * default the requirement of the annotations is true.
+    * 
+    * @param type this is the annotation type that this is wrapping
+    */
+   public AnnotationHandler(Class type) {
+      this(type, true);
+   }
 
    /**
     * Constructor for the <code>AnnotationHandler</code> object. This 
@@ -69,9 +86,11 @@ class AnnotationHandler implements InvocationHandler {
     * annotation. The annotation type wrapped must be provided.
     * 
     * @param type this is the annotation type that this is wrapping
+    * @param required this is used to determine if its required
     */
-   public AnnotationHandler(Class type) {
+   public AnnotationHandler(Class type, boolean required) {
       this.comparer = new Comparer();
+      this.required = required;
       this.type = type;
    }
 
@@ -101,7 +120,7 @@ class AnnotationHandler implements InvocationHandler {
          return type;
       }
       if(name.equals(REQUIRED)) {
-         return false;
+         return required;
       }
       return method.getDefaultValue();
    }
@@ -202,7 +221,7 @@ class AnnotationHandler implements InvocationHandler {
       String name = method.getName();
               
       if(name.equals(REQUIRED)) {
-         return  false;
+         return required;
       }
       return method.getDefaultValue();
    }

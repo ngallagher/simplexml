@@ -110,11 +110,28 @@ class MethodScanner extends ContactList {
     * XML annotation specified within the class.
     * 
     * @param type this is the type that is to be scanned for methods
+    * @param access this is the access type for default values
     * 
     * @throws Exception thrown if there was a problem scanning
     */
    public MethodScanner(Class type, DefaultType access) throws Exception {
-      this.factory = new MethodPartFactory();
+      this(type, access, true);
+   }
+   
+   /**
+    * Constructor for the <code>MethodScanner</code> object. This is
+    * used to create an object that will scan the specified class
+    * such that all bean property methods can be paired under the
+    * XML annotation specified within the class.
+    * 
+    * @param type this is the type that is to be scanned for methods
+    * @param access this is the access type for default values
+    * @param required used to determine if defaults are required
+    * 
+    * @throws Exception thrown if there was a problem scanning
+    */
+   public MethodScanner(Class type, DefaultType access, boolean required) throws Exception {
+      this.factory = new MethodPartFactory(required);
       this.hierarchy = new Hierarchy(type);
       this.write = new PartMap();
       this.read = new PartMap();

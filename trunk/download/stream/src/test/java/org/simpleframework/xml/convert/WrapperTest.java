@@ -50,7 +50,7 @@ public class WrapperTest extends TestCase {
    } 
    
    @Root
-   @Default
+   @Default(required=false)
    private static class Entry {
       private String name;
       private String value;
@@ -61,7 +61,7 @@ public class WrapperTest extends TestCase {
    }
    
    @Root
-   @Default
+   @Default(required=false)
    private static class WrapperExample {
       @Convert(WrapperConverter.class)
       private Wrapper wrapper;

@@ -116,13 +116,31 @@ class Builder {
       Object[] values = list.toArray();
       
       for(int i = 0; i < list.size(); i++) {
-         String name = list.get(i).getName();
-         Variable variable = criteria.remove(name);
-         Object value = variable.getValue();
-         
-         values[i] = value;
+         values[i] = getVariable(criteria, i);
       }
       return getInstance(values);
+   }
+   
+   /**
+    * This is used to acquire a variable from the criteria provided. 
+    * In order to match the constructor correctly this will check to
+    * see if the if the parameter is required. If it is required then
+    * there must be a non null value or an exception is thrown.
+    * 
+    * @param criteria this is used to acquire the parameter value
+    * @param index this is the index to acquire the value for
+    * 
+    * @return the value associated with the specified parameter
+    */
+   private Object getVariable(Criteria criteria, int index) throws Exception {
+      Parameter parameter = list.get(index);
+      String name = parameter.getName();
+      Variable variable = criteria.remove(name);
+      
+      if(variable != null) {
+         return variable.getValue();
+      }
+      return null;
    }
    
    /**
@@ -155,11 +173,17 @@ class Builder {
       int score = 0;
       
       for(int i = 0; i < list.size(); i++) {
-         String name = list.get(i).getName();
+         Parameter parameter = list.get(i);
+         String name = parameter.getName();
          Label label = criteria.get(name);
-         
+
          if(label == null) {
-            return -1;
+            if(parameter.isRequired()) {
+               return -1;
+            }  
+            if(parameter.isPrimitive()) {
+               return -1;
+            }
          }
          score++;
       }

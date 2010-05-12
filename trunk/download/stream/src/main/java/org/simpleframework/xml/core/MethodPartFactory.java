@@ -53,7 +53,19 @@ class MethodPartFactory {
     * either set or get values depending on its type.
     */
    public MethodPartFactory() {
-      this.factory = new AnnotationFactory();
+      this(true);
+   }
+   
+   /**
+    * Constructor for the <code>MethodPartFactory</code> object. This
+    * is used to create method parts based on the method signature 
+    * and the XML annotation is uses. The created part can be used to
+    * either set or get values depending on its type.
+    * 
+    * @param required used to determine if defaults are required
+    */
+   public MethodPartFactory(boolean required) {
+      this.factory = new AnnotationFactory(required);
    }
    
    /**
