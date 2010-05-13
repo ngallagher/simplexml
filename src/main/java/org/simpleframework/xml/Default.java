@@ -64,7 +64,7 @@ public @interface Default {
    /**
     * This is used to determine if the generated annotations are
     * required or not. By default generated parameters are required.
-    * Setting this to default means that null values are accepted
+    * Setting this to false means that null values are accepted
     * by all defaulted fields or methods depending on the type.
     * 
     * @return this is used to determine if defaults are required
