@@ -22,6 +22,7 @@ import static org.simpleframework.xml.DefaultType.FIELD;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.DefaultType;
@@ -174,7 +175,7 @@ class FieldScanner extends ContactList {
          for(Field field : list) {
             Class real = field.getType();
             
-            if(real != null) {
+            if(!isStatic(field)) {
                process(field, real);
             }
          }   
@@ -275,5 +276,23 @@ class FieldScanner extends ContactList {
       for(Contact contact : done) {
          add(contact);
       }
+   }
+   
+   /**
+    * This is used to determine if a field is static. If a field is
+    * static it should not be considered as a default field. This
+    * ensures the default annotation does not pick up static finals.
+    * 
+    * @param field this is the field to determine if it is static
+    * 
+    * @return true if the field is static, false otherwise
+    */
+   private boolean isStatic(Field field) {
+      int modifier = field.getModifiers();
+      
+      if(Modifier.isStatic(modifier)) {
+         return true;
+      }
+      return false;
    }
 }
