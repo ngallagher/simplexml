@@ -1,5 +1,7 @@
 package org.simpleframework.xml.convert;
 
+import java.io.StringWriter;
+
 import org.simpleframework.xml.Default;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
@@ -27,6 +29,31 @@ public class RegistryConverterTest extends ValidationTestCase {
       }
    }
    
+   public static class PersonConverter implements Converter<Person> {
+      private final Serializer serializer;
+      public PersonConverter(Serializer serializer) {
+         this.serializer = serializer;
+      }
+      public Person read(InputNode node) throws Exception {
+         return serializer.read(PersonDelegate.class, node.getNext());
+      }
+      public void write(OutputNode node, Person value) throws Exception {
+         Person person = new PersonDelegate(value);
+         serializer.write(person, node);
+      }
+      @Root
+      @Default
+      private static class PersonDelegate extends Person {
+         public PersonDelegate() {
+            super();
+         }
+         public PersonDelegate(Person person) {
+            super(person.name, person.age);
+         }
+      }
+   }
+   
+   
    @Root
    private static class OrderItem {
       @Element
@@ -36,6 +63,30 @@ public class RegistryConverterTest extends ValidationTestCase {
       }
       public OrderItem(Envelope envelope) {
          this.envelope = envelope;
+      }
+   }
+   
+   @Root
+   @Default
+   private static class PersonProfile {
+      private Person person;
+      public PersonProfile() {
+         super();
+      }
+      public PersonProfile(Person person) {
+         this.person = person;
+      }
+   }
+   
+   private static class Person {
+      private String name;
+      private int age;
+      public Person() {
+         super();
+      }
+      public Person(String name, int age) {
+         this.name = name;
+         this.age = age;
       }
    }
    
@@ -77,5 +128,28 @@ public class RegistryConverterTest extends ValidationTestCase {
       
       OrderItem order = new OrderItem(envelope);
       serializer.write(order, System.out);
+   }
+   
+   public void testPersonConverter() throws Exception {
+      Style style = new CamelCaseStyle();
+      Format format = new Format(style);
+      Registry registry = new Registry();
+      Person person = new Person("Niall", 30);
+      RegistryStrategy strategy = new RegistryStrategy(registry);
+      Serializer serializer = new Persister(strategy, format);
+      Converter converter = new PersonConverter(serializer);
+      StringWriter writer = new StringWriter();
+      
+      registry.bind(Person.class, converter);
+      
+      PersonProfile profile = new PersonProfile(person);
+      serializer.write(profile, writer);
+      
+      System.out.println(writer.toString());
+      
+      PersonProfile read = serializer.read(PersonProfile.class, writer.toString());
+      
+      assertEquals(read.person.name, "Niall");
+      assertEquals(read.person.age, 30);
    }
 }
