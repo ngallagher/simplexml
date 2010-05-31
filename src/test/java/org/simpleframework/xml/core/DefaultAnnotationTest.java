@@ -1,10 +1,9 @@
 package org.simpleframework.xml.core;
 
+import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import junit.framework.TestCase;
 
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Default;
@@ -12,12 +11,14 @@ import org.simpleframework.xml.DefaultType;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
+import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.Transient;
+import org.simpleframework.xml.ValidationTestCase;
 import org.simpleframework.xml.strategy.Strategy;
 import org.simpleframework.xml.strategy.TreeStrategy;
 import org.simpleframework.xml.stream.Style;
 
-public class DefaultAnnotationTest extends TestCase {
+public class DefaultAnnotationTest extends ValidationTestCase {
    
    private static final String SOURCE =
    "<orderList id='100' array='a, b, c, d'>"+
@@ -43,6 +44,17 @@ public class DefaultAnnotationTest extends TestCase {
    "      </orderItem>"+
    "   </orders>"+
    "</orderList>";
+   
+   private static final String ORDER =
+   "<orderItem>"+
+   "   <name>IR1234</name>" +
+   "   <value>2</value>"+
+   "   <price>7.4</price>"+
+   "   <customer id='1'>"+
+   "      <name>John Doe</name>"+
+   "      <address>Sin City</address>"+
+   "   </customer>"+
+   "</orderItem>";
    
    private static final String MISMATCH = 
    "<typeMisMatch/>";
@@ -83,6 +95,7 @@ public class DefaultAnnotationTest extends TestCase {
    @Root
    @Default(DefaultType.FIELD)
    private static class OrderItem {
+      private static final String IGNORE = "ignore";
       private Customer customer;
       private String name;
       private int value;
@@ -128,6 +141,18 @@ public class DefaultAnnotationTest extends TestCase {
       }
       assertTrue(failure);
    }
+   
+   public void testIgnoreStatic() throws Exception {
+      Serializer serializer = new Persister();
+      OrderItem order = serializer.read(OrderItem.class, ORDER);
+      StringWriter writer = new StringWriter();
+      
+      serializer.write(order, writer);
+      
+      assertElementDoesNotExist(writer.toString(), "orderItem/IGNORE");
+      System.out.println(writer.toString());
+   }
+   
    
    public void testDefault() throws Exception {
       MethodScanner methodScanner = new MethodScanner(OrderList.class, DefaultType.PROPERTY);
