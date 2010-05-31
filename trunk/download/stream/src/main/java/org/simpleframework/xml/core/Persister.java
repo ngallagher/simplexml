@@ -67,6 +67,11 @@ import org.simpleframework.xml.transform.Matcher;
 public class Persister implements Serializer {
    
    /**
+    * This is used to manage the serialization sessions created/
+    */
+   private final SessionManager manager;
+   
+   /**
     * This is the strategy object used to load and resolve classes.
     */ 
    private final Strategy strategy;
@@ -386,6 +391,7 @@ public class Persister implements Serializer {
     */
    public Persister(Strategy strategy, Filter filter, Matcher matcher, Format format) {
       this.support = new Support(filter, matcher);
+      this.manager = new SessionManager();
       this.style = format.getStyle();
       this.strategy = strategy;
       this.format = format;
@@ -579,9 +585,34 @@ public class Persister implements Serializer {
     * @throws Exception if the object cannot be fully deserialized
     */
    public <T> T read(Class<? extends T> type, InputNode node, boolean strict) throws Exception {
-      return read(type, node, new Source(strategy, support, style, strict));
-   }                      
-           
+      Session session = manager.open(strict);
+      
+      try {
+         return read(type, node, session);
+      } finally {
+         manager.close();
+      }
+   }    
+      
+   /**
+    * This <code>read</code> method will read the contents of the XML
+    * document provided and convert it to an object of the specified
+    * type. If the XML document cannot be deserialized or there is a
+    * problem building the object graph an exception is thrown. The
+    * object graph deserialized is returned.
+    * 
+    * @param type this is the XML schema class to be deserialized
+    * @param node this provides the source of the XML document
+    * @param session this is the session used for deserialization
+    * 
+    * @return the object deserialized from the XML document given
+    * 
+    * @throws Exception if the object cannot be fully deserialized
+    */
+   private <T> T read(Class<? extends T> type, InputNode node, Session session) throws Exception {
+      return read(type, node, new Source(strategy, support, style, session));
+   }
+        
    /**
     * This <code>read</code> method will read the contents of the XML
     * document provided and convert it to an object of the specified
@@ -799,8 +830,34 @@ public class Persister implements Serializer {
     * @throws Exception if the object cannot be fully deserialized
     */ 
    public <T> T read(T value, InputNode node, boolean strict) throws Exception {
-      return read(value, node, new Source(strategy, support, style, strict));
+      Session session = manager.open(strict);
+      
+      try {
+         return read(value, node, session);
+      }finally {
+         manager.close();
+      }
    } 
+   
+   /**
+    * This <code>read</code> method will read the contents of the XML
+    * document from the provided source and populate the object with
+    * the values deserialized. This is used as a means of injecting an
+    * object with values deserialized from an XML document. If the
+    * XML source cannot be deserialized or there is a problem building
+    * the object graph an exception is thrown.
+    * 
+    * @param value this is the object to deserialize the XML in to
+    * @param node this provides the source of the XML document
+    * @param session this is the session used for the deserialization
+    * 
+    * @return the same instance provided is returned when finished 
+    * 
+    * @throws Exception if the object cannot be fully deserialized
+    */ 
+   private <T> T read(T value, InputNode node, Session session) throws Exception {
+      return read(value, node, new Source(strategy, support, style, session));
+   }
            
    /**
     * This <code>read</code> method will read the contents of the XML
@@ -1020,8 +1077,34 @@ public class Persister implements Serializer {
     * @throws Exception if the class XML schema does not fully match
     */
    public boolean validate(Class type, InputNode node, boolean strict) throws Exception {
-      return validate(type, node, new Source(strategy, support, style, strict));
-   }                      
+      Session session = manager.open(strict);
+      
+      try {
+         return validate(type, node, session);
+      }finally {
+         manager.close();
+      }
+   } 
+   
+   /**
+    * This <code>validate</code> method will validate the contents of
+    * the XML document against the specified XML class schema. This is
+    * used to perform a read traversal of the class schema such that 
+    * the document can be tested against it. This is preferred to
+    * reading the document as it does not instantiate the objects or
+    * invoke any callback methods, thus making it a safe validation.
+    * 
+    * @param type this is the class type to be validated against XML
+    * @param node this provides the source of the XML document
+    * @param session this is the session that is used for validation
+    * 
+    * @return true if the document matches the class XML schema 
+    * 
+    * @throws Exception if the class XML schema does not fully match
+    */
+   private boolean validate(Class type, InputNode node, Session session) throws Exception {
+      return validate(type, node, new Source(strategy, support, style, session));
+   } 
            
    /**
     * This <code>validate</code> method will validate the contents of
@@ -1058,7 +1141,13 @@ public class Persister implements Serializer {
     * @throws Exception if the schema for the object is not valid
     */
    public void write(Object source, OutputNode root) throws Exception {
-      write(source, root, support);
+      Session session = manager.open();
+      
+      try {
+         write(source, root, session);
+      } finally {
+         manager.close();
+      }
    }
 
    /**
@@ -1072,12 +1161,12 @@ public class Persister implements Serializer {
     * 
     * @param source this is the object that is to be serialized
     * @param root this is where the serialized XML is written to
-    * @param support this is the support used to process strings
+    * @param session this is the session used for deserialization
     * 
     * @throws Exception if the schema for the object is not valid
     */   
-   private void write(Object source, OutputNode root, Support support) throws Exception {   
-      write(source, root, new Source(strategy, support, style));
+   private void write(Object source, OutputNode root, Session session)throws Exception {   
+      write(source, root, new Source(strategy, support, style, session));
    }
 
    /**

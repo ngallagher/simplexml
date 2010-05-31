@@ -104,7 +104,8 @@ public class ScannerTest extends TestCase {
       Support context = new Support();
       Strategy strategy = new TreeStrategy();
       Style style = new DefaultStyle(); 
-      Source source = new Source(strategy, context, style);
+      Session session = new Session();
+      Source source = new Source(strategy, context, style, session);
       Scanner scanner = new Scanner(Example.class);
       ArrayList<Class> types = new ArrayList<Class>();
       
@@ -132,10 +133,11 @@ public class ScannerTest extends TestCase {
    }
    
    public void testMixedExample() throws Exception {
-      Support context = new Support();
+      Support support = new Support();
       Strategy strategy = new TreeStrategy();
       Style style = new DefaultStyle();
-      Source source = new Source(strategy, context, style);
+      Session session = new Session();
+      Context source = new Source(strategy, support, style, session);
       Scanner scanner = new Scanner(MixedExample.class);
       ArrayList<Class> types = new ArrayList<Class>();
       
