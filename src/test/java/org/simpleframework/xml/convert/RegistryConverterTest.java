@@ -6,8 +6,11 @@ import org.simpleframework.xml.Root;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.ValidationTestCase;
 import org.simpleframework.xml.core.Persister;
+import org.simpleframework.xml.stream.CamelCaseStyle;
+import org.simpleframework.xml.stream.Format;
 import org.simpleframework.xml.stream.InputNode;
 import org.simpleframework.xml.stream.OutputNode;
+import org.simpleframework.xml.stream.Style;
 
 public class RegistryConverterTest extends ValidationTestCase {
 
@@ -31,8 +34,8 @@ public class RegistryConverterTest extends ValidationTestCase {
       public OrderItem() {
          super();
       }
-      public OrderItem(String name, String address) {
-         this.envelope = new Envelope(new Customer(name, address));
+      public OrderItem(Envelope envelope) {
+         this.envelope = envelope;
       }
    }
    
@@ -61,14 +64,18 @@ public class RegistryConverterTest extends ValidationTestCase {
    }
    
    public void testConverter() throws Exception {
+      Style style = new CamelCaseStyle();
+      Format format = new Format(style);
       Registry registry = new Registry();
+      Customer customer = new Customer("Niall", "Some Place");
+      Envelope envelope = new Envelope(customer);
       RegistryStrategy strategy = new RegistryStrategy(registry);
-      Serializer serializer = new Persister(strategy);
+      Serializer serializer = new Persister(strategy, format);
       Converter converter = new EnvelopeConverter(serializer);
       
       registry.bind(Envelope.class, converter);
       
-      OrderItem order = new OrderItem("Niall", "Gallagher");
+      OrderItem order = new OrderItem(envelope);
       serializer.write(order, System.out);
    }
 }
