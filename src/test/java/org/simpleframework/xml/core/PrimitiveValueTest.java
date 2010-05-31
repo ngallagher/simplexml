@@ -128,7 +128,7 @@ public class PrimitiveValueTest extends TestCase {
    
    public void testInlineString() throws Exception 
    {
-      Source source = new Source(new TreeStrategy(), new Support(), new DefaultStyle());
+      Source source = new Source(new TreeStrategy(), new Support(), new DefaultStyle(), new Session());
       MockElementMap map = new MockElementMap(true, // attribute
                                               false, // data
                                               "entry", // entry 
@@ -151,7 +151,7 @@ public class PrimitiveValueTest extends TestCase {
    
    public void testNotInlineString() throws Exception 
    {
-      Source source = new Source(new TreeStrategy(), new Support(), new DefaultStyle());
+      Source source = new Source(new TreeStrategy(), new Support(), new DefaultStyle(), new Session());
       MockElementMap map = new MockElementMap(false, // attribute
                                               false, // data
                                               "entry", // entry 
@@ -174,7 +174,7 @@ public class PrimitiveValueTest extends TestCase {
    
    public void testNoAttributeString() throws Exception 
    {
-      Source source = new Source(new TreeStrategy(), new Support(), new DefaultStyle());
+      Source source = new Source(new TreeStrategy(), new Support(), new DefaultStyle(), new Session());
       MockElementMap map = new MockElementMap(false, // attribute
                                               false, // data
                                               "entry", // entry 
@@ -197,7 +197,7 @@ public class PrimitiveValueTest extends TestCase {
    
    public void testAttributeNoKeyString() throws Exception 
    {
-      Source source = new Source(new TreeStrategy(), new Support(), new DefaultStyle());
+      Source source = new Source(new TreeStrategy(), new Support(), new DefaultStyle(), new Session());
       MockElementMap map = new MockElementMap(true, // attribute
                                               false, // data
                                               "entry", // entry 

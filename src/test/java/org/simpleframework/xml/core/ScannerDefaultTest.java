@@ -86,7 +86,8 @@ public class ScannerDefaultTest extends TestCase {
       Support support = new Support();
       Strategy strategy = new TreeStrategy();
       Style style = new DefaultStyle();
-      Context context = new Source(strategy, support, style);
+      Session session = new Session();
+      Context context = new Source(strategy, support, style, session);
       LabelMap attributes = scanner.getAttributes(context);
       LabelMap elements = scanner.getElements(context);  
 
@@ -99,7 +100,8 @@ public class ScannerDefaultTest extends TestCase {
       Support support = new Support();
       Strategy strategy = new TreeStrategy();
       Style style = new DefaultStyle();
-      Context context = new Source(strategy, support, style);
+      Session session = new Session();
+      Context context = new Source(strategy, support, style, session);
       LabelMap attributes = scanner.getAttributes(context);
       LabelMap elements = scanner.getElements(context);
       

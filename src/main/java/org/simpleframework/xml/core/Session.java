@@ -48,8 +48,13 @@ final class Session implements Map {
    /**
     * This is the internal map that provides storage for pairs.
     */         
-   private final Map map;        
-
+   private final Map map;      
+   
+   /**
+    * This is used to determine if this session is a strict one.
+    */
+   private final boolean strict;
+   
    /**
     * Constructor for the <code>Session</code> object. This is 
     * used to create a new session that makes use of a hash map
@@ -57,7 +62,33 @@ final class Session implements Map {
     * the duration of the persistence process this is used in.
     */ 
    public Session(){
-      this.map = new HashMap();                
+      this(true);
+   }
+
+   /**
+    * Constructor for the <code>Session</code> object. This is 
+    * used to create a new session that makes use of a hash map
+    * to store key value pairs which are maintained throughout
+    * the duration of the persistence process this is used in.
+    * 
+    * @param strict this is used to determine the strictness
+    */ 
+   public Session(boolean strict){
+      this.map = new HashMap();    
+      this.strict = strict;
+   }
+   
+   /**
+    * This is used to determine if the deserialization mode is strict
+    * or not. If this is not strict then deserialization will be done
+    * in such a way that additional elements and attributes can be
+    * ignored. This allows external XML formats to be used without 
+    * having to match the object structure to the XML fully.
+    * 
+    * @return this returns true if the deserialization is strict
+    */
+   public boolean isStrict() {
+      return strict;
    }
 
    /**
