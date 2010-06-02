@@ -91,7 +91,7 @@ class Source implements Context {
     * @param strategy this is used to resolve the classes used   
     * @param support this is the context used to process strings
     * @param style this is the style used for the serialization
-    * @param strict this determines whether to read in strict mode
+    * @param session this is the session to use for this context
     */       
    public Source(Strategy strategy, Support support, Style style, Session session) {
       this.filter = new TemplateFilter(this, support);           

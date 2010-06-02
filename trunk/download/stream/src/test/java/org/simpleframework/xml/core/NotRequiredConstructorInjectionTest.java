@@ -47,7 +47,7 @@ public class NotRequiredConstructorInjectionTest extends ValidationTestCase{
       }
    }
    
-   public void s_testInjection() throws Exception {
+   public void testInjection() throws Exception {
       ExampleNotRequired example = new Persister().read(ExampleNotRequired.class, SOURCE);
       assertEquals(example.getName(), null);
       assertEquals(example.getValue(), "value");
