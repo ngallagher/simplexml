@@ -29,6 +29,7 @@ import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementArray;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.ElementMap;
+import org.simpleframework.xml.Text;
 
 /**
  * The <code>ConstructorScanner</code> object is used to scan all 
@@ -190,6 +191,9 @@ class ConstructorScanner {
          return create(factory, label, ordinal);
       }
       if(label instanceof Element) {
+         return create(factory, label, ordinal);
+      }
+      if(label instanceof Text) {
          return create(factory, label, ordinal);
       }
       return null;

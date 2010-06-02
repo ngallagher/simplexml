@@ -26,6 +26,7 @@ import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementArray;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.ElementMap;
+import org.simpleframework.xml.Text;
 
 /**
  * The <code>ParameterFactory</code> object is used to create instances 
@@ -106,6 +107,9 @@ final class ParameterFactory {
        }
        if(label instanceof Attribute) {
           return new Entry(AttributeParameter.class, Attribute.class);
+       }
+       if(label instanceof Text) {
+          return new Entry(TextParameter.class, Text.class);
        }
        throw new PersistenceException("Annotation %s not supported", label);
     }

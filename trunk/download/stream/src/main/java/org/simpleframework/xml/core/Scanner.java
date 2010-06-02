@@ -534,6 +534,9 @@ class Scanner {
          String name = parameter.getName();
          Label label = elements.get(name);
          
+         if(isEmpty(name)) {
+            label = text;
+         }
          if(label == null) {
             label = attributes.get(name);
          }
