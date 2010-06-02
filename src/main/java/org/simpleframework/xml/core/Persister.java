@@ -1161,7 +1161,7 @@ public class Persister implements Serializer {
     * 
     * @param source this is the object that is to be serialized
     * @param root this is where the serialized XML is written to
-    * @param session this is the session used for deserialization
+    * @param session this is the session used for serialization
     * 
     * @throws Exception if the schema for the object is not valid
     */   
