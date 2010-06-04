@@ -22,6 +22,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 
 import org.simpleframework.xml.Element;
+import org.simpleframework.xml.reflect.Reflection;
 
 /**
  * The <code>ElementParameter</code> represents a constructor 
@@ -183,7 +184,11 @@ class ElementParameter implements Parameter {
        * @return this returns the name of the annotated parameter
        */
       public String getName() {
-         return label.name();
+         String name = label.name();
+         if(name.equals("")) {
+            return Reflection.lookupParameterNames(factory)[index];
+         }
+         return name;
       }
    }
 }
