@@ -9,11 +9,11 @@ import java.lang.reflect.Method;
 public class Reflection {
 
 
-   public String[] lookupParameterNames(AccessibleObject methodOrConstructor) {
+   public static String[] lookupParameterNames(AccessibleObject methodOrConstructor) {
       return lookupParameterNames(methodOrConstructor, true);
    }
 
-   public String[] lookupParameterNames(AccessibleObject methodOrCtor,
+   public static String[] lookupParameterNames(AccessibleObject methodOrCtor,
          boolean throwExceptionIfMissing) {
 
       Class<?>[] types = null;
@@ -58,7 +58,7 @@ public class Reflection {
       }
    }
 
-   private InputStream getClassAsStream(Class<?> clazz) {
+   private static InputStream getClassAsStream(Class<?> clazz) {
       ClassLoader classLoader = clazz.getClassLoader();
       if (classLoader == null) {
          classLoader = ClassLoader.getSystemClassLoader();
@@ -66,7 +66,7 @@ public class Reflection {
       return getClassAsStream(classLoader, clazz.getName());
    }
 
-   private InputStream getClassAsStream(ClassLoader classLoader,
+   private static InputStream getClassAsStream(ClassLoader classLoader,
          String className) {
       String name = className.replace('.', '/') + ".class";
       // better pre-cache all methods otherwise this content will be loaded
