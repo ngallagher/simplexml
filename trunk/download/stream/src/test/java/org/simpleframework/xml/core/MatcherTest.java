@@ -136,7 +136,7 @@ public class MatcherTest extends ValidationTestCase {
 
       @Override
       public String write(MyEnum value) throws Exception {
-         return value.name().replace('-', '-');
+         return value.name().replace('_', '-');
       }
       
    }
@@ -155,8 +155,13 @@ public class MatcherTest extends ValidationTestCase {
       Matcher matcher = new ExampleEnumMatcher();
       Serializer serializer = new Persister(matcher);
       ExampleEnum value = new ExampleEnum(MyEnum.A_1);
+      StringWriter writer = new StringWriter();
       
-      serializer.write(value, System.out);      
+      serializer.write(value, writer);
+      
+      assertElementHasAttribute(writer.toString(), "/exampleEnum", "value", "A-1");
+      
+      validate(serializer, value);
    }
    
    public void testStringMatcher() throws Exception {
