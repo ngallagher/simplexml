@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="WINDOWS-1252" standalone="no"?>
+<jardesc>
+    <jar path="serialization/src/benchmark/java/org/simpleframework/xml/benchmark/asm/tostring-agent.jar"/>
+    <options buildIfNeeded="true" compress="true" descriptionLocation="/serialization/src/benchmark/java/org/simpleframework/xml/benchmark/asm/tostring-agent.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="false" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
+    <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
+    <selectedProjects/>
+    <manifest generateManifest="false" manifestLocation="/serialization/src/benchmark/java/org/simpleframework/xml/benchmark/asm/tostring-agent.manifest" manifestVersion="1.0" reuseManifest="true" saveManifest="true" usesManifest="true">
+        <sealing sealJar="false">
+            <packagesToSeal/>
+            <packagesToUnSeal/>
+        </sealing>
+    </manifest>
+    <selectedElements exportClassFiles="true" exportJavaFiles="true" exportOutputFolder="false">
+        <javaElement handleIdentifier="=serialization/src\/benchmark\/java&lt;org.simpleframework.xml.benchmark.asm{ToStringAgent.java"/>
+        <javaElement handleIdentifier="=serialization/src\/benchmark\/java&lt;org.simpleframework.xml.benchmark.asm{FieldCollector.java"/>
+        <javaElement handleIdentifier="=serialization/src\/benchmark\/java&lt;org.simpleframework.xml.benchmark.asm{FieldInfo.java"/>
+        <javaElement handleIdentifier="=serialization/src\/benchmark\/java&lt;org.simpleframework.xml.benchmark.asm{ToString.java"/>
+        <javaElement handleIdentifier="=serialization/src\/benchmark\/java&lt;org.simpleframework.xml.benchmark.asm{ToStringGenerator.java"/>
+    </selectedElements>
+</jardesc>
