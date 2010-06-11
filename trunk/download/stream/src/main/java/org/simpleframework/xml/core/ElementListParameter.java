@@ -22,7 +22,6 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 
 import org.simpleframework.xml.ElementList;
-import org.simpleframework.xml.reflect.Reflection;
 
 /**
  * The <code>ElementListParameter</code> represents a constructor 
@@ -184,11 +183,7 @@ class ElementListParameter implements Parameter {
        * @return this returns the name of the annotated parameter
        */
       public String getName() {
-         String name = label.name();
-         if(name.equals("")) {
-            return Reflection.lookupParameterNames(factory)[index];
-         }
-         return name;
+         return label.name();
       }
    }
 }

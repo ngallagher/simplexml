@@ -52,6 +52,17 @@ public class MatcherTest extends ValidationTestCase {
       }
    }
    
+   @Root
+   private static class ExampleEnum {
+      
+      @Attribute
+      private MyEnum value;
+      
+      public ExampleEnum(@Attribute(name="value") MyEnum value) {
+         this.value = value;
+      }
+   }
+   
    private static class ExampleIntegerMatcher implements Matcher, Transform<Integer> {
 
       public Transform match(Class type) throws Exception {
@@ -102,6 +113,34 @@ public class MatcherTest extends ValidationTestCase {
       }
    }
    
+   private static enum MyEnum {
+      A_1,
+      B_2,
+      C_3,
+   }
+   
+   private static class ExampleEnumMatcher implements Matcher, Transform<MyEnum> {
+
+      @Override
+      public Transform match(Class type) throws Exception {
+         if(type == MyEnum.class) {
+            return this;
+         }
+         return null;
+      }
+
+      @Override
+      public MyEnum read(String value) throws Exception {
+         return Enum.valueOf(MyEnum.class, value);
+      }
+
+      @Override
+      public String write(MyEnum value) throws Exception {
+         return value.name().replace('-', '-');
+      }
+      
+   }
+   
    public void testMatcher() throws Exception {
       Matcher matcher = new ExampleIntegerMatcher();
       Serializer serializer = new Persister(matcher);
@@ -110,6 +149,14 @@ public class MatcherTest extends ValidationTestCase {
       serializer.write(example, System.out);
     
       validate(serializer, example);
+   }
+   
+   public void testEnumMatcher() throws Exception {
+      Matcher matcher = new ExampleEnumMatcher();
+      Serializer serializer = new Persister(matcher);
+      ExampleEnum value = new ExampleEnum(MyEnum.A_1);
+      
+      serializer.write(value, System.out);      
    }
    
    public void testStringMatcher() throws Exception {
