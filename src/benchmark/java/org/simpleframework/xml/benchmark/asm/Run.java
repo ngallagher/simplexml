@@ -32,6 +32,42 @@ method and the modified binary representation is returned. Otherwise the transfo
 just returns null to indicate that no modifications are necessary.
 
 java -cp C:\work\development\codesearch\serialization\lib\asm-3.3.jar;C:\work\development\codesearch\serialization\lib\asm-commons-3.3.jar;C:\work\development\codesearch\serialization\lib\asm-tree-3.3.jar;tostring-all.jar;tostring-agent.jar -javaagent:tostring-agent.jar org.simpleframework.xml.benchmark.asm.Run
+
+public class Invoker<S, V> {
+
+    public void set(S source, V value);
+    public V get(S source);
+}
+
+private static class element_Invoker implements Invoker<Entry, String> {
+
+   public void set(Entry entry, String value) {
+      entry.value = value;
+   }
+   public String get(Entry entry) {
+      return entry.value;
+   }
+}
+
+private static class date_Invoker implements Invoker<Entry, Date> {
+
+   public void set(Entry entry, Date value) {
+      entry.value = value;
+   }
+   public Date get(Entry entry) {
+      return entry.value;
+   }
+}
+
+@Element
+@Invoke(element_Invoker.class)
+private String element;
+
+
+@Element
+@Invoke(date_Invoker.class)
+private Date date;
+
 */
 public class Run
 {
