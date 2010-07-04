@@ -121,7 +121,6 @@ public class MatcherTest extends ValidationTestCase {
    
    private static class ExampleEnumMatcher implements Matcher, Transform<MyEnum> {
 
-      @Override
       public Transform match(Class type) throws Exception {
          if(type == MyEnum.class) {
             return this;
@@ -129,12 +128,10 @@ public class MatcherTest extends ValidationTestCase {
          return null;
       }
 
-      @Override
       public MyEnum read(String value) throws Exception {
          return Enum.valueOf(MyEnum.class, value);
       }
 
-      @Override
       public String write(MyEnum value) throws Exception {
          return value.name().replace('_', '-');
       }
