@@ -17,7 +17,7 @@ public class PatchBuilder {
       this.persister = new Persister();
       this.shell = shell;
    }
-   public void build(Jardesc jardesc, String tagName, String patchTag, String group, String host, String pattern) throws Exception {
+   public void build(Jardesc jardesc, String tagName, String patchTag, String group, String host, String pattern, String jira) throws Exception {
       Project project = builder.build(patchTag, jardesc);
       project.addProperty("config.group", group);
       project.addProperty("scm.tag", tagName);
