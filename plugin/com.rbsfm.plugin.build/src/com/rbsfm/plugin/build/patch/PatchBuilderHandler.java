@@ -60,7 +60,7 @@ public class PatchBuilderHandler extends AbstractHandler{
          this.resource = resource;
       }
       protected Control createContents(Composite composite){
-         return new PatchBuilderWindow(composite, jardesc, resource);
+         return new PatchBuilderWindow(composite, jardesc);
       }
    }
 }
