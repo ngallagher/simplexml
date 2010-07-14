@@ -7,6 +7,7 @@ Bundle-Activator: com.rbsfm.plugin.build.Activator
 Bundle-Vendor: RBSFM
 Export-Package: com.rbsfm.plugin.build,
  com.rbsfm.plugin.build.assemble,
+ com.rbsfm.plugin.build.patch,
  com.rbsfm.plugin.build.publish
 Require-Bundle: org.eclipse.ui,org.eclipse.core.runtime,org.eclipse.core.resources;bundle-version="3.4.0",org.eclipse.jdt.core;bundle-version="3.4.0",
  org.eclipse.ui,
