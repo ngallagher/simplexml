@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <project name="Build Plugin" default="build" basedir=".">
    <target name="layout">
-      <property name="eclipse.path" value="C:\Program Files\eclipse\eclipse"/>
+      <property name="eclipse.path" value="C:\Program Files\eclipse\galileo"/>
       <property name="source.path" value="src"/>
       <property name="build.path" value="build"/>
       <property name="jar.path" value="jar"/>
