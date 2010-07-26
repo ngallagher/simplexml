@@ -158,6 +158,8 @@ public class MatcherTest extends ValidationTestCase {
       
       assertElementHasAttribute(writer.toString(), "/exampleEnum", "value", "A-1");
       
+      System.out.println(writer.toString());
+      
       validate(serializer, value);
    }
    
