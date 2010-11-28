@@ -121,7 +121,7 @@ class ClassCreator implements Creator {
       int max = 0;
       
       for(Builder builder : list) {
-         int score = builder.score(criteria);
+         int score = builder.getScore(criteria);
          
          if(score > max) {
             result = builder;

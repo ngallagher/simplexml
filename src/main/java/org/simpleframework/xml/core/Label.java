@@ -117,6 +117,17 @@ interface Label {
    public String getEntry() throws Exception; 
    
    /**
+    * This method is used to return the path where this is located.
+    * The path is an XPath expression that allows serialization to
+    * locate the XML entity within the document. If there is no
+    * path then the XML entity is written within the current context.
+    * An empty path is identified as a null value.
+    * 
+    * @return the XPath expression identifying the location
+    */
+   public String getPath();
+   
+   /**
     * This is used to acquire the contact object for this label. The 
     * contact retrieved can be used to set any object or primitive that
     * has been deserialized, and can also be used to acquire values to

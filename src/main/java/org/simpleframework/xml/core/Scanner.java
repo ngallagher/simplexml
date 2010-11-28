@@ -19,18 +19,11 @@
 package org.simpleframework.xml.core;
 
 import java.lang.annotation.Annotation;
-import java.util.List;
 
-import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Default;
 import org.simpleframework.xml.DefaultType;
-import org.simpleframework.xml.Element;
-import org.simpleframework.xml.ElementArray;
-import org.simpleframework.xml.ElementList;
-import org.simpleframework.xml.ElementMap;
 import org.simpleframework.xml.Order;
 import org.simpleframework.xml.Root;
-import org.simpleframework.xml.Text;
 import org.simpleframework.xml.Version;
 
 /**
@@ -47,7 +40,12 @@ import org.simpleframework.xml.Version;
  * 
  * @see org.simpleframework.xml.core.Schema
  */ 
-class Scanner {
+class Scanner implements Policy {
+   
+   /**
+    * This is used to store all XML attributes and XML elements.
+    */
+   private StructureBuilder builder;
    
    /**
     * This method acts as a pointer to the types commit process.
@@ -55,34 +53,14 @@ class Scanner {
    private ClassScanner scanner;
    
    /**
+    * This defines the structure build from the class annotations.
+    */
+   private Structure structure;
+   
+   /**
     * This is the default access type to be used for this scanner.
     */
    private DefaultType access;
-   
-   /**
-    * This is used to store all labels that are XML attributes.
-    */
-   private LabelMap attributes;
-   
-   /**
-    * This is used to store all labels that are XML elements.
-    */
-   private LabelMap elements;   
-   
-   /**
-    * This is used to compare the annotations being scanned.
-    */
-   private Comparer comparer;
-   
-   /**
-    * This is the version label used to read the version attribute.
-    */
-   private Label version;
-
-   /**
-    * This is used to store all labels that are XML text values.
-    */
-   private Label text;
    
    /**
     * This is the name of the class as taken from the root class.
@@ -93,11 +71,6 @@ class Scanner {
     * This is the type that is being scanned by this scanner.
     */
    private Class type;
-   
-   /**
-    * This is used to specify whether the type is a primitive class.
-    */
-   private boolean primitive;
    
    /**
     * This is used to determine if the defaults are required.
@@ -113,9 +86,7 @@ class Scanner {
     */
    public Scanner(Class type) throws Exception {  
       this.scanner = new ClassScanner(type);
-      this.attributes = new LabelMap(this);
-      this.elements = new LabelMap(this); 
-      this.comparer = new Comparer();
+      this.builder = new StructureBuilder(this, type); 
       this.type = type;
       this.scan(type);
    }      
@@ -170,35 +141,20 @@ class Scanner {
    }
 
    /**
-    * Returns a <code>LabelMap</code> that contains the details for
-    * all fields marked as XML attributes. This returns a new map
-    * each time the method is called, the goal is to ensure that any
-    * object using the label map can manipulate it without changing
-    * the core details of the schema, allowing it to be cached.
+    * This is used to create a <code>Section</code> given the context
+    * used for serialization. A section is an XML structure that 
+    * contains all the elements and attributes defined for the class.
+    * Each section is a tree like structure defining exactly where
+    * each attribute an element is located within the source XML.
     * 
-    * @param context this is the context used to style the names 
-    *
-    * @return map with the details extracted from the schema class
-    */ 
-   public LabelMap getAttributes(Context context) throws Exception {
-      return attributes.clone(context);
-   }        
-
-   /**
-    * Returns a <code>LabelMap</code> that contains the details for
-    * all fields marked as XML elements. The annotations that are
-    * considered elements are the <code>ElementList</code> and the
-    * <code>Element</code> annotations. This returns a copy of the
-    * details extracted from the schema class so this can be cached.
+    * @param context this is the context used to style the values
     * 
-    * @param context this is the context used to style the names
-    *
-    * @return a map containing the details for XML elements
+    * @return this will return a section for serialization
     */
-   public LabelMap getElements(Context context) throws Exception {
-      return elements.clone(context);
+   public Section getSection(Context context) {
+      return structure.getSection(context);
    }
-  
+   
    /**
     * This is the <code>Version</code> for the scanned class. It 
     * allows the deserialization process to be configured such that
@@ -209,10 +165,20 @@ class Scanner {
     * @return this returns the version of the class that is scanned
     */
    public Version getRevision() {
-      if(version != null) {
-         return version.getContact().getAnnotation(Version.class);
-      }
-      return null;
+      return structure.getRevision();
+   }
+   
+   /**
+    * This is used to acquire the <code>Order</code> annotation for
+    * the class schema. The order annotation defines the order that
+    * the elements and attributes should appear within the document.
+    * Providing order in this manner makes the resulting XML more
+    * predictable. If no order is provided, appearance is random.
+    * 
+    * @return this returns the order, if any, defined for the class
+    */
+   public Order getOrder() {
+      return scanner.getOrder();
    }
    
    /**
@@ -224,7 +190,7 @@ class Scanner {
     * @return this returns the label used for reading the version
     */
    public Label getVersion() {
-      return version;
+      return structure.getVersion();
    }
    
    /**
@@ -237,7 +203,7 @@ class Scanner {
     * @return this returns the text label for the scanned class
     */
    public Label getText() {
-      return text;
+      return structure.getText();
    }
    
    /**
@@ -340,7 +306,7 @@ class Scanner {
     * @return this returns true if no XML annotations were found
     */
    public boolean isPrimitive() {
-      return primitive;
+      return structure.isPrimitive();
    }
    
    /**
@@ -351,19 +317,8 @@ class Scanner {
     * 
     * @return this returns true if no XML annotations were found
     */
-   private boolean isEmpty() {
-      Root root = scanner.getRoot();
-      
-      if(!elements.isEmpty()) {
-         return false;
-      }
-      if(!attributes.isEmpty()) {
-         return false;
-      }
-      if(text != null) {
-         return false;
-      }
-      return root == null;
+   public boolean isEmpty() {
+      return scanner.getRoot() == null;
    }
    
    /**
@@ -395,6 +350,34 @@ class Scanner {
       field(type);
       method(type);
       validate(type);
+      commit(type);
+   }
+   
+   /**
+    * Once the scanner has completed extracting the annotations and
+    * validating the resulting structure this is called to complete 
+    * the process. This will build a <code>Structure</code> object and
+    * clean up any data structures no longer required by the scanner.
+    * 
+    * @param type this is the type that this scanner has scanned
+    */
+   private void commit(Class type) throws Exception {
+      if(structure == null) {
+         structure = builder.build(type);
+      }
+      builder = null;
+   }
+   
+   /**
+    * This is used to acquire the optional order annotation to provide
+    * order to the elements and attributes for the generated XML. This
+    * acts as an override to the order provided by the declaration of
+    * the types within the object.  
+    * 
+    * @param type this is the type to be scanned for the order
+    */
+   private void order(Class<?> type) throws Exception {
+      builder.assemble(type);
    }
    
    /**
@@ -407,145 +390,9 @@ class Scanner {
     * @throws Exception if text and element annotations are present
     */
    private void validate(Class type) throws Exception {
-      Creator creator = scanner.getCreator();
-      Order order = scanner.getOrder();
-      
-      validateElements(type, order);
-      validateAttributes(type, order);
-      validateParameters(creator);
-      validateText(type);
+      builder.validate(type);
    }
-   
-   /**
-    * This is used to validate the configuration of the scanned class.
-    * If a <code>Text</code> annotation has been used with elements
-    * then validation will fail and an exception will be thrown. 
-    * 
-    * @param type this is the object type that is being scanned
-    * 
-    * @throws Exception if text and element annotations are present
-    */
-   private void validateText(Class type) throws Exception {
-      if(text != null) {
-         if(!elements.isEmpty()) {
-            throw new TextException("Elements used with %s in %s", text, type);
-         }
-      }  else {
-         primitive = isEmpty();
-      }
-   }
-   
-   /**
-    * This is used to validate the configuration of the scanned class.
-    * If an ordered element is specified but does not refer to an
-    * existing element then this will throw an exception.
-    * 
-    * @param type this is the object type that is being scanned
-    * 
-    * @throws Exception if an ordered element does not exist
-    */
-   private void validateElements(Class type, Order order) throws Exception {
-      Creator factory = scanner.getCreator();
-      List<Builder> builders = factory.getBuilders();
-      
-      for(Builder builder : builders) {
-         validateConstructor(builder, elements);
-      }
-      if(order != null) {
-         for(String name : order.elements()) {
-            Label label = elements.get(name);
-            
-            if(label == null) {
-               throw new ElementException("Ordered element '%s' missing for %s", name, type);
-            }
-         }
-      }
-   }
-   
-   /**
-    * This is used to validate the configuration of the scanned class.
-    * If an ordered attribute is specified but does not refer to an
-    * existing attribute then this will throw an exception.
-    * 
-    * @param type this is the object type that is being scanned
-    * 
-    * @throws Exception if an ordered attribute does not exist
-    */
-   private void validateAttributes(Class type, Order order) throws Exception {
-      Creator factory = scanner.getCreator();
-      List<Builder> builders = factory.getBuilders();
-      
-      for(Builder builder : builders) {
-         validateConstructor(builder, elements);
-      }
-      if(order != null) {
-         for(String name : order.attributes()) {
-            Label label = attributes.get(name);
-            
-            if(label == null) {
-               throw new AttributeException("Ordered attribute '%s' missing for %s", name, type);
-            }
-         }
-      }
-   } 
-
-   /**
-    * This is used to ensure that final methods and fields have a 
-    * constructor parameter that allows the value to be injected in
-    * to. Validating the constructor in this manner ensures that the
-    * class schema remains fully serializable and deserializable.
-    * 
-    * @param builder this is the builder to validate the labels with
-    * @param map this is the map that contains the labels to validate
-    * 
-    * @throws Exception this is thrown if the validation fails
-    */
-   private void validateConstructor(Builder builder, LabelMap map) throws Exception {
-      for(Label label : map) {         
-         if(label != null) {
-            Contact contact = label.getContact();
-            String name = label.getName();
-            
-            if(contact.isReadOnly()) {
-               Parameter value = builder.getParameter(name);
-               
-               if(value == null) {
-                  throw new ConstructorException("No match found for %s in %s", contact, type);
-               }
-            }        
-         }
-      } 
-   }
-   
-   /**
-    * This is used to ensure that for each parameter in the builder
-    * there is a matching method or field. This ensures that the
-    * class schema is fully readable and writable. If not method or
-    * field annotation exists for the parameter validation fails.
-    * 
-    * @param creator this is the creator to validate the labels with
-    * 
-    * @throws Exception this is thrown if the validation fails
-    */
-   private void validateParameters(Creator creator) throws Exception {
-      List<Parameter> list = creator.getParameters();
-      
-      for(Parameter parameter : list) {
-         String name = parameter.getName();
-         Label label = elements.get(name);
-         
-         if(isEmpty(name)) {
-            label = text;
-         }
-         if(label == null) {
-            label = attributes.get(name);
-         }
-         if(label == null) {
-            throw new ConstructorException("Parameter '%s' does not have a match in %s", name, type);
-         }
-      }
-   }
-   
+  
    /**
     * This is used to acquire the optional <code>Root</code> from the
     * specified class. The root annotation provides information as
@@ -566,27 +413,6 @@ class Scanner {
             text = Reflector.getName(real);
          }      
          name = text.intern();      
-      }
-   }
-   
-   /**
-    * This is used to acquire the optional order annotation to provide
-    * order to the elements and attributes for the generated XML. This
-    * acts as an override to the order provided by the declaration of
-    * the types within the object.  
-    * 
-    * @param type this is the type to be scanned for the order
-    */
-   private void order(Class<?> type) {
-      Order order = scanner.getOrder();
-      
-      if(order != null) {
-         for(String name : order.elements()) {
-            elements.put(name, null);            
-         }
-         for(String name : order.attributes()) {
-            attributes.put(name, null);
-         }
       }
    }
    
@@ -629,11 +455,15 @@ class Scanner {
     * 
     * @param type this is the object type that is to be scanned
     */    
-   public void field(Class type) throws Exception {
+   private void field(Class type) throws Exception {
       ContactList list = new FieldScanner(type, access, required);
       
       for(Contact contact : list) {
-         scan(contact, contact.getAnnotation());
+         Annotation label = contact.getAnnotation();
+         
+         if(label != null) {
+            builder.process(contact, label);
+         }
       }
    }
    
@@ -648,151 +478,11 @@ class Scanner {
       ContactList list = new MethodScanner(type, access, required);
       
       for(Contact contact : list) {
-         scan(contact, contact.getAnnotation());
+         Annotation label = contact.getAnnotation();
+         
+         if(label != null) {
+            builder.process(contact, label);
+         }
       }
-   }
-   
-   /**
-    * This reflectively checks the annotation to determine the type 
-    * of annotation it represents. If it represents an XML schema
-    * annotation it is used to create a <code>Label</code> which can
-    * be used to represent the field within the context object.
-    * 
-    * @param field the field that the annotation comes from
-    * @param label the annotation used to model the XML schema
-    * 
-    * @throws Exception if there is more than one text annotation
-    */   
-   private void scan(Contact field, Annotation label) throws Exception {
-      if(label instanceof Attribute) {
-         process(field, label, attributes);
-      }
-      if(label instanceof ElementList) {
-         process(field, label, elements);
-      }
-      if(label instanceof ElementArray) {
-         process(field, label, elements);
-      }
-      if(label instanceof ElementMap) {
-         process(field, label, elements);
-      }
-      if(label instanceof Element) {
-         process(field, label, elements);
-      }    
-      if(label instanceof Version) {
-         version(field, label);
-      }
-      if(label instanceof Text) {
-         text(field, label);
-      }
-   }
-   
-   /**
-    * This is used to process the <code>Text</code> annotations that
-    * are present in the scanned class. This will set the text label
-    * for the class and an ensure that if there is more than one
-    * text label within the class an exception is thrown.
-    * 
-    * @param field the field the annotation was extracted from
-    * @param type the annotation extracted from the field
-    * 
-    * @throws Exception if there is more than one text annotation
-    */   
-   private void text(Contact field, Annotation type) throws Exception {
-      Label label = LabelFactory.getInstance(field, type);
-      
-      if(text != null) {
-         throw new TextException("Multiple text annotations in %s", type);
-      }
-      text = label;
-   }
-   
-   /**
-    * This is used to process the <code>Text</code> annotations that
-    * are present in the scanned class. This will set the text label
-    * for the class and an ensure that if there is more than one
-    * text label within the class an exception is thrown.
-    * 
-    * @param field the field the annotation was extracted from
-    * @param type the annotation extracted from the field
-    * 
-    * @throws Exception if there is more than one text annotation
-    */   
-   private void version(Contact field, Annotation type) throws Exception {
-      Label label = LabelFactory.getInstance(field, type);
-      
-      if(version != null) {
-         throw new AttributeException("Multiple version annotations in %s", type);
-      }
-      version = label;
-   }
-   
-   /**
-    * This is used when all details from a field have been gathered 
-    * and a <code>Label</code> implementation needs to be created. 
-    * This will build a label instance based on the field annotation.
-    * If a label with the same name was already inserted then it is
-    * ignored and the value for that field will not be serialized. 
-    * 
-    * @param field the field the annotation was extracted from
-    * @param type the annotation extracted from the field
-    * @param map this is used to collect the label instance created
-    * 
-    * @throws Exception thrown if the label can not be created
-    */   
-   private void process(Contact field, Annotation type, LabelMap map) throws Exception {
-      Label label = LabelFactory.getInstance(field, type);
-      String name = label.getName();
-      
-      if(map.get(name) != null) {
-         throw new PersistenceException("Annotation of name '%s' declared twice", name);
-      }
-      map.put(name, label);      
-      validate(label, name);
-   }
-   
-   /**
-    * This is used to validate the <code>Parameter</code> object that
-    * exist in the constructors. Validation is performed against the
-    * annotated methods and fields to ensure that they match up.
-    * 
-    * @param field this is the annotated method or field to validate
-    * @param name this is the name of the parameter to validate with
-    * 
-    * @throws Exception thrown if the validation fails
-    */
-   private void validate(Label field, String name) throws Exception {
-      Creator factory = scanner.getCreator();
-      Parameter parameter = factory.getParameter(name);
-      
-      if(parameter != null) {
-         validate(field, parameter);
-      }
-   }
-   
-   /**
-    * This is used to validate the <code>Parameter</code> object that
-    * exist in the constructors. Validation is performed against the
-    * annotated methods and fields to ensure that they match up.
-    * 
-    * @param field this is the annotated method or field to validate
-    * @param parameter this is the parameter to validate with
-    * 
-    * @throws Exception thrown if the validation fails
-    */
-   private void validate(Label field, Parameter parameter) throws Exception {
-      Contact contact = field.getContact();
-      Annotation label = contact.getAnnotation();
-      Annotation match = parameter.getAnnotation();
-      String name = field.getName();
-      
-      if(!comparer.equals(label, match)) {
-         throw new ConstructorException("Annotation does not match for '%s' in %s", name, type);
-      }
-      Class expect = contact.getType();
-      
-      if(expect != parameter.getType()) {
-         throw new ConstructorException("Parameter does not match field for '%s' in %s", name, type);
-      }     
    }
 }

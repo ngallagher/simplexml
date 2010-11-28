@@ -24,18 +24,18 @@ public class MixTest extends ValidationTestCase {
    @Root
    private static class MixExample {
       
-      @ElementList
-      private List<Object> list;
+     // @ElementList
+     // private List<Object> list;
       
-      @ElementMap
-      private Map<Object, Object> map;
+     // @ElementMap
+     // private Map<Object, Object> map;
       
       @Element
       private Calendar calendar;
       
       public MixExample() {
-         this.list = new ArrayList();
-         this.map = new HashMap();
+      //   this.list = new ArrayList();
+       //  this.map = new HashMap();
       }
       
       private void setTime(Date date) {
@@ -43,17 +43,17 @@ public class MixTest extends ValidationTestCase {
          calendar.setTime(date);
       }
       
-      public void put(Object key, Object value) {
-         map.put(key, value);
-      }
+     // public void put(Object key, Object value) {
+     //    map.put(key, value);
+     // }
       
-      public Object get(int index) {
-         return list.get(index);
-      }
+     // public Object get(int index) {
+      //   return list.get(index);
+     // }
       
-      public void add(Object object) {
-         list.add(object);
-      }
+     // public void add(Object object) {
+      //   list.add(object);
+      //}
    }
    
    @Root
@@ -81,15 +81,15 @@ public class MixTest extends ValidationTestCase {
       StringWriter source = new StringWriter();
       
       example.setTime(new Date());
-      example.add("text");
-      example.add(1);
-      example.add(true);
-      example.add(new Entry("1", "example 1"));
-      example.add(new Entry("2", "example 2"));
-      example.put(new Entry("1", "key 1"), new Entry("1", "value 1"));
-      example.put("key 2", "value 2");
-      example.put("key 3", 3);
-      example.put("key 4", new Entry("4", "value 4"));
+     // example.add("text");
+     // example.add(1);
+     // example.add(true);
+     // example.add(new Entry("1", "example 1"));
+     // example.add(new Entry("2", "example 2"));
+     // example.put(new Entry("1", "key 1"), new Entry("1", "value 1"));
+     // example.put("key 2", "value 2");
+     // example.put("key 3", 3);
+     // example.put("key 4", new Entry("4", "value 4"));
       
       serializer.write(example, System.out);
       serializer.write(example, source);   
@@ -99,9 +99,9 @@ public class MixTest extends ValidationTestCase {
       
       serializer.write(other, System.out);
       
-      assertEquals(example.get(0), "text");
-      assertEquals(example.get(1), 1);      
-      assertEquals(example.get(2), true);
+     // assertEquals(example.get(0), "text");
+     // assertEquals(example.get(1), 1);      
+     // assertEquals(example.get(2), true);
       
       validate(example, serializer);
    }

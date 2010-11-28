@@ -88,8 +88,8 @@ public class ScannerDefaultTest extends TestCase {
       Style style = new DefaultStyle();
       Session session = new Session();
       Context context = new Source(strategy, support, style, session);
-      LabelMap attributes = scanner.getAttributes(context);
-      LabelMap elements = scanner.getElements(context);  
+      LabelMap attributes = scanner.getSection(context).getAttributes();
+      LabelMap elements = scanner.getSection(context).getElements();  
 
       assertEquals(attributes.get("id").getType(), int.class);
       assertEquals(elements.get("id").getType(), int.class);
@@ -102,8 +102,8 @@ public class ScannerDefaultTest extends TestCase {
       Style style = new DefaultStyle();
       Session session = new Session();
       Context context = new Source(strategy, support, style, session);
-      LabelMap attributes = scanner.getAttributes(context);
-      LabelMap elements = scanner.getElements(context);
+      LabelMap attributes = scanner.getSection(context).getAttributes();
+      LabelMap elements = scanner.getSection(context).getElements();
       
       assertEquals(attributes.get("price").getType(), double.class);
       assertEquals(elements.get("customer").getType(), Customer.class);
