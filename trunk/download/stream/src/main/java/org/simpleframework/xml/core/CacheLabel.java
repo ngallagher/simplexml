@@ -53,6 +53,11 @@ class CacheLabel implements Label {
    private final String entry;
    
    /**
+    * This represents the path location within the XML for this.
+    */
+   private final String path;
+   
+   /**
     * This is used to represent the name override for the annotation.
     */
    private final String override;
@@ -114,6 +119,7 @@ class CacheLabel implements Label {
       this.required = label.isRequired();
       this.override = label.getOverride();
       this.inline = label.isInline();
+      this.path = label.getPath();
       this.type = label.getType();
       this.name = label.getName();
       this.entry = label.getEntry();
@@ -231,6 +237,19 @@ class CacheLabel implements Label {
     */
    public String getName() throws Exception {
       return name;
+   }
+   
+   /**
+    * This method is used to return the path where this is located.
+    * The path is an XPath expression that allows serialization to
+    * locate the XML entity within the document. If there is no
+    * path then the XML entity is written within the current context.
+    * An empty path is identified as a null value.
+    * 
+    * @return the XPath expression identifying the location
+    */
+   public String getPath() {
+      return path;
    }
    
    /**

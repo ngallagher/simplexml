@@ -8,6 +8,7 @@ import junit.framework.TestCase;
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
+import org.simpleframework.xml.Path;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.Text;
 import org.simpleframework.xml.strategy.Strategy;
@@ -64,6 +65,22 @@ public class ScannerTest extends TestCase {
       }
    }
    
+   @Root
+   public static class ExampleWithPath {
+      
+      @Attribute
+      @Path("contact-info/phone")
+      private String code;
+      
+      @Element
+      @Path("contact-info/phone")
+      private String mobile;
+      
+      @Element
+      @Path("contact-info/phone")
+      private String home;
+   }
+   
    public static class DuplicateAttributeExample extends Example {
       
       private String name;
@@ -100,6 +117,26 @@ public class ScannerTest extends TestCase {
       private String text;
    }
    
+   public void testExampleWithPath() throws Exception {
+      Support context = new Support();
+      Strategy strategy = new TreeStrategy();
+      Style style = new DefaultStyle(); 
+      Session session = new Session();
+      Source source = new Source(strategy, context, style, session);
+      Scanner scanner = new Scanner(ExampleWithPath.class);
+      ArrayList<Class> types = new ArrayList<Class>();
+      
+      assertEquals(scanner.getSection(source).getElements().size(), 0);
+      assertTrue(scanner.getSection(source).getSection("contact-info") != null);
+      assertEquals(scanner.getSection(source).getSection("contact-info").getElements().size(), 0);
+      assertEquals(scanner.getSection(source).getSection("contact-info").getAttributes().size(), 0);
+      assertTrue(scanner.getSection(source).getSection("contact-info").getSection("phone") != null);
+      assertEquals(scanner.getSection(source).getSection("contact-info").getSection("phone").getElements().size(), 2);
+      assertEquals(scanner.getSection(source).getSection("contact-info").getSection("phone").getAttributes().size(), 1);
+      assertNull(scanner.getText());
+      assertTrue(scanner.isStrict());
+   }
+   
    public void testExample() throws Exception {
       Support context = new Support();
       Strategy strategy = new TreeStrategy();
@@ -109,12 +146,12 @@ public class ScannerTest extends TestCase {
       Scanner scanner = new Scanner(Example.class);
       ArrayList<Class> types = new ArrayList<Class>();
       
-      assertEquals(scanner.getElements(source).size(), 1);
-      assertEquals(scanner.getAttributes(source).size(), 2);
+      assertEquals(scanner.getSection(source).getElements().size(), 1);
+      assertEquals(scanner.getSection(source).getAttributes().size(), 2);
       assertNull(scanner.getText());
       assertTrue(scanner.isStrict());
       
-      for(Label label : scanner.getElements(source)) {
+      for(Label label : scanner.getSection(source).getElements()) {
          assertTrue(label.getName() == intern(label.getName()));
          assertTrue(label.getEntry() == intern(label.getEntry()));
          
@@ -122,7 +159,7 @@ public class ScannerTest extends TestCase {
       }
       assertTrue(types.contains(Collection.class));      
       
-      for(Label label : scanner.getAttributes(source)) {
+      for(Label label : scanner.getSection(source).getAttributes()) {
          assertTrue(label.getName() == intern(label.getName()));
          assertTrue(label.getEntry() == intern(label.getEntry()));
          
@@ -141,12 +178,12 @@ public class ScannerTest extends TestCase {
       Scanner scanner = new Scanner(MixedExample.class);
       ArrayList<Class> types = new ArrayList<Class>();
       
-      assertEquals(scanner.getElements(source).size(), 3);
-      assertEquals(scanner.getAttributes(source).size(), 2);
+      assertEquals(scanner.getSection(source).getElements().size(), 3);
+      assertEquals(scanner.getSection(source).getAttributes().size(), 2);
       assertNull(scanner.getText());
       assertFalse(scanner.isStrict());
       
-      for(Label label : scanner.getElements(source)) {
+      for(Label label : scanner.getSection(source).getElements()) {
          assertTrue(label.getName() == intern(label.getName()));
          assertTrue(label.getEntry() == intern(label.getEntry()));
          
@@ -156,7 +193,7 @@ public class ScannerTest extends TestCase {
       assertTrue(types.contains(Entry.class));
       assertTrue(types.contains(String.class));
       
-      for(Label label : scanner.getAttributes(source)) {
+      for(Label label : scanner.getSection(source).getAttributes()) {
          assertTrue(label.getName() == intern(label.getName()));
          assertTrue(label.getEntry() == intern(label.getEntry()));
          

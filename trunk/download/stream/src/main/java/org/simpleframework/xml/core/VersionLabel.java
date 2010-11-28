@@ -178,6 +178,19 @@ class VersionLabel implements Label {
    }
    
    /**
+    * This method is used to return the path where this is located.
+    * The path is an XPath expression that allows serialization to
+    * locate the XML entity within the document. If there is no
+    * path then the XML entity is written within the current context.
+    * An empty path is identified as a null value.
+    * 
+    * @return the XPath expression identifying the location
+    */
+   public String getPath() {
+      return null;
+   }
+   
+   /**
     * This acts as a convenience method used to determine the type of
     * the contact this represents. This will be a primitive type of a
     * primitive type from the <code>java.lang</code> primitives.

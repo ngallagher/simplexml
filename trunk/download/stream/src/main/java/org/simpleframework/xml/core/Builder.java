@@ -169,7 +169,7 @@ class Builder {
     * 
     * @return this returns the score based on the criteria provided
     */
-   public int score(Criteria criteria) throws Exception {
+   public int getScore(Criteria criteria) throws Exception {
       int score = 0;
       
       for(int i = 0; i < list.size(); i++) {

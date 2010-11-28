@@ -35,17 +35,17 @@ import java.util.Iterator;
 class LabelMap extends LinkedHashMap<String, Label> implements Iterable<Label> { 
    
    /**
-    * This is the scanner object that represents the scanner used.
+    * This is policy used to determine the type of mappings used.
     */        
-   private final Scanner source;
+   private final Policy policy;
         
    /**
     * Constructor for the <code>LabelMap</code> object is used to 
     * create an empty map. This is used for convenience as a typedef
     * like construct which avoids having to use the generic type.
     */ 
-   public LabelMap(Scanner source) {
-      this.source = source;
+   public LabelMap(Policy policy) {
+      this.policy = policy;
    }
 
    /**
@@ -84,13 +84,15 @@ class LabelMap extends LinkedHashMap<String, Label> implements Iterable<Label> {
     *
     * @return this returns a cloned representation of this map
     */ 
-   public LabelMap clone(Context context) throws Exception {
-      LabelMap clone = new LabelMap(source);
+   public LabelMap build(Context context) throws Exception {
+      LabelMap clone = new LabelMap(policy);
       
       for(Label label : this) {
-         String name = label.getName(context);
-
-         clone.put(name, label);
+         if(label != null) {
+            String name = label.getName(context);
+            
+            clone.put(name, label);
+         }
       }         
       return clone;      
    }   
@@ -108,6 +110,6 @@ class LabelMap extends LinkedHashMap<String, Label> implements Iterable<Label> {
     * @return true if strict parsing is enabled, false otherwise
     */ 
    public boolean isStrict(Context context) {
-      return context.isStrict() && source.isStrict();           
+      return context.isStrict() && policy.isStrict();           
    }
 }

@@ -97,23 +97,15 @@ interface Schema {
    public Caller getCaller();
    
    /**
-    * Returns a <code>LabelMap</code> that contains the details for
-    * all fields marked as XML attributes. Labels contained within
-    * this map are used to convert primitive types only.
+    * This is used to acquire the <code>Section</code> that defines
+    * the XML structure for this class schema. A section, is the 
+    * section of XML that the class is represented within. A
+    * section contains all the elements and attributes defined for
+    * the class in a tree like structure.
     * 
-    * @return map with the details extracted from the schema class
-    */ 
-   public LabelMap getAttributes();
-   
-   /**
-    * Returns a <code>LabelMap</code> that contains the details for
-    * all fields marked as XML elements. The annotations that are
-    * considered elements are the <code>ElementList</code> and the
-    * <code>Element</code> annotations. 
-    * 
-    * @return a map containing the details for XML elements
+    * @return this returns the section defined for the schama
     */
-   public LabelMap getElements();
+   public Section getSection();
    
    /**
     * This returns the <code>Label</code> that represents the text

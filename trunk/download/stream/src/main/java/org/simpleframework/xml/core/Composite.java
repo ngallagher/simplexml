@@ -344,11 +344,31 @@ class Composite implements Converter {
     * @param schema this object visits the objects contacts
     */
    private void read(InputNode node, Object source, Schema schema) throws Exception {
+      Section section = schema.getSection();
       readVersion(node, source, schema);
       readText(node, source, schema);
-      readAttributes(node, source, schema);
-      readElements(node, source, schema);
+      readSection(node, source, section);
    }   
+   
+   /**
+    * This <code>readSection</code> method performs deserialization of a
+    * schema class type by traversing the contacts and instantiating them
+    * using details from the provided XML element. Because this will
+    * convert a non-primitive value it delegates to other converters to
+    * perform deserialization of lists and primitives.
+    * <p>
+    * If any of the required contacts are not present within the provided
+    * XML element this will terminate deserialization and throw an
+    * exception. The annotation missing is reported in the exception.
+    * 
+    * @param node the XML element contact values are deserialized from
+    * @param source this type of the object that is to be deserialized
+    * @param section this is the XML section that contains the structure
+    */
+   private void readSection(InputNode node, Object source, Section section) throws Exception {
+      readAttributes(node, source, section);
+      readElements(node, source, section);
+   }
    
    /**
     * This method is used to read the version from the provided input
@@ -423,13 +443,11 @@ class Composite implements Converter {
     * 
     * @param node this is the XML element to be evaluated
     * @param source the type of the object that is being deserialized
-    * @param schema this is used to visit the attribute contacts
-    * 
-    * @throws Exception thrown if any required attributes remain
+    * @param section this is the XML section that contains the structure
     */
-   private void readAttributes(InputNode node, Object source, Schema schema) throws Exception {
+   private void readAttributes(InputNode node, Object source, Section section) throws Exception {
       NodeMap<InputNode> list = node.getAttributes();
-      LabelMap map = schema.getAttributes();
+      LabelMap map = section.getAttributes();
 
       for(String name : list) {         
          readAttribute(node.getAttribute(name), source, map);
@@ -450,20 +468,22 @@ class Composite implements Converter {
     * 
     * @param node this is the XML element to be evaluated
     * @param source the type of the object that is being deserialized
-    * @param schema this is used to visit the element contacts
-    * 
-    * @throws Exception thrown if any required elements remain
+    * @param section the XML section that contains the structure
     */
-   private void readElements(InputNode node, Object source, Schema schema) throws Exception {
-      LabelMap map = schema.getElements();
+   private void readElements(InputNode node, Object source, Section section) throws Exception {
+      LabelMap map = section.getElements();
+      InputNode child = node.getNext();
       
-      while(true) {
-         InputNode child = node.getNext(); 
+      while(child != null) {         
+         String name = child.getName();
+         Section block = section.getSection(name);         
          
-         if(child == null) {
-            break;
+         if(block != null) {
+            readSection(child, source, block);
+         } else {         
+            readElement(child, source, map);
          }
-         readElement(child, source, map);
+         child = node.getNext();
       } 
       validate(node, map, source);
    }
@@ -478,8 +498,6 @@ class Composite implements Converter {
     * @param node this is the XML element to acquire the text from
     * @param source the type of the object that is being deserialized
     * @param schema this is used to visit the element contacts
-    * 
-    * @throws Exception thrown if a required text value was null
     */
    private void readText(InputNode node, Object source, Schema schema) throws Exception {
       Label label = schema.getText();
@@ -500,8 +518,6 @@ class Composite implements Converter {
     * @param node this is the node that contains the contact value
     * @param source the type of the object that is being deserialized
     * @param map this is the map that contains the label objects
-    * 
-    * @throws Exception thrown if the the label object does not exist
     */
    private void readAttribute(InputNode node, Object source, LabelMap map) throws Exception {
       String name = node.getName();
@@ -530,8 +546,6 @@ class Composite implements Converter {
     * @param node this is the node that contains the contact value
     * @param source the type of the object that is being deserialized
     * @param map this is the map that contains the label objects
-    * 
-    * @throws Exception thrown if the the label object does not exist
     */
    private void readElement(InputNode node, Object source, LabelMap map) throws Exception {
       String name = node.getName();
@@ -565,8 +579,6 @@ class Composite implements Converter {
     * @param node this is the node that contains the contact value
     * @param source the type of the object that is being deserialized
     * @param label this is the label used to create the converter
-    * 
-    * @throws Exception thrown if the contact could not be deserialized
     */
    private Object read(InputNode node, Object source, Label label) throws Exception {    
       Object object = readObject(node, source, label);
@@ -601,8 +613,6 @@ class Composite implements Converter {
     * @param label this is the label used to create the converter
     * 
     * @return this returns the original value deserialized in to
-    * 
-    * @throws Exception thrown if the contact could not be deserialized
     */
    private Object readObject(InputNode node, Object source, Label label) throws Exception {    
       Converter reader = label.getConverter(context);   
@@ -639,8 +649,6 @@ class Composite implements Converter {
     * 
     * @param map this is the map to check for remaining labels
     * @param source this is the object that has been deserialized 
-    * 
-    * @throws Exception thrown if an XML property was not declared
     */
    private void validate(InputNode node, LabelMap map, Object source) throws Exception {     
       Position line = node.getPosition();
@@ -704,13 +712,32 @@ class Composite implements Converter {
     */
    private boolean validate(InputNode node, Class type) throws Exception {
       Schema schema = context.getSchema(type);
+      Section section = schema.getSection();
       
       validateText(node, schema);
-      validateAttributes(node, schema);
-      validateElements(node, schema);
+      validateSection(node, section);
       
       return node.isElement();
-   }   
+   }
+   
+   /**
+    * This <code>validateSection</code> method performs validation of a
+    * schema class type by traversing the contacts and validating them
+    * using details from the provided XML element. Because this will
+    * validate a non-primitive value it delegates to other converters 
+    * to perform validation of lists, maps, and primitives.
+    * <p>
+    * If any of the required contacts are not present within the given
+    * XML element this will terminate validation and throw an exception
+    * The annotation missing is reported in the exception.
+    * 
+    * @param node the XML element contact values are validated from
+    * @param section this is the section that defines the XML structure
+    */
+   private void validateSection(InputNode node, Section section) throws Exception {
+      validateAttributes(node, section);
+      validateElements(node, section);
+   }
 
    /**
     * This <code>validateAttributes</code> method validates the attributes 
@@ -724,13 +751,11 @@ class Composite implements Converter {
     * any required attribute remains an exception is thrown. 
     * 
     * @param node this is the XML element to be validated
-    * @param schema this is used to visit the attribute contacts
-    * 
-    * @throws Exception thrown if any required attributes remain
+    * @param section this is the section that defines the XML structure
     */
-   private void validateAttributes(InputNode node, Schema schema) throws Exception {
+   private void validateAttributes(InputNode node, Section section) throws Exception {
       NodeMap<InputNode> list = node.getAttributes();
-      LabelMap map = schema.getAttributes();
+      LabelMap map = section.getAttributes();
 
       for(String name : list) {         
          validateAttribute(node.getAttribute(name), map);
@@ -750,20 +775,22 @@ class Composite implements Converter {
     * remain. If any required element remains an exception is thrown.
     * 
     * @param node this is the XML element to be evaluated
-    * @param schema this is used to visit the element contacts
-    * 
-    * @throws Exception thrown if any required elements remain
+    * @param section this is the section that defines the XML structure
     */
-   private void validateElements(InputNode node, Schema schema) throws Exception {
-      LabelMap map = schema.getElements();
+   private void validateElements(InputNode node, Section section) throws Exception {
+      LabelMap map = section.getElements();
+      InputNode next = node.getNext();
       
-      while(true) {
-         InputNode child = node.getNext(); 
+      while(next != null) {         
+         String name = next.getName();
+         Section child = section.getSection(name);         
          
-         if(child == null) {
-            break;
+         if(child != null) {
+            validateSection(next, child);
+         } else {         
+            validateElement(next,  map);
          }
-         validateElement(child, map);
+         next = node.getNext();
       } 
       validate(node, map);
    }
@@ -777,8 +804,6 @@ class Composite implements Converter {
     * 
     * @param node this is the XML element to acquire the text from
     * @param schema this is used to visit the element contacts
-    * 
-    * @throws Exception thrown if a required text value was null
     */
    private void validateText(InputNode node, Schema schema) throws Exception {
       Label label = schema.getText();
@@ -797,8 +822,6 @@ class Composite implements Converter {
     * 
     * @param node this is the node that contains the contact value
     * @param map this is the map that contains the label objects
-    * 
-    * @throws Exception thrown if the the label object does not exist
     */
    private void validateAttribute(InputNode node, LabelMap map) throws Exception {
       Position line = node.getPosition();
@@ -823,8 +846,6 @@ class Composite implements Converter {
     * 
     * @param node this is the node that contains the contact value
     * @param map this is the map that contains the label objects
-    * 
-    * @throws Exception thrown if the the label object does not exist
     */
    private void validateElement(InputNode node, LabelMap map) throws Exception {
       String name = node.getName();
@@ -855,8 +876,6 @@ class Composite implements Converter {
     * 
     * @param node this is the node that contains the contact value
     * @param label this is the label used to create the converter
-    * 
-    * @throws Exception thrown if the contact could not be deserialized
     */
    private void validate(InputNode node, Label label) throws Exception {    
       Converter reader = label.getConverter(context);      
@@ -880,8 +899,6 @@ class Composite implements Converter {
     * 
     * @param node this is the node that contains the composite data
     * @param map this contains the converters to perform validation
-    * 
-    * @throws Exception thrown if an XML property was not declared
     */
    private void validate(InputNode node, LabelMap map) throws Exception {     
       Position line = node.getPosition();
@@ -902,9 +919,7 @@ class Composite implements Converter {
     * instance of. If a required contact is null an exception is thrown.
     * 
     * @param source this is the source object to be serialized
-    * @param node the XML element the object is to be serialized to 
-    * 
-    * @throws Exception thrown if there is a serialization problem
+    * @param node the XML element the object is to be serialized to
     */
    public void write(OutputNode node, Object source) throws Exception {
       Class type = source.getClass();
@@ -934,16 +949,33 @@ class Composite implements Converter {
     * @param source this is the source object to be serialized
     * @param node the XML element the object is to be serialized to
     * @param schema this is used to track the referenced contacts 
-    * 
-    * @throws Exception thrown if there is a serialization problem
     */
    private void write(OutputNode node, Object source, Schema schema) throws Exception {
+      Section section = schema.getSection();
+      
       writeVersion(node, source, schema);
-      writeAttributes(node, source, schema);
-      writeElements(node, source, schema);
+      writeSection(node, source, section);
       writeText(node, source, schema);
+
    }
    
+   /**
+    * This <code>writeSection</code> method is used to perform serialization 
+    * of the given source object. Serialization is performed by appending
+    * elements and attributes from the source object to the provided XML
+    * element object. How the objects contacts are serialized is 
+    * determined by the XML schema class that the source object is an
+    * instance of. If a required contact is null an exception is thrown.
+    * 
+    * @param source this is the source object to be serialized
+    * @param node the XML element the object is to be serialized to
+    * @param section this is the section that defines the XML structure
+    */
+   private void writeSection(OutputNode node, Object source, Section section) throws Exception {
+      writeAttributes(node, source, section);
+      writeElements(node, source, section);
+   }
+
    /**
     * This method is used to write the version attribute. A version is
     * written only if it is not the initial version or if it required.
@@ -955,8 +987,6 @@ class Composite implements Converter {
     * @param node this is the node to read the version attribute from
     * @param source this is the source object that is to be written
     * @param schema this is the schema that contains the version
-    * 
-    * @throws Exception thrown if there is a serialization problem
     */
    private void writeVersion(OutputNode node, Object source, Schema schema) throws Exception {
       Version version = schema.getRevision();
@@ -986,12 +1016,10 @@ class Composite implements Converter {
     * 
     * @param source this is the source object to be serialized
     * @param node this is the XML element to write attributes to
-    * @param schema this is used to track the referenced attributes
-    * 
-    * @throws Exception thrown if there is a serialization problem
+    * @param section this is the section that defines the XML structure
     */
-   private void writeAttributes(OutputNode node, Object source, Schema schema) throws Exception {
-      LabelMap attributes = schema.getAttributes();
+   private void writeAttributes(OutputNode node, Object source, Section section) throws Exception {
+      LabelMap attributes = section.getAttributes();
 
       for(Label label : attributes) {
          Contact contact = label.getContact();         
@@ -1017,30 +1045,55 @@ class Composite implements Converter {
     * 
     * @param source this is the source object to be serialized
     * @param node this is the XML element to write elements to
-    * @param schema this is used to track the referenced elements
-    * 
-    * @throws Exception thrown if there is a serialization problem
+    * @param section this is the section that defines the XML structure
     */
-   private void writeElements(OutputNode node, Object source, Schema schema) throws Exception {
-      LabelMap elements = schema.getElements();
-      
-      for(Label label : elements) {
-         Contact contact = label.getContact();
-         Object value = contact.get(source);
-                 
-         if(value == null && label.isRequired()) {
-            throw new ElementException("Value for %s is null", label);
-         }
-         Object replace = writeReplace(value);
+   private void writeElements(OutputNode node, Object source, Section section) throws Exception {
+      for(String name : section) {
+         Section child = section.getSection(name);
          
-         if(replace != null) {
-            writeElement(node, replace, label);            
-         }
-      }         
+         if(child != null) {
+            OutputNode next = node.getChild(name);
+           
+            writeSection(next, source, child);
+         } else {
+            Label label = section.getElement(name);
+            
+            if(label == null) {
+               throw new ElementException("Element '%s' not defined for", name, type);
+            }
+            writeReplace(node, source, label);
+         }            
+      }
    }
    
    /**
-    * The <code>replace</code> method is used to replace an object
+    * The <code>writeReplace</code> method is used to replace an object
+    * before it is serialized. This is used so that an object can give
+    * a substitute to be written to the XML document in the event that
+    * the actual object is not suitable or desired for serialization. 
+    * This acts as an equivalent to the Java Object Serialization
+    * <code>writeReplace</code> method for the object serialization.
+    * 
+    * @param source this is the source object to be serialized
+    * @param node this is the XML element to write elements to
+    * @param label this is the label used to define the XML element
+    */
+   private void writeReplace(OutputNode node, Object source, Label label) throws Exception {
+      Contact contact = label.getContact();
+      Object value = contact.get(source);
+      
+      if(value == null && label.isRequired()) {
+         throw new ElementException("Value for %s is null", label);
+      }
+      Object replace = writeReplace(value);
+      
+      if(replace != null) {
+         writeElement(node, replace, label);            
+      }
+   }
+   
+   /**
+    * The <code>writeReplace</code> method is used to replace an object
     * before it is serialized. This is used so that an object can give
     * a substitute to be written to the XML document in the event that
     * the actual object is not suitable or desired for serialization. 
@@ -1050,8 +1103,6 @@ class Composite implements Converter {
     * @param source this is the source object that is to be replaced
     * 
     * @return this returns the object to use as a replacement value
-    * 
-    * @throws Exception if the replacement object is not suitable
     */
    private Object writeReplace(Object source) throws Exception {      
       if(source != null) {
@@ -1074,8 +1125,6 @@ class Composite implements Converter {
     * @param source this is the source object to be serialized
     * @param node this is the XML element to write text value to
     * @param schema this is used to track the referenced elements
-    * 
-    * @throws Exception thrown if there is a serialization problem
     */
    private void writeText(OutputNode node, Object source, Schema schema) throws Exception {
       Label label = schema.getText();
@@ -1105,8 +1154,6 @@ class Composite implements Converter {
     * @param value this is the value to be set as an attribute
     * @param node this is the XML element to write the attribute to
     * @param label the label that contains the contact details
-    * 
-    * @throws Exception thrown if there is a serialization problem
     */
    private void writeAttribute(OutputNode node, Object value, Label label) throws Exception {
       if(value != null) {         
@@ -1135,8 +1182,6 @@ class Composite implements Converter {
     * @param value this is the value to be set as an element
     * @param node this is the XML element to write the element to
     * @param label the label that contains the contact details
-    * 
-    * @throws Exception thrown if there is a serialization problem
     */
    private void writeElement(OutputNode node, Object value, Label label) throws Exception {
       if(value != null) {
@@ -1168,8 +1213,6 @@ class Composite implements Converter {
     * @param node this is the node that the value is to be written to
     * @param value this is the value that is to be written
     * @param convert this is the converter used to perform writing
-    * 
-    * @throws Exception thrown if there is a serialization problem
     */
    private void writeElement(OutputNode node, Object value, Converter convert) throws Exception {
       convert.write(node, value);
@@ -1185,8 +1228,6 @@ class Composite implements Converter {
     * @param node this is the node that decorations are applied to
     * @param type this is the type to acquire the decoration for
     * @param label this contains the primary decorator to be used
-    * 
-    * @throws Exception thrown if there is a decoration problem
     */
    private void writeNamespaces(OutputNode node, Class type, Label label) throws Exception {
       Decorator primary = context.getDecorator(type);
@@ -1205,8 +1246,6 @@ class Composite implements Converter {
     * @param value this is the value to set as the XML element text
     * @param node this is the XML element to write the text value to
     * @param label the label that contains the contact details
-    * 
-    * @throws Exception thrown if there is a serialization problem
     */
    private void writeText(OutputNode node, Object value, Label label) throws Exception {
       if(value != null) {         

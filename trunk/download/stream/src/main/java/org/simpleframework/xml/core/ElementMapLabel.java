@@ -258,6 +258,19 @@ class ElementMapLabel implements Label {
    }
    
    /**
+    * This method is used to return the path where this is located.
+    * The path is an XPath expression that allows serialization to
+    * locate the XML entity within the document. If there is no
+    * path then the XML entity is written within the current context.
+    * An empty path is identified as a null value.
+    * 
+    * @return the XPath expression identifying the location
+    */
+   public String getPath() {
+      return detail.getPath();
+   }
+   
+   /**
     * This is used to acquire the name of the element or attribute
     * as taken from the annotation. If the element or attribute
     * explicitly specifies a name then that name is used for the

@@ -20,6 +20,7 @@ package org.simpleframework.xml.core;
 
 import java.lang.annotation.Annotation;
 
+import org.simpleframework.xml.Path;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.strategy.Type;
 
@@ -217,6 +218,23 @@ class Signature {
       }
       return contact.getName();
    }  
+   
+   /**
+    * This is used to acquire the XPath location of an XML entity. 
+    * The path is acquired from a <code>Path</code> annotation. If
+    * this annotation is not defined for the field or method then
+    * this will return null, representing no defined path.
+    * 
+    * @return this will return the path for the field or method
+    */
+   public String getPath() {
+      Path path = contact.getAnnotation(Path.class);
+      
+      if(path == null) {
+         return null;
+      }
+      return path.value();
+   }
    
    /**
     * This method is used to determine if a root annotation value is

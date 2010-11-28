@@ -1,0 +1,233 @@
+/*
+ * Model.java November 2010
+ *
+ * Copyright (C) 2010, Niall Gallagher <niallg@users.sf.net>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or 
+ * implied. See the License for the specific language governing 
+ * permissions and limitations under the License.
+ */
+
+package org.simpleframework.xml.core;
+
+/**
+ * The <code>Model</code> interface represents the core data structure
+ * used for representing an XML schema. This is effectively a tree
+ * like structure in that it can contain other models as well as XML
+ * attributes and elements. Each model represents a context within an
+ * XML document, each context is navigated to with an XPath expression.
+ * <p>
+ * The model is responsible for building the element and attribute
+ * labels used to read and write and also to ensure the correct order
+ * of the XML elements and attributes is enforced. Once the model has
+ * been completed it can then be validated to ensure its contents 
+ * represent a valid XML structure.
+ * 
+ * @author Niall Gallagher
+ * 
+ * @see org.simpleframework.xml.core.Section
+ */
+interface Model extends Iterable<String> {
+   
+   /**
+    * This is used to validate the model to ensure all elements and
+    * attributes are valid. Validation also ensures that any order
+    * specified by an annotated class did not contain invalid XPath
+    * values, or redundant elements and attributes.
+    * 
+    * @param type this is the object type representing the schema
+    * 
+    * @throws Exception if text and element annotations are present
+    */
+   public void validate(Class type) throws Exception;
+   
+   /**
+    * This is used to build a map from a <code>Context</code> object.
+    * Building a map in this way ensures that any style specified by
+    * the context can be used to create the XML element and attribute
+    * names in the styled format. It also ensures that the model
+    * remains immutable as it only provides copies of its data.
+    * 
+    * @param context the context associated with the serialization
+    * 
+    * @return this returns a map built from the specified context
+    */
+   public LabelMap buildElements(Context context) throws Exception;
+   
+   /**
+    * This is used to build a map from a <code>Context</code> object.
+    * Building a map in this way ensures that any style specified by
+    * the context can be used to create the XML element and attribute
+    * names in the styled format. It also ensures that the model
+    * remains immutable as it only provides copies of its data.
+    * 
+    * @param context the context associated with the serialization
+    * 
+    * @return this returns a map built from the specified context
+    */
+   public LabelMap buildAttributes(Context context) throws Exception;
+   
+   /**
+    * This is used to build a map from a <code>Context</code> object.
+    * Building a map in this way ensures that any style specified by
+    * the context can be used to create the XML element and attribute
+    * names in the styled format. It also ensures that the model
+    * remains immutable as it only provides copies of its data.
+    * 
+    * @param context the context associated with the serialization
+    * 
+    * @return this returns a map built from the specified context
+    */
+   public ModelMap buildModels(Context context) throws Exception;
+   
+   /**
+    * This is used to register an XML entity within the model. The
+    * registration process has the affect of telling the model that
+    * it will contain a specific, named, XML entity. It also has 
+    * the affect of ordering them within the model, such that the
+    * first registered entity is the first iterated over.
+    * 
+    * @param label this is the label to register with the model
+    */
+   public void register(Label label) throws Exception;
+   
+   /**
+    * This is used to register an XML entity within the model. The
+    * registration process has the affect of telling the model that
+    * it will contain a specific, named, XML entity. It also has 
+    * the affect of ordering them within the model, such that the
+    * first registered entity is the first iterated over.
+    * 
+    * @param label this is the label to register with the model
+    */
+   public void registerElement(Label label) throws Exception;
+   
+   /**
+    * This is used to register an XML entity within the model. The
+    * registration process has the affect of telling the model that
+    * it will contain a specific, named, XML entity. It also has 
+    * the affect of ordering them within the model, such that the
+    * first registered entity is the first iterated over.
+    * 
+    * @param label this is the label to register with the model
+    */
+   public void registerAttribute(Label label) throws Exception;
+   
+   /**
+    * This is used to register an XML entity within the model. The
+    * registration process has the affect of telling the model that
+    * it will contain a specific, named, XML entity. It also has 
+    * the affect of ordering them within the model, such that the
+    * first registered entity is the first iterated over.
+    * 
+    * @param name this is the name of the element to register
+    */
+   public void registerElement(String name) throws Exception;
+   
+   /**
+    * This is used to register an XML entity within the model. The
+    * registration process has the affect of telling the model that
+    * it will contain a specific, named, XML entity. It also has 
+    * the affect of ordering them within the model, such that the
+    * first registered entity is the first iterated over.
+    * 
+    * @param name this is the name of the element to register
+    */
+   public void registerAttribute(String name) throws Exception;
+   
+   /**
+    * This is used to register a <code>Model</code> within this
+    * model. Registration of a model creates a tree of models that
+    * can be used to represent an XML structure. Each model can
+    * contain elements and attributes associated with a type.
+    * 
+    * @param name this is the name of the model to be registered
+    * 
+    * @return this returns the model that was registered
+    */
+   public Model register(String name) throws Exception;
+   
+   /**
+    * This method is used to look for a <code>Model</code> that
+    * matches the specified expression. If no such model exists
+    * then this will return null. Using an XPath expression allows
+    * a tree like structure to be navigated with ease.
+    * 
+    * @param path an XPath expression used to locate a model
+    * 
+    * @return this returns the model located by the expression
+    */
+   public Model lookup(Expression path);
+   
+   /**
+    * This method is used to look for a <code>Model</code> that
+    * matches the specified element name. If no such model exists
+    * then this will return null. This is used as an alternative
+    * to providing an XPath expression to navigate the tree.
+    * 
+    * @param name this is the name of the model to be acquired
+    * 
+    * @return this returns the model located by the expression
+    */
+   public Model lookup(String name);
+   
+   /**
+    * This is used to determine if the provided name represents
+    * a model. This is useful when validating the model as it
+    * allows determination of a named model, which is an element. 
+    * 
+    * @param name this is the name of the section to determine
+    * 
+    * @return this returns true if the model is registered
+    */
+   public boolean isModel(String name);
+   
+   /**
+    * This is used to determine if the provided name represents
+    * an element. This is useful when validating the model as 
+    * it allows determination of a named XML element. 
+    * 
+    * @param name this is the name of the section to determine
+    * 
+    * @return this returns true if the element is registered
+    */
+   public boolean isElement(String name);
+   
+   /**
+    * This is used to determine if the provided name represents
+    * an attribute. This is useful when validating the model as 
+    * it allows determination of a named XML attribute
+    * 
+    * @param name this is the name of the attribute to determine
+    * 
+    * @return this returns true if the attribute is registered
+    */
+   public boolean isAttribute(String name);
+   
+   /**
+    * Used to determine if a model is empty. A model is considered
+    * empty if that model does not contain any registered elements
+    * or attributes. However, if the model contains other models
+    * that have registered elements or attributes it is not empty.
+    * 
+    * @return true if the model does not contain registrations
+    */
+   public boolean isEmpty();
+   
+   /**
+    * This is used to return the name of the model. The name is 
+    * must be a valid XML element name. It is used when a style
+    * is applied to a section as the model name must be styled.
+    * 
+    * @return this returns the name of this model instance
+    */
+   public String getName();
+}

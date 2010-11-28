@@ -171,8 +171,8 @@ public class DefaultAnnotationTest extends ValidationTestCase {
       Style style = new DefaultStyle();
       Session session = new Session();
       Context context = new Source(strategy, support, style, session);
-      LabelMap attributes = scanner.getAttributes(context);
-      LabelMap elements = scanner.getElements(context);  
+      LabelMap attributes = scanner.getSection(context).getAttributes();
+      LabelMap elements = scanner.getSection(context).getElements();  
       
       assertEquals(elements.get("orders").getType(), List.class);
       assertEquals(elements.get("orders").getContact().getAnnotation().annotationType(), ElementList.class);

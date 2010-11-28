@@ -39,14 +39,9 @@ class ClassSchema implements Schema {
    private final Decorator decorator;
 
    /**
-    * Contains a map of all attributes present within the schema.
+    * This represents the XML section defined for the class schema.
     */
-   private final LabelMap attributes;
-   
-   /**
-    * Contains a map of all elements present within the schema.
-    */
-   private final LabelMap elements;
+   private final Section section;
    
    /**
     * This is the version annotation for the XML class schema.
@@ -93,8 +88,7 @@ class ClassSchema implements Schema {
     * @param context this is the context object for serialization
     */
    public ClassSchema(Scanner schema, Context context) throws Exception {  
-      this.attributes = schema.getAttributes(context);
-      this.elements = schema.getElements(context);
+      this.section = schema.getSection(context);
       this.caller = schema.getCaller(context);
       this.factory = schema.getCreator();
       this.revision = schema.getRevision();
@@ -181,25 +175,16 @@ class ClassSchema implements Schema {
    }
    
    /**
-    * Returns a <code>LabelMap</code> that contains the details for
-    * all fields marked as XML attributes. Labels contained within
-    * this map are used to convert primitive types only.
+    * This is used to acquire the <code>Section</code> that defines
+    * the XML structure for this class schema. A section, is the 
+    * section of XML that the class is represented within. A
+    * section contains all the elements and attributes defined for
+    * the class in a tree like structure.
     * 
-    * @return map with the details extracted from the schema class
-    */ 
-   public LabelMap getAttributes() {
-      return attributes;
-   }   
-   /**
-    * Returns a <code>LabelMap</code> that contains the details for
-    * all fields marked as XML elements. The annotations that are
-    * considered elements are the <code>ElementList</code> and the
-    * <code>Element</code> annotations. 
-    * 
-    * @return a map containing the details for XML elements
+    * @return this returns the section defined for the schama
     */
-   public LabelMap getElements() {
-      return elements;
+   public Section getSection() {
+      return section;
    }
    
    /**
