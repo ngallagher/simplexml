@@ -31,13 +31,15 @@ import java.util.List;
  * <pre>
  * 
  *    ./example/path
- *    ./example/path/
+ *    ./example[2]/path/
  *    example/path
+ *    example/path/@attribute
+ *    ./path/@attribute 
  *    
  * </pre>
  * If the parsed path does not match an XPath expression similar to
  * the above then an exception is thrown. Once parsed the segments
- * of the path can be used to traverse data structures modelled on
+ * of the path can be used to traverse data structures modeled on
  * an XML document or fragment.
  * 
  * @author Niall Gallagher
@@ -47,14 +49,24 @@ import java.util.List;
 class PathParser implements Expression {
    
    /**
+    * This contains a list of the indexes for each path segment.
+    */
+   private LinkedList<Integer> indexes;   
+   
+   /**
     * This contains a list of the path segments that were parsed.
     */
-   private LinkedList<String> list;
+   private LinkedList<String> names;
    
    /**
     * This is a cache of the canonical path representation.
     */
    private String path;
+   
+   /**
+    * This is used to determine if the path is an attribute.
+    */
+   private boolean attribute;
    
    /**
     * This is a copy of the source data that is to be parsed.
@@ -85,7 +97,8 @@ class PathParser implements Expression {
     * @param path this is the XPath expression to be parsed
     */
    public PathParser(String path) throws Exception {
-      this.list = new LinkedList<String>();
+      this.indexes = new LinkedList<Integer>();
+      this.names = new LinkedList<String>();
       this.parse(path);
    }
    
@@ -97,7 +110,31 @@ class PathParser implements Expression {
     * @return true if this contains more than one segment
     */
    public boolean isPath() {
-      return list.size() > 1;
+      return names.size() > 1;
+   }
+   
+   /**
+    * This is used to determine if the expression points to an
+    * attribute value. An attribute value contains an '@' character
+    * before the last segment name. Such expressions distinguish
+    * element references from attribute references.
+    * 
+    * @return this returns true if the path has an attribute
+    */
+   public boolean isAttribute() {
+      return attribute;
+   }
+   
+   /**
+    * If the first path segment contains an index it is provided
+    * by this method. There may be several indexes within a 
+    * path, however only the index at the first segment is issued
+    * by this method. If there is no index this will return 1.
+    * 
+    * @return this returns the index of this path expression
+    */
+   public int getIndex() {
+      return indexes.getFirst();
    }
    
    /**
@@ -109,7 +146,7 @@ class PathParser implements Expression {
     * @return this returns the parent element for the path
     */
    public String getFirst() {
-      return list.getFirst();
+      return names.getFirst();
    }
    
    /**
@@ -121,7 +158,7 @@ class PathParser implements Expression {
     * @return this returns the leaf element for the path
     */ 
    public String getLast() {
-      return list.getLast();
+      return names.getLast();
    }
 
    /**
@@ -133,7 +170,7 @@ class PathParser implements Expression {
     * @return this returns an iterator for the path segments
     */
    public Iterator<String> iterator() {
-      return list.iterator();
+      return names.iterator();
    }
    
    /**
@@ -164,7 +201,7 @@ class PathParser implements Expression {
     * @return this returns an expression from this one
     */
    public Expression getPath(int from, int trim) {
-      int last = list.size() - 1;
+      int last = names.size() - 1;
       
       if(last- trim >= from) {       
          return new PathSection(from, last -trim);
@@ -198,14 +235,31 @@ class PathParser implements Expression {
     * @param path this is the XPath expression to be parsed
     */ 
    private void path(String path) throws Exception {
-      if (data[off] == '/') {
+      if(data[off] == '/') {
          throw new PathException("Path '%s' references document root", path);
       }
-      if (data[off] == '.') {
+      if(data[off] == '.') {
          skip(path);
       }
       while (off < count) {
          segment(path);
+      }  
+      trim(path);
+   }
+   
+   /**
+    * This method is used to trim any trailing characters at the
+    * end of the path. Trimming will remove any trailing legal
+    * characters at the end of the path that we do not want in a
+    * canonical string representation of the path expression. 
+    * 
+    * @param path this is the original path to be parsed
+    */
+   private void trim(String path) throws Exception {
+      if(off - 1 >= data.length) {
+         off--;
+      } else if(data[off-1] == '/'){
+         off--;
       }
    }
 
@@ -236,18 +290,166 @@ class PathParser implements Expression {
     * @param path this is the original path expression parsed
     */
    private void segment(String path) throws Exception {
-      int mark = off;
+      char first = data[off];
 
-      if (data[off] == '/') {
+      if(first == '/') {
          throw new PathException("Invalid path expression '%s'", path);
       }
-      while (off < count) {
-         if (data[off] == '/') {
+      if(first == '@') {
+         attribute(path);
+      } else {
+         element(path);
+      }
+      index();
+   }
+   
+   /**
+    * This is used to extract an element from the path expression. 
+    * An element value is one that contains only alphanumeric values
+    * or any special characters allowed within an XML element name.
+    * If an illegal character is found an exception is thrown.
+    * 
+    * @param path this is the path expression to be parsed
+    */
+   private void element(String path) throws Exception { 
+      int mark = off;
+      int size = 0;
+      
+      while(off < count) {         
+         char value = data[off++];
+         
+         if(!isValid(value)) {
+            if(value == '[') {
+               index(path);            
+               break;
+            } else if(value != '/') { 
+               throw new PathException("Illegal character '%s' for element in '%s'", value, path);
+            }         
             break;
          }
-         off++;
+         size++;         
       }
-      append(mark, off++ - mark);
+      append(mark, size);
+   }
+   
+   /**
+    * This is used to extract an attribute from the path expression. 
+    * An attribute value is one that contains only alphanumeric values
+    * or any special characters allowed within an XML attribute name.
+    * If an illegal character is found an exception is thrown.
+    * 
+    * @param path this is the path expression to be parsed
+    */
+   private void attribute(String path) throws Exception {
+      int mark = ++off;
+      
+      while(off < count) {
+         char value = data[off++];
+         
+         if(!isValid(value)) {
+            throw new PathException("Illegal character '%s' for attribute in '%s'", value, path);
+         }         
+      }
+      if(off > mark) {
+         attribute = true;
+      }
+      append(mark, off - mark);
+   }
+   
+   /**
+    * This is used to add a default index to a segment or attribute
+    * extracted from the source expression. In the event that a
+    * segment does not contain an index, the default index of 1 is
+    * assigned to the element for consistency.
+    */
+   private void index() throws Exception {
+      int require = names.size();
+      int size = indexes.size();
+      
+      if(require > size) {
+         indexes.add(1);
+      }
+   }
+   
+   /**
+    * This is used to extract an index from an element. An index is
+    * a numerical value that identifies the position of the path
+    * within the XML document. If the index can not be extracted
+    * from the expression an exception is thrown.
+    * 
+    * @param path this is the original path to be parsed
+    */
+   private void index(String path) throws Exception {
+      int value = 0;
+
+      if(data[off-1] == '[') {
+         while(off < count) {
+            char digit = data[off++];
+            
+            if(!isDigit(digit)){
+               break;
+            }
+            value *= 10;
+            value += digit;
+            value -= '0';  
+         }
+      }
+      if(data[off++ - 1] != ']') {
+         throw new PathException("Invalid index for path '%s'", path);
+      }
+      indexes.add(value);
+   }
+   
+   /**
+    * This is used to determine if the provided character is a digit.
+    * Only digits can be used within a segment index, so this is used
+    * when parsing the index to ensure all characters are valid.     
+    * 
+    * @param value this is the value of the character
+    * 
+    * @return this returns true if the provide character is a digit
+    */
+   private boolean isDigit(char value) {
+      return Character.isDigit(value);
+   }
+   
+   /**
+    * This is used to determine if the provided character is a legal
+    * XML element character. This is used to ensure all extracted
+    * element names conform to legal element names.
+    * 
+    * @param value this is the value of the character
+    * 
+    * @return this returns true if the provided character is legal
+    */
+   private boolean isValid(char value) {
+      return isLetter(value) || isSpecial(value);
+   }
+   
+   /**
+    * This is used to determine if the provided character is a legal
+    * XML element character. This is used to ensure all extracted
+    * element and attribute names conform to the XML specification.
+    * 
+    * @param value this is the value of the character
+    * 
+    * @return this returns true if the provided character is legal
+    */
+   private boolean isSpecial(char value) {
+      return value == '_' || value == '-' || value == ':';
+   }
+   
+   /**
+    * This is used to determine if the provided character is an
+    * alpha numeric character. This is used to ensure all extracted
+    * element and attribute names conform to the XML specification.
+    * 
+    * @param value this is the value of the character
+    * 
+    * @return this returns true if the provided character is legal
+    */
+   private boolean isLetter(char value) {
+      return Character.isLetterOrDigit(value);
    }
 
    /**
@@ -261,8 +463,8 @@ class PathParser implements Expression {
    private void append(int start, int count) {
       String segment = new String(data, start, count);
 
-      if (count > 0) {
-         list.add(segment);
+      if(count > 0) {
+         names.add(segment);
       }
    }
    
@@ -277,7 +479,7 @@ class PathParser implements Expression {
       int size = off - start;
       
       if(path == null) {
-         return new String(data, start, size-1);
+         return new String(data, start, size);
       }
       return path;
    } 
@@ -339,6 +541,30 @@ class PathParser implements Expression {
       }
       
       /**
+       * This is used to determine if the expression points to an
+       * attribute value. An attribute value contains an '@' character
+       * before the last segment name. Such expressions distinguish
+       * element references from attribute references.
+       * 
+       * @return this returns true if the path has an attribute
+       */
+      public boolean isAttribute() {
+         return end >= names.size() - 1;
+      }
+      
+      /**
+       * If the first path segment contains an index it is provided
+       * by this method. There may be several indexes within a 
+       * path, however only the index at the first segment is issued
+       * by this method. If there is no index this will return 1.
+       * 
+       * @return this returns the index of this path expression
+       */
+      public int getIndex() {
+         return indexes.get(begin);
+      }
+      
+      /**
        * This can be used to acquire the first path segment within
        * the expression. The first segment represents the parent XML
        * element of the path. All segments returned do not contain
@@ -347,7 +573,7 @@ class PathParser implements Expression {
        * @return this returns the parent element for the path
        */
       public String getFirst() {
-         return list.get(begin);
+         return names.get(begin);
       }
       
       /**
@@ -359,7 +585,7 @@ class PathParser implements Expression {
        * @return this returns the leaf element for the path
        */ 
       public String getLast() {
-         return list.get(end);
+         return names.get(end);
       }
       
       /**
@@ -404,7 +630,7 @@ class PathParser implements Expression {
       public Iterator<String> iterator() {
          if(cache.isEmpty()) {
             for(int i = begin; i <= end; i++) {
-               String segment = list.get(i);
+               String segment = names.get(i);
                
                if(segment != null) {
                   cache.add(segment);
@@ -421,23 +647,22 @@ class PathParser implements Expression {
        * 
        * @return this returns the string format for the XPath
        */
-      private String getPath() {
-         int off = start;   
-         int size = 0;
-         int pos = 0;
+      private String getPath() {        
+         int last = start;
+         int pos = 0; 
          
-         for(String name : list) {
-            int count = name.length();
-            
-            if(pos < begin) {
-               off += count + 1;
-            } else if(pos <=  end){
-               size += count + 1;
-            }     
-            pos++;
+         for(int i = 0; i <= end;) {
+            if(last >= count) {
+               last++;
+               break;
+            }
+            if(data[last++] == '/'){
+               if(++i == begin) {                  
+                  pos = last;
+               }         
+            }            
          }
-         return new String(data, off, size - 1);
-         
+         return new String(data, pos, --last -pos);         
       }
       
       /**

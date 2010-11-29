@@ -27,8 +27,10 @@ package org.simpleframework.xml.core;
  * <pre>
  * 
  *    ./example/path
- *    ./example/path/
+ *    ./example[2]/path/
  *    example/path
+ *    example/path/@attribute
+ *    ./path/@attribute              
  *    
  * </pre>
  * As can be seen only a subset of the XPath syntax is supported by
@@ -41,6 +43,16 @@ package org.simpleframework.xml.core;
  * @see org.simpleframework.xml.core.ExpressionBuilder
  */
 interface Expression extends Iterable<String> {
+	
+   /**
+    * If the first path segment contains an index it is provided
+    * by this method. There may be several indexes within a 
+    * path, however only the index at the first segment is issued
+    * by this method. If there is no index this will return 1.
+    * 
+    * @return this returns the index of this path expression
+    */
+   public int getIndex();
    
    /**
     * This can be used to acquire the first path segment within
@@ -88,6 +100,16 @@ interface Expression extends Iterable<String> {
     * @return this returns an expression from this one
     */
    public Expression getPath(int from, int trim);
+   
+   /**
+    * This is used to determine if the expression points to an
+    * attribute value. An attribute value contains an '@' character
+    * before the last segment name. Such expressions distinguish
+    * element references from attribute references.
+    * 
+    * @return this returns true if the path has an attribute
+    */
+   public boolean isAttribute();
    
    /**
     * This is used to determine if the expression is a path. An
