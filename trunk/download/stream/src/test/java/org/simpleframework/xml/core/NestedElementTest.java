@@ -15,19 +15,19 @@ public class NestedElementTest extends ValidationTestCase {
    @SuppressWarnings("all")
    private static class NestedElementExample {
       @Attribute(name="area-code")
-      @Path("contact-info/phone")
+      @Path("contact-info[1]/phone")
       private final int areaCode;
       @Element
-      @Path("contact-info/address")
+      @Path("contact-info[1]/address")
       private final String city;
       @Element
-      @Path("contact-info/address")
+      @Path("contact-info[1]/address")
       private final String street;
       @Element
-      @Path("contact-info/phone")
+      @Path("contact-info[1]/phone")
       private final String mobile;
       @Element
-      @Path("contact-info/phone")
+      @Path("./contact-info[1]/phone")
       private final String home;
       public NestedElementExample(
               @Element(name="city") String city,
