@@ -70,6 +70,7 @@ public @interface Path {
     *    ./example/path
     *    ./example/path/
     *    example/path
+    *    example[2]/path
     *    
     * </pre>
     * There is no limit to the level of nesting supported. Also 
