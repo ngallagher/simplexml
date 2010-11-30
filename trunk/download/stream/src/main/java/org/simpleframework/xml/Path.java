@@ -53,6 +53,48 @@ import java.lang.annotation.RetentionPolicy;
  * with either elements or attributes to convert an otherwise flat
  * object to XML structure in to something more complex. This is
  * useful when mapping objects to foreign XML formats.
+ * <p>
+ * In addition to providing wrappers for existing elements and
+ * attributes the <code>Path</code> annotations can be used to 
+ * provide an ordered set of elements. Order can be applied to the
+ * elements created using an XPath index. For example.
+ * <pre>
+ * 
+ *    &#64;Element
+ *    &#64;Path("contact-info[1]/phone")
+ *    private String home;
+ *    
+ *    &#64;Element
+ *    &#64;Path("contact-info[2]/phone")
+ *    private String office;   
+ *    
+ * </pre>
+ * In the above example we have two element annotations within a
+ * single class. However each one is given an element path with
+ * an index. This tells the serialization process that it should
+ * generate two wrapping elements, ordered by the index specified.
+ * The above annotations will result in the following.
+ * <pre>
+ * 
+ *    &lt;contact-info&gt;
+ *       &lt;phone&gt;
+ *          &lt;home&gt;1800123123&lt;/home&gt;
+ *       &lt;/phone&gt;
+ *    &lt;/contact-info&gt; 
+ *    &lt;contact-info&gt;
+ *       &lt;phone&gt;
+ *          &lt;office&gt;1800123123&lt;/office&gt;
+ *       &lt;/phone&gt;
+ *    &lt;/contact-info&gt;      
+ * 
+ * </pre>
+ * On deserialization the references to fields are known, and
+ * can be read from the order of the wrapping path elements.
+ * This is useful if you need to read specific fields or methods
+ * from an XML document that maintains elements in sequence. If
+ * such sequences contain similarly named child elements, then
+ * the <code>ElementList</code> annotation provides a better
+ * alternative to indexed XPath expressions.
  * 
  * @author Niall Gallagher
  */
