@@ -31,14 +31,14 @@ public class PathStructureTest extends ValidationTestCase {
       "some/other/path/tenth"
    },
    attributes={
-      "some/path/a",
-      "group/example/b",
-      "group/example/c",
-      "some/path/d",
-      "some/path/e",
+      "some/path/@a",
+      "group/example/@b",
+      "group/example/@c",
+      "some/path/@d",
+      "some/path/@e",
       "f",
       "g",
-      "some/path/h"   
+      "some/path/@h"   
    }
    )
    @Root
@@ -158,13 +158,12 @@ public class PathStructureTest extends ValidationTestCase {
       Strategy strategy = new TreeStrategy();
       Style style = new DefaultStyle(); 
       Session session = new Session();
-      Source source = new Source(strategy, context, style, session);
-      Section section = scanner.getSection(source);      
+      Source source = new Source(strategy, context, style, session);      
       
-      validate(section, "some", "fifth", "sixth", "group", "ninth");
-      validate(section.getSection("some"), "path", "other");
-      validate(section.getSection("some").getSection("other"), "path", "fourth");
-      validate(section.getSection("some").getSection("other").getSection("path"), "first", "second", "third", "tenth");      
+      validate(scanner.getSection(source), "some", "fifth", "sixth", "group", "ninth");
+      validate(scanner.getSection(source).getSection("some"), "path", "other");
+      validate(scanner.getSection(source).getSection("some").getSection("other"), "path", "fourth");
+      validate(scanner.getSection(source).getSection("some").getSection("other").getSection("path"), "first", "second", "third", "tenth");      
    }
    
    public void testSerialization() throws Exception {

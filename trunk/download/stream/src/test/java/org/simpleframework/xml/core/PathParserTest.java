@@ -5,7 +5,7 @@ import junit.framework.TestCase;
 public class PathParserTest extends TestCase {
    
    public void testAttribute() throws Exception {
-      Expression expression = new PathParser("./some[3]/path[2]/to/parse/@attribute");
+      Expression expression = new PathParser(PathParserTest.class, "./some[3]/path[2]/to/parse/@attribute");
       assertEquals(expression.getFirst(), "some");
       assertEquals(expression.getIndex(), 3);
       assertEquals(expression.getLast(), "attribute");
@@ -31,7 +31,7 @@ public class PathParserTest extends TestCase {
    }
 
    public void testIndex() throws Exception {
-      Expression expression = new PathParser("./some[3]/path[2]/to/parse");
+      Expression expression = new PathParser(PathParserTest.class, "./some[3]/path[2]/to/parse");
       assertEquals(expression.getFirst(), "some");
       assertEquals(expression.getIndex(), 3);
       assertEquals(expression.getLast(), "parse");
@@ -59,7 +59,7 @@ public class PathParserTest extends TestCase {
       assertEquals(expression.toString(), "path[2]");
       assertFalse(expression.isPath());
       
-      expression = new PathParser("./a[10]/b[2]/c/d");      
+      expression = new PathParser(PathParserTest.class, "./a[10]/b[2]/c/d");      
       assertEquals(expression.getFirst(), "a");
       assertEquals(expression.getIndex(), 10);
       assertEquals(expression.getLast(), "d");
@@ -73,7 +73,7 @@ public class PathParserTest extends TestCase {
       assertEquals(expression.toString(), "b[2]/c");
       assertTrue(expression.isPath());
       
-      expression = new PathParser("a[10]/b[2]/c/d[300]");      
+      expression = new PathParser(PathParserTest.class, "a[10]/b[2]/c/d[300]");      
       assertEquals(expression.getFirst(), "a");
       assertEquals(expression.getIndex(), 10);
       assertEquals(expression.getLast(), "d");
@@ -87,7 +87,7 @@ public class PathParserTest extends TestCase {
       assertEquals(expression.toString(), "d[300]");
       assertFalse(expression.isPath());
       
-      expression = new PathParser("b[1]/c/d[300]/");      
+      expression = new PathParser(PathParserTest.class, "b[1]/c/d[300]/");      
       assertEquals(expression.getFirst(), "b");
       assertEquals(expression.getIndex(), 1);
       assertEquals(expression.getLast(), "d");
@@ -110,7 +110,7 @@ public class PathParserTest extends TestCase {
    }
    
    public void testExpressions() throws Exception {
-      Expression expression = new PathParser("./some/path/to/parse");
+      Expression expression = new PathParser(PathParserTest.class, "./some/path/to/parse");
       assertEquals(expression.getFirst(), "some");
       assertEquals(expression.getLast(), "parse");
       assertEquals(expression.toString(), "some/path/to/parse");
@@ -122,7 +122,7 @@ public class PathParserTest extends TestCase {
       assertEquals(expression.toString(), "to/parse");
       assertTrue(expression.isPath());
       
-      expression = new PathParser("a/b/c/d/e/f/g");
+      expression = new PathParser(PathParserTest.class, "a/b/c/d/e/f/g");
       assertEquals(expression.getFirst(), "a");
       assertEquals(expression.getLast(), "g");
       assertEquals(expression.toString(), "a/b/c/d/e/f/g");
@@ -140,7 +140,7 @@ public class PathParserTest extends TestCase {
       assertEquals(expression.toString(), "d/e/f/g");
       assertTrue(expression.isPath());
       
-      expression = new PathParser("1/2/3/4/5/6/7");
+      expression = new PathParser(PathParserTest.class, "1/2/3/4/5/6/7");
       assertEquals(expression.getFirst(), "1");
       assertEquals(expression.getLast(), "7");
       assertEquals(expression.toString(), "1/2/3/4/5/6/7");
@@ -164,16 +164,16 @@ public class PathParserTest extends TestCase {
       assertEquals(expression.toString(), "4");
       assertFalse(expression.isPath());
       
-      expression = new PathParser(".");
+      expression = new PathParser(PathParserTest.class, ".");
       assertFalse(expression.isPath());
       
-      expression = new PathParser("./name");
+      expression = new PathParser(PathParserTest.class, "./name");
       assertEquals(expression.getFirst(), "name");
       assertEquals(expression.getLast(), "name");
       assertEquals(expression.toString(), "name");
       assertFalse(expression.isPath()); 
       
-      expression = new PathParser("./path/");
+      expression = new PathParser(PathParserTest.class, "./path/");
       assertEquals(expression.getFirst(), "path");
       assertEquals(expression.getLast(), "path");
       assertEquals(expression.toString(), "path");
@@ -191,12 +191,15 @@ public class PathParserTest extends TestCase {
       ensureException("../a[100]/b/@attribute");
       ensureException("../a[100]/@b/@attribute");
       ensureException("a//b//c");
+      ensureException("a/b[1]/c[");
+      ensureException("a/b[1]/c/@");
+      ensureException("a@");
    }
    
    private void ensureException(String path) {
       boolean exception = false;
       try{
-         new PathParser(path);
+         new PathParser(PathParserTest.class, path);
       }catch(Exception e){
          e.printStackTrace();
          exception = true;
