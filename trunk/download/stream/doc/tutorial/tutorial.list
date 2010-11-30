@@ -28,3 +28,4 @@ archive/version_tolerant_serialization.html
 archive/annotating_static_fields.html
 archive/overriding_serialization.html
 archive/intercepting_serialization.html
+archive/path_expressions.html
