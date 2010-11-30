@@ -71,23 +71,23 @@ public class AnnotationCycleStrategyTest extends ValidationTestCase {
       assertTrue(copy.getEntries().get(1) == copy.getEntries().get(3)); // cycle
       
       assertElementExists(text, "/entryListExample");
-      assertElementExists(text, "/entryListExample/entry[0]");
-      assertElementExists(text, "/entryListExample/entry[0]/name");
-      assertElementExists(text, "/entryListExample/entry[0]/value");
-      assertElementHasValue(text, "/entryListExample/entry[0]/name", "A");
-      assertElementHasValue(text, "/entryListExample/entry[0]/value", "a");
+      assertElementExists(text, "/entryListExample/entry[1]");
       assertElementExists(text, "/entryListExample/entry[1]/name");
       assertElementExists(text, "/entryListExample/entry[1]/value");
-      assertElementHasValue(text, "/entryListExample/entry[1]/name", "B");
-      assertElementHasValue(text, "/entryListExample/entry[1]/value", "b");
+      assertElementHasValue(text, "/entryListExample/entry[1]/name", "A");
+      assertElementHasValue(text, "/entryListExample/entry[1]/value", "a");
       assertElementExists(text, "/entryListExample/entry[2]/name");
       assertElementExists(text, "/entryListExample/entry[2]/value");
-      assertElementHasValue(text, "/entryListExample/entry[2]/name", "C");
-      assertElementHasValue(text, "/entryListExample/entry[2]/value", "c");
-      assertElementExists(text, "/entryListExample/entry[3]");
+      assertElementHasValue(text, "/entryListExample/entry[2]/name", "B");
+      assertElementHasValue(text, "/entryListExample/entry[2]/value", "b");
+      assertElementExists(text, "/entryListExample/entry[3]/name");
+      assertElementExists(text, "/entryListExample/entry[3]/value");
+      assertElementHasValue(text, "/entryListExample/entry[3]/name", "C");
+      assertElementHasValue(text, "/entryListExample/entry[3]/value", "c");
       assertElementExists(text, "/entryListExample/entry[4]");
-      assertElementHasAttribute(text, "/entryListExample/entry[3]", "reference", "2"); // cycle
-      assertElementHasAttribute(text, "/entryListExample/entry[4]", "reference", "3"); // cycle
+      assertElementExists(text, "/entryListExample/entry[5]");
+      assertElementHasAttribute(text, "/entryListExample/entry[4]", "reference", "2"); // cycle
+      assertElementHasAttribute(text, "/entryListExample/entry[5]", "reference", "3"); // cycle
       assertElementExists(text, "/entryListExample/primary");
       assertElementHasAttribute(text, "/entryListExample/primary", "name", "PRIMARY"); // other converter
       assertElementHasAttribute(text, "/entryListExample/primary", "value", "primary"); // other converter

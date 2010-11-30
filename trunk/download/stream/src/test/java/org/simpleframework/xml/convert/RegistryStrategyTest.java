@@ -60,15 +60,15 @@ public class RegistryStrategyTest extends ValidationTestCase {
       
       assertElementExists(text, "/petShop");
       assertElementExists(text, "/petShop/pets");
-      assertElementExists(text, "/petShop/pets/pet[0]");
       assertElementExists(text, "/petShop/pets/pet[1]");
-      assertElementDoesNotExist(text, "/petShop/pets/pet[2]");
+      assertElementExists(text, "/petShop/pets/pet[2]");
+      assertElementDoesNotExist(text, "/petShop/pets/pet[3]");
       assertElementHasNamespace(text, "/petShop", "http://domain/a");
       assertElementHasNamespace(text, "/petShop/pets", "http://domain/b");
-      assertElementHasNamespace(text, "/petShop/pets/pet[0]", null);
-      assertElementHasAttribute(text, "/petShop/pets/pet[0]", "name", "Lassie");
-      assertElementHasAttribute(text, "/petShop/pets/pet[0]", "age", "10");
-      assertElementHasValue(text, "/petShop/pets/pet[1]/name", "Kitty");
-      assertElementHasValue(text, "/petShop/pets/pet[1]/age", "2");
+      assertElementHasNamespace(text, "/petShop/pets/pet[1]", null);
+      assertElementHasAttribute(text, "/petShop/pets/pet[1]", "name", "Lassie");
+      assertElementHasAttribute(text, "/petShop/pets/pet[1]", "age", "10");
+      assertElementHasValue(text, "/petShop/pets/pet[2]/name", "Kitty");
+      assertElementHasValue(text, "/petShop/pets/pet[2]/age", "2");
    }
 }

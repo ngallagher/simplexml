@@ -224,7 +224,7 @@ public class ValidationTestCase extends XMLTestCase {
              int index = 0;
              if(matcher.matches()) {
                 String value = matcher.group(2);
-                index = Integer.parseInt(value);
+                index = Integer.parseInt(value) -1;
                 path = matcher.group(1);
              }
              List<org.w3c.dom.Element> list = getElementsByTagName(element, path);

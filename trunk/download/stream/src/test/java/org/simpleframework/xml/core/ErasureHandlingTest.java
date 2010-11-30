@@ -168,21 +168,21 @@ public class ErasureHandlingTest extends ValidationTestCase {
       String text = writer.toString();
       System.out.println(text);
       
-      assertElementHasAttribute(text, "/erasureWithMapInlineValueIsIgnoredExample/entry[0]", "key", "a");
-      assertElementHasAttribute(text, "/erasureWithMapInlineValueIsIgnoredExample/entry[1]", "key", "b");
-      assertElementHasAttribute(text, "/erasureWithMapInlineValueIsIgnoredExample/entry[2]", "key", "c");
+      assertElementHasAttribute(text, "/erasureWithMapInlineValueIsIgnoredExample/entry[1]", "key", "a");
+      assertElementHasAttribute(text, "/erasureWithMapInlineValueIsIgnoredExample/entry[2]", "key", "b");
+      assertElementHasAttribute(text, "/erasureWithMapInlineValueIsIgnoredExample/entry[3]", "key", "c");
       
-      assertElementHasAttribute(text, "/erasureWithMapInlineValueIsIgnoredExample/entry[0]/value", "class", ErasureItem.class.getName());
       assertElementHasAttribute(text, "/erasureWithMapInlineValueIsIgnoredExample/entry[1]/value", "class", ErasureItem.class.getName());
       assertElementHasAttribute(text, "/erasureWithMapInlineValueIsIgnoredExample/entry[2]/value", "class", ErasureItem.class.getName());
+      assertElementHasAttribute(text, "/erasureWithMapInlineValueIsIgnoredExample/entry[3]/value", "class", ErasureItem.class.getName());
       
-      assertElementHasValue(text, "/erasureWithMapInlineValueIsIgnoredExample/entry[0]/value/name", "A");
-      assertElementHasValue(text, "/erasureWithMapInlineValueIsIgnoredExample/entry[1]/value/name", "B");
-      assertElementHasValue(text, "/erasureWithMapInlineValueIsIgnoredExample/entry[2]/value/name", "C");
+      assertElementHasValue(text, "/erasureWithMapInlineValueIsIgnoredExample/entry[1]/value/name", "A");
+      assertElementHasValue(text, "/erasureWithMapInlineValueIsIgnoredExample/entry[2]/value/name", "B");
+      assertElementHasValue(text, "/erasureWithMapInlineValueIsIgnoredExample/entry[3]/value/name", "C");
       
-      assertElementHasValue(text, "/erasureWithMapInlineValueIsIgnoredExample/entry[0]/value/value", "1");
-      assertElementHasValue(text, "/erasureWithMapInlineValueIsIgnoredExample/entry[1]/value/value", "2");
-      assertElementHasValue(text, "/erasureWithMapInlineValueIsIgnoredExample/entry[2]/value/value", "3");
+      assertElementHasValue(text, "/erasureWithMapInlineValueIsIgnoredExample/entry[1]/value/value", "1");
+      assertElementHasValue(text, "/erasureWithMapInlineValueIsIgnoredExample/entry[2]/value/value", "2");
+      assertElementHasValue(text, "/erasureWithMapInlineValueIsIgnoredExample/entry[3]/value/value", "3");
       
       System.out.println(text);
       
