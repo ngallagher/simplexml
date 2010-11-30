@@ -55,6 +55,11 @@ class TreeModel implements Model {
    private final ModelMap models;
    
    /**
+    * This is used to provide the order of the model elements.
+    */
+   private final OrderList order;
+   
+   /**
     * This is the serialization policy enforced on this model.
     */
    private final Policy policy;
@@ -65,6 +70,11 @@ class TreeModel implements Model {
    private final String name;
    
    /**
+    * This is the index used to sort similarly named models.
+    */
+   private final int index;
+   
+   /**
     * Constructor for the <code>TreeModel</code> object. This can be
     * used to register the attributes and elements associated with
     * an annotated class. Also, if there are any path references, 
@@ -73,7 +83,7 @@ class TreeModel implements Model {
     * @param policy this is the serialization policy enforced
     */
    public TreeModel(Policy policy) {
-      this(policy, null);
+      this(policy, null, 1);
    }
    
    /**
@@ -84,12 +94,15 @@ class TreeModel implements Model {
     * 
     * @param policy this is the serialization policy enforced
     * @param name this is the XML element name for this model
+    * @param index this is the index used to order the model
     */
-   public TreeModel(Policy policy, String name) {
+   public TreeModel(Policy policy, String name, int index) {
       this.attributes = new LabelMap(policy);
       this.elements = new LabelMap(policy);
+      this.order = new OrderList();
       this.models = new ModelMap();
       this.policy = policy;
+      this.index = index;
       this.name = name;
    }
    
@@ -104,18 +117,19 @@ class TreeModel implements Model {
     * @return this returns the model located by the expression
     */
    public Model lookup(Expression path) {
-      Expression target = path.getPath(1, 0);
       String name = path.getFirst();
-      Model model = models.get(name);
+      int index = path.getIndex();
+      Model model = lookup(name, index);
       
-      if(!path.isPath()) {
-         return model;
+      if(path.isPath()) {
+         path = path.getPath(1, 0);
+         
+         if(model != null) {     
+            return model.lookup(path);
+         }
       }
-      if(model == null) {
-         return null;
-      }         
-      return model.lookup(target); 
-   }
+      return model;   
+   }   
    
    /**
     * This is used to register an XML entity within the model. The
@@ -127,6 +141,9 @@ class TreeModel implements Model {
     * @param name this is the name of the element to register
     */   
    public void registerElement(String name) throws Exception {
+      if(!order.contains(name)) {
+         order.add(name);
+      }
       elements.put(name, null);
    }   
    
@@ -176,6 +193,9 @@ class TreeModel implements Model {
       if(elements.get(name) != null) {
          throw new PersistenceException("Annotation of name '%s' declared twice", name);
       }
+      if(!order.contains(name)) {
+         order.add(name);
+      }
       elements.put(name, label);
    }
    
@@ -222,20 +242,6 @@ class TreeModel implements Model {
     */
    public LabelMap buildElements(Context context) throws Exception{
       return elements.build(context);
-   }
-
-   /**
-    * This method is used to look for a <code>Model</code> that
-    * matches the specified element name. If no such model exists
-    * then this will return null. This is used as an alternative
-    * to providing an XPath expression to navigate the tree.
-    * 
-    * @param name this is the name of the model to be acquired
-    * 
-    * @return this returns the model located by the expression
-    */
-   public Model lookup(String name) {
-      return models.get(name);
    }
    
    /**
@@ -289,7 +295,7 @@ class TreeModel implements Model {
    public Iterator<String> iterator() {
       List<String> list = new ArrayList<String>();
       
-      for(String name : elements.keySet()) {
+      for(String name : order) {
          list.add(name);        
       }
       return list.iterator();      
@@ -316,12 +322,29 @@ class TreeModel implements Model {
     * will basically result in validation of the entire tree. Once
     * finished all models contained within the tree will be valid.
     * If any model is invalid an exception will be thrown.
+    * <p>
+    * To ensure that all ordering and registration of the models
+    * is consistent this will check to ensure the indexes of each
+    * registered model are in sequence. If they are out of sequence
+    * then this will throw an exception.
     * 
     * @param type this is the type this model is created for
     */
    private void validateModels(Class type) throws Exception {
-      for(Model model : models) {
-         model.validate(type);
+      for(ModelList list : models) {
+         int count = 1;
+         
+         for(Model model : list) {
+            if(model != null) {        
+               String name = model.getName();
+               int index = model.getIndex();
+            
+               if(index != count++) {
+                  throw new ElementException("Path section '%s[%s]' is out of sequence in %s", name, index, type);
+               }
+               model.validate(type);
+            }
+         }
       }
    }
    
@@ -357,14 +380,14 @@ class TreeModel implements Model {
       Set<String> keys = elements.keySet();
       
       for(String name : keys) {
-         Model model = models.get(name);
+         ModelList list = models.get(name);
          Label label = elements.get(name);
          
-         if(model == null && label == null) {
+         if(list == null && label == null) {
             throw new ElementException("Ordered element '%s' does not exist in %s", name, type);
          }
-         if(model != null && label != null) {
-            if(!model.isEmpty()) {
+         if(list != null && label != null) {
+            if(!list.isEmpty()) {
                throw new ElementException("Element '%s' is also a path name in %s", name, type);
             }
          }
@@ -386,6 +409,20 @@ class TreeModel implements Model {
       } else {
          registerElement(label);
       }
+   }   
+
+   /**
+    * This method is used to look for a <code>Model</code> that
+    * matches the specified element name. If no such model exists
+    * then this will return null. This is used as an alternative
+    * to providing an XPath expression to navigate the tree.
+    * 
+    * @param name this is the name of the model to be acquired
+    * 
+    * @return this returns the model located by the expression
+    */
+   public Model lookup(String name, int index) {
+      return models.lookup(name, index);
    }
 
    /**
@@ -395,14 +432,15 @@ class TreeModel implements Model {
     * contain elements and attributes associated with a type.
     * 
     * @param name this is the name of the model to be registered
+    * @param name this is the index used to order the model
     * 
     * @return this returns the model that was registered
     */
-   public Model register(String name) throws Exception {
-      Model model = models.get(name);
+   public Model register(String name, int index) throws Exception {
+      Model model = models.lookup(name, index);
       
       if (model == null) {
-         return create(name);
+         return create(name, index);
       }
       return model;
    }
@@ -414,15 +452,16 @@ class TreeModel implements Model {
     * contain elements and attributes associated with a type.
     * 
     * @param name this is the name of the model to be registered
+    * @param name this is the index used to order the model
     * 
     * @return this returns the model that was registered
     */
-   private Model create(String name) throws Exception {
-      Model model = new TreeModel(policy, name);
+   private Model create(String name, int index) throws Exception {
+      Model model = new TreeModel(policy, name, index);
       
       if(name != null) {
-         elements.put(name, null);
-         models.put(name, model);         
+         models.register(name, model);
+         order.add(name);
       }
       return model;
    }
@@ -436,9 +475,13 @@ class TreeModel implements Model {
     * @return true if any model has elements or attributes
     */
    private boolean isComposite() {
-      for(Model group : models) {
-         if(group.isEmpty()) {
-            return false;
+      for(ModelList list : models) {
+         for(Model model : list) {
+            if(model != null) {
+               if(!model.isEmpty()) {
+                  return true;
+               }
+            }
          }
       }
       return !models.isEmpty();
@@ -471,5 +514,48 @@ class TreeModel implements Model {
     */
    public String getName() {
       return name;
+   }
+   
+   /**
+    * This method is used to return the index of the model. The
+    * index is the order that this model appears within the XML
+    * document. Having an index allows multiple models of the
+    * same name to be inserted in to a sorted collection.
+    * 
+    * @return this is the index of this model instance
+    */
+   public int getIndex() {
+      return index;
+   }
+   
+   /**
+    * For the purposes of debugging we provide a representation
+    * of the model in a string format. This will basically show
+    * the name of the model and the index it exists at.
+    * 
+    * @return this returns some details for the model
+    */
+   public String toString() {
+      return String.format("model '%s[%s]'", name, index);
+   }
+   
+   /**
+    * The <code>OrderList</code> object is used to maintain the order
+    * of the XML elements within the model. Elements are either 
+    * other models or element <code>Label</code> objects that are
+    * annotated fields or methods. Maintaining order is important     
+    * 
+    * @author Niall Gallagher
+    */
+   private static class OrderList extends ArrayList<String> {
+      
+      /**
+       * Constructor for the <code>OrderList</code> object. This is
+       * basically a typedef of sorts that hides the ugly generic
+       * details from the class definition.        
+       */
+      public OrderList() {
+         super();
+      }
    }
 }

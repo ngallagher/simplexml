@@ -150,10 +150,24 @@ interface Model extends Iterable<String> {
     * contain elements and attributes associated with a type.
     * 
     * @param name this is the name of the model to be registered
+    * @param index this is the index used to order the model
     * 
     * @return this returns the model that was registered
     */
-   public Model register(String name) throws Exception;
+   public Model register(String name, int index) throws Exception;   
+   
+   /**
+    * This method is used to look for a <code>Model</code> that
+    * matches the specified element name. If no such model exists
+    * then this will return null. This is used as an alternative
+    * to providing an XPath expression to navigate the tree.
+    * 
+    * @param name this is the name of the model to be acquired
+    * @param index this is the index used to order the model
+    * 
+    * @return this returns the model located by the expression
+    */
+   public Model lookup(String name, int index);
    
    /**
     * This method is used to look for a <code>Model</code> that
@@ -166,18 +180,6 @@ interface Model extends Iterable<String> {
     * @return this returns the model located by the expression
     */
    public Model lookup(Expression path);
-   
-   /**
-    * This method is used to look for a <code>Model</code> that
-    * matches the specified element name. If no such model exists
-    * then this will return null. This is used as an alternative
-    * to providing an XPath expression to navigate the tree.
-    * 
-    * @param name this is the name of the model to be acquired
-    * 
-    * @return this returns the model located by the expression
-    */
-   public Model lookup(String name);
    
    /**
     * This is used to determine if the provided name represents
@@ -229,5 +231,15 @@ interface Model extends Iterable<String> {
     * 
     * @return this returns the name of this model instance
     */
-   public String getName();
+   public String getName();   
+
+   /**
+    * This method is used to return the index of the model. The
+    * index is the order that this model appears within the XML
+    * document. Having an index allows multiple models of the
+    * same name to be inserted in to a sorted collection.
+    * 
+    * @return this is the index of this model instance
+    */
+   public int getIndex();
 }

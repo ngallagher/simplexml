@@ -59,9 +59,19 @@ class PathParser implements Expression {
    private LinkedList<String> names;
    
    /**
+    * This is the the cached canonical representation of the path.
+    */
+   private String cache;
+   
+   /**
     * This is a cache of the canonical path representation.
     */
    private String path;
+   
+   /**
+    * This is the type the expressions are to be parsed for.
+    */
+   private Class type;
    
    /**
     * This is used to determine if the path is an attribute.
@@ -95,10 +105,13 @@ class PathParser implements Expression {
     * the parser will contain all the extracted path segments.
     * 
     * @param path this is the XPath expression to be parsed
+    * @param type this is the type the expressions are parsed for
     */
-   public PathParser(String path) throws Exception {
+   public PathParser(Class type, String path) throws Exception {
       this.indexes = new LinkedList<Integer>();
       this.names = new LinkedList<String>();
+      this.type = type;
+      this.path = path;
       this.parse(path);
    }
    
@@ -223,7 +236,7 @@ class PathParser implements Expression {
          data = new char[count];
          path.getChars(0, count, data, 0);
       }
-      path(path);
+      path();
    }
    
    /**
@@ -231,36 +244,18 @@ class PathParser implements Expression {
     * When parsing the expression this will trim any references
     * to the root context, also any trailing slashes are removed.
     * An exception is thrown if the path is invalid.
-    * 
-    * @param path this is the XPath expression to be parsed
     */ 
-   private void path(String path) throws Exception {
+   private void path() throws Exception {
       if(data[off] == '/') {
-         throw new PathException("Path '%s' references document root", path);
+         throw new PathException("Path '%s' in %s references document root", path, type);
       }
       if(data[off] == '.') {
-         skip(path);
+         skip();
       }
       while (off < count) {
-         segment(path);
+         segment();
       }  
-      trim(path);
-   }
-   
-   /**
-    * This method is used to trim any trailing characters at the
-    * end of the path. Trimming will remove any trailing legal
-    * characters at the end of the path that we do not want in a
-    * canonical string representation of the path expression. 
-    * 
-    * @param path this is the original path to be parsed
-    */
-   private void trim(String path) throws Exception {
-      if(off - 1 >= data.length) {
-         off--;
-      } else if(data[off-1] == '/'){
-         off--;
-      }
+      truncate();
    }
 
    /**
@@ -268,13 +263,11 @@ class PathParser implements Expression {
     * the root prefix ensures that it is not considered as a valid
     * path segment and so is not returned as part of the iterator
     * nor is it considered with building a string representation.
-    * 
-    * @param path this is the original path expression parsed
     */
-   private void skip(String path) throws Exception {
+   private void skip() throws Exception {
       if (data.length > 1) {
          if (data[off + 1] != '/') {
-            throw new PathException("Path '%s' has an illegal syntax", path);
+            throw new PathException("Path '%s' in %s has an illegal syntax", path, type);
          }
          off++;
       }      
@@ -286,21 +279,19 @@ class PathParser implements Expression {
     * expression. Before extracting the segment this validates the
     * input to ensure it represents a valid path. If the path is
     * not valid then this will thrown an exception.
-    * 
-    * @param path this is the original path expression parsed
     */
-   private void segment(String path) throws Exception {
+   private void segment() throws Exception {
       char first = data[off];
 
       if(first == '/') {
-         throw new PathException("Invalid path expression '%s'", path);
+         throw new PathException("Invalid path expression '%s' in %s", path, type);
       }
       if(first == '@') {
-         attribute(path);
+         attribute();
       } else {
-         element(path);
+         element();
       }
-      index();
+      align();
    }
    
    /**
@@ -308,10 +299,8 @@ class PathParser implements Expression {
     * An element value is one that contains only alphanumeric values
     * or any special characters allowed within an XML element name.
     * If an illegal character is found an exception is thrown.
-    * 
-    * @param path this is the path expression to be parsed
     */
-   private void element(String path) throws Exception { 
+   private void element() throws Exception { 
       int mark = off;
       int size = 0;
       
@@ -320,10 +309,10 @@ class PathParser implements Expression {
          
          if(!isValid(value)) {
             if(value == '[') {
-               index(path);            
+               index();            
                break;
             } else if(value != '/') { 
-               throw new PathException("Illegal character '%s' for element in '%s'", value, path);
+               throw new PathException("Illegal character '%s' in element for '%s' in %s", value, path, type);
             }         
             break;
          }
@@ -337,49 +326,33 @@ class PathParser implements Expression {
     * An attribute value is one that contains only alphanumeric values
     * or any special characters allowed within an XML attribute name.
     * If an illegal character is found an exception is thrown.
-    * 
-    * @param path this is the path expression to be parsed
     */
-   private void attribute(String path) throws Exception {
-      int mark = ++off;
+   private void attribute() throws Exception {
+      int mark = ++off;      
       
       while(off < count) {
          char value = data[off++];
          
          if(!isValid(value)) {
-            throw new PathException("Illegal character '%s' for attribute in '%s'", value, path);
+            throw new PathException("Illegal character '%s' in attribute for '%s' in %s", value, path, type);
          }         
       }
-      if(off > mark) {
+      if(off <= mark) {
+         throw new PathException("Attribute reference in '%s' for %s is empty", path, type);
+      } else {
          attribute = true;
       }
       append(mark, off - mark);
    }
    
-   /**
-    * This is used to add a default index to a segment or attribute
-    * extracted from the source expression. In the event that a
-    * segment does not contain an index, the default index of 1 is
-    * assigned to the element for consistency.
-    */
-   private void index() throws Exception {
-      int require = names.size();
-      int size = indexes.size();
-      
-      if(require > size) {
-         indexes.add(1);
-      }
-   }
    
    /**
     * This is used to extract an index from an element. An index is
     * a numerical value that identifies the position of the path
     * within the XML document. If the index can not be extracted
     * from the expression an exception is thrown.
-    * 
-    * @param path this is the original path to be parsed
     */
-   private void index(String path) throws Exception {
+   private void index() throws Exception {
       int value = 0;
 
       if(data[off-1] == '[') {
@@ -395,9 +368,39 @@ class PathParser implements Expression {
          }
       }
       if(data[off++ - 1] != ']') {
-         throw new PathException("Invalid index for path '%s'", path);
+         throw new PathException("Invalid index for path '%s' in %s", path, type);
       }
       indexes.add(value);
+   }
+   
+   
+   /**
+    * This method is used to trim any trailing characters at the
+    * end of the path. Trimming will remove any trailing legal
+    * characters at the end of the path that we do not want in a
+    * canonical string representation of the path expression. 
+    */
+   private void truncate() throws Exception {
+      if(off - 1 >= data.length) {
+         off--;
+      } else if(data[off-1] == '/'){
+         off--;
+      }
+   }
+   
+   /**
+    * This is used to add a default index to a segment or attribute
+    * extracted from the source expression. In the event that a
+    * segment does not contain an index, the default index of 1 is
+    * assigned to the element for consistency.
+    */
+   private void align() throws Exception {
+      int require = names.size();
+      int size = indexes.size();
+      
+      if(require > size) {
+         indexes.add(1);
+      }
    }
    
    /**
@@ -478,10 +481,10 @@ class PathParser implements Expression {
    public String toString() {
       int size = off - start;
       
-      if(path == null) {
-         return new String(data, start, size);
+      if(cache == null) {
+         cache = new String(data, start, size);
       }
-      return path;
+      return cache;
    } 
    
    /**

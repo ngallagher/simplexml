@@ -61,7 +61,11 @@ interface Section extends Iterable<String> {
     * Returns the named element as a <code>Label</code> object.
     * For convenience this method is provided so that when iterating
     * over the names of the elements in the section a specific one
-    * of interest can be acquired. 
+    * of interest can be acquired.
+    * <p>
+    * To ensure that elements of the same name are not referenced
+    * more than once this will remove the element once acquired. 
+    * This ensures that they are visited only once in serialization.      
     * 
     * @param name the name of the element that is to be acquired
     * 
@@ -74,6 +78,10 @@ interface Section extends Iterable<String> {
     * For convenience this method is provided so that when iterating
     * over the names of the elements in the section a specific one
     * of interest can be acquired. 
+    * <p>
+    * To ensure that models of the same name are not referenced
+    * more than once this will remove the model once acquired. 
+    * This ensures that they are visited only once in serialization.
     * 
     * @param name the name of the element that is to be acquired
     * 

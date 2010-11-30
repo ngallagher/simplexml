@@ -168,13 +168,17 @@ class ModelSection implements Section {
     * For convenience this method is provided so that when iterating
     * over the names of the elements in the section a specific one
     * of interest can be acquired. 
+    * <p>
+    * To ensure that elements of the same name are not referenced
+    * more than once this will remove the element once acquired. 
+    * This ensures that they are visited only once in serialization.
     * 
     * @param name the name of the element that is to be acquired
     * 
     * @return this returns the label associated with the name
     */
    public Label getElement(String name) throws Exception {
-      return getElements().get(name);
+      return getElements().take(name);
    }
 
    /**
@@ -182,20 +186,26 @@ class ModelSection implements Section {
     * For convenience this method is provided so that when iterating
     * over the names of the elements in the section a specific one
     * of interest can be acquired. 
+    * <p>
+    * To ensure that models of the same name are not referenced
+    * more than once this will remove the model once acquired. 
+    * This ensures that they are visited only once in serialization.
     * 
     * @param name the name of the element that is to be acquired
     * 
     * @return this returns the section associated with the name
     */
    public Section getSection(String name) throws Exception {
-      Model value = getModels().get(name);
+      ModelMap map = getModels();
+      ModelList list = map.get(name);      
       
-      if(value == null) {
-         return null;
+      if(list != null) {
+         Model model = list.take();
+         
+         if(model != null){
+            return new ModelSection(context, model);
+         }
       }
-      if(value.isEmpty()) {
-         return null;
-      }
-      return new ModelSection(context, value);
+      return null;
    }
 }

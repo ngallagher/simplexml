@@ -24,8 +24,19 @@ import org.simpleframework.xml.Order;
  * The <code>ModelAssembler</code> is used to assemble the model
  * using registrations based on the specified order. The order of
  * elements and attributes is specified by an <code>Order</code>
- * annotation. If such an annotations exists then it is used to
- * perform the initial registrations and thus establish order.
+ * annotation. For order, all attributes within an XPath expression
+ * must be valid attribute references, for example
+ * <pre>
+ * 
+ *    some[1]/path/@attribute
+ *    path/to/@attribute
+ *    attribute    
+ * 
+ * </pre>
+ * The above expressions are all legal references. The final 
+ * reference specifies an attribute that is not within an XPath
+ * expression. If the '@' character is missing from attribute
+ * orderings an exception is thrown to indicate this.
  * 
  * @author Niall Gallagher
  * 
@@ -73,12 +84,13 @@ class ModelAssembler {
     * @param order this is the order specified by the class   
     */
    private void assembleElements(Model model, Order order) throws Exception {
-      for(String path : order.elements()) {
-         Expression expression = builder.build(path);
+      for(String value : order.elements()) {
+         Expression path = builder.build(value);
          
-         if(expression != null) {
-            buildElements(model, expression);
-         }
+         if(path.isAttribute()) {
+            throw new PathException("Ordered element '%s' references an attribute", path);
+         }         
+         registerElements(model, path);         
       }
    }
    
@@ -92,12 +104,13 @@ class ModelAssembler {
     * @param order this is the order specified by the class   
     */
    private void assembleAttributes(Model model, Order order) throws Exception {
-      for(String path : order.attributes()) {
-         Expression expression = builder.build(path);
+      for(String value : order.attributes()) {
+         Expression path = builder.build(value);
          
-         if(expression != null) {
-            buildAttributes(model, expression);
+         if(!path.isAttribute() && path.isPath()) {
+            throw new PathException("Ordered attribute '%s' references an element", path);
          }
+         registerAttributes(model, path);         
       }
    }
    
@@ -107,20 +120,38 @@ class ModelAssembler {
     * the final segment of the expression is the attribute.
     * 
     * @param model the model to register the attribute with
-    * @param expression this is the expression to be evaluated
+    * @param path this is the expression to be evaluated
     */
-   private void buildAttributes(Model model, Expression expression) throws Exception {
-      String name = expression.getFirst();         
-      Model next = model.lookup(name);
-      
-      if(expression.isPath()) {
-         expression = expression.getPath(1);
+   private void registerAttributes(Model model, Expression path) throws Exception {
+      String name = path.getFirst();   
+      int index = path.getIndex();
+  
+      if(path.isPath()) {
+         Model next = model.register(name, index);
+         Expression child = path.getPath(1);
          
          if(next == null) {
             throw new PathException("Element '%s' does not exist", name);
          }
-         buildAttributes(next, expression);
+         registerAttributes(next, child);
       } else {         
+         registerAttribute(model, path);
+      }
+   }
+   
+   /**
+    * This will register the attribute specified in the path within
+    * the provided model. Registration here will ensure that the
+    * attribute is ordered so that it is placed within the document
+    * in a required position.
+    * 
+    * @param model this is the model to register the attribute in
+    * @param path this is the path referencing the attribute
+    */
+   private void registerAttribute(Model model, Expression path) throws Exception {
+      String name = path.getFirst(); 
+      
+      if(name != null) {
          model.registerAttribute(name);
       }
    }
@@ -131,16 +162,54 @@ class ModelAssembler {
     * the final segment of the expression is the element.
     * 
     * @param model the model to register the element with
-    * @param expression this is the expression to be evaluated
+    * @param path this is the expression to be evaluated
     */
-   private void buildElements(Model model, Expression expression) throws Exception {
-      String name = expression.getFirst();         
-      Model next = model.register(name); 
+   private void registerElements(Model model, Expression path) throws Exception {
+      String name = path.getFirst();  
+      int index = path.getIndex();
       
-      if(expression.isPath()) {
-         expression = expression.getPath(1);
-         buildElements(next, expression);
+      if(name != null) {
+         Model next = model.register(name, index);
+         Expression child = path.getPath(1);
+      
+         if(path.isPath()) {            
+            registerElements(next, child);
+         }
       }
-      model.registerElement(name);      
+      registerElement(model, path);      
    }   
+   
+   /**
+    * This is used to register the element within the specified
+    * model. To ensure the order does not conflict with expressions
+    * the index of the ordered path is checked. If the order comes
+    * before an expected order then an exception is thrown. 
+    * For example, take the following expressions.
+    * <pre>
+    *    
+    *    path[1]/element
+    *    path[3]/element
+    *    path[2]/element
+    *    
+    * </pre>
+    * In the above the order of appearance of the expressions does
+    * not match the indexes of the paths. This causes a conflict.
+    * To ensure such a situation does not arise this is checked.
+    * 
+    * @param model this is the model to register the element in
+    * @param path this is the expression referencing the element
+    */
+   private void registerElement(Model model, Expression path) throws Exception {
+      String name = path.getFirst();  
+      int index = path.getIndex();
+      
+      if(index > 1) {
+         Model previous = model.lookup(name, index -1);
+         
+         if(previous == null) {
+            throw new PathException("Ordered element '%s' in path '%s' is out of sequence", name, path);
+         }
+      }
+      model.register(name, index);
+   }
 }
