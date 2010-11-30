@@ -1,0 +1,140 @@
+<table border='0'><tr><td><img src='/images/home_bullet.gif' border='0'></td><td><a name='xpath'></a><b>Mapping with XPath expressions</b></td></tr><tr><td><!-- padding --></td><td>
+<p>
+At times it is useful to have your object model map to complex XML documents, without having to write an
+annotated class to map to the required elements and attributes. For such scenarios the 
+<a href="/download/stream/doc/javadoc/org/simpleframework/xml/Path.html">Path</a> annotation can be 
+used. This requires the user to specify an XPath expression for a field or method. For example take annotated
+fields below.
+</p>
+<pre class="sh_java">
+@Root
+public class ServerDeployment {
+
+   @Attribute
+   @Path("group")
+   private ServerType type;
+
+   @Element
+   @Path("group/server[1]/details")
+   private Server primary;
+
+   @Element
+   @Path("group/server[2]/details")
+   private Server secondary;
+    
+   public Server getPrimary() {
+      return primary;
+   }
+
+   public Server getSecondary() {
+      return secondary
+   }
+}
+
+@Root
+public class Server {
+
+   @Attribute
+   private String host;
+
+   @Attribute
+   private int port;
+}
+
+public enum ServerType {
+   WINDOWS,
+   LINUX,
+   SOLARIS
+}
+</pre>
+<p>
+The above code shows annotations applied to two objects. One contains XPath expressions that
+tell the serialization process how to read and write the details to an from the document. Here
+the expression defines a server within wrapper elements. When serializing such objects, the 
+following XML results.  
+</p>
+<pre class="sh_xml">
+&lt;serverDeployment&gt;
+   &lt;group type="LINUX"&gt;
+      &lt;server&gt;
+         &lt;details&gt;
+            &lt;primary host="host1.domain.com" port="4567"/&gt; 
+         &lt;/details&gt;
+      &lt;/server&gt;
+      &lt;server&gt;
+         &lt;details&gt;
+            &lt;secondary host="host2.domain.com" port="4567"/&gt; 
+         &lt;/details&gt;
+      &lt;/server&gt;
+   &lt;/group&gt;
+&lt;/serverDeployment&gt;
+</pre>
+<p>
+As can be seen the XPath expressions defined have been used to determine the structure
+of the XML document. Such expressions allow a complex XML format to be serialized in to
+two simple objects. This can greatly reduce the number of types required to map an
+object to an XML structure. Both attributes and elements can be mapped in this manner.
+</p>
+When ordering elements with the <a href="/download/stream/doc/javadoc/org/simpleframework/xml/Order.html">Order</a>
+annotation these wrapper elements can be sorted. To order wrapper elements an XPath expression can be
+used to identify the wrapper. Simply place the expression in the order annotation along with
+any element or attribute names and it is ordered as required. For example, take the following
+code snippet.
+</p>
+<pre class="sh_java">
+@Default
+@Order(elements={"name[1]/first", "name[1]/surname", "age/date", "name[2]/nickname"})
+public class Person {
+   
+   @Path("name[1]")
+   private String first;
+
+   @Path("name[1]")
+   private String surname;
+
+   @Path("name[2]")
+   private String nickname;
+
+   @Path("age")
+   private String date;
+
+   public String getName() {
+      return name;
+   }
+
+   public String getSurname() {
+      return surname;
+   }
+}
+</pre>
+<p>
+Just like ordering of elements or attributes without XPath expressions, a reference is all
+that is needed to ensure order. For the above code the serialization of the object will result
+in the following XML.
+</p>
+<pre class="sh_xml">
+&lt;person&gt;
+   &lt;name&gt;
+      &lt;first&gt;Jack&lt;/first&gt;
+      &lt;surname&gt;Daniels&lt;/surname&gt;
+   &lt;/name&gt;
+   &lt;age&gt;
+       &lt;birth&gt;19/10/1912&lt;/birth&gt;
+   &lt;/age&gt;
+   &lt;name&gt;
+      &lt;nickname&gt;JD&lt;/nickname&gt;
+   &lt;/name&gt;
+&lt;/person&gt;
+</pre>
+<p>
+In the above XML snippet we have serialized a single object in to multiple elements and
+ensured the order of the elements is as we required. Ordering can be applied to elements
+and attributes with <a href="/download/stream/doc/javadoc/org/simpleframework/xml/Path.html">Path</a>
+annotations as easily as it can to those without, and both can be mixed within the same 
+annotation. Using this type of ordering it is possible to generate very predictible
+results. One thing to note when using such annotations, is that only a subset of the XPath
+expression syntax is supported. For example, element and attribute references can not
+be taken from the root of the document, only references within the current context are
+allowed.
+</p>
+</td></tr></table>
