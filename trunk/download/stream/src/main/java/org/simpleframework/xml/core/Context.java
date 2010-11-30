@@ -261,6 +261,19 @@ interface Context {
     * @throws Exception thrown if the details cannot be set
     */
    public boolean setOverride(Type type, Object value, OutputNode node) throws Exception;
+   
+   /**
+    * This is used to determine the type of an object given the 
+    * source instance. To provide a best match approach this will
+    * first attempt to get the value for the actual instance, if
+    * however the instance is null the type is delegated to.
+    * 
+    * @param type this is the type used in the serialization
+    * @param value this is the source instance being used
+    * 
+    * @return the best match given the criteria
+    */
+   public Class getType(Type type, Object value);
 
    /**
     * This is used to acquire the attribute mapped to the specified

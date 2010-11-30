@@ -432,7 +432,7 @@ class TreeModel implements Model {
     * contain elements and attributes associated with a type.
     * 
     * @param name this is the name of the model to be registered
-    * @param name this is the index used to order the model
+    * @param index this is the index used to order the model
     * 
     * @return this returns the model that was registered
     */
@@ -452,7 +452,7 @@ class TreeModel implements Model {
     * contain elements and attributes associated with a type.
     * 
     * @param name this is the name of the model to be registered
-    * @param name this is the index used to order the model
+    * @param index this is the index used to order the model
     * 
     * @return this returns the model that was registered
     */
