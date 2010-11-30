@@ -68,15 +68,15 @@ public class RegistryCycleStrategyTest extends ValidationTestCase {
       assertElementExists(text, "/petBucket");
       assertElementExists(text, "/petBucket/pet");
       assertElementHasAttribute(text, "/petBucket", "id", "0");
-      assertElementHasAttribute(text, "/petBucket/pet[0]", "id", "1");
-      assertElementHasAttribute(text, "/petBucket/pet[1]", "id", "2");
-      assertElementHasAttribute(text, "/petBucket/pet[2]", "id", "3");
-      assertElementHasAttribute(text, "/petBucket/pet[3]", "reference", "2");
-      assertElementHasAttribute(text, "/petBucket/pet[4]", "reference", "1");
-      assertElementHasValue(text, "/petBucket/pet[0]/name", "Kitty");
-      assertElementHasValue(text, "/petBucket/pet[0]/age", "10");
-      assertElementHasAttribute(text, "/petBucket/pet[0]", "class", Cat.class.getName());
-      assertElementHasAttribute(text, "/petBucket/pet[1]", "class", Dog.class.getName());
+      assertElementHasAttribute(text, "/petBucket/pet[1]", "id", "1");
+      assertElementHasAttribute(text, "/petBucket/pet[2]", "id", "2");
+      assertElementHasAttribute(text, "/petBucket/pet[3]", "id", "3");
+      assertElementHasAttribute(text, "/petBucket/pet[4]", "reference", "2");
+      assertElementHasAttribute(text, "/petBucket/pet[5]", "reference", "1");
+      assertElementHasValue(text, "/petBucket/pet[1]/name", "Kitty");
+      assertElementHasValue(text, "/petBucket/pet[1]/age", "10");
+      assertElementHasAttribute(text, "/petBucket/pet[1]", "class", Cat.class.getName());
+      assertElementHasAttribute(text, "/petBucket/pet[2]", "class", Dog.class.getName());
    }
    
 }

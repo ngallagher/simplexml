@@ -35,8 +35,11 @@ public class PathSectionIndexTest extends ValidationTestCase {
       persister.write(example, writer);
       PathSectionIndexExample recovered= persister.read(PathSectionIndexExample.class, writer.toString());
       assertEquals(recovered.home, example.home);
-      assertEquals(recovered.mobile, example.mobile);      
+      assertEquals(recovered.mobile, example.mobile);
+      assertElementExists(writer.toString(), "/pathSectionIndexExample/contact-details[1]/phone/mobile");
+      assertElementExists(writer.toString(), "/pathSectionIndexExample/contact-details[2]/phone/home");
       validate(example, persister);
+      
    }
 
 }
