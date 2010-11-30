@@ -393,6 +393,24 @@ class Source implements Context {
       }          
       return strategy.write(type, value, map, session);
    }
+   
+   /**
+    * This is used to determine the type of an object given the 
+    * source instance. To provide a best match approach this will
+    * first attempt to get the value for the actual instance, if
+    * however the instance is null the type is delegated to.
+    * 
+    * @param type this is the type used in the serialization
+    * @param value this is the source instance being used
+    * 
+    * @return the best match given the criteria
+    */
+   public Class getType(Type type, Object value) {
+      if(value != null) {
+         return value.getClass();
+      }
+      return type.getType();
+   }
 
    /**
     * Replaces any template variables within the provided string. 

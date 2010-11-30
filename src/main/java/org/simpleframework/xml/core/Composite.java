@@ -27,12 +27,12 @@ import org.simpleframework.xml.stream.Position;
 
 /**
  * The <code>Composite</code> object is used to perform serialization
- * of objects that contain XML annotation. Composite objects are objects
+ * of objects that contain XML annotations. Composite objects are objects
  * that are not primitive and contain references to serializable fields.
  * This <code>Converter</code> will visit each field within the object
  * and deserialize or serialize that field depending on the requested
  * action. If a required field is not present when deserializing from
- * an XML element this terminates the deserialization reports the error.
+ * an XML element this terminates and deserialization reports the error.
  * <pre>
  * 
  *    &lt;element name="test" class="some.package.Type"&gt;
@@ -526,11 +526,8 @@ class Composite implements Converter {
       
       if(label == null) {
          Position line = node.getPosition();
-         Class expect = type.getType();
-         
-         if(source != null) {
-            expect = source.getClass();
-         }
+         Class expect = context.getType(type, source);
+
          if(map.isStrict(context) && revision.isEqual()) {              
             throw new AttributeException("Attribute '%s' does not have a match in %s at %s", name, expect, line);
          }            
@@ -560,11 +557,8 @@ class Composite implements Converter {
       }
       if(label == null) {
          Position line = node.getPosition();
-         Class expect = type.getType();
+         Class expect = context.getType(type, source);
          
-         if(source != null) {
-            expect = source.getClass();
-         }        
          if(map.isStrict(context) && revision.isEqual()) {              
             throw new ElementException("Element '%s' does not have a match in %s at %s", name, expect, line);
          } else {
@@ -592,11 +586,8 @@ class Composite implements Converter {
     
       if(object == null) {     
          Position line = node.getPosition();
-         Class expect = type.getType();
+         Class expect = context.getType(type, source);
          
-         if(source != null) {
-            expect = source.getClass();
-         }
          if(label.isRequired() && revision.isEqual()) {              
             throw new ValueRequiredException("Empty value for %s in %s at %s", label, expect, line);
          }
@@ -654,16 +645,14 @@ class Composite implements Converter {
     * XML schema class annotations. If there is a required label that
     * remains it is reported within the exception thrown.
     * 
+    * @param node this is the node that contains the contact value
     * @param map this is the map to check for remaining labels
     * @param source this is the object that has been deserialized 
     */
-   private void validate(InputNode node, LabelMap map, Object source) throws Exception {     
+   private void validate(InputNode node, LabelMap map, Object source) throws Exception {
+      Class expect = context.getType(type, source);
       Position line = node.getPosition();
-      Class expect = type.getType();
       
-      if(source != null) {
-         expect = source.getClass();
-      }
       for(Label label : map) {
          if(label.isRequired() && revision.isEqual()) {
             throw new ValueRequiredException("Unable to satisfy %s for %s at %s", label, expect, line);
@@ -1031,12 +1020,13 @@ class Composite implements Converter {
       for(Label label : attributes) {
          Contact contact = label.getContact();         
          Object value = contact.get(source);
+         Class expect = context.getType(type, source);
          
          if(value == null) {
             value = label.getEmpty(context);
          }
          if(value == null && label.isRequired()) {
-            throw new AttributeException("Value for %s is null", label);
+            throw new AttributeException("Value for %s is null in %s", label, expect);
          }
          writeAttribute(node, value, label);              
       }      
@@ -1064,9 +1054,10 @@ class Composite implements Converter {
             writeSection(next, source, child);
          } else {
             Label label = section.getElement(name);
-            
+            Class expect = context.getType(type, source);
+
             if(label == null) {
-               throw new ElementException("Element '%s' not defined for", name, type);
+               throw new ElementException("Element '%s' not defined in %s", name, expect);
             }
             writeReplace(node, source, label);
          }            
@@ -1088,9 +1079,10 @@ class Composite implements Converter {
    private void writeReplace(OutputNode node, Object source, Label label) throws Exception {
       Contact contact = label.getContact();
       Object value = contact.get(source);
+      Class expect = context.getType(type, source);
       
       if(value == null && label.isRequired()) {
-         throw new ElementException("Value for %s is null", label);
+         throw new ElementException("Value for %s is null in %s", label, expect);
       }
       Object replace = writeReplace(value);
       
@@ -1139,13 +1131,13 @@ class Composite implements Converter {
       if(label != null) {
          Contact contact = label.getContact();
          Object value = contact.get(source);
-         Class type = source.getClass();
-          
+         Class expect = context.getType(type, source);
+         
          if(value == null) {
             value = label.getEmpty(context);
          }
          if(value == null && label.isRequired()) {
-            throw new TextException("Value for %s is null for %s", label, type);
+            throw new TextException("Value for %s is null in %s", label, expect);
          }
          writeText(node, value, label); 
       }         
