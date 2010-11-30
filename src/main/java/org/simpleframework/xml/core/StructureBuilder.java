@@ -115,7 +115,7 @@ class StructureBuilder {
     * @param type this is the type that is being scanned
     */
    public StructureBuilder(Scanner scanner, Class type) throws Exception {
-      this.builder = new ExpressionBuilder();
+      this.builder = new ExpressionBuilder(type);
       this.assembler = new ModelAssembler(builder);
       this.attributes = new LabelMap(scanner);
       this.elements = new LabelMap(scanner);
@@ -354,13 +354,14 @@ class StructureBuilder {
     * 
     * @return this returns the model that was registered
     */
-   private Model register(String path) throws Exception {      
-      Model model = root.lookup(path);
+   private Model register(String path) throws Exception {
+      Expression expression = builder.build(path);
+      Model model = root.lookup(expression);
       
       if (model != null) {
          return model;
       }      
-      return create(path);
+      return create(expression);
    }
    
    /**
@@ -373,12 +374,20 @@ class StructureBuilder {
     * 
     * @return this returns the model that was registered
     */
-   private Model create(String path) throws Exception {
-      Expression expression = builder.build(path);
+   private Model create(Expression path) throws Exception {
       Model model = root;
    
-      for(String segment : expression) {
-         model = model.register(segment);
+      while(model != null) {
+         String name = path.getFirst();
+         int index = path.getIndex();
+
+         if(name != null) {
+            model = model.register(name, index);
+         }
+         if(!path.isPath()) {
+            break;
+         }
+         path = path.getPath(1);
       }
       return model;
    }

@@ -345,6 +345,7 @@ class Composite implements Converter {
     */
    private void read(InputNode node, Object source, Schema schema) throws Exception {
       Section section = schema.getSection();
+      
       readVersion(node, source, schema);
       readText(node, source, schema);
       readSection(node, source, section);
@@ -525,10 +526,13 @@ class Composite implements Converter {
       
       if(label == null) {
          Position line = node.getPosition();
-         Class type = source.getClass();
-
+         Class expect = type.getType();
+         
+         if(source != null) {
+            expect = source.getClass();
+         }
          if(map.isStrict(context) && revision.isEqual()) {              
-            throw new AttributeException("Attribute '%s' does not have a match in %s at %s", name, type, line);
+            throw new AttributeException("Attribute '%s' does not have a match in %s at %s", name, expect, line);
          }            
       } else {
          read(node, source, label);
@@ -556,10 +560,13 @@ class Composite implements Converter {
       }
       if(label == null) {
          Position line = node.getPosition();
-         Class type = source.getClass();
+         Class expect = type.getType();
          
+         if(source != null) {
+            expect = source.getClass();
+         }        
          if(map.isStrict(context) && revision.isEqual()) {              
-            throw new ElementException("Element '%s' does not have a match in %s at %s", name, type, line);
+            throw new ElementException("Element '%s' does not have a match in %s at %s", name, expect, line);
          } else {
             node.skip();                 
          }
