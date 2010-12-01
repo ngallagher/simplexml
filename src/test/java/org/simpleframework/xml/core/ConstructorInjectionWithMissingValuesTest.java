@@ -89,6 +89,6 @@ public class ConstructorInjectionWithMissingValuesTest extends TestCase{
       TwoConstructorsWithMissingValues example = persister.read(TwoConstructorsWithMissingValues.class, SOURCE);
       assertEquals(example.getA(), "Value for A");
       assertEquals(example.getB(), null);
-      assertEquals(example.getC(), "Default C");
+      assertEquals(example.getC(), null);
    }
 }
