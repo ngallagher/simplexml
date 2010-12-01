@@ -18,6 +18,7 @@
 
 package org.simpleframework.xml.core;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -167,7 +168,7 @@ class ClassCreator implements Creator {
     * @return this returns a list of builders for the creator
     */
    public List<Builder> getBuilders() {
-      return list;
+      return new ArrayList<Builder>(list);
    }
    
    /**

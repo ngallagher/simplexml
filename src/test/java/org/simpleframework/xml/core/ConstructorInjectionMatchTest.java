@@ -38,7 +38,7 @@ public class ConstructorInjectionMatchTest extends TestCase {
         }
         
         public SimpleElementOne(SimpleElementTwo two, int length) {
-        	this.two = two;
+           this.two = two;
         }
     }
 

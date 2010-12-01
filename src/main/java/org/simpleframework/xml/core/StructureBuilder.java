@@ -19,6 +19,7 @@
 package org.simpleframework.xml.core;
 
 import java.lang.annotation.Annotation;
+import java.util.Iterator;
 import java.util.List;
 
 import org.simpleframework.xml.Attribute;
@@ -398,8 +399,6 @@ class StructureBuilder {
     * then validation will fail and an exception will be thrown. 
     * 
     * @param type this is the object type that is being scanned
-    * 
-    * @throws Exception if text and element annotations are present
     */
    public void validate(Class type) throws Exception {
       Creator creator = scanner.getCreator();
@@ -408,6 +407,7 @@ class StructureBuilder {
       validateElements(type, order);
       validateAttributes(type, order);
       validateParameters(creator);
+      validateConstructors(type);
       validateModel(type);
       validateText(type);      
    }
@@ -419,8 +419,6 @@ class StructureBuilder {
     * values, or redundant elements and attributes.
     * 
     * @param type this is the object type representing the schema
-    * 
-    * @throws Exception if text and element annotations are present
     */
    private void validateModel(Class type) throws Exception {
       if(!root.isEmpty()) {
@@ -434,8 +432,6 @@ class StructureBuilder {
     * then validation will fail and an exception will be thrown. 
     * 
     * @param type this is the object type that is being scanned
-    * 
-    * @throws Exception if text and element annotations are present
     */
    private void validateText(Class type) throws Exception {
       if(text != null) {
@@ -458,16 +454,9 @@ class StructureBuilder {
     * existing element then this will throw an exception.
     * 
     * @param type this is the object type that is being scanned
-    * 
-    * @throws Exception if an ordered element does not exist
+    * @param order this is the order that is to be validated
     */
    private void validateElements(Class type, Order order) throws Exception {
-      Creator factory = scanner.getCreator();
-      List<Builder> builders = factory.getBuilders();
-      
-      for(Builder builder : builders) {
-         validateConstructor(builder, elements);
-      }
       if(order != null) {
          for(String name : order.elements()) {
             if(!isElement(name)) {
@@ -483,16 +472,9 @@ class StructureBuilder {
     * existing attribute then this will throw an exception.
     * 
     * @param type this is the object type that is being scanned
-    * 
-    * @throws Exception if an ordered attribute does not exist
+    * @param order this is the order that is to be validated
     */
    private void validateAttributes(Class type, Order order) throws Exception {
-      Creator factory = scanner.getCreator();
-      List<Builder> builders = factory.getBuilders();
-      
-      for(Builder builder : builders) {
-         validateConstructor(builder, elements);
-      }
       if(order != null) {
          for(String name : order.attributes()) {
             if(!isAttribute(name)) {
@@ -508,26 +490,87 @@ class StructureBuilder {
     * to. Validating the constructor in this manner ensures that the
     * class schema remains fully serializable and deserializable.
     * 
-    * @param builder this is the builder to validate the labels with
-    * @param map this is the map that contains the labels to validate
+    * @param type this is the type to validate constructors for
+    */   
+   private void validateConstructors(Class type) throws Exception {
+      Creator creator = scanner.getCreator();
+      List<Builder> builders = creator.getBuilders();      
+
+      if(creator.isDefault()) {
+         validateConstructors(elements);
+         validateConstructors(attributes);
+      }
+      if(!builders.isEmpty()) {
+         validateConstructors(elements, builders);
+         validateConstructors(attributes, builders);
+      }
+   }
+   
+   /**
+    * This is used when there are only default constructors. It will
+    * check to see if any of the annotated fields or methods is read
+    * only. If a read only method or field is found then this will
+    * throw an exception to indicate that it is not valid. 
     * 
-    * @throws Exception this is thrown if the validation fails
+    * @param map this is the map of values that is to be validated
     */
-   private void validateConstructor(Builder builder, LabelMap map) throws Exception {
-      for(Label label : map) {         
+   private void validateConstructors(LabelMap map) throws Exception {
+      for(Label label : map) {
          if(label != null) {
             Contact contact = label.getContact();
-            String name = label.getName();
             
             if(contact.isReadOnly()) {
-               Parameter value = builder.getParameter(name);
-               
-               if(value == null) {
-                  throw new ConstructorException("No match found for %s in %s", contact, type);
-               }
-            }        
+               throw new ConstructorException("Default constructor can not accept read only %s in %s", label, type);
+            }
          }
-      } 
+      }
+   }
+   
+   /**
+    * This is used to ensure that final methods and fields have a 
+    * constructor parameter that allows the value to be injected in
+    * to. Validating the constructor in this manner ensures that the
+    * class schema remains fully serializable and deserializable.
+    * 
+    * @param map this is the map that contains the labels to validate
+    * @param builders this is the list of builders to validate
+    */
+   private void validateConstructors(LabelMap map, List<Builder> builders) throws Exception {      
+      for(Label label : map) {         
+         if(label != null) {
+            validateConstructor(label, builders);
+         }
+      }   
+      if(builders.isEmpty()) {
+         throw new ConstructorException("No constructor accepts all read only values in %s", type);
+      }
+   }
+   
+   /**
+    * This is used to ensure that final methods and fields have a 
+    * constructor parameter that allows the value to be injected in
+    * to. Validating the constructor in this manner ensures that the
+    * class schema remains fully serializable and deserializable.
+    * 
+    * @param label this is the variable to check in constructors
+    * @param builders this is the list of builders to validate
+    */
+   private void validateConstructor(Label label, List<Builder> builders) throws Exception {
+      Iterator<Builder> list = builders.iterator();
+      
+      while(list.hasNext()) {
+         Builder builder = list.next();
+         Contact contact = label.getContact();
+         String name = label.getName();
+         
+         if(contact.isReadOnly()) {
+            Parameter value = builder.getParameter(name);
+            
+            if(value == null) {
+               list.remove();
+            }
+         } 
+      }
    }
    
    /**
@@ -537,8 +580,6 @@ class StructureBuilder {
     * field annotation exists for the parameter validation fails.
     * 
     * @param creator this is the creator to validate the labels with
-    * 
-    * @throws Exception this is thrown if the validation fails
     */
    private void validateParameters(Creator creator) throws Exception {
       List<Parameter> list = creator.getParameters();
@@ -566,8 +607,6 @@ class StructureBuilder {
     * 
     * @param field this is the annotated method or field to validate
     * @param name this is the name of the parameter to validate with
-    * 
-    * @throws Exception thrown if the validation fails
     */
    private void validate(Label field, String name) throws Exception {
       Creator factory = scanner.getCreator();
@@ -585,8 +624,6 @@ class StructureBuilder {
     * 
     * @param field this is the annotated method or field to validate
     * @param parameter this is the parameter to validate with
-    * 
-    * @throws Exception thrown if the validation fails
     */
    private void validate(Label field, Parameter parameter) throws Exception {
       Contact contact = field.getContact();
