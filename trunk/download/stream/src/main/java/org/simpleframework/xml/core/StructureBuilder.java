@@ -442,6 +442,9 @@ class StructureBuilder {
          if(!elements.isEmpty()) {
             throw new TextException("Elements used with %s in %s", text, type);
          }
+         if(!root.isEmpty()) {
+            throw new TextException("Paths used with %s in %s", text, type);
+         }
       }  else {
          if(scanner.isEmpty()) {
             primitive = isEmpty();
