@@ -80,7 +80,7 @@ public class ConstructorInjectionTest extends ValidationTestCase {
          return array;
       }
    }
-   /*
+   
    public void testConstructor() throws Exception {      
       Persister persister = new Persister();
       Example example = persister.read(Example.class, SOURCE);
@@ -112,7 +112,7 @@ public class ConstructorInjectionTest extends ValidationTestCase {
       assertEquals(example.string, null); 
       
       validate(persister, example);
-   }*/
+   }
    
    public void testArrayExample() throws Exception {   
       Style style = new CamelCaseStyle();
