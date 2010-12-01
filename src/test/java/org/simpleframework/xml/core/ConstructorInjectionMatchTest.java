@@ -52,18 +52,6 @@ public class ConstructorInjectionMatchTest extends TestCase {
 
     }
 
-    /**
-     * The stack trace is :
-     *  org.simpleframework.xml.core.ConstructorException: No match found for field 'two' private final thirdparty.simplexml.ConstructorInjectionTest$SimpleElementTwo thirdparty.simplexml.ConstructorInjectionTest$SimpleElementOne.two in class thirdparty.simplexml.ConstructorInjectionTest$SimpleElementOne
-     *  at org.simpleframework.xml.core.Scanner.validateConstructor(Scanner.java:513)
-     *  at org.simpleframework.xml.core.Scanner.validateElements(Scanner.java:452)
-     *  at org.simpleframework.xml.core.Scanner.validate(Scanner.java:413)
-     *  at org.simpleframework.xml.core.Scanner.scan(Scanner.java:397)
-     *  at org.simpleframework.xml.core.Scanner.<init>(Scanner.java:120)
-     *  at org.simpleframework.xml.core.ScannerFactory.getInstance(ScannerFactory.java:65)
-     *  [...]
-     *  at thirdparty.simplexml.ConstructorInjectionTest.testConstructorInjection(ConstructorInjectionTest.java:78)
-     */
     public void testConstructorInjection() throws Exception {
         SimpleElementTwo two = new SimpleElementTwo("val");
         SimpleElementOne one = new SimpleElementOne(two);

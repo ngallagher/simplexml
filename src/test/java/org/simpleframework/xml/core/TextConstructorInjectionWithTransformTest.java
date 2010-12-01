@@ -14,7 +14,10 @@ import org.simpleframework.xml.transform.Transform;
 public class TextConstructorInjectionWithTransformTest extends TestCase {
    
    private static class DateTime {
-      private String time;
+      private final String time;
+      public DateTime(){
+         this.time = null;
+      }
       public DateTime(String time) {
          this.time = time;
       }
