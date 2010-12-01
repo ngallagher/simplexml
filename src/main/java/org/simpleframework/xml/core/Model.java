@@ -215,6 +215,16 @@ interface Model extends Iterable<String> {
    public boolean isAttribute(String name);
    
    /**
+    * This is used to perform a recursive search of the models that
+    * have been registered, if a model has elements or attributes
+    * then this returns true. If however no other model contains 
+    * any attributes or elements then this will return false.
+    * 
+    * @return true if any model has elements or attributes
+    */
+   public boolean isComposite();
+   
+   /**
     * Used to determine if a model is empty. A model is considered
     * empty if that model does not contain any registered elements
     * or attributes. However, if the model contains other models

@@ -474,7 +474,7 @@ class TreeModel implements Model {
     * 
     * @return true if any model has elements or attributes
     */
-   private boolean isComposite() {
+   public boolean isComposite() {
       for(ModelList list : models) {
          for(Model model : list) {
             if(model != null) {
