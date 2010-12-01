@@ -407,7 +407,8 @@ class StructureBuilder {
       
       validateElements(type, order);
       validateAttributes(type, order);
-      validateParameters(creator);
+      validateParameters(creator);    
+      validateConstructors(type);
       validateModel(type);
       validateText(type);      
    }
@@ -462,12 +463,6 @@ class StructureBuilder {
     * @throws Exception if an ordered element does not exist
     */
    private void validateElements(Class type, Order order) throws Exception {
-      Creator factory = scanner.getCreator();
-      List<Builder> builders = factory.getBuilders();
-      
-      for(Builder builder : builders) {
-         validateConstructor(builder, elements);
-      }
       if(order != null) {
          for(String name : order.elements()) {
             if(!isElement(name)) {
@@ -487,12 +482,6 @@ class StructureBuilder {
     * @throws Exception if an ordered attribute does not exist
     */
    private void validateAttributes(Class type, Order order) throws Exception {
-      Creator factory = scanner.getCreator();
-      List<Builder> builders = factory.getBuilders();
-      
-      for(Builder builder : builders) {
-         validateConstructor(builder, elements);
-      }
       if(order != null) {
          for(String name : order.attributes()) {
             if(!isAttribute(name)) {
@@ -501,33 +490,38 @@ class StructureBuilder {
          }
       }
    } 
+   
+   private void validateConstructors(Class type) throws Exception {
+      LabelMap required = new LabelMap(scanner);
+      LabelMap optional = new LabelMap(scanner);
+      
+      validateLabels(elements, required, optional);
+      validateLabels(attributes, required, optional);
+      validateConstructors(optional, required);
+   }
+   
+   private void validateConstructors(LabelMap optional, LabelMap required) throws Exception {
+      for(Label label : optional) {         
+         validateConstructor(label, required);
+      }
+   }
+   
+   private void validateConstructor(Label optional, LabelMap required) throws Exception {
+      LabelMap map = new LabelMap(scanner);      
 
-   /**
-    * This is used to ensure that final methods and fields have a 
-    * constructor parameter that allows the value to be injected in
-    * to. Validating the constructor in this manner ensures that the
-    * class schema remains fully serializable and deserializable.
-    * 
-    * @param builder this is the builder to validate the labels with
-    * @param map this is the map that contains the labels to validate
-    * 
-    * @throws Exception this is thrown if the validation fails
-    */
-   private void validateConstructor(Builder builder, LabelMap map) throws Exception {
-      for(Label label : map) {         
-         if(label != null) {
-            Contact contact = label.getContact();
-            String name = label.getName();
-            
-            if(contact.isReadOnly()) {
-               Parameter value = builder.getParameter(name);
-               
-               if(value == null) {
-                  throw new ConstructorException("No match found for %s in %s", contact, type);
-               }
-            }        
+      for(Label label : required) {
+         String name = label.getName();
+         
+         if(name != null) {
+            map.put(name, label);
          }
       } 
+      String name = optional.getName();
+      
+      if(name != null) {
+         map.put(name, optional);         
+      }
+      validateConstructor(map);      
    }
    
    /**
@@ -604,6 +598,20 @@ class StructureBuilder {
       }     
    }
    
+   private void validateLabels(LabelMap map, LabelMap required, LabelMap optional) throws Exception {
+      for(Label label : map) {
+         if(label != null) {
+            String name = label.getName();
+         
+            if(label.isRequired()) {
+               required.put(name, label);
+            } else {
+               optional.put(name, label);
+            }
+         }
+      }
+   }
+   
    /**
     * This method is used to determine if a root annotation value is
     * an empty value. Rather than determining if a string is empty
@@ -633,3 +641,4 @@ class StructureBuilder {
       return root.isEmpty();
    } 
 }
+
