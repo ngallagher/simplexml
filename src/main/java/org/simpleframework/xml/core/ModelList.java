@@ -18,7 +18,7 @@
 
 package org.simpleframework.xml.core;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 /**
  * The <code>ModelList</code> object is used to maintain an ordered
@@ -30,7 +30,7 @@ import java.util.LinkedList;
  * 
  * @author Niall Gallagher
  */
-class ModelList extends LinkedList<Model> {
+class ModelList extends ArrayList<Model> {
    
    /**
     * Constructor for the <code>ModelList</code> object. This is
@@ -127,7 +127,7 @@ class ModelList extends LinkedList<Model> {
     */
    public Model take() {
       while(!isEmpty()) {
-         Model model = removeFirst();         
+         Model model = remove(0);         
          
          if(!model.isEmpty()) {
             return model;
