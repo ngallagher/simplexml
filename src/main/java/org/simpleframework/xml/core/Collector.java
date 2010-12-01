@@ -111,10 +111,8 @@ class Collector implements Criteria {
 
       if(label != null) {
          String name = label.getName(context);
-         String real = label.getName();
          
          if(!registry.containsKey(name)) {
-            registry.put(real, variable);
             registry.put(name, variable);
          }
       }

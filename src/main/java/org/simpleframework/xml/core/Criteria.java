@@ -27,7 +27,7 @@ package org.simpleframework.xml.core;
  * 
  * @author Niall Gallagher
  */
-interface Criteria {
+interface Criteria extends Iterable<String> {
    
    /**
     * This is used to get the <code>Variable</code> that represents

@@ -83,10 +83,12 @@ class ClassCreator implements Creator {
     * argument constructor. If for some reason the object can not be
     * instantiated then this will throw an exception with the reason.
     * 
+    * @param context this is the context used to match parameters
+    * 
     * @return this returns the object that has been instantiated
     */
-   public Object getInstance() throws Exception {
-      return primary.getInstance();
+   public Object getInstance(Context context) throws Exception {
+      return primary.getInstance(context);
    }
    
    /**
@@ -95,17 +97,18 @@ class ClassCreator implements Creator {
     * been deserialized can be taken from the <code>Criteria</code>
     * object which contains the deserialized values.
     * 
+    * @param context this is the context used to match parameters
     * @param criteria this contains the criteria to be used
     * 
     * @return this returns the object that has been instantiated
     */
-   public Object getInstance(Criteria criteria) throws Exception {
-      Builder builder = getBuilder(criteria);
+   public Object getInstance(Context context, Criteria criteria) throws Exception {
+      Builder builder = getBuilder(context, criteria);
       
       if(builder == null) {
          throw new PersistenceException("Constructor not matched for %s", type);
       }
-      return builder.getInstance(criteria);
+      return builder.getInstance(context, criteria);
    }
    
    /**
@@ -113,16 +116,17 @@ class ClassCreator implements Creator {
     * to instantiate the object. If there is no match for the builder
     * then the default constructor is provided.
     * 
+    * @param context this is the context used to match parameters
     * @param criteria this contains the criteria to be used
     * 
     * @return this returns the builder that has been matched
     */
-   private Builder getBuilder(Criteria criteria) throws Exception {
+   private Builder getBuilder(Context context, Criteria criteria) throws Exception {
       Builder result = primary;
-      int max = 0;
+      double max = 0.0;
       
       for(Builder builder : list) {
-         int score = builder.getScore(criteria);
+         double score = builder.getScore(context, criteria);
          
          if(score > max) {
             result = builder;

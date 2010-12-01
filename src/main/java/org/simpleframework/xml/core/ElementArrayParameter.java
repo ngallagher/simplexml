@@ -86,12 +86,25 @@ class ElementArrayParameter implements Parameter {
    /**
     * This is used to acquire the name of the parameter that this
     * represents. The name is determined using annotation and 
-    * the name attribute of that annotation, if one is provided.
+    * the name attribute of that annotation, if one is provided.    
     * 
     * @return this returns the name of the annotated parameter
     */
-   public String getName() {
+   public String getName() throws Exception {
       return name;
+   }
+   
+   /**
+    * This is used to acquire the name of the parameter that this
+    * represents. The name is determined using annotation and 
+    * the name attribute of that annotation, if one is provided.
+    * 
+    * @param context this is the context used to style the name
+    * 
+    * @return this returns the name of the annotated parameter
+    */
+   public String getName(Context context) throws Exception {
+      return label.getName(context);
    }
    
    /**

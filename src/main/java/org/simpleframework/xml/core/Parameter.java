@@ -33,15 +33,6 @@ import java.lang.annotation.Annotation;
 interface Parameter {
    
    /**
-    * This is used to acquire the name of the parameter that this
-    * represents. The name is determined using annotation and 
-    * the name attribute of that annotation, if one is provided.
-    * 
-    * @return this returns the name of the annotated parameter
-    */
-   public String getName() throws Exception;
-   
-   /**
     * This is used to acquire the annotation that is used for the
     * parameter. The annotation provided will be an XML annotation
     * such as the <code>Element</code> or <code>Attribute</code>
@@ -88,4 +79,24 @@ interface Parameter {
     * @return this returns true if the parameter is primitive
     */
    public boolean isPrimitive();
+   
+   /**
+    * This is used to acquire the name of the parameter that this
+    * represents. The name is determined using annotation and 
+    * the name attribute of that annotation, if one is provided.
+    * 
+    * @return this returns the name of the annotated parameter
+    */
+   public String getName() throws Exception;
+   
+   /**
+    * This is used to acquire the name of the parameter that this
+    * represents. The name is determined using annotation and 
+    * the name attribute of that annotation, if one is provided.
+    * 
+    * @param context this is the context used to style the name
+    * 
+    * @return this returns the name of the annotated parameter
+    */
+   public String getName(Context context) throws Exception;
 }
