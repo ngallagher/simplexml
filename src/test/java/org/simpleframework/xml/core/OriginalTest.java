@@ -86,7 +86,7 @@ public class OriginalTest extends ValidationTestCase {
          return name.hashCode() ^ value.hashCode();
       }
    }
-   /*
+   
    @Root
    @NamespaceList({@Namespace(prefix="root", reference="http://domain/entry")})
    private static class ExampleWithOriginals {
@@ -140,7 +140,7 @@ public class OriginalTest extends ValidationTestCase {
       assertEquals(original.inlineMap.get(3.0), (new Entry("c", "3")));
       
       validate(persister, original);
-   }*/
+   }
    public void testA(){}
 
 }

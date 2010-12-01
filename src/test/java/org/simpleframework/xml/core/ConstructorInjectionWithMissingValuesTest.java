@@ -63,7 +63,7 @@ public class ConstructorInjectionWithMissingValuesTest extends TestCase{
    }
    
    @Root(name="test")
-   private static class TwoConstructorsWithMissingValues{
+   private static class ManyConstructorsWithMissingValues{
       @Element(required=false)
       private final String a;
       @Element(required=false)
@@ -73,7 +73,7 @@ public class ConstructorInjectionWithMissingValuesTest extends TestCase{
       @Element
       private final int d;    
       @SuppressWarnings("unused")
-      public TwoConstructorsWithMissingValues(
+      public ManyConstructorsWithMissingValues(
             @Element(name="a", required=false) String a)
       {
          this.a = a;
@@ -82,7 +82,7 @@ public class ConstructorInjectionWithMissingValuesTest extends TestCase{
          this.d = 10;
       }
       @SuppressWarnings("unused")
-      public TwoConstructorsWithMissingValues(
+      public ManyConstructorsWithMissingValues(
          @Element(name="a", required=false) String a,
          @Element(name="b", required=false) String b)
       {
@@ -92,7 +92,7 @@ public class ConstructorInjectionWithMissingValuesTest extends TestCase{
          this.d = 10;
       }
       @SuppressWarnings("unused")
-      public TwoConstructorsWithMissingValues(
+      public ManyConstructorsWithMissingValues(
             @Element(name="a", required=false) String a,
             @Element(name="d") int d)
       {
@@ -102,7 +102,7 @@ public class ConstructorInjectionWithMissingValuesTest extends TestCase{
          this.d = d;
       }
       @SuppressWarnings("unused")
-      public TwoConstructorsWithMissingValues(
+      public ManyConstructorsWithMissingValues(
          @Element(name="a", required=false) String a,
          @Element(name="b", required=false) String b,
          @Element(name="c", required=false) String c)
@@ -113,7 +113,7 @@ public class ConstructorInjectionWithMissingValuesTest extends TestCase{
          this.d = 10;
       }
       @SuppressWarnings("unused")
-      public TwoConstructorsWithMissingValues(
+      public ManyConstructorsWithMissingValues(
             @Element(name="a", required=false) String a,
             @Element(name="b", required=false) String b,
             @Element(name="c", required=false) String c,
@@ -148,7 +148,7 @@ public class ConstructorInjectionWithMissingValuesTest extends TestCase{
    
    public void testMatchAD() throws Exception {
       Persister persister = new Persister();
-      TwoConstructorsWithMissingValues example = persister.read(TwoConstructorsWithMissingValues.class, MATCH_A_D);
+      ManyConstructorsWithMissingValues example = persister.read(ManyConstructorsWithMissingValues.class, MATCH_A_D);
       assertEquals(example.getA(), "Value for A");
       assertEquals(example.getB(), "Default B");
       assertEquals(example.getC(), "Default C");
@@ -157,7 +157,7 @@ public class ConstructorInjectionWithMissingValuesTest extends TestCase{
    
    public void testMatchACD() throws Exception {
       Persister persister = new Persister();
-      TwoConstructorsWithMissingValues example = persister.read(TwoConstructorsWithMissingValues.class, MATCH_A_C_D);
+      ManyConstructorsWithMissingValues example = persister.read(ManyConstructorsWithMissingValues.class, MATCH_A_C_D);
       assertEquals(example.getA(), "Value for A");
       assertEquals(example.getB(), null);
       assertEquals(example.getC(), "Value for C");
@@ -166,7 +166,7 @@ public class ConstructorInjectionWithMissingValuesTest extends TestCase{
    
    public void testMatchABCD() throws Exception {
       Persister persister = new Persister();
-      TwoConstructorsWithMissingValues example = persister.read(TwoConstructorsWithMissingValues.class, MATCH_A_B_C_D);
+      ManyConstructorsWithMissingValues example = persister.read(ManyConstructorsWithMissingValues.class, MATCH_A_B_C_D);
       assertEquals(example.getA(), "Value for A");
       assertEquals(example.getB(), "Value for B");
       assertEquals(example.getC(), "Value for C");
