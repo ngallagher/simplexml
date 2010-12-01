@@ -268,7 +268,7 @@ class Composite implements Converter {
     */
    private Object readConstructor(InputNode node, Schema schema, Instance value) throws Exception {
       Creator creator = schema.getCreator();
-      Object source = creator.getInstance(criteria);
+      Object source = creator.getInstance(context, criteria);
       
       if(value != null) {
          value.setInstance(source);

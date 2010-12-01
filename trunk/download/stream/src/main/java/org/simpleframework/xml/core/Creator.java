@@ -44,21 +44,24 @@ interface Creator {
     * argument constructor. If for some reason the object can not be
     * instantiated then this will throw an exception with the reason.
     * 
+    * @param context this is the context used to match parameters
+    * 
     * @return this returns the object that has been instantiated
     */
-   public Object getInstance() throws Exception; 
+   public Object getInstance(Context context) throws Exception; 
    
    /**
     * This is used to instantiate the object using a constructor that
     * takes deserialized objects as arguments. The object that have
     * been deserialized can be taken from the <code>Criteria</code>
     * object which contains the deserialized values.
-    * 
+    *
+    * @param context this is the context used to match parameters
     * @param criteria this contains the criteria to be used
     * 
     * @return this returns the object that has been instantiated
     */
-   public Object getInstance(Criteria criteria) throws Exception;
+   public Object getInstance(Context context, Criteria criteria) throws Exception;
 
    /**
     * This is used to acquire the named <code>Parameter</code> from

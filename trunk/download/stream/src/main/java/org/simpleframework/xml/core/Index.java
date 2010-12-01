@@ -75,6 +75,26 @@ class Index extends LinkedHashMap<String, Parameter> {
    public List<Parameter> getParameters() {
       return new ArrayList<Parameter>(values());
    }
+   
+   /**
+    * This is used to build an <code>Index</code> with the given
+    * context so that keys are styled. This allows serialization
+    * to match styled element names or attributes to ensure 
+    * that they can be used to acquire the parameters.
+    * 
+    * @param context this is used to build the index
+    * 
+    * @return this returns an index with styled keys
+    */
+   public Index getIndex(Context context) throws Exception {
+      Index index = new Index(type);
+      
+      for(Parameter value : values()) {  
+         String name = value.getName(context);
+         index.put(name, value);
+      }
+      return index;
+   }
  
    /**
     * This is the type that this class map represents. It can be 

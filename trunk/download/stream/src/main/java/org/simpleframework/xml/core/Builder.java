@@ -93,9 +93,11 @@ class Builder {
     * argument constructor. If for some reason the object can not be
     * instantiated then this will throw an exception with the reason.
     * 
+    * @param context this is the context used to match parameters     
+    * 
     * @return this returns the object that has been instantiated
     */
-   public Object getInstance() throws Exception {
+   public Object getInstance(Context context) throws Exception {
       if(!factory.isAccessible()) {
          factory.setAccessible(true);
       } 
@@ -108,15 +110,16 @@ class Builder {
     * been deserialized can be taken from the <code>Criteria</code>
     * object which contains the deserialized values.
     * 
+    * @param context this is the context used to match parameters     
     * @param criteria this contains the criteria to be used
     * 
     * @return this returns the object that has been instantiated
     */
-   public Object getInstance(Criteria criteria) throws Exception {
+   public Object getInstance(Context context, Criteria criteria) throws Exception {
       Object[] values = list.toArray();
       
       for(int i = 0; i < list.size(); i++) {
-         values[i] = getVariable(criteria, i);
+         values[i] = getVariable(context, criteria, i);
       }
       return getInstance(values);
    }
@@ -127,14 +130,15 @@ class Builder {
     * see if the if the parameter is required. If it is required then
     * there must be a non null value or an exception is thrown.
     * 
+    * @param context this is the context used to match parameters
     * @param criteria this is used to acquire the parameter value
     * @param index this is the index to acquire the value for
     * 
     * @return the value associated with the specified parameter
     */
-   private Object getVariable(Criteria criteria, int index) throws Exception {
+   private Object getVariable(Context context, Criteria criteria, int index) throws Exception {
       Parameter parameter = list.get(index);
-      String name = parameter.getName();
+      String name = parameter.getName(context);
       Variable variable = criteria.remove(name);
       
       if(variable != null) {
@@ -142,6 +146,75 @@ class Builder {
       }
       return null;
    }
+  
+   /**
+    * This is used to score this <code>Builder</code> object so that
+    * it can be weighed amongst other constructors. The builder that
+    * scores the highest is the one that is used for instantiation.
+    * <p>
+    * If any read only element or attribute is not a parameter in
+    * the constructor then the constructor is discounted. This is
+    * because there is no way to set the read only entity without a
+    * constructor injection in to the instantiated object.
+    * 
+    * @param context this is the context used to match parameters
+    * @param criteria this contains the criteria to be used
+    * 
+    * @return this returns the score based on the criteria provided
+    */
+   public double getScore(Context context, Criteria criteria) throws Exception {
+      Index match = index.getIndex(context);
+      
+      for(String name : criteria) {
+         Label label = criteria.get(name);
+         
+         if(label != null) {
+            Contact contact = label.getContact();
+            Parameter value = match.get(name);
+
+            if(contact.isReadOnly()) {
+               if(value == null) {
+                  return -1.0;
+               }               
+            }
+         }
+      }
+      return getPercentage(context, criteria);
+   }
+   
+   /**
+    * This is used to determine what percentage of available values
+    * can be injected in to a constructor. Calculating the percentage
+    * in this manner ensures that the best possible fit will be used
+    * to construct the object. This also allows the object to define
+    * what defaults it wishes to set for the values.
+    * 
+    * @param context this is the context used to match parameters     
+    * @param criteria this is the criteria object containing values
+    * 
+    * @return this returns the percentage match for the values
+    */
+   private double getPercentage(Context context, Criteria criteria) throws Exception {
+      double score = 0.0;
+      
+      for(int i = 0; i < list.size(); i++) {
+         Parameter parameter = list.get(i);
+         String name = parameter.getName(context);
+         Label label = criteria.get(name);
+
+         if(label == null) {
+            if(parameter.isRequired()) {
+               return -1;
+            }  
+            if(parameter.isPrimitive()) {
+               return -1;
+            }
+         } else {
+            score++;
+         }
+      }
+      return score / list.size();
+   }   
    
    /**
     * This is used to instantiate the object using a constructor that
@@ -158,36 +231,6 @@ class Builder {
          factory.setAccessible(true);
       } 
       return factory.newInstance(list);
-   }
-  
-   /**
-    * This is used to score this <code>Builder</code> object so that
-    * it can be weighed amongst other constructors. The builder that
-    * scores the highest is the one that is used for instantiation.
-    * 
-    * @param criteria this contains the criteria to be used
-    * 
-    * @return this returns the score based on the criteria provided
-    */
-   public int getScore(Criteria criteria) throws Exception {
-      int score = 0;
-      
-      for(int i = 0; i < list.size(); i++) {
-         Parameter parameter = list.get(i);
-         String name = parameter.getName();
-         Label label = criteria.get(name);
-
-         if(label == null) {
-            if(parameter.isRequired()) {
-               return -1;
-            }  
-            if(parameter.isPrimitive()) {
-               return -1;
-            }
-         }
-         score++;
-      }
-      return score;
    }
    
    /**

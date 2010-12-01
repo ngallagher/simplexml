@@ -119,7 +119,7 @@ class TextLabel implements Label {
     * @return returns the name that is used for the XML property
     */
    public String getName(Context context) {
-      return contact.toString();
+      return getName();
    }
    
    /**
