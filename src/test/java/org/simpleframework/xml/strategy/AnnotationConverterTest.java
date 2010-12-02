@@ -195,11 +195,13 @@ public class AnnotationConverterTest extends ValidationTestCase {
       
       String text = writer.toString();
       
-      assertXpathExists("/farmExample/chicken[@name='Hen']", text);
-      assertXpathExists("/farmExample/chicken[@age='1']", text);
-      assertXpathExists("/farmExample/chicken[@legs='2']", text);
-      assertXpathExists("/farmExample/cow[@name='Bull']", text);
-      assertXpathExists("/farmExample/cow[@age='4']", text);
-      assertXpathExists("/farmExample/cow[@legs='4']", text);
+      assertElementHasAttribute(text, "/farmExample/chicken", "name", "Hen");
+      assertElementHasAttribute(text, "/farmExample/chicken", "age", "1");
+      assertElementHasAttribute(text, "/farmExample/chicken", "legs", "2");
+      assertElementHasAttribute(text, "/farmExample/cow", "name", "Bull");
+      assertElementHasAttribute(text, "/farmExample/cow", "age", "4");
+      assertElementHasAttribute(text, "/farmExample/cow", "legs", "4");
+
+
    }
 }

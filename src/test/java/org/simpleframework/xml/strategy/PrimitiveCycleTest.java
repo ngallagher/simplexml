@@ -184,27 +184,27 @@ public class PrimitiveCycleTest extends ValidationTestCase {
       persister.write(entry, out);
       String text = out.toString();
 
-      assertXpathExists("/test[@id='0']", text);
-      assertXpathExists("/test/primitive[@id='1']", text);
-      assertXpathExists("/test/object[@id='2']", text);     
+      assertElementHasAttribute(text, "/test", "id", "0");
+      assertElementHasAttribute(text, "/test/primitive", "id", "1");
+      assertElementHasAttribute(text, "/test/object", "id", "2");     
 
-      assertXpathEvaluatesTo("true", "/test/primitive/boolean", text);   
-      assertXpathEvaluatesTo("16", "/test/primitive/byte", text);  
-      assertXpathEvaluatesTo("120", "/test/primitive/short", text);       
-      assertXpathEvaluatesTo("1234", "/test/primitive/int", text);        
-      assertXpathEvaluatesTo("1234.56", "/test/primitive/float", text);       
-      assertXpathEvaluatesTo("1234567", "/test/primitive/long", text);       
-      assertXpathEvaluatesTo("1234567.89", "/test/primitive/double", text);
+      assertElementHasValue(text, "/test/primitive/boolean", "true");   
+      assertElementHasValue(text, "/test/primitive/byte", "16");  
+      assertElementHasValue(text, "/test/primitive/short", "120");       
+      assertElementHasValue(text, "/test/primitive/int", "1234");        
+      assertElementHasValue(text, "/test/primitive/float", "1234.56");       
+      assertElementHasValue(text, "/test/primitive/long", "1234567");       
+      assertElementHasValue(text, "/test/primitive/double", "1234567.89");
  
-      assertXpathEvaluatesTo("true", "/test/object/Boolean", text);   
-      assertXpathEvaluatesTo("16", "/test/object/Byte", text);  
-      assertXpathEvaluatesTo("120", "/test/object/Short", text);       
-      assertXpathEvaluatesTo("1234", "/test/object/Integer", text);        
-      assertXpathEvaluatesTo("1234.56", "/test/object/Float", text);       
-      assertXpathEvaluatesTo("1234567", "/test/object/Long", text);       
-      assertXpathEvaluatesTo("1234567.89", "/test/object/Double", text);     
-      assertXpathEvaluatesTo("text value", "/test/object/String", text);       
-      assertXpathEvaluatesTo("TWO", "/test/object/Enum", text);    
+      assertElementHasValue(text, "/test/object/Boolean", "true");   
+      assertElementHasValue(text, "/test/object/Byte", "16");  
+      assertElementHasValue(text, "/test/object/Short", "120");       
+      assertElementHasValue(text, "/test/object/Integer", "1234");        
+      assertElementHasValue(text, "/test/object/Float", "1234.56");       
+      assertElementHasValue(text, "/test/object/Long", "1234567");       
+      assertElementHasValue(text, "/test/object/Double", "1234567.89");     
+      assertElementHasValue(text, "/test/object/String", "text value");       
+      assertElementHasValue(text, "/test/object/Enum", "TWO");  
       
       validate(entry, persister);
    }
@@ -215,11 +215,11 @@ public class PrimitiveCycleTest extends ValidationTestCase {
       persister.write(example, out);
       String text = out.toString();
 
-      assertXpathExists("/stringReferenceExample[@id='0']", text);
-      assertXpathExists("/stringReferenceExample/a[@id='1']", text);
-      assertXpathExists("/stringReferenceExample/b[@reference='1']", text);
-      assertXpathExists("/stringReferenceExample/c[@reference='1']", text);
-      
+      assertElementHasAttribute(text, "/stringReferenceExample", "id", "0");
+      assertElementHasAttribute(text, "/stringReferenceExample/a", "id", "1");
+      assertElementHasAttribute(text, "/stringReferenceExample/b", "reference", "1");
+      assertElementHasAttribute(text, "/stringReferenceExample/c", "reference", "1");
+       
       validate(example, persister);
       
       example = new StringReferenceExample("a", "b", "a");      
@@ -227,10 +227,10 @@ public class PrimitiveCycleTest extends ValidationTestCase {
       persister.write(example, out);
       text = out.toString();
 
-      assertXpathExists("/stringReferenceExample[@id='0']", text);
-      assertXpathExists("/stringReferenceExample/a[@id='1']", text);
-      assertXpathExists("/stringReferenceExample/b[@id='2']", text);
-      assertXpathExists("/stringReferenceExample/c[@reference='1']", text);
+      assertElementHasAttribute(text, "/stringReferenceExample", "id", "0");
+      assertElementHasAttribute(text, "/stringReferenceExample/a", "id", "1");
+      assertElementHasAttribute(text, "/stringReferenceExample/b", "id", "2");
+      assertElementHasAttribute(text, "/stringReferenceExample/c", "reference", "1");
       
       validate(example, persister);  
       
@@ -243,11 +243,11 @@ public class PrimitiveCycleTest extends ValidationTestCase {
       persister.write(integers, out);
       text = out.toString();
 
-      assertXpathExists("/integerReferenceExample[@id='0']", text);
-      assertXpathExists("/integerReferenceExample/a[@id='1']", text);
-      assertXpathExists("/integerReferenceExample/b[@id='2']", text);
-      assertXpathExists("/integerReferenceExample/c[@id='3']", text);
-      
+      assertElementHasAttribute(text, "/integerReferenceExample", "id", "0");
+      assertElementHasAttribute(text, "/integerReferenceExample/a", "id", "1");
+      assertElementHasAttribute(text, "/integerReferenceExample/b", "id", "2");
+      assertElementHasAttribute(text, "/integerReferenceExample/c", "id", "3");
+     
       validate(integers, persister);
       
       integers = new IntegerReferenceExample(one, one, two);   
@@ -255,10 +255,10 @@ public class PrimitiveCycleTest extends ValidationTestCase {
       persister.write(integers, out);
       text = out.toString();
 
-      assertXpathExists("/integerReferenceExample[@id='0']", text);
-      assertXpathExists("/integerReferenceExample/a[@id='1']", text);
-      assertXpathExists("/integerReferenceExample/b[@reference='1']", text);
-      assertXpathExists("/integerReferenceExample/c[@id='2']", text);
+      assertElementHasAttribute(text, "/integerReferenceExample", "id", "0");
+      assertElementHasAttribute(text, "/integerReferenceExample/a", "id", "1");
+      assertElementHasAttribute(text, "/integerReferenceExample/b", "reference", "1");
+      assertElementHasAttribute(text, "/integerReferenceExample/c", "id", "2");
       
       validate(integers, persister);
    }

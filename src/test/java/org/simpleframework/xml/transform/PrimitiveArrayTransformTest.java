@@ -190,15 +190,13 @@ public class PrimitiveArrayTransformTest extends ValidationTestCase {
       persister.write(example, out);
       String text = out.toString();
       
-      assertXpathExists("/integerArrayExample[@id='0']", text);
-      assertXpathExists("/integerArrayExample/element[@id='1']", text);
-      assertXpathExists("/integerArrayExample/list[@id='2']", text);
-      assertXpathExists("/integerArrayExample/array[@id='3']", text);
-      
-      assertXpathExists("/integerArrayExample/list/int[@reference='1']", text);
-      assertXpathExists("/integerArrayExample/array/int[@reference='1']", text);
-      
-      assertXpathEvaluatesTo("1, 2, 3, 4", "/integerArrayExample/element", text);
+      assertElementHasAttribute(text, "/integerArrayExample", "id", "0");
+      assertElementHasAttribute(text, "/integerArrayExample/element", "id", "1");
+      assertElementHasAttribute(text, "/integerArrayExample/list", "id", "2");
+      assertElementHasAttribute(text, "/integerArrayExample/array", "id", "3");
+      assertElementHasAttribute(text, "/integerArrayExample/list/int", "reference", "1");
+      assertElementHasAttribute(text, "/integerArrayExample/array/int", "reference", "1");      
+      assertElementHasValue(text, "/integerArrayExample/element", "1, 2, 3, 4");
       
       validate(example, persister);
       
@@ -216,8 +214,8 @@ public class PrimitiveArrayTransformTest extends ValidationTestCase {
       assertEquals(example.list.size(), 0);
       assertEquals(example.array[0], null);
       
-      assertXpathExists("/integerArrayExample[@id='0']", text);
-      assertXpathExists("/integerArrayExample/list[@id='1']", text);
-      assertXpathExists("/integerArrayExample/array[@id='2']", text);
+      assertElementHasAttribute(text, "/integerArrayExample", "id", "0");
+      assertElementHasAttribute(text, "/integerArrayExample/list", "id", "1");
+      assertElementHasAttribute(text, "/integerArrayExample/array", "id", "2");
    }
 }

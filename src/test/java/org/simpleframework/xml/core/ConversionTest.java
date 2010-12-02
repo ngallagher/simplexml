@@ -218,9 +218,9 @@ public class ConversionTest extends ValidationTestCase {
       assertEquals("Kitty", newShop.getPet("Kitty").getName());
       assertEquals(2, newShop.getPet("Kitty").getAge());
       
-      assertXpathExists("/petShop/pets/pet[@name='Lassie']", text);
-      assertXpathExists("/petShop/pets/pet[@age='10']", text);
-      assertXpathExists("/petShop/pets/pet/name", text);
-      assertXpathExists("/petShop/pets/pet/age", text);
+      assertElementHasAttribute(text, "/petShop/pets/pet", "name", "Lassie");
+      assertElementHasAttribute(text, "/petShop/pets/pet", "age", "10");
+      assertElementExists(text, "/petShop/pets/pet[2]/name");
+      assertElementExists(text, "/petShop/pets/pet[2]/age");
    }
 }

@@ -275,9 +275,9 @@ public class ArrayTest extends ValidationTestCase {
       serializer.write(example, writer);
       String content = writer.toString();
       
-      assertXpathExists("/root/array[@length='100']", content);
-      assertXpathExists("/root/array/entry[1][@value='index 0']", content);
-      assertXpathExists("/root/array/entry[100][@value='index 99']", content);      
+      assertElementHasAttribute(content, "/root/array", "length", "100");
+      assertElementHasAttribute(content, "/root/array/entry[1]", "value", "index 0");
+      assertElementHasAttribute(content, "/root/array/entry[100]", "value", "index 99");      
       
       ArrayExample deserialized = serializer.read(ArrayExample.class, content);
 
@@ -298,11 +298,11 @@ public class ArrayTest extends ValidationTestCase {
       serializer.write(example, oddOnly);
       content = oddOnly.toString();
       
-      assertXpathExists("/root/array[@length='100']", content);
-      assertXpathNotExists("/root/array/entry[1][@value='index 0']", content);
-      assertXpathExists("/root/array/entry[2][@value='index 1']", content);
-      assertXpathNotExists("/root/array/entry[3][@value='index 2']", content);
-      assertXpathExists("/root/array/entry[100][@value='index 99']", content);
+      assertElementHasAttribute(content, "/root/array", "length", "100");
+      assertElementDoesNotHaveAttribute(content, "/root/array/entry[1]", "value", "index 0");
+      assertElementHasAttribute(content, "/root/array/entry[2]", "value", "index 1");
+      assertElementDoesNotHaveAttribute(content, "/root/array/entry[3]", "value", "index 2");
+      assertElementHasAttribute(content, "/root/array/entry[100]", "value", "index 99");
       
       deserialized = serializer.read(ArrayExample.class, content);
       
