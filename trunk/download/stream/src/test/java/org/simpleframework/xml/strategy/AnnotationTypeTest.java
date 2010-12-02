@@ -91,8 +91,8 @@ public class AnnotationTypeTest extends ValidationTestCase {
       
       String text = writer.toString();
       
-      assertXpathExists("/annotationExample[@age='10']", text);
-      assertXpathExists("/annotationExample/name[@key='name']", text);
+      assertElementHasAttribute(text, "/annotationExample", "age", "10");
+      assertElementHasAttribute(text, "/annotationExample/name", "key", "name");
       
       AnnotationExample result = persister.read(AnnotationExample.class, text);
       

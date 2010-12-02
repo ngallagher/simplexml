@@ -200,25 +200,40 @@ class Builder {
     * @return this returns the percentage match for the values
     */
    private double getPercentage(Context context, Criteria criteria) throws Exception {
-      double adjustment = list.size() / 1000.0;
       double score = 0.0;
       
-      for(int i = 0; i < list.size(); i++) {
-         Parameter parameter = list.get(i);
-         String name = parameter.getName(context);
+      for(Parameter value : list) {
+         String name = value.getName(context);
          Label label = criteria.get(name);
 
          if(label == null) {
-            if(parameter.isRequired()) {
+            if(value.isRequired()) {
                return -1;
             }  
-            if(parameter.isPrimitive()) {
+            if(value.isPrimitive()) {
                return -1;
             }
          } else {
             score++;
          }
       }
+      return getAdjustment(context, score);
+   }
+   
+   /**
+    * This will use a slight adjustment to ensure that if there are
+    * many constructors with a 100% match on parameters, the one 
+    * with the most values to be injected wins. This ensures the
+    * most desirable constructor is chosen each time.
+    *     
+    * @param context this is the context used for serialization
+    * @param score this is the score from the parameter matching
+    * 
+    * @return an adjusted score to account for the signature size
+    */
+   private double getAdjustment(Context context, double score) {
+      double adjustment = list.size() / 1000.0;
+      
       if(score > 0) {
          return adjustment + score / list.size();
       }

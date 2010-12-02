@@ -100,11 +100,11 @@ public class DateTransformTest extends ValidationTestCase {
       persister.write(example, out);
       String text = out.toString();
       
-      assertXpathExists("/dateExample[@id='0']", text);
-      assertXpathExists("/dateExample/array[@id='1']", text);
-      assertXpathExists("/dateExample/array/date[@id='2']", text);
-      assertXpathExists("/dateExample/element[@reference='2']", text);
-      assertXpathExists("/dateExample/list[@id='3']", text);
+      assertElementHasAttribute(text, "/dateExample", "id", "0");
+      assertElementHasAttribute(text, "/dateExample/array", "id", "1");
+      assertElementHasAttribute(text, "/dateExample/array/date", "id", "2");
+      assertElementHasAttribute(text, "/dateExample/element", "reference", "2");
+      assertElementHasAttribute(text, "/dateExample/list", "id", "3");
       
       example = persister.read(DateExample.class, text);
       

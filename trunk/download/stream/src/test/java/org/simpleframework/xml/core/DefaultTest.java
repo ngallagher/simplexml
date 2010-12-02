@@ -80,13 +80,13 @@ public class DefaultTest extends ValidationTestCase {
       persister.write(list, buffer);
       String text = buffer.toString();
       
-      assertXpathExists("/defaultTextList/list[@class='java.util.ArrayList']", text);
-      assertXpathExists("/defaultTextList/list/textEntry[@name='a']", text);
-      assertXpathExists("/defaultTextList/list/textEntry[@name='b']", text);
-      assertXpathExists("/defaultTextList/list/textEntry[@name='c']", text);      
-      assertXpathEvaluatesTo("Example 1", "/defaultTextList/list/textEntry[1]", text);
-      assertXpathEvaluatesTo("Example 2", "/defaultTextList/list/textEntry[2]", text);
-      assertXpathEvaluatesTo("Example 3", "/defaultTextList/list/textEntry[3]", text);      
+      assertElementHasAttribute(text, "/defaultTextList/list", "class", "java.util.ArrayList");
+      assertElementHasAttribute(text, "/defaultTextList/list/textEntry[1]", "name", "a");
+      assertElementHasAttribute(text, "/defaultTextList/list/textEntry[2]", "name", "b");
+      assertElementHasAttribute(text, "/defaultTextList/list/textEntry[3]", "name", "c");      
+      assertElementHasValue(text, "/defaultTextList/list/textEntry[1]", "Example 1");
+      assertElementHasValue(text, "/defaultTextList/list/textEntry[2]", "Example 2");
+      assertElementHasValue(text, "/defaultTextList/list/textEntry[3]", "Example 3");   
       
       validate(list, persister);
 
@@ -107,14 +107,13 @@ public class DefaultTest extends ValidationTestCase {
       persister.write(list, buffer);      
       String copy = buffer.toString();
       
-      assertXpathExists("/defaultTextList/list[@class='java.util.ArrayList']", copy);
-      assertXpathExists("/defaultTextList/list/textEntry[@name='a']", copy);
-      assertXpathExists("/defaultTextList/list/textEntry[@name='b']", copy);
-      assertXpathExists("/defaultTextList/list/textEntry[@name='c']", copy);      
-      assertXpathEvaluatesTo("Example 1", "/defaultTextList/list/textEntry[1]", copy);
-      assertXpathEvaluatesTo("Example 2", "/defaultTextList/list/textEntry[2]", copy);
-      assertXpathEvaluatesTo("Example 3", "/defaultTextList/list/textEntry[3]", copy);
-      assertXMLEqual(text, copy);
+      assertElementHasAttribute(copy, "/defaultTextList/list", "class", "java.util.ArrayList");
+      assertElementHasAttribute(copy, "/defaultTextList/list/textEntry[1]", "name", "a");
+      assertElementHasAttribute(copy, "/defaultTextList/list/textEntry[2]", "name", "b");
+      assertElementHasAttribute(copy, "/defaultTextList/list/textEntry[3]", "name", "c");      
+      assertElementHasValue(text, "/defaultTextList/list/textEntry[1]", "Example 1");
+      assertElementHasValue(text, "/defaultTextList/list/textEntry[2]", "Example 2");
+      assertElementHasValue(text, "/defaultTextList/list/textEntry[3]", "Example 3");
       
       validate(list, persister);     
    }

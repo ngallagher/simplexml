@@ -415,7 +415,7 @@
                <include name="**/*.jar"/>
             </fileset>
          </classpath>  
-         <link href="http://java.sun.com/j2se/1.5.0/docs/api/"/> 
+         <link offline="true" href="http://download.oracle.com/javase/1.5.0/docs/api/" packagelistloc="${doc.path}" resolvelink="true"/> 
       </javadoc>
       <delete dir="${build.path}"/>
    </target>         
@@ -427,8 +427,8 @@
             <fileset dir="${lib.path}">
                <include name="**/*.jar"/>
             </fileset>
-         </classpath>  
-         <link href="http://java.sun.com/j2se/1.5.0/docs/api/"/> 
+         </classpath> 
+         <link offline="true" href="http://download.oracle.com/javase/1.5.0/docs/api/" packagelistloc="${doc.path}" resolvelink="true"/>         
       </javadoc>
       <delete dir="${build.path}"/>
    </target>          

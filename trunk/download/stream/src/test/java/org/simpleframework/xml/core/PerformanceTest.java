@@ -22,7 +22,7 @@ import org.simpleframework.xml.stream.InputNode;
 import org.simpleframework.xml.stream.NodeMap;
 import org.simpleframework.xml.stream.OutputNode;
 
-import com.thoughtworks.xstream.XStream;
+//import com.thoughtworks.xstream.XStream;
 
 public class PerformanceTest extends ValidationTestCase {
 
@@ -214,23 +214,23 @@ public class PerformanceTest extends ValidationTestCase {
       RootEntry entry = simpleSerializer.read(RootEntry.class, BASIC_ENTRY);
       ByteArrayOutputStream simpleBuffer = new ByteArrayOutputStream();
       ByteArrayOutputStream javaBuffer = new ByteArrayOutputStream();
-      ByteArrayOutputStream xstreamBuffer = new ByteArrayOutputStream();
+      //ByteArrayOutputStream xstreamBuffer = new ByteArrayOutputStream();
       ObjectOutputStream javaSerializer = new ObjectOutputStream(javaBuffer);
-      XStream xstreamSerializer = new XStream();
+      //XStream xstreamSerializer = new XStream();
       
       simpleSerializer.write(entry, simpleBuffer);
-      xstreamSerializer.toXML(entry, xstreamBuffer);
+      //xstreamSerializer.toXML(entry, xstreamBuffer);
       javaSerializer.writeObject(entry);
 
       byte[] simpleByteArray = simpleBuffer.toByteArray();
-      byte[] xstreamByteArray = xstreamBuffer.toByteArray();
+      //byte[] xstreamByteArray = xstreamBuffer.toByteArray();
       byte[] javaByteArray = javaBuffer.toByteArray();
       
       System.err.println("SIMPLE TOOK "+timeToSerializeWithSimple(RootEntry.class, simpleByteArray, ITERATIONS)+"ms");
       System.err.println("JAVA TOOK "+timeToSerializeWithJava(RootEntry.class, javaByteArray, ITERATIONS)+"ms");
-      System.err.println("XSTREAM TOOK "+timeToSerializeWithXStream(RootEntry.class, xstreamByteArray, ITERATIONS)+"ms");
+      //System.err.println("XSTREAM TOOK "+timeToSerializeWithXStream(RootEntry.class, xstreamByteArray, ITERATIONS)+"ms");
       
-      System.err.println("XSTREAM --->>"+xstreamBuffer.toString());
+      //System.err.println("XSTREAM --->>"+xstreamBuffer.toString());
       System.err.println("SIMPLE --->>"+simpleBuffer.toString());
    }
    
@@ -256,6 +256,7 @@ public class PerformanceTest extends ValidationTestCase {
       return System.currentTimeMillis() - now;
    }
    
+   /*
    private long timeToSerializeWithXStream(Class type, byte[] buffer, int count) throws Exception {
       XStream stream = new XStream();
       stream.fromXML(new ByteArrayInputStream(buffer));
@@ -265,7 +266,7 @@ public class PerformanceTest extends ValidationTestCase {
          stream.fromXML(new ByteArrayInputStream(buffer));
       }
       return System.currentTimeMillis() - now;  
-   }
+   }*/
       
    public void testBasicDocument() throws Exception { 
       RootEntry entry = (RootEntry)systemSerializer.read(RootEntry.class, BASIC_ENTRY);
