@@ -269,9 +269,6 @@
       <copy todir="${package.path}/${build.path}/simple-xml-${version}">
          <fileset file="LICENSE.txt"/>
       </copy>
-      <copy todir="${package.path}/${build.path}/simple-xml-${version}/${doc.path}">
-         <fileset file="${doc.path}"/>
-      </copy>
       <copy todir="${package.path}/${build.path}/simple-xml-${version}/${test.path}">
          <fileset dir="${skel.path}/${test.path}"/>
       </copy>
