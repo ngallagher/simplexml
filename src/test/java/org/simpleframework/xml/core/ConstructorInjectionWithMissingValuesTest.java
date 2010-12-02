@@ -93,8 +93,8 @@ public class ConstructorInjectionWithMissingValuesTest extends TestCase{
       }
       @SuppressWarnings("unused")
       public ManyConstructorsWithMissingValues(
-            @Element(name="a", required=false) String a,
-            @Element(name="d") int d)
+         @Element(name="a", required=false) String a,
+         @Element(name="d") int d)
       {
          this.a = a;
          this.b = "Default B";
@@ -114,10 +114,10 @@ public class ConstructorInjectionWithMissingValuesTest extends TestCase{
       }
       @SuppressWarnings("unused")
       public ManyConstructorsWithMissingValues(
-            @Element(name="a", required=false) String a,
-            @Element(name="b", required=false) String b,
-            @Element(name="c", required=false) String c,
-            @Element(name="d") int d)
+         @Element(name="a", required=false) String a,
+         @Element(name="b", required=false) String b,
+         @Element(name="c", required=false) String c,
+         @Element(name="d") int d)
       {
          this.a = a;
          this.b = b;

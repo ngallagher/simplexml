@@ -188,6 +188,11 @@ class Builder {
     * in this manner ensures that the best possible fit will be used
     * to construct the object. This also allows the object to define
     * what defaults it wishes to set for the values.
+    * <p>
+    * This will use a slight adjustment to ensure that if there are
+    * many constructors with a 100% match on parameters, the one 
+    * with the most values to be injected wins. This ensures the
+    * most desirable constructor is chosen each time.
     * 
     * @param context this is the context used to match parameters     
     * @param criteria this is the criteria object containing values
@@ -195,6 +200,7 @@ class Builder {
     * @return this returns the percentage match for the values
     */
    private double getPercentage(Context context, Criteria criteria) throws Exception {
+      double adjustment = list.size() / 1000.0;
       double score = 0.0;
       
       for(int i = 0; i < list.size(); i++) {
@@ -212,6 +218,9 @@ class Builder {
          } else {
             score++;
          }
+      }
+      if(score > 0) {
+         return adjustment + score / list.size();
       }
       return score / list.size();
    }   
