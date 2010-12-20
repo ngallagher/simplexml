@@ -110,13 +110,13 @@ class PrimitiveValue implements Converter {
       Class expect = type.getType();
       String name = entry.getValue();
       
-      if(name == null) {
-         name = context.getName(expect);
+      if(!entry.isInline()) {
+         if(name == null) {
+            name = context.getName(expect);
+         }
+         return readElement(node, name);
       }
-      if(entry.isInline()) {
-         return root.read(node);
-      }
-      return read(node, name);
+      return readAttribute(node, name);
    }
    
    /**
@@ -142,7 +142,7 @@ class PrimitiveValue implements Converter {
    }
    
    /**
-    * This method is used to read the value value from the node. The 
+    * This method is used to read the element value from the node. The 
     * value read from the node is resolved using the template filter.
     * If the value value can not be found according to the annotation
     * attributes then null is assumed and returned.
@@ -152,7 +152,7 @@ class PrimitiveValue implements Converter {
     * 
     * @return this returns the value deserialized from the node
     */ 
-   private Object read(InputNode node, String key) throws Exception {
+   private Object readElement(InputNode node, String key) throws Exception {
       String name = style.getAttribute(key);
       InputNode child = node.getNext(name);
       
@@ -163,7 +163,29 @@ class PrimitiveValue implements Converter {
    }
    
    /**
-    * This method is used to read the value value from the node. The 
+    * This method is used to read the text value from the node. The 
+    * value read from the node is resolved using the template filter.
+    * If the value value can not be found according to the annotation
+    * attributes then null is assumed and returned.
+    * 
+    * @param node this is the node to read the value object from
+    * @param key this is the name of the value XML attribute, if any
+    * 
+    * @return this returns the value deserialized from the node
+    */ 
+   private Object readAttribute(InputNode node, String name) throws Exception {
+      if(name != null) {
+         name = style.getAttribute(name);
+         node = node.getAttribute(name);
+      }       
+      if(node == null) {
+         return null;        
+      }
+      return root.read(node);      
+   }
+   
+   /**
+    * This method is used to validate the value from the node. The 
     * value read from the node is resolved using the template filter.
     * If the value value can not be found according to the annotation
     * attributes then null is assumed and the node is valid.
@@ -176,14 +198,17 @@ class PrimitiveValue implements Converter {
       Class expect = type.getType();
       String name = entry.getValue();
       
-      if(name == null) {
-         name = context.getName(expect);
+      if(!entry.isInline()) {
+         if(name == null) {
+            name = context.getName(expect);
+         }
+         return validateElement(node, name);
       }
-      return validate(node, name);
+      return validateAttribute(node, name);
    }
    
    /**
-    * This method is used to read the value value from the node. The 
+    * This method is used to validate the value from the node. The 
     * value read from the node is resolved using the template filter.
     * If the value value can not be found according to the annotation
     * attributes then null is assumed and the node is valid.
@@ -193,15 +218,34 @@ class PrimitiveValue implements Converter {
     * 
     * @return this returns true if the primitive key is valid
     */    
-   private boolean validate(InputNode node, String key) throws Exception {
+   private boolean validateElement(InputNode node, String key) throws Exception {
       String name = style.getAttribute(key);
+      InputNode child = node.getNext(name);
       
-      if(!entry.isInline()) {
-         node = node.getNext(name);
-      
-         if(node == null) {
-            return true;        
-         }
+      if(child == null) {
+         return true;        
+      }
+      return root.validate(node);
+   }
+   
+   /**
+    * This method is used to validate the value from the node. The 
+    * value read from the node is resolved using the template filter.
+    * If the value value can not be found according to the annotation
+    * attributes then null is assumed and the node is valid.
+    *  
+    * @param node this is the node to read the value object from
+    * @param key this is the name of the node to be validated
+    * 
+    * @return this returns true if the primitive key is valid
+    */    
+   private boolean validateAttribute(InputNode node, String key) throws Exception {
+      if(key != null) {
+         key = style.getAttribute(key);
+         node = node.getNext(key);
+      }
+      if(node == null) {
+         return true;        
       }
       return root.validate(node);
    }
@@ -219,10 +263,14 @@ class PrimitiveValue implements Converter {
       Class expect = type.getType();
       String name = entry.getValue();
       
-      if(name == null) {
-         name = context.getName(expect);
-      } 
-      write(node, item, name);
+      if(!entry.isInline()) {
+         if(name == null) {
+            name = context.getName(expect);
+         } 
+         writeElement(node, item, name);
+      } else {
+         writeAttribute(node, item, name);
+      }
    }
    
    /**
@@ -233,18 +281,36 @@ class PrimitiveValue implements Converter {
     * 
     * @param node this is the node that the value is written to
     * @param item this is the item that is to be written
-    * @param key this is the name of the node to be created
+    * @param key this is the name of the element to be created
     */   
-   private void write(OutputNode node, Object item, String key) throws Exception {
+   private void writeElement(OutputNode node, Object item, String key) throws Exception {
       String name = style.getAttribute(key);
-      
-      if(!entry.isInline()) {
-         node = node.getChild(name);        
-      }
+      OutputNode child = node.getChild(name);
+
       if(item != null) {        
-         if(!isOverridden(node, item)) {
-            root.write(node, item);
+         if(!isOverridden(child, item)) {
+            root.write(child, item);
          }
+      }
+   }
+   
+   /**
+    * This method is used to write the value to the specified node.
+    * The value written to the node can be an attribute or an element
+    * depending on the annotation attribute values. This method will
+    * maintain references for serialized elements.
+    * 
+    * @param node this is the node that the value is written to
+    * @param item this is the item that is to be written
+    * @param key this is the name of the attribute to be created
+    */   
+   private void writeAttribute(OutputNode node, Object item, String key) throws Exception {
+      if(item != null) {
+         if(key != null) {
+            key = style.getAttribute(key);
+            node = node.setAttribute(key, null);
+         }     
+         root.write(node, item);
       }
    }
    
