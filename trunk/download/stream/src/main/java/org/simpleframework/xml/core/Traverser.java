@@ -233,8 +233,7 @@ class Traverser {
             decorator.decorate(child);
          }
          if(!context.setOverride(type, source, child)) {
-            Converter convert = getComposite(actual);            
-            convert.write(child, source);         
+            getComposite(actual).write(child, source);         
          }
       }         
       child.commit();      
