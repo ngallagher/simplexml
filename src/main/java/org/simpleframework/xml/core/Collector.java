@@ -19,8 +19,8 @@
 package org.simpleframework.xml.core;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 
 /**
  * The <code>Collector</code> object is used to store variables for
@@ -145,7 +145,7 @@ class Collector implements Criteria {
     * 
     * @author Niall Gallagher
     */
-   private class Registry extends HashMap<String, Variable> {
+   private class Registry extends LinkedHashMap<String, Variable> {
       
       /**
        * This is used to iterate over the names of the variables
