@@ -94,7 +94,6 @@ class Entry {
       this.entry = label.entry();
       this.value = label.value();
       this.key = label.key();
-      this.key = label.key();
       this.contact = contact;
       this.label = label;
    }
