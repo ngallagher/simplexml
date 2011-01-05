@@ -29,7 +29,7 @@ public class RequestTest{
    private class TestListener implements ResponseListener{
       private CountDownLatch latch;
       private Throwable error;
-      private int status;
+      private String status;
       public TestListener(){
          this.latch = new CountDownLatch(1);
       }
@@ -40,9 +40,9 @@ public class RequestTest{
          latch.countDown();
          error = cause;
       }
-      public void success(int code){
+      public void success(String message){        
          latch.countDown();
-         status = code;
+         status = message;
       }
       public void validate(){
          assertEquals(status, 200);

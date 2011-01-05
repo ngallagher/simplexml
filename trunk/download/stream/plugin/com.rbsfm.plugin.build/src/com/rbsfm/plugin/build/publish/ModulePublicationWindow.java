@@ -1,6 +1,8 @@
 package com.rbsfm.plugin.build.publish;
 import java.io.File;
-import org.eclipse.jface.dialogs.MessageDialog;
+import java.util.prefs.Preferences;
+
+import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
@@ -10,9 +12,13 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+
+import com.rbsfm.plugin.build.assemble.ProjectAssemblyRequestBuilder;
 import com.rbsfm.plugin.build.ivy.Module;
 import com.rbsfm.plugin.build.ui.InputWindow;
 import com.rbsfm.plugin.build.ui.MessageFormatter;
+import com.rbsfm.plugin.build.ui.MessageLogger;
+import com.rbsfm.plugin.build.ui.InputWindow.SelectionAdapter;
 public class ModulePublicationWindow extends InputWindow{
    private Module module;
    private Text loginField;
@@ -86,7 +92,7 @@ public class ModulePublicationWindow extends InputWindow{
                String id = idField.getText();
                publisher.publish(file, moduleName, revision, branch, branchRevision, mailAddress, id);
             }catch(Exception cause){
-               MessageDialog.openInformation(getShell(), "Error", MessageFormatter.format(cause));
+               MessageLogger.openInformation(getShell(), "Error", MessageFormatter.format(cause));
                throw new RuntimeException(cause);
             }
          }
@@ -96,6 +102,19 @@ public class ModulePublicationWindow extends InputWindow{
             clearFields();
             moduleField.forceFocus();
          }
+      });
+      createButton(buttons, "&Server", "Set server location", new SelectionAdapter(){
+        public void widgetSelected(SelectionEvent e) {
+          Preferences preferences = Preferences.userNodeForPackage(ModulePublicationRequestBuilder.class);
+          String server = preferences.get("server", "");
+          InputDialog dialog = new InputDialog(getShell(),  "Server location", "Set the location of the publication server", server, null);
+          dialog.open();
+          String result = dialog.getValue();
+          if(result != null && !result.equals("")) {
+            preferences.put("server", result);
+          }
+          moduleField.forceFocus();
+        }
       });
    }
 }

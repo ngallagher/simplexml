@@ -33,6 +33,9 @@ class Context{
       SVNWCClient client = getLocalClient();
       SVNInfo info = client.doInfo(file, SVNRevision.BASE);
       String location = info.getURL().toDecodedString();
+      if(file.isDirectory()) {
+        return LocationParser.parse(location + "/.");
+      }
       return LocationParser.parse(location);
    }
    public String getLogin(){

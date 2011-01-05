@@ -6,7 +6,6 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.swt.widgets.Composite;
@@ -16,6 +15,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import com.rbsfm.plugin.build.ivy.Module;
 import com.rbsfm.plugin.build.ivy.ModuleParser;
 import com.rbsfm.plugin.build.ui.MessageFormatter;
+import com.rbsfm.plugin.build.ui.MessageLogger;
 /**
  * The <code>ModulePublicationHandler</code> object is the main point of entry
  * for the module publication command. This provides an event with the file 
@@ -40,10 +40,10 @@ public class ModulePublicationHandler extends AbstractHandler{
             Module module = ModuleParser.parse(source);
             open(shell, location, module);
          }catch(Exception cause){
-            MessageDialog.openError(shell, "Error", MessageFormatter.format(cause));
+            MessageLogger.openError(shell, "Error", MessageFormatter.format(cause));
          }
       }else{
-         MessageDialog.openInformation(HandlerUtil.getActiveShell(event), "Information", "Please select an ivy.xml file");
+         MessageLogger.openInformation(HandlerUtil.getActiveShell(event), "Information", "Please select an ivy.xml file");
       }
       return null;
    }
