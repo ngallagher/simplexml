@@ -1,6 +1,5 @@
 package com.rbsfm.plugin.build.assemble;
 import java.io.File;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Shell;
 import com.rbsfm.plugin.build.rpc.Method;
 import com.rbsfm.plugin.build.rpc.Request;
@@ -12,6 +11,7 @@ import com.rbsfm.plugin.build.svn.Scheme;
 import com.rbsfm.plugin.build.svn.Status;
 import com.rbsfm.plugin.build.svn.Subversion;
 import com.rbsfm.plugin.build.ui.MessageFormatter;
+import com.rbsfm.plugin.build.ui.MessageLogger;
 public class ProjectAssembler implements ResponseListener{
    private final Repository repository;
    private final Shell shell;
@@ -30,28 +30,28 @@ public class ProjectAssembler implements ResponseListener{
          }
          if(!repository.queryTag(file, tag)) {
             Location location = repository.tag(file, tag, String.format("%s %s", id, tag), false);
-            MessageDialog.openInformation(shell, "Tag created", location.prefix);
+            MessageLogger.openInformation(shell, "Tag created", location.prefix);
          } else {
-            MessageDialog.openInformation(shell, "Tag", "Using existing tag "+ tag);
+            MessageLogger.openInformation(shell, "Tag", "Using existing tag "+ tag);
          }
-         MessageDialog.openInformation(shell, "Project", "Publishing project " + projectName + " from " + tag);
+         MessageLogger.openInformation(shell, "Project", "Publishing project " + projectName + " from " + tag);
          request.execute(Method.POST);
       }
    }
    private boolean valid(String[] environmentList) {
       for(String token : environmentList) {
          if(!Environment.valid(token)) {
-            MessageDialog.openError(shell, "Error", "Environment "+token+" is not valid");
+            MessageLogger.openError(shell, "Error", "Environment "+token+" is not valid");
             return false;
          }
       }
       return true;
    }
    public void exception(Throwable cause){
-      MessageDialog.openInformation(shell, "Error", MessageFormatter.format(cause));
+      MessageLogger.openInformation(shell, "Error", MessageFormatter.format(cause));
    }
-   public void success(int status){
-      MessageDialog.openInformation(shell, "Success", "Project has been assembled");
+   public void success(String message){
+      MessageLogger.openInformation(shell, "Success", message);
    }
    private static enum Environment{
       UAT,DEV,CONT,PROD,SUPPORTDEV;

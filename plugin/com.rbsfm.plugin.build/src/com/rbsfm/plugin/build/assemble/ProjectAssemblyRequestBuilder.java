@@ -1,5 +1,6 @@
 package com.rbsfm.plugin.build.assemble;
 import java.util.Map;
+import java.util.prefs.Preferences;
 import com.rbsfm.plugin.build.rpc.Method;
 import com.rbsfm.plugin.build.rpc.Request;
 import com.rbsfm.plugin.build.rpc.RequestBuilder;
@@ -17,10 +18,24 @@ public class ProjectAssemblyRequestBuilder implements RequestBuilder{
       this.mailAddress = mailAddress;
    }
    public void address(StringBuilder builder){
-      builder.append("http://lonms04037.fm.rbsgrp.net:59009/ProjectAssemblyServer/ProjectAssemblyService");
+     Preferences preferences = Preferences.userNodeForPackage(ProjectAssemblyRequestBuilder.class);
+     String server = preferences.get("server", "http://lonms06619.fm.rbsgrp.net:59009/ProjectAssemblyServer/ProjectAssemblyService");
+     builder.append(server);     
    }
    public void header(Map<String,String> header){
+      header.put("Accept", "*/*");
+      header.put("Accept-Language", "en-us");
+      header.put("Referer", "http://sydmw12385:9999/ProjectAssemblyServer/91CD486DABE691C54B93D2B7C8C37AF5.cache.html");
+      header.put("Content-Type", "text/x-gwt-rpc; charset=utf-8");
+      header.put("UA-CPU", "x86");
+      header.put("Accept-Encoding", "gzip, deflate");
+      header.put("User-Agent", "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; .NET CLR 1.1.4322; .NET CLR 2.0.50727; .NET CLR 3.0.4506.2152; .NET CLR 3.5.30729)");
+      header.put("Host", "sydmw12385:9999");
+      //header.put("Content-Length", "474");
       header.put("Connection", "close");
+      header.put("Cache-Control", "no-cache");
+      header.put("Cookie", "projectassemblyserver.user.email=niall.gallagher@rbs.com; proxy=http://lonms06619.fm.rbsgrp.net:59009/ProjectAssemblyServer/ProjectAssemblyServer.html");
+      /*header.put("Connection", "close");
       header.put("Host", "localhost:9999");
       header.put("User-Agent", "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.1.8) Gecko/20100202 Firefox/3.5.8");
       header.put("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,");
@@ -30,17 +45,20 @@ public class ProjectAssemblyRequestBuilder implements RequestBuilder{
       header.put("Content-Type", "text/x-gwt-rpc; charset=utf-8");
       header.put("Referer", "http://localhost:9999/ProjectAssemblyServer/C35FAD9739E7C3D9CDB7FE7B7BD68DCD.cache.html");
       header.put("Pragma", "no-cache");
-      header.put("Cache-Control", "no-cache");
+      header.put("Cache-Control", "no-cache");*/
    }
    public void body(StringBuilder builder){
       int size = environmentList.length;
       builder.append(5);
       builder.append("|").append("0");
       builder.append("|").append(13 + size);
-      builder.append("|").append("http://localhost:9999/ProjectAssemblyServer/");
-      builder.append("|").append("50F473AF07CA2557CCF4AE2C5D50CA40");
+      //builder.append("|").append("http://localhost:9999/ProjectAssemblyServer/");
+      builder.append("|").append("http://sydmw12385:9999/ProjectAssemblyServer/");
+      //builder.append("|").append("50F473AF07CA2557CCF4AE2C5D50CA40");
+      builder.append("|").append("C679019429F34E9A7E91EB954F5164D7");
       builder.append("|").append("com.rbsfm.fi.projectassemblyserver.client.ProjectAssemblyService");
-      builder.append("|").append("assemble|com.rbsfm.fi.projectassemblyserver.client.ProjectAssemblyData");
+      builder.append("|").append("assemble");
+      builder.append("|").append("com.rbsfm.fi.projectassemblyserver.client.ProjectAssemblyData");
       builder.append("|").append("com.rbsfm.fi.projectassemblyserver.client.ProjectAssemblyDataImpl/739800790");
       builder.append("|").append("java.util.ArrayList/3821976829");
       builder.append("|").append("java.lang.String/2004016611");

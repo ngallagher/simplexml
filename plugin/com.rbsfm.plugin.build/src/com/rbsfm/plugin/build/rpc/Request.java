@@ -1,8 +1,11 @@
 package com.rbsfm.plugin.build.rpc;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
+import org.apache.commons.httpclient.StatusLine;
 import org.apache.commons.httpclient.URI;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
@@ -68,9 +71,18 @@ public class Request{
       }
    }
    private void respond(HttpMethod method) throws Exception{
-      int status = method.getStatusCode();
+      Header[] response = method.getResponseHeaders();
+      StatusLine status = method.getStatusLine();
       if(listener != null){
-         listener.success(status);
+         StringBuilder builder = new StringBuilder();         
+         builder.append(status);
+         builder.append('\r');
+         for(Header header : response) {
+           builder.append(header);
+           builder.append('\r');
+         }
+         String message = builder.toString();
+         listener.success(message);
       }
    }
    private Entity build(Method method) throws Exception{

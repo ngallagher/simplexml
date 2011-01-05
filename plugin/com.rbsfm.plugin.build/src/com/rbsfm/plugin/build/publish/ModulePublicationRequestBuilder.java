@@ -1,5 +1,6 @@
 package com.rbsfm.plugin.build.publish;
 import java.util.Map;
+import java.util.prefs.Preferences;
 import com.rbsfm.plugin.build.rpc.Method;
 import com.rbsfm.plugin.build.rpc.Request;
 import com.rbsfm.plugin.build.rpc.RequestBuilder;
@@ -16,8 +17,10 @@ public class ModulePublicationRequestBuilder implements RequestBuilder{
       this.branchRevision = branchRevision;
       this.mailAddress = mailAddress;
    }
-   public void address(StringBuilder builder){
-      builder.append("http://lonms04037.fm.rbsgrp.net:59009/ModulePublicationServer/ModulePublicationService");
+   public void address(StringBuilder builder){	  
+      Preferences preferences = Preferences.userNodeForPackage(ModulePublicationRequestBuilder.class);
+      String server = preferences.get("server", "http://lonms06619:59009/ModulePublicationServer/ModulePublicationService");
+      builder.append(server);
    }
    public void header(Map<String,String> header){
       header.put("Connection", "close");

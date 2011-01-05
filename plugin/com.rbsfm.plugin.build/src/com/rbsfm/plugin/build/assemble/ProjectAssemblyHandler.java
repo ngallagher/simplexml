@@ -6,7 +6,6 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.swt.widgets.Composite;
@@ -16,6 +15,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import com.rbsfm.plugin.build.ivy.Project;
 import com.rbsfm.plugin.build.ivy.ProjectParser;
 import com.rbsfm.plugin.build.ui.MessageFormatter;
+import com.rbsfm.plugin.build.ui.MessageLogger;
 /**
  * The <code>ProjectAssemblyHandler</code> object is the main point of entry
  * for the project assembly command. This provides an event with the file 
@@ -40,10 +40,10 @@ public class ProjectAssemblyHandler extends AbstractHandler{
             Project project = ProjectParser.parse(source);
             open(shell, location, project);
          }catch(Exception cause){
-            MessageDialog.openError(shell, "Error", MessageFormatter.format(cause));
+            MessageLogger.openError(shell, "Error", MessageFormatter.format(cause));
          }
       }else{
-         MessageDialog.openInformation(shell, "Information", "Please select a project");
+         MessageLogger.openInformation(shell, "Information", "Please select a project");
       }
       return null;
    }

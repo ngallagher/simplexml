@@ -1,6 +1,8 @@
 package com.rbsfm.plugin.build.assemble;
 import java.io.File;
-import org.eclipse.jface.dialogs.MessageDialog;
+import java.util.prefs.Preferences;
+
+import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
@@ -10,9 +12,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+
 import com.rbsfm.plugin.build.ivy.Project;
 import com.rbsfm.plugin.build.ui.InputWindow;
 import com.rbsfm.plugin.build.ui.MessageFormatter;
+import com.rbsfm.plugin.build.ui.MessageLogger;
 class ProjectAssemblyWindow extends InputWindow{
    private Text loginField;
    private Text passwordField;
@@ -86,7 +90,7 @@ class ProjectAssemblyWindow extends InputWindow{
                String id = idField.getText();
                assembler.assemble(file, projectName, installName, tagName, environments, mailAddress, id);
             }catch(Exception cause){
-               MessageDialog.openInformation(getShell(), "Error", MessageFormatter.format(cause));
+               MessageLogger.openInformation(getShell(), "Error", MessageFormatter.format(cause));
                throw new RuntimeException(cause);
             }
          }
@@ -96,6 +100,19 @@ class ProjectAssemblyWindow extends InputWindow{
             clearFields();
             projectField.forceFocus();
          }
+      });
+      createButton(buttons, "&Server", "Set server location", new SelectionAdapter(){
+        public void widgetSelected(SelectionEvent e) {
+          Preferences preferences = Preferences.userNodeForPackage(ProjectAssemblyRequestBuilder.class);
+          String server = preferences.get("server", "");
+          InputDialog dialog = new InputDialog(getShell(), "Server location", "Set the location of the assembly server", server, null);
+          dialog.open();
+          String result = dialog.getValue();
+          if(result != null && !result.equals("")) {
+            preferences.put("server", result);
+          }
+          projectField.forceFocus();          
+        }
       });
    }
 }
