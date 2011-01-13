@@ -15,7 +15,7 @@ import org.simpleframework.xml.stream.OutputNode;
 
 public class HideEnclosingConverterTest extends TestCase {
 
-   private static class EntryConverter implements Converter<Entry> {
+   public static class EntryConverter implements Converter<Entry> {
       private final Serializer serializer;
       public EntryConverter() {
          this.serializer = new Persister();
@@ -32,29 +32,41 @@ public class HideEnclosingConverterTest extends TestCase {
    }
    
    @Default(required=false)
-   private static class Entry {
-      private String name;
-      private String value;
+   public static class Entry {
+      private final String name;
+      private final String value;
       public Entry(@Element(name="name", required=false) String name, @Element(name="value", required=false) String value){
          this.name = name;
          this.value = value;
       }
+      public String getName(){
+         return name;
+      }
+      public String getValue(){
+         return value;
+      }
    }
    
    @Default
-   private static class EntryHolder {
+   public static class EntryHolder {
       @Convert(EntryConverter.class)
       private Entry entry;
       private String name;
       @Attribute
       private int code;
-      public EntryHolder(){
-         super();
-      }
-      public EntryHolder(Entry entry, String name, int code) {
+      public EntryHolder(@Element(name="entry") Entry entry, @Element(name="name") String name, @Attribute(name="code") int code) {
          this.entry = entry;
          this.name = name;
          this.code = code;
+      }
+      public Entry getEntry(){
+         return entry;
+      }
+      public String getName() {
+         return name;
+      }
+      public int getCode() {
+         return code;
       }
    }
 
