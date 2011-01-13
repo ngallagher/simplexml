@@ -50,10 +50,10 @@ public class HideEnclosingConverterTest extends TestCase {
    @Default
    public static class EntryHolder {
       @Convert(EntryConverter.class)
-      private Entry entry;
-      private String name;
+      private final Entry entry;
+      private final String name;
       @Attribute
-      private int code;
+      private final int code;
       public EntryHolder(@Element(name="entry") Entry entry, @Element(name="name") String name, @Attribute(name="code") int code) {
          this.entry = entry;
          this.name = name;
