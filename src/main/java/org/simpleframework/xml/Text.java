@@ -38,7 +38,7 @@ import java.lang.annotation.Retention;
  * 
  *    &lt;example one="value" two="value"&gt;
  *       Example text value       
- *    &lt;example&gt;
+ *    &lt;/example&gt;
  * 
  * </pre>
  * Text values are used when an element containing attributes is
