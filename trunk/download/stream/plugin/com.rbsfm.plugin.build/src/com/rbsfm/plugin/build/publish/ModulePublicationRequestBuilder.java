@@ -24,18 +24,22 @@ public class ModulePublicationRequestBuilder implements RequestBuilder{
    }
    public void header(Map<String,String> header){
       header.put("Connection", "close");
-      header.put("Host", "localhost:9999");
+      //header.put("Host", "localhost:9999");
+      header.put("Host", "localhost:7777");
       header.put("User-Agent", "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.1.8) Gecko/20100202 Firefox/3.5.8");
       header.put("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,");
       header.put("Accept-Language", "en-gb,en;q=0.5");
       header.put("Accept-Encoding", "gzip,deflate");
       header.put("Accept-Charset", "ISO-8859-1,utf-8;q=0.7,*;q=0.7");
       header.put("Content-Type", "text/x-gwt-rpc; charset=utf-8");
-      header.put("Referer", "http://localhost:9999/ModulePublicationServer/C35FAD9739E7C3D9CDB7FE7B7BD68DCD.cache.html");
+      //header.put("Referer", "http://localhost:9999/ModulePublicationServer/C35FAD9739E7C3D9CDB7FE7B7BD68DCD.cache.html");
+      header.put("Referer", "http://localhost:7777/ModulePublicationServer/A1C5CD49A6DAF51B66FF5F90FA1A1F7E.cache.html");
       header.put("Pragma", "no-cache");
       header.put("Cache-Control", "no-cache");
    }
    public void body(StringBuilder builder){
+      //5|0|9|http://localhost:7777/ModulePublicationServer/|4D2BB86C9B694708FD0D5834CE6A80B1|com.rbsfm.fi.modulepublicationserver.client.ModulePublicationService|publish|com.rbsfm.fi.modulepublicationserver.client.ModulePublicationData|com.rbsfm.fi.modulepublicationserver.client.ModulePublicationDataImpl/2938065861|egpricing|2010WK51-us-09|vladimir.ivanov@rbs.com|1|2|3|4|1|5|6|0|7|8|0|0|9|0|0|0|0|0|
+      //5|0|9|http://localhost:9999/ModulePublicationServer/|4D2BB86C9B694708FD0D5834CE6A80B1|com.rbsfm.fi.modulepublicationserver.client.ModulePublicationService|publish|com.rbsfm.fi.modulepublicationserver.client.ModulePublicationData|com.rbsfm.fi.modulepublicationserver.client.ModulePublicationDataImpl/2938065861|egpricing|us-2010WK51-09|vladimir.ivanov@rbs.com|1|2|3|4|1|5|6|0|7|8|0|0|9|0|0|0|0|0|
       builder.append(5);
       builder.append("|").append(0);
       builder.append("|").append(9);

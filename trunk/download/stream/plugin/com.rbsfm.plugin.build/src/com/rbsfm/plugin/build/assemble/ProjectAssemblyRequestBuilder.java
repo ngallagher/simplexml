@@ -48,6 +48,8 @@ public class ProjectAssemblyRequestBuilder implements RequestBuilder{
       header.put("Cache-Control", "no-cache");*/
    }
    public void body(StringBuilder builder){
+     //"5|0|14|http://localhost:7777 /ProjectAssemblyServer/|C679019429F34E9A7E91EB954F5164D7|com.rbsfm.fi.projectassemblyserver.client.ProjectAssemblyService|assemble|com.rbsfm.fi.projectassemblyserver.client.ProjectAssemblyData|com.rbsfm.fi.projectassemblyserver.client.ProjectAssemblyDataImpl/739800790|java.util.ArrayList/3821976829|java.lang.String/2004016611|dev|uat|aussie-2010WK48-rmdsbridge-1|aussie_rmdsbridge|                             svn|niall.gallagher@rbs.com|1|2|3|4|1|5|6|7|2|8|9|8|10|11|12|11|13|0|14|0|0|0|0|0|"
+     //"5|0|15|http://sydmw12385:9999/ProjectAssemblyServer/|C679019429F34E9A7E91EB954F5164D7|com.rbsfm.fi.projectassemblyserver.client.ProjectAssemblyService|assemble|com.rbsfm.fi.projectassemblyserver.client.ProjectAssemblyData|com.rbsfm.fi.projectassemblyserver.client.ProjectAssemblyDataImpl/739800790|java.util.ArrayList/3821976829|java.lang.String/2004016611|uat|dev|aussie-2010WK48-rmdsbridge-1|aussie_rmdsbridge|aussie-2010WK48-rmdsbridge-1|svn|niall.gallagher@rbs.com|1|2|3|4|1|5|6|7|2|8|9|8|10|11|12|13|14|0|15|0|0|0|0|0|
       int size = environmentList.length;
       builder.append(5);
       builder.append("|").append("0");
