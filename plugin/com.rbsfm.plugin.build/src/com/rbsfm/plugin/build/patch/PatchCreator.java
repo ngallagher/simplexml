@@ -4,10 +4,8 @@ import java.io.FileWriter;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import org.eclipse.swt.widgets.Shell;
 import org.simpleframework.xml.core.Persister;
-
 import com.rbsfm.plugin.build.svn.Location;
 import com.rbsfm.plugin.build.svn.Repository;
 import com.rbsfm.plugin.build.svn.Scheme;
