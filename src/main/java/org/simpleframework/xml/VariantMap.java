@@ -36,7 +36,7 @@ import java.lang.annotation.RetentionPolicy;
  *       &#64;ElementMap(entry="y", inline=true, valueType=Y.class),
  *       &#64;ElementMap(entry="z", inline=true, valueType=Z.class)               
  *    })
- *    private Map<String, Code> codes;
+ *    private Map&lt;String, Code&gt; codes;
  *    
  * </pre>
  * For the above definition the map field can take any of the declared
