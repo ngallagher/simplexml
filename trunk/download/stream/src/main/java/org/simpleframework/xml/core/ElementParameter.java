@@ -166,6 +166,17 @@ class ElementParameter implements Parameter {
    }
    
    /**
+    * This is used to provide a textual representation of the 
+    * parameter. Providing a string describing the parameter is
+    * useful for debugging and for exception messages.
+    * 
+    * @return this returns the string representation for this
+    */
+   public String toString() {
+      return contact.toString();
+   }
+   
+   /**
     * The <code>Contact</code> represents a contact object that is
     * to be used for a label in order to extract a parameter name.
     * The parameter name is taken from the XML annotation.

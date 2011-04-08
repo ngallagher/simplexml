@@ -18,6 +18,8 @@
 
 package org.simpleframework.xml.core;
 
+import java.util.Set;
+
 import org.simpleframework.xml.Version;
 import org.simpleframework.xml.strategy.Type;
 import org.simpleframework.xml.stream.InputNode;
@@ -86,7 +88,7 @@ class Composite implements Converter {
     * This is the type that this composite produces instances of.
     */
    private final Type type;
-        
+   
    /**
     * Constructor for the <code>Composite</code> object. This creates 
     * a converter object capable of serializing and deserializing root
@@ -97,7 +99,21 @@ class Composite implements Converter {
     * @param type this is the XML schema type to use for this
     */
    public Composite(Context context, Type type) {
-      this.factory = new ObjectFactory(context, type);  
+      this(context, type, null);
+   }
+        
+   /**
+    * Constructor for the <code>Composite</code> object. This creates 
+    * a converter object capable of serializing and deserializing root
+    * objects labeled with XML annotations. The XML schema class must 
+    * be given to the instance in order to perform deserialization.
+    *  
+    * @param context the source object used to perform serialization
+    * @param type this is the XML schema type to use for this
+    * @param override this is the override type declared for this
+    */
+   public Composite(Context context, Type type, Class override) {
+      this.factory = new ObjectFactory(context, type, override);  
       this.primitive = new Primitive(context, type);
       this.criteria = new Collector(context);
       this.revision = new Revision();
@@ -418,7 +434,7 @@ class Composite implements Converter {
     * @param label this is the label used to read the version attribute
     */
    private void readVersion(InputNode node, Object source, Label label) throws Exception {
-      Object value = read(node, source, label);
+      Object value = readInstance(node, source, label);
       Class expect = type.getType();
      
       if(value != null) {
@@ -504,7 +520,7 @@ class Composite implements Converter {
       Label label = schema.getText();
       
       if(label != null) {
-         read(node, source, label);
+         readInstance(node, source, label);
       }
    }
    
@@ -532,7 +548,7 @@ class Composite implements Converter {
             throw new AttributeException("Attribute '%s' does not have a match in %s at %s", name, expect, line);
          }            
       } else {
-         read(node, source, label);
+         readInstance(node, source, label);
       }         
    }
 
@@ -565,10 +581,35 @@ class Composite implements Converter {
             node.skip();                 
          }
       } else {
-         read(node, source, label);
+         readVariant(node, source, map, label);
       }         
    }
    
+   /**
+    * The <code>readVariant</code> method is determine the variants 
+    * for a particular label and set the value of that variant to
+    * the same value as the label. This helps the deserialization 
+    * process by ensuring once a variant is read it is not
+    * replaced. This is also required when reading inline lists.
+    * 
+    * @param node this is the XML element to read the elements from
+    * @param source this is the instance to read the variants from
+    * @param map this is the label map associated with the label
+    * @param label this is the label used to define the XML element
+    */
+   private void readVariant(InputNode node, Object source, LabelMap map, Label label) throws Exception {
+      Object value = readInstance(node, source, label);
+      Set<String> list = label.getVariants(context);
+      
+      for(String key : list) {
+         Label variant = map.take(key);
+         
+         if(label.isInline()) {
+            criteria.set(variant, value);
+         }
+      }
+   }
+
    /**
     * This <code>read</code> method is used to perform deserialization
     * of the provided node object using a delegate converter. This is
@@ -581,8 +622,8 @@ class Composite implements Converter {
     * @param source the type of the object that is being deserialized
     * @param label this is the label used to create the converter
     */
-   private Object read(InputNode node, Object source, Label label) throws Exception {    
-      Object object = readObject(node, source, label);
+   private Object readInstance(InputNode node, Object source, Label label) throws Exception {    
+      Object object = readVariable(node, source, label);
     
       if(object == null) {     
          Position line = node.getPosition();
@@ -592,7 +633,7 @@ class Composite implements Converter {
             throw new ValueRequiredException("Empty value for %s in %s at %s", label, expect, line);
          }
       } else {
-         if(object != label.getEmpty(context)) {      
+         if(object != label.getEmpty(context)) {  
             criteria.set(label, object);
          }
       }
@@ -612,7 +653,7 @@ class Composite implements Converter {
     * 
     * @return this returns the original value deserialized in to
     */
-   private Object readObject(InputNode node, Object source, Label label) throws Exception {    
+   private Object readVariable(InputNode node, Object source, Label label) throws Exception {    
       Converter reader = label.getConverter(context);   
       String name = label.getName(context);
       
@@ -624,15 +665,15 @@ class Composite implements Converter {
             Object value = variable.getValue();
 
             return reader.read(node, value);
-         } else {
-            if(source != null) {
-               Object value = contact.get(source);
-            
-               if(value != null) {
-                  return reader.read(node, value);
-               }
+         }
+         if(source != null) {
+            Object value = contact.get(source);
+         
+            if(value != null) {
+               return reader.read(node, value);
             }
          }
+         
       }
       return reader.read(node);
    }
@@ -652,7 +693,7 @@ class Composite implements Converter {
    private void validate(InputNode node, LabelMap map, Object source) throws Exception {
       Class expect = context.getType(type, source);
       Position line = node.getPosition();
-      
+
       for(Label label : map) {
          if(label.isRequired() && revision.isEqual()) {
             throw new ValueRequiredException("Unable to satisfy %s for %s at %s", label, expect, line);
@@ -825,8 +866,10 @@ class Composite implements Converter {
       Label label = map.take(name);
       
       if(label == null) {
+         Class expect = type.getType();
+         
          if(map.isStrict(context) && revision.isEqual()) {              
-            throw new AttributeException("Attribute '%s' does not exist at %s", name, line);
+            throw new AttributeException("Attribute '%s' does not exist for %s at %s", name, expect, line);
          }            
       } else {
          validate(node, label);
@@ -852,15 +895,42 @@ class Composite implements Converter {
       }
       if(label == null) {
          Position line = node.getPosition();
+         Class expect = type.getType();
          
          if(map.isStrict(context) && revision.isEqual()) {              
-            throw new ElementException("Element '%s' does not exist at %s", name, line);
+            throw new ElementException("Element '%s' does not exist for %s at %s", name, expect, line);
          } else {
             node.skip();                 
          }
       } else {
-         validate(node, label);
+         validateVariant(node, map, label);
       }         
+   }
+   
+   /**
+    * The <code>validateVariant</code> method is determine the variants 
+    * for a particular label and set the value of that variant to
+    * the same value as the label. This helps the deserialization 
+    * process by ensuring once a variant is validated it is not
+    * replaced. This is also required when validating inline lists.
+    * 
+    * @param node this is the XML element to read the elements from
+    * @param map this is the label map associated with the label
+    * @param label this is the label used to define the XML element
+    */
+   private void validateVariant(InputNode node, LabelMap map, Label label) throws Exception {
+      Set<String> list = label.getVariants(context);
+      
+      for(String key : list) {
+         Label variant = map.take(key);
+         
+         if(variant != null) {
+            if(label.isInline()) {
+               criteria.set(variant, null);
+            }
+         }
+      }
+      validate(node, label);
    }
    
    /**
@@ -900,8 +970,10 @@ class Composite implements Converter {
       Position line = node.getPosition();
 
       for(Label label : map) {
+         Class expect = type.getType();
+         
          if(label.isRequired() && revision.isEqual()) {
-            throw new ValueRequiredException("Unable to satisfy %s at %s", label, line);
+            throw new ValueRequiredException("Unable to satisfy %s for %s at %s", label, expect, line);
          }
       }      
    }
@@ -952,7 +1024,6 @@ class Composite implements Converter {
       writeVersion(node, source, schema);
       writeSection(node, source, section);
       writeText(node, source, schema);
-
    }
    
    /**
@@ -1045,7 +1116,7 @@ class Composite implements Converter {
     * @param section this is the section that defines the XML structure
     */
    private void writeElements(OutputNode node, Object source, Section section) throws Exception {
-      for(String name : section) {
+       for(String name : section) {
          Section child = section.getSection(name);
          
          if(child != null) {
@@ -1055,28 +1126,31 @@ class Composite implements Converter {
          } else {
             Label label = section.getElement(name);
             Class expect = context.getType(type, source);
-
-            if(label == null) {
-               throw new ElementException("Element '%s' not defined in %s", name, expect);
+            Object value = criteria.get(name);
+            
+            if(value == null) {
+               if(label == null) {
+                 throw new ElementException("Element '%s' not defined in %s", name, expect);
+               }
+               writeVariant(node, source, section, label);
             }
-            writeReplace(node, source, label);
          }            
       }
    }
    
    /**
-    * The <code>writeReplace</code> method is used to replace an object
-    * before it is serialized. This is used so that an object can give
-    * a substitute to be written to the XML document in the event that
-    * the actual object is not suitable or desired for serialization. 
-    * This acts as an equivalent to the Java Object Serialization
-    * <code>writeReplace</code> method for the object serialization.
+    * The <code>writeVariant</code> method is determine the variants 
+    * for a particular label and set the value of that variant to
+    * the same value as the label. This helps the serialization 
+    * process by ensuring once a variant is written it is not
+    * replaced. This is also required when writing inline lists.
     * 
-    * @param source this is the source object to be serialized
     * @param node this is the XML element to write elements to
+    * @param source this is the source object to be serialized
+    * @param section this is the section associated with the label
     * @param label this is the label used to define the XML element
     */
-   private void writeReplace(OutputNode node, Object source, Label label) throws Exception {
+   private void writeVariant(OutputNode node, Object source, Section section, Label label) throws Exception {
       Contact contact = label.getContact();
       Object value = contact.get(source);
       Class expect = context.getType(type, source);
@@ -1088,6 +1162,15 @@ class Composite implements Converter {
       
       if(replace != null) {
          writeElement(node, replace, label);            
+      }
+      Set<String> list = label.getVariants(context);
+      
+      for(String name : list) {
+         Label variant = section.getElement(name);
+         
+         if(variant != null) {
+            criteria.set(variant, replace);
+         }
       }
    }
    
@@ -1184,17 +1267,18 @@ class Composite implements Converter {
     */
    private void writeElement(OutputNode node, Object value, Label label) throws Exception {
       if(value != null) {
-         String name = label.getName(context);
+         Class real = value.getClass();
+         Label variant = label.getLabel(real);
+         String name = variant.getName(context);
+         Type type = label.getType(real); 
          OutputNode next = node.getChild(name);
-         Type contact = label.getContact(); 
-         Class type = contact.getType();
 
-         if(!label.isInline()) {
-            writeNamespaces(next, type, label);
+         if(!variant.isInline()) {
+            writeNamespaces(next, type, variant);
          }
-         if(label.isInline() || !isOverridden(next, value, contact)) {
-            Converter convert = label.getConverter(context);
-            boolean data = label.isData();
+         if(variant.isInline() || !isOverridden(next, value, type)) {
+            Converter convert = variant.getConverter(context);
+            boolean data = variant.isData();
             
             next.setData(data);
             writeElement(next, value, convert);
@@ -1228,8 +1312,9 @@ class Composite implements Converter {
     * @param type this is the type to acquire the decoration for
     * @param label this contains the primary decorator to be used
     */
-   private void writeNamespaces(OutputNode node, Class type, Label label) throws Exception {
-      Decorator primary = context.getDecorator(type);
+   private void writeNamespaces(OutputNode node, Type type, Label label) throws Exception {
+      Class expect = type.getType();
+      Decorator primary = context.getDecorator(expect);
       Decorator decorator = label.getDecorator();
       
       decorator.decorate(node, primary);

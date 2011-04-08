@@ -136,7 +136,7 @@ class PrimitiveValue implements Converter {
       Class expect = type.getType();
       
       if(value != null) {
-         throw new PersistenceException("Can not read value of %s", expect);
+         throw new PersistenceException("Can not read value of %s for %s", expect, entry);
       }
       return read(node);
    }

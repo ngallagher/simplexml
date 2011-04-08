@@ -18,6 +18,10 @@
 
 package org.simpleframework.xml.core;
 
+import java.lang.annotation.Annotation;
+import java.util.Collections;
+import java.util.Set;
+
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.strategy.Type;
 import org.simpleframework.xml.stream.Style;
@@ -43,12 +47,17 @@ class ElementLabel implements Label {
    /**
     * The contact that this element label represents.
     */
-   private Signature detail;
+   private Introspector detail;
    
    /**
     * References the annotation that was used by the field.
     */
    private Element label;
+   
+   /**
+    * This is the override that has been declared for this label.
+    */
+   private Class override;
    
    /**
     * This is the type of the class that the field references.
@@ -69,11 +78,73 @@ class ElementLabel implements Label {
     * @param label this is the annotation for the contact 
     */
    public ElementLabel(Contact contact, Element label) {
-      this.detail = new Signature(contact, this);
+      this.detail = new Introspector(contact, this);
       this.decorator = new Qualifier(contact);
       this.type = contact.getType();
+      this.override = label.type();
       this.name = label.name();     
-      this.label = label;      
+      this.label = label; 
+   }
+   
+   /**
+    * This is used to acquire the <code>Type</code> that the type
+    * provided is represented by. Typically this will return the
+    * field or method represented by the label. However, in the 
+    * case of variants this will provide an override type.
+    * 
+    * @param type this is the class to acquire the type for
+    * 
+    * @return this returns the type represented by this class
+    */
+   public Type getType(Class type){
+      Type contact = getContact();
+      
+      if(override == void.class) {
+         return contact;
+      }
+      return new OverrideType(contact, override);
+   }
+   
+   /**
+    * This is used to acquire the <code>Label</code> that the type
+    * provided is represented by. Typically this will return the
+    * same instance. However, in the case of variants this will
+    * look for an individual label to match the type provided.
+    * 
+    * @param type this is the type to acquire the label for
+    * 
+    * @return this returns the label represented by this type
+    */
+   public Label getLabel(Class type) {
+      return this;
+   }
+   
+   /**
+    * This returns a <code>Set</code> of variants for this label. This
+    * will typically be an empty set, and is never null. If this is
+    * a variant label then this will return the name of each label
+    * within the group. Providing the variants for a label allows the
+    * serialization process to determine the associated labels.
+    * 
+    * @return this returns the names of each of the variants
+    */
+   public Set<String> getVariants() throws Exception {
+      return Collections.emptySet();
+   }
+   
+   /**
+    * This returns a <code>Set</code> of variants for this label. This
+    * will typically be an empty set, and is never null. If this is
+    * a variant label then this will return the name of each label
+    * within the group. Providing the variants for a label allows the
+    * serialization process to determine the associated labels.
+    * 
+    * @param context this is used to style the variant names
+    * 
+    * @return this returns the names of each of the variants
+    */
+   public Set<String> getVariants(Context context) throws Exception {
+      return Collections.emptySet();
    }
    
    /**
@@ -103,8 +174,11 @@ class ElementLabel implements Label {
       
       if(context.isPrimitive(type)) {
          return new Primitive(context, type);
+      }      
+      if(override == void.class) {
+         return new Composite(context, type);
       }
-      return new Composite(context, type);
+      return new Composite(context, type, override);
    }
    
    /**
@@ -150,6 +224,18 @@ class ElementLabel implements Label {
     */
    public String getName() throws Exception{
       return detail.getName();
+   }
+   
+   /**
+    * This acquires the annotation associated with this label. This
+    * is typically the annotation acquired from the field or method.
+    * However, in the case of variants this will return the actual
+    * annotation within the variant group that this represents.
+    * 
+    * @return this returns the annotation that this represents
+    */
+   public Annotation getAnnotation() {
+      return label;
    }
    
    /**
@@ -202,7 +288,10 @@ class ElementLabel implements Label {
     * @return this returns the type of the contact class
     */  
    public Class getType() {
-      return type;
+      if(override == void.class) {
+         return type;
+      }
+      return override;
    }
    
    /**

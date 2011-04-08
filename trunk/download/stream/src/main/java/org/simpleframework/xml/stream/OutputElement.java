@@ -287,6 +287,18 @@ class OutputElement implements OutputNode {
    }
    
    /**
+    * This is used to change the name of an output node. This will
+    * only affect the name of the node if the node has not yet been
+    * committed. If the node is committed then this will not be
+    * reflected in the resulting XML generated.
+    * 
+    * @param name this is the name to change the node to
+    */
+   public void setName(String name) {
+      this.name = name;
+   }
+   
+   /**
     * This is used to set the output mode of this node to either
     * be CDATA or escaped. If this is set to true the any value
     * specified will be written in a CDATA block, if this is set

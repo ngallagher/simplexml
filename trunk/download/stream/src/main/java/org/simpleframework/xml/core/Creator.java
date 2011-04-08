@@ -86,13 +86,13 @@ interface Creator {
    public List<Parameter> getParameters();
    
    /**
-    * This is used to acquire all of the <code>Builder</code> objects
+    * This is used to acquire the <code>Initializer</code> objects
     * used to create an instance of the object. Each represents a
     * constructor and contains the parameters to the constructor. 
     * This is primarily used to validate each constructor against the
     * fields and methods annotated to ensure they are compatible.
     * 
-    * @return this returns a list of builders for the creator
+    * @return this returns a list of initializers for the creator
     */
-   public List<Builder> getBuilders();
+   public List<Initializer> getInitializers();
 }

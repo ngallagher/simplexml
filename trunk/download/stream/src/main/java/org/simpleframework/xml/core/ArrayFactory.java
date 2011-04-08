@@ -23,6 +23,7 @@ import java.lang.reflect.Array;
 import org.simpleframework.xml.strategy.Type;
 import org.simpleframework.xml.strategy.Value;
 import org.simpleframework.xml.stream.InputNode;
+import org.simpleframework.xml.stream.Position;
 
 /**
  * The <code>ArrayFactory</code> is used to create object array
@@ -77,10 +78,11 @@ class ArrayFactory extends Factory {
     * @return the object array type used for the instantiation
     */         
    public Instance getInstance(InputNode node) throws Exception {
+      Position line = node.getPosition();
       Value value = getOverride(node);    
       
       if(value == null) {
-         throw new ElementException("Array length required for %s", type);         
+         throw new ElementException("Array length required for %s at %s", type, line);         
       }      
       Class type = value.getType();
       
@@ -94,15 +96,15 @@ class ArrayFactory extends Factory {
     * the array types are not compatible an exception is thrown.
     * 
     * @param value this is the type object with the array details
-    * @param type this is the entry type for the array instance    
+    * @param entry this is the entry type for the array instance    
     * 
     * @return this object array type used for the instantiation  
     */
-   private Instance getInstance(Value value, Class type) throws Exception {
+   private Instance getInstance(Value value, Class entry) throws Exception {
       Class expect = getComponentType();
 
-      if(!expect.isAssignableFrom(type)) {
-         throw new InstantiationException("Array of type %s cannot hold %s", expect, type);
+      if(!expect.isAssignableFrom(entry)) {
+         throw new InstantiationException("Array of type %s cannot hold %s for %s", expect, entry, type);
       }
       return new ArrayInstance(value);   
    }   
@@ -116,11 +118,11 @@ class ArrayFactory extends Factory {
     * @return this returns the component type for the array
     */
    private Class getComponentType() throws Exception {
-      Class type = getType();
+      Class expect = getType();
       
-      if(!type.isArray()) {
-         throw new InstantiationException("The %s not an array", type);
+      if(!expect.isArray()) {
+         throw new InstantiationException("The %s not an array for %s", expect, type);
       }
-      return type.getComponentType();
+      return expect.getComponentType();
    }
 }

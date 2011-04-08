@@ -42,6 +42,17 @@ interface Criteria extends Iterable<String> {
    public Variable get(String name);
    
    /**
+    * This is used to resolve the <code>Variable</code> by using 
+    * the variant names of a label. This will also acquire variables
+    * based on the actual name of the variable.
+    * 
+    * @param name this is the name of the variable to be acquired
+    * 
+    * @return this returns the named variable if it exists
+    */
+   public Variable resolve(String name);
+   
+   /**
     * This is used to remove the <code>Variable</code> from this
     * criteria object. When removed, the variable will no longer be
     * used to set the method or field when the <code>commit</code>
@@ -51,7 +62,7 @@ interface Criteria extends Iterable<String> {
     * 
     * @return this returns the named variable if it exists
     */
-   public Variable remove(String name);
+   public Variable remove(String name) throws Exception;
    
    /**
     * This is used to create a <code>Variable</code> and set it for

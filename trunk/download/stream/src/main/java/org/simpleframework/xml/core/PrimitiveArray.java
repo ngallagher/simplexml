@@ -75,6 +75,11 @@ class PrimitiveArray implements Converter {
    private final Type entry;
    
    /**
+    * This represents the actual field or method for the array.
+    */
+   private final Type type;
+   
+   /**
     * Constructor for the <code>PrimitiveArray</code> object. This is
     * given the array type for the contact that is to be converted. An
     * array of the specified type is used to hold the deserialized
@@ -90,6 +95,7 @@ class PrimitiveArray implements Converter {
       this.root = new Primitive(context, entry);          
       this.parent = parent;
       this.entry = entry;
+      this.type = type;
    }
 
    /**
@@ -134,7 +140,7 @@ class PrimitiveArray implements Converter {
             return list;            
          }
          if(pos >= length){
-            throw new ElementException("Array length missing or incorrect at %s", line);
+            throw new ElementException("Array length missing or incorrect for %s at %s", type, line);
          }
          Array.set(list, pos, root.read(next));
       } 
@@ -163,7 +169,7 @@ class PrimitiveArray implements Converter {
    }
 
    /**
-    * This <code>validate</code> method wll validate the XML element list 
+    * This <code>validate</code> method will validate the XML element list 
     * from the provided node and validate its children as entry types.
     * This will validate each entry type as a primitive value. In order 
     * to do this the parent string provided forms the element.

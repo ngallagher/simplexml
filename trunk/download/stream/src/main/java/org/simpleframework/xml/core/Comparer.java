@@ -74,19 +74,23 @@ class Comparer {
     */
    public boolean equals(Annotation left, Annotation right) throws Exception {
       Class type = left.annotationType();
+      Class expect = right.annotationType();
       Method[] list = type.getDeclaredMethods();
 
-      for(Method method : list) {
-         if(!isIgnore(method)) {
-            Object value = method.invoke(left);
-            Object other = method.invoke(right);
-            
-            if(!value.equals(other)) {
-               return false;
+      if(type.equals(expect)) {
+         for(Method method : list) {
+            if(!isIgnore(method)) {
+               Object value = method.invoke(left);
+               Object other = method.invoke(right);
+               
+               if(!value.equals(other)) {
+                  return false;
+               }
             }
          }
+         return true;
       }
-      return true;
+      return false;
    }
    
    /**

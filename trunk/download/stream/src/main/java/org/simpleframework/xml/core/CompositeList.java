@@ -77,6 +77,11 @@ class CompositeList implements Converter {
     * This is the entry type for elements within the list.
     */   
    private final Type entry;
+   
+   /**
+    * This is the field or method that has been annotated.
+    */
+   private final Type type;
 
    /**
     * Constructor for the <code>CompositeList</code> object. This is
@@ -92,6 +97,7 @@ class CompositeList implements Converter {
       this.factory = new CollectionFactory(context, type); 
       this.root = new Traverser(context);      
       this.entry = entry;
+      this.type = type;
       this.name = name;
    }
 
@@ -234,10 +240,10 @@ class CompositeList implements Converter {
       for(Object item : list) {
          if(item != null) {
             Class expect = entry.getType();
-            Class type = item.getClass();
+            Class actual = item.getClass();
 
-            if(!expect.isAssignableFrom(type)) {
-               throw new PersistenceException("Entry %s does not match %s", type, entry);                     
+            if(!expect.isAssignableFrom(actual)) {
+               throw new PersistenceException("Entry %s does not match %s for %s", actual, entry, type);                     
             }
             root.write(node, item, expect, name);
          }

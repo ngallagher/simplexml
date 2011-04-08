@@ -170,6 +170,16 @@ public interface OutputNode extends Node {
    public void setValue(String value);
    
    /**
+    * This is used to change the name of an output node. This will
+    * only affect the name of the node if the node has not yet been
+    * committed. If the node is committed then this will not be
+    * reflected in the resulting XML generated.
+    * 
+    * @param name this is the name to change the node to
+    */
+   public void setName(String name);
+   
+   /**
     * This method is used for convenience to add an attribute node 
     * to the attribute <code>NodeMap</code>. The attribute added
     * can be removed from the element by using the node map.

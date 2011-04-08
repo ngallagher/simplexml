@@ -76,7 +76,7 @@ final class ParameterFactory {
      * @throws Exception thrown if the annotation is not supported
      */
     private static Constructor getConstructor(Annotation label) throws Exception {
-       return getEntry(label).getConstructor();
+       return getBuilder(label).getConstructor();
     }
     
     /**
@@ -87,42 +87,39 @@ final class ParameterFactory {
      * 
      * @param label the XML annotation used to create the parameter
      * 
-     * @return this returns the entry used to create a suitable
-     *         constructor for the parameter
-     * 
-     * @throws Exception thrown if the annotation is not supported
+     * @return this returns the entry used to create a constructor
      */
-    private static Entry getEntry(Annotation label) throws Exception{      
+    private static PameterBuilder getBuilder(Annotation label) throws Exception{      
        if(label instanceof Element) {
-          return new Entry(ElementParameter.class, Element.class);
+          return new PameterBuilder(ElementParameter.class, Element.class);
        }
        if(label instanceof ElementList) {
-          return new Entry(ElementListParameter.class, ElementList.class);
+          return new PameterBuilder(ElementListParameter.class, ElementList.class);
        }
        if(label instanceof ElementArray) {
-          return new Entry(ElementArrayParameter.class, ElementArray.class);               
+          return new PameterBuilder(ElementArrayParameter.class, ElementArray.class);               
        }
        if(label instanceof ElementMap) {
-          return new Entry(ElementMapParameter.class, ElementMap.class);
+          return new PameterBuilder(ElementMapParameter.class, ElementMap.class);
        }
        if(label instanceof Attribute) {
-          return new Entry(AttributeParameter.class, Attribute.class);
+          return new PameterBuilder(AttributeParameter.class, Attribute.class);
        }
        if(label instanceof Text) {
-          return new Entry(TextParameter.class, Text.class);
+          return new PameterBuilder(TextParameter.class, Text.class);
        }
        throw new PersistenceException("Annotation %s not supported", label);
     }
     
     /**
-     * The <code>Entry<code> object is used to create a constructor 
+     * The <code>PameterBuilder<code> is used to create a constructor 
      * that can be used to instantiate the correct parameter for the 
      * XML annotation specified. The constructor requires three 
      * arguments, the constructor, the annotation, and the index.
      * 
      * @see java.lang.reflect.Constructor
      */
-    private static class Entry {
+    private static class PameterBuilder {
              
        /**
         * This is the parameter type that is to be instantiated.
@@ -135,14 +132,14 @@ final class ParameterFactory {
        public Class type;
        
        /**
-        * Constructor for the <code>Entry</code> object. This pairs
-        * the parameter type with the annotation argument used within
-        * the constructor. This allows constructor to be selected.
+        * Constructor for the <code>PameterBuilder</code> object. This 
+        * pairs the parameter type with the annotation argument used 
+        * within the constructor. This allows constructor to be selected.
         * 
         * @param create this is the label type to be instantiated
         * @param type the type that is used within the constructor
         */
-       public Entry(Class create, Class type) {
+       public PameterBuilder(Class create, Class type) {
           this.create = create;
           this.type = type;
        }

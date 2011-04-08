@@ -99,6 +99,17 @@ class Entry {
    }
    
    /**
+    * This represents the field or method that has been annotated as
+    * a map. This can be used to acquire information on the field or
+    * method. Also, as a means of reporting errors this can be used.
+    * 
+    * @return this returns the contact associated with the map
+    */
+   public Contact getContact() {
+      return contact;
+   }
+   
+   /**
     * Represents whether the key value is to be an attribute or an
     * element. This allows the key to be embedded within the entry
     * XML element allowing for a more compact representation. Only
@@ -291,4 +302,15 @@ class Entry {
    private boolean isEmpty(String value) {
       return value.length() == 0;
    }  
+   
+   /**
+    * This provides a textual representation of the annotated field 
+    * or method for the map. Providing a textual representation allows
+    * exception messages to be reported with sufficient information.
+    * 
+    * @return this returns the textual representation of the label
+    */
+   public String toString() {
+      return String.format("%s on %s", label, contact);
+   }
 }

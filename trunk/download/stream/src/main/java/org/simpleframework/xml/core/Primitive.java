@@ -70,7 +70,12 @@ class Primitive implements Converter {
    /**
     * This is the type that this primitive expects to represent.
     */
-   private final Class type;
+   private final Class expect;
+   
+   /**
+    * This is the actual method or field that has been annotated.
+    */
+   private final Type type;
    
    /**
     * Constructor for the <code>Primitive</code> object. This is used
@@ -97,9 +102,10 @@ class Primitive implements Converter {
     */ 
    public Primitive(Context context, Type type, String empty) {
       this.factory = new PrimitiveFactory(context, type);  
-      this.type = type.getType();
+      this.expect = type.getType();
       this.context = context; 
-      this.empty = empty;          
+      this.empty = empty;     
+      this.type = type;     
    }
 
    /**
@@ -117,7 +123,7 @@ class Primitive implements Converter {
       if(node.isElement()) {
          return readElement(node);
       }
-      return read(node, type);
+      return read(node, expect);
    }  
    
    /**
@@ -136,7 +142,7 @@ class Primitive implements Converter {
     */ 
    public Object read(InputNode node, Object value) throws Exception{
       if(value != null) {
-         throw new PersistenceException("Can not read existing %s", type);
+         throw new PersistenceException("Can not read existing %s for %s", expect, type);
       }
       return read(node);
    }
@@ -198,7 +204,7 @@ class Primitive implements Converter {
     * @return this returns the primitive that has been deserialized
     */ 
    private Object readElement(InputNode node, Instance value) throws Exception {
-      Object result = read(node, type);
+      Object result = read(node, expect);
       
       if(value != null) {
          value.setInstance(result);

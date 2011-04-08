@@ -80,6 +80,11 @@ class CompositeInlineList implements Repeater {
     * This is the entry type for elements within the list.
     */   
    private final Type entry;
+   
+   /**
+    * This represents the actual method or field for the list.
+    */
+   private final Type type;
 
    /**
     * Constructor for the <code>CompositeInlineList</code> object. 
@@ -93,9 +98,10 @@ class CompositeInlineList implements Repeater {
     * @param name this is the name of the entries used for this list
     */    
    public CompositeInlineList(Context context, Type type, Type entry, String name) {
-      this.factory = new CollectionFactory(context, type); 
-      this.root = new Traverser(context);      
+      this.factory = new CollectionFactory(context, type);
+      this.root = new Traverser(context);
       this.entry = entry;
+      this.type = type;
       this.name = name;
    }
 
@@ -183,10 +189,10 @@ class CompositeInlineList implements Repeater {
    private Object read(InputNode node, Class expect) throws Exception {
       Object item = root.read(node, expect);
       Class result = item.getClass();
-      Class type = entry.getType();
+      Class actual = entry.getType();
       
-      if(!type.isAssignableFrom(result)) {
-         throw new PersistenceException("Entry %s does not match %s", result, entry);
+      if(!actual.isAssignableFrom(result)) {
+         throw new PersistenceException("Entry %s does not match %s for %s", result, entry, type);
       }
       return item;      
    }
@@ -230,7 +236,7 @@ class CompositeInlineList implements Repeater {
     * @param node this is the XML element container to be populated
     */ 
    public void write(OutputNode node, Object source) throws Exception {
-      Collection list = (Collection) source;                
+      Collection list = (Collection) source;              
       OutputNode parent = node.getParent();      
       
       if(!node.isCommitted()) {
@@ -253,13 +259,13 @@ class CompositeInlineList implements Repeater {
    public void write(OutputNode node, Collection list) throws Exception {  
       for(Object item : list) {
          if(item != null) {
-            Class type = entry.getType();
-            Class result = item.getClass();
+            Class expect = entry.getType();
+            Class actual = item.getClass();
 
-            if(!type.isAssignableFrom(result)) {
-               throw new PersistenceException("Entry %s does not match %s", result, type);
+            if(!expect.isAssignableFrom(actual)) {
+               throw new PersistenceException("Entry %s does not match %s for %s", actual, expect, type);
             }
-            root.write(node, item, type, name);
+            root.write(node, item, expect, name);
          }
       }
    }

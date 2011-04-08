@@ -173,7 +173,7 @@ class TreeModel implements Model {
       String name = label.getName();
       
       if(attributes.get(name) != null) {
-         throw new PersistenceException("Annotation of name '%s' declared twice", name);
+         throw new PersistenceException("Duplicate annotation of name '%s' on %s", name, label);
       }
       attributes.put(name, label);
    }   
@@ -191,7 +191,7 @@ class TreeModel implements Model {
       String name = label.getName();
       
       if(elements.get(name) != null) {
-         throw new PersistenceException("Annotation of name '%s' declared twice", name);
+         throw new PersistenceException("Duplicate annotation of name '%s' on %s", name, label);
       }
       if(!order.contains(name)) {
          order.add(name);
