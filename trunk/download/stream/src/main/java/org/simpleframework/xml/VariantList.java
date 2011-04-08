@@ -36,7 +36,7 @@ import java.lang.annotation.RetentionPolicy;
  *       &#64;ElementList(entry="y", inline=true, type=Y.class),
  *       &#64;ElementList(entry="z", inline=true, type=Z.class)               
  *    })
- *    private List<Code> codes;
+ *    private List&lt;Code&gt; codes;
  *    
  * </pre>
  * For the above definition the list field can take any of the declared
