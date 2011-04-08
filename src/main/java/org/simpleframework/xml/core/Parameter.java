@@ -99,4 +99,13 @@ interface Parameter {
     * @return this returns the name of the annotated parameter
     */
    public String getName(Context context) throws Exception;
+   
+   /**
+    * This is used to provide a textual representation of the 
+    * parameter. Providing a string describing the parameter is
+    * useful for debugging and for exception messages.
+    * 
+    * @return this returns the string representation for this
+    */
+   public String toString();
 }

@@ -21,6 +21,7 @@ package org.simpleframework.xml.core;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.Set;
 
 /**
  * The <code>Collector</code> object is used to store variables for
@@ -41,6 +42,11 @@ class Collector implements Criteria {
    private final Registry registry;
    
    /**
+    * This is the registry containing labels registered by alias.
+    */
+   private final Registry alias;
+   
+   /**
     * This is the context object used by the serialization process.
     */
    private final Context context;
@@ -54,6 +60,7 @@ class Collector implements Criteria {
     */
    public Collector(Context context) {
       this.registry = new Registry();
+      this.alias = new Registry();
       this.context = context;
    }
 
@@ -73,6 +80,19 @@ class Collector implements Criteria {
    } 
    
    /**
+    * This is used to resolve the <code>Variable</code> by using 
+    * the variant names of a label. This will also acquire variables
+    * based on the actual name of the variable.
+    * 
+    * @param name this is the name of the variable to be acquired
+    * 
+    * @return this returns the named variable if it exists
+    */
+   public Variable resolve(String name) {
+      return alias.get(name);
+   }
+   
+   /**
     * This is used to remove the <code>Variable</code> from this
     * criteria object. When removed, the variable will no longer be
     * used to set the method or field when the <code>commit</code>
@@ -82,8 +102,19 @@ class Collector implements Criteria {
     * 
     * @return this returns the named variable if it exists
     */
-   public Variable remove(String name) {
-      return registry.remove(name);
+   public Variable remove(String name) throws Exception{
+      Variable variable = alias.remove(name);
+      
+      if(variable != null) {
+         Set<String> variants = variable.getVariants(context);
+         
+         for(String variant : variants) {
+            registry.remove(variant);
+            alias.remove(variant);
+         }
+         registry.remove(name);
+      }
+      return variable;
    }
    
    /**
@@ -110,10 +141,15 @@ class Collector implements Criteria {
       Variable variable = new Variable(label, value);
 
       if(label != null) {
+         Set<String> variants = label.getVariants(context);
          String name = label.getName(context);
          
          if(!registry.containsKey(name)) {
             registry.put(name, variable);
+            alias.put(name, variable);
+         }
+         for(String variant : variants) {
+            alias.put(variant, variable);
          }
       }
    }

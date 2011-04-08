@@ -18,6 +18,9 @@
 
 package org.simpleframework.xml.core;
 
+import java.lang.annotation.Annotation;
+import java.util.Set;
+
 import org.simpleframework.xml.strategy.Type;
 
 /**
@@ -35,7 +38,7 @@ import org.simpleframework.xml.strategy.Type;
  * @author Niall Gallagher
  */
 interface Label {
-   
+     
    /**
     * This is used to acquire the <code>Decorator</code> for this.
     * A decorator is an object that adds various details to the
@@ -47,6 +50,54 @@ interface Label {
     */
    public Decorator getDecorator() throws Exception;
 
+   /**
+    * This is used to acquire the <code>Type</code> that the type
+    * provided is represented by. Typically this will return the
+    * field or method represented by the label. However, in the 
+    * case of variants this will provide an override type.
+    * 
+    * @param type this is the class to acquire the type for
+    * 
+    * @return this returns the type represented by this class
+    */
+   public Type getType(Class type) throws Exception;   
+   
+   /**
+    * This is used to acquire the <code>Label</code> that the type
+    * provided is represented by. Typically this will return the
+    * same instance. However, in the case of variants this will
+    * look for an individual label to match the type provided.
+    * 
+    * @param type this is the type to acquire the label for
+    * 
+    * @return this returns the label represented by this type
+    */
+   public Label getLabel(Class type) throws Exception;
+
+   /**
+    * This returns a <code>Set</code> of variants for this label. This
+    * will typically be an empty set, and is never null. If this is
+    * a variant label then this will return the name of each label
+    * within the group. Providing the variants for a label allows the
+    * serialization process to determine the associated labels.
+    * 
+    * @return this returns the names of each of the variants
+    */
+   public Set<String> getVariants() throws Exception;
+   
+   /**
+    * This returns a <code>Set</code> of variants for this label. This
+    * will typically be an empty set, and is never null. If this is
+    * a variant label then this will return the name of each label
+    * within the group. Providing the variants for a label allows the
+    * serialization process to determine the associated labels.
+    * 
+    * @param context this is used to style the variant names
+    * 
+    * @return this returns the names of each of the variants
+    */
+   public Set<String> getVariants(Context context) throws Exception;
+   
    /**
     * This is used to provide a configured empty value used when the
     * annotated value is null. This ensures that XML can be created
@@ -114,7 +165,17 @@ interface Label {
     * 
     * @return this returns the name of the XML entry element used 
     */
-   public String getEntry() throws Exception; 
+   public String getEntry() throws Exception;
+   
+   /**
+    * This acquires the annotation associated with this label. This
+    * is typically the annotation acquired from the field or method.
+    * However, in the case of variants this will return the actual
+    * annotation within the variant group that this represents.
+    * 
+    * @return this returns the annotation that this represents
+    */
+   public Annotation getAnnotation();
    
    /**
     * This method is used to return the path where this is located.

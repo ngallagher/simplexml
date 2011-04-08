@@ -32,22 +32,22 @@ import java.util.List;
 class ClassCreator implements Creator {
    
    /**
-    * This contains a list of all the builders for the class.
+    * This contains a list of all the initializers for the class.
     */
-   private final List<Builder> list;   
+   private final List<Initializer> list;   
    
    /**
     * This represents the default no argument constructor used.
     */
-   private final Builder primary;
+   private final Initializer primary;
    
    /**
     * This is used to acquire a parameter by the parameter name.
     */
-   private final Index index;
+   private final Signature signature;
    
    /**
-    * This is the type this builder creates instances of.
+    * This is the type this creator creates instances of.
     */
    private final Class type;
    
@@ -56,14 +56,14 @@ class ClassCreator implements Creator {
     * used to create an object that contains all information that
     * relates to the construction of an instance. 
     * 
-    * @param list this contains the list of all constructors 
-    * @param index this contains all parameters for each constructor
+    * @param list contains the list of all constructors available
+    * @param signature contains all parameters for the constructors
     * @param primary this is the default no argument constructor
     */
-   public ClassCreator(List<Builder> list, Index index, Builder primary) {
-      this.type = index.getType();
+   public ClassCreator(List<Initializer> list, Signature signature, Initializer primary) {
+      this.type = signature.getType();
+      this.signature = signature;
       this.primary = primary;
-      this.index = index;
       this.list = list;
    }
 
@@ -103,33 +103,33 @@ class ClassCreator implements Creator {
     * @return this returns the object that has been instantiated
     */
    public Object getInstance(Context context, Criteria criteria) throws Exception {
-      Builder builder = getBuilder(context, criteria);
+      Initializer initializer = getInitializer(context, criteria);
       
-      if(builder == null) {
+      if(initializer == null) {
          throw new PersistenceException("Constructor not matched for %s", type);
       }
-      return builder.getInstance(context, criteria);
+      return initializer.getInstance(context, criteria);
    }
    
    /**
-    * This is used to acquire a <code>Builder</code> which is used
-    * to instantiate the object. If there is no match for the builder
+    * This is used to acquire an <code>Initializer</code> which is used
+    * to instantiate the object. If there is no match for the initializer
     * then the default constructor is provided.
     * 
     * @param context this is the context used to match parameters
     * @param criteria this contains the criteria to be used
     * 
-    * @return this returns the builder that has been matched
+    * @return this returns the initializer that has been matched
     */
-   private Builder getBuilder(Context context, Criteria criteria) throws Exception {
-      Builder result = primary;
+   private Initializer getInitializer(Context context, Criteria criteria) throws Exception {
+      Initializer result = primary;
       double max = 0.0;
       
-      for(Builder builder : list) {
-         double score = builder.getScore(context, criteria);
+      for(Initializer initializer : list) {
+         double score = initializer.getScore(context, criteria);
          
          if(score > max) {
-            result = builder;
+            result = initializer;
             max = score;
          }
       }
@@ -147,7 +147,7 @@ class ClassCreator implements Creator {
     * @return this returns the named parameter for the creator
     */
    public Parameter getParameter(String name) {
-      return index.get(name);
+      return signature.get(name);
    }
    
    /**
@@ -159,20 +159,20 @@ class ClassCreator implements Creator {
     * @return this returns the parameters declared in the schema     
     */
    public List<Parameter> getParameters() {
-      return index.getParameters();
+      return signature.getParameters();
    }
    
    /**
-    * This is used to acquire all of the <code>Builder</code> objects
-    * used to create an instance of the object. Each represents a
-    * constructor and contains the parameters to the constructor. 
+    * This is used to acquire all of the <code>Initializer</code> 
+    * objects used to create an instance of the object. Each represents 
+    * a constructor and contains the parameters to the constructor. 
     * This is primarily used to validate each constructor against the
     * fields and methods annotated to ensure they are compatible.
     * 
-    * @return this returns a list of builders for the creator
+    * @return this returns a list of initializers for the creator
     */
-   public List<Builder> getBuilders() {
-      return new ArrayList<Builder>(list);
+   public List<Initializer> getInitializers() {
+      return new ArrayList<Initializer>(list);
    }
    
    /**

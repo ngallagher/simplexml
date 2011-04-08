@@ -161,6 +161,17 @@ abstract class ParameterContact<T extends Annotation> implements Contact {
    public boolean isReadOnly() {
       return false;
    }
+   
+   /**
+    * This is used to provide a textual representation of the 
+    * parameter. Providing a string describing the parameter is
+    * useful for debugging and for exception messages.
+    * 
+    * @return this returns the string representation for this
+    */
+   public String toString() {
+      return String.format("parameter %s of constructor %s", index, factory);
+   }
 
    /**
     * This represents the name of the parameter. Because the name

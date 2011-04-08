@@ -203,7 +203,7 @@ class MethodContact implements Contact {
       Class type = getType();
       
       if(set == null) {
-         throw new MethodException("Method '%s' of '%s' is read only", name, type);
+         throw new MethodException("Method %s of %s is read only", name, type);
       }
       set.getMethod().invoke(source, value);
    }

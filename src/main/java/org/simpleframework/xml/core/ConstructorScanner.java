@@ -35,7 +35,7 @@ import org.simpleframework.xml.Text;
  * The <code>ConstructorScanner</code> object is used to scan all 
  * all constructors that have XML annotations for their parameters. 
  * parameters. Each constructor scanned is converted in to a 
- * <code>Builder</code> object. In order to ensure consistency
+ * <code>Initializer</code> object. In order to ensure consistency
  * amongst the annotated parameters each named parameter must have
  * the exact same type and annotation attributes across the 
  * constructors. This ensures a consistent XML representation.
@@ -47,19 +47,19 @@ import org.simpleframework.xml.Text;
 class ConstructorScanner {
 
    /**
-    * This contains a list of all the builders for the class.
+    * This contains a list of all the initializers for the class.
     */
-   private List<Builder> list;
+   private List<Initializer> list;
    
    /**
     * This represents the default no argument constructor used.
     */
-   private Builder primary;
+   private Initializer primary;
    
    /**
     * This is used to acquire a parameter by the parameter name.
     */
-   private Index index;
+   private Signature signature;
    
    /**
     * This is the type that is scanner for annotated constructors.
@@ -75,8 +75,8 @@ class ConstructorScanner {
     * @param type this is the type that is to be scanned
     */
    public ConstructorScanner(Class type) throws Exception {
-      this.list = new ArrayList<Builder>();
-      this.index = new Index(type);
+      this.list = new ArrayList<Initializer>();
+      this.signature = new Signature(type);
       this.type = type;
       this.scan(type);
    }
@@ -91,7 +91,7 @@ class ConstructorScanner {
     * @return this returns the creator for the class object
     */
    public Creator getCreator() {
-      return new ClassCreator(list, index, primary);
+      return new ClassCreator(list, signature, primary);
    }
    
    /**
@@ -108,7 +108,7 @@ class ConstructorScanner {
          throw new ConstructorException("Can not construct inner %s", type);
       }
       for(Constructor factory: array){
-         Index index = new Index(type);
+         Signature index = new Signature(type);
          
          if(!type.isPrimitive()) { 
             scan(factory, index);
@@ -125,7 +125,7 @@ class ConstructorScanner {
     * @param factory this is the constructor that is to be scanned
     * @param map this is the parameter map that contains parameters
     */
-   private void scan(Constructor factory, Index map) throws Exception {
+   private void scan(Constructor factory, Signature map) throws Exception {
       Annotation[][] labels = factory.getParameterAnnotations();
       Class[] types = factory.getParameterTypes();
 
@@ -139,7 +139,7 @@ class ConstructorScanner {
                if(map.containsKey(name)) {
                   throw new PersistenceException("Parameter '%s' is a duplicate in %s", name, factory);
                }
-               index.put(name, value);
+               signature.put(name, value);
                map.put(name, value);
             }
          }
@@ -150,20 +150,20 @@ class ConstructorScanner {
    }
    
    /**
-    * This is used to build the <code>Builder</code> object that is
-    * to be used to instantiate the object. The builder contains 
+    * This is used to build the <code>Initializer</code> object that is
+    * to be used to instantiate the object. The initializer contains 
     * the constructor at the parameters in the declaration order.
     * 
     * @param factory this is the constructor that is to be scanned
-    * @param map this is the parameter map that contains parameters
+    * @param signature the parameter map that contains parameters
     */
-   private void build(Constructor factory, Index map) throws Exception {
-      Builder builder = new Builder(factory, map);
+   private void build(Constructor factory, Signature signature) throws Exception {
+      Initializer initializer = new Initializer(factory, signature);
       
-      if(builder.isDefault()) {
-         primary = builder;
+      if(initializer.isDefault()) {
+         primary = initializer;
       }
-      list.add(builder);   
+      list.add(initializer);   
    }
    
    /**
@@ -214,7 +214,7 @@ class ConstructorScanner {
       Parameter value = ParameterFactory.getInstance(factory, label, ordinal);
       String name = value.getName(); 
       
-      if(index.containsKey(name)) {
+      if(signature.containsKey(name)) {
          validate(value, name);
       }
       return value;
@@ -230,7 +230,7 @@ class ConstructorScanner {
     * @param name this is the name of the parameter to validate
     */
    private void validate(Parameter parameter, String name) throws Exception {
-      Parameter other = index.get(name);
+      Parameter other = signature.get(name);
       Annotation label = other.getAnnotation();
       
       if(!parameter.getAnnotation().equals(label)) {

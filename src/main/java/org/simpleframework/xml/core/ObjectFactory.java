@@ -44,8 +44,8 @@ class ObjectFactory extends PrimitiveFactory {
     * @param context the contextual object used by the persister 
     * @param type this is the object type to use for this factory 
     */
-   public ObjectFactory(Context context, Type type) {
-      super(context, type);           
+   public ObjectFactory(Context context, Type type, Class override) {
+      super(context, type, override);
    }        
 
    /**
@@ -61,13 +61,13 @@ class ObjectFactory extends PrimitiveFactory {
    @Override
    public Instance getInstance(InputNode node) throws Exception {
       Value value = getOverride(node);
-      Class type = getType();
+      Class expect = getType();
     
       if(value == null) { 
-         if(!isInstantiable(type)) {
-            throw new InstantiationException("Cannot instantiate %s", type);              
+         if(!isInstantiable(expect)) {
+            throw new InstantiationException("Cannot instantiate %s for %s", expect, type);              
          }
-         return context.getInstance(type);         
+         return context.getInstance(expect);         
       }
       return new ObjectInstance(context, value);      
    }     

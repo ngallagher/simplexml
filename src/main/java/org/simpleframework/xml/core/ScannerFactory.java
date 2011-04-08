@@ -18,6 +18,7 @@
 
 package org.simpleframework.xml.core;
 
+
 /**
  * The <code>ScannerFactory</code> is used to create scanner objects
  * that will scan a class for its XML class schema. Caching is done

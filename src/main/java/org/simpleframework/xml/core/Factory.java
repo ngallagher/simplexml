@@ -24,6 +24,7 @@ import org.simpleframework.xml.strategy.Type;
 import org.simpleframework.xml.strategy.Value;
 import org.simpleframework.xml.stream.InputNode;
 import org.simpleframework.xml.stream.OutputNode;
+import org.simpleframework.xml.stream.Position;
 
 /**
  * The <code>Factory</code> object provides a base class for factories 
@@ -50,6 +51,11 @@ abstract class Factory {
    protected Support support;
    
    /**
+    * This is the class override to used when instantiating objects.
+    */
+   protected Class override;
+   
+   /**
     * This is the field type that the class must be assignable to.
     */
    protected Type type;  
@@ -64,7 +70,22 @@ abstract class Factory {
     * @param type this is the property representing the field 
     */
    protected Factory(Context context, Type type) {
+      this(context, type, null);
+   }
+   
+   /**
+    * Constructor for the <code>Factory</code> object. This is given 
+    * the class type for the field that this factory will determine
+    * the actual type for. The actual type must be assignable to the
+    * field type to insure that any instance can be set. 
+    * 
+    * @param context the contextual object used by the persister
+    * @param type this is the property representing the field 
+    * @param override this is the override used for this factory
+    */
+   protected Factory(Context context, Type type, Class override) {
       this.support = context.getSupport();
+      this.override = override;
       this.context = context; 
       this.type = type;
    }
@@ -77,6 +98,9 @@ abstract class Factory {
     * @return this returns the class represented by the factory
     */
    public Class getType() {
+      if(override != null) {
+         return override;
+      }
       return type.getType();
    }
    
@@ -114,12 +138,13 @@ abstract class Factory {
    protected Value getOverride(InputNode node) throws Exception {
       Value value = getConversion(node);      
 
-      if(value != null) { 
-         Class type = value.getType();
+      if(value != null) {
+         Position line = node.getPosition();
+         Class proposed = value.getType();
          Class expect = getType();
      
-         if(!isCompatible(expect, type)) {
-            throw new InstantiationException("Type %s is not compatible with %s", type, expect);              
+         if(!isCompatible(expect, proposed)) {
+            throw new InstantiationException("Incompatible %s for %s at %s", proposed, type, line);              
          }
       }         
       return value; 
@@ -159,7 +184,12 @@ abstract class Factory {
     * @throws Exception thrown if the override class cannot be loaded    
     */ 
    public Value getConversion(InputNode node) throws Exception {
-      return context.getOverride(type, node);
+      Value value = context.getOverride(type, node);
+      
+      if(value != null && override != null) {
+         return new OverrideValue(value, override);
+      }
+      return value;
    }
    
    /**

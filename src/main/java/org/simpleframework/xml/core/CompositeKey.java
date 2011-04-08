@@ -100,7 +100,7 @@ class CompositeKey implements Converter {
          name = context.getName(expect);
       }
       if(entry.isAttribute()) {
-         throw new ElementException("Can not have %s as an attribute at %s", expect, line);
+         throw new AttributeException("Can not have %s as an attribute for %s at %s", expect, entry, line);
       }
       return read(node, name);
    }
@@ -118,11 +118,12 @@ class CompositeKey implements Converter {
     * 
     * @throws Exception if value is not null an exception is thrown
     */ 
-   public Object read(InputNode node, Object value) throws Exception { 
+   public Object read(InputNode node, Object value) throws Exception {
+      Position line = node.getPosition();
       Class expect = type.getType();
       
       if(value != null) {
-         throw new PersistenceException("Can not read key of %s", expect);
+         throw new PersistenceException("Can not read key of %s for %s at %s", expect, entry, line);
       }
       return read(node);
    }
@@ -173,7 +174,7 @@ class CompositeKey implements Converter {
          name = context.getName(expect);
       }
       if(entry.isAttribute()) {
-         throw new ElementException("Can not have %s as an attribute at %s", expect, line);
+         throw new ElementException("Can not have %s as an attribute for %s at %s", expect, entry, line);
       }
       return validate(node, name);
    }
@@ -217,7 +218,7 @@ class CompositeKey implements Converter {
       String key = entry.getKey();
       
       if(entry.isAttribute()) {
-         throw new ElementException("Can not have %s as an attribute", expect);
+         throw new ElementException("Can not have %s as an attribute for %s", expect, entry);
       }
       if(key == null) {
          key = context.getName(expect);

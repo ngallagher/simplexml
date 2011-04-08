@@ -59,14 +59,14 @@ class MapFactory extends Factory {
     * @return a type which is used to instantiate the map     
     */
    public Object getInstance() throws Exception {
-      Class type = getType();
-      Class real = type;
+      Class expect = getType();
+      Class real = expect;
 
       if(!isInstantiable(real)) {
-         real = getConversion(type);   
+         real = getConversion(expect);   
       }
       if(!isMap(real)) {
-         throw new InstantiationException("Type is not a collection %s", type);
+         throw new InstantiationException("Invalid map %s for %s", expect, type);
       }
       return real.newInstance();
    }
@@ -83,18 +83,18 @@ class MapFactory extends Factory {
     */       
    public Instance getInstance(InputNode node) throws Exception {
       Value value = getOverride(node);
-      Class type = getType();
+      Class expect = getType();
      
       if(value != null) {              
          return getInstance(value);
       }
-      if(!isInstantiable(type)) {
-         type = getConversion(type);
+      if(!isInstantiable(expect)) {
+         expect = getConversion(expect);
       }
-      if(!isMap(type)) {
-         throw new InstantiationException("Type is not a map %s", type);
+      if(!isMap(expect)) {
+         throw new InstantiationException("Invalid map %s for %s", expect, type);
       }
-      return context.getInstance(type);         
+      return context.getInstance(expect);         
    }  
    
    /**
@@ -108,15 +108,15 @@ class MapFactory extends Factory {
     * @return this returns a compatible map object instance 
     */
    public Instance getInstance(Value value) throws Exception {
-      Class type = value.getType();
+      Class expect = value.getType();
 
-      if(!isInstantiable(type)) {
-         type = getConversion(type);
+      if(!isInstantiable(expect)) {
+         expect = getConversion(expect);
       }
-      if(!isMap(type)) {
-         throw new InstantiationException("Type is not a map %s", type);              
+      if(!isMap(expect)) {
+         throw new InstantiationException("Invalid map %s for %s", expect, type);              
       }
-      return new ConversionInstance(context, value, type);         
+      return new ConversionInstance(context, value, expect);         
    } 
    
    /**
@@ -126,18 +126,18 @@ class MapFactory extends Factory {
     * return a <code>HashMap</code> or <code>TreeSet</code> type. If 
     * no suitable match can be found this throws an exception.
     * 
-    * @param type this is the type that is to be converted
+    * @param require this is the type that is to be converted
     * 
     * @return a collection that is assignable to the provided type
     */ 
-   public Class getConversion(Class type) throws Exception {
-      if(type.isAssignableFrom(HashMap.class)) {
+   public Class getConversion(Class require) throws Exception {
+      if(require.isAssignableFrom(HashMap.class)) {
          return HashMap.class;
       }
-      if(type.isAssignableFrom(TreeMap.class)) {
+      if(require.isAssignableFrom(TreeMap.class)) {
          return TreeMap.class;                 
       }      
-      throw new InstantiationException("Cannot instantiate %s", type);
+      throw new InstantiationException("Cannot instantiate %s for %s", require, type);
    }
    
    /**

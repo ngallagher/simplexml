@@ -136,7 +136,7 @@ class PrimitiveKey implements Converter {
       Class expect = type.getType();
       
       if(value != null) {
-         throw new PersistenceException("Can not read key of %s", expect);
+         throw new PersistenceException("Can not read key of %s for %s", expect, entry);
       }
       return read(node);
    }

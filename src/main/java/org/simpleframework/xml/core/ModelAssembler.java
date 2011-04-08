@@ -47,7 +47,12 @@ class ModelAssembler {
    /**
     * This is used to parse the XPath expressions in the order
     */
-   private ExpressionBuilder builder;   
+   private final ExpressionBuilder builder;  
+   
+   /**
+    * This is the type this this is assembling the model for.
+    */
+   private final Class type;
 
    /**
     * Constructor for the <code>ModelAssembler</code> object. If
@@ -55,9 +60,11 @@ class ModelAssembler {
     * will perform no registrations on the specified model.   
     * 
     * @param builder this is the builder for XPath expressions
+    * @param type this is the type to assemble the model for
     */
-   public ModelAssembler(ExpressionBuilder builder) throws Exception {
+   public ModelAssembler(ExpressionBuilder builder, Class type) throws Exception {
       this.builder = builder;     
+      this.type = type;
    }
    
    /**
@@ -88,7 +95,7 @@ class ModelAssembler {
          Expression path = builder.build(value);
          
          if(path.isAttribute()) {
-            throw new PathException("Ordered element '%s' references an attribute", path);
+            throw new PathException("Ordered element '%s' references an attribute in %s", path, type);
          }         
          registerElements(model, path);         
       }
@@ -108,7 +115,7 @@ class ModelAssembler {
          Expression path = builder.build(value);
          
          if(!path.isAttribute() && path.isPath()) {
-            throw new PathException("Ordered attribute '%s' references an element", path);
+            throw new PathException("Ordered attribute '%s' references an element in %s", path, type);
          }
          registerAttributes(model, path);         
       }
@@ -131,7 +138,7 @@ class ModelAssembler {
          Expression child = path.getPath(1);
          
          if(next == null) {
-            throw new PathException("Element '%s' does not exist", name);
+            throw new PathException("Element '%s' does not exist in %s", name, type);
          }
          registerAttributes(next, child);
       } else {         
@@ -207,7 +214,7 @@ class ModelAssembler {
          Model previous = model.lookup(name, index -1);
          
          if(previous == null) {
-            throw new PathException("Ordered element '%s' in path '%s' is out of sequence", name, path);
+            throw new PathException("Ordered element '%s' in path '%s' is out of sequence for %s", name, path, type);
          }
       }
       model.register(name, index);

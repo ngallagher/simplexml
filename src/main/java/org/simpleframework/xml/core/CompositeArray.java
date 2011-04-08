@@ -79,6 +79,11 @@ class CompositeArray implements Converter {
    private final Type entry;
    
    /**
+    * This represents the actual field or method for the array.
+    */
+   private final Type type;
+   
+   /**
     * Constructor for the <code>CompositeArray</code> object. This is
     * given the array type for the contact that is to be converted. An
     * array of the specified type is used to hold the deserialized
@@ -94,6 +99,7 @@ class CompositeArray implements Converter {
       this.root = new Traverser(context);     
       this.parent = parent;
       this.entry = entry;
+      this.type = type;
    }
 
    /**
@@ -140,7 +146,7 @@ class CompositeArray implements Converter {
             return list;
          }
          if(pos >= length){
-             throw new ElementException("Array length missing or incorrect at %s", line);
+             throw new ElementException("Array length missing or incorrect for %s at %s", type, line);
          }
          read(next, list, pos);
       } 

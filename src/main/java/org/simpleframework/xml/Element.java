@@ -83,5 +83,15 @@ public @interface Element {
     * 
     * @return true if the element is required, false otherwise
     */
-   public boolean required() default true;   
+   public boolean required() default true; 
+   
+   /**
+    * This represents an explicit type that should be used for the
+    * annotated field or method. Typically this is used when the
+    * element forms part of a variant group. It allows the variant
+    * to distinguish the annotation to use based on the type.
+    * 
+    * @return this returns the explicit type to use for this
+    */
+   public Class type() default void.class;
 }

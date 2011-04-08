@@ -21,6 +21,7 @@ package org.simpleframework.xml.core;
 import java.lang.annotation.Annotation;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
@@ -29,6 +30,9 @@ import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.ElementMap;
 import org.simpleframework.xml.Order;
 import org.simpleframework.xml.Text;
+import org.simpleframework.xml.Variant;
+import org.simpleframework.xml.VariantList;
+import org.simpleframework.xml.VariantMap;
 import org.simpleframework.xml.Version;
 
 /**
@@ -117,7 +121,7 @@ class StructureBuilder {
     */
    public StructureBuilder(Scanner scanner, Class type) throws Exception {
       this.builder = new ExpressionBuilder(type);
-      this.assembler = new ModelAssembler(builder);
+      this.assembler = new ModelAssembler(builder, type);
       this.attributes = new LabelMap(scanner);
       this.elements = new LabelMap(scanner);
       this.root = new TreeModel(scanner);
@@ -154,6 +158,15 @@ class StructureBuilder {
     * @throws Exception if there is more than one text annotation
     */   
    public void process(Contact field, Annotation label) throws Exception {
+      if(label instanceof Variant) {
+         variant(field, label, elements);
+      }
+      if(label instanceof VariantList) {
+         variant(field, label, elements);
+      }
+      if(label instanceof VariantMap) {
+         variant(field, label, elements);
+      }
       if(label instanceof Attribute) {
          process(field, label, attributes);
       }
@@ -190,12 +203,40 @@ class StructureBuilder {
     * 
     * @throws Exception thrown if the label can not be created
     */   
+   private void variant(Contact field, Annotation type, LabelMap map) throws Exception {
+      Annotation[] list = extract(type);
+      
+      for(Annotation value : list) {
+         Label label = LabelFactory.getInstance(field, type, value);
+         String name = label.getName();
+         
+         if(map.get(name) != null) {
+            throw new PersistenceException("Duplicate annotation of name '%s' on %s", name, label);
+         }
+         process(field, label, map);
+         validate(label, name);
+      }
+   }
+   
+   /**
+    * This is used when all details from a field have been gathered 
+    * and a <code>Label</code> implementation needs to be created. 
+    * This will build a label instance based on the field annotation.
+    * If a label with the same name was already inserted then it is
+    * ignored and the value for that field will not be serialized. 
+    * 
+    * @param field the field the annotation was extracted from
+    * @param type the annotation extracted from the field
+    * @param map this is used to collect the label instance created
+    * 
+    * @throws Exception thrown if the label can not be created
+    */   
    private void process(Contact field, Annotation type, LabelMap map) throws Exception {
       Label label = LabelFactory.getInstance(field, type);
       String name = label.getName();
       
       if(map.get(name) != null) {
-         throw new PersistenceException("Annotation of name '%s' declared twice", name);
+         throw new PersistenceException("Duplicate annotation of name '%s' on %s", name, field);
       }
       process(field, label, map);
       validate(label, name);
@@ -264,6 +305,28 @@ class StructureBuilder {
          throw new AttributeException("Multiple version annotations in %s", type);
       }
       version = label;
+   }
+   
+   /**
+    * This is used to extract the individual annotations associated
+    * with the variant annotation provided. If the annotation does
+    * not represent a variant then this will return null.
+    * 
+    * @param type this is the annotation to extract from
+    * 
+    * @return this returns an array of annotations from the variant
+    */
+   private Annotation[] extract(Annotation type) throws Exception {
+      if(type instanceof Variant) {
+         return Variant.class.cast(type).value();
+      }
+      if(type instanceof VariantList) {
+         return VariantList.class.cast(type).value();
+      }
+      if(type instanceof VariantMap) {
+         return VariantMap.class.cast(type).value();
+      }
+      return null;
    }
    
    /**
@@ -404,12 +467,13 @@ class StructureBuilder {
       Creator creator = scanner.getCreator();
       Order order = scanner.getOrder();
       
+      validateVariants(type);
       validateElements(type, order);
       validateAttributes(type, order);
       validateParameters(creator);
       validateConstructors(type);
       validateModel(type);
-      validateText(type);      
+      validateText(type);  
    }
    
    /**
@@ -449,6 +513,32 @@ class StructureBuilder {
    }
    
    /**
+    * This is used to validate the variants that have been defined
+    * within the type. Variant validation is done by determining if 
+    * the variant has consistent inline values. If one annotation in
+    * the variant declaration is inline, then all must be inline.
+    * 
+    * @param type this is the type to validate the variants for
+    */
+   private void validateVariants(Class type) throws Exception {
+      for(Label label : elements) {
+         Set<String> variants = label.getVariants();
+         Contact contact = label.getContact();
+         
+         if(label.isInline()) {
+            for(String name : variants) {
+               Annotation variant = contact.getAnnotation();
+               Label other = elements.get(name);
+               
+               if(!other.isInline()) {
+                  throw new VariantException("Inline must be consistent in %s for %s", variant, label);
+               }
+            }
+         }
+      }
+   }
+   
+   /**
     * This is used to validate the configuration of the scanned class.
     * If an ordered element is specified but does not refer to an
     * existing element then this will throw an exception.
@@ -478,7 +568,7 @@ class StructureBuilder {
       if(order != null) {
          for(String name : order.attributes()) {
             if(!isAttribute(name)) {
-               throw new AttributeException("Ordered attribute '%s' missing for %s", name, type);
+               throw new AttributeException("Ordered attribute '%s' missing in %s", name, type);
             }
          }
       }
@@ -494,15 +584,15 @@ class StructureBuilder {
     */   
    private void validateConstructors(Class type) throws Exception {
       Creator creator = scanner.getCreator();
-      List<Builder> builders = creator.getBuilders();      
+      List<Initializer> list = creator.getInitializers();      
 
       if(creator.isDefault()) {
          validateConstructors(elements);
          validateConstructors(attributes);
       }
-      if(!builders.isEmpty()) {
-         validateConstructors(elements, builders);
-         validateConstructors(attributes, builders);
+      if(!list.isEmpty()) {
+         validateConstructors(elements, list);
+         validateConstructors(attributes, list);
       }
    }
    
@@ -533,15 +623,15 @@ class StructureBuilder {
     * class schema remains fully serializable and deserializable.
     * 
     * @param map this is the map that contains the labels to validate
-    * @param builders this is the list of builders to validate
+    * @param list this is the list of builders to validate
     */
-   private void validateConstructors(LabelMap map, List<Builder> builders) throws Exception {      
+   private void validateConstructors(LabelMap map, List<Initializer> list) throws Exception {      
       for(Label label : map) {         
          if(label != null) {
-            validateConstructor(label, builders);
+            validateConstructor(label, list);
          }
       }   
-      if(builders.isEmpty()) {
+      if(list.isEmpty()) {
          throw new ConstructorException("No constructor accepts all read only values in %s", type);
       }
    }
@@ -553,21 +643,27 @@ class StructureBuilder {
     * class schema remains fully serializable and deserializable.
     * 
     * @param label this is the variable to check in constructors
-    * @param builders this is the list of builders to validate
+    * @param list this is the list of builders to validate
     */
-   private void validateConstructor(Label label, List<Builder> builders) throws Exception {
-      Iterator<Builder> list = builders.iterator();
+   private void validateConstructor(Label label, List<Initializer> list) throws Exception {
+      Iterator<Initializer> iterator = list.iterator();
       
-      while(list.hasNext()) {
-         Builder builder = list.next();
+      while(iterator.hasNext()) {
+         Initializer initializer = iterator.next();
          Contact contact = label.getContact();
          String name = label.getName();
          
          if(contact.isReadOnly()) {
-            Parameter value = builder.getParameter(name);
+            Parameter value = initializer.getParameter(name);
+            Set<String> variants = label.getVariants();
             
+            for(String variant : variants) {
+               if(value == null) {
+                  value = initializer.getParameter(variant);
+               }
+            }
             if(value == null) {
-               list.remove();
+               iterator.remove();
             }
          } 
       }
@@ -605,15 +701,15 @@ class StructureBuilder {
     * exist in the constructors. Validation is performed against the
     * annotated methods and fields to ensure that they match up.
     * 
-    * @param field this is the annotated method or field to validate
+    * @param label this is the annotated method or field to validate
     * @param name this is the name of the parameter to validate with
     */
-   private void validate(Label field, String name) throws Exception {
+   private void validate(Label label, String name) throws Exception {
       Creator factory = scanner.getCreator();
       Parameter parameter = factory.getParameter(name);
       
       if(parameter != null) {
-         validate(field, parameter);
+         validate(label, parameter);
       }
    }
    
@@ -622,23 +718,55 @@ class StructureBuilder {
     * exist in the constructors. Validation is performed against the
     * annotated methods and fields to ensure that they match up.
     * 
-    * @param field this is the annotated method or field to validate
+    * @param label this is the annotated method or field to validate
     * @param parameter this is the parameter to validate with
     */
-   private void validate(Label field, Parameter parameter) throws Exception {
-      Contact contact = field.getContact();
-      Annotation label = contact.getAnnotation();
-      Annotation match = parameter.getAnnotation();
-      String name = field.getName();
-      
-      if(!comparer.equals(label, match)) {
-         throw new ConstructorException("Annotation does not match for '%s' in %s", name, type);
-      }
+   private void validate(Label label, Parameter parameter) throws Exception {
+      Set<String> variants = label.getVariants();
+      Contact contact = label.getContact();
+      String name = parameter.getName();
       Class expect = contact.getType();
       
       if(expect != parameter.getType()) {
-         throw new ConstructorException("Parameter does not match field for '%s' in %s", name, type);
-      }     
+         throw new ConstructorException("Type does not match %s for '%s' in %s", label, name, parameter);
+      }
+      if(!variants.contains(name)) {
+         String require = label.getName();
+         
+         if(name != require) {
+            if(name == null || require == null) {
+               throw new ConstructorException("Annotation does not match %s for '%s' in %s", label, name, parameter);
+            }
+            if(!name.equals(require)) {
+               throw new ConstructorException("Annotation does not match %s for '%s' in %s", label, name, parameter);              
+            }
+         }
+      }   
+      validateAnnotations(label, parameter);
+   }
+   
+   /**
+    * This is used to validate the annotations associated with a field
+    * and a matching constructor parameter. Each constructor parameter
+    * paired with an annotated field or method must be the same 
+    * annotation type and must also contain the same name.
+    * 
+    * @param label this is the label associated with the parameter
+    * @param parameter this is the constructor parameter to use
+    */
+   private void validateAnnotations(Label label, Parameter parameter) throws Exception {
+      Annotation field = label.getAnnotation();
+      Annotation argument = parameter.getAnnotation();
+      String name = parameter.getName();     
+      
+      if(!comparer.equals(field, argument)) {
+         Class expect = field.annotationType();
+         Class actual = argument.annotationType();
+         
+         if(!expect.equals(actual)) {
+            throw new ConstructorException("Annotation %s does not match %s for '%s' in %s", actual, expect, name, parameter);  
+         } 
+      }
    }
    
    /**

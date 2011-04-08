@@ -60,6 +60,11 @@ class OutputDocument implements OutputNode {
    private String value;
    
    /**
+    * This is the name of this output document node instance.
+    */
+   private String name;
+   
+   /**
     * This is the output mode of this output document object.
     */
    private Mode mode;
@@ -251,6 +256,18 @@ class OutputDocument implements OutputNode {
       return table;
    }
 
+   /**
+    * This is used to change the name of an output node. This will
+    * only affect the name of the node if the node has not yet been
+    * committed. If the node is committed then this will not be
+    * reflected in the resulting XML generated.
+    * 
+    * @param name this is the name to change the node to
+    */
+   public void setName(String name) {
+      this.name = name;
+   }
+   
    /**
     * This is used to set a text value to the element. This effect
     * of adding this to the document node will not change what

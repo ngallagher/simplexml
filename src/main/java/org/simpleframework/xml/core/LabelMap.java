@@ -44,6 +44,15 @@ class LabelMap extends LinkedHashMap<String, Label> implements Iterable<Label> {
     * create an empty map. This is used for convenience as a typedef
     * like construct which avoids having to use the generic type.
     */ 
+   public LabelMap() {
+      this(null);
+   }
+   
+   /**
+    * Constructor for the <code>LabelMap</code> object is used to 
+    * create an empty map. This is used for convenience as a typedef
+    * like construct which avoids having to use the generic type.
+    */ 
    public LabelMap(Policy policy) {
       this.policy = policy;
    }
@@ -110,6 +119,9 @@ class LabelMap extends LinkedHashMap<String, Label> implements Iterable<Label> {
     * @return true if strict parsing is enabled, false otherwise
     */ 
    public boolean isStrict(Context context) {
+      if(policy == null) {
+         return context.isStrict();
+      }
       return context.isStrict() && policy.isStrict();           
    }
 }

@@ -53,6 +53,22 @@ class PrimitiveFactory extends Factory {
    }
    
    /**
+    * Constructor for the <code>PrimitiveFactory</code> object. This
+    * is provided the field type that is to be instantiated. This
+    * must be a type that contains a <code>Transform</code> object,
+    * typically this is a <code>java.lang</code> primitive object
+    * or one of the primitive types such as <code>int</code>. Also
+    * this can be given a class for an enumerated type. 
+    * 
+    * @param context this is the context used by this factory
+    * @param type this is the field type to be instantiated
+    * @param override this is the override used for this primitve
+    */
+   public PrimitiveFactory(Context context, Type type, Class override) {
+      super(context, type, override);           
+   }
+   
+   /**
     * This method will instantiate an object of the field type, or if
     * the <code>Strategy</code> object can resolve a class from the
     * XML element then this is used instead. If the resulting type is
