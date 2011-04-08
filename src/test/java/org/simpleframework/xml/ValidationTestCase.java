@@ -243,7 +243,7 @@ public class ValidationTestCase extends TestCase {
        }
     }
     
-    public static List<org.w3c.dom.Element> getElementsByTagName(org.w3c.dom.Element element, String name) {
+    private static List<org.w3c.dom.Element> getElementsByTagName(org.w3c.dom.Element element, String name) {
        List<org.w3c.dom.Element> list = new ArrayList<org.w3c.dom.Element>();
        NodeList allElements = element.getElementsByTagName("*");
        for(int i = 0; i < allElements.getLength(); i++) {
@@ -279,12 +279,12 @@ public class ValidationTestCase extends TestCase {
        return null;  
     }
     
-    public static interface ExpressionMatch{
+    private static interface ExpressionMatch{
        public boolean match(org.w3c.dom.Element element);
        public String getDescription();
     }
     
-    public static class MatchAny implements ExpressionMatch {
+    private static class MatchAny implements ExpressionMatch {
        public boolean match(org.w3c.dom.Element element) {
           return element != null;
        }
@@ -293,7 +293,7 @@ public class ValidationTestCase extends TestCase {
        }
     }
     
-    public static class ElementMatch implements ExpressionMatch {
+    private static class ElementMatch implements ExpressionMatch {
        private final String text;
        public ElementMatch(String text){
           this.text = text;
@@ -310,7 +310,7 @@ public class ValidationTestCase extends TestCase {
        }
     }
     
-    public static class ElementCDATAMatch implements ExpressionMatch {
+    private static class ElementCDATAMatch implements ExpressionMatch {
        private final String text;
        public ElementCDATAMatch(String text){
           this.text = text;
@@ -330,7 +330,7 @@ public class ValidationTestCase extends TestCase {
        }
     }
     
-    public static class NamespaceMatch implements ExpressionMatch {
+    private static class NamespaceMatch implements ExpressionMatch {
        private final String reference;
        public NamespaceMatch(String reference) {
           this.reference = reference;
@@ -371,7 +371,7 @@ public class ValidationTestCase extends TestCase {
        }
     }
     
-    public static class OfficialNamespaceMatch implements ExpressionMatch {
+    private static class OfficialNamespaceMatch implements ExpressionMatch {
        private final String reference;
        public OfficialNamespaceMatch(String reference) {
           this.reference = reference;
@@ -391,7 +391,7 @@ public class ValidationTestCase extends TestCase {
        }
     }
     
-    public static class AttributeMatch implements ExpressionMatch {
+    private static class AttributeMatch implements ExpressionMatch {
        private final String name;
        private final String value;
        public AttributeMatch(String name, String value) {
@@ -434,7 +434,7 @@ public class ValidationTestCase extends TestCase {
        print(doc.getDocumentElement());
      }
    
-     public static class DebugVisitor implements Visitor {
+     private static class DebugVisitor implements Visitor {
         public void read(Type type, NodeMap<InputNode> node){
            InputNode element = node.getNode();
            if(element.isRoot()) {

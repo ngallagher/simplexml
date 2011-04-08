@@ -1,60 +1,137 @@
 package org.simpleframework.xml.core;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.util.List;
 
 import junit.framework.TestCase;
 
-import org.simpleframework.xml.Default;
+import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
+import org.simpleframework.xml.Variant;
+import org.simpleframework.xml.VariantList;
 
 public class VariantTest extends TestCase {
-   private static final String SOURCE = 
-      "<variantExample>" +
-      "  <a/>" +
-      "  <b/>" +
-      "  <c/>" +
-      "</variantExample>";
    
-   @Retention(RetentionPolicy.RUNTIME)
-   public static @interface Variant {
-      public Class[] value();
-   }
-   @Root(name="a")
-   public static class A implements DynamicEntry {
+   private static final String SOURCE = 
+   "<variantExample>" +
+   "  <integer>" +
+   "    <number>111</number>" +
+   "  </integer>" +
+   "</variantExample>";
+   
+   private static final String SOURCE_LIST = 
+   "<variantExample>" +
+   "  <integer>" +
+   "    <number>111</number>" +
+   "  </integer>" +
+   "  <i>" +
+   "    <number>111</number>" +
+   "  </i>" +
+   "  <d>" +
+   "    <number>222d</number>" +
+   "  </d>" +
+   "  <s>" +
+   "    <string>SSS</string>" +
+   "  </s>" +
+   "</variantExample>";
+   
+   private static final String DOUBLE_LIST =
+   "<variantExample>" +
+   "  <double>" +
+   "    <number>222.2</number>" +
+   "  </double>" +
+   "  <d>" +
+   "    <number>1.1</number>" +
+   "  </d>" +
+   "  <d>" +
+   "    <number>2.2</number>" +
+   "  </d>" +
+   "</variantExample>";     
+   
+   @Root(name="string")
+   public static class StringEntry implements Entry<String> {
+      @Element
+      private String string;
+      
       public String foo(){
-         return "a";
+         return string;
       }
    }
-   @Root(name="b")
-   public static class B implements DynamicEntry {
-      public String foo() {
-         return "b";
+   @Root(name="integer")
+   public static class IntegerEntry implements Entry<Integer> {
+      @Element
+      private Integer number;
+      
+      public Integer foo() {
+         return number;
       }
    }
-   @Root(name="c")
-   public static class C implements DynamicEntry {
-      public String foo() {
-         return "c";
+   @Root(name="double")
+   public static class DoubleEntry implements Entry {
+      @Element
+      private Double number;
+      
+      public Double foo() {
+         return number;
       }
    }
-   @Variant({A.class, B.class, C.class})
-   public static interface DynamicEntry {
-      public String foo();
+   public static interface Entry<T> {
+      public T foo();
    }
-   @Default
+   @Root
    public static class VariantExample {
-      @ElementList(inline=true)
-      private List<DynamicEntry> list;
+      
+      @Variant({
+         @Element(name="double", type=DoubleEntry.class),
+         @Element(name="string", type=StringEntry.class),
+         @Element(name="integer", type=IntegerEntry.class)
+      })
+      private Entry entry;
    }
-   public void testVariant() throws Exception {
-      Persister persister = new Persister();
-      VariantExample example = persister.read(VariantExample.class, SOURCE);
-      assertEquals(example.list.get(0).getClass(), A.class);
-      assertEquals(example.list.get(1).getClass(), B.class);
-      assertEquals(example.list.get(2).getClass(), C.class);
-   }
+   @Root
+   public static class VariantListExample {
+      
+      @Variant({
+         @Element(name="double", type=DoubleEntry.class),
+         @Element(name="string", type=StringEntry.class),
+         @Element(name="integer", type=IntegerEntry.class)
+      })
+      private Entry entry;
+      
+      @VariantList({
+         @ElementList(entry="d", inline=true, type=DoubleEntry.class),
+         @ElementList(entry="s", inline=true, type=StringEntry.class),
+         @ElementList(entry="i", inline=true, type=IntegerEntry.class)
+      })
+      private List<Entry> list;
 
+   }
+   public void testListDeserialization() throws Exception {
+      Persister persister = new Persister();
+      VariantListExample example = persister.read(VariantListExample.class, SOURCE_LIST);
+      List<Entry> entry = example.list;
+      assertEquals(entry.size(), 3);
+      assertEquals(entry.get(0).getClass(), IntegerEntry.class);
+      assertEquals(entry.get(0).foo(), 111);
+      assertEquals(entry.get(1).getClass(), DoubleEntry.class);
+      assertEquals(entry.get(1).foo(), 222.0);
+      assertEquals(entry.get(2).getClass(), StringEntry.class);
+      assertEquals(entry.get(2).foo(), "SSS");
+      assertEquals(example.entry.getClass(), IntegerEntry.class);
+      assertEquals(example.entry.foo(), 111);
+      persister.write(example, System.out);
+   }
+   public void testDoubleListDeserialization() throws Exception {
+      Persister persister = new Persister();
+      VariantListExample example = persister.read(VariantListExample.class, DOUBLE_LIST);
+      List<Entry> entry = example.list;
+      assertEquals(entry.size(), 2);
+      assertEquals(entry.get(0).getClass(), DoubleEntry.class);
+      assertEquals(entry.get(0).foo(), 1.1);
+      assertEquals(entry.get(1).getClass(), DoubleEntry.class);
+      assertEquals(entry.get(1).foo(), 2.2);
+      assertEquals(example.entry.getClass(), DoubleEntry.class);
+      assertEquals(example.entry.foo(), 222.2);
+      persister.write(example, System.out);
+   }
 }
