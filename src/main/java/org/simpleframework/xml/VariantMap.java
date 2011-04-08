@@ -23,8 +23,9 @@ import java.lang.annotation.RetentionPolicy;
 
 /**
  * The <code>VariantMap</code> annotation is used to describe a field 
- * or method that can have a number of different XML schemas depending
- * on an XML element name of the instance type. Here a map of element 
+ * or method that can dynamically match a schema class. Each variant
+ * can have a number of different XML class schemas matched based on
+ * an XML element name or the instance type. Here a map of element 
  * map annotations can be declared. Each annotation expresses the types
  * the map can accept. Taking the declaration below, if the annotation 
  * is inline, the map can take a number of varying types all determined

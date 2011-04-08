@@ -22,9 +22,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- * The <code>Variant</code> annotation is used to describe a field or
- * method that can have a number of different XML schemas depending
- * on an XML element name of the instance type. This provides a means
+ * The <code>Variant</code> annotation is used to describe a field 
+ * or method that can dynamically match a schema class. Each variant
+ * can have a number of different XML class schemas matched based on
+ * an XML element name or the instance type. This provides a means
  * of expressing a logical OR. By annotating a field or method as a
  * variant it can take multiple forms. For example.
  * <pre>
