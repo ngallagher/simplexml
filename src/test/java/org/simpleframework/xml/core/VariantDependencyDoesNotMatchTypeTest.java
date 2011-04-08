@@ -44,5 +44,6 @@ public class VariantDependencyDoesNotMatchTypeTest extends ValidationTestCase {
       example.add(new Z());
       example.add(new Z());
       persister.write(example, System.out);
+      validate(persister, example);
    }
 }
