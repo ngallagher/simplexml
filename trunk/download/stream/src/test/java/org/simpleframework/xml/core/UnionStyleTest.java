@@ -6,17 +6,17 @@ import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.ValidationTestCase;
-import org.simpleframework.xml.Variant;
-import org.simpleframework.xml.VariantList;
+import org.simpleframework.xml.Union;
+import org.simpleframework.xml.UnionList;
 import org.simpleframework.xml.stream.CamelCaseStyle;
 import org.simpleframework.xml.stream.Format;
 import org.simpleframework.xml.stream.HyphenStyle;
 import org.simpleframework.xml.stream.Style;
 
-public class VariantStyleTest extends ValidationTestCase {
+public class UnionStyleTest extends ValidationTestCase {
 
    private static final String CAMEL_CASE_SOURCE = 
-   "<VariantListExample>" +
+   "<UnionListExample>" +
    "  <IntegerField>" +
    "    <Number>777</Number>" +
    "  </IntegerField>" +
@@ -32,10 +32,10 @@ public class VariantStyleTest extends ValidationTestCase {
    "  <StringEntry>" +
    "    <Text>B</Text>" +
    "  </StringEntry>" +      
-   "</VariantListExample>";
+   "</UnionListExample>";
  
    private static final String HYPHEN_SOURCE = 
-   "<variant-list-example>" +
+   "<union-list-example>" +
    "  <integer-field>" +
    "    <number>777</number>" +
    "  </integer-field>" +
@@ -51,7 +51,7 @@ public class VariantStyleTest extends ValidationTestCase {
    "  <string-entry>" +
    "    <text>B</text>" +
    "  </string-entry>" +      
-   "</variant-list-example>";
+   "</union-list-example>";
    
    @Root(name="string")
    public static class StringEntry implements Entry<String> {
@@ -85,16 +85,16 @@ public class VariantStyleTest extends ValidationTestCase {
    }
 
    @Root
-   public static class VariantListExample {
+   public static class UnionListExample {
       
-      @Variant({
+      @Union({
          @Element(name="doubleField", type=DoubleEntry.class),
          @Element(name="stringField", type=StringEntry.class),
          @Element(name="integerField", type=IntegerEntry.class)
       })
       private Entry entry;
       
-      @VariantList({
+      @UnionList({
          @ElementList(entry="doubleEntry", inline=true, type=DoubleEntry.class),
          @ElementList(entry="stringEntry", inline=true, type=StringEntry.class),
          @ElementList(entry="integerEntry", inline=true, type=IntegerEntry.class)
@@ -106,7 +106,7 @@ public class VariantStyleTest extends ValidationTestCase {
       Style style = new CamelCaseStyle();
       Format format = new Format(style);
       Persister persister = new Persister(format);
-      VariantListExample example = persister.read(VariantListExample.class, CAMEL_CASE_SOURCE);
+      UnionListExample example = persister.read(UnionListExample.class, CAMEL_CASE_SOURCE);
       List<Entry> entry = example.list;
       assertEquals(entry.size(), 4);
       assertEquals(entry.get(0).getClass(), IntegerEntry.class);
@@ -127,7 +127,7 @@ public class VariantStyleTest extends ValidationTestCase {
       Style style = new HyphenStyle();
       Format format = new Format(style);
       Persister persister = new Persister(format);
-      VariantListExample example = persister.read(VariantListExample.class, HYPHEN_SOURCE);
+      UnionListExample example = persister.read(UnionListExample.class, HYPHEN_SOURCE);
       List<Entry> entry = example.list;
       assertEquals(entry.size(), 4);
       assertEquals(entry.get(0).getClass(), IntegerEntry.class);

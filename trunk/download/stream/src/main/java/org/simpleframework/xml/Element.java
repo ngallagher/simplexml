@@ -88,7 +88,7 @@ public @interface Element {
    /**
     * This represents an explicit type that should be used for the
     * annotated field or method. Typically this is used when the
-    * element forms part of a variant group. It allows the variant
+    * element forms part of a union group. It allows the union
     * to distinguish the annotation to use based on the type.
     * 
     * @return this returns the explicit type to use for this

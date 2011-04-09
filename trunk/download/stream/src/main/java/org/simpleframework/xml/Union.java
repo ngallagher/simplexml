@@ -1,5 +1,5 @@
 /*
- * Variant.java March 2011
+ * Union.java March 2011
  *
  * Copyright (C) 2011, Niall Gallagher <niallg@users.sf.net>
  *
@@ -22,15 +22,15 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- * The <code>Variant</code> annotation is used to describe a field 
- * or method that can dynamically match a schema class. Each variant
+ * The <code>Union</code> annotation is used to describe a field 
+ * or method that can dynamically match a schema class. Each union
  * can have a number of different XML class schemas matched based on
  * an XML element name or the instance type. This provides a means
  * of expressing a logical OR. By annotating a field or method as a
- * variant it can take multiple forms. For example.
+ * union it can take multiple forms. For example.
  * <pre>
  * 
- *    &#64;Variant({
+ *    &#64;Union({
  *       &#64;Element(name="circle", type=Circle.class),
  *       &#64;Element(name="square", type=Square.class)       
  *    })
@@ -49,17 +49,17 @@ import java.lang.annotation.RetentionPolicy;
  * @see org.simpleframework.xml.Element
  */
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Variant {
+public @interface Union {
    
    /**
     * This provides the <code>Element</code> annotations that have 
-    * been defined for this variant. Each element describes the XML
+    * been defined for this union. Each element describes the XML
     * class schema to use and the name of the XML element. This 
     * allows the serialization process to determine which elements
     * map to the defined types. Also, the types define how the XML
     * is generated for a given instance.     
     * 
-    * @return the elements defined for the variant declaration
+    * @return the elements defined for the union declaration
     */
    public Element[] value();
 }

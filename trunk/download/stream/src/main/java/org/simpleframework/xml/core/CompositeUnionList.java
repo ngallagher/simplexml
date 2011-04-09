@@ -1,5 +1,5 @@
 /*
- * CompositeVariantMap.java March 2011
+ * CompositeUnionList.java March 2011
  *
  * Copyright (C) 2011, Niall Gallagher <niallg@users.sf.net>
  *
@@ -18,8 +18,8 @@
 
 package org.simpleframework.xml.core;
 
+import java.util.Collection;
 import java.util.Collections;
-import java.util.Map;
 
 import org.simpleframework.xml.strategy.Type;
 import org.simpleframework.xml.stream.InputNode;
@@ -27,20 +27,20 @@ import org.simpleframework.xml.stream.OutputNode;
 import org.simpleframework.xml.stream.Style;
 
 /**
- * The <code>CompositeVariantMap</code> object is used to act as a 
- * mediator for multiple converters associated with a particular variant 
+ * The <code>CompositeUnionList</code> object is used to act as a 
+ * mediator for multiple converters associated with a particular union 
  * group. This will basically determine which <code>Converter</code> 
  * should be delegated to based on either the XML element name being read 
  * or the type of the instance object being written. Selection of the 
  * converter is done by consulting the <code>Group</code> of labels 
- * representing the variant declaration.
+ * representing the union declaration.
  * 
  * @author Niall Gallagher
  */
-class CompositeVariantMap implements Repeater {
+class CompositeUnionList implements Repeater {
    
    /**
-    * This contains the labels in the variant group keyed by name.
+    * This contains the labels in the union group keyed by name.
     */
    private final LabelMap elements;
    
@@ -50,7 +50,7 @@ class CompositeVariantMap implements Repeater {
    private final Context context;
    
    /**
-    * This contains the group of labels associated with the variant.
+    * This contains the group of labels associated with the union.
     */
    private final Group group;
    
@@ -60,21 +60,21 @@ class CompositeVariantMap implements Repeater {
    private final Style style;
    
    /**
-    * This is the type field or method annotated as a variant.
+    * This is the type field or method annotated as a union.
     */
    private final Type type;
 
    /**
-    * Constructor for the <code>CompositeVariantMap</code> object. This
+    * Constructor for the <code>CompositeUnionList</code> object. This
     * is used to create a converter that delegates to other associated
-    * converters within the variant group depending on the XML element
+    * converters within the union group depending on the XML element
     * name being read or the instance type that is being written.
     * 
     * @param context this is the context used for the serialization
-    * @param group this is the variant group used for delegation
+    * @param group this is the union group used for delegation
     * @param type this is the annotated field or method to be used
     */
-   public CompositeVariantMap(Context context, Group group, Type type) throws Exception {
+   public CompositeUnionList(Context context, Group group, Type type) throws Exception {
       this.elements = group.getElements(context);
       this.style = context.getStyle();
       this.context = context;
@@ -86,7 +86,7 @@ class CompositeVariantMap implements Repeater {
     * The <code>read</code> method uses the name of the XML element to
     * select a converter to be used to read the instance. Selection of
     * the converter is done by looking up the associated label from
-    * the variant group using the element name. Once the converter has
+    * the union group using the element name. Once the converter has
     * been selected it is used to read the instance.
     * 
     * @param node this is the XML element used to read the instance
@@ -105,7 +105,7 @@ class CompositeVariantMap implements Repeater {
     * The <code>read</code> method uses the name of the XML element to
     * select a converter to be used to read the instance. Selection of
     * the converter is done by looking up the associated label from
-    * the variant group using the element name. Once the converter has
+    * the union group using the element name. Once the converter has
     * been selected it is used to read the instance.
     * 
     * @param node this is the XML element used to read the instance
@@ -144,46 +144,43 @@ class CompositeVariantMap implements Repeater {
     * The <code>write</code> method uses the name of the XML element to
     * select a converter to be used to write the instance. Selection of
     * the converter is done by looking up the associated label from
-    * the variant group using the instance type. Once the converter has
+    * the union group using the instance type. Once the converter has
     * been selected it is used to write the instance.
     * 
     * @param node this is the XML element used to write the instance
     * @param object this is the value that is to be written
     */
    public void write(OutputNode node, Object value) throws Exception {
-      Map map = (Map) value;
+      Collection list = (Collection) value;
       
-      for(Object key : map.keySet()) {
-         Object item = map.get(key);
-         
+      for(Object item : list) {
          if(item != null) {
             Class real = item.getClass();
             Label label = group.getLabel(real);
             
             if(label == null) {               
-               throw new VariantException("Value of %s not declared in %s with annotation %s", real, type, group);
+               throw new UnionException("Entry of %s not declared in %s with annotation %s", real, type, group);
             }
-            write(node, key, item, label);
+            write(node, item, label);
          }
       }
    }
-   
+      
    /**
     * The <code>write</code> method uses the name of the XML element to
     * select a converter to be used to write the instance. Selection of
     * the converter is done by looking up the associated label from
-    * the variant group using the instance type. Once the converter has
+    * the union group using the instance type. Once the converter has
     * been selected it is used to write the instance.
     * 
     * @param node this is the XML element used to write the instance
-    * @param key this is the key associated with the item to write
-    * @param value this is the value associated with the item to write
+    * @param item this is the individual list entry to be serialized
     * @param label this is the label to used to acquire the converter     
     */
-   private void write(OutputNode node, Object key, Object item, Label label) throws Exception {  
+   private void write(OutputNode node, Object item, Label label) throws Exception {
       Converter converter = label.getConverter(context);
-      Map map = Collections.singletonMap(key, item);
-      
+      Collection list = Collections.singleton(item);
+
       if(!label.isInline()) {
          String name = label.getName();
          String root = style.getElement(name);
@@ -192,6 +189,6 @@ class CompositeVariantMap implements Repeater {
             node.setName(root);
          }
       }
-      converter.write(node, map);   
+      converter.write(node, list);    
    }
 }

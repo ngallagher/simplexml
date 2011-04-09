@@ -32,9 +32,9 @@ import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.ElementMap;
 import org.simpleframework.xml.Text;
 import org.simpleframework.xml.Transient;
-import org.simpleframework.xml.Variant;
-import org.simpleframework.xml.VariantList;
-import org.simpleframework.xml.VariantMap;
+import org.simpleframework.xml.Union;
+import org.simpleframework.xml.UnionList;
+import org.simpleframework.xml.UnionMap;
 import org.simpleframework.xml.Version;
 
 /**
@@ -195,13 +195,13 @@ class FieldScanner extends ContactList {
     * @param label the annotation used to model the XML schema
     */
    private void scan(Field field, Annotation label) {
-      if(label instanceof Variant) {
+      if(label instanceof Union) {
          process(field, label);
       }
-      if(label instanceof VariantList) {
+      if(label instanceof UnionList) {
          process(field, label);
       }
-      if(label instanceof VariantMap) {
+      if(label instanceof UnionMap) {
          process(field, label);
       }
       if(label instanceof Attribute) {

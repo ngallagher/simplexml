@@ -1,5 +1,5 @@
 /*
- * VariantMap.java March 2011
+ * UnionMap.java March 2011
  *
  * Copyright (C) 2011, Niall Gallagher <niallg@users.sf.net>
  *
@@ -22,8 +22,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- * The <code>VariantMap</code> annotation is used to describe a field 
- * or method that can dynamically match a schema class. Each variant
+ * The <code>UnionMap</code> annotation is used to describe a field 
+ * or method that can dynamically match a schema class. Each union
  * can have a number of different XML class schemas matched based on
  * an XML element name or the instance type. Here a map of element 
  * map annotations can be declared. Each annotation expresses the types
@@ -32,7 +32,7 @@ import java.lang.annotation.RetentionPolicy;
  * from the XML element name.
  * <pre>
  * 
- *    &#64;VariantMap({
+ *    &#64;UnionMap({
  *       &#64;ElementMap(entry="x", inline=true, valueType=X.class),
  *       &#64;ElementMap(entry="y", inline=true, valueType=Y.class),
  *       &#64;ElementMap(entry="z", inline=true, valueType=Z.class)               
@@ -52,17 +52,17 @@ import java.lang.annotation.RetentionPolicy;
  * @see org.simpleframework.xml.ElementMap
  */
 @Retention(RetentionPolicy.RUNTIME)
-public @interface VariantMap {
+public @interface UnionMap {
    
    /**
     * This provides the <code>ElementMap</code> annotations that have 
-    * been defined for this variant. Each element map describes the 
+    * been defined for this union. Each element map describes the 
     * XML class schema to use and the name of the XML element. This 
     * allows the serialization process to determine which elements
     * map to the defined types. Also, the types define how the XML
     * is generated for a given instance.     
     * 
-    * @return the element maps defined for the variant declaration
+    * @return the element maps defined for the union declaration
     */ 
    public ElementMap[] value();
 }

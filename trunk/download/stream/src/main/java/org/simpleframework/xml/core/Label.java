@@ -54,7 +54,7 @@ interface Label {
     * This is used to acquire the <code>Type</code> that the type
     * provided is represented by. Typically this will return the
     * field or method represented by the label. However, in the 
-    * case of variants this will provide an override type.
+    * case of unions this will provide an override type.
     * 
     * @param type this is the class to acquire the type for
     * 
@@ -65,7 +65,7 @@ interface Label {
    /**
     * This is used to acquire the <code>Label</code> that the type
     * provided is represented by. Typically this will return the
-    * same instance. However, in the case of variants this will
+    * same instance. However, in the case of unions this will
     * look for an individual label to match the type provided.
     * 
     * @param type this is the type to acquire the label for
@@ -75,28 +75,28 @@ interface Label {
    public Label getLabel(Class type) throws Exception;
 
    /**
-    * This returns a <code>Set</code> of variants for this label. This
+    * This returns a <code>Set</code> of elements in a union. This
     * will typically be an empty set, and is never null. If this is
-    * a variant label then this will return the name of each label
-    * within the group. Providing the variants for a label allows the
+    * a label union then this will return the name of each label
+    * within the group. Providing the labels for a union allows the
     * serialization process to determine the associated labels.
     * 
-    * @return this returns the names of each of the variants
+    * @return this returns the names of each of the elements
     */
-   public Set<String> getVariants() throws Exception;
+   public Set<String> getUnion() throws Exception;
    
    /**
-    * This returns a <code>Set</code> of variants for this label. This
+    * This returns a <code>Set</code> of elements in a union. This
     * will typically be an empty set, and is never null. If this is
-    * a variant label then this will return the name of each label
-    * within the group. Providing the variants for a label allows the
+    * a label union then this will return the name of each label
+    * within the group. Providing the labels for a union allows the
     * serialization process to determine the associated labels.
+    *
+    * @param context this is used to style the element names
     * 
-    * @param context this is used to style the variant names
-    * 
-    * @return this returns the names of each of the variants
+    * @return this returns the names of each of the elements
     */
-   public Set<String> getVariants(Context context) throws Exception;
+   public Set<String> getUnion(Context context) throws Exception;
    
    /**
     * This is used to provide a configured empty value used when the
@@ -170,8 +170,8 @@ interface Label {
    /**
     * This acquires the annotation associated with this label. This
     * is typically the annotation acquired from the field or method.
-    * However, in the case of variants this will return the actual
-    * annotation within the variant group that this represents.
+    * However, in the case of unions this will return the actual
+    * annotation within the union group that this represents.
     * 
     * @return this returns the annotation that this represents
     */

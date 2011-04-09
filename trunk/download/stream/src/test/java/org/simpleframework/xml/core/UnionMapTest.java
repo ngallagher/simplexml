@@ -7,9 +7,9 @@ import org.simpleframework.xml.Default;
 import org.simpleframework.xml.ElementMap;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.ValidationTestCase;
-import org.simpleframework.xml.VariantMap;
+import org.simpleframework.xml.UnionMap;
 
-public class VariantMapTest extends ValidationTestCase {
+public class UnionMapTest extends ValidationTestCase {
    
    private static final String INLINE_MAP_SOURCE =
    "<inlineMapExample>" +
@@ -66,7 +66,7 @@ public class VariantMapTest extends ValidationTestCase {
    
    @Root
    public static class InlineMapExample {   
-      @VariantMap({
+      @UnionMap({
          @ElementMap(entry="xEntry", key="xKey", attribute=true, inline=true, keyType=String.class, valueType=X.class),
          @ElementMap(entry="yEntry", key="yKey", attribute=true, inline=true, keyType=String.class, valueType=Y.class),
          @ElementMap(entry="zEntry", key="zKey", attribute=true, inline=true, keyType=String.class, valueType=Z.class)
@@ -76,7 +76,7 @@ public class VariantMapTest extends ValidationTestCase {
    
    @Root
    public static class MapExample {   
-      @VariantMap({
+      @UnionMap({
          @ElementMap(name="xMap", entry="xx", key="key", attribute=true, keyType=String.class, valueType=X.class),
          @ElementMap(name="yMap", entry="yy", key="key", attribute=true, keyType=String.class, valueType=Y.class),
          @ElementMap(name="zMap", entry="zz", key="key", attribute=true, keyType=String.class, valueType=Z.class)

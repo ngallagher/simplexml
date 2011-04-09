@@ -20,7 +20,7 @@ package org.simpleframework.xml.core;
 
 /**
  * The <code>Group</code> interface represents a group of labels
- * associated with a particular variant annotation. A group allows
+ * associated with a particular union annotation. A group allows
  * a <code>Label</code> to be acquired by name or type. Acquiring
  * the label by type allows the serialization process to dynamically
  * select a label, and thus converter, based on the instance type.
@@ -55,7 +55,7 @@ interface Group {
    public LabelMap getElements(Context context) throws Exception;
    
    /**
-    * This returns a string representation of the variant group.
+    * This returns a string representation of the union group.
     * Providing a string representation in this way ensures that the
     * group can be used in exception messages and for any debugging.
     * 

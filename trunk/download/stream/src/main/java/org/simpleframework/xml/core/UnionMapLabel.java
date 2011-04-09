@@ -1,5 +1,5 @@
 /*
- * VariantMapLabel.java March 2011
+ * UnionMapLabel.java March 2011
  *
  * Copyright (C) 2011, Niall Gallagher <niallg@users.sf.net>
  *
@@ -22,29 +22,29 @@ import java.lang.annotation.Annotation;
 import java.util.Set;
 
 import org.simpleframework.xml.ElementMap;
-import org.simpleframework.xml.VariantMap;
+import org.simpleframework.xml.UnionMap;
 import org.simpleframework.xml.strategy.Type;
 
 /**
- * The <code>VariantMapLabel</code> acts as an adapter for an internal
- * label. Each annotation within the variant can be acquired by type 
+ * The <code>UnionMapLabel</code> acts as an adapter for an internal
+ * label. Each annotation within the union can be acquired by type 
  * so that deserialization can dynamically switch the converter used.
- * Each variant label can be used in place of any other, this means 
- * that regardless of which variant is matched it can be used.
+ * Each union label can be used in place of any other, this means 
+ * that regardless of which union is matched it can be used.
  * <p>
- * Each instance of this <code>Label</code> is given the variant and
+ * Each instance of this <code>Label</code> is given the union and
  * the primary label it represents. This allows the label extract each
- * other label within the variant group. The <code>Converter</code> 
+ * other label within the union group. The <code>Converter</code> 
  * created by this can therefore acquire any label instance required. 
  * 
  * @author Niall Gallagher
  * 
- * @see org.simpleframework.xml.core.VariantMap
+ * @see org.simpleframework.xml.core.UnionMap
  */
-class VariantMapLabel implements Label {
+class UnionMapLabel implements Label {
    
    /**
-    * This is used to extract the individual variants in the group.
+    * This is used to extract the individual unions in the group.
     */
    private final GroupExtractor extractor;
    
@@ -59,17 +59,17 @@ class VariantMapLabel implements Label {
    private final Label label;
 
    /**
-    * Constructor for the <code>VariantMapLabel</code> object. This 
-    * is given the variant this represents as well as the individual
-    * element it will act as an adapter for. This allows the variant
+    * Constructor for the <code>UnionMapLabel</code> object. This 
+    * is given the union this represents as well as the individual
+    * element it will act as an adapter for. This allows the union
     * label to acquire any other label within the group.
     * 
-    * @param contact this is the contact associated with the variant
-    * @param variant this is the variant annotation this represents
+    * @param contact this is the contact associated with the union
+    * @param union this is the union annotation this represents
     * @param element this is the individual annotation used
     */
-   public VariantMapLabel(Contact contact, VariantMap variant, ElementMap element) throws Exception {
-      this.extractor = new GroupExtractor(contact, variant);
+   public UnionMapLabel(Contact contact, UnionMap union, ElementMap element) throws Exception {
+      this.extractor = new GroupExtractor(contact, union);
       this.label = new ElementMapLabel(contact, element);
       this.contact = contact;
    }
@@ -90,8 +90,8 @@ class VariantMapLabel implements Label {
    /**
     * This acquires the annotation associated with this label. This
     * is typically the annotation acquired from the field or method.
-    * However, in the case of variants this will return the actual
-    * annotation within the variant group that this represents.
+    * However, in the case of unions this will return the actual
+    * annotation within the union group that this represents.
     * 
     * @return this returns the annotation that this represents
     */
@@ -103,7 +103,7 @@ class VariantMapLabel implements Label {
     * This is used to acquire the <code>Type</code> that the type
     * provided is represented by. Typically this will return the
     * field or method represented by the label. However, in the 
-    * case of variants this will provide an override type.
+    * case of unions this will provide an override type.
     * 
     * @param type this is the class to acquire the type for
     * 
@@ -116,7 +116,7 @@ class VariantMapLabel implements Label {
    /**
     * This is used to acquire the <code>Label</code> that the type
     * provided is represented by. Typically this will return the
-    * same instance. However, in the case of variants this will
+    * same instance. However, in the case of unions this will
     * look for an individual label to match the type provided.
     * 
     * @param type this is the type to acquire the label for
@@ -141,36 +141,36 @@ class VariantMapLabel implements Label {
       Type type = getContact();
       
       if(type == null) {
-         throw new VariantException("Variant %s was not declared on a field or method", label);
+         throw new UnionException("Union %s was not declared on a field or method", label);
       }
-      return new CompositeVariantMap(context, extractor, type);
+      return new CompositeUnionMap(context, extractor, type);
    }
    
    /**
-    * This returns a <code>Set</code> of variants for this label. This
+    * This returns a <code>Set</code> of elements in a union. This
     * will typically be an empty set, and is never null. If this is
-    * a variant label then this will return the name of each label
-    * within the group. Providing the variants for a label allows the
+    * a label union then this will return the name of each label
+    * within the group. Providing the labels for a union allows the
     * serialization process to determine the associated labels.
     * 
-    * @return this returns the names of each of the variants
+    * @return this returns the names of each of the elements
     */
-   public Set<String> getVariants() throws Exception {
+   public Set<String> getUnion() throws Exception {
       return extractor.getNames();
    }
 
    /**
-    * This returns a <code>Set</code> of variants for this label. This
+    * This returns a <code>Set</code> of elements in a union. This
     * will typically be an empty set, and is never null. If this is
-    * a variant label then this will return the name of each label
-    * within the group. Providing the variants for a label allows the
+    * a label union then this will return the name of each label
+    * within the group. Providing the labels for a union allows the
     * serialization process to determine the associated labels.
+    *
+    * @param context this is used to style the element names
     * 
-    * @param context this is used to style the variant names
-    * 
-    * @return this returns the names of each of the variants
+    * @return this returns the names of each of the elements
     */
-   public Set<String> getVariants(Context context) throws Exception {
+   public Set<String> getUnion(Context context) throws Exception {
       return extractor.getNames(context);
    }
    

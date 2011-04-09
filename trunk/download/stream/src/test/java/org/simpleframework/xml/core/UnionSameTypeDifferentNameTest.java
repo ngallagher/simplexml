@@ -3,9 +3,9 @@ package org.simpleframework.xml.core;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.ValidationTestCase;
-import org.simpleframework.xml.Variant;
+import org.simpleframework.xml.Union;
 
-public class VariantSameTypeDifferentNameTest extends ValidationTestCase {
+public class UnionSameTypeDifferentNameTest extends ValidationTestCase {
    
    private static final String USERNAME_SOURCE =
    "<optionalNameExample>"+
@@ -25,7 +25,7 @@ public class VariantSameTypeDifferentNameTest extends ValidationTestCase {
    @Root
    private static class OptionalNameExample {
       
-      @Variant({
+      @Union({
          @Element(name="login"),
          @Element(name="name"),
          @Element(name="username", type=String.class),

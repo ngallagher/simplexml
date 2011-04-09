@@ -6,9 +6,9 @@ import org.simpleframework.xml.Default;
 import org.simpleframework.xml.ElementMap;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.ValidationTestCase;
-import org.simpleframework.xml.VariantMap;
+import org.simpleframework.xml.UnionMap;
 
-public class VariantNotRequiredMapTest extends ValidationTestCase {
+public class UnionNotRequiredMapTest extends ValidationTestCase {
    
    private static final String SOURCE =
    "<farmExample>" +
@@ -59,7 +59,7 @@ public class VariantNotRequiredMapTest extends ValidationTestCase {
    
    @Root
    public static class FarmExample {   
-      @VariantMap({
+      @UnionMap({
          @ElementMap(name="cats", entry="animal", key="key", required=false, attribute=true, valueType=Cat.class),
          @ElementMap(name="dogs", entry="animal", key="key", required=false, attribute=true, valueType=Dog.class),
          @ElementMap(name="chickens", entry="animal", key="key", required=false, attribute=true, valueType=Chicken.class)

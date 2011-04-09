@@ -6,13 +6,13 @@ import java.util.List;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.ValidationTestCase;
-import org.simpleframework.xml.VariantList;
+import org.simpleframework.xml.UnionList;
 
-public class VariantMixInlineTest extends ValidationTestCase {
+public class UnionMixInlineTest extends ValidationTestCase {
    
    @Root
    private static class Example {
-      @VariantList({
+      @UnionList({
          @ElementList(name="x", inline=true, type=Integer.class),
          @ElementList(name="y", inline=false, type=Double.class),
          @ElementList(name="z", inline=false, type=String.class)
@@ -32,11 +32,11 @@ public class VariantMixInlineTest extends ValidationTestCase {
       example.add("1");
       try {
          persister.write(example, System.out);
-      }catch(VariantException e){
+      }catch(UnionException e){
          e.printStackTrace();
          exception = true;
       }
-      assertTrue("Inline must be consistent across variant declarations", exception);
+      assertTrue("Inline must be consistent across union declarations", exception);
          
    }
 

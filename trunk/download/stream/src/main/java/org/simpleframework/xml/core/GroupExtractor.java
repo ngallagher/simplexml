@@ -25,7 +25,7 @@ import java.util.Set;
 
 /**
  * The <code>GroupExtractor</code> represents an extractor for labels
- * associated with a particular variant annotation. This extractor 
+ * associated with a particular union annotation. This extractor 
  * registers <code>Label</code> by name and by type. Acquiring
  * the label by type allows the serialization process to dynamically
  * select a label, and thus converter, based on the instance type.
@@ -38,12 +38,12 @@ import java.util.Set;
 class GroupExtractor implements Group {
 
    /**
-    * This represents a factory for creating variant extractors.
+    * This represents a factory for creating union extractors.
     */
    private final ExtractorFactory factory;
    
    /**
-    * This represents the variant label to be used for this group.
+    * This represents the union label to be used for this group.
     */
    private final Annotation label;
    
@@ -59,8 +59,8 @@ class GroupExtractor implements Group {
    
    /**
     * Constructor for the <code>GroupExtractor</code> object. This
-    * will create an extractor for the provided variant annotation.
-    * Each individual declaration within the variant is extracted
+    * will create an extractor for the provided union annotation.
+    * Each individual declaration within the union is extracted
     * and made available within the group.
     * 
     * @param contact this is the annotated field or method
@@ -79,7 +79,7 @@ class GroupExtractor implements Group {
     * with this <code>Group</code> instance. The names provided
     * here are not styled according to a serialization context.
     * 
-    * @return this returns the names of each variant extracted
+    * @return this returns the names of each union extracted
     */
    public Set<String> getNames() throws Exception {
       return elements.keySet();
@@ -92,7 +92,7 @@ class GroupExtractor implements Group {
     * 
     * @param context this is the context used to style names
     * 
-    * @return this returns the names of each variant extracted
+    * @return this returns the names of each union extracted
     */
    public Set<String> getNames(Context context) throws Exception {
       return getElements(context).keySet();
@@ -128,7 +128,7 @@ class GroupExtractor implements Group {
    
    /**
     * This is used to determine if the associated type represents a
-    * label defined within the variant group. If the label exists
+    * label defined within the union group. If the label exists
     * this returns true, if not then this returns false.
     * 
     * @param type this is the type to check for
@@ -142,7 +142,7 @@ class GroupExtractor implements Group {
    /**
     * This is used to extract the labels associated with the group.
     * Extraction will instantiate a <code>Label</code> object for
-    * an individual annotation declared within the variant. Each of
+    * an individual annotation declared within the union. Each of
     * the label instances is then registered by both name and type.
     */
    private void extract() throws Exception {
@@ -156,7 +156,7 @@ class GroupExtractor implements Group {
    /**
     * This is used to extract the labels associated with the group.
     * Extraction will instantiate a <code>Label</code> object for
-    * an individual annotation declared within the variant. Each of
+    * an individual annotation declared within the union. Each of
     * the label instances is then registered by both name and type.
     * 
     * @param extractor this is the extractor to get labels for
@@ -172,7 +172,7 @@ class GroupExtractor implements Group {
    /**
     * This is used to extract the labels associated with the group.
     * Extraction will instantiate a <code>Label</code> object for
-    * an individual annotation declared within the variant. Each of
+    * an individual annotation declared within the union. Each of
     * the label instances is then registered by both name and type.
     * 
     * @param extractor this is the extractor to get labels for
@@ -190,7 +190,7 @@ class GroupExtractor implements Group {
    }
    
    /**
-    * This returns a string representation of the variant group.
+    * This returns a string representation of the union group.
     * Providing a string representation in this way ensures that the
     * group can be used in exception messages and for any debugging.
     * 

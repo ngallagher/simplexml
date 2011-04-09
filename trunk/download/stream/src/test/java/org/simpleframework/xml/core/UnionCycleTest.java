@@ -3,11 +3,11 @@ package org.simpleframework.xml.core;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.ValidationTestCase;
-import org.simpleframework.xml.Variant;
+import org.simpleframework.xml.Union;
 import org.simpleframework.xml.strategy.CycleStrategy;
 import org.simpleframework.xml.strategy.Strategy;
 
-public class VariantCycleTest extends ValidationTestCase {
+public class UnionCycleTest extends ValidationTestCase {
    
    private static final String SOURCE =
    "<shapeExample>" +
@@ -40,14 +40,14 @@ public class VariantCycleTest extends ValidationTestCase {
    @Root
    public static class ShapeExample {
       
-      @Variant({
+      @Union({
          @Element(name="circle", type=Circle.class),
          @Element(name="square", type=Square.class)
       })
       private Shape shape;
    }
       
-   public void testVariantCycle() throws Exception {
+   public void testUnionCycle() throws Exception {
       Strategy strategy = new CycleStrategy();
       Persister persister = new Persister(strategy);
       ShapeExample example = persister.read(ShapeExample.class, SOURCE);

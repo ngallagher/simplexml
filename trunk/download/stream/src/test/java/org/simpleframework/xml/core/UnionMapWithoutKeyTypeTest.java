@@ -6,9 +6,9 @@ import org.simpleframework.xml.ElementMap;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.Text;
 import org.simpleframework.xml.ValidationTestCase;
-import org.simpleframework.xml.VariantMap;
+import org.simpleframework.xml.UnionMap;
 
-public class VariantMapWithoutKeyTypeTest extends ValidationTestCase {
+public class UnionMapWithoutKeyTypeTest extends ValidationTestCase {
    
    private static final String SOURCE =
    "<mapExample>" +
@@ -51,7 +51,7 @@ public class VariantMapWithoutKeyTypeTest extends ValidationTestCase {
    
    @Root
    public static class MapExample {   
-      @VariantMap({
+      @UnionMap({
          @ElementMap(entry="x-node", key="key", inline=true, attribute=true, valueType=X.class),
          @ElementMap(entry="y-node", key="key", inline=true, attribute=true, valueType=Y.class),
          @ElementMap(entry="z-node", key="key", inline=true, attribute=true, valueType=Z.class)

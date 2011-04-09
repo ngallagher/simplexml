@@ -5,14 +5,15 @@ import java.io.StringWriter;
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
+import org.simpleframework.xml.Union;
+import org.simpleframework.xml.UnionList;
 import org.simpleframework.xml.ValidationTestCase;
-import org.simpleframework.xml.Variant;
 
-public class VariantConstructorInjectionTest extends ValidationTestCase {
-   
+public class UnionConstructorInjectionTest extends ValidationTestCase {
+
    @Root
    private static class Example {
-      @Variant({
+      @Union({
          @Element(name="login"),
          @Element(name="account"),
          @Element(name="username"),
@@ -21,7 +22,7 @@ public class VariantConstructorInjectionTest extends ValidationTestCase {
       })
       private final String name;
       
-      @Variant({
+      @Union({
          @Element(name="password"),
          @Element(name="value")
       })
@@ -57,7 +58,7 @@ public class VariantConstructorInjectionTest extends ValidationTestCase {
    
    @Root
    private static class InvalidExample {
-      @Variant({
+      @Union({
          @Element(name="login"),
          @Element(name="account"),
          @Element(name="username"),
@@ -76,7 +77,7 @@ public class VariantConstructorInjectionTest extends ValidationTestCase {
    
    @Root
    private static class InvalidAnnotationExample {
-      @Variant({
+      @Union({
          @Element(name="login"),
          @Element(name="account"),
          @Element(name="username"),
@@ -122,7 +123,7 @@ public class VariantConstructorInjectionTest extends ValidationTestCase {
          e.printStackTrace();
          exception = true;
       }
-      assertTrue("Type should be respected in variant constructors", exception);
+      assertTrue("Type should be respected in union constructors", exception);
    }
       
    public void testInvalidAnnotationConstructorInjection() throws Exception{
@@ -136,6 +137,6 @@ public class VariantConstructorInjectionTest extends ValidationTestCase {
          e.printStackTrace();
          exception = true;
       }
-      assertTrue("Annotation type should be respected in variant constructors", exception);
+      assertTrue("Annotation type should be respected in union constructors", exception);
    }
 }

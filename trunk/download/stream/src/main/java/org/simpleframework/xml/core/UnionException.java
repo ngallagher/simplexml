@@ -1,5 +1,5 @@
 /*
- * VariantException.java July 2006
+ * UnionException.java July 2006
  *
  * Copyright (C) 2006, Niall Gallagher <niallg@users.sf.net>
  *
@@ -19,23 +19,23 @@
 package org.simpleframework.xml.core;
 
 /**
- * The <code>VariantException</code> is thrown when there is an error
- * associated with variants. This exception this will be thrown if
- * there is an invalid variant declaration on a field or method.
+ * The <code>UnionException</code> is thrown when there is an error
+ * associated with unions. This exception this will be thrown if
+ * there is an invalid union declaration on a field or method.
  * 
  * @author Niall Gallagher
  */
-public class VariantException extends PersistenceException {
+public class UnionException extends PersistenceException {
 
    /**
-    * Constructor for the <code>VariantException</code> object. 
+    * Constructor for the <code>UnionException</code> object. 
     * This constructor takes a format string an a variable number of 
     * object arguments, which can be inserted into the format string. 
     * 
     * @param text a format string used to present the error message
     * @param list a list of arguments to insert into the string
     */
-   public VariantException(String text, Object... list) {
+   public UnionException(String text, Object... list) {
       super(String.format(text, list));               
    }        
 }
