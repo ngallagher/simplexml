@@ -7,20 +7,20 @@ import junit.framework.TestCase;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
-import org.simpleframework.xml.Variant;
-import org.simpleframework.xml.VariantList;
+import org.simpleframework.xml.Union;
+import org.simpleframework.xml.UnionList;
 
-public class VariantTest extends TestCase {
+public class UnionTest extends TestCase {
    
    private static final String SOURCE = 
-   "<variantExample>" +
+   "<unionExample>" +
    "  <integer>" +
    "    <number>111</number>" +
    "  </integer>" +
-   "</variantExample>";
+   "</unionExample>";
    
    private static final String SOURCE_LIST = 
-   "<variantExample>" +
+   "<unionExample>" +
    "  <integer>" +
    "    <number>111</number>" +
    "  </integer>" +
@@ -33,10 +33,10 @@ public class VariantTest extends TestCase {
    "  <s>" +
    "    <string>SSS</string>" +
    "  </s>" +
-   "</variantExample>";
+   "</unionExample>";
    
    private static final String DOUBLE_LIST =
-   "<variantExample>" +
+   "<unionExample>" +
    "  <double>" +
    "    <number>222.2</number>" +
    "  </double>" +
@@ -46,7 +46,7 @@ public class VariantTest extends TestCase {
    "  <d>" +
    "    <number>2.2</number>" +
    "  </d>" +
-   "</variantExample>";     
+   "</unionExample>";     
    
    @Root(name="string")
    public static class StringEntry implements Entry<String> {
@@ -79,9 +79,9 @@ public class VariantTest extends TestCase {
       public T foo();
    }
    @Root
-   public static class VariantExample {
+   public static class UnionExample {
       
-      @Variant({
+      @Union({
          @Element(name="double", type=DoubleEntry.class),
          @Element(name="string", type=StringEntry.class),
          @Element(name="integer", type=IntegerEntry.class)
@@ -89,16 +89,16 @@ public class VariantTest extends TestCase {
       private Entry entry;
    }
    @Root
-   public static class VariantListExample {
+   public static class UnionListExample {
       
-      @Variant({
+      @Union({
          @Element(name="double", type=DoubleEntry.class),
          @Element(name="string", type=StringEntry.class),
          @Element(name="integer", type=IntegerEntry.class)
       })
       private Entry entry;
       
-      @VariantList({
+      @UnionList({
          @ElementList(entry="d", inline=true, type=DoubleEntry.class),
          @ElementList(entry="s", inline=true, type=StringEntry.class),
          @ElementList(entry="i", inline=true, type=IntegerEntry.class)
@@ -108,7 +108,7 @@ public class VariantTest extends TestCase {
    }
    public void testListDeserialization() throws Exception {
       Persister persister = new Persister();
-      VariantListExample example = persister.read(VariantListExample.class, SOURCE_LIST);
+      UnionListExample example = persister.read(UnionListExample.class, SOURCE_LIST);
       List<Entry> entry = example.list;
       assertEquals(entry.size(), 3);
       assertEquals(entry.get(0).getClass(), IntegerEntry.class);
@@ -123,7 +123,7 @@ public class VariantTest extends TestCase {
    }
    public void testDoubleListDeserialization() throws Exception {
       Persister persister = new Persister();
-      VariantListExample example = persister.read(VariantListExample.class, DOUBLE_LIST);
+      UnionListExample example = persister.read(UnionListExample.class, DOUBLE_LIST);
       List<Entry> entry = example.list;
       assertEquals(entry.size(), 2);
       assertEquals(entry.get(0).getClass(), DoubleEntry.class);

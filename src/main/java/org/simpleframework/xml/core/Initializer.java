@@ -170,13 +170,13 @@ class Initializer {
          Label label = criteria.resolve(name);
          
          if(label != null) {
-            Set<String> variants = label.getVariants(context);
+            Set<String> options = label.getUnion(context);
             Parameter value = match.getParameter(name);
             Contact contact = label.getContact();
 
-            for(String variant : variants) {
+            for(String option : options) {
                if(value == null) {
-                  value = match.getParameter(variant);
+                  value = match.getParameter(option);
                }
             }
             if(contact.isReadOnly()) {

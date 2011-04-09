@@ -7,9 +7,9 @@ import org.simpleframework.xml.Default;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.ValidationTestCase;
-import org.simpleframework.xml.VariantList;
+import org.simpleframework.xml.UnionList;
 
-public class VariantListTest extends ValidationTestCase {
+public class UnionListTest extends ValidationTestCase {
    
    private static final String INLINE_LIST_SOURCE =
    "<inlineListExample>" +
@@ -66,7 +66,7 @@ public class VariantListTest extends ValidationTestCase {
    
    @Root
    public static class InlineListExample {   
-      @VariantList({
+      @UnionList({
          @ElementList(entry="xx", inline=true, type=X.class),
          @ElementList(entry="yy", inline=true, type=Y.class),
          @ElementList(entry="zz", inline=true, type=Z.class)
@@ -76,7 +76,7 @@ public class VariantListTest extends ValidationTestCase {
    
    @Root
    public static class ListExample {   
-      @VariantList({
+      @UnionList({
          @ElementList(name="xList", entry="xx", type=X.class),
          @ElementList(name="yList", entry="yy", type=Y.class),
          @ElementList(name="zList", entry="zz", type=Z.class)

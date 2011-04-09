@@ -23,9 +23,9 @@ import java.util.List;
 
 /**
  * The <code>Extractor</code> interface is used to represent an object
- * that can be used to extract constituent parts from a variant. Using
+ * that can be used to extract constituent parts from a union. Using
  * this allows a uniform interface to be used to interface with various
- * different variant annotations. 
+ * different union annotations. 
  * 
  * @author Niall Gallagher
  * 
@@ -35,12 +35,12 @@ interface Extractor<T extends Annotation>{
    
    /**
     * This is used to acquire each annotation that forms part of the
-    * variant group. Extracting the annotations in this way allows
+    * union group. Extracting the annotations in this way allows
     * the extractor to build a <code>Label</code> which can be used
     * to represent the annotation. Each label can then provide a
     * converter implementation to serialize objects.
     * 
-    * @return this returns each annotation within the variant group
+    * @return this returns each annotation within the union group
     */
    public List<T> getAnnotations() throws Exception;
    
@@ -58,7 +58,7 @@ interface Extractor<T extends Annotation>{
    /**
     * This creates a <code>Label</code> object used to represent the
     * annotation provided. Creating the label in this way ensures
-    * that each variant has access to the serialization methods 
+    * that each union has access to the serialization methods 
     * defined for each type an XML element name.
     * 
     * @param label this is the annotation to create the label for

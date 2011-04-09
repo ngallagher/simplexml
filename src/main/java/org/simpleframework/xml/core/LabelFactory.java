@@ -27,9 +27,9 @@ import org.simpleframework.xml.ElementArray;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.ElementMap;
 import org.simpleframework.xml.Text;
-import org.simpleframework.xml.Variant;
-import org.simpleframework.xml.VariantList;
-import org.simpleframework.xml.VariantMap;
+import org.simpleframework.xml.Union;
+import org.simpleframework.xml.UnionList;
+import org.simpleframework.xml.UnionMap;
 import org.simpleframework.xml.Version;
 
 /**
@@ -137,14 +137,14 @@ final class LabelFactory {
      * @return this returns the entry used to create a constructor
      */
     private static LabelBuilder getBuilder(Annotation label) throws Exception{   
-       if(label instanceof Variant) {
-          return new LabelBuilder(VariantLabel.class, Variant.class, Element.class);
+       if(label instanceof Union) {
+          return new LabelBuilder(UnionLabel.class, Union.class, Element.class);
        }
-       if(label instanceof VariantList) {
-          return new LabelBuilder(VariantListLabel.class, VariantList.class, ElementList.class);
+       if(label instanceof UnionList) {
+          return new LabelBuilder(UnionListLabel.class, UnionList.class, ElementList.class);
        }
-       if(label instanceof VariantMap) {
-          return new LabelBuilder(VariantMapLabel.class, VariantMap.class, ElementMap.class);
+       if(label instanceof UnionMap) {
+          return new LabelBuilder(UnionMapLabel.class, UnionMap.class, ElementMap.class);
        }
        if(label instanceof Element) {
           return new LabelBuilder(ElementLabel.class, Element.class);

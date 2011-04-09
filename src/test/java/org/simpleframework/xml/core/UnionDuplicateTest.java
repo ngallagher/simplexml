@@ -3,9 +3,9 @@ package org.simpleframework.xml.core;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.ValidationTestCase;
-import org.simpleframework.xml.Variant;
+import org.simpleframework.xml.Union;
 
-public class VariantDuplicateTest extends ValidationTestCase {
+public class UnionDuplicateTest extends ValidationTestCase {
 
    private static final String SOURCE =
    "<shapeExample>" +
@@ -41,7 +41,7 @@ public class VariantDuplicateTest extends ValidationTestCase {
    @Root
    public static class ShapeExample {
       
-      @Variant({
+      @Union({
          @Element(name="circle", type=Circle.class),
          @Element(name="square", type=Square.class)
       })
@@ -58,6 +58,6 @@ public class VariantDuplicateTest extends ValidationTestCase {
          e.printStackTrace();
          exception = true;
       }
-      assertTrue("Variant can only appear once in source XML", exception);
+      assertTrue("Union can only appear once in source XML", exception);
    }
 }

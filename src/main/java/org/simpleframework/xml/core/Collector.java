@@ -81,7 +81,7 @@ class Collector implements Criteria {
    
    /**
     * This is used to resolve the <code>Variable</code> by using 
-    * the variant names of a label. This will also acquire variables
+    * the union names of a label. This will also acquire variables
     * based on the actual name of the variable.
     * 
     * @param name this is the name of the variable to be acquired
@@ -106,11 +106,11 @@ class Collector implements Criteria {
       Variable variable = alias.remove(name);
       
       if(variable != null) {
-         Set<String> variants = variable.getVariants(context);
+         Set<String> options = variable.getUnion(context);
          
-         for(String variant : variants) {
-            registry.remove(variant);
-            alias.remove(variant);
+         for(String option : options) {
+            registry.remove(option);
+            alias.remove(option);
          }
          registry.remove(name);
       }
@@ -141,15 +141,15 @@ class Collector implements Criteria {
       Variable variable = new Variable(label, value);
 
       if(label != null) {
-         Set<String> variants = label.getVariants(context);
+         Set<String> options = label.getUnion(context);
          String name = label.getName(context);
          
          if(!registry.containsKey(name)) {
             registry.put(name, variable);
             alias.put(name, variable);
          }
-         for(String variant : variants) {
-            alias.put(variant, variable);
+         for(String option : options) {
+            alias.put(option, variable);
          }
       }
    }

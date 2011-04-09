@@ -7,15 +7,15 @@ import org.simpleframework.xml.Namespace;
 import org.simpleframework.xml.Path;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.ValidationTestCase;
-import org.simpleframework.xml.Variant;
+import org.simpleframework.xml.Union;
 
-public class VariantNamespaceTest extends ValidationTestCase {
+public class UnionNamespaceTest extends ValidationTestCase {
 
    @Root
    private static class Example {
       @Path("path")
       @Namespace(prefix="x", reference="http://www.xml.com/ns")
-      @Variant({
+      @Union({
          @Element(name="a"),
          @Element(name="b"),
          @Element(name="c"),
@@ -32,7 +32,7 @@ public class VariantNamespaceTest extends ValidationTestCase {
       }
    }
    
-   public void testNamespaceWithVariant() throws Exception{
+   public void testNamespaceWithUnion() throws Exception{
       Persister persister = new Persister();
       Example example = new Example("example");
       StringWriter writer = new StringWriter();

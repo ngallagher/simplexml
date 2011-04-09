@@ -3,13 +3,13 @@ package org.simpleframework.xml.core;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.ValidationTestCase;
-import org.simpleframework.xml.Variant;
+import org.simpleframework.xml.Union;
 
 public class ElementWithExplicitTypeTest extends ValidationTestCase {
    
    @Root
-   private static class VariantExample {
-      @Variant({
+   private static class UnionExample {
+      @Union({
          @Element(name="s", type=String.class),
          @Element(name="i", type=Integer.class),
          @Element(name="d", type=Double.class)
@@ -68,9 +68,9 @@ public class ElementWithExplicitTypeTest extends ValidationTestCase {
       validate(persister, example);
    }
    
-   public void testExplicitVariantType() throws Exception{
+   public void testExplicitUnionType() throws Exception{
       Persister persister = new Persister();
-      VariantExample example = new VariantExample();
+      UnionExample example = new UnionExample();
       example.value = "str";
       persister.write(example, System.out);
       validate(persister, example);

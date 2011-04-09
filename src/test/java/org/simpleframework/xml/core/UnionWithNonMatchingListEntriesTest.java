@@ -6,9 +6,9 @@ import java.util.List;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.ValidationTestCase;
-import org.simpleframework.xml.VariantList;
+import org.simpleframework.xml.UnionList;
 
-public class VariantWithNonMatchingListEntriesTest extends ValidationTestCase {
+public class UnionWithNonMatchingListEntriesTest extends ValidationTestCase {
    
    @Root
    private static class Type{}
@@ -19,15 +19,15 @@ public class VariantWithNonMatchingListEntriesTest extends ValidationTestCase {
    private static class E extends Type{};
 
    @Root
-   private static class NonMatchingVariantList{
-      @VariantList({
+   private static class NonMatchingUnionList{
+      @UnionList({
          @ElementList(entry="a", inline=true, type=A.class),
          @ElementList(entry="b", inline=true, type=B.class),
          @ElementList(entry="c", inline=true, type=C.class),
          @ElementList(entry="d", inline=true, type=D.class)         
       })
       private List<Type> list;
-      public NonMatchingVariantList(){
+      public NonMatchingUnionList(){
          this.list = new ArrayList<Type>();
       }
       public void addType(Type t) {
@@ -37,7 +37,7 @@ public class VariantWithNonMatchingListEntriesTest extends ValidationTestCase {
    
    public void testNonMatching() throws Exception {
       Persister persister = new Persister();
-      NonMatchingVariantList list = new NonMatchingVariantList();
+      NonMatchingUnionList list = new NonMatchingUnionList();
       boolean exception = false;
       list.addType(new A());
       list.addType(new B());

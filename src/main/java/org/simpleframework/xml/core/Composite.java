@@ -582,31 +582,31 @@ class Composite implements Converter {
             node.skip();                 
          }
       } else {
-         readVariant(node, source, map, label);
+         readUnion(node, source, map, label);
       }         
    }
    
    /**
-    * The <code>readVariant</code> method is determine the variants 
-    * for a particular label and set the value of that variant to
+    * The <code>readUnion</code> method is determine the unions 
+    * for a particular label and set the value of that union to
     * the same value as the label. This helps the deserialization 
-    * process by ensuring once a variant is read it is not
+    * process by ensuring once a union is read it is not
     * replaced. This is also required when reading inline lists.
     * 
     * @param node this is the XML element to read the elements from
-    * @param source this is the instance to read the variants from
+    * @param source this is the instance to read the unions from
     * @param map this is the label map associated with the label
     * @param label this is the label used to define the XML element
     */
-   private void readVariant(InputNode node, Object source, LabelMap map, Label label) throws Exception {
+   private void readUnion(InputNode node, Object source, LabelMap map, Label label) throws Exception {
       Object value = readInstance(node, source, label);
-      Set<String> list = label.getVariants(context);
+      Set<String> list = label.getUnion(context);
       
       for(String key : list) {
-         Label variant = map.take(key);
+         Label union = map.take(key);
          
          if(label.isInline()) {
-            criteria.set(variant, value);
+            criteria.set(union, value);
          }
       }
    }
@@ -904,30 +904,30 @@ class Composite implements Converter {
             node.skip();                 
          }
       } else {
-         validateVariant(node, map, label);
+         validateUnion(node, map, label);
       }         
    }
    
    /**
-    * The <code>validateVariant</code> method is determine the variants 
-    * for a particular label and set the value of that variant to
+    * The <code>validateUnion</code> method is determine the unions 
+    * for a particular label and set the value of that union to
     * the same value as the label. This helps the deserialization 
-    * process by ensuring once a variant is validated it is not
+    * process by ensuring once a union is validated it is not
     * replaced. This is also required when validating inline lists.
     * 
     * @param node this is the XML element to read the elements from
     * @param map this is the label map associated with the label
     * @param label this is the label used to define the XML element
     */
-   private void validateVariant(InputNode node, LabelMap map, Label label) throws Exception {
-      Set<String> list = label.getVariants(context);
+   private void validateUnion(InputNode node, LabelMap map, Label label) throws Exception {
+      Set<String> list = label.getUnion(context);
       
       for(String key : list) {
-         Label variant = map.take(key);
+         Label union = map.take(key);
          
-         if(variant != null) {
+         if(union != null) {
             if(label.isInline()) {
-               criteria.set(variant, null);
+               criteria.set(union, null);
             }
          }
       }
@@ -1145,17 +1145,17 @@ class Composite implements Converter {
                if(label == null) {
                  throw new ElementException("Element '%s' not defined in %s", name, expect);
                }
-               writeVariant(node, source, section, label);
+               writeUnion(node, source, section, label);
             }
          }            
       }
    }
    
    /**
-    * The <code>writeVariant</code> method is determine the variants 
-    * for a particular label and set the value of that variant to
+    * The <code>writeUnion</code> method is determine the unions 
+    * for a particular label and set the value of that union to
     * the same value as the label. This helps the serialization 
-    * process by ensuring once a variant is written it is not
+    * process by ensuring once a union is written it is not
     * replaced. This is also required when writing inline lists.
     * 
     * @param node this is the XML element to write elements to
@@ -1163,7 +1163,7 @@ class Composite implements Converter {
     * @param section this is the section associated with the label
     * @param label this is the label used to define the XML element
     */
-   private void writeVariant(OutputNode node, Object source, Section section, Label label) throws Exception {
+   private void writeUnion(OutputNode node, Object source, Section section, Label label) throws Exception {
       Contact contact = label.getContact();
       Object value = contact.get(source);
       Class expect = context.getType(type, source);
@@ -1176,13 +1176,13 @@ class Composite implements Converter {
       if(replace != null) {
          writeElement(node, replace, label);            
       }
-      Set<String> list = label.getVariants(context);
+      Set<String> list = label.getUnion(context);
       
       for(String name : list) {
-         Label variant = section.getElement(name);
+         Label union = section.getElement(name);
          
-         if(variant != null) {
-            criteria.set(variant, replace);
+         if(union != null) {
+            criteria.set(union, replace);
          }
       }
    }
@@ -1281,17 +1281,17 @@ class Composite implements Converter {
    private void writeElement(OutputNode node, Object value, Label label) throws Exception {
       if(value != null) {
          Class real = value.getClass();
-         Label variant = label.getLabel(real);
-         String name = variant.getName(context);
+         Label union = label.getLabel(real);
+         String name = union.getName(context);
          Type type = label.getType(real); 
          OutputNode next = node.getChild(name);
 
-         if(!variant.isInline()) {
-            writeNamespaces(next, type, variant);
+         if(!union.isInline()) {
+            writeNamespaces(next, type, union);
          }
-         if(variant.isInline() || !isOverridden(next, value, type)) {
-            Converter convert = variant.getConverter(context);
-            boolean data = variant.isData();
+         if(union.isInline() || !isOverridden(next, value, type)) {
+            Converter convert = union.getConverter(context);
+            boolean data = union.isData();
             
             next.setData(data);
             writeElement(next, value, convert);

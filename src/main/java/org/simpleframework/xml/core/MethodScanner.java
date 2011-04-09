@@ -33,9 +33,9 @@ import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.ElementMap;
 import org.simpleframework.xml.Text;
 import org.simpleframework.xml.Transient;
-import org.simpleframework.xml.Variant;
-import org.simpleframework.xml.VariantList;
-import org.simpleframework.xml.VariantMap;
+import org.simpleframework.xml.Union;
+import org.simpleframework.xml.UnionList;
+import org.simpleframework.xml.UnionMap;
 import org.simpleframework.xml.Version;
 
 /**
@@ -237,13 +237,13 @@ class MethodScanner extends ContactList {
     * @throws Exception if there is more than one text annotation
     */ 
    private void scan(Method method, Annotation label) throws Exception {
-      if(label instanceof Variant) {
+      if(label instanceof Union) {
          process(method, label);
       }
-      if(label instanceof VariantList) {
+      if(label instanceof UnionList) {
          process(method, label);
       }
-      if(label instanceof VariantMap) {
+      if(label instanceof UnionMap) {
          process(method, label);
       }
       if(label instanceof Attribute) {

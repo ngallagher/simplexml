@@ -27,17 +27,17 @@ import java.util.List;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.ElementMap;
-import org.simpleframework.xml.Variant;
-import org.simpleframework.xml.VariantList;
-import org.simpleframework.xml.VariantMap;
+import org.simpleframework.xml.Union;
+import org.simpleframework.xml.UnionList;
+import org.simpleframework.xml.UnionMap;
 
 /**
  * The <code>ExtractorFactory</code> is used to create an extractor 
  * object that can be used to build a label for each annotation in
- * the variant group. In order to build an extractor the factory
- * requires the <code>Contact</code> and the variant annotation.
+ * the union group. In order to build an extractor the factory
+ * requires the <code>Contact</code> and the union annotation.
  * Each extractor created by this factory can be used to extract
- * the constituent parts of each label defined in the variant.
+ * the constituent parts of each label defined in the union.
  * 
  * @author Niall Gallagher
  * 
@@ -46,23 +46,23 @@ import org.simpleframework.xml.VariantMap;
 class ExtractorFactory {   
 
    /**
-    * This is the variant annotation this creates extractors for.
+    * This is the union annotation this creates extractors for.
     */
    private final Annotation label;
    
    /**
-    * This is the contact that has been annotated as a variant.
+    * This is the contact that has been annotated as a union.
     */
    private final Contact contact;
    
    /**
     * Constructor for the <code>ExtractorFactory</code> object. This
-    * requires the contact that was annotated as a variant and the
-    * actual variant annotation, which is used to build individual
+    * requires the contact that was annotated as a union and the
+    * actual union annotation, which is used to build individual
     * labels based on the declarations.
     * 
     * @param contact this is the field or method annotated
-    * @param label this is the variant annotation to extract from
+    * @param label this is the union annotation to extract from
     */
    public ExtractorFactory(Contact contact, Annotation label) {
       this.contact = contact;
@@ -71,10 +71,10 @@ class ExtractorFactory {
    
    /**
     * This is used to instantiate an <code>Extractor</code> based on
-    * the variant annotation provided. Each extractor provides a 
-    * uniform interface to the constituent parts of the variant.
+    * the union annotation provided. Each extractor provides a 
+    * uniform interface to the constituent parts of the union.
     * 
-    * @return this returns an extractor for the variant
+    * @return this returns an extractor for the union
     */
    public Extractor getInstance() throws Exception {
       return (Extractor)getInstance(label);     
@@ -82,12 +82,12 @@ class ExtractorFactory {
    
    /**
     * This is used to instantiate an <code>Extractor</code> based on
-    * the variant annotation provided. Each extractor provides a 
-    * uniform interface to the constituent parts of the variant.
+    * the union annotation provided. Each extractor provides a 
+    * uniform interface to the constituent parts of the union.
     * 
-    * @param label this is the variant annotation to be used
+    * @param label this is the union annotation to be used
     * 
-    * @return this returns an extractor for the variant
+    * @return this returns an extractor for the union
     */
    private Object getInstance(Annotation label) throws Exception {
       ExtractorBuilder builder = getBuilder(label);
@@ -101,29 +101,29 @@ class ExtractorFactory {
    
    /**
     * This returns a builder used to instantiate an extractor based
-    * on a particular variant annotation. If the annotation provided
-    * does not represent a valid variant an exception is thrown.
+    * on a particular union annotation. If the annotation provided
+    * does not represent a valid union an exception is thrown.
     * 
-    * @param label this is the variant annotation to build for
+    * @param label this is the union annotation to build for
     * 
     * @return this returns a builder used to create an extractor
     */
    private ExtractorBuilder getBuilder(Annotation label) throws Exception {
-      if(label instanceof Variant) {
-         return new ExtractorBuilder(Variant.class, ElementExtractor.class);
+      if(label instanceof Union) {
+         return new ExtractorBuilder(Union.class, ElementExtractor.class);
       }
-      if(label instanceof VariantList) {
-         return new ExtractorBuilder(VariantList.class, ElementListExtractor.class);
+      if(label instanceof UnionList) {
+         return new ExtractorBuilder(UnionList.class, ElementListExtractor.class);
       }
-      if(label instanceof VariantMap) {
-         return new ExtractorBuilder(VariantMap.class, ElementMapExtractor.class);
+      if(label instanceof UnionMap) {
+         return new ExtractorBuilder(UnionMap.class, ElementMapExtractor.class);
       }
-      throw new PersistenceException("Annotation %s is not a variant", label);
+      throw new PersistenceException("Annotation %s is not a union", label);
    }
    
    /**
     * The <code>ExtractorBuilder</code> object is used to instantiate
-    * an extractor based an a particular variant annotation. Each 
+    * an extractor based an a particular union annotation. Each 
     * builder has a known constructor signature which can be used to
     * reflectively instantiate the builder instance.
     * 
@@ -132,7 +132,7 @@ class ExtractorFactory {
    private static class ExtractorBuilder {
       
       /**
-       * This is the variant annotation to build the extractor for.
+       * This is the union annotation to build the extractor for.
        */
       private final Class label;
       
@@ -143,10 +143,10 @@ class ExtractorFactory {
       
       /**
        * Constructor for the <code>ExtractorBuilder</code> object. This
-       * requires the variant annotation to instantiate the builder for.
+       * requires the union annotation to instantiate the builder for.
        * Also, the actual builder type is required.
        * 
-       * @param label this is the variant annotation to be used
+       * @param label this is the union annotation to be used
        * @param type this is the actual extractor implementation
        */
       public ExtractorBuilder(Class label, Class type) {
@@ -168,7 +168,7 @@ class ExtractorFactory {
    
    /**
     * The <code>ElementExtractor</code> object is used extract the
-    * constituent parts of the provided variant annotation. This can
+    * constituent parts of the provided union annotation. This can
     * also be used to create a </code>Label</code> object for each
     * of the declared annotation for dynamic serialization.
     * 
@@ -177,39 +177,39 @@ class ExtractorFactory {
    private static class ElementExtractor implements Extractor<Element> {
       
       /**
-       * This is the variant annotation to extract the labels for.
-       */
-      private final Variant variant;
-      
-      /**
-       * This is the contact that has been annotated as a variant.
+       * This is the contact that has been annotated as a union.
        */
       private final Contact contact;
+      
+      /**
+       * This is the union annotation to extract the labels for.
+       */
+      private final Union union;
       
       /**
        * Constructor for the <code>ElementExtractor</code> object. This
        * is used to create an extractor that can be used to extract
        * the various labels used to serialize and deserialize objects.
        * 
-       * @param contact this is the contact annotated as a variant
-       * @param variant this is the variant annotation to extract from
+       * @param contact this is the contact annotated as a union
+       * @param union this is the union annotation to extract from
        */
-      public ElementExtractor(Contact contact, Variant variant) throws Exception {
-         this.variant = variant;
+      public ElementExtractor(Contact contact, Union union) throws Exception {
          this.contact = contact;
+         this.union = union;
       }
       
       /**
        * This is used to acquire each annotation that forms part of the
-       * variant group. Extracting the annotations in this way allows
+       * union group. Extracting the annotations in this way allows
        * the extractor to build a <code>Label</code> which can be used
        * to represent the annotation. Each label can then provide a
        * converter implementation to serialize objects.
        * 
-       * @return this returns each annotation within the variant group
+       * @return this returns each annotation within the union group
        */
       public List<Element> getAnnotations() {
-         Element[] list = variant.value();
+         Element[] list = union.value();
          
          if(list.length > 0) {
             return Arrays.asList(list);
@@ -220,7 +220,7 @@ class ExtractorFactory {
       /**
        * This creates a <code>Label</code> object used to represent the
        * annotation provided. Creating the label in this way ensures
-       * that each variant has access to the serialization methods 
+       * that each union has access to the serialization methods 
        * defined for each type an XML element name.
        * 
        * @param label this is the annotation to create the label for
@@ -252,7 +252,7 @@ class ExtractorFactory {
    
    /**
     * The <code>ElementListExtractor</code> object is used extract the
-    * constituent parts of the provided variant annotation. This can
+    * constituent parts of the provided union annotation. This can
     * also be used to create a </code>Label</code> object for each
     * of the declared annotation for dynamic serialization.
     * 
@@ -261,39 +261,39 @@ class ExtractorFactory {
    private static class ElementListExtractor implements Extractor<ElementList>{
       
       /**
-       * This is the variant annotation to extract the labels for.
-       */
-      private final VariantList variant;
-      
-      /**
-       * This is the contact that has been annotated as a variant.
+       * This is the contact that has been annotated as a union.
        */
       private final Contact contact;
+      
+      /**
+       * This is the union annotation to extract the labels for.
+       */
+      private final UnionList union;
       
       /**
        * Constructor for the <code>ElementListExtractor</code> object. 
        * This is used to create an extractor that can be used to extract
        * the various labels used to serialize and deserialize objects.
        * 
-       * @param contact this is the contact annotated as a variant
-       * @param variant this is the variant annotation to extract from
+       * @param contact this is the contact annotated as a union
+       * @param union this is the union annotation to extract from
        */
-      public ElementListExtractor(Contact contact, VariantList variant) throws Exception {
-         this.variant = variant;
+      public ElementListExtractor(Contact contact, UnionList union) throws Exception {
          this.contact = contact;
+         this.union = union;
       }
       
       /**
        * This is used to acquire each annotation that forms part of the
-       * variant group. Extracting the annotations in this way allows
+       * union group. Extracting the annotations in this way allows
        * the extractor to build a <code>Label</code> which can be used
        * to represent the annotation. Each label can then provide a
        * converter implementation to serialize objects.
        * 
-       * @return this returns each annotation within the variant group
+       * @return this returns each annotation within the union group
        */
       public List<ElementList> getAnnotations() {
-         ElementList[] list = variant.value();
+         ElementList[] list = union.value();
          
          if(list.length > 0) {
             return Arrays.asList(list);
@@ -304,7 +304,7 @@ class ExtractorFactory {
       /**
        * This creates a <code>Label</code> object used to represent the
        * annotation provided. Creating the label in this way ensures
-       * that each variant has access to the serialization methods 
+       * that each union has access to the serialization methods 
        * defined for each type an XML element name.
        * 
        * @param label this is the annotation to create the label for
@@ -331,7 +331,7 @@ class ExtractorFactory {
    
    /**
     * The <code>ElementListExtractor</code> object is used extract the
-    * constituent parts of the provided variant annotation. This can
+    * constituent parts of the provided union annotation. This can
     * also be used to create a </code>Label</code> object for each
     * of the declared annotation for dynamic serialization.
     * 
@@ -340,39 +340,39 @@ class ExtractorFactory {
    private static class ElementMapExtractor implements Extractor<ElementMap>{
       
       /**
-       * This is the variant annotation to extract the labels for.
-       */
-      private final VariantMap variant;
-      
-      /**
-       * This is the contact that has been annotated as a variant.
+       * This is the contact that has been annotated as a union.
        */
       private final Contact contact;
+      
+      /**
+       * This is the union annotation to extract the labels for.
+       */
+      private final UnionMap union;
       
       /**
        * Constructor for the <code>ElementMapExtractor</code> object. 
        * This is used to create an extractor that can be used to extract
        * the various labels used to serialize and deserialize objects.
        * 
-       * @param contact this is the contact annotated as a variant
-       * @param variant this is the variant annotation to extract from
+       * @param contact this is the contact annotated as a union
+       * @param union this is the union annotation to extract from
        */
-      public ElementMapExtractor(Contact contact, VariantMap variant) throws Exception {
-         this.variant = variant;
+      public ElementMapExtractor(Contact contact, UnionMap union) throws Exception {
          this.contact = contact;
+         this.union = union;
       }
       
       /**
        * This is used to acquire each annotation that forms part of the
-       * variant group. Extracting the annotations in this way allows
+       * union group. Extracting the annotations in this way allows
        * the extractor to build a <code>Label</code> which can be used
        * to represent the annotation. Each label can then provide a
        * converter implementation to serialize objects.
        * 
-       * @return this returns each annotation within the variant group
+       * @return this returns each annotation within the union group
        */
       public List<ElementMap> getAnnotations() {
-         ElementMap[] list = variant.value();
+         ElementMap[] list = union.value();
          
          if(list.length > 0) {
             return Arrays.asList(list);
@@ -383,7 +383,7 @@ class ExtractorFactory {
       /**
        * This creates a <code>Label</code> object used to represent the
        * annotation provided. Creating the label in this way ensures
-       * that each variant has access to the serialization methods 
+       * that each union has access to the serialization methods 
        * defined for each type an XML element name.
        * 
        * @param label this is the annotation to create the label for

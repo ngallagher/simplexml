@@ -25,7 +25,7 @@ import org.simpleframework.xml.strategy.Type;
 /**
  * The <code>OverrideType</code> is used to represent a type as class
  * other than that defined in a containing type. This can be used to
- * ensure that a variant type does not have to have an attribute
+ * ensure that a union type does not have to have an attribute
  * defining its type serialized in to the resulting XML.
  * 
  * @author Niall Gallagher

@@ -30,9 +30,9 @@ import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.ElementMap;
 import org.simpleframework.xml.Order;
 import org.simpleframework.xml.Text;
-import org.simpleframework.xml.Variant;
-import org.simpleframework.xml.VariantList;
-import org.simpleframework.xml.VariantMap;
+import org.simpleframework.xml.Union;
+import org.simpleframework.xml.UnionList;
+import org.simpleframework.xml.UnionMap;
 import org.simpleframework.xml.Version;
 
 /**
@@ -158,14 +158,14 @@ class StructureBuilder {
     * @throws Exception if there is more than one text annotation
     */   
    public void process(Contact field, Annotation label) throws Exception {
-      if(label instanceof Variant) {
-         variant(field, label, elements);
+      if(label instanceof Union) {
+         union(field, label, elements);
       }
-      if(label instanceof VariantList) {
-         variant(field, label, elements);
+      if(label instanceof UnionList) {
+         union(field, label, elements);
       }
-      if(label instanceof VariantMap) {
-         variant(field, label, elements);
+      if(label instanceof UnionMap) {
+         union(field, label, elements);
       }
       if(label instanceof Attribute) {
          process(field, label, attributes);
@@ -203,7 +203,7 @@ class StructureBuilder {
     * 
     * @throws Exception thrown if the label can not be created
     */   
-   private void variant(Contact field, Annotation type, LabelMap map) throws Exception {
+   private void union(Contact field, Annotation type, LabelMap map) throws Exception {
       Annotation[] list = extract(type);
       
       for(Annotation value : list) {
@@ -309,22 +309,22 @@ class StructureBuilder {
    
    /**
     * This is used to extract the individual annotations associated
-    * with the variant annotation provided. If the annotation does
-    * not represent a variant then this will return null.
+    * with the union annotation provided. If the annotation does
+    * not represent a union then this will return null.
     * 
     * @param type this is the annotation to extract from
     * 
-    * @return this returns an array of annotations from the variant
+    * @return this returns an array of annotations from the union
     */
    private Annotation[] extract(Annotation type) throws Exception {
-      if(type instanceof Variant) {
-         return Variant.class.cast(type).value();
+      if(type instanceof Union) {
+         return Union.class.cast(type).value();
       }
-      if(type instanceof VariantList) {
-         return VariantList.class.cast(type).value();
+      if(type instanceof UnionList) {
+         return UnionList.class.cast(type).value();
       }
-      if(type instanceof VariantMap) {
-         return VariantMap.class.cast(type).value();
+      if(type instanceof UnionMap) {
+         return UnionMap.class.cast(type).value();
       }
       return null;
    }
@@ -468,7 +468,7 @@ class StructureBuilder {
       Creator creator = scanner.getCreator();
       Order order = scanner.getOrder();
       
-      validateVariants(type);
+      validateUnions(type);
       validateElements(type, order);
       validateAttributes(type, order);
       validateParameters(creator);
@@ -514,25 +514,25 @@ class StructureBuilder {
    }
    
    /**
-    * This is used to validate the variants that have been defined
-    * within the type. Variant validation is done by determining if 
-    * the variant has consistent inline values. If one annotation in
-    * the variant declaration is inline, then all must be inline.
+    * This is used to validate the unions that have been defined
+    * within the type. Union validation is done by determining if 
+    * the union has consistent inline values. If one annotation in
+    * the union declaration is inline, then all must be inline.
     * 
-    * @param type this is the type to validate the variants for
+    * @param type this is the type to validate the unions for
     */
-   private void validateVariants(Class type) throws Exception {
+   private void validateUnions(Class type) throws Exception {
       for(Label label : elements) {
-         Set<String> variants = label.getVariants();
+         Set<String> options = label.getUnion();
          Contact contact = label.getContact();
          
          if(label.isInline()) {
-            for(String name : variants) {
-               Annotation variant = contact.getAnnotation();
-               Label other = elements.get(name);
+            for(String option : options) {
+               Annotation union = contact.getAnnotation();
+               Label other = elements.get(option);
                
                if(!other.isInline()) {
-                  throw new VariantException("Inline must be consistent in %s for %s", variant, label);
+                  throw new UnionException("Inline must be consistent in %s for %s", union, label);
                }
             }
          }
@@ -656,11 +656,11 @@ class StructureBuilder {
          
          if(contact.isReadOnly()) {
             Parameter value = initializer.getParameter(name);
-            Set<String> variants = label.getVariants();
+            Set<String> options = label.getUnion();
             
-            for(String variant : variants) {
+            for(String option : options) {
                if(value == null) {
-                  value = initializer.getParameter(variant);
+                  value = initializer.getParameter(option);
                }
             }
             if(value == null) {
@@ -723,7 +723,7 @@ class StructureBuilder {
     * @param parameter this is the parameter to validate with
     */
    private void validate(Label label, Parameter parameter) throws Exception {
-      Set<String> variants = label.getVariants();
+      Set<String> options = label.getUnion();
       Contact contact = label.getContact();
       String name = parameter.getName();
       Class expect = contact.getType();
@@ -731,7 +731,7 @@ class StructureBuilder {
       if(expect != parameter.getType()) {
          throw new ConstructorException("Type does not match %s for '%s' in %s", label, name, parameter);
       }
-      if(!variants.contains(name)) {
+      if(!options.contains(name)) {
          String require = label.getName();
          
          if(name != require) {

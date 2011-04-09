@@ -4,9 +4,9 @@ import org.simpleframework.xml.Default;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.ValidationTestCase;
-import org.simpleframework.xml.Variant;
+import org.simpleframework.xml.Union;
 
-public class VariantNotRequiredTest extends ValidationTestCase {
+public class UnionNotRequiredTest extends ValidationTestCase {
    
    private static final String SOURCE =
    "<animalFarm>" +
@@ -52,7 +52,7 @@ public class VariantNotRequiredTest extends ValidationTestCase {
    
    @Root
    public static class AnimalFarm {   
-      @Variant({
+      @Union({
          @Element(name="cat", required=false, type=Cat.class),
          @Element(name="dog", required=false, type=Dog.class),
          @Element(name="chicken", required=false, type=Chicken.class)

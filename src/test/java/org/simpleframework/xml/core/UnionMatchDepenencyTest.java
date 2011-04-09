@@ -3,13 +3,13 @@ package org.simpleframework.xml.core;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.ValidationTestCase;
-import org.simpleframework.xml.Variant;
+import org.simpleframework.xml.Union;
 
-public class VariantMatchDepenencyTest extends ValidationTestCase {
+public class UnionMatchDepenencyTest extends ValidationTestCase {
       
    @Root
    private static class Example {
-      @Variant({
+      @Union({
          @Element(name="x", type=Integer.class),
          @Element(name="y", type=Integer.class),
          @Element(name="z", type=Integer.class)         
@@ -34,7 +34,7 @@ public class VariantMatchDepenencyTest extends ValidationTestCase {
          e.printStackTrace();
          exception = true;
       }
-      assertTrue("Types must match for variants", exception);
+      assertTrue("Types must match for unions", exception);
    }
    
 

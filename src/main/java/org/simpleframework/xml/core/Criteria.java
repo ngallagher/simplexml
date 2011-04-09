@@ -43,7 +43,7 @@ interface Criteria extends Iterable<String> {
    
    /**
     * This is used to resolve the <code>Variable</code> by using 
-    * the variant names of a label. This will also acquire variables
+    * the union names of a label. This will also acquire variables
     * based on the actual name of the variable.
     * 
     * @param name this is the name of the variable to be acquired

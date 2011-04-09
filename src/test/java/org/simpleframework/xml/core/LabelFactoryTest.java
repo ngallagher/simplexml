@@ -6,13 +6,13 @@ import junit.framework.TestCase;
 
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
-import org.simpleframework.xml.Variant;
-import org.simpleframework.xml.VariantList;
+import org.simpleframework.xml.Union;
+import org.simpleframework.xml.UnionList;
 
 public class LabelFactoryTest extends TestCase {
    
    private static class Example {
-      @Variant({
+      @Union({
          @Element(name="a", type=String.class),
          @Element(name="b", type=Integer.class)
       })
@@ -20,32 +20,32 @@ public class LabelFactoryTest extends TestCase {
    }
    
    private static class ExampleList {
-      @VariantList({
+      @UnionList({
          @ElementList(name="a", type=String.class),
          @ElementList(name="b", type=Integer.class)
       })
       private List<Object> value;
    }
 
-   public void testVariant() throws Exception {
+   public void testUnion() throws Exception {
       FieldScanner scanner = new FieldScanner(Example.class);
       Contact contact = scanner.get(0);
-      Element element = ((Variant)contact.getAnnotation()).value()[0];
-      Label variantLabel = LabelFactory.getInstance(contact, contact.getAnnotation(), element);
+      Element element = ((Union)contact.getAnnotation()).value()[0];
+      Label unionLabel = LabelFactory.getInstance(contact, contact.getAnnotation(), element);
       Label elementLabel = LabelFactory.getInstance(contact, element);
       
-      assertEquals(variantLabel.getName(), "a");
+      assertEquals(unionLabel.getName(), "a");
       assertEquals(elementLabel.getName(), "a");
    }
    
-   public void testVariantList() throws Exception {
+   public void testUnionList() throws Exception {
       FieldScanner scanner = new FieldScanner(ExampleList.class);
       Contact contact = scanner.get(0);
-      ElementList element = ((VariantList)contact.getAnnotation()).value()[0];
-      Label variantLabel = LabelFactory.getInstance(contact, contact.getAnnotation(), element);
+      ElementList element = ((UnionList)contact.getAnnotation()).value()[0];
+      Label unionLabel = LabelFactory.getInstance(contact, contact.getAnnotation(), element);
       Label elementLabel = LabelFactory.getInstance(contact, element);
       
-      assertEquals(variantLabel.getName(), "a");
+      assertEquals(unionLabel.getName(), "a");
       assertEquals(elementLabel.getName(), "a");
    }
 }

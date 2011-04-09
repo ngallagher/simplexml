@@ -1,5 +1,5 @@
 /*
- * VariantList.java March 2011
+ * UnionList.java March 2011
  *
  * Copyright (C) 2011, Niall Gallagher <niallg@users.sf.net>
  *
@@ -22,8 +22,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- * The <code>VariantList</code> annotation is used to describe a field 
- * or method that can dynamically match a schema class. Each variant
+ * The <code>UnionList</code> annotation is used to describe a field 
+ * or method that can dynamically match a schema class. Each union
  * can have a number of different XML class schemas matched based on
  * an XML element name or the instance type. Here a collection of
  * element list annotations can be declared. Each annotation expresses
@@ -32,7 +32,7 @@ import java.lang.annotation.RetentionPolicy;
  * all determined from the XML element name.
  * <pre>
  * 
- *    &#64;VariantList({
+ *    &#64;UnionList({
  *       &#64;ElementList(entry="x", inline=true, type=X.class),
  *       &#64;ElementList(entry="y", inline=true, type=Y.class),
  *       &#64;ElementList(entry="z", inline=true, type=Z.class)               
@@ -52,17 +52,17 @@ import java.lang.annotation.RetentionPolicy;
  * @see org.simpleframework.xml.ElementList
  */
 @Retention(RetentionPolicy.RUNTIME)
-public @interface VariantList {
+public @interface UnionList {
    
    /**
     * This provides the <code>ElementList</code> annotations that have 
-    * been defined for this variant. Each element list describes the 
+    * been defined for this union. Each element list describes the 
     * XML class schema to use and the name of the XML element. This 
     * allows the serialization process to determine which elements
     * map to the defined types. Also, the types define how the XML
     * is generated for a given instance.     
     * 
-    * @return the element lists defined for the variant declaration
+    * @return the element lists defined for the union declaration
     */   
    public ElementList[] value();
 }
