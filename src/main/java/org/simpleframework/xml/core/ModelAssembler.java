@@ -130,11 +130,12 @@ class ModelAssembler {
     * @param path this is the expression to be evaluated
     */
    private void registerAttributes(Model model, Expression path) throws Exception {
+      String prefix = path.getPrefix();
       String name = path.getFirst();   
       int index = path.getIndex();
   
       if(path.isPath()) {
-         Model next = model.register(name, index);
+         Model next = model.register(name, prefix, index);
          Expression child = path.getPath(1);
          
          if(next == null) {
@@ -172,11 +173,12 @@ class ModelAssembler {
     * @param path this is the expression to be evaluated
     */
    private void registerElements(Model model, Expression path) throws Exception {
+      String prefix = path.getPrefix();
       String name = path.getFirst();  
       int index = path.getIndex();
       
       if(name != null) {
-         Model next = model.register(name, index);
+         Model next = model.register(name, prefix, index);
          Expression child = path.getPath(1);
       
          if(path.isPath()) {            
@@ -207,6 +209,7 @@ class ModelAssembler {
     * @param path this is the expression referencing the element
     */
    private void registerElement(Model model, Expression path) throws Exception {
+      String prefix = path.getPrefix();
       String name = path.getFirst();  
       int index = path.getIndex();
       
@@ -217,6 +220,6 @@ class ModelAssembler {
             throw new PathException("Ordered element '%s' in path '%s' is out of sequence for %s", name, path, type);
          }
       }
-      model.register(name, index);
+      model.register(name, prefix, index);
    }
 }

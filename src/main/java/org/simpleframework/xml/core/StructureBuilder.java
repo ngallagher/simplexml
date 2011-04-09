@@ -442,11 +442,12 @@ class StructureBuilder {
       Model model = root;
    
       while(model != null) {
+         String prefix = path.getPrefix();
          String name = path.getFirst();
          int index = path.getIndex();
 
          if(name != null) {
-            model = model.register(name, index);
+            model = model.register(name, prefix, index);
          }
          if(!path.isPath()) {
             break;

@@ -34,6 +34,25 @@ package org.simpleframework.xml.core;
  * @see org.simpleframework.xml.core.Structure
  */
 interface Section extends Iterable<String> {
+   
+   /**
+    * This is used to return the name of the section. The name is 
+    * must be a valid XML element name. It is used when a style
+    * is applied to a path as the section name must be styled.
+    * 
+    * @return this returns the name of this section instance
+    */
+   public String getName();
+   
+   /**
+    * This is used to acquire the path prefix for the section. The
+    * path prefix is used when the section is transformed in to an
+    * XML structure. This ensures that the XML element created to
+    * represent the section contains the optional prefix.
+    * 
+    * @return this returns the prefix for this section
+    */
+   public String getPrefix();
 
    /**
     * Returns a <code>LabelMap</code> that contains the details for

@@ -39,7 +39,7 @@ public class ClassToNamespaceVisitor implements Visitor {
          if(comment) {
             node.getNode().setComment(type);
          }
-         node.getNode().getNamespaces().put(name, "class");
+         node.getNode().getNamespaces().setReference(name, "class");
          node.getNode().setReference(name);
       }
    }

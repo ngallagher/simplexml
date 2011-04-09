@@ -132,7 +132,7 @@ class NamespaceDecorator implements Decorator {
          String reference = next.reference();
          String prefix = next.prefix();
             
-         map.put(reference, prefix);
+         map.setReference(reference, prefix);
       }
    }
    

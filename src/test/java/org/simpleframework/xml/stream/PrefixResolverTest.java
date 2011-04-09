@@ -13,17 +13,17 @@ public class PrefixResolverTest extends ValidationTestCase {
       // <root xmlns="ns1">
       OutputNode root = node.getChild("root");
       root.setReference("ns1");
-      root.getNamespaces().put("ns1", "n");
+      root.getNamespaces().setReference("ns1", "n");
       
       // <child xmlns="ns2">
       OutputNode child = root.getChild("child");
       child.setReference("ns2");
-      child.getNamespaces().put("ns2", "n");
+      child.getNamespaces().setReference("ns2", "n");
 
       // <grandchild xmlns="ns1">
       OutputNode grandchild = child.getChild("grandchild");
       grandchild.setReference("ns1");
-      grandchild.getNamespaces().put("ns1", "n");
+      grandchild.getNamespaces().setReference("ns1", "n");
       
       root.commit();
       

@@ -23,6 +23,7 @@ import java.util.Set;
 import org.simpleframework.xml.Version;
 import org.simpleframework.xml.strategy.Type;
 import org.simpleframework.xml.stream.InputNode;
+import org.simpleframework.xml.stream.NamespaceMap;
 import org.simpleframework.xml.stream.NodeMap;
 import org.simpleframework.xml.stream.OutputNode;
 import org.simpleframework.xml.stream.Position;
@@ -1039,6 +1040,15 @@ class Composite implements Converter {
     * @param section this is the section that defines the XML structure
     */
    private void writeSection(OutputNode node, Object source, Section section) throws Exception {
+      NamespaceMap scope = node.getNamespaces();
+      String prefix = section.getPrefix();
+      String reference = scope.getReference(prefix);
+
+      if(reference == null) {
+         throw new ElementException("Namespace prefix '%s' for %s is not in scope", type);
+      } else {
+         node.setReference(reference);  
+      }
       writeAttributes(node, source, section);
       writeElements(node, source, section);
    }
@@ -1121,7 +1131,7 @@ class Composite implements Converter {
          
          if(child != null) {
             OutputNode next = node.getChild(name);
-           
+
             writeSection(next, source, child);
          } else {
             Label label = section.getElement(name);

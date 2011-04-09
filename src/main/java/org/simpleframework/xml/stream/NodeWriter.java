@@ -355,7 +355,7 @@ class NodeWriter {
       NamespaceMap map = node.getNamespaces();
       
       for(String name : map) {
-         String prefix = map.get(name);
+         String prefix = map.getPrefix(name);
          
          writer.writeNamespace(name, prefix);
       }

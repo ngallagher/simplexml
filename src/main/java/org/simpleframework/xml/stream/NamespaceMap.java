@@ -54,19 +54,20 @@ public interface NamespaceMap extends Iterable<String> {
     * 
     * @return this will return the prefix that is is scope
     */
-   public String get(String reference);
-
+   public String getPrefix(String reference);
+   
    /**
-    * This is used to remove the prefix that is matched to the 
-    * given reference. If no prefix is matched to the reference then
-    * this will silently return. This will only remove mappings
-    * from the current map, and will ignore the parent nodes.
+    * This acquires the namespace reference for the specified prefix.
+    * If the provided prefix has been set on this node with a given
+    * reference then that reference is returned, however if it has
+    * not been set this will search the parent elements to find the
+    * reference that is in scope for the specified reference.
     * 
-    * @param reference this is the reference that is to be removed 
+    * @param prefix the prefix to find a matching reference for
     * 
-    * @return this returns the prefix that was matched to this
+    * @return this will return the reference that is is scope
     */
-   public String remove(String reference);
+   public String getReference(String prefix);
 
    /**
     * This returns an iterator for the namespace of all the nodes 
@@ -88,7 +89,7 @@ public interface NamespaceMap extends Iterable<String> {
     * 
     * @return this returns the prefix that has been replaced
     */
-   public String put(String reference);
+   public String setReference(String reference);
    
    /**
     * This is used to add the namespace reference to the namespace
@@ -100,5 +101,5 @@ public interface NamespaceMap extends Iterable<String> {
     * 
     * @return this returns the prefix that has been replaced
     */
-   public String put(String reference, String prefix);
+   public String setReference(String reference, String prefix);
 }

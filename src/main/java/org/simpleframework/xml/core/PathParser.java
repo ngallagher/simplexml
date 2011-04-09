@@ -54,6 +54,11 @@ class PathParser implements Expression {
    private LinkedList<Integer> indexes;   
    
    /**
+    * This is used to store the path prefixes for the parsed path.
+    */
+   private LinkedList<String> prefixes;
+   
+   /**
     * This contains a list of the path segments that were parsed.
     */
    private LinkedList<String> names;
@@ -109,6 +114,7 @@ class PathParser implements Expression {
     */
    public PathParser(Class type, String path) throws Exception {
       this.indexes = new LinkedList<Integer>();
+      this.prefixes = new LinkedList<String>();
       this.names = new LinkedList<String>();
       this.type = type;
       this.path = path;
@@ -148,6 +154,18 @@ class PathParser implements Expression {
     */
    public int getIndex() {
       return indexes.getFirst();
+   }
+   
+   /**
+    * This is used to extract a namespace prefix from the path
+    * expression. A prefix is used to qualify the XML element name
+    * and does not form part of the actual path structure. This
+    * can be used to add the namespace in addition to the name.
+    * 
+    * @return this returns the prefix for the path expression
+    */
+   public String getPrefix(){
+      return prefixes.getFirst();
    }
    
    /**
@@ -253,6 +271,9 @@ class PathParser implements Expression {
          skip();
       }
       while (off < count) {
+         if(attribute) {
+            throw new PathException("Path '%s' in %s references an invalid attribute", path, type);
+         }
          segment();
       }  
       truncate();
@@ -318,7 +339,7 @@ class PathParser implements Expression {
          }
          size++;         
       }
-      append(mark, size);
+      insert(mark, size);
    }
    
    /**
@@ -342,7 +363,7 @@ class PathParser implements Expression {
       } else {
          attribute = true;
       }
-      append(mark, off - mark);
+      insert(mark, off - mark);
    }
    
    
@@ -463,12 +484,32 @@ class PathParser implements Expression {
     * @param start this is the start offset for the path segment
     * @param count this is the number of characters in the segment
     */
-   private void append(int start, int count) {
+   private void insert(int start, int count) {
       String segment = new String(data, start, count);
 
       if(count > 0) {
-         names.add(segment);
+         insert(segment);
       }
+   }
+   
+   /**
+    * This will insert the path segment provided. A path segment is
+    * represented by an optional namespace prefix and an XML element
+    * name. If there is no prefix then a null is entered this will
+    * ensure that the names and segments are kept aligned by index.
+    * 
+    * @param segment this is the path segment to be inserted
+    */
+   private void insert(String segment) {
+      int index = segment.indexOf(':');
+      String prefix = null;
+      
+      if(index > 0) {
+         prefix = segment.substring(0, index);
+         segment = segment.substring(index+1);
+      }
+      prefixes.add(prefix);
+      names.add(segment);
    }
    
    /**
@@ -552,7 +593,10 @@ class PathParser implements Expression {
        * @return this returns true if the path has an attribute
        */
       public boolean isAttribute() {
-         return end >= names.size() - 1;
+         if(attribute) {
+            return end >= names.size() - 1;
+         }
+         return false;
       }
       
       /**
@@ -565,6 +609,18 @@ class PathParser implements Expression {
        */
       public int getIndex() {
          return indexes.get(begin);
+      }
+      
+      /**
+       * This is used to extract a namespace prefix from the path
+       * expression. A prefix is used to qualify the XML element name
+       * and does not form part of the actual path structure. This
+       * can be used to add the namespace in addition to the name.
+       * 
+       * @return this returns the prefix for the path expression
+       */
+      public String getPrefix() {
+         return prefixes.get(begin);
       }
       
       /**

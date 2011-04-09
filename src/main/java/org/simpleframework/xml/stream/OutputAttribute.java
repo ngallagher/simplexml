@@ -226,7 +226,7 @@ class OutputAttribute implements OutputNode {
     * @return this returns the prefix associated with this node
     */  
    public String getPrefix() {
-      return scope.get(reference);          
+      return scope.getPrefix(reference);          
    }
    
    /**
@@ -241,7 +241,7 @@ class OutputAttribute implements OutputNode {
     * @return this returns the prefix associated with this node
     */  
    public String getPrefix(boolean inherit) {
-      return scope.get(reference);
+      return scope.getPrefix(reference);
    }
    
    /**
