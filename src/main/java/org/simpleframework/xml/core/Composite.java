@@ -1042,12 +1042,15 @@ class Composite implements Converter {
    private void writeSection(OutputNode node, Object source, Section section) throws Exception {
       NamespaceMap scope = node.getNamespaces();
       String prefix = section.getPrefix();
-      String reference = scope.getReference(prefix);
 
-      if(reference == null) {
-         throw new ElementException("Namespace prefix '%s' for %s is not in scope", type);
-      } else {
-         node.setReference(reference);  
+      if(prefix != null) {
+         String reference = scope.getReference(prefix);
+         
+         if(reference == null) {     
+            throw new ElementException("Namespace prefix '%s' in %s is not in scope", prefix, type);
+         } else {
+            node.setReference(reference);  
+         }
       }
       writeAttributes(node, source, section);
       writeElements(node, source, section);
