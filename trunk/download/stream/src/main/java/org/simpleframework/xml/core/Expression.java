@@ -55,6 +55,16 @@ interface Expression extends Iterable<String> {
    public int getIndex();
    
    /**
+    * This is used to extract a namespace prefix from the path
+    * expression. A prefix is used to qualify the XML element name
+    * and does not form part of the actual path structure. This
+    * can be used to add the namespace in addition to the name.
+    * 
+    * @return this returns the prefix for the path expression
+    */
+   public String getPrefix();
+   
+   /**
     * This can be used to acquire the first path segment within
     * the expression. The first segment represents the parent XML
     * element of the path. All segments returned do not contain

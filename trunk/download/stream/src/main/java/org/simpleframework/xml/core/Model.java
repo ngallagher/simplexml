@@ -150,11 +150,12 @@ interface Model extends Iterable<String> {
     * contain elements and attributes associated with a type.
     * 
     * @param name this is the name of the model to be registered
+    * @param prefix this is the prefix used for this model
     * @param index this is the index used to order the model
     * 
     * @return this returns the model that was registered
     */
-   public Model register(String name, int index) throws Exception;   
+   public Model register(String name, String prefix, int index) throws Exception;   
    
    /**
     * This method is used to look for a <code>Model</code> that
@@ -233,6 +234,16 @@ interface Model extends Iterable<String> {
     * @return true if the model does not contain registrations
     */
    public boolean isEmpty();
+   
+   /**
+    * This is used to acquire the path prefix for the model. The
+    * path prefix is used when the model is transformed in to an
+    * XML structure. This ensures that the XML element created to
+    * represent the model contains the optional prefix.
+    * 
+    * @return this returns the prefix for this model
+    */
+   public String getPrefix();
    
    /**
     * This is used to return the name of the model. The name is 

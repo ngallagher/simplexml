@@ -80,6 +80,29 @@ class ModelSection implements Section {
    }
    
    /**
+    * This is used to return the name of the section. The name is 
+    * must be a valid XML element name. It is used when a style
+    * is applied to a path as the section name must be styled.
+    * 
+    * @return this returns the name of this section instance
+    */
+   public String getName() {
+      return model.getName();
+   }
+   
+   /**
+    * This is used to acquire the path prefix for the section. The
+    * path prefix is used when the section is transformed in to an
+    * XML structure. This ensures that the XML element created to
+    * represent the section contains the optional prefix.
+    * 
+    * @return this returns the prefix for this section
+    */
+   public String getPrefix() {
+      return model.getPrefix();
+   }
+   
+   /**
     * This will return the names of all elements contained within
     * the model. This includes the names of all XML elements that
     * have been registered as well as any other models that have

@@ -118,7 +118,7 @@ class OutputElement implements OutputNode {
     * @return this returns the prefix associated with this node
     */  
    public String getPrefix(boolean inherit) {
-      String prefix = scope.get(reference);
+      String prefix = scope.getPrefix(reference);
 
       if(inherit) {
          if(prefix == null) {

@@ -76,8 +76,8 @@ class PrefixResolver extends LinkedHashMap<String, String> implements NamespaceM
     * 
     * @return this returns the prefix that has been replaced
     */
-   public String put(String reference) {
-      return put(reference, "");
+   public String setReference(String reference) {
+      return setReference(reference, "");
    }
    
    /**
@@ -90,27 +90,13 @@ class PrefixResolver extends LinkedHashMap<String, String> implements NamespaceM
     * 
     * @return this returns the prefix that has been replaced
     */
-   public String put(String reference, String prefix) {
-      String parent = resolve(reference);
+   public String setReference(String reference, String prefix) {
+      String parent = resolvePrefix(reference);
       
       if(parent != null) {
          return null;
       }
-      return super.put(reference, prefix);
-   }
-
-   /**
-    * This is used to remove the prefix that is matched to the 
-    * given reference. If no prefix is matched to the reference then
-    * this will silently return. This will only remove mappings
-    * from the current map, and will ignore the parent nodes.
-    * 
-    * @param reference this is the reference that is to be removed 
-    * 
-    * @return this returns the prefix that was matched to this
-    */
-   public String remove(String reference) {
-      return super.remove(reference);
+      return put(reference, prefix);
    }
 
    /**
@@ -124,17 +110,61 @@ class PrefixResolver extends LinkedHashMap<String, String> implements NamespaceM
     * 
     * @return this will return the prefix that is is scope
     */
-   public String get(String reference) {
+   public String getPrefix(String reference) {
       int size = size();
       
       if(size > 0) {
-         String prefix = super.get(reference); 
+         String prefix = get(reference); 
    
          if(prefix != null) {
             return prefix;
          }    
       }
-      return resolve(reference);
+      return resolvePrefix(reference);
+   }
+   
+   /**
+    * This acquires the namespace reference for the specified prefix.
+    * If the provided prefix has been set on this node with a given
+    * reference then that reference is returned, however if it has
+    * not been set this will search the parent elements to find the
+    * reference that is in scope for the specified reference.
+    * 
+    * @param prefix the prefix to find a matching reference for
+    * 
+    * @return this will return the reference that is is scope
+    */
+   public String getReference(String prefix) {
+      if(containsValue(prefix)) {
+         for(String reference : this) {
+            String value = get(reference);
+            
+            if(value != null) {
+               if(value.equals(prefix)) {
+                  return reference;
+               }
+            }
+         }
+      }
+      return resolveReference(prefix);
+   }
+   
+   /**
+    * This method will resolve the reference or the specified prefix
+    * by searching the parent nodes in order. This allows the prefix
+    * that is currently in scope for the reference to be acquired.
+    *
+    * @param prefix the prefix to find a matching reference for
+    * 
+    * @return this will return the reference that is is scope
+    */ 
+   private String resolveReference(String prefix) {
+      NamespaceMap parent = source.getNamespaces();
+      
+      if(parent != null) {
+         return parent.getReference(prefix);
+      }
+      return null;
    }
    
    /**
@@ -146,11 +176,11 @@ class PrefixResolver extends LinkedHashMap<String, String> implements NamespaceM
     * 
     * @return this will return the prefix that is is scope
     */ 
-   private String resolve(String reference) {
+   private String resolvePrefix(String reference) {
       NamespaceMap parent = source.getNamespaces();
       
       if(parent != null) {
-         String prefix = parent.get(reference);
+         String prefix = parent.getPrefix(reference);
          
          if(!containsValue(prefix)) {
             return prefix;

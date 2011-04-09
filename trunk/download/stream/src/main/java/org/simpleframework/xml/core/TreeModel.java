@@ -70,6 +70,11 @@ class TreeModel implements Model {
    private final String name;
    
    /**
+    * This is used to represent the prefix for this model.
+    */
+   private final String prefix;
+   
+   /**
     * This is the index used to sort similarly named models.
     */
    private final int index;
@@ -83,7 +88,7 @@ class TreeModel implements Model {
     * @param policy this is the serialization policy enforced
     */
    public TreeModel(Policy policy) {
-      this(policy, null, 1);
+      this(policy, null, null, 1);
    }
    
    /**
@@ -94,14 +99,16 @@ class TreeModel implements Model {
     * 
     * @param policy this is the serialization policy enforced
     * @param name this is the XML element name for this model
+    * @param prefix this is the prefix used for this model object
     * @param index this is the index used to order the model
     */
-   public TreeModel(Policy policy, String name, int index) {
+   public TreeModel(Policy policy, String name, String prefix, int index) {
       this.attributes = new LabelMap(policy);
       this.elements = new LabelMap(policy);
       this.order = new OrderList();
       this.models = new ModelMap();
       this.policy = policy;
+      this.prefix = prefix;
       this.index = index;
       this.name = name;
    }
@@ -432,15 +439,16 @@ class TreeModel implements Model {
     * contain elements and attributes associated with a type.
     * 
     * @param name this is the name of the model to be registered
+    * @param prefix this is the prefix used for this model
     * @param index this is the index used to order the model
     * 
     * @return this returns the model that was registered
     */
-   public Model register(String name, int index) throws Exception {
+   public Model register(String name, String prefix, int index) throws Exception {
       Model model = models.lookup(name, index);
       
       if (model == null) {
-         return create(name, index);
+         return create(name, prefix, index);
       }
       return model;
    }
@@ -452,12 +460,13 @@ class TreeModel implements Model {
     * contain elements and attributes associated with a type.
     * 
     * @param name this is the name of the model to be registered
+    * @param prefix this is the prefix used for this model
     * @param index this is the index used to order the model
     * 
     * @return this returns the model that was registered
     */
-   private Model create(String name, int index) throws Exception {
-      Model model = new TreeModel(policy, name, index);
+   private Model create(String name, String prefix, int index) throws Exception {
+      Model model = new TreeModel(policy, name, prefix, index);
       
       if(name != null) {
          models.register(name, model);
@@ -503,6 +512,18 @@ class TreeModel implements Model {
          return false;
       }
       return !isComposite();
+   }
+   
+   /**
+    * This is used to acquire the path prefix for the model. The
+    * path prefix is used when the model is transformed in to an
+    * XML structure. This ensures that the XML element created to
+    * represent the model contains the optional prefix.
+    * 
+    * @return this returns the prefix for this model
+    */
+   public String getPrefix() {
+      return prefix;
    }
    
    /**

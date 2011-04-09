@@ -4,6 +4,59 @@ import junit.framework.TestCase;
 
 public class PathParserTest extends TestCase {
    
+   public void testSimplePath() throws Exception {
+      Expression expression = new PathParser(PathParserTest.class, "path1/path2/path3/path4");
+      assertEquals(expression.getFirst(), "path1");
+      assertEquals(expression.getPrefix(), null);
+      assertEquals(expression.getLast(), "path4");
+      assertEquals(expression.toString(), "path1/path2/path3/path4");
+      assertTrue(expression.isPath());
+      assertFalse(expression.isAttribute());
+      
+      expression = expression.getPath(1);
+      assertEquals(expression.getFirst(), "path2");
+      assertEquals(expression.getPrefix(), null);
+      assertEquals(expression.getLast(), "path4");
+      assertEquals(expression.toString(), "path2/path3/path4");
+      assertTrue(expression.isPath());
+      assertFalse(expression.isAttribute());
+   }
+   
+   public void testPathPrefix() throws Exception {
+      Expression expression = new PathParser(PathParserTest.class, "ns1:path1/ns2:path2/path3/ns3:path4[2]");
+      assertEquals(expression.getFirst(), "path1");
+      assertEquals(expression.getPrefix(), "ns1");
+      assertEquals(expression.getLast(), "path4");
+      assertEquals(expression.toString(), "ns1:path1/ns2:path2/path3/ns3:path4[2]");
+      assertTrue(expression.isPath());
+      assertFalse(expression.isAttribute());
+      
+      expression = expression.getPath(1);
+      assertEquals(expression.getFirst(), "path2");
+      assertEquals(expression.getPrefix(), "ns2");
+      assertEquals(expression.getLast(), "path4");
+      assertEquals(expression.toString(), "ns2:path2/path3/ns3:path4[2]");
+      assertTrue(expression.isPath());
+      assertFalse(expression.isAttribute());
+      
+      expression = expression.getPath(1);
+      assertEquals(expression.getFirst(), "path3");
+      assertEquals(expression.getPrefix(), null);
+      assertEquals(expression.getLast(), "path4");
+      assertEquals(expression.toString(), "path3/ns3:path4[2]");
+      assertTrue(expression.isPath());
+      assertFalse(expression.isAttribute());
+      
+      expression = expression.getPath(1);
+      assertEquals(expression.getFirst(), "path4");
+      assertEquals(expression.getPrefix(), "ns3");
+      assertEquals(expression.getLast(), "path4");
+      assertEquals(expression.getIndex(), 2);
+      assertEquals(expression.toString(), "ns3:path4[2]");
+      assertFalse(expression.isPath());
+      assertFalse(expression.isAttribute());
+   }
+   
    public void testAttribute() throws Exception {
       Expression expression = new PathParser(PathParserTest.class, "./some[3]/path[2]/to/parse/@attribute");
       assertEquals(expression.getFirst(), "some");
@@ -191,6 +244,8 @@ public class PathParserTest extends TestCase {
       ensureException("../a[100]/b/@attribute");
       ensureException("../a[100]/@b/@attribute");
       ensureException("a//b//c");
+      ensureException("a/@b/@c");
+      ensureException("a/@b/");
       ensureException("a/b[1]/c[");
       ensureException("a/b[1]/c/@");
       ensureException("a@");

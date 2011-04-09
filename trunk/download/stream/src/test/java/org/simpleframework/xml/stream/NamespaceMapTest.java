@@ -36,8 +36,8 @@ public class NamespaceMapTest extends ValidationTestCase {
       NamespaceMap map = root.getNamespaces();
       
       root.setReference("http://www.sun.com/jsp");
-      map.put("http://www.w3c.com/xhtml", "xhtml");
-      map.put("http://www.sun.com/jsp", "jsp");
+      map.setReference("http://www.w3c.com/xhtml", "xhtml");
+      map.setReference("http://www.sun.com/jsp", "jsp");
       
       OutputNode child = root.getChild("child");
      
@@ -54,7 +54,7 @@ public class NamespaceMapTest extends ValidationTestCase {
       otherChild.setAttribute("name.b", "b");
       
       map = otherChild.getNamespaces();
-      map.put("http://www.w3c.com/xhtml", "ignore");
+      map.setReference("http://www.w3c.com/xhtml", "ignore");
       
       OutputNode yetAnotherChild = otherChild.getChild("yetAnotherChild");
       
@@ -64,19 +64,19 @@ public class NamespaceMapTest extends ValidationTestCase {
       OutputNode finalChild = otherChild.getChild("finalChild");
       
       map = finalChild.getNamespaces();
-      map.put("http://www.w3c.com/anonymous");
+      map.setReference("http://www.w3c.com/anonymous");
       
       finalChild.setReference("http://www.w3c.com/anonymous");
       
       OutputNode veryLastChild = finalChild.getChild("veryLastChild");
       
       map = veryLastChild.getNamespaces();
-      map.put("");
+      map.setReference("");
       
       OutputNode veryVeryLastChild = veryLastChild.getChild("veryVeryLastChild");
       
       map = veryVeryLastChild.getNamespaces();
-      map.put("");
+      map.setReference("");
       
       veryVeryLastChild.setReference("");
       veryVeryLastChild.setValue("very very last child");
