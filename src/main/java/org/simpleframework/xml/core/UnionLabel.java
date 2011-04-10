@@ -49,14 +49,14 @@ class UnionLabel implements Label {
    private final GroupExtractor extractor;
    
    /**
-    * This is the union associated with this label instance.
-    */
-   private final Union union;
-   
-   /**
     * This is the contact that this label is associated with.
     */
    private final Contact contact;
+   
+   /**
+    * This is the union associated with this label instance.
+    */
+   private final Union union;   
    
    /**
     * This is the label that this acts as an adapter to.
@@ -76,8 +76,8 @@ class UnionLabel implements Label {
    public UnionLabel(Contact contact, Union union, Element element) throws Exception {
       this.extractor = new GroupExtractor(contact, union);
       this.label = new ElementLabel(contact, element);
-      this.union = union;
       this.contact = contact;
+      this.union = union;
    }
    
    /**
