@@ -1,0 +1,207 @@
+<table border='0'><tr><td><img src='/images/home_bullet.gif' border='0'></td><td><a name='union'></a><b>Dynamic serialization with unions</b></td></tr><tr><td><!-- padding --></td><td>
+<p>
+In order to perform dynamic serialization where element names bind to specific types the 
+<a href="/download/stream/doc/javadoc/org/simpleframework/xml/Union.html">Union</a> annotation can be used.
+This allows different XML schema classes to be associated with a single annotated field or method. Serialization
+of the associated instance determines the XML element name using the instance type. On deserialization the
+XML element name is then used to determine the schema class to use. For example, take the following set of
+annotated classes.
+</p>
+<pre class="sh_java">
+public interface Shape {
+
+   public double area();
+}
+
+@Root
+public class Circle implements Shape {
+
+   @Element
+   private double radius;
+
+   public Circle(@Element(name="radius") double radius) {
+      this.radius = radius;
+   }
+
+   public double area() {
+      return Math.PI * Math.pow(radius, 2.0);
+   }
+}
+
+@Root
+public class Rectangle implements Shape {
+
+   @Element
+   private double width;
+
+   @Element
+   private double height;
+
+   public Rectangle(
+      @Element(name="width") double width, 
+      @Element(name="height") double height) 
+   {
+      this.height = height;
+      this.width = width;
+   }
+
+   public double area() {
+      return width * height;
+   }
+}
+
+@Root
+public class Diagram {
+      
+   @Union({
+      @Element(name="circle", type=Circle.class),
+      @Element(name="rectangle", type=Rectangle.class)
+   })
+   private Shape shape;
+      
+   public Diagram() {
+      super();
+   }
+      
+   public void setShape(Shape shape){
+      this.shape = shape;
+   }
+      
+   public Shape getShape() {
+      return shape;
+   }
+}
+</pre>
+<p>
+The above set of classes can now be used to dynamically deserialize different XML documents using a single
+schema class. For example, take the XML snippet below, this shows what is generated when the shape is
+assigned an instance of the circle type.
+</p>
+<pre class="sh_xml">
+&lt;diagram&gt;
+&nbsp;&nbsp; &lt;circle&gt;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;radius&gt;3.0&lt;/radius&gt;
+&nbsp;&nbsp; &lt;/circle&gt;
+&lt;/diagram&gt;
+</pre>
+<p>
+However, if the shape field is assigned an instance of the square type then serialization of the diagram
+results in a different XML document. See the XML snippet below.
+</p>
+<pre class="sh_xml">
+&lt;diagram&gt;
+&nbsp;&nbsp; &lt;rectangle&gt;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;width&gt;5.0&lt;/width&gt;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;height&gt;11.0&lt;/heigth&gt;
+&nbsp;&nbsp; &lt;/rectangle&gt;
+&lt;/diagram&gt;
+</pre>
+<p>
+Providing dynamic serialization capabilities via the <a href="/download/stream/doc/javadoc/org/simpleframework/xml/Union.html">Union</a>
+annotation ensures that more complex XML documents can be handled with ease. Typically, such unions will be required for a list of 
+similar types. To tackle lists the <a href="/download/stream/doc/javadoc/org/simpleframework/xml/UnionList.html">UnionList</a> annotation
+can be used. This can be used as a union of inline lists to collect similar XML declarations in to a single list. For example, take
+the annotated classes below.
+</p>
+<pre class="sh_java">
+public interface Operation {
+   
+   public void execute();
+}
+
+@Default
+public class Delete implements Operation {
+
+   private File file;
+   
+   public Delete(@Element(name="file") File file) {
+      this.file = file;
+   }
+   
+   public void execute() {
+      file.delete();
+   }
+}
+
+@Default
+public class MakeDirectory implements Operation {
+
+   private File path;
+   
+   private MakeDirectory(@Element(name="path") File path) {
+      this.path = path;
+   }
+   
+   public void execute() {
+      path.mkdirs();
+   }
+}
+
+@Default
+public class Move implements Operation {
+   
+   private File source;
+   private File destination;
+   
+   public Move(
+         @Element(name="source") File source,
+         @Element(name="destination") File destination)
+   {
+      this.source = source;
+      this.destination = destination;
+   }
+   
+   public void execute() {
+      source.renameTo(destination);
+   }
+}
+
+@Root
+public class Task {
+   
+   @UnionList({
+      @ElementList(entry="delete", inline=true, type=Delete.class),
+      @ElementList(entry="mkdir", inline=true, type=MakeDirectory.class),
+      @ElementList(entry="move", inline=true, type=Move.class)
+   })
+   private List&lt;Operation&gt; operations;
+   
+   @Attribute
+   private String name;
+   
+   public Task(@Attribute(name="name") String name) {
+      this.operations = new LinkedList&lt;Operation&gt;();
+      this.name = name;
+   }
+   
+   public void add(Operation operation) {
+      operations.add(operation);
+   }
+   
+   public void execute() {
+      for(Operation operation : operations) {
+         operation.execute();
+      }
+   }
+}
+</pre>
+<p>
+For the above set of annotated classes a list of operations can be defined in an XML document. Each
+type inserted in to the list can be resolved using the XML element name. Below is an example
+XML document generated from the annotated classes.
+</p>
+<pre class="sh_xml">
+&lt;task name=&quot;setup&quot;&gt;
+&nbsp;&nbsp; &lt;delete&gt;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;file&gt;C:\workspace\classes&lt;/file&gt;
+&nbsp;&nbsp; &lt;/delete&gt;
+&nbsp;&nbsp; &lt;mkdir&gt;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;path&gt;C:\workspace\classes&lt;/path&gt;
+&nbsp;&nbsp; &lt;/mkdir&gt;
+&nbsp;&nbsp; &lt;move&gt;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;source&gt;C:\worksace\classes&lt;/source&gt;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;destination&gt;C:\workspace\build&lt;/destination&gt;
+&nbsp;&nbsp; &lt;/move&gt;
+&lt;/task&gt;
+</pre>
+</td></tr></table>

@@ -29,3 +29,4 @@ archive/annotating_static_fields.html
 archive/overriding_serialization.html
 archive/intercepting_serialization.html
 archive/path_expressions.html
+archive/dynamic_serialization_with_unions.html
