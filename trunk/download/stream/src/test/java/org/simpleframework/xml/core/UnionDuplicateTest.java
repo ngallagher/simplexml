@@ -30,6 +30,11 @@ public class UnionDuplicateTest extends ValidationTestCase {
    public static class Circle implements Shape {
       @Element
       private String type;
+      private double radius;
+      
+      public double area() {
+         return Math.PI * Math.pow(radius, 2.0);
+      }
       
       public String type() {
          return type;
@@ -39,20 +44,32 @@ public class UnionDuplicateTest extends ValidationTestCase {
       public String type();
    }
    @Root
-   public static class ShapeExample {
+   public static class Diagram {
       
       @Union({
          @Element(name="circle", type=Circle.class),
          @Element(name="square", type=Square.class)
       })
       private Shape shape;
+      
+      public Diagram() {
+         super();
+      }
+      
+      public void setShape(Shape shape){
+         this.shape = shape;
+      }
+      
+      public Shape getShape() {
+         return shape;
+      }
    }
    
    public void testShape() throws Exception {
       Persister persister = new Persister();
       boolean exception = false;
       try {
-         ShapeExample example = persister.read(ShapeExample.class, SOURCE);
+         Diagram example = persister.read(Diagram.class, SOURCE);
          assertNull(example);
       }catch(Exception e) {
          e.printStackTrace();
