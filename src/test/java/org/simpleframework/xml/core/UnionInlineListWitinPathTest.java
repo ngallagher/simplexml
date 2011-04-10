@@ -1,6 +1,5 @@
 package org.simpleframework.xml.core;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -8,8 +7,8 @@ import org.simpleframework.xml.Default;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Path;
-import org.simpleframework.xml.ValidationTestCase;
 import org.simpleframework.xml.UnionList;
+import org.simpleframework.xml.ValidationTestCase;
 import org.simpleframework.xml.strategy.CycleStrategy;
 import org.simpleframework.xml.strategy.Strategy;
 
