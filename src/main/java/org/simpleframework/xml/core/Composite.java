@@ -1281,17 +1281,17 @@ class Composite implements Converter {
    private void writeElement(OutputNode node, Object value, Label label) throws Exception {
       if(value != null) {
          Class real = value.getClass();
-         Label union = label.getLabel(real);
-         String name = union.getName(context);
+         Label match = label.getLabel(real);
+         String name = match.getName(context);
          Type type = label.getType(real); 
          OutputNode next = node.getChild(name);
 
-         if(!union.isInline()) {
-            writeNamespaces(next, type, union);
+         if(!match.isInline()) {
+            writeNamespaces(next, type, match);
          }
-         if(union.isInline() || !isOverridden(next, value, type)) {
-            Converter convert = union.getConverter(context);
-            boolean data = union.isData();
+         if(match.isInline() || !isOverridden(next, value, type)) {
+            Converter convert = match.getConverter(context);
+            boolean data = match.isData();
             
             next.setData(data);
             writeElement(next, value, convert);
