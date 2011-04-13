@@ -210,7 +210,7 @@
       <delete dir="${build.path}"/>
    </target>
 
-   <target name="test-woodstox" depends="-compile" description="Compile project and run unit tests with woodstox">
+   <target name="test-woodstox" depends="-compile" description="Compile project and run unit tests with Woodstox">
       <junit showoutput="true" printsummary="yes" haltonfailure="yes">
 	      <sysproperty key="javax.xml.stream.XMLInputFactory"  value="com.ctc.wstx.stax.WstxInputFactory"/>
          <classpath location="${main.build.path}"/>
@@ -218,6 +218,54 @@
          <classpath>
             <fileset dir="${lib.path}">
                <include name="**/*.jar"/>
+            </fileset>
+         </classpath>
+         <formatter type="plain"/>
+         <batchtest fork="yes" todir="${test.report.path}">
+            <fileset dir="${test.build.path}">
+               <include name="**/*Test.class"/>
+               <exclude name="**/*TestSuite.class"/>
+            </fileset>
+         </batchtest>
+      </junit>
+      <delete dir="${build.path}"/>
+   </target>
+
+   <target name="test-xpp3" depends="-compile" description="Compile project and run unit tests with XPP3">
+      <junit showoutput="true" printsummary="yes" haltonfailure="yes">
+         <classpath location="${main.build.path}"/>
+         <classpath location="${test.build.path}"/>
+         <classpath>
+            <fileset dir="${lib.path}">
+               <include name="**/*.jar"/>
+               <exclude name="**/stax-api-1.0.1.jar"/>
+               <exclude name="**/stax-1.2.0.jar"/>
+               <exclude name="**/wstx-asl-3.2.1.jar"/>
+            </fileset>
+         </classpath>
+         <formatter type="plain"/>
+         <batchtest fork="yes" todir="${test.report.path}">
+            <fileset dir="${test.build.path}">
+               <include name="**/*Test.class"/>
+               <exclude name="**/*TestSuite.class"/>
+            </fileset>
+         </batchtest>
+      </junit>
+      <delete dir="${build.path}"/>
+   </target>
+
+   <target name="test-dom" depends="-compile" description="Compile project and run unit tests with W3C DOM">
+      <junit showoutput="true" printsummary="yes" haltonfailure="yes">
+         <classpath location="${main.build.path}"/>
+         <classpath location="${test.build.path}"/>
+         <classpath>
+            <fileset dir="${lib.path}">
+               <include name="**/*.jar"/>
+               <exclude name="**/stax-api-1.0.1.jar"/>
+               <exclude name="**/stax-1.2.0.jar"/>
+               <exclude name="**/wstx-asl-3.2.1.jar"/>
+               <exclude name="**/xpp3-1.1.3_8.jar"/>
+               <exclude name="**/xpp3_min-1.1.3_8.jar"/>                 
             </fileset>
          </classpath>
          <formatter type="plain"/>
