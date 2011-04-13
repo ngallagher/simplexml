@@ -44,7 +44,7 @@ final class ProviderFactory {
     */
    public static Provider getInstance() {
       try {
-         return new StreamProvider();
+         return new PullProvider();
       } catch(Throwable e) {
          return new DocumentProvider();
       }
