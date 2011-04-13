@@ -19,7 +19,7 @@ class PullProvider implements Provider {
       XmlPullParser parser = factory.newPullParser();
       
       if(source != null) {
-         parser.setInput(source, "UTF-8");
+         parser.setInput(source, null);
       }
       return new PullReader(parser);  
    }
