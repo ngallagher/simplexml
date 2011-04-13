@@ -1,3 +1,4 @@
+C:\Program Files (x86)\Android\android-sdk-windows\platforms\android-8\tools>dx --dex --output=simple-xml-2.5.1.dex --verbose simple-xml-2.5.1.jar
 mvn source:jar javadoc:jar repository:bundle-create
 https://sourceforge.net/project/admin/editpackages.php?group_id=112203
 sftp niallg,simple@web.sourceforge.net
