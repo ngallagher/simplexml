@@ -85,10 +85,14 @@ class PullReader implements EventReader {
    private class Entry extends EventAttribute {
       
       private final XmlPullParser source;
+      private final String reference;
+      private final String prefix;
       private final String name;
       private final String value;
       
       public Entry(XmlPullParser source, int index) {
+         this.reference = source.getAttributeNamespace(index);
+         this.prefix = source.getAttributePrefix(index);
          this.value = source.getAttributeValue(index);
          this.name = source.getAttributeName(index);
          this.source = source;
@@ -104,6 +108,14 @@ class PullReader implements EventReader {
       
       public boolean isReserved() {
          return false;
+      }
+      
+      public String getReference() {
+         return reference;
+      }
+      
+      public String getPrefix() {
+         return prefix;
       }
       
       public Object getSource() {

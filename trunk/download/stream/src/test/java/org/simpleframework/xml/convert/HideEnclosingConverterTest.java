@@ -2,18 +2,17 @@ package org.simpleframework.xml.convert;
 
 import java.io.StringWriter;
 
-import junit.framework.TestCase;
-
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Default;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Serializer;
+import org.simpleframework.xml.ValidationTestCase;
 import org.simpleframework.xml.core.Persister;
 import org.simpleframework.xml.strategy.Strategy;
 import org.simpleframework.xml.stream.InputNode;
 import org.simpleframework.xml.stream.OutputNode;
 
-public class HideEnclosingConverterTest extends TestCase {
+public class HideEnclosingConverterTest extends ValidationTestCase {
 
    public static class EntryConverter implements Converter<Entry> {
       private final Serializer serializer;
@@ -80,5 +79,15 @@ public class HideEnclosingConverterTest extends TestCase {
       System.out.println(writer.toString());
       serializer.read(EntryHolder.class, writer.toString());
       System.err.println(writer.toString());
+      String sourceXml = writer.toString();
+      assertElementExists(sourceXml, "/entryHolder");
+      assertElementHasAttribute(sourceXml, "/entryHolder", "code", "10");
+      assertElementExists(sourceXml, "/entryHolder/entry");
+      assertElementExists(sourceXml, "/entryHolder/entry/name");
+      assertElementHasValue(sourceXml, "/entryHolder/entry/name", "name");
+      assertElementExists(sourceXml, "/entryHolder/entry/value");
+      assertElementHasValue(sourceXml, "/entryHolder/entry/value", "value");
+      assertElementExists(sourceXml, "/entryHolder/name");
+      assertElementHasValue(sourceXml, "/entryHolder/name", "test");
    }
 }
