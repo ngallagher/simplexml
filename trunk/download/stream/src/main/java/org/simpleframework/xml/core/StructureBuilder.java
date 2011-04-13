@@ -19,6 +19,7 @@
 package org.simpleframework.xml.core;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -316,17 +317,11 @@ class StructureBuilder {
     * 
     * @return this returns an array of annotations from the union
     */
-   private Annotation[] extract(Annotation type) throws Exception {
-      if(type instanceof Union) {
-         return Union.class.cast(type).value();
-      }
-      if(type instanceof UnionList) {
-         return UnionList.class.cast(type).value();
-      }
-      if(type instanceof UnionMap) {
-         return UnionMap.class.cast(type).value();
-      }
-      return null;
+   private Annotation[] extract(Annotation label) throws Exception {
+      Class type = label.annotationType();
+      Method method = type.getDeclaredMethod("value");
+      
+      return (Annotation[])method.invoke(label);
    }
    
    /**
