@@ -318,10 +318,16 @@ class StructureBuilder {
     * @return this returns an array of annotations from the union
     */
    private Annotation[] extract(Annotation label) throws Exception {
-      Class type = label.annotationType();
-      Method method = type.getDeclaredMethod("value");
+      Class union = label.annotationType();
+      Method[] list = union.getDeclaredMethods();
       
-      return (Annotation[])method.invoke(label);
+      if(list.length != 1) {
+         throw new UnionException("Annotation '%s' is not a valid union for %s", label, type);
+      }
+      Method method = list[0];
+      Object value = method.invoke(label);
+      
+      return (Annotation[])value;
    }
    
    /**
