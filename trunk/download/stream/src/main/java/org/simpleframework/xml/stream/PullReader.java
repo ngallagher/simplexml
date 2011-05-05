@@ -18,6 +18,7 @@
 
 package org.simpleframework.xml.stream;
 
+import static org.xmlpull.v1.XmlPullParser.END_DOCUMENT;
 import static org.xmlpull.v1.XmlPullParser.END_TAG;
 import static org.xmlpull.v1.XmlPullParser.START_TAG;
 import static org.xmlpull.v1.XmlPullParser.TEXT;
@@ -103,16 +104,19 @@ class PullReader implements EventReader {
    private EventNode read() throws Exception {
       int event = parser.next();      
       
-      if(event == START_TAG){
-         return start();
+      if(event != END_DOCUMENT) {
+         if(event == START_TAG){
+            return start();
+         }
+         if(event == TEXT) {
+            return text();
+         }
+         if(event == END_TAG) {
+            return end();
+         }
+         return read();
       }
-      if(event == TEXT) {
-         return text();
-      }
-      if(event == END_TAG) {
-         return end();
-      }
-      return read();
+      return null;
    }
 
    /**
