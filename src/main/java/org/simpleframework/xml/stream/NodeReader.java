@@ -109,7 +109,10 @@ class NodeReader {
          }
          event = reader.next();
       }
-      return null; 
+      if(from == null) {
+         throw new NodeException("Document has no root element"); 
+      }
+      return null;
    }
    
    /**
