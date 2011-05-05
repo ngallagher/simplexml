@@ -56,20 +56,6 @@ class NodeReader {
    }        
    
    /**
-    * Returns the root input node for the document. This is returned
-    * only if no other elements have been read. Once the root element
-    * has been read from the event reader this will return null.
-    *
-    * @return this returns the root input node for the document
-    */ 
-   public InputNode readRoot() throws Exception {
-      if(stack.isEmpty()) {
-         return readElement(null);
-      }
-      return null;
-   }
-   
-   /**
     * This method is used to determine if this node is the root 
     * node for the XML document. The root node is the first node
     * in the document and has no sibling nodes. This is false
@@ -79,6 +65,25 @@ class NodeReader {
     */
    public boolean isRoot(InputNode node) {
       return stack.bottom() == node;        
+   }
+   
+   /**
+    * Returns the root input node for the document. This is returned
+    * only if no other elements have been read. Once the root element
+    * has been read from the event reader this will return null.
+    *
+    * @return this returns the root input node for the document
+    */ 
+   public InputNode readRoot() throws Exception {
+      if(stack.isEmpty()) {
+         InputNode node = readElement(null);
+         
+         if(node == null) {
+            throw new NodeException("Document has no root element"); 
+         }
+         return node;
+      }
+      return null;
    }
    
    /**
@@ -108,9 +113,6 @@ class NodeReader {
             return readStart(from, event);                 
          }
          event = reader.next();
-      }
-      if(from == null) {
-         throw new NodeException("Document has no root element"); 
       }
       return null;
    }
