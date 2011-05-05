@@ -230,7 +230,7 @@
       <delete dir="${build.path}"/>
    </target>
 
-   <target name="test-xpp3" depends="-compile" description="Compile project and run unit tests with XPP3">
+   <target name="test-kxml" depends="-compile" description="Compile project and run unit tests with KXML">
       <junit showoutput="true" printsummary="yes" haltonfailure="yes">
          <classpath location="${main.build.path}"/>
          <classpath location="${test.build.path}"/>
@@ -263,7 +263,7 @@
                <exclude name="**/stax-api-1.0.1.jar"/>
                <exclude name="**/stax-1.2.0.jar"/>
                <exclude name="**/wstx-asl-3.2.1.jar"/>
-               <exclude name="**/xpp3-1.1.3_8.jar"/>
+               <exclude name="**/kxml2-2.3.0.jar"/>
             </fileset>
          </classpath>
          <formatter type="plain"/>

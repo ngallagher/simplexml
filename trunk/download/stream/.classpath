@@ -40,7 +40,6 @@
 	<classpathentry kind="lib" path="lib/xsom.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/lucene-core-2.4.1.jar"/>
-	<classpathentry kind="lib" path="lib/xpp3_min-1.1.3_8.jar"/>
-	<classpathentry kind="lib" path="lib/xpp3-1.1.3_8.jar"/>
+	<classpathentry kind="lib" path="lib/kxml2-2.3.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
