@@ -19,6 +19,7 @@
 package org.simpleframework.xml.core;
 
 import java.lang.annotation.Annotation;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
@@ -151,7 +152,7 @@ class GroupExtractor implements Group {
       if(extractor != null) {
          extract(extractor);
       }
-   }     
+   }
    
    /**
     * This is used to extract the labels associated with the group.
@@ -208,7 +209,7 @@ class GroupExtractor implements Group {
     * 
     * @author Niall Gallagher
     */
-   private static class Registry extends LinkedHashMap<Class, Label> {
+   private static class Registry extends LinkedHashMap<Class, Label> implements Iterable<Label> {
    
       /**
        * This maintains a mapping between label names and labels.
@@ -225,6 +226,17 @@ class GroupExtractor implements Group {
        */
       public Registry(LabelMap elements){
          this.elements = elements;
+      }
+      
+      /**
+       * This is used so that all the <code>Label</code> objects
+       * that have been added to the registry can be iterated over.
+       * Iteration over the labels allows for easy validation.
+       * 
+       * @return this returns an iterator for all the labels
+       */
+      public Iterator<Label> iterator() {
+         return values().iterator();
       }
       
       /**

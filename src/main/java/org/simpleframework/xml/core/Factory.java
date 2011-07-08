@@ -164,10 +164,30 @@ abstract class Factory {
    public boolean setOverride(Type type, Object value, OutputNode node) throws Exception {
       Class expect = type.getType();
       
-      if(!expect.isPrimitive()) {
-         return context.setOverride(type, value, node);
+      if(expect.isPrimitive()) {
+         type = getPrimitive(type, expect);
       }
-      return false;
+      return context.setOverride(type, value, node);
+   }
+   
+   /**
+    * This is used to convert the <code>Type</code> provided as an 
+    * overridden type. Overriding the type in this way ensures that if
+    * a primitive type, represented as a boxed object, is given to a
+    * strategy then the strategy will see a match in the types used.
+    * 
+    * @param type this is the field or method that is a primitive
+    * @param expect this is the boxed object type to be converted
+    * 
+    * @return this returns a type representing the boxed type
+    */
+   private Type getPrimitive(Type type, Class expect) throws Exception {      
+      Class convert = support.getPrimitive(expect);
+      
+      if(convert != expect) {
+         return new OverrideType(type, convert);
+      }
+      return type;
    }
 
    /**

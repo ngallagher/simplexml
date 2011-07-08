@@ -186,7 +186,13 @@ public class PrimitiveCycleTest extends ValidationTestCase {
 
       assertElementHasAttribute(text, "/test", "id", "0");
       assertElementHasAttribute(text, "/test/primitive", "id", "1");
-      assertElementHasAttribute(text, "/test/object", "id", "2");     
+      assertElementHasAttribute(text, "/test/primitive/boolean", "id", "2");
+      assertElementHasAttribute(text, "/test/primitive/byte", "id", "3");
+      assertElementHasAttribute(text, "/test/primitive/short", "id", "4");
+      assertElementHasAttribute(text, "/test/primitive/int", "id", "5");
+      assertElementHasAttribute(text, "/test/primitive/float", "id", "6");
+      assertElementHasAttribute(text, "/test/primitive/long", "id", "7");
+      assertElementHasAttribute(text, "/test/primitive/double", "id", "8");     
 
       assertElementHasValue(text, "/test/primitive/boolean", "true");   
       assertElementHasValue(text, "/test/primitive/byte", "16");  
