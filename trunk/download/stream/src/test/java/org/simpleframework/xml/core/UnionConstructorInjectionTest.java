@@ -4,9 +4,8 @@ import java.io.StringWriter;
 
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
-import org.simpleframework.xml.Root;
 import org.simpleframework.xml.ElementUnion;
-import org.simpleframework.xml.ElementListUnion;
+import org.simpleframework.xml.Root;
 import org.simpleframework.xml.ValidationTestCase;
 
 public class UnionConstructorInjectionTest extends ValidationTestCase {

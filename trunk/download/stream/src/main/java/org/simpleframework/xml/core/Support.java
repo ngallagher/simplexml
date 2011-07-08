@@ -240,7 +240,7 @@ class Support implements Filter {
    
    /**
     * This returns the name of the class specified. If there is a root
-    * annotation on the type, then this is ignored in favor of the 
+    * annotation on the type, then this is ignored in favour of the 
     * actual class name. This is typically used when the type is a
     * primitive or if there is no <code>Root</code> annotation present. 
     * 
@@ -258,6 +258,43 @@ class Support implements Filter {
          return name;
       }
       return Reflector.getName(name);
+   }
+   
+   /**
+    * This method is used to convert a primitive type to its object
+    * counterpart. Conversion to an object counterpart is useful when
+    * there is a need to mask the difference between types.
+    * 
+    * @param type this is the primitive type to convert to an object
+    * 
+    * @return this returns the primitive type as its object type
+    */
+   public Class getPrimitive(Class type) throws Exception {
+      if(type == double.class) {
+         return Double.class;
+      }
+      if(type == float.class) {
+         return Float.class;
+      }
+      if(type == int.class) {
+         return Integer.class;
+      }
+      if(type == long.class) {
+         return Long.class;
+      }
+      if(type == boolean.class) {
+         return Boolean.class;
+      }
+      if(type == char.class) {
+         return Character.class;
+      }
+      if(type == short.class) {
+         return Short.class;
+      }
+      if(type == byte.class) {
+         return Byte.class;
+      }
+      return type;
    }
    
    /**
