@@ -108,7 +108,7 @@ class Formatter {
     * @param format this is the format object to use 
     */ 
    public Formatter(Writer result, Format format){
-       this.result = new BufferedWriter(result);
+       this.result = new BufferedWriter(result, 1024);
        this.indenter = new Indenter(format);
        this.buffer = new OutputBuffer();
        this.prolog = format.getProlog();      

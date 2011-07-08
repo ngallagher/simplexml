@@ -26,10 +26,10 @@ import java.util.List;
 
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
+import org.simpleframework.xml.ElementListUnion;
 import org.simpleframework.xml.ElementMap;
-import org.simpleframework.xml.Union;
-import org.simpleframework.xml.UnionList;
-import org.simpleframework.xml.UnionMap;
+import org.simpleframework.xml.ElementMapUnion;
+import org.simpleframework.xml.ElementUnion;
 
 /**
  * The <code>ExtractorFactory</code> is used to create an extractor 
@@ -109,14 +109,14 @@ class ExtractorFactory {
     * @return this returns a builder used to create an extractor
     */
    private ExtractorBuilder getBuilder(Annotation label) throws Exception {
-      if(label instanceof Union) {
-         return new ExtractorBuilder(Union.class, ElementExtractor.class);
+      if(label instanceof ElementUnion) {
+         return new ExtractorBuilder(ElementUnion.class, ElementExtractor.class);
       }
-      if(label instanceof UnionList) {
-         return new ExtractorBuilder(UnionList.class, ElementListExtractor.class);
+      if(label instanceof ElementListUnion) {
+         return new ExtractorBuilder(ElementListUnion.class, ElementListExtractor.class);
       }
-      if(label instanceof UnionMap) {
-         return new ExtractorBuilder(UnionMap.class, ElementMapExtractor.class);
+      if(label instanceof ElementMapUnion) {
+         return new ExtractorBuilder(ElementMapUnion.class, ElementMapExtractor.class);
       }
       throw new PersistenceException("Annotation %s is not a union", label);
    }
@@ -184,7 +184,7 @@ class ExtractorFactory {
       /**
        * This is the union annotation to extract the labels for.
        */
-      private final Union union;
+      private final ElementUnion union;
       
       /**
        * Constructor for the <code>ElementExtractor</code> object. This
@@ -194,7 +194,7 @@ class ExtractorFactory {
        * @param contact this is the contact annotated as a union
        * @param union this is the union annotation to extract from
        */
-      public ElementExtractor(Contact contact, Union union) throws Exception {
+      public ElementExtractor(Contact contact, ElementUnion union) throws Exception {
          this.contact = contact;
          this.union = union;
       }
@@ -268,7 +268,7 @@ class ExtractorFactory {
       /**
        * This is the union annotation to extract the labels for.
        */
-      private final UnionList union;
+      private final ElementListUnion union;
       
       /**
        * Constructor for the <code>ElementListExtractor</code> object. 
@@ -278,7 +278,7 @@ class ExtractorFactory {
        * @param contact this is the contact annotated as a union
        * @param union this is the union annotation to extract from
        */
-      public ElementListExtractor(Contact contact, UnionList union) throws Exception {
+      public ElementListExtractor(Contact contact, ElementListUnion union) throws Exception {
          this.contact = contact;
          this.union = union;
       }
@@ -347,7 +347,7 @@ class ExtractorFactory {
       /**
        * This is the union annotation to extract the labels for.
        */
-      private final UnionMap union;
+      private final ElementMapUnion union;
       
       /**
        * Constructor for the <code>ElementMapExtractor</code> object. 
@@ -357,7 +357,7 @@ class ExtractorFactory {
        * @param contact this is the contact annotated as a union
        * @param union this is the union annotation to extract from
        */
-      public ElementMapExtractor(Contact contact, UnionMap union) throws Exception {
+      public ElementMapExtractor(Contact contact, ElementMapUnion union) throws Exception {
          this.contact = contact;
          this.union = union;
       }

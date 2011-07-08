@@ -1,5 +1,5 @@
 /*
- * UnionListLabel.java March 2011
+ * ElementListUnionLabel.java March 2011
  *
  * Copyright (C) 2011, Niall Gallagher <niallg@users.sf.net>
  *
@@ -22,11 +22,11 @@ import java.lang.annotation.Annotation;
 import java.util.Set;
 
 import org.simpleframework.xml.ElementList;
-import org.simpleframework.xml.UnionList;
+import org.simpleframework.xml.ElementListUnion;
 import org.simpleframework.xml.strategy.Type;
 
 /**
- * The <code>UnionListLabel</code> acts as an adapter for an internal
+ * The <code>ElementListUnionLabel</code> is an adapter for an internal
  * label. Each annotation within the union can be acquired by type 
  * so that deserialization can dynamically switch the converter used.
  * Each union label can be used in place of any other, this means 
@@ -39,9 +39,9 @@ import org.simpleframework.xml.strategy.Type;
  * 
  * @author Niall Gallagher
  * 
- * @see org.simpleframework.xml.core.UnionList
+ * @see org.simpleframework.xml.core.ElementListUnion
  */
-class UnionListLabel implements Label {
+class ElementListUnionLabel implements Label {
     
    /**
     * This is used to extract the individual unions in the group.
@@ -59,8 +59,8 @@ class UnionListLabel implements Label {
    private final Label label;
    
    /**
-    * Constructor for the <code>UnionListLabel</code> object. This 
-    * is given the union this represents as well as the individual
+    * Constructor for the <code>ElementListUnionLabel</code> object. 
+    * This is given the union this represents as well as the individual
     * element it will act as an adapter for. This allows the union
     * label to acquire any other label within the group.
     * 
@@ -68,7 +68,7 @@ class UnionListLabel implements Label {
     * @param union this is the union annotation this represents
     * @param element this is the individual annotation used
     */
-   public UnionListLabel(Contact contact, UnionList union, ElementList element) throws Exception {
+   public ElementListUnionLabel(Contact contact, ElementListUnion union, ElementList element) throws Exception {
       this.label = new ElementListLabel(contact, element);
       this.extractor = new GroupExtractor(contact, union);
       this.contact = contact;
@@ -143,7 +143,7 @@ class UnionListLabel implements Label {
       if(type == null) {
          throw new UnionException("Union %s was not declared on a field or method", label);
       }
-      return new CompositeUnionList(context, extractor, type);
+      return new CompositeListUnion(context, extractor, type);
    }
    
    /**

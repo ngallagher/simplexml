@@ -1,5 +1,5 @@
 /*
- * UnionMap.java March 2011
+ * ElementMapUnion.java March 2011
  *
  * Copyright (C) 2011, Niall Gallagher <niallg@users.sf.net>
  *
@@ -22,8 +22,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- * The <code>UnionMap</code> annotation is used to describe a field 
- * or method that can dynamically match a schema class. Each union
+ * The <code>ElementMapUnion</code> annotation is used to describe a 
+ * field or method that can dynamically match a schema class. Each union
  * can have a number of different XML class schemas matched based on
  * an XML element name or the instance type. Here a map of element 
  * map annotations can be declared. Each annotation expresses the types
@@ -32,7 +32,7 @@ import java.lang.annotation.RetentionPolicy;
  * from the XML element name.
  * <pre>
  * 
- *    &#64;UnionMap({
+ *    &#64;ElementMapUnion({
  *       &#64;ElementMap(entry="x", inline=true, valueType=X.class),
  *       &#64;ElementMap(entry="y", inline=true, valueType=Y.class),
  *       &#64;ElementMap(entry="z", inline=true, valueType=Z.class)               
@@ -52,7 +52,7 @@ import java.lang.annotation.RetentionPolicy;
  * @see org.simpleframework.xml.ElementMap
  */
 @Retention(RetentionPolicy.RUNTIME)
-public @interface UnionMap {
+public @interface ElementMapUnion {
    
    /**
     * This provides the <code>ElementMap</code> annotations that have 
