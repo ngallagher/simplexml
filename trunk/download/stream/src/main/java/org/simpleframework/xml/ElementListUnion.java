@@ -1,5 +1,5 @@
 /*
- * UnionList.java March 2011
+ * ElementListUnion.java March 2011
  *
  * Copyright (C) 2011, Niall Gallagher <niallg@users.sf.net>
  *
@@ -22,17 +22,17 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- * The <code>UnionList</code> annotation is used to describe a field 
- * or method that can dynamically match a schema class. Each union
- * can have a number of different XML class schemas matched based on
- * an XML element name or the instance type. Here a collection of
+ * The <code>ElementListUnion</code> annotation is used to describe 
+ * fields and methods that can dynamically match a schema class. Each 
+ * union can have a number of different XML class schemas matched based 
+ * on an XML element name or the instance type. Here a collection of
  * element list annotations can be declared. Each annotation expresses
  * the types the list can accept. Taking the declaration below, if the
  * annotation is inline, the list can take a number of varying types
  * all determined from the XML element name.
  * <pre>
  * 
- *    &#64;UnionList({
+ *    &#64;ElementListUnion({
  *       &#64;ElementList(entry="x", inline=true, type=X.class),
  *       &#64;ElementList(entry="y", inline=true, type=Y.class),
  *       &#64;ElementList(entry="z", inline=true, type=Z.class)               
@@ -52,7 +52,7 @@ import java.lang.annotation.RetentionPolicy;
  * @see org.simpleframework.xml.ElementList
  */
 @Retention(RetentionPolicy.RUNTIME)
-public @interface UnionList {
+public @interface ElementListUnion {
    
    /**
     * This provides the <code>ElementList</code> annotations that have 

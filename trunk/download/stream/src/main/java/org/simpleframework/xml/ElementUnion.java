@@ -1,5 +1,5 @@
 /*
- * Union.java March 2011
+ * ElementUnion.java March 2011
  *
  * Copyright (C) 2011, Niall Gallagher <niallg@users.sf.net>
  *
@@ -22,15 +22,15 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- * The <code>Union</code> annotation is used to describe a field 
- * or method that can dynamically match a schema class. Each union
+ * The <code>ElementUnion</code> annotation is used to describe fields 
+ * and methods that can dynamically match a schema class. Each union
  * can have a number of different XML class schemas matched based on
  * an XML element name or the instance type. This provides a means
  * of expressing a logical OR. By annotating a field or method as a
  * union it can take multiple forms. For example.
  * <pre>
  * 
- *    &#64;Union({
+ *    &#64;ElementUnion({
  *       &#64;Element(name="circle", type=Circle.class),
  *       &#64;Element(name="square", type=Square.class)       
  *    })
@@ -49,7 +49,7 @@ import java.lang.annotation.RetentionPolicy;
  * @see org.simpleframework.xml.Element
  */
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Union {
+public @interface ElementUnion {
    
    /**
     * This provides the <code>Element</code> annotations that have 

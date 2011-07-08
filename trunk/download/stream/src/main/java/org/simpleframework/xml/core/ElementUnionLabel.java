@@ -1,5 +1,5 @@
 /*
- * UnionMapLabel.java March 2011
+ * ElementUnionLabel.java March 2011
  *
  * Copyright (C) 2011, Niall Gallagher <niallg@users.sf.net>
  *
@@ -21,12 +21,12 @@ package org.simpleframework.xml.core;
 import java.lang.annotation.Annotation;
 import java.util.Set;
 
-import org.simpleframework.xml.ElementMap;
-import org.simpleframework.xml.UnionMap;
+import org.simpleframework.xml.Element;
+import org.simpleframework.xml.ElementUnion;
 import org.simpleframework.xml.strategy.Type;
 
 /**
- * The <code>UnionMapLabel</code> acts as an adapter for an internal
+ * The <code>ElementUnionLabel</code> is an adapter for an internal
  * label. Each annotation within the union can be acquired by type 
  * so that deserialization can dynamically switch the converter used.
  * Each union label can be used in place of any other, this means 
@@ -39,14 +39,19 @@ import org.simpleframework.xml.strategy.Type;
  * 
  * @author Niall Gallagher
  * 
- * @see org.simpleframework.xml.core.UnionMap
+ * @see org.simpleframework.xml.core.ElementUnion
  */
-class UnionMapLabel implements Label {
-   
+class ElementUnionLabel implements Label {
+
    /**
     * This is used to extract the individual unions in the group.
     */
    private final GroupExtractor extractor;
+   
+   /**
+    * This is the union associated with this label instance.
+    */
+   private final ElementUnion union;   
    
    /**
     * This is the contact that this label is associated with.
@@ -57,9 +62,9 @@ class UnionMapLabel implements Label {
     * This is the label that this acts as an adapter to.
     */
    private final Label label;
-
+   
    /**
-    * Constructor for the <code>UnionMapLabel</code> object. This 
+    * Constructor for the <code>ElementUnionLabel</code> object. This 
     * is given the union this represents as well as the individual
     * element it will act as an adapter for. This allows the union
     * label to acquire any other label within the group.
@@ -68,10 +73,11 @@ class UnionMapLabel implements Label {
     * @param union this is the union annotation this represents
     * @param element this is the individual annotation used
     */
-   public UnionMapLabel(Contact contact, UnionMap union, ElementMap element) throws Exception {
+   public ElementUnionLabel(Contact contact, ElementUnion union, Element element) throws Exception {
       this.extractor = new GroupExtractor(contact, union);
-      this.label = new ElementMapLabel(contact, element);
+      this.label = new ElementLabel(contact, element);
       this.contact = contact;
+      this.union = union;
    }
    
    /**
@@ -98,21 +104,7 @@ class UnionMapLabel implements Label {
    public Annotation getAnnotation() {
       return label.getAnnotation();
    }
-
-   /**
-    * This is used to acquire the <code>Type</code> that the type
-    * provided is represented by. Typically this will return the
-    * field or method represented by the label. However, in the 
-    * case of unions this will provide an override type.
-    * 
-    * @param type this is the class to acquire the type for
-    * 
-    * @return this returns the type represented by this class
-    */
-   public Type getType(Class type) {
-      return getContact();
-   }
-
+   
    /**
     * This is used to acquire the <code>Label</code> that the type
     * provided is represented by. Typically this will return the
@@ -123,8 +115,32 @@ class UnionMapLabel implements Label {
     * 
     * @return this returns the label represented by this type
     */
-   public Label getLabel(Class type) {
-      return this;
+   public Label getLabel(Class type) throws Exception {
+      Type contact = getContact();
+      
+      if(!extractor.isValid(type)) {
+         throw new UnionException("No type matches %s in %s for %s", type, union, contact);
+      }
+      return extractor.getLabel(type);
+   }
+   
+   /**
+    * This is used to acquire the <code>Type</code> that the type
+    * provided is represented by. Typically this will return the
+    * field or method represented by the label. However, in the 
+    * case of unions this will provide an override type.
+    * 
+    * @param type this is the class to acquire the type for
+    * 
+    * @return this returns the type represented by this class
+    */
+   public Type getType(Class type) throws Exception {
+      Type contact = getContact();
+      
+      if(!extractor.isValid(type)) {
+         throw new UnionException("No type matches %s in %s for %s", type, union, contact);
+      }
+      return new OverrideType(contact, type);
    }
 
    /**
@@ -143,7 +159,7 @@ class UnionMapLabel implements Label {
       if(type == null) {
          throw new UnionException("Union %s was not declared on a field or method", label);
       }
-      return new CompositeUnionMap(context, extractor, type);
+      return new CompositeUnion(context, extractor, type);
    }
    
    /**
@@ -173,7 +189,7 @@ class UnionMapLabel implements Label {
    public Set<String> getUnion(Context context) throws Exception {
       return extractor.getNames(context);
    }
-   
+ 
    /**
     * This is used to provide a configured empty value used when the
     * annotated value is null. This ensures that XML can be created

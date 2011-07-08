@@ -25,11 +25,11 @@ import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementArray;
 import org.simpleframework.xml.ElementList;
+import org.simpleframework.xml.ElementListUnion;
 import org.simpleframework.xml.ElementMap;
+import org.simpleframework.xml.ElementMapUnion;
+import org.simpleframework.xml.ElementUnion;
 import org.simpleframework.xml.Text;
-import org.simpleframework.xml.Union;
-import org.simpleframework.xml.UnionList;
-import org.simpleframework.xml.UnionMap;
 import org.simpleframework.xml.Version;
 
 /**
@@ -137,15 +137,6 @@ final class LabelFactory {
      * @return this returns the entry used to create a constructor
      */
     private static LabelBuilder getBuilder(Annotation label) throws Exception{   
-       if(label instanceof Union) {
-          return new LabelBuilder(UnionLabel.class, Union.class, Element.class);
-       }
-       if(label instanceof UnionList) {
-          return new LabelBuilder(UnionListLabel.class, UnionList.class, ElementList.class);
-       }
-       if(label instanceof UnionMap) {
-          return new LabelBuilder(UnionMapLabel.class, UnionMap.class, ElementMap.class);
-       }
        if(label instanceof Element) {
           return new LabelBuilder(ElementLabel.class, Element.class);
        }
@@ -157,6 +148,15 @@ final class LabelFactory {
        }
        if(label instanceof ElementMap) {
           return new LabelBuilder(ElementMapLabel.class, ElementMap.class);
+       }
+       if(label instanceof ElementUnion) {
+          return new LabelBuilder(ElementUnionLabel.class, ElementUnion.class, Element.class);
+       }
+       if(label instanceof ElementListUnion) {
+          return new LabelBuilder(ElementListUnionLabel.class, ElementListUnion.class, ElementList.class);
+       }
+       if(label instanceof ElementMapUnion) {
+          return new LabelBuilder(ElementMapUnionLabel.class, ElementMapUnion.class, ElementMap.class);
        }
        if(label instanceof Attribute) {
           return new LabelBuilder(AttributeLabel.class, Attribute.class);

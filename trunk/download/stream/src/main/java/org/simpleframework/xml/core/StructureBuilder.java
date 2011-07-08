@@ -28,12 +28,12 @@ import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementArray;
 import org.simpleframework.xml.ElementList;
+import org.simpleframework.xml.ElementListUnion;
 import org.simpleframework.xml.ElementMap;
+import org.simpleframework.xml.ElementMapUnion;
+import org.simpleframework.xml.ElementUnion;
 import org.simpleframework.xml.Order;
 import org.simpleframework.xml.Text;
-import org.simpleframework.xml.Union;
-import org.simpleframework.xml.UnionList;
-import org.simpleframework.xml.UnionMap;
 import org.simpleframework.xml.Version;
 
 /**
@@ -159,17 +159,17 @@ class StructureBuilder {
     * @throws Exception if there is more than one text annotation
     */   
    public void process(Contact field, Annotation label) throws Exception {
-      if(label instanceof Union) {
-         union(field, label, elements);
-      }
-      if(label instanceof UnionList) {
-         union(field, label, elements);
-      }
-      if(label instanceof UnionMap) {
-         union(field, label, elements);
-      }
       if(label instanceof Attribute) {
          process(field, label, attributes);
+      }
+      if(label instanceof ElementUnion) {
+         union(field, label, elements);
+      }
+      if(label instanceof ElementListUnion) {
+         union(field, label, elements);
+      }
+      if(label instanceof ElementMapUnion) {
+         union(field, label, elements);
       }
       if(label instanceof ElementList) {
          process(field, label, elements);

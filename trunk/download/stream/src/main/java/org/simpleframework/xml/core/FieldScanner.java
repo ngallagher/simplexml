@@ -32,9 +32,9 @@ import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.ElementMap;
 import org.simpleframework.xml.Text;
 import org.simpleframework.xml.Transient;
-import org.simpleframework.xml.Union;
-import org.simpleframework.xml.UnionList;
-import org.simpleframework.xml.UnionMap;
+import org.simpleframework.xml.ElementUnion;
+import org.simpleframework.xml.ElementListUnion;
+import org.simpleframework.xml.ElementMapUnion;
 import org.simpleframework.xml.Version;
 
 /**
@@ -195,16 +195,16 @@ class FieldScanner extends ContactList {
     * @param label the annotation used to model the XML schema
     */
    private void scan(Field field, Annotation label) {
-      if(label instanceof Union) {
-         process(field, label);
-      }
-      if(label instanceof UnionList) {
-         process(field, label);
-      }
-      if(label instanceof UnionMap) {
-         process(field, label);
-      }
       if(label instanceof Attribute) {
+         process(field, label);
+      }
+      if(label instanceof ElementUnion) {
+         process(field, label);
+      }
+      if(label instanceof ElementListUnion) {
+         process(field, label);
+      }
+      if(label instanceof ElementMapUnion) {
          process(field, label);
       }
       if(label instanceof ElementList) {

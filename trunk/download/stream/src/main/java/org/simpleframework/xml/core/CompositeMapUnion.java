@@ -1,5 +1,5 @@
 /*
- * CompositeUnionList.java March 2011
+ * CompositeMapUnion.java March 2011
  *
  * Copyright (C) 2011, Niall Gallagher <niallg@users.sf.net>
  *
@@ -18,8 +18,8 @@
 
 package org.simpleframework.xml.core;
 
-import java.util.Collection;
 import java.util.Collections;
+import java.util.Map;
 
 import org.simpleframework.xml.strategy.Type;
 import org.simpleframework.xml.stream.InputNode;
@@ -27,7 +27,7 @@ import org.simpleframework.xml.stream.OutputNode;
 import org.simpleframework.xml.stream.Style;
 
 /**
- * The <code>CompositeUnionList</code> object is used to act as a 
+ * The <code>CompositeMapUnion</code> object is used to act as a 
  * mediator for multiple converters associated with a particular union 
  * group. This will basically determine which <code>Converter</code> 
  * should be delegated to based on either the XML element name being read 
@@ -37,7 +37,7 @@ import org.simpleframework.xml.stream.Style;
  * 
  * @author Niall Gallagher
  */
-class CompositeUnionList implements Repeater {
+class CompositeMapUnion implements Repeater {
    
    /**
     * This contains the labels in the union group keyed by name.
@@ -65,7 +65,7 @@ class CompositeUnionList implements Repeater {
    private final Type type;
 
    /**
-    * Constructor for the <code>CompositeUnionList</code> object. This
+    * Constructor for the <code>CompositeMapUnion</code> object. This
     * is used to create a converter that delegates to other associated
     * converters within the union group depending on the XML element
     * name being read or the instance type that is being written.
@@ -74,7 +74,7 @@ class CompositeUnionList implements Repeater {
     * @param group this is the union group used for delegation
     * @param type this is the annotated field or method to be used
     */
-   public CompositeUnionList(Context context, Group group, Type type) throws Exception {
+   public CompositeMapUnion(Context context, Group group, Type type) throws Exception {
       this.elements = group.getElements(context);
       this.style = context.getStyle();
       this.context = context;
@@ -151,21 +151,23 @@ class CompositeUnionList implements Repeater {
     * @param object this is the value that is to be written
     */
    public void write(OutputNode node, Object value) throws Exception {
-      Collection list = (Collection) value;
+      Map map = (Map) value;
       
-      for(Object item : list) {
+      for(Object key : map.keySet()) {
+         Object item = map.get(key);
+         
          if(item != null) {
             Class real = item.getClass();
             Label label = group.getLabel(real);
             
             if(label == null) {               
-               throw new UnionException("Entry of %s not declared in %s with annotation %s", real, type, group);
+               throw new UnionException("Value of %s not declared in %s with annotation %s", real, type, group);
             }
-            write(node, item, label);
+            write(node, key, item, label);
          }
       }
    }
-      
+   
    /**
     * The <code>write</code> method uses the name of the XML element to
     * select a converter to be used to write the instance. Selection of
@@ -174,13 +176,14 @@ class CompositeUnionList implements Repeater {
     * been selected it is used to write the instance.
     * 
     * @param node this is the XML element used to write the instance
-    * @param item this is the individual list entry to be serialized
+    * @param key this is the key associated with the item to write
+    * @param value this is the value associated with the item to write
     * @param label this is the label to used to acquire the converter     
     */
-   private void write(OutputNode node, Object item, Label label) throws Exception {
+   private void write(OutputNode node, Object key, Object item, Label label) throws Exception {  
       Converter converter = label.getConverter(context);
-      Collection list = Collections.singleton(item);
-
+      Map map = Collections.singletonMap(key, item);
+      
       if(!label.isInline()) {
          String name = label.getName();
          String root = style.getElement(name);
@@ -189,6 +192,6 @@ class CompositeUnionList implements Repeater {
             node.setName(root);
          }
       }
-      converter.write(node, list);    
+      converter.write(node, map);   
    }
 }
