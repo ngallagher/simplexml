@@ -6,7 +6,7 @@ import java.util.List;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.ValidationTestCase;
-import org.simpleframework.xml.UnionList;
+import org.simpleframework.xml.ElementListUnion;
 
 public class UnionWithNonMatchingListEntriesTest extends ValidationTestCase {
    
@@ -20,7 +20,7 @@ public class UnionWithNonMatchingListEntriesTest extends ValidationTestCase {
 
    @Root
    private static class NonMatchingUnionList{
-      @UnionList({
+      @ElementListUnion({
          @ElementList(entry="a", inline=true, type=A.class),
          @ElementList(entry="b", inline=true, type=B.class),
          @ElementList(entry="c", inline=true, type=C.class),

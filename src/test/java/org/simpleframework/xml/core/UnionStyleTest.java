@@ -6,8 +6,8 @@ import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.ValidationTestCase;
-import org.simpleframework.xml.Union;
-import org.simpleframework.xml.UnionList;
+import org.simpleframework.xml.ElementUnion;
+import org.simpleframework.xml.ElementListUnion;
 import org.simpleframework.xml.stream.CamelCaseStyle;
 import org.simpleframework.xml.stream.Format;
 import org.simpleframework.xml.stream.HyphenStyle;
@@ -87,14 +87,14 @@ public class UnionStyleTest extends ValidationTestCase {
    @Root
    public static class UnionListExample {
       
-      @Union({
+      @ElementUnion({
          @Element(name="doubleField", type=DoubleEntry.class),
          @Element(name="stringField", type=StringEntry.class),
          @Element(name="integerField", type=IntegerEntry.class)
       })
       private Entry entry;
       
-      @UnionList({
+      @ElementListUnion({
          @ElementList(entry="doubleEntry", inline=true, type=DoubleEntry.class),
          @ElementList(entry="stringEntry", inline=true, type=StringEntry.class),
          @ElementList(entry="integerEntry", inline=true, type=IntegerEntry.class)

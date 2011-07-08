@@ -3,7 +3,7 @@ package org.simpleframework.xml.core;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.ValidationTestCase;
-import org.simpleframework.xml.Union;
+import org.simpleframework.xml.ElementUnion;
 
 public class UnionSameTypeDifferentNameTest extends ValidationTestCase {
    
@@ -25,7 +25,7 @@ public class UnionSameTypeDifferentNameTest extends ValidationTestCase {
    @Root
    private static class OptionalNameExample {
       
-      @Union({
+      @ElementUnion({
          @Element(name="login"),
          @Element(name="name"),
          @Element(name="username", type=String.class),

@@ -9,7 +9,7 @@ import org.simpleframework.xml.Default;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
-import org.simpleframework.xml.UnionList;
+import org.simpleframework.xml.ElementListUnion;
 import org.simpleframework.xml.ValidationTestCase;
 
 public class UnionListTaskTest extends ValidationTestCase {
@@ -69,7 +69,7 @@ public class UnionListTaskTest extends ValidationTestCase {
    @Root
    private static class Task {
       
-      @UnionList({
+      @ElementListUnion({
          @ElementList(entry="delete", inline=true, type=Delete.class),
          @ElementList(entry="mkdir", inline=true, type=MakeDirectory.class),
          @ElementList(entry="move", inline=true, type=Move.class)

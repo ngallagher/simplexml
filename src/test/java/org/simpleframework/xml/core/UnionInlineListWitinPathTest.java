@@ -7,7 +7,7 @@ import org.simpleframework.xml.Default;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Path;
-import org.simpleframework.xml.UnionList;
+import org.simpleframework.xml.ElementListUnion;
 import org.simpleframework.xml.ValidationTestCase;
 import org.simpleframework.xml.strategy.CycleStrategy;
 import org.simpleframework.xml.strategy.Strategy;
@@ -17,7 +17,7 @@ public class UnionInlineListWitinPathTest extends ValidationTestCase {
    @Default
    private static class Department {
       @Path("employees")
-      @UnionList({
+      @ElementListUnion({
          @ElementList(entry="graduate", inline=true, type=Graduate.class),
          @ElementList(entry="assistant", inline=true, type=Assistant.class),
          @ElementList(entry="manager", inline=true, type=Manager.class)     
@@ -68,7 +68,7 @@ public class UnionInlineListWitinPathTest extends ValidationTestCase {
    @Default
    private static class Manager extends Employee {
       @Path("subordinates")
-      @UnionList({
+      @ElementListUnion({
          @ElementList(entry="graduate", inline=true, type=Graduate.class),
          @ElementList(entry="assistant", inline=true, type=Assistant.class)        
       })      

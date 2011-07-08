@@ -7,8 +7,8 @@ import junit.framework.TestCase;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
-import org.simpleframework.xml.Union;
-import org.simpleframework.xml.UnionList;
+import org.simpleframework.xml.ElementUnion;
+import org.simpleframework.xml.ElementListUnion;
 
 public class UnionTest extends TestCase {
    
@@ -81,7 +81,7 @@ public class UnionTest extends TestCase {
    @Root
    public static class UnionExample {
       
-      @Union({
+      @ElementUnion({
          @Element(name="double", type=DoubleEntry.class),
          @Element(name="string", type=StringEntry.class),
          @Element(name="integer", type=IntegerEntry.class)
@@ -91,14 +91,14 @@ public class UnionTest extends TestCase {
    @Root
    public static class UnionListExample {
       
-      @Union({
+      @ElementUnion({
          @Element(name="double", type=DoubleEntry.class),
          @Element(name="string", type=StringEntry.class),
          @Element(name="integer", type=IntegerEntry.class)
       })
       private Entry entry;
       
-      @UnionList({
+      @ElementListUnion({
          @ElementList(entry="d", inline=true, type=DoubleEntry.class),
          @ElementList(entry="s", inline=true, type=StringEntry.class),
          @ElementList(entry="i", inline=true, type=IntegerEntry.class)

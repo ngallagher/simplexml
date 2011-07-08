@@ -3,13 +3,13 @@ package org.simpleframework.xml.core;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.ValidationTestCase;
-import org.simpleframework.xml.Union;
+import org.simpleframework.xml.ElementUnion;
 
 public class UnionMatchDepenencyTest extends ValidationTestCase {
       
    @Root
    private static class Example {
-      @Union({
+      @ElementUnion({
          @Element(name="x", type=Integer.class),
          @Element(name="y", type=Integer.class),
          @Element(name="z", type=Integer.class)         
