@@ -5,15 +5,15 @@ import java.io.StringWriter;
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
-import org.simpleframework.xml.Union;
-import org.simpleframework.xml.UnionList;
+import org.simpleframework.xml.ElementUnion;
+import org.simpleframework.xml.ElementListUnion;
 import org.simpleframework.xml.ValidationTestCase;
 
 public class UnionConstructorInjectionTest extends ValidationTestCase {
 
    @Root
    private static class Example {
-      @Union({
+      @ElementUnion({
          @Element(name="login"),
          @Element(name="account"),
          @Element(name="username"),
@@ -22,7 +22,7 @@ public class UnionConstructorInjectionTest extends ValidationTestCase {
       })
       private final String name;
       
-      @Union({
+      @ElementUnion({
          @Element(name="password"),
          @Element(name="value")
       })
@@ -58,7 +58,7 @@ public class UnionConstructorInjectionTest extends ValidationTestCase {
    
    @Root
    private static class InvalidExample {
-      @Union({
+      @ElementUnion({
          @Element(name="login"),
          @Element(name="account"),
          @Element(name="username"),
@@ -77,7 +77,7 @@ public class UnionConstructorInjectionTest extends ValidationTestCase {
    
    @Root
    private static class InvalidAnnotationExample {
-      @Union({
+      @ElementUnion({
          @Element(name="login"),
          @Element(name="account"),
          @Element(name="username"),

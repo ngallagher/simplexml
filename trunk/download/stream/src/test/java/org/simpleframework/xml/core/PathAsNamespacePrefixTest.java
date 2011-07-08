@@ -8,7 +8,7 @@ import org.simpleframework.xml.Namespace;
 import org.simpleframework.xml.Path;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.ValidationTestCase;
-import org.simpleframework.xml.Union;
+import org.simpleframework.xml.ElementUnion;
 
 public class PathAsNamespacePrefixTest extends ValidationTestCase {
 
@@ -17,7 +17,7 @@ public class PathAsNamespacePrefixTest extends ValidationTestCase {
    private static class PathWithPrefix {
       @Path("x/y/p:z")
       @Namespace(reference="http://www.x.com/y")
-      @Union({
+      @ElementUnion({
          @Element(name="name"),
          @Element(name="login"),
          @Element(name="user")
@@ -35,7 +35,7 @@ public class PathAsNamespacePrefixTest extends ValidationTestCase {
    private static class PathWithPrefixOutOfScope {
       @Path("x/y/p:z")
       @Namespace(reference="http://www.x.com/y")
-      @Union({
+      @ElementUnion({
          @Element(name="name"),
          @Element(name="login"),
          @Element(name="user")

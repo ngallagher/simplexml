@@ -7,7 +7,7 @@ import org.simpleframework.xml.Namespace;
 import org.simpleframework.xml.Path;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.ValidationTestCase;
-import org.simpleframework.xml.Union;
+import org.simpleframework.xml.ElementUnion;
 
 public class UnionNamespaceTest extends ValidationTestCase {
 
@@ -15,7 +15,7 @@ public class UnionNamespaceTest extends ValidationTestCase {
    private static class Example {
       @Path("path")
       @Namespace(prefix="x", reference="http://www.xml.com/ns")
-      @Union({
+      @ElementUnion({
          @Element(name="a"),
          @Element(name="b"),
          @Element(name="c"),

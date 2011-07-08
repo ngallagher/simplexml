@@ -6,7 +6,7 @@ import org.simpleframework.xml.Default;
 import org.simpleframework.xml.ElementMap;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.ValidationTestCase;
-import org.simpleframework.xml.UnionMap;
+import org.simpleframework.xml.ElementMapUnion;
 
 public class UnionNotRequiredMapTest extends ValidationTestCase {
    
@@ -59,7 +59,7 @@ public class UnionNotRequiredMapTest extends ValidationTestCase {
    
    @Root
    public static class FarmExample {   
-      @UnionMap({
+      @ElementMapUnion({
          @ElementMap(name="cats", entry="animal", key="key", required=false, attribute=true, valueType=Cat.class),
          @ElementMap(name="dogs", entry="animal", key="key", required=false, attribute=true, valueType=Dog.class),
          @ElementMap(name="chickens", entry="animal", key="key", required=false, attribute=true, valueType=Chicken.class)

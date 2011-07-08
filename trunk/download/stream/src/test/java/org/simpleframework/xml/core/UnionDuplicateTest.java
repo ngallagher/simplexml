@@ -3,7 +3,7 @@ package org.simpleframework.xml.core;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.ValidationTestCase;
-import org.simpleframework.xml.Union;
+import org.simpleframework.xml.ElementUnion;
 
 public class UnionDuplicateTest extends ValidationTestCase {
 
@@ -46,7 +46,7 @@ public class UnionDuplicateTest extends ValidationTestCase {
    @Root
    public static class Diagram {
       
-      @Union({
+      @ElementUnion({
          @Element(name="circle", type=Circle.class),
          @Element(name="square", type=Square.class)
       })

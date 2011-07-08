@@ -7,7 +7,7 @@ import org.simpleframework.xml.Default;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.ValidationTestCase;
-import org.simpleframework.xml.UnionList;
+import org.simpleframework.xml.ElementListUnion;
 
 public class UnionListTest extends ValidationTestCase {
    
@@ -66,7 +66,7 @@ public class UnionListTest extends ValidationTestCase {
    
    @Root
    public static class InlineListExample {   
-      @UnionList({
+      @ElementListUnion({
          @ElementList(entry="xx", inline=true, type=X.class),
          @ElementList(entry="yy", inline=true, type=Y.class),
          @ElementList(entry="zz", inline=true, type=Z.class)
@@ -76,7 +76,7 @@ public class UnionListTest extends ValidationTestCase {
    
    @Root
    public static class ListExample {   
-      @UnionList({
+      @ElementListUnion({
          @ElementList(name="xList", entry="xx", type=X.class),
          @ElementList(name="yList", entry="yy", type=Y.class),
          @ElementList(name="zList", entry="zz", type=Z.class)

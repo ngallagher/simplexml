@@ -8,14 +8,14 @@ import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.ValidationTestCase;
-import org.simpleframework.xml.Union;
-import org.simpleframework.xml.UnionList;
+import org.simpleframework.xml.ElementUnion;
+import org.simpleframework.xml.ElementListUnion;
 
 public class UnionListConstructorInjectionTest extends ValidationTestCase {
    
    @Root
    private static class AccessControl{
-      @UnionList({
+      @ElementListUnion({
          @ElementList(entry="user", inline=true, type=UserIdentity.class),
          @ElementList(entry="admin", inline=true, type=AdministratorIdentity.class)
       })      
@@ -33,7 +33,7 @@ public class UnionListConstructorInjectionTest extends ValidationTestCase {
       public Identity(@Element(name="name") String name){
          this.name = name;
       }
-      @Union({
+      @ElementUnion({
          @Element(name="login"),
          @Element(name="name"),
          @Element(name="user")

@@ -7,7 +7,7 @@ import org.simpleframework.xml.Default;
 import org.simpleframework.xml.ElementMap;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.ValidationTestCase;
-import org.simpleframework.xml.UnionMap;
+import org.simpleframework.xml.ElementMapUnion;
 
 public class UnionMapTest extends ValidationTestCase {
    
@@ -66,7 +66,7 @@ public class UnionMapTest extends ValidationTestCase {
    
    @Root
    public static class InlineMapExample {   
-      @UnionMap({
+      @ElementMapUnion({
          @ElementMap(entry="xEntry", key="xKey", attribute=true, inline=true, keyType=String.class, valueType=X.class),
          @ElementMap(entry="yEntry", key="yKey", attribute=true, inline=true, keyType=String.class, valueType=Y.class),
          @ElementMap(entry="zEntry", key="zKey", attribute=true, inline=true, keyType=String.class, valueType=Z.class)
@@ -76,7 +76,7 @@ public class UnionMapTest extends ValidationTestCase {
    
    @Root
    public static class MapExample {   
-      @UnionMap({
+      @ElementMapUnion({
          @ElementMap(name="xMap", entry="xx", key="key", attribute=true, keyType=String.class, valueType=X.class),
          @ElementMap(name="yMap", entry="yy", key="key", attribute=true, keyType=String.class, valueType=Y.class),
          @ElementMap(name="zMap", entry="zz", key="key", attribute=true, keyType=String.class, valueType=Z.class)

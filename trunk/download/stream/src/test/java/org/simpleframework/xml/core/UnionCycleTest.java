@@ -3,7 +3,7 @@ package org.simpleframework.xml.core;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.ValidationTestCase;
-import org.simpleframework.xml.Union;
+import org.simpleframework.xml.ElementUnion;
 import org.simpleframework.xml.strategy.CycleStrategy;
 import org.simpleframework.xml.strategy.Strategy;
 
@@ -40,7 +40,7 @@ public class UnionCycleTest extends ValidationTestCase {
    @Root
    public static class ShapeExample {
       
-      @Union({
+      @ElementUnion({
          @Element(name="circle", type=Circle.class),
          @Element(name="square", type=Square.class)
       })

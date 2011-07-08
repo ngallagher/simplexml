@@ -6,13 +6,13 @@ import java.util.List;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.ValidationTestCase;
-import org.simpleframework.xml.UnionList;
+import org.simpleframework.xml.ElementListUnion;
 
 public class UnionDependencyDoesNotMatchTypeTest extends ValidationTestCase {
    
    @Root
    private static class Example {
-      @UnionList({
+      @ElementListUnion({
          @ElementList(entry="x", inline=true, type=X.class),
          @ElementList(entry="y", inline=true, type=Y.class),
          @ElementList(entry="z", inline=true, type=Z.class),    

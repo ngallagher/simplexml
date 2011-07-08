@@ -6,13 +6,13 @@ import java.util.List;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.ValidationTestCase;
-import org.simpleframework.xml.UnionList;
+import org.simpleframework.xml.ElementListUnion;
 
 public class UnionMixInlineTest extends ValidationTestCase {
    
    @Root
    private static class Example {
-      @UnionList({
+      @ElementListUnion({
          @ElementList(name="x", inline=true, type=Integer.class),
          @ElementList(name="y", inline=false, type=Double.class),
          @ElementList(name="z", inline=false, type=String.class)

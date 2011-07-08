@@ -3,13 +3,13 @@ package org.simpleframework.xml.core;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.ValidationTestCase;
-import org.simpleframework.xml.Union;
+import org.simpleframework.xml.ElementUnion;
 
 public class ElementWithExplicitTypeTest extends ValidationTestCase {
    
    @Root
    private static class UnionExample {
-      @Union({
+      @ElementUnion({
          @Element(name="s", type=String.class),
          @Element(name="i", type=Integer.class),
          @Element(name="d", type=Double.class)

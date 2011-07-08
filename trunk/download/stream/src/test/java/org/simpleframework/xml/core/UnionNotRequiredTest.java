@@ -4,7 +4,7 @@ import org.simpleframework.xml.Default;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.ValidationTestCase;
-import org.simpleframework.xml.Union;
+import org.simpleframework.xml.ElementUnion;
 
 public class UnionNotRequiredTest extends ValidationTestCase {
    
@@ -52,7 +52,7 @@ public class UnionNotRequiredTest extends ValidationTestCase {
    
    @Root
    public static class AnimalFarm {   
-      @Union({
+      @ElementUnion({
          @Element(name="cat", required=false, type=Cat.class),
          @Element(name="dog", required=false, type=Dog.class),
          @Element(name="chicken", required=false, type=Chicken.class)
