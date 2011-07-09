@@ -405,7 +405,20 @@
       </exec>
    </target>
 
-   <target name="maven-package" depends="-compile" description="Create maven bundle">
+   
+   <target name="pom" depends="-compile" description="Create maven bundle">
+      <copy todir="${root.path}" overwrite="true">
+         <fileset dir="${script.path}">
+            <include name="pom.xml"/>
+            <include name="maven-package.sh"/>
+         </fileset>
+         <filterset>
+            <filtersfile file="${root.path}/build.properties"/>
+         </filterset>
+      </copy>
+   </target>
+
+   <target name="maven-exec" depends="-compile" description="Create maven bundle">
       <copy todir="${root.path}" overwrite="true">
          <fileset dir="${script.path}">
             <include name="pom.xml"/>
@@ -418,10 +431,10 @@
       <exec executable="sh">
          <arg value="${root.path}/maven-package.sh"/>
       </exec>
-      <antcall target="package-maven"/>
+      <antcall target="maven-archive"/>
    </target>
 
-   <target name="package-maven" depends="-setup">
+   <target name="maven-archive" depends="-setup">
       <copy todir="${root.path}" overwrite="true">
          <fileset dir="${script.path}">
             <include name="pom.xml"/>
