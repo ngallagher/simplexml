@@ -527,16 +527,17 @@ class StructureBuilder {
          Set<String> options = label.getUnion();
          Contact contact = label.getContact();
          
-         if(label.isInline()) {
-            for(String option : options) {
-               Annotation union = contact.getAnnotation();
-               Label other = elements.get(option);
-               
-               if(!other.isInline()) {
-                  throw new UnionException("Inline must be consistent in %s for %s", union, label);
-               }
+         for(String option : options) {
+            Annotation union = contact.getAnnotation();
+            Label other = elements.get(option);
+            
+            if(label.isInline() != other.isInline()) {
+               throw new UnionException("Inline must be consistent in %s for %s", union, contact);
             }
-         }
+            if(label.isRequired() != other.isRequired()) {
+               throw new UnionException("Required must be consistent in %s for %s", union, contact);
+            }
+         }    
       }
    }
    
