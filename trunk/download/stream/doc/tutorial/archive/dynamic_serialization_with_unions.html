@@ -1,7 +1,7 @@
 <table border='0'><tr><td><img src='/images/home_bullet.gif' border='0'></td><td><a name='union'></a><b>Dynamic serialization with unions</b></td></tr><tr><td><!-- padding --></td><td>
 <p>
 In order to perform dynamic serialization where element names bind to specific types the 
-<a href="/download/stream/doc/javadoc/org/simpleframework/xml/Union.html">Union</a> annotation can be used.
+<a href="/download/stream/doc/javadoc/org/simpleframework/xml/ElementUnion.html">ElementUnion</a> annotation can be used.
 This allows different XML schema classes to be associated with a single annotated field or method. Serialization
 of the associated instance determines the XML element name using the instance type. On deserialization the
 XML element name is then used to determine the schema class to use. For example, take the following set of
@@ -53,7 +53,7 @@ public class Rectangle implements Shape {
 @Root
 public class Diagram {
       
-   @Union({
+   @ElementUnion({
       @Element(name="circle", type=Circle.class),
       @Element(name="rectangle", type=Rectangle.class)
    })
@@ -97,9 +97,9 @@ results in a different XML document. See the XML snippet below.
 &lt;/diagram&gt;
 </pre>
 <p>
-Providing dynamic serialization capabilities via the <a href="/download/stream/doc/javadoc/org/simpleframework/xml/Union.html">Union</a>
+Providing dynamic serialization capabilities via the <a href="/download/stream/doc/javadoc/org/simpleframework/xml/ElementUnion.html">ElementUnion</a>
 annotation ensures that more complex XML documents can be handled with ease. Typically, such unions will be required for a list of 
-similar types. To tackle lists the <a href="/download/stream/doc/javadoc/org/simpleframework/xml/UnionList.html">UnionList</a> annotation
+similar types. To tackle lists the <a href="/download/stream/doc/javadoc/org/simpleframework/xml/ElementListUnion.html">ElementListUnion</a> annotation
 can be used. This can be used as a union of inline lists to collect similar XML declarations in to a single list. For example, take
 the annotated classes below.
 </p>
@@ -159,7 +159,7 @@ public class Move implements Operation {
 @Root
 public class Task {
    
-   @UnionList({
+   @ElementListUnion({
       @ElementList(entry="delete", inline=true, type=Delete.class),
       @ElementList(entry="mkdir", inline=true, type=MakeDirectory.class),
       @ElementList(entry="move", inline=true, type=Move.class)
