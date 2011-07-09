@@ -355,4 +355,17 @@ class ElementMapUnionLabel implements Label {
    public boolean isRequired() {
       return label.isRequired();
    }
+   
+   /**
+    * This is used to describe the annotation and method or field
+    * that this label represents. This is used to provide error
+    * messages that can be used to debug issues that occur when
+    * processing a method. This will provide enough information
+    * such that the problem can be isolated correctly. 
+    * 
+    * @return this returns a string representation of the label
+    */
+   public String toString() {
+      return label.toString();
+   }
 }
