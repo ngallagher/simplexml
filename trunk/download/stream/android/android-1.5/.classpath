@@ -3,6 +3,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
-	<classpathentry kind="lib" path="C:/Users/niall/Workspace/xml/bin"/>
+	<classpathentry kind="lib" path="C:/Users/niall/Workspace/xml/bin" sourcepath="C:/Users/niall/Workspace/xml/src/test/java"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
