@@ -46,12 +46,10 @@ import org.xml.sax.InputSource;
 
 public class ValidationTestCase extends TestCase {
 
-   private static TransformerFactory transformerFactory;
-  
-	private static Transformer transformer;   
+   //private static TransformerFactory transformerFactory;
+	//private static Transformer transformer;   
    
    private static DocumentBuilderFactory builderFactory;
-
    private static DocumentBuilder builder;
         
    static  {
@@ -60,87 +58,75 @@ public class ValidationTestCase extends TestCase {
          builderFactory.setNamespaceAware(true);
          builder = builderFactory.newDocumentBuilder();
 
-         transformerFactory = TransformerFactory.newInstance();
-         transformer = transformerFactory.newTransformer();
+         //transformerFactory = TransformerFactory.newInstance();
+         //transformer = transformerFactory.newTransformer();
       } catch(Exception cause) {
          cause.printStackTrace();              
       }         
    }
 
-   private static File directory;
-
-   static {
-        try {
-            String path = System.getProperty("output");                                       
-            directory = new File(path);
-        } catch(Exception cause){
-            directory = new File("output");
-        }         
-        if(!directory.exists()) {
-            directory.mkdirs();                
-        }
-   }
-
    public void testDirectory() throws Exception {
-      assertTrue(directory.exists());           
+      assertTrue(FileSystem.validFileSystem());           
    }
 
    public static synchronized void validate(Serializer out, Object type) throws Exception {
       validate(type, out);
    }
     public static synchronized void validate(Object type, Serializer out) throws Exception {
-        File destination = new File(directory, type.getClass().getSimpleName() + ".xml");
-        OutputStream file = new FileOutputStream(destination);
+        String fileName = type.getClass().getSimpleName() + ".xml";
         StringWriter buffer = new StringWriter();
         out.write(type, buffer);
         String text = buffer.toString();
         byte[] octets = text.getBytes("UTF-8");
         System.out.write(octets);
         System.out.flush();
-        file.write(octets);
-        file.close();        
+        FileSystem.writeBytes(fileName, octets);       
         validate(text);
         
-        File domDestination = new File(directory, type.getClass().getSimpleName() + ".dom.xml");
-        File asciiDestination = new File(directory, type.getClass().getSimpleName() + ".ascii-dom.xml");
-        OutputStream domFile = new FileOutputStream(domDestination);
-        OutputStream asciiFile = new FileOutputStream(asciiDestination);
-        Writer asciiOut = new OutputStreamWriter(asciiFile, "iso-8859-1");
+        //File domDestination = new File(directory, type.getClass().getSimpleName() + ".dom.xml");
+        //File asciiDestination = new File(directory, type.getClass().getSimpleName() + ".ascii-dom.xml");
+        //OutputStream domFile = new FileOutputStream(domDestination);
+        //OutputStream asciiFile = new FileOutputStream(asciiDestination);
+        //Writer asciiOut = new OutputStreamWriter(asciiFile, "iso-8859-1");
         
         /*
          * This DOM document is the result of serializing the object in to a 
          * string. The document can then be used to validate serialization.
          */
-        Document doc = builder.parse(new InputSource(new StringReader(text)));   
+        //Document doc = builder.parse(new InputSource(new StringReader(text)));   
         
-        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-        transformer.transform(new DOMSource(doc), new StreamResult(domFile));
-        transformer.transform(new DOMSource(doc), new StreamResult(asciiOut));    
+        //transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+        //transformer.transform(new DOMSource(doc), new StreamResult(domFile));
+        //transformer.transform(new DOMSource(doc), new StreamResult(asciiOut));    
         
-        domFile.close();      
-        asciiFile.close();
+        //domFile.close();      
+        //asciiFile.close();
         out.validate(type.getClass(), text);
        
-        File hyphenFile = new File(directory, type.getClass().getSimpleName() + ".hyphen.xml");
+        String hyphenFile =  type.getClass().getSimpleName() + ".hyphen.xml";
         Strategy strategy = new CycleStrategy("ID", "REFERER");
         Visitor visitor = new DebugVisitor();
         strategy = new VisitorStrategy(visitor, strategy);
         Style style = new HyphenStyle();
         Format format = new Format(style);
         Persister hyphen = new Persister(strategy, format);
+        StringWriter hyphenWriter = new StringWriter();
         
-        hyphen.write(type, hyphenFile);
+        hyphen.write(type, hyphenWriter);
         hyphen.write(type, System.out);
-        hyphen.read(type.getClass(), hyphenFile);
+        hyphen.read(type.getClass(), hyphenWriter.toString());
+        FileSystem.writeString(hyphenFile, hyphenWriter.toString());
         
-        File camelCaseFile = new File(directory, type.getClass().getSimpleName() + ".camel-case.xml");
+        String camelCaseFile = type.getClass().getSimpleName() + ".camel-case.xml";
         Style camelCaseStyle = new CamelCaseStyle(true, false);
         Format camelCaseFormat = new Format(camelCaseStyle);
         Persister camelCase = new Persister(strategy, camelCaseFormat);
-        
-        camelCase.write(type, camelCaseFile);
+        StringWriter camelCaseWriter =  new StringWriter();
+       
+        camelCase.write(type, camelCaseWriter);
         camelCase.write(type, System.out);
-        camelCase.read(type.getClass(), camelCaseFile);
+        camelCase.read(type.getClass(), camelCaseWriter.toString());
+        FileSystem.writeString(camelCaseFile, camelCaseWriter.toString());
     }
     
     public static synchronized Document parse(String text) throws Exception {
@@ -447,6 +433,44 @@ public class ValidationTestCase extends TestCase {
         public void write(Type type, NodeMap<OutputNode> node) throws Exception {
            if(!node.getNode().isRoot()) {
               node.getNode().setComment(type.getType().getName());
+           }
+        }
+     }
+     public static class FileSystem {
+        public static File getDirectory() {
+           File directory = null; 
+            try{
+                 String path = System.getProperty("output"); 
+                 if(path != null) {
+                    directory = new File(path);
+                 }
+             } catch(Exception e){
+                e.printStackTrace();
+             }         
+             if(directory == null) {
+                directory = new File("output");
+             }
+             if(!directory.exists()) {
+                directory.mkdirs();                
+            }
+            return directory;
+        }
+        public static boolean validFileSystem() {
+           return getDirectory().exists();
+        }
+        public static void writeString(String fileName, String content) {
+           writeBytes(fileName, content.getBytes());
+        }
+        public static void writeBytes(String fileName, byte[] content) {
+           try {
+              File directory = getDirectory();
+              File file = new File(directory, fileName);
+              FileOutputStream out = new FileOutputStream(file);
+              out.write(content);
+              out.flush();
+              out.close();
+           }catch(Exception e){
+              System.err.println(e.getMessage());
            }
         }
      }
