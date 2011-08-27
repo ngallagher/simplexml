@@ -165,6 +165,23 @@ class GroupExtractor implements Group {
    }
    
    /**
+    * This is used to determine if the group is inline. A group is
+    * inline if all of the elements in the group is inline. If any of
+    * the <code>Label<code> objects in the group is not inline then
+    * the entire group is not inline, although this is unlikely.
+    * 
+    * @return this returns true if each label in the group is inline
+    */
+   public boolean isInline() {
+      for(Label label : registry) {
+         if(!label.isInline()) {
+            return false;
+         }
+      }
+      return !registry.isEmpty();
+   }
+   
+   /**
     * This is used to extract the labels associated with the group.
     * Extraction will instantiate a <code>Label</code> object for
     * an individual annotation declared within the union. Each of

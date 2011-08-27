@@ -31,6 +31,16 @@ package org.simpleframework.xml.core;
 interface Group {
    
    /**
+    * This is used to determine if the group is inline. A group is
+    * inline if all of the elements in the group is inline. If any of
+    * the <code>Label<code> objects in the group is not inline then
+    * the entire group is not inline, although this is unlikely.
+    * 
+    * @return this returns true if each label in the group is inline
+    */
+   public boolean isInline();
+   
+   /**
     * This is used to acquire a <code>Label</code> based on the type
     * of an object. Selecting a label based on the type ensures that
     * the serialization process can dynamically convert an object

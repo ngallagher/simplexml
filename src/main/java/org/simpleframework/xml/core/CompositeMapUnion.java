@@ -149,7 +149,7 @@ class CompositeMapUnion implements Repeater {
       
       return converter.validate(node);
    }
-
+   
    /**
     * The <code>write</code> method uses the name of the XML element to
     * select a converter to be used to write the instance. Selection of
@@ -160,9 +160,32 @@ class CompositeMapUnion implements Repeater {
     * @param node this is the XML element used to write the instance
     * @param value this is the value that is to be written
     */
-   public void write(OutputNode node, Object value) throws Exception {
+   public void write(OutputNode node, Object value) throws Exception {               
+      OutputNode parent = node.getParent();  
       Map map = (Map) value;
-      
+
+      if(group.isInline()) {
+         if(!map.isEmpty()) {
+            write(node, map);
+         } else if(!node.isCommitted()){
+            node.remove();
+         }
+      } else {
+         write(parent, map);
+      }
+   }
+
+   /**
+    * The <code>write</code> method uses the name of the XML element to
+    * select a converter to be used to write the instance. Selection of
+    * the converter is done by looking up the associated label from
+    * the union group using the instance type. Once the converter has
+    * been selected it is used to write the instance.
+    * 
+    * @param node this is the XML element used to write the instance
+    * @param map this is the value that is to be written
+    */
+   private void write(OutputNode node, Map map) throws Exception {
       for(Object key : map.keySet()) {
          Object item = map.get(key);
          
