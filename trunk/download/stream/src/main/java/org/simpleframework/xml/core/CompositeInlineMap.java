@@ -212,12 +212,12 @@ class CompositeInlineMap implements Repeater {
     * so its <code>Root</code> annotation must be present.
     * 
     * @param node this is the node the map is to be written to
-    * @param value this is the source map that is to be written 
+    * @param source this is the source map that is to be written 
     */
-   public void write(OutputNode node, Object value) throws Exception {               
+   public void write(OutputNode node, Object source) throws Exception {               
       OutputNode parent = node.getParent();  
       Mode mode = node.getMode();
-      Map map = (Map) value;
+      Map map = (Map) source;
 
       if(!node.isCommitted()) {
          node.remove();

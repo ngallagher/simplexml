@@ -158,11 +158,10 @@ class CompositeMapUnion implements Repeater {
     * been selected it is used to write the instance.
     * 
     * @param node this is the XML element used to write the instance
-    * @param value this is the value that is to be written
+    * @param source this is the value that is to be written
     */
-   public void write(OutputNode node, Object value) throws Exception {               
-      OutputNode parent = node.getParent();  
-      Map map = (Map) value;
+   public void write(OutputNode node, Object source) throws Exception {               
+      Map map = (Map) source;
 
       if(group.isInline()) {
          if(!map.isEmpty()) {
@@ -171,7 +170,7 @@ class CompositeMapUnion implements Repeater {
             node.remove();
          }
       } else {
-         write(parent, map);
+         write(node, map);
       }
    }
 
