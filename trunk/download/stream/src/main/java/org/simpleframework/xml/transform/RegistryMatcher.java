@@ -26,8 +26,7 @@ import org.simpleframework.xml.util.WeakCache;
  * <code>Transform</code> class or instance. If a transform class is
  * registered an instance of it is created when requested using the
  * default no argument constructor of the type, it is then cached so 
- * it can be reused on future requests. When an instance is registered
- * it is reused on each request. 
+ * it can be reused on future requests.
  * 
  * @author Niall Gallagher
  * 
