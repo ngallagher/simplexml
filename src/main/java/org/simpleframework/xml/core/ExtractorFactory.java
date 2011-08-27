@@ -223,7 +223,7 @@ class ExtractorFactory {
        * that each union has access to the serialization methods 
        * defined for each type an XML element name.
        * 
-       * @param label this is the annotation to create the label for
+       * @param element this is the annotation to create the label for
        * 
        * @return this is the label created for the annotation
        */
@@ -236,7 +236,7 @@ class ExtractorFactory {
        * which label is used to serialize an object. This ensures that
        * the correct label is selected whenever serialization occurs.
        * 
-       * @param label this is the annotation to extract the type for
+       * @param element this is the annotation to extract the type for
        * 
        * @return this returns the class associated with the annotation
        */
@@ -307,7 +307,7 @@ class ExtractorFactory {
        * that each union has access to the serialization methods 
        * defined for each type an XML element name.
        * 
-       * @param label this is the annotation to create the label for
+       * @param element this is the annotation to create the label for
        * 
        * @return this is the label created for the annotation
        */
@@ -320,7 +320,7 @@ class ExtractorFactory {
        * which label is used to serialize an object. This ensures that
        * the correct label is selected whenever serialization occurs.
        * 
-       * @param label this is the annotation to extract the type for
+       * @param element this is the annotation to extract the type for
        * 
        * @return this returns the class associated with the annotation
        */
@@ -386,7 +386,7 @@ class ExtractorFactory {
        * that each union has access to the serialization methods 
        * defined for each type an XML element name.
        * 
-       * @param label this is the annotation to create the label for
+       * @param element this is the annotation to create the label for
        * 
        * @return this is the label created for the annotation
        */
@@ -399,7 +399,7 @@ class ExtractorFactory {
        * which label is used to serialize an object. This ensures that
        * the correct label is selected whenever serialization occurs.
        * 
-       * @param label this is the annotation to extract the type for
+       * @param element this is the annotation to extract the type for
        * 
        * @return this returns the class associated with the annotation
        */

@@ -169,7 +169,7 @@ class PrimitiveValue implements Converter {
     * attributes then null is assumed and returned.
     * 
     * @param node this is the node to read the value object from
-    * @param key this is the name of the value XML attribute, if any
+    * @param name this is the name of the value XML attribute, if any
     * 
     * @return this returns the value deserialized from the node
     */ 

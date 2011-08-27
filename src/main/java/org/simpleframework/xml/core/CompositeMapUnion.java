@@ -158,7 +158,7 @@ class CompositeMapUnion implements Repeater {
     * been selected it is used to write the instance.
     * 
     * @param node this is the XML element used to write the instance
-    * @param object this is the value that is to be written
+    * @param value this is the value that is to be written
     */
    public void write(OutputNode node, Object value) throws Exception {
       Map map = (Map) value;
@@ -187,7 +187,7 @@ class CompositeMapUnion implements Repeater {
     * 
     * @param node this is the XML element used to write the instance
     * @param key this is the key associated with the item to write
-    * @param value this is the value associated with the item to write
+    * @param item this is the value associated with the item to write
     * @param label this is the label to used to acquire the converter     
     */
    private void write(OutputNode node, Object key, Object item, Label label) throws Exception {  

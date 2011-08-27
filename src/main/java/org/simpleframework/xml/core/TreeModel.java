@@ -409,7 +409,7 @@ class TreeModel implements Model {
     * throw an exception. If the model contains no labels then it is
     * considered empty and does not need validation.
     * 
-    * @param type this is the object type representing the schema
+    * @param label this is the object type representing the schema
     */
    private void validateExpression(Label label) throws Exception {
       Expression location = label.getExpression();

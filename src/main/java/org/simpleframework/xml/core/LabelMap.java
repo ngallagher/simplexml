@@ -114,7 +114,7 @@ class LabelMap extends LinkedHashMap<String, Label> implements Iterable<Label> {
     * a labels to be referred to by either. If there are no elements
     * registered with this map this will return an empty set.
     * 
-    * @param this is used to style the names and paths used
+    * @param context this is used to style the names and paths used
     * 
     * @return this returns the names and paths for each label
     */
@@ -159,7 +159,7 @@ class LabelMap extends LinkedHashMap<String, Label> implements Iterable<Label> {
     * reference the labels using paths only. Each path provided is
     * styled using the context provided.
     * 
-    * @param this is used to style the paths used by this map
+    * @param context this is used to style the paths for this map
     * 
     * @return this returns the paths for each label in this map
     */

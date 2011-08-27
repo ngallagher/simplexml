@@ -69,7 +69,7 @@ class OverrideValue implements Value {
     * this is set then the <code>getValue</code> method will return
     * the object that has been provided for consistency. 
     * 
-    * @param value this is the value to insert as the type
+    * @param instance this is the value to insert as the type
     */
    public void setValue(Object instance) {
       value.setValue(instance);

@@ -336,7 +336,7 @@ class StructureBuilder {
     * with the union annotation provided. If the annotation does
     * not represent a union then this will return null.
     * 
-    * @param type this is the annotation to extract from
+    * @param label this is the annotation to extract from
     * 
     * @return this returns an array of annotations from the union
     */
