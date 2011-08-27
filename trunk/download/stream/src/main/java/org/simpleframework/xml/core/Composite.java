@@ -18,7 +18,7 @@
 
 package org.simpleframework.xml.core;
 
-import java.util.Set;
+import java.util.Collection;
 
 import org.simpleframework.xml.Version;
 import org.simpleframework.xml.strategy.Type;
@@ -364,7 +364,6 @@ class Composite implements Converter {
       Section section = schema.getSection();
       
       readVersion(node, source, schema);
-      readText(node, source, schema);
       readSection(node, source, section);
    }   
    
@@ -384,6 +383,7 @@ class Composite implements Converter {
     * @param section this is the XML section that contains the structure
     */
    private void readSection(InputNode node, Object source, Section section) throws Exception {
+      readText(node, source, section);
       readAttributes(node, source, section);
       readElements(node, source, section);
    }
@@ -468,7 +468,11 @@ class Composite implements Converter {
       LabelMap map = section.getAttributes();
 
       for(String name : list) {         
-         readAttribute(node.getAttribute(name), source, map);
+         InputNode value = node.getAttribute(name);
+         
+         if(value != null) {
+            readAttribute(value, source, section, map);
+         }
       }  
       validate(node, map, source);
    }
@@ -499,7 +503,7 @@ class Composite implements Converter {
          if(block != null) {
             readSection(child, source, block);
          } else {         
-            readElement(child, source, map);
+            readElement(child, source, section, map);
          }
          child = node.getNext();
       } 
@@ -517,8 +521,8 @@ class Composite implements Converter {
     * @param source the type of the object that is being deserialized
     * @param schema this is used to visit the element contacts
     */
-   private void readText(InputNode node, Object source, Schema schema) throws Exception {
-      Label label = schema.getText();
+   private void readText(InputNode node, Object source, Section section) throws Exception {
+      Label label = section.getText();
       
       if(label != null) {
          readInstance(node, source, label);
@@ -537,16 +541,17 @@ class Composite implements Converter {
     * @param source the type of the object that is being deserialized
     * @param map this is the map that contains the label objects
     */
-   private void readAttribute(InputNode node, Object source, LabelMap map) throws Exception {
+   private void readAttribute(InputNode node, Object source, Section section, LabelMap map) throws Exception {
       String name = node.getName();
-      Label label = map.take(name);
+      String path = section.getAttribute(name);
+      Label label = map.getLabel(path);
       
       if(label == null) {
          Position line = node.getPosition();
          Class expect = context.getType(type, source);
 
          if(map.isStrict(context) && revision.isEqual()) {              
-            throw new AttributeException("Attribute '%s' does not have a match in %s at %s", name, expect, line);
+            throw new AttributeException("Attribute '%s' does not have a match in %s at %s", path, expect, line);
          }            
       } else {
          readInstance(node, source, label);
@@ -563,21 +568,23 @@ class Composite implements Converter {
     * 
     * @param node this is the node that contains the contact value
     * @param source the type of the object that is being deserialized
+    * @param section this is the section to read the element from
     * @param map this is the map that contains the label objects
     */
-   private void readElement(InputNode node, Object source, LabelMap map) throws Exception {
+   private void readElement(InputNode node, Object source, Section section, LabelMap map) throws Exception {
       String name = node.getName();
-      Label label = map.take(name);      
+      String path = section.getPath(name); 
+      Label label = map.getLabel(path);      
 
       if(label == null) {
-         label = criteria.get(name);
+         label = criteria.get(path);
       }
       if(label == null) {
          Position line = node.getPosition();
          Class expect = context.getType(type, source);
          
          if(map.isStrict(context) && revision.isEqual()) {              
-            throw new ElementException("Element '%s' does not have a match in %s at %s", name, expect, line);
+            throw new ElementException("Element '%s' does not have a match in %s at %s", path, expect, line);
          } else {
             node.skip();                 
          }
@@ -600,10 +607,10 @@ class Composite implements Converter {
     */
    private void readUnion(InputNode node, Object source, LabelMap map, Label label) throws Exception {
       Object value = readInstance(node, source, label);
-      Set<String> list = label.getUnion(context);
+      Collection<String> list = label.getPaths(context);
       
       for(String key : list) {
-         Label union = map.take(key);
+         Label union = map.getLabel(key);
          
          if(label.isInline()) {
             criteria.set(union, value);
@@ -796,7 +803,11 @@ class Composite implements Converter {
       LabelMap map = section.getAttributes();
 
       for(String name : list) {         
-         validateAttribute(node.getAttribute(name), map);
+         InputNode value = node.getAttribute(name);
+         
+         if(value != null) {
+            validateAttribute(value, section, map);
+         }
       }  
       validate(node, map);
    }
@@ -826,7 +837,7 @@ class Composite implements Converter {
          if(child != null) {
             validateSection(next, child);
          } else {         
-            validateElement(next,  map);
+            validateElement(next, section, map);
          }
          next = node.getNext();
       } 
@@ -861,16 +872,17 @@ class Composite implements Converter {
     * @param node this is the node that contains the contact value
     * @param map this is the map that contains the label objects
     */
-   private void validateAttribute(InputNode node, LabelMap map) throws Exception {
+   private void validateAttribute(InputNode node, Section section, LabelMap map) throws Exception {
       Position line = node.getPosition();
       String name = node.getName();
-      Label label = map.take(name);
+      String path = section.getAttribute(name);
+      Label label = map.getLabel(path);
       
       if(label == null) {
          Class expect = type.getType();
          
          if(map.isStrict(context) && revision.isEqual()) {              
-            throw new AttributeException("Attribute '%s' does not exist for %s at %s", name, expect, line);
+            throw new AttributeException("Attribute '%s' does not exist for %s at %s", path, expect, line);
          }            
       } else {
          validate(node, label);
@@ -887,19 +899,20 @@ class Composite implements Converter {
     * @param node this is the node that contains the contact value
     * @param map this is the map that contains the label objects
     */
-   private void validateElement(InputNode node, LabelMap map) throws Exception {
+   private void validateElement(InputNode node, Section section, LabelMap map) throws Exception {
       String name = node.getName();
-      Label label = map.take(name);      
+      String path = section.getPath(name);
+      Label label = map.getLabel(path);      
 
       if(label == null) {
-         label = criteria.get(name);
+         label = criteria.get(path);
       }
       if(label == null) {
          Position line = node.getPosition();
          Class expect = type.getType();
          
          if(map.isStrict(context) && revision.isEqual()) {              
-            throw new ElementException("Element '%s' does not exist for %s at %s", name, expect, line);
+            throw new ElementException("Element '%s' does not exist for %s at %s", path, expect, line);
          } else {
             node.skip();                 
          }
@@ -920,10 +933,10 @@ class Composite implements Converter {
     * @param label this is the label used to define the XML element
     */
    private void validateUnion(InputNode node, LabelMap map, Label label) throws Exception {
-      Set<String> list = label.getUnion(context);
+      Collection<String> list = label.getPaths(context);
       
       for(String key : list) {
-         Label union = map.take(key);
+         Label union = map.getLabel(key);
          
          if(union != null) {
             if(label.isInline()) {
@@ -1024,7 +1037,6 @@ class Composite implements Converter {
       
       writeVersion(node, source, schema);
       writeSection(node, source, section);
-      writeText(node, source, schema);
    }
    
    /**
@@ -1054,6 +1066,7 @@ class Composite implements Converter {
       }
       writeAttributes(node, source, section);
       writeElements(node, source, section);
+      writeText(node, source, section);
    }
 
    /**
@@ -1137,9 +1150,10 @@ class Composite implements Converter {
 
             writeSection(next, source, child);
          } else {
-            Label label = section.getElement(name);
+            String path = section.getPath(name);
+            Label label = section.getElement(path);
             Class expect = context.getType(type, source);
-            Object value = criteria.get(name);
+            Object value = criteria.get(path);
             
             if(value == null) {
                if(label == null) {
@@ -1176,7 +1190,7 @@ class Composite implements Converter {
       if(replace != null) {
          writeElement(node, replace, label);            
       }
-      Set<String> list = label.getUnion(context);
+      Collection<String> list = label.getPaths(context);
       
       for(String name : list) {
          Label union = section.getElement(name);
@@ -1221,8 +1235,8 @@ class Composite implements Converter {
     * @param node this is the XML element to write text value to
     * @param schema this is used to track the referenced elements
     */
-   private void writeText(OutputNode node, Object source, Schema schema) throws Exception {
-      Label label = schema.getText();
+   private void writeText(OutputNode node, Object source, Section section) throws Exception {
+      Label label = section.getText();
 
       if(label != null) {
          Contact contact = label.getContact();

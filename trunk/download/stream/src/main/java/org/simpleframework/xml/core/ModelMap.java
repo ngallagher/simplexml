@@ -38,12 +38,17 @@ import org.simpleframework.xml.stream.Style;
 class ModelMap extends LinkedHashMap<String, ModelList> implements Iterable<ModelList>{
    
    /**
+    * This is the type associated with this model map instance.
+    */
+   private final Class type;
+   
+   /**
     * Constructor for the <code>ModelMap</code> object is used to 
     * create an empty map. This is used for convenience as a typedef
     * like construct which avoids having to use the generic type.
     */ 
-   public ModelMap() {
-      super();
+   public ModelMap(Class type) {
+      this.type = type;
    }
    
    /**
@@ -107,11 +112,11 @@ class ModelMap extends LinkedHashMap<String, ModelList> implements Iterable<Mode
     *
     * @return this returns a cloned representation of this map
     */
-   public ModelMap build(Context context) throws Exception {
+   public ModelMap getModels(Context context) throws Exception {
       Style style = context.getStyle();
       
       if(style != null){
-         return build(style);
+         return getModels(style);
       }
       return this;
    }
@@ -126,8 +131,8 @@ class ModelMap extends LinkedHashMap<String, ModelList> implements Iterable<Mode
     *
     * @return this returns a cloned representation of this map
     */
-   private ModelMap build(Style style) throws Exception {
-      ModelMap map = new ModelMap();
+   private ModelMap getModels(Style style) throws Exception {
+      ModelMap map = new ModelMap(type);
       
       for(String element : keySet()) {
          ModelList list = get(element);
@@ -135,6 +140,9 @@ class ModelMap extends LinkedHashMap<String, ModelList> implements Iterable<Mode
          
          if(list != null) {
             list = list.build();
+         }
+         if(map.containsKey(name)) {
+            throw new PathException("Path with name '%s' is a duplicate of '%s' in %s ", element, name, type);
          }
          map.put(name, list);
       }         

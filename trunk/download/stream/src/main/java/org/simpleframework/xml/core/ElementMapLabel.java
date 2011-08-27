@@ -19,8 +19,6 @@
 package org.simpleframework.xml.core;
 
 import java.lang.annotation.Annotation;
-import java.util.Collections;
-import java.util.Set;
 
 import org.simpleframework.xml.ElementMap;
 import org.simpleframework.xml.strategy.Type;
@@ -37,7 +35,7 @@ import org.simpleframework.xml.stream.Style;
  * 
  *  @see org.simpleframework.xml.ElementMap
  */
-class ElementMapLabel implements Label {
+class ElementMapLabel extends TemplateLabel {
    
    /**
     * This is the decorator that is associated with the element.
@@ -97,62 +95,6 @@ class ElementMapLabel implements Label {
    }
    
    /**
-    * This is used to acquire the <code>Label</code> that the type
-    * provided is represented by. Typically this will return the
-    * same instance. However, in the case of unions this will
-    * look for an individual label to match the type provided.
-    * 
-    * @param type this is the type to acquire the label for
-    * 
-    * @return this returns the label represented by this type
-    */
-   public Label getLabel(Class type) {
-      return this;
-   }
-   
-   /**
-    * This is used to acquire the <code>Type</code> that the type
-    * provided is represented by. Typically this will return the
-    * field or method represented by the label. However, in the 
-    * case of unions this will provide an override type.
-    * 
-    * @param type this is the class to acquire the type for
-    * 
-    * @return this returns the type represented by this class
-    */
-   public Type getType(Class type){
-      return getContact();
-   }
-   
-   /**
-    * This returns a <code>Set</code> of elements in a union. This
-    * will typically be an empty set, and is never null. If this is
-    * a label union then this will return the name of each label
-    * within the group. Providing the labels for a union allows the
-    * serialization process to determine the associated labels.
-    * 
-    * @return this returns the names of each of the elements
-    */
-   public Set<String> getUnion() throws Exception {
-      return Collections.emptySet();
-   }
-   
-   /**
-    * This returns a <code>Set</code> of elements in a union. This
-    * will typically be an empty set, and is never null. If this is
-    * a label union then this will return the name of each label
-    * within the group. Providing the labels for a union allows the
-    * serialization process to determine the associated labels.
-    *
-    * @param context this is used to style the element names
-    * 
-    * @return this returns the names of each of the elements
-    */
-   public Set<String> getUnion(Context context) throws Exception {
-      return Collections.emptySet();
-   }
-   
-   /**
     * This is used to acquire the <code>Decorator</code> for this.
     * A decorator is an object that adds various details to the
     * node without changing the overall structure of the node. For
@@ -203,6 +145,23 @@ class ElementMapLabel implements Label {
          name = detail.getName();
       }
       return style.getElement(name);
+   }
+   
+   /**
+    * This is used to acquire the path of the element or attribute
+    * that is used by the class schema. The path is determined by
+    * acquiring the XPath expression and appending the name of the
+    * label to form a fully qualified styled path.
+    * 
+    * @param context this is the context used to style the path
+    * 
+    * @return returns the path that is used for the XML property
+    */
+   public String getPath(Context context) throws Exception {
+      Expression path = getExpression();
+      String name = getName(context);
+      
+      return path.getElement(name); 
    }
    
    /**
@@ -280,6 +239,33 @@ class ElementMapLabel implements Label {
    }
    
    /**
+    * This is used to acquire the path of the element or attribute
+    * that is used by the class schema. The path is determined by
+    * acquiring the XPath expression and appending the name of the
+    * label to form a fully qualified path.
+    * 
+    * @return returns the path that is used for the XML property
+    */
+   public String getPath() throws Exception {
+      Expression path = getExpression();
+      String name = getName();
+      
+      return path.getElement(name);  
+   }
+   
+   /**
+    * This method is used to return an XPath expression that is 
+    * used to represent the position of this label. If there is no
+    * XPath expression associated with this then an empty path is
+    * returned. This will never return a null expression.
+    * 
+    * @return the XPath expression identifying the location
+    */
+   public Expression getExpression() throws Exception {
+      return detail.getExpression();
+   }
+   
+   /**
     * This returns the map type for this label. The primary type
     * is the type of the <code>Map</code> that this creates. The key
     * and value types are the types used to populate the primary.
@@ -330,19 +316,6 @@ class ElementMapLabel implements Label {
    }
    
    /**
-    * This method is used to return the path where this is located.
-    * The path is an XPath expression that allows serialization to
-    * locate the XML entity within the document. If there is no
-    * path then the XML entity is written within the current context.
-    * An empty path is identified as a null value.
-    * 
-    * @return the XPath expression identifying the location
-    */
-   public String getPath() {
-      return detail.getPath();
-   }
-   
-   /**
     * This is used to acquire the name of the element or attribute
     * as taken from the annotation. If the element or attribute
     * explicitly specifies a name then that name is used for the
@@ -365,17 +338,6 @@ class ElementMapLabel implements Label {
     */
    public boolean isData() {
       return label.data();
-   }
-   
-   /**
-    * This method is used to determine if the label represents an
-    * attribute. This is used to style the name so that elements
-    * are styled as elements and attributes are styled as required.
-    * 
-    * @return this is used to determine if this is an attribute
-    */
-   public boolean isAttribute() {
-      return false;
    }
    
    /**

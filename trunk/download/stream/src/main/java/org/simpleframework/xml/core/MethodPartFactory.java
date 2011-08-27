@@ -313,7 +313,7 @@ class MethodPartFactory {
       String real = method.getName();
       
       if(list.length != 1) {
-         throw new MethodException("Set method %s os not a valid property", method);         
+         throw new MethodException("Set method %s is not a valid property", method);         
       }
       String name = getTypeName(real, type);
       

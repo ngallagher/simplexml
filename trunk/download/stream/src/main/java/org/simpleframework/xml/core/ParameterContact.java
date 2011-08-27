@@ -34,6 +34,11 @@ import java.lang.reflect.Constructor;
 abstract class ParameterContact<T extends Annotation> implements Contact {
 
    /**
+    * This is used to hold the annotations for this parameter.
+    */
+   protected final Annotation[] labels;
+
+   /**
     * This is the constructor the parameter was declared within. 
     */
    protected final Constructor factory;
@@ -59,6 +64,7 @@ abstract class ParameterContact<T extends Annotation> implements Contact {
     * @param index this is the index for the parameter
     */
    public ParameterContact(T label, Constructor factory, int index) {
+      this.labels = factory.getParameterAnnotations()[index];
       this.factory = factory;
       this.index = index;
       this.label = label;
@@ -147,6 +153,13 @@ abstract class ParameterContact<T extends Annotation> implements Contact {
     * @return this provides the annotation associated with this
     */
    public <A extends Annotation> A getAnnotation(Class<A> type) {
+      for(Annotation label : labels) {
+         Class expect = label.annotationType();
+         
+         if(expect.equals(type)) {
+            return (A)label;
+         }
+      }
       return null;
    }
    

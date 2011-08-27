@@ -22,6 +22,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 
 import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.stream.Style;
 
 /**
  * The <code>AttributeParameter</code> represents a constructor 
@@ -33,7 +34,12 @@ import org.simpleframework.xml.Attribute;
  * 
  * @author Niall Gallagher
  */
-class AttributeParameter implements Parameter {
+class AttributeParameter extends TemplateParameter {
+   
+   /**
+    * This is the expression used to represent this parameter.
+    */
+   private final Expression expression;
    
    /**
     * This is the constructor the parameter was declared in.
@@ -49,6 +55,11 @@ class AttributeParameter implements Parameter {
     * This is the label that will create the parameter name. 
     */
    private final Label label;
+   
+   /**
+    * This is the fully qualified path used for this parameter.
+    */
+   private final String path;
    
    /**
     * This is the actual name that has been determined.
@@ -77,10 +88,24 @@ class AttributeParameter implements Parameter {
    public AttributeParameter(Constructor factory, Attribute value, int index) throws Exception {
       this.contact = new Contact(value, factory, index);
       this.label = new AttributeLabel(contact, value);
+      this.expression = label.getExpression();
+      this.path = label.getPath();
       this.type = label.getType();
       this.name = label.getName();
       this.factory = factory;
       this.index = index;
+   }
+   
+   /**
+    * This is used to acquire the path of the element or attribute
+    * represented by this parameter. The path is determined by
+    * acquiring the XPath expression and appending the name of the
+    * label to form a fully qualified path.
+    * 
+    * @return returns the path that is used for this parameter
+    */
+   public String getPath() {
+      return path;
    }
    
    /**
@@ -90,8 +115,37 @@ class AttributeParameter implements Parameter {
     * 
     * @return this returns the name of the annotated parameter
     */
-   public String getName() throws Exception {
+   public String getName() {
       return name;
+   }
+   
+   /**
+    * This method is used to return an XPath expression that is 
+    * used to represent the position of this parameter. If there is 
+    * no XPath expression associated with this then an empty path 
+    * is returned. This will never return a null expression.
+    * 
+    * @return the XPath expression identifying the location
+    */
+   public Expression getExpression() {
+      return expression;
+   }
+   
+   /**
+    * This is used to acquire the path of the element or attribute
+    * represented by this parameter. The path is determined by
+    * acquiring the XPath expression and appending the name of the
+    * label to form a fully qualified styled path.
+    * 
+    * @param context this is the context used to style the path
+    * 
+    * @return returns the path that is used for this parameter
+    */
+   public String getPath(Context context) {
+      Expression expression = getExpression();
+      String name = getName(context);
+      
+      return expression.getAttribute(name);
    }
    
    /**
@@ -103,8 +157,11 @@ class AttributeParameter implements Parameter {
     * 
     * @return this returns the name of the annotated parameter
     */
-   public String getName(Context context) throws Exception {
-      return label.getName(context);
+   public String getName(Context context) {
+      Style style = context.getStyle();
+      String name = getName();
+      
+      return style.getAttribute(name);
    }
    
    /**
@@ -163,6 +220,17 @@ class AttributeParameter implements Parameter {
     */
    public boolean isPrimitive() {
       return type.isPrimitive();
+   }
+   
+   /**
+    * This method is used to determine if the parameter represents 
+    * an attribute. This is used to style the name so that elements
+    * are styled as elements and attributes are styled as required.
+    * 
+    * @return this is used to determine if this is an attribute
+    */
+   public boolean isAttribute() {
+      return true;
    }
    
    /**

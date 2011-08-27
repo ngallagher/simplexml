@@ -18,8 +18,10 @@
 
 package org.simpleframework.xml.core;
 
-import java.util.LinkedHashMap;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Set;
 
 /**
  * The <code>LabelMap</code> object represents a map that contains 
@@ -79,8 +81,99 @@ class LabelMap extends LinkedHashMap<String, Label> implements Iterable<Label> {
     *
     * @return this is the label object representing the XML node
     */ 
-   public Label take(String name) {
+   public Label getLabel(String name) {
       return remove(name);    
+   }
+
+   /**
+    * This is used to acquire the paths and names for each label in
+    * this map. Extracting the names and paths in this manner allows
+    * a labels to be referred to by either. If there are no elements
+    * registered with this map this will return an empty set.
+    * 
+    * @return this returns the names and paths for each label
+    */
+   public Set<String> getKeys() throws Exception {
+      Set<String> list = new HashSet<String>();
+      
+      for(Label label : this) {
+         if(label != null) {
+            String path = label.getPath();
+            String name = label.getName();
+            
+            list.add(path);
+            list.add(name);
+         }
+      }
+      return list;
+   }
+   
+   /**
+    * This is used to acquire the paths and names for each label in
+    * this map. Extracting the names and paths in this manner allows
+    * a labels to be referred to by either. If there are no elements
+    * registered with this map this will return an empty set.
+    * 
+    * @param this is used to style the names and paths used
+    * 
+    * @return this returns the names and paths for each label
+    */
+   public Set<String> getKeys(Context context) throws Exception {
+      Set<String> list = new HashSet<String>();
+      
+      for(Label label : this) {
+         if(label != null) {
+            String path = label.getPath(context);
+            String name = label.getName(context);
+            
+            list.add(path);
+            list.add(name);
+         }
+      }
+      return list;
+   }
+   
+   /**
+    * This is used to acquire the paths for each label in this map. 
+    * Extracting the paths in this manner allows them to be used to
+    * reference the labels using paths only.
+    * 
+    * @return this returns the paths for each label in this map
+    */
+   public Set<String> getPaths() throws Exception {
+      Set<String> list = new HashSet<String>();
+      
+      for(Label label : this) {
+         if(label != null) {
+            String path = label.getPath();
+            
+            list.add(path);
+         }
+      }
+      return list;
+   }
+   
+   /**
+    * This is used to acquire the paths for each label in this map. 
+    * Extracting the paths in this manner allows them to be used to
+    * reference the labels using paths only. Each path provided is
+    * styled using the context provided.
+    * 
+    * @param this is used to style the paths used by this map
+    * 
+    * @return this returns the paths for each label in this map
+    */
+   public Set<String> getPaths(Context context) throws Exception {
+      Set<String> list = new HashSet<String>();
+      
+      for(Label label : this) {
+         if(label != null) {
+            String path = label.getPath(context);
+            
+            list.add(path);
+         }
+      }
+      return list;
    }
 
    /**
@@ -93,12 +186,12 @@ class LabelMap extends LinkedHashMap<String, Label> implements Iterable<Label> {
     *
     * @return this returns a cloned representation of this map
     */ 
-   public LabelMap build(Context context) throws Exception {
+   public LabelMap getLabels(Context context) throws Exception {
       LabelMap clone = new LabelMap(policy);
       
       for(Label label : this) {
          if(label != null) {
-            String name = label.getName(context);
+            String name = label.getPath(context);
             
             clone.put(name, label);
          }

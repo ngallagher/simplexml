@@ -20,9 +20,9 @@ package org.simpleframework.xml.core;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
@@ -66,6 +66,11 @@ class StructureBuilder {
    private ModelAssembler assembler;
    
    /**
+    * This is used to resolve the labels using parameters.
+    */
+   private LabelResolver resolver;
+   
+   /**
     * For validation all attributes must be stored in the builder.
     */
    private LabelMap attributes;
@@ -75,6 +80,11 @@ class StructureBuilder {
     */
    private LabelMap elements;
  
+   /**
+    * This is used to maintain the text labels for the class.
+    */
+   private LabelMap texts;
+   
    /**
     * This is used for validation to compare annotations used.
     */
@@ -123,9 +133,11 @@ class StructureBuilder {
    public StructureBuilder(Scanner scanner, Class type) throws Exception {
       this.builder = new ExpressionBuilder(type);
       this.assembler = new ModelAssembler(builder, type);
+      this.root = new TreeModel(scanner, type);
       this.attributes = new LabelMap(scanner);
       this.elements = new LabelMap(scanner);
-      this.root = new TreeModel(scanner);
+      this.texts = new LabelMap(scanner);
+      this.resolver = new LabelResolver();
       this.comparer = new Comparer();
       this.scanner = scanner;
       this.type = type;
@@ -209,13 +221,14 @@ class StructureBuilder {
       
       for(Annotation value : list) {
          Label label = LabelFactory.getInstance(field, type, value);
+         String path = label.getPath();
          String name = label.getName();
          
-         if(map.get(name) != null) {
+         if(map.get(path) != null) {
             throw new PersistenceException("Duplicate annotation of name '%s' on %s", name, label);
          }
          process(field, label, map);
-         validate(label, name);
+         validate(label, path);
       }
    }
    
@@ -234,13 +247,14 @@ class StructureBuilder {
     */   
    private void process(Contact field, Annotation type, LabelMap map) throws Exception {
       Label label = LabelFactory.getInstance(field, type);
+      String path = label.getPath();
       String name = label.getName();
       
-      if(map.get(name) != null) {
+      if(map.get(path) != null) {
          throw new PersistenceException("Duplicate annotation of name '%s' on %s", name, field);
       }
       process(field, label, map);
-      validate(label, name);
+      validate(label, path);
    }
    
    /**
@@ -257,15 +271,16 @@ class StructureBuilder {
     * @throws Exception thrown if the label can not be created
     */
    private void process(Contact field, Label label, LabelMap map) throws Exception {
-      String name = label.getName();
+      Expression expression = label.getExpression();
       String path = label.getPath();
       Model model = root;
       
-      if(path != null) {
-         model = register(path);
+      if(!expression.isEmpty()) {
+         model = register(expression);
       }
+      resolver.register(label);
       model.register(label);      
-      map.put(name, label);
+      map.put(path, label);
    }   
    
    /**
@@ -281,11 +296,19 @@ class StructureBuilder {
     */   
    private void text(Contact field, Annotation type) throws Exception {
       Label label = LabelFactory.getInstance(field, type);
+      Expression expression = label.getExpression();
+      String path = label.getPath();
+      Model model = root;
       
-      if(text != null) {
+      if(!expression.isEmpty()) {
+         model = register(expression);
+      }
+      if(texts.get(path) != null) {
          throw new TextException("Multiple text annotations in %s", type);
       }
-      text = label;
+      resolver.register(label);
+      model.register(label);
+      texts.put(path, label);
    }
    
    /**
@@ -419,14 +442,13 @@ class StructureBuilder {
     * 
     * @return this returns the model that was registered
     */
-   private Model register(String path) throws Exception {
-      Expression expression = builder.build(path);
-      Model model = root.lookup(expression);
+   private Model register(Expression path) throws Exception {   
+      Model model = root.lookup(path);
       
       if (model != null) {
          return model;
       }      
-      return create(expression);
+      return create(path);
    }
    
    /**
@@ -500,7 +522,7 @@ class StructureBuilder {
     * @param type this is the object type that is being scanned
     */
    private void validateText(Class type) throws Exception {
-      if(text != null) {
+      if(root.getText() != null) {
          if(!elements.isEmpty()) {
             throw new TextException("Elements used with %s in %s", text, type);
          }
@@ -524,7 +546,7 @@ class StructureBuilder {
     */
    private void validateUnions(Class type) throws Exception {
       for(Label label : elements) {
-         Set<String> options = label.getUnion();
+         Collection<String> options = label.getPaths();
          Contact contact = label.getContact();
          
          for(String option : options) {
@@ -654,15 +676,19 @@ class StructureBuilder {
       while(iterator.hasNext()) {
          Initializer initializer = iterator.next();
          Contact contact = label.getContact();
-         String name = label.getName();
+         String path = label.getPath();
          
          if(contact.isReadOnly()) {
-            Parameter value = initializer.getParameter(name);
-            Set<String> options = label.getUnion();
+            Parameter value = initializer.getParameter(path);
+            Collection<String> options = label.getNames();
             
-            for(String option : options) {
                if(value == null) {
+               for(String option : options) {
                   value = initializer.getParameter(option);
+               
+                  if(value != null) {
+                     break;
+                  }
                }
             }
             if(value == null) {
@@ -684,17 +710,11 @@ class StructureBuilder {
       List<Parameter> list = creator.getParameters();
       
       for(Parameter parameter : list) {
-         String name = parameter.getName();
-         Label label = elements.get(name);
+         Label label = resolver.resolve(parameter);
+         String path = parameter.getPath();
          
-         if(isEmpty(name)) {
-            label = text;
-         }
          if(label == null) {
-            label = attributes.get(name);
-         }
-         if(label == null) {
-            throw new ConstructorException("Parameter '%s' does not have a match in %s", name, type);
+            throw new ConstructorException("Parameter '%s' does not have a match in %s", path, type);
          }
       }
    }
@@ -725,7 +745,7 @@ class StructureBuilder {
     * @param parameter this is the parameter to validate with
     */
    private void validate(Label label, Parameter parameter) throws Exception {
-      Set<String> options = label.getUnion();
+      Collection<String> options = label.getNames();
       Contact contact = label.getContact();
       String name = parameter.getName();
       Class expect = contact.getType();
@@ -770,20 +790,6 @@ class StructureBuilder {
             throw new ConstructorException("Annotation %s does not match %s for '%s' in %s", actual, expect, name, parameter);  
          } 
       }
-   }
-   
-   /**
-    * This method is used to determine if a root annotation value is
-    * an empty value. Rather than determining if a string is empty
-    * be comparing it to an empty string this method allows for the
-    * value an empty string represents to be changed in future.
-    * 
-    * @param value this is the value to determine if it is empty
-    * 
-    * @return true if the string value specified is an empty value
-    */
-   private boolean isEmpty(String value) {
-      return value.length() == 0;
    }
    
    /**

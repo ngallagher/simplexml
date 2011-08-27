@@ -40,44 +40,59 @@ import java.util.Set;
 class TreeModel implements Model {
   
    /**
+    * This is the XPath expression representing the location.
+    */
+   private Expression expression;
+  
+   /**
     * This holds the mappings for elements within the model.
     */
-   private final LabelMap attributes;
+   private LabelMap attributes;
    
    /**
     * This holds the mappings for elements within the model.
     */
-   private final LabelMap elements;
+   private LabelMap elements;
    
    /**
     * This holds the mappings for the models within this instance.
     */
-   private final ModelMap models;
+   private ModelMap models;
    
    /**
     * This is used to provide the order of the model elements.
     */
-   private final OrderList order;
+   private OrderList order;
    
    /**
     * This is the serialization policy enforced on this model.
     */
-   private final Policy policy;
+   private Policy policy;
    
    /**
     * This must be a valid XML element representing the name.
     */
-   private final String name;
+   private String name;
    
    /**
     * This is used to represent the prefix for this model.
     */
-   private final String prefix;
+   private String prefix;
+   
+   /**
+    * This is the type used for reporting validation errors.
+    */
+   private Class type;
+   
+   /**
+    * This is an optional text label used for this model.
+    */
+   private Label text;
    
    /**
     * This is the index used to sort similarly named models.
     */
-   private final int index;
+   private int index;
    
    /**
     * Constructor for the <code>TreeModel</code> object. This can be
@@ -87,8 +102,8 @@ class TreeModel implements Model {
     * 
     * @param policy this is the serialization policy enforced
     */
-   public TreeModel(Policy policy) {
-      this(policy, null, null, 1);
+   public TreeModel(Policy policy, Class type) {
+      this(policy, type, null, null, 1);
    }
    
    /**
@@ -102,15 +117,16 @@ class TreeModel implements Model {
     * @param prefix this is the prefix used for this model object
     * @param index this is the index used to order the model
     */
-   public TreeModel(Policy policy, String name, String prefix, int index) {
+   public TreeModel(Policy policy, Class type, String name, String prefix, int index) {
       this.attributes = new LabelMap(policy);
       this.elements = new LabelMap(policy);
+      this.models = new ModelMap(type);
       this.order = new OrderList();
-      this.models = new ModelMap();
       this.policy = policy;
       this.prefix = prefix;
       this.index = index;
       this.name = name;
+      this.type = type;
    }
    
    /**
@@ -176,11 +192,27 @@ class TreeModel implements Model {
     * 
     * @param label this is the label to register with the model
     */   
+   public void registerText(Label label) throws Exception {
+      if(text != null) {
+         throw new TextException("Duplicate text annotation on %s", label);
+      }
+      text = label;
+   }
+   
+   /**
+    * This is used to register an XML entity within the model. The
+    * registration process has the affect of telling the model that
+    * it will contain a specific, named, XML entity. It also has 
+    * the affect of ordering them within the model, such that the
+    * first registered entity is the first iterated over.
+    * 
+    * @param label this is the label to register with the model
+    */   
    public void registerAttribute(Label label) throws Exception {
       String name = label.getName();
       
       if(attributes.get(name) != null) {
-         throw new PersistenceException("Duplicate annotation of name '%s' on %s", name, label);
+         throw new AttributeException("Duplicate annotation of name '%s' on %s", name, label);
       }
       attributes.put(name, label);
    }   
@@ -198,7 +230,7 @@ class TreeModel implements Model {
       String name = label.getName();
       
       if(elements.get(name) != null) {
-         throw new PersistenceException("Duplicate annotation of name '%s' on %s", name, label);
+         throw new ElementException("Duplicate annotation of name '%s' on %s", name, label);
       }
       if(!order.contains(name)) {
          order.add(name);
@@ -218,7 +250,7 @@ class TreeModel implements Model {
     * @return this returns a map built from the specified context
     */   
    public ModelMap buildModels(Context context) throws Exception {
-      return models.build(context);
+      return models.getModels(context);
    }
 
    /**
@@ -233,7 +265,7 @@ class TreeModel implements Model {
     * @return this returns a map built from the specified context
     */   
    public LabelMap buildAttributes(Context context) throws Exception {
-      return attributes.build(context);
+      return attributes.getLabels(context);
    }
 
    /**
@@ -248,7 +280,7 @@ class TreeModel implements Model {
     * @return this returns a map built from the specified context
     */
    public LabelMap buildElements(Context context) throws Exception{
-      return elements.build(context);
+      return elements.getLabels(context);
    }
    
    /**
@@ -319,9 +351,79 @@ class TreeModel implements Model {
     * @throws Exception if text and element annotations are present
     */
    public void validate(Class type) throws Exception {
+      validateExpressions(type);
       validateAttributes(type);
       validateElements(type);
       validateModels(type);
+      validateText(type);
+   }
+   
+   /**
+    * This method is used to validate the model based on whether it 
+    * has a text annotation. If this model has a text annotation then
+    * it is checked to see if it is a composite model or has any
+    * elements. If it has either then the model is considered invalid.
+    *
+    * @param type this is the object type representing the schema
+    */
+   private void validateText(Class type) throws Exception {
+      if(text != null) {
+         if(!elements.isEmpty()) {
+            throw new TextException("Text annotation %s used with elements in %s", text, type);
+         }
+         if(isComposite()) {
+            throw new TextException("Text annotation %s can not be used with paths in %s", text, type);
+         }
+      }
+   }
+   
+   /**
+    * This is used to validate the expressions used for each label that
+    * this model represents. Each label within a model must have an
+    * XPath expression, if the expressions do not match then this will
+    * throw an exception. If the model contains no labels then it is
+    * considered empty and does not need validation.
+    * 
+    * @param type this is the object type representing the schema
+    */
+   private void validateExpressions(Class type) throws Exception {
+      for(Label label : elements) {
+         if(label != null) {
+            validateExpression(label);
+         }
+      }
+      for(Label label : attributes) {
+         if(label != null) {
+            validateExpression(label);
+         }
+      }
+      if(text != null) {
+         validateExpression(text);
+      } 
+   }
+   
+   /**
+    * This is used to validate the expressions used for a label that
+    * this model represents. Each label within a model must have an
+    * XPath expression, if the expressions do not match then this will
+    * throw an exception. If the model contains no labels then it is
+    * considered empty and does not need validation.
+    * 
+    * @param type this is the object type representing the schema
+    */
+   private void validateExpression(Label label) throws Exception {
+      Expression location = label.getExpression();
+      
+      if(expression != null) {
+         String path = expression.getPath();
+         String expect = location.getPath();
+         
+         if(!path.equals(expect)) {
+            throw new PathException("Path '%s' does not match '%s' in %s", path, expect, type);
+         }
+      } else {
+         expression = location;
+      }
    }
    
    /**
@@ -413,6 +515,8 @@ class TreeModel implements Model {
    public void register(Label label) throws Exception {
       if(label.isAttribute()) {
          registerAttribute(label);
+      } else if(label.isText()) {
+         registerText(label);
       } else {
          registerElement(label);
       }
@@ -466,7 +570,7 @@ class TreeModel implements Model {
     * @return this returns the model that was registered
     */
    private Model create(String name, String prefix, int index) throws Exception {
-      Model model = new TreeModel(policy, name, prefix, index);
+      Model model = new TreeModel(policy, type, name, prefix, index);
       
       if(name != null) {
          models.register(name, model);
@@ -505,6 +609,9 @@ class TreeModel implements Model {
     * @return true if the model does not contain registrations
     */
    public boolean isEmpty() {
+      if(text != null) {
+         return false;
+      }
       if(!elements.isEmpty()) {
          return false;
       }
@@ -512,6 +619,29 @@ class TreeModel implements Model {
          return false;
       }
       return !isComposite();
+   }
+   
+   /**
+    * This returns a text label if one is associated with the model.
+    * If the model does not contain a text label then this method
+    * will return null. Any model with a text label should not be
+    * composite and should not contain any elements.
+    * 
+    * @return this is the optional text label for this model
+    */
+   public Label getText() {
+      return text;
+   }
+   
+   /**
+    * This returns an <code>Expression</code> representing the path
+    * this model exists at within the class schema. This should 
+    * never be null for any model that is not empty.
+    * 
+    * @return this returns the expression associated with this
+    */
+   public Expression getExpression() {
+      return expression;
    }
    
    /**

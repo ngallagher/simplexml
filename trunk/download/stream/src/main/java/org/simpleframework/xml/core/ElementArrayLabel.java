@@ -19,8 +19,6 @@
 package org.simpleframework.xml.core;
 
 import java.lang.annotation.Annotation;
-import java.util.Collections;
-import java.util.Set;
 
 import org.simpleframework.xml.ElementArray;
 import org.simpleframework.xml.strategy.Type;
@@ -38,7 +36,7 @@ import org.simpleframework.xml.stream.Style;
  * 
  * @see org.simpleframework.xml.ElementArray
  */
-class ElementArrayLabel implements Label {
+class ElementArrayLabel extends TemplateLabel {
    
    /**
     * This is the decorator that is associated with the element.
@@ -85,62 +83,6 @@ class ElementArrayLabel implements Label {
       this.entry = label.entry();
       this.name = label.name();
       this.label = label;
-   }
-   
-   /**
-    * This is used to acquire the <code>Type</code> that the type
-    * provided is represented by. Typically this will return the
-    * field or method represented by the label. However, in the 
-    * case of unions this will provide an override type.
-    * 
-    * @param type this is the class to acquire the type for
-    * 
-    * @return this returns the type represented by this class
-    */
-   public Type getType(Class type){
-      return getContact();
-   }
-   
-   /**
-    * This is used to acquire the <code>Label</code> that the type
-    * provided is represented by. Typically this will return the
-    * same instance. However, in the case of unions this will
-    * look for an individual label to match the type provided.
-    * 
-    * @param type this is the type to acquire the label for
-    * 
-    * @return this returns the label represented by this type
-    */
-   public Label getLabel(Class type) {
-      return this;
-   }     
-   
-   /**
-    * This returns a <code>Set</code> of elements in a union. This
-    * will typically be an empty set, and is never null. If this is
-    * a label union then this will return the name of each label
-    * within the group. Providing the labels for a union allows the
-    * serialization process to determine the associated labels.
-    * 
-    * @return this returns the names of each of the elements
-    */
-   public Set<String> getUnion() throws Exception {
-      return Collections.emptySet();
-   }
-   
-   /**
-    * This returns a <code>Set</code> of elements in a union. This
-    * will typically be an empty set, and is never null. If this is
-    * a label union then this will return the name of each label
-    * within the group. Providing the labels for a union allows the
-    * serialization process to determine the associated labels.
-    *
-    * @param context this is used to style the element names
-    * 
-    * @return this returns the names of each of the elements
-    */
-   public Set<String> getUnion(Context context) throws Exception {
-      return Collections.emptySet();
    }
    
    /**
@@ -231,6 +173,23 @@ class ElementArrayLabel implements Label {
    }
    
    /**
+    * This is used to acquire the path of the element or attribute
+    * that is used by the class schema. The path is determined by
+    * acquiring the XPath expression and appending the name of the
+    * label to form a fully qualified styled path.
+    * 
+    * @param context this is the context used to style the path
+    * 
+    * @return returns the path that is used for the XML property
+    */
+   public String getPath(Context context) throws Exception {
+      Expression path = getExpression();
+      String name = getName(context);
+      
+      return path.getElement(name); 
+   }   
+   
+   /**
     * This is used to provide a configured empty value used when the
     * annotated value is null. This ensures that XML can be created
     * with required details regardless of whether values are null or
@@ -277,6 +236,33 @@ class ElementArrayLabel implements Label {
    public String getName() throws Exception{
       return detail.getName();
    }
+   
+   /**
+    * This is used to acquire the path of the element or attribute
+    * that is used by the class schema. The path is determined by
+    * acquiring the XPath expression and appending the name of the
+    * label to form a fully qualified path.
+    * 
+    * @return returns the path that is used for the XML property
+    */
+   public String getPath() throws Exception {
+      Expression path = getExpression();
+      String name = getName();
+   
+      return path.getElement(name);   
+   }
+  
+   /**
+    * This method is used to return an XPath expression that is 
+    * used to represent the position of this label. If there is no
+    * XPath expression associated with this then an empty path is
+    * returned. This will never return a null expression.
+    * 
+    * @return the XPath expression identifying the location
+    */
+   public Expression getExpression() throws Exception {
+      return detail.getExpression();
+   }   
    
    /**
     * This acquires the annotation associated with this label. This
@@ -335,19 +321,6 @@ class ElementArrayLabel implements Label {
    }
    
    /**
-    * This method is used to return the path where this is located.
-    * The path is an XPath expression that allows serialization to
-    * locate the XML entity within the document. If there is no
-    * path then the XML entity is written within the current context.
-    * An empty path is identified as a null value.
-    * 
-    * @return the XPath expression identifying the location
-    */
-   public String getPath() {
-      return detail.getPath();
-   }
-   
-   /**
     * This is used to acquire the name of the element or attribute
     * as taken from the annotation. If the element or attribute
     * explicitly specifies a name then that name is used for the
@@ -358,30 +331,6 @@ class ElementArrayLabel implements Label {
     */
    public String getOverride() {
       return name;
-   }
-   
-   /**
-    * This method is used to determine if the label represents an
-    * attribute. This is used to style the name so that elements
-    * are styled as elements and attributes are styled as required.
-    * 
-    * @return this is used to determine if this is an attribute
-    */
-   public boolean isAttribute() {
-      return false;
-   }
-   
-   /**
-    * This is used to determine if the label is a collection. If the
-    * label represents a collection then any original assignment to
-    * the field or method can be written to without the need to 
-    * create a new collection. This allows obscure collections to be
-    * used and also allows initial entries to be maintained.
-    * 
-    * @return true if the label represents a collection value
-    */
-   public boolean isCollection() {
-      return false;
    }
    
    /**
@@ -407,19 +356,6 @@ class ElementArrayLabel implements Label {
     */
    public boolean isData() {
       return label.data();
-   }
-   
-   /**
-    * This method is used by the deserialization process to check
-    * to see if an annotation is inline or not. If an annotation
-    * represents an inline XML entity then the deserialization
-    * and serialization process ignores overrides and special 
-    * attributes. By default element arrays are not inline.
-    * 
-    * @return this always returns false for array labels
-    */
-   public boolean isInline() {
-      return false;
    }
    
    /**

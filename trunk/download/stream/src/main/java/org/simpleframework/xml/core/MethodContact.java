@@ -200,10 +200,10 @@ class MethodContact implements Contact {
     * @param value this is the value that is to be set on the object
     */    
    public void set(Object source, Object value) throws Exception{
-      Class type = getType();
+      Class type = get.getDeclaringClass();
       
       if(set == null) {
-         throw new MethodException("Method %s of %s is read only", name, type);
+         throw new MethodException("Property '%s' is read only in %s", name, type);
       }
       set.getMethod().invoke(source, value);
    }

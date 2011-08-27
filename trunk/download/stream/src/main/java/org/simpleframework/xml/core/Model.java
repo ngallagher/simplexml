@@ -108,6 +108,17 @@ interface Model extends Iterable<String> {
     * 
     * @param label this is the label to register with the model
     */
+   public void registerText(Label label) throws Exception;
+   
+   /**
+    * This is used to register an XML entity within the model. The
+    * registration process has the affect of telling the model that
+    * it will contain a specific, named, XML entity. It also has 
+    * the affect of ordering them within the model, such that the
+    * first registered entity is the first iterated over.
+    * 
+    * @param label this is the label to register with the model
+    */
    public void registerElement(Label label) throws Exception;
    
    /**
@@ -234,6 +245,25 @@ interface Model extends Iterable<String> {
     * @return true if the model does not contain registrations
     */
    public boolean isEmpty();
+   
+   /**
+    * This returns a text label if one is associated with the model.
+    * If the model does not contain a text label then this method
+    * will return null. Any model with a text label should not be
+    * composite and should not contain any elements.
+    * 
+    * @return this is the optional text label for this model
+    */
+   public Label getText();
+   
+   /**
+    * This returns an <code>Expression</code> representing the path
+    * this model exists at within the class schema. This should 
+    * never be null for any model that is not empty.
+    * 
+    * @return this returns the expression associated with this
+    */
+   public Expression getExpression();
    
    /**
     * This is used to acquire the path prefix for the model. The

@@ -85,6 +85,40 @@ interface Expression extends Iterable<String> {
    public String getLast();
    
    /**
+    * This location contains the full path expression with all
+    * of the indexes explicitly shown for each path segment. This
+    * is used to create a uniform representation that can be used
+    * for comparisons of different path expressions. 
+    * 
+    * @return this returns an expanded version of the path
+    */
+   public String getPath();
+   
+   /**
+    * This is used to acquire the element path using this XPath
+    * expression. The element path is simply the fully qualified
+    * path for this expression with the provided name appended.
+    * If this is an empty path, the provided name is returned.
+    * 
+    * @param name this is the name of the element to be used
+    * 
+    * @return a fully qualified path for the specified name
+    */
+   public String getElement(String name);
+   
+   /**
+    * This is used to acquire the attribute path using this XPath
+    * expression. The attribute path is simply the fully qualified
+    * path for this expression with the provided name appended.
+    * If this is an empty path, the provided name is returned.
+    * 
+    * @param name this is the name of the attribute to be used
+    * 
+    * @return a fully qualified path for the specified name
+    */
+   public String getAttribute(String name);
+   
+   /**
     * This allows an expression to be extracted from the current
     * context. Extracting expressions in this manner makes it 
     * more convenient for navigating structures representing
@@ -129,6 +163,15 @@ interface Expression extends Iterable<String> {
     * @return true if this contains more than one segment
     */
    public boolean isPath();
+   
+   /**
+    * This method is used to determine if this expression is an
+    * empty path. An empty path can be represented by a single
+    * period, '.'. It identifies the current path.
+    * 
+    * @return returns true if this represents an empty path
+    */
+   public boolean isEmpty();
 
    /**
     * Provides a canonical XPath expression. This is used for both

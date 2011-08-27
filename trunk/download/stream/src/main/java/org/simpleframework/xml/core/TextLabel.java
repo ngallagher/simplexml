@@ -19,8 +19,6 @@
 package org.simpleframework.xml.core;
 
 import java.lang.annotation.Annotation;
-import java.util.Collections;
-import java.util.Set;
 
 import org.simpleframework.xml.Text;
 import org.simpleframework.xml.strategy.Type;
@@ -36,7 +34,7 @@ import org.simpleframework.xml.strategy.Type;
  * 
  *  @see org.simpleframework.xml.Text
  */
-class TextLabel implements Label {
+class TextLabel extends TemplateLabel {
    
    /**
     * This represents the signature of the annotated contact.
@@ -77,62 +75,6 @@ class TextLabel implements Label {
       this.empty = label.empty();
       this.contact = contact;
       this.label = label;  
-   }
-   
-   /**
-    * This is used to acquire the <code>Type</code> that the type
-    * provided is represented by. Typically this will return the
-    * field or method represented by the label. However, in the 
-    * case of unions this will provide an override type.
-    * 
-    * @param type this is the class to acquire the type for
-    * 
-    * @return this returns the type represented by this class
-    */
-   public Type getType(Class type){
-      return getContact();
-   }
-   
-   /**
-    * This is used to acquire the <code>Label</code> that the type
-    * provided is represented by. Typically this will return the
-    * same instance. However, in the case of unions this will
-    * look for an individual label to match the type provided.
-    * 
-    * @param type this is the type to acquire the label for
-    * 
-    * @return this returns the label represented by this type
-    */
-   public Label getLabel(Class type) {
-      return this;
-   }
-   
-   /**
-    * This returns a <code>Set</code> of elements in a union. This
-    * will typically be an empty set, and is never null. If this is
-    * a label union then this will return the name of each label
-    * within the group. Providing the labels for a union allows the
-    * serialization process to determine the associated labels.
-    * 
-    * @return this returns the names of each of the elements
-    */
-   public Set<String> getUnion() throws Exception {
-      return Collections.emptySet();
-   }
-   
-   /**
-    * This returns a <code>Set</code> of elements in a union. This
-    * will typically be an empty set, and is never null. If this is
-    * a label union then this will return the name of each label
-    * within the group. Providing the labels for a union allows the
-    * serialization process to determine the associated labels.
-    *
-    * @param context this is used to style the element names
-    * 
-    * @return this returns the names of each of the elements
-    */
-   public Set<String> getUnion(Context context) throws Exception {
-      return Collections.emptySet();
    }
    
    /**
@@ -183,6 +125,20 @@ class TextLabel implements Label {
    }
    
    /**
+    * This is used to acquire the path of the element or attribute
+    * that is used by the class schema. The path is determined by
+    * acquiring the XPath expression and appending the name of the
+    * label to form a fully qualified styled path.
+    * 
+    * @param context this is the context used to style the path
+    * 
+    * @return returns the path that is used for the XML property
+    */
+   public String getPath(Context context) throws Exception {
+      return getPath();
+   }
+   
+   /**
     * This is used to provide a configured empty value used when the
     * annotated value is null. This ensures that XML can be created
     * with required details regardless of whether values are null or
@@ -197,6 +153,30 @@ class TextLabel implements Label {
          return null;
       }
       return empty;
+   }
+   
+   /**
+    * This is used to acquire the path of the element or attribute
+    * that is used by the class schema. The path is determined by
+    * acquiring the XPath expression and appending the name of the
+    * label to form a fully qualified path.
+    * 
+    * @return returns the path that is used for the XML property
+    */
+   public String getPath() throws Exception {
+      return getExpression().getPath();
+   }
+   
+   /**
+    * This method is used to return an XPath expression that is 
+    * used to represent the position of this label. If there is no
+    * XPath expression associated with this then an empty path is
+    * returned. This will never return a null expression.
+    * 
+    * @return the XPath expression identifying the location
+    */
+   public Expression getExpression() throws Exception {
+      return detail.getExpression();
    }
    
    /**
@@ -224,19 +204,6 @@ class TextLabel implements Label {
       return contact;
    }
    
-   /**
-    * This method is used to return the path where this is located.
-    * The path is an XPath expression that allows serialization to
-    * locate the XML entity within the document. If there is no
-    * path then the XML entity is written within the current context.
-    * An empty path is identified as a null value.
-    * 
-    * @return the XPath expression identifying the location
-    */
-   public String getPath() {
-      return null;
-   }
-  
    /**
     * This is used to acquire the name of the element or attribute
     * that is used by the class schema. The name is determined by
@@ -278,53 +245,6 @@ class TextLabel implements Label {
    }
    
    /**
-    * This is typically used to acquire the entry value as acquired
-    * from the annotation. However given that the annotation this
-    * represents does not have a entry attribute this will always
-    * provide a null value for the entry string.
-    * 
-    * @return this will always return null for the entry value 
-    */
-   public String getEntry() {
-      return null;
-   }
-   
-   /**
-    * This is used to acquire the dependent class for this label. 
-    * This returns null as there are no dependents to the XML text
-    * annotation as it can only hold primitives with no dependents.
-    * 
-    * @return this is used to return the dependent type of null
-    */
-   public Type getDependent() {
-      return null;
-   }
-   
-   /**
-    * This method is used to determine if the label represents an
-    * attribute. This is used to style the name so that elements
-    * are styled as elements and attributes are styled as required.
-    * 
-    * @return this is used to determine if this is an attribute
-    */
-   public boolean isAttribute() {
-      return false;
-   }
-   
-   /**
-    * This is used to determine if the label is a collection. If the
-    * label represents a collection then any original assignment to
-    * the field or method can be written to without the need to 
-    * create a new collection. This allows obscure collections to be
-    * used and also allows initial entries to be maintained.
-    * 
-    * @return true if the label represents a collection value
-    */
-   public boolean isCollection() {
-      return false;
-   }
-   
-   /**
     * This is used to determine whether the XML element is required. 
     * This ensures that if an XML element is missing from a document
     * that deserialization can continue. Also, in the process of
@@ -348,6 +268,18 @@ class TextLabel implements Label {
     */
    public boolean isData() {
       return label.data();
+   }
+   
+   /**
+    * This is used to determine if the label represents text. If
+    * a label represents text it typically does not have a name,
+    * instead the empty string represents the name. Also text
+    * labels can not exist with other text labels, or elements.
+    * 
+    * @return this returns true if this label represents text
+    */
+   public boolean isText() {
+      return true;
    }
    
    /**

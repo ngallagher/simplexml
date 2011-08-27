@@ -19,8 +19,8 @@
 package org.simpleframework.xml.core;
 
 import java.lang.reflect.Constructor;
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 /**
  * The <code>Initializer</code> object is used to represent an single
@@ -139,8 +139,8 @@ class Initializer {
     */
    private Object getVariable(Context context, Criteria criteria, int index) throws Exception {
       Parameter parameter = list.get(index);
-      String name = parameter.getName(context);
-      Variable variable = criteria.remove(name);
+      String path = parameter.getPath(context);
+      Variable variable = criteria.remove(path);
       
       if(variable != null) {
          return variable.getValue();
@@ -170,13 +170,18 @@ class Initializer {
          Label label = criteria.resolve(name);
          
          if(label != null) {
-            Set<String> options = label.getUnion(context);
             Parameter value = match.getParameter(name);
             Contact contact = label.getContact();
 
-            for(String option : options) {
                if(value == null) {
+               Collection<String> options = label.getNames(context);
+               
+               for(String option : options) {
                   value = match.getParameter(option);
+                  
+                  if(value != null) {
+                     break;
+                  }
                }
             }
             if(contact.isReadOnly()) {
@@ -210,7 +215,7 @@ class Initializer {
       double score = 0.0;
       
       for(Parameter value : list) {
-         String name = value.getName(context);
+         String name = value.getPath(context);
          Label label = criteria.resolve(name);
 
          if(label == null) {
