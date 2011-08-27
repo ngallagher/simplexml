@@ -161,8 +161,7 @@ class CompositeListUnion implements Repeater {
     * @param node this is the XML element container to be populated
     */ 
    public void write(OutputNode node, Object source) throws Exception {
-      Collection list = (Collection) source;              
-      OutputNode parent = node.getParent();      
+      Collection list = (Collection) source;                  
       
       if(group.isInline()) {
          if(!list.isEmpty()) {
@@ -171,7 +170,7 @@ class CompositeListUnion implements Repeater {
             node.remove();
          }
       } else {
-         write(parent, list);
+         write(node, list);
       }
    }
 
