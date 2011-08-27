@@ -39,8 +39,6 @@ public interface Matcher {
     * @param type this is the type to acquire the transform for
     * 
     * @return returns a transform for processing the type given
-    * 
-    * @throws Exception thrown if a transform could not be found
     */ 
    public Transform match(Class type) throws Exception;
 }
