@@ -1,0 +1,140 @@
+/*
+ * RegistryMatcher.java May 2011
+ *
+ * Copyright (C) 2011, Niall Gallagher <niallg@users.sf.net>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or 
+ * implied. See the License for the specific language governing 
+ * permissions and limitations under the License.
+ */
+
+package org.simpleframework.xml.transform;
+
+import org.simpleframework.xml.util.WeakCache;
+
+/**
+ * The <code>RegistryMatcher</code> provides a simple matcher backed
+ * by a registry. Registration can be done to match a class to a
+ * <code>Transform</code> type or instance. If a transform type is
+ * registered an instance of it is created each time it is requested.
+ * However, if a transform instance was registered it is used each
+ * time it is requested. This is provided for convenience.
+ * 
+ * @author Niall Gallagher
+ * 
+ * @see org.simpleframework.xml.core.Persister
+ */
+public class RegistryMatcher implements Matcher {
+   
+   /**
+    * This is used to fetch transform instances by type.
+    */
+   private final Cache<Transform> transforms;
+   
+   /**
+    * This is used to determine the transform  for a type.
+    */
+   private final Cache<Class> types;
+   
+   /**
+    * Constructor for the <code>RegistryMatcher</code>. This is used
+    * to create a matcher instance that can resolve a transform by
+    * type and can also instantiate new transforms if required. It 
+    * is essentially a convenience implementation.
+    */
+   public RegistryMatcher() {
+      this.transforms = new Cache<Transform>();
+      this.types = new Cache<Class>();
+   }
+   
+   /**
+    * This is used to bind a <code>Transform</code> type. Each time
+    * a transform is requested for the specified type a new instance
+    * of this <code>Transform</code> will be instantiated.
+    * 
+    * @param type this is the type to resolve the transform for
+    * @param transform this is the transform type to instantiate
+    */
+   public void bind(Class type, Class transform) {
+      types.cache(type, transform);
+   }
+   
+   /**
+    * This is used to bind a <code>Transform</code> instance to the
+    * specified type. Each time a transform is requested for this
+    * type the provided instance will be returned.
+    * 
+    * @param type this is the type to resolve the transform for
+    * @param transform this transform instance to be used
+    */
+   public void bind(Class type, Transform transform) {
+      transforms.cache(type, transform);
+   }
+   
+   /**
+    * This is used to match a <code>Transform</code> using the type
+    * specified. If no transform can be acquired then this returns
+    * a null value indicating that no transform could be found.
+    * 
+    * @param type this is the type to acquire the transform for
+    * 
+    * @return returns a transform for processing the type given
+    */ 
+   public Transform match(Class type) throws Exception {
+      Transform transform = transforms.fetch(type);
+      
+      if(transform == null) {
+         return create(type);
+      }
+      return transform;
+   }
+   
+   /**
+    * This is used to match a <code>Transform</code> using the type
+    * specified. If no transform can be acquired then this returns
+    * a null value indicating that no transform could be found.
+    * 
+    * @param type this is the type to acquire the transform for
+    * 
+    * @return returns a transform for processing the type given
+    */ 
+   private Transform create(Class type) throws Exception {
+      Class transform = types.fetch(type);
+      
+      if(transform != null) {
+         Object value = transform.newInstance();
+         return (Transform)value;
+      }
+      return null;
+   }
+   
+   /**
+    * The <code>Cache</code> object that is used store the transform
+    * types and instances. Each item cached can be resolved using
+    * a type. If the key is collected by the garbage collector then
+    * this will drop the value, as this is a weak cache.
+    * 
+    * @author Niall Gallagher
+    */
+   private static class Cache<T> extends WeakCache<Class, T> {
+    
+      /**
+       * Constructor for the <code>Cache</code> object. This is
+       * used to instantiate a weak cache that is keyed by type.
+       * Weak keys ensure that the registrations can be collected
+       * when the keys are collected by the garbage collector.
+       */
+      public Cache() {
+         super();
+      }
+   }
+
+}
