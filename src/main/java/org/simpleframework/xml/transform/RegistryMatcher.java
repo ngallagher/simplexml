@@ -23,10 +23,11 @@ import org.simpleframework.xml.util.WeakCache;
 /**
  * The <code>RegistryMatcher</code> provides a simple matcher backed
  * by a registry. Registration can be done to match a class to a
- * <code>Transform</code> type or instance. If a transform type is
- * registered an instance of it is created each time it is requested.
- * However, if a transform instance was registered it is used each
- * time it is requested. This is provided for convenience.
+ * <code>Transform</code> class or instance. If a transform class is
+ * registered an instance of it is created when requested using the
+ * default no argument constructor of the type, it is then cached so 
+ * it can be reused on future requests. When an instance is registered
+ * it is reused on each request. 
  * 
  * @author Niall Gallagher
  * 
@@ -56,9 +57,9 @@ public class RegistryMatcher implements Matcher {
    }
    
    /**
-    * This is used to bind a <code>Transform</code> type. Each time
-    * a transform is requested for the specified type a new instance
-    * of this <code>Transform</code> will be instantiated.
+    * This is used to bind a <code>Transform</code> type. The first 
+    * time a transform is requested for the specified type a new 
+    * instance of this <code>Transform</code> will be instantiated.
     * 
     * @param type this is the type to resolve the transform for
     * @param transform this is the transform type to instantiate
@@ -98,7 +99,7 @@ public class RegistryMatcher implements Matcher {
    }
    
    /**
-    * This is used to match a <code>Transform</code> using the type
+    * This is used to create a <code>Transform</code> using the type
     * specified. If no transform can be acquired then this returns
     * a null value indicating that no transform could be found.
     * 
@@ -107,13 +108,32 @@ public class RegistryMatcher implements Matcher {
     * @return returns a transform for processing the type given
     */ 
    private Transform create(Class type) throws Exception {
-      Class transform = types.fetch(type);
+      Class factory = types.fetch(type);
       
-      if(transform != null) {
-         Object value = transform.newInstance();
-         return (Transform)value;
+      if(factory != null) {
+         return create(type, factory);
       }
       return null;
+   }
+   
+   /**
+    * This is used to create a <code>Transform</code> using the type
+    * specified. If the transform can not be instantiated then this
+    * will throw an exception. If it can then it is cached.
+    * 
+    * @param type this is the type to acquire the transform for
+    * @param factory the class for instantiating the transform
+    * 
+    * @return returns a transform for processing the type given
+    */ 
+   private Transform create(Class type, Class factory) throws Exception {
+      Object value = factory.newInstance();
+      Transform transform = (Transform)value;
+         
+      if(transform != null) {
+         transforms.cache(type, transform);
+      }
+      return transform;
    }
    
    /**
