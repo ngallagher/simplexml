@@ -39,7 +39,7 @@ import org.simpleframework.xml.strategy.Type;
  * 
  * @author Niall Gallagher
  * 
- * @see org.simpleframework.xml.core.ElementMapUnion
+ * @see org.simpleframework.xml.ElementMapUnion
  */
 class ElementMapUnionLabel implements Label {
    

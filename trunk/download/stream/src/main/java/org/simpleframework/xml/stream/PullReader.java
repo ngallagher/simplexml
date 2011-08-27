@@ -178,7 +178,7 @@ class PullReader implements EventReader {
     * reader and used to provide an <code>InputNode</code> that can
     * be used to represent an XML attribute within the source document.
     * 
-    * @param entry the object that is to be converted to an attribute
+    * @param index this is the index of this attribute to create
     *
     * @return this returns an attribute created from the given object
     */
@@ -365,7 +365,7 @@ class PullReader implements EventReader {
        * as the name, namespace prefix and namespace reference. The
        * provided element node can be acquired for debugging purposes.
        * 
-       * @param event this is the parser being wrapped by this
+       * @param source this is the parser being wrapped by this
        */
       public Start(XmlPullParser source) {
          this.reference = source.getNamespace();
@@ -458,7 +458,7 @@ class PullReader implements EventReader {
        * an event that provides text to the core reader. Text can be
        * in the form of a CDATA section or a normal text entry.
        * 
-       * @param event this is the node that represents the text value
+       * @param source this is the node that represents the text value
        */
       public Text(XmlPullParser source){
          this.text = source.getText(); 

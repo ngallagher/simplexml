@@ -200,8 +200,8 @@ final class LabelFactory {
         * pairs the label type with the XML annotation argument used 
         * within the constructor. This create the constructor.
         * 
-        * @param label this is the label type to be instantiated
-        * @param argument type that is used within the constructor
+        * @param type this is the label type to be instantiated
+        * @param label type that is used within the constructor
         */
        public LabelBuilder(Class type, Class label) {
           this(type, label, null);
@@ -212,8 +212,9 @@ final class LabelFactory {
         * pairs the label type with the XML annotation argument used 
         * within the constructor. This will create the constructor.
         * 
-        * @param label this is the label type to be instantiated
-        * @param argument type that is used within the constructor
+        * @param type this is the label type to be instantiated
+        * @param label type that is used within the constructor
+        * @param entry entry that is used within the constructor
         */
        public LabelBuilder(Class type, Class label, Class entry) {
           this.entry = entry;
@@ -251,7 +252,8 @@ final class LabelFactory {
         * the XML annotation. The constructor returned will take two
         * arguments, a contact and the XML annotation type.
         * 
-        * @param type this is the XML annotation argument type used
+        * @param label this is the XML annotation argument type used
+        * @param entry this is the entry type to use for the label
         * 
         * @return returns the constructor for the label object
         */

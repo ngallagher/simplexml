@@ -158,7 +158,7 @@ class CompositeListUnion implements Repeater {
     * been selected it is used to write the instance.
     * 
     * @param node this is the XML element used to write the instance
-    * @param object this is the value that is to be written
+    * @param value this is the value that is to be written
     */
    public void write(OutputNode node, Object value) throws Exception {
       Collection list = (Collection) value;

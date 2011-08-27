@@ -62,7 +62,7 @@ class OverrideType implements Type {
     * Java collection such as a <code>java.util.List</code> then
     * this will return null for any annotation requested.
     * 
-    * @param type this is the type of the annotation to acquire
+    * @param label this is the type of the annotation to acquire
     *
     * @return this provides the annotation associated with this
     */

@@ -519,7 +519,7 @@ class Composite implements Converter {
     * 
     * @param node this is the XML element to acquire the text from
     * @param source the type of the object that is being deserialized
-    * @param schema this is used to visit the element contacts
+    * @param section this is used to visit the element contacts
     */
    private void readText(InputNode node, Object source, Section section) throws Exception {
       Label label = section.getText();
@@ -539,6 +539,7 @@ class Composite implements Converter {
     * 
     * @param node this is the node that contains the contact value
     * @param source the type of the object that is being deserialized
+    * @param section this is the section to read the attribute from
     * @param map this is the map that contains the label objects
     */
    private void readAttribute(InputNode node, Object source, Section section, LabelMap map) throws Exception {
@@ -870,6 +871,7 @@ class Composite implements Converter {
     * fails validation then an exception is thrown to report the issue.
     * 
     * @param node this is the node that contains the contact value
+    * @param section this is the section to validate this attribute in
     * @param map this is the map that contains the label objects
     */
    private void validateAttribute(InputNode node, Section section, LabelMap map) throws Exception {
@@ -897,6 +899,7 @@ class Composite implements Converter {
     * fails validation then an exception is thrown to report the issue.
     * 
     * @param node this is the node that contains the contact value
+    * @param section this is the section to validate this element in
     * @param map this is the map that contains the label objects
     */
    private void validateElement(InputNode node, Section section, LabelMap map) throws Exception {
@@ -1233,7 +1236,7 @@ class Composite implements Converter {
     * 
     * @param source this is the source object to be serialized
     * @param node this is the XML element to write text value to
-    * @param schema this is used to track the referenced elements
+    * @param section this is used to track the referenced elements
     */
    private void writeText(OutputNode node, Object source, Section section) throws Exception {
       Label label = section.getText();
