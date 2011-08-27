@@ -33,7 +33,12 @@ import org.simpleframework.xml.Element;
  * 
  * @author Niall Gallagher
  */
-class ElementParameter implements Parameter {
+class ElementParameter extends TemplateParameter {
+   
+   /**
+    * This is the expression used to represent this parameter.
+    */
+   private final Expression expression;   
    
    /**
     * This is the constructor the parameter was declared in.
@@ -49,6 +54,11 @@ class ElementParameter implements Parameter {
     * This is the label that will create the parameter name. 
     */
    private final Label label;
+   
+   /**
+    * This is the fully qualified path used for this parameter.
+    */
+   private final String path;
    
    /**
     * This is the actual name that has been determined.
@@ -77,10 +87,24 @@ class ElementParameter implements Parameter {
    public ElementParameter(Constructor factory, Element value, int index) throws Exception {
       this.contact = new Contact(value, factory, index);
       this.label = new ElementLabel(contact, value);
+      this.expression = label.getExpression();
+      this.path = label.getPath();
       this.type = label.getType();
       this.name = label.getName();
       this.factory = factory;
       this.index = index;
+   }
+   
+   /**
+    * This is used to acquire the path of the element or attribute
+    * represented by this parameter. The path is determined by
+    * acquiring the XPath expression and appending the name of the
+    * label to form a fully qualified path.
+    * 
+    * @return returns the path that is used for this parameter
+    */
+   public String getPath() {
+      return path;
    }
    
    /**
@@ -90,21 +114,20 @@ class ElementParameter implements Parameter {
     * 
     * @return this returns the name of the annotated parameter
     */
-   public String getName() throws Exception {
+   public String getName() {
       return name;
    }
    
    /**
-    * This is used to acquire the name of the parameter that this
-    * represents. The name is determined using annotation and 
-    * the name attribute of that annotation, if one is provided.
+    * This method is used to return an XPath expression that is 
+    * used to represent the position of this parameter. If there is 
+    * no XPath expression associated with this then an empty path 
+    * is returned. This will never return a null expression.
     * 
-    * @param context this is the context used to style the name
-    * 
-    * @return this returns the name of the annotated parameter
+    * @return the XPath expression identifying the location
     */
-   public String getName(Context context) throws Exception {
-      return label.getName(context);
+   public Expression getExpression() {
+      return expression;
    }
    
    /**

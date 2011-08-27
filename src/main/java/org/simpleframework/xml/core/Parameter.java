@@ -33,16 +33,6 @@ import java.lang.annotation.Annotation;
 interface Parameter {
    
    /**
-    * This is used to acquire the annotation that is used for the
-    * parameter. The annotation provided will be an XML annotation
-    * such as the <code>Element</code> or <code>Attribute</code>
-    * annotation.
-    * 
-    * @return this returns the annotation used on the parameter
-    */
-   public Annotation getAnnotation();
-
-   /**
     * This is used to acquire the annotated type class. The class
     * is the type that is to be deserialized from the XML. This
     * is used to validate against annotated fields and methods.
@@ -59,6 +49,68 @@ interface Parameter {
     * @return this returns the index for the parameter
     */
    public int getIndex();
+   
+   /**
+    * This is used to acquire the annotation that is used for the
+    * parameter. The annotation provided will be an XML annotation
+    * such as the <code>Element</code> or <code>Attribute</code>
+    * annotation.
+    * 
+    * @return this returns the annotation used on the parameter
+    */
+   public Annotation getAnnotation();
+
+   /**
+    * This method is used to return an XPath expression that is 
+    * used to represent the position of this parameter. If there is 
+    * no XPath expression associated with this then an empty path 
+    * is returned. This will never return a null expression.
+    * 
+    * @return the XPath expression identifying the location
+    */
+   public Expression getExpression(); 
+   
+   /**
+    * This is used to acquire the name of the parameter that this
+    * represents. The name is determined using annotation and 
+    * the name attribute of that annotation, if one is provided.
+    * 
+    * @return this returns the name of the annotated parameter
+    */
+   public String getName();
+   
+   /**
+    * This is used to acquire the path of the element or attribute
+    * represented by this parameter. The path is determined by
+    * acquiring the XPath expression and appending the name of the
+    * label to form a fully qualified path.
+    * 
+    * @return returns the path that is used for this parameter
+    */
+   public String getPath();
+   
+   /**
+    * This is used to acquire the path of the element or attribute
+    * represented by this parameter. The path is determined by
+    * acquiring the XPath expression and appending the name of the
+    * label to form a fully qualified styled path.
+    * 
+    * @param context this is the context used to style the path
+    * 
+    * @return returns the path that is used for this parameter
+    */
+   public String getPath(Context context);
+   
+   /**
+    * This is used to acquire the name of the parameter that this
+    * represents. The name is determined using annotation and 
+    * the name attribute of that annotation, if one is provided.
+    * 
+    * @param context this is the context used to style the name
+    * 
+    * @return this returns the name of the annotated parameter
+    */
+   public String getName(Context context);
    
    /**
     * This is used to determine if the parameter is required. If 
@@ -81,24 +133,23 @@ interface Parameter {
    public boolean isPrimitive();
    
    /**
-    * This is used to acquire the name of the parameter that this
-    * represents. The name is determined using annotation and 
-    * the name attribute of that annotation, if one is provided.
+    * This method is used to determine if the parameter represents 
+    * an attribute. This is used to style the name so that elements
+    * are styled as elements and attributes are styled as required.
     * 
-    * @return this returns the name of the annotated parameter
+    * @return this is used to determine if this is an attribute
     */
-   public String getName() throws Exception;
+   public boolean isAttribute();
    
    /**
-    * This is used to acquire the name of the parameter that this
-    * represents. The name is determined using annotation and 
-    * the name attribute of that annotation, if one is provided.
+    * This is used to determine if the parameter represents text. 
+    * If this represents text it typically does not have a name,
+    * instead the empty string represents the name. Also text
+    * parameters can not exist with other text parameters.
     * 
-    * @param context this is the context used to style the name
-    * 
-    * @return this returns the name of the annotated parameter
+    * @return returns true if this parameter represents text
     */
-   public String getName(Context context) throws Exception;
+   public boolean isText();
    
    /**
     * This is used to provide a textual representation of the 

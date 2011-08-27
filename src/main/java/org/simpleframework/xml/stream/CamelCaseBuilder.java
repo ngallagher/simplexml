@@ -109,6 +109,11 @@ class CamelCaseBuilder implements Style {
    private class Attribute extends Splitter {
       
       /**
+       * This determines whether to capitalise a split token
+       */
+      private boolean capital;
+      
+      /**
        * Constructor for the <code>Attribute</code> object. This will
        * take the original string and parse it such that all of the
        * words are emitted and used to build the styled token.
@@ -130,9 +135,10 @@ class CamelCaseBuilder implements Style {
        */
       @Override
       protected void parse(char[] text, int off, int len) {
-         if(attribute) {
+         if(attribute || capital) {
             text[off] = toUpper(text[off]);
          }
+         capital = true;
       }
       
       /**
@@ -160,6 +166,11 @@ class CamelCaseBuilder implements Style {
    private class Element extends Attribute {
       
       /**
+       * This determines whether to capitalise a split token
+       */
+      private boolean capital;
+      
+      /**
        * Constructor for the <code>Element</code> object. This will
        * take the original string and parse it such that all of the
        * words are emitted and used to build the styled token.
@@ -181,9 +192,10 @@ class CamelCaseBuilder implements Style {
        */
       @Override
       protected void parse(char[] text, int off, int len) {
-         if(element) {
+         if(element || capital) {
             text[off] = toUpper(text[off]);
          }
+         capital = true;
       }
    }
 

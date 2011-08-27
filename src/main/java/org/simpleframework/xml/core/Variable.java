@@ -19,7 +19,7 @@
 package org.simpleframework.xml.core;
 
 import java.lang.annotation.Annotation;
-import java.util.Set;
+import java.util.Collection;
 
 import org.simpleframework.xml.strategy.Type;
 import org.simpleframework.xml.stream.InputNode;
@@ -93,31 +93,57 @@ class Variable implements Label {
    }
    
    /**
-    * This returns a <code>Set</code> of elements in a union. This
-    * will typically be an empty set, and is never null. If this is
-    * a label union then this will return the name of each label
-    * within the group. Providing the labels for a union allows the
-    * serialization process to determine the associated labels.
+    * This returns a <code>Collection</code> of element names. This
+    * will typically contain both the name and path of the label. 
+    * However, if this is a union it can contain many names and
+    * paths. This method should never return null. 
     * 
     * @return this returns the names of each of the elements
     */
-   public Set<String> getUnion() throws Exception {
-      return label.getUnion();
+   public Collection<String> getNames() throws Exception {
+      return label.getNames();
    }
    
    /**
-    * This returns a <code>Set</code> of elements in a union. This
-    * will typically be an empty set, and is never null. If this is
-    * a label union then this will return the name of each label
-    * within the group. Providing the labels for a union allows the
-    * serialization process to determine the associated labels.
+    * This returns a <code>Collection</code> of element paths. This
+    * will typically contain only the path of the label, which is
+    * composed using the <code>Path</code> annotation and the name
+    * of the label. However, if this is a union it can contain many 
+    * paths. This method should never return null.
+    * 
+    * @return this returns the names of each of the elements
+    */
+   public Collection<String> getPaths() throws Exception {
+      return label.getPaths();
+   }
+   
+   /**
+    * This is used to acquire the full set of names and paths that
+    * can be used to identify a label. Labels can be specified using 
+    * the <code>Path</code> optionally. If the path annotation is not
+    * specified then it needs to be identified by the name alone. 
+    * For a union this can create a large set.
+    * 
+    * @param context this is used to style the element names
+    * 
+    * @return this returns the names of each of the elements
+    */
+   public Collection<String> getNames(Context context) throws Exception {
+      return label.getNames(context);
+   }
+   
+   /**
+    * This is used to acquire the full set of paths that can be used 
+    * to identify a label. Labels can be identified using a name or by 
+    * using the optional <code>Path</code> with the name. If the path 
+    * annotation is not specified this will return the names.
     *
     * @param context this is used to style the element names
     * 
     * @return this returns the names of each of the elements
     */
-   public Set<String> getUnion(Context context) throws Exception {
-      return label.getUnion(context);
+   public Collection<String> getPaths(Context context) throws Exception {
+      return label.getPaths(context);
    }
    
    /**
@@ -176,10 +202,21 @@ class Variable implements Label {
     * @return returns the name that is used for the XML property
     */
    public String getName(Context context) throws Exception{
-      String name = label.getName(context);
-      Style style = context.getStyle();
-      
-      return style.getElement(name);
+      return label.getName(context);
+   }
+   
+   /**
+    * This is used to acquire the path of the element or attribute
+    * that is used by the class schema. The path is determined by
+    * acquiring the XPath expression and appending the name of the
+    * label to form a fully qualified styled path.
+    * 
+    * @param context this is the context used to style the path
+    * 
+    * @return returns the path that is used for the XML property
+    */
+   public String getPath(Context context) throws Exception {
+      return label.getPath(context);
    }
    
    /**
@@ -260,16 +297,27 @@ class Variable implements Label {
    }
    
    /**
-    * This method is used to return the path where this is located.
-    * The path is an XPath expression that allows serialization to
-    * locate the XML entity within the document. If there is no
-    * path then the XML entity is written within the current context.
-    * An empty path is identified as a null value.
+    * This is used to acquire the path of the element or attribute
+    * that is used by the class schema. The path is determined by
+    * acquiring the XPath expression and appending the name of the
+    * label to form a fully qualified path.
+    * 
+    * @return returns the path that is used for the XML property
+    */
+   public String getPath() throws Exception {
+      return label.getPath();
+   }
+   
+   /**
+    * This method is used to return an XPath expression that is 
+    * used to represent the position of this label. If there is no
+    * XPath expression associated with this then an empty path is
+    * returned. This will never return a null expression.
     * 
     * @return the XPath expression identifying the location
     */
-   public String getPath() {
-      return label.getPath();
+   public Expression getExpression() throws Exception {
+      return label.getExpression();
    }
    
    /**
@@ -359,6 +407,29 @@ class Variable implements Label {
     */
    public boolean isRequired() {
       return label.isRequired();
+   }
+   
+   /**
+    * This is used to determine if the label represents text. If
+    * a label represents text it typically does not have a name,
+    * instead the empty string represents the name. Also text
+    * labels can not exist with other text labels, or elements.
+    * 
+    * @return this returns true if this label represents text
+    */
+   public boolean isText() {
+      return label.isText();
+   }
+   
+   /**
+    * This is used to determine if this label is a union. If this
+    * is true then this label represents a number of labels and
+    * is simply a wrapper for these labels. 
+    * 
+    * @return this returns true if the label represents a union
+    */
+   public boolean isUnion() {
+      return label.isUnion();
    }
    
    /**

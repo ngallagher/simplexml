@@ -20,6 +20,8 @@ package org.simpleframework.xml.core;
 
 import java.util.HashMap;
 
+import org.simpleframework.xml.strategy.Type;
+
 /**
  * The <code>ExpressionBuilder</code> object is used build and cache
  * path expressions. The expressions provided by this must be valid
@@ -42,7 +44,7 @@ class ExpressionBuilder {
    /**
     * This is the type the expressions are being built for.
     */
-   private final Class type;
+   private final Type type;
    
    /**
     * Constructor for the <code>ExpressionBuilder</code>. This is
@@ -52,6 +54,17 @@ class ExpressionBuilder {
     * @param type this is the type containing the expressions
     */
    public ExpressionBuilder(Class type) {
+      this(new ClassType(type));
+   }
+   
+   /**
+    * Constructor for the <code>ExpressionBuilder</code>. This is
+    * used to create a builder to cache frequently requested XPath
+    * expressions. Such caching improves the overall performance.
+    * 
+    * @param type this is the type containing the expressions
+    */
+   public ExpressionBuilder(Type type) {
       this.cache = new Cache();
       this.type = type;
    }

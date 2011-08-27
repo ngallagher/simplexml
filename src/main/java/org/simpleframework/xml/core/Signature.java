@@ -21,6 +21,7 @@ package org.simpleframework.xml.core;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Set;
 
 /**
  * The <code>Signature</code> object represents a constructor
@@ -103,7 +104,7 @@ class Signature extends LinkedHashMap<String, Parameter> {
       Signature signature = new Signature(type);
       
       for(Parameter value : values()) {  
-         String name = value.getName(context);
+         String name = value.getPath(context);
          signature.put(name, value);
       }
       return signature;

@@ -44,7 +44,7 @@ class ClassCreator implements Creator {
    /**
     * This is used to acquire a parameter by the parameter name.
     */
-   private final Signature signature;
+   private final Signature registry;
    
    /**
     * This is the type this creator creates instances of.
@@ -57,12 +57,12 @@ class ClassCreator implements Creator {
     * relates to the construction of an instance. 
     * 
     * @param list contains the list of all constructors available
-    * @param signature contains all parameters for the constructors
+    * @param registry contains all parameters for the constructors
     * @param primary this is the default no argument constructor
     */
-   public ClassCreator(List<Initializer> list, Signature signature, Initializer primary) {
-      this.type = signature.getType();
-      this.signature = signature;
+   public ClassCreator(List<Initializer> list, Signature registry, Initializer primary) {
+      this.type = registry.getType();
+      this.registry = registry;
       this.primary = primary;
       this.list = list;
    }
@@ -147,7 +147,7 @@ class ClassCreator implements Creator {
     * @return this returns the named parameter for the creator
     */
    public Parameter getParameter(String name) {
-      return signature.get(name);
+      return registry.get(name);
    }
    
    /**
@@ -159,7 +159,7 @@ class ClassCreator implements Creator {
     * @return this returns the parameters declared in the schema     
     */
    public List<Parameter> getParameters() {
-      return signature.getParameters();
+      return registry.getParameters();
    }
    
    /**

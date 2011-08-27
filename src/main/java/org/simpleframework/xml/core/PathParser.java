@@ -23,6 +23,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.simpleframework.xml.strategy.Type;
+
 /**
  * The <code>PathParser</code> object is used to parse XPath paths.
  * This will parse a subset of the XPath expression syntax, such
@@ -39,7 +41,7 @@ import java.util.List;
  * </pre>
  * If the parsed path does not match an XPath expression similar to
  * the above then an exception is thrown. Once parsed the segments
- * of the path can be used to traverse data structures modeled on
+ * of the path can be used to traverse data structures modelled on
  * an XML document or fragment.
  * 
  * @author Niall Gallagher
@@ -64,6 +66,16 @@ class PathParser implements Expression {
    private LinkedList<String> names;
    
    /**
+    * This is used to build a fully qualified path expression.
+    */
+   private StringBuilder builder;
+   
+   /**
+    * This is the fully qualified path expression for this.
+    */
+   private String location;
+   
+   /**
     * This is the the cached canonical representation of the path.
     */
    private String cache;
@@ -76,7 +88,7 @@ class PathParser implements Expression {
    /**
     * This is the type the expressions are to be parsed for.
     */
-   private Class type;
+   private Type type;
    
    /**
     * This is used to determine if the path is an attribute.
@@ -112,13 +124,25 @@ class PathParser implements Expression {
     * @param path this is the XPath expression to be parsed
     * @param type this is the type the expressions are parsed for
     */
-   public PathParser(Class type, String path) throws Exception {
+   public PathParser(Type type, String path) throws Exception {
       this.indexes = new LinkedList<Integer>();
       this.prefixes = new LinkedList<String>();
       this.names = new LinkedList<String>();
+      this.builder = new StringBuilder();
       this.type = type;
       this.path = path;
       this.parse(path);
+   }
+   
+   /**
+    * This method is used to determine if this expression is an
+    * empty path. An empty path can be represented by a single
+    * period, '.'. It identifies the current path.
+    * 
+    * @return returns true if this represents an empty path
+    */
+   public boolean isEmpty() {
+      return isEmpty(location);
    }
    
    /**
@@ -190,6 +214,85 @@ class PathParser implements Expression {
     */ 
    public String getLast() {
       return names.getLast();
+   }
+
+   /**
+    * This location contains the full path expression with all
+    * of the indexes explicitly shown for each path segment. This
+    * is used to create a uniform representation that can be used
+    * for comparisons of different path expressions. 
+    * 
+    * @return this returns an expanded version of the path
+    */
+   public String getPath() {
+      return location;
+   }
+   
+   /**
+    * This is used to acquire the element path using this XPath
+    * expression. The element path is simply the fully qualified
+    * path for this expression with the provided name appended.
+    * If this is an empty path, the provided name is returned.
+    * 
+    * @param name this is the name of the element to be used
+    * 
+    * @return a fully qualified path for the specified name
+    */
+   public String getElement(String name) {
+      return getElementPath(location, name);
+   }
+   
+   /**
+    * This is used to acquire the element path using this XPath
+    * expression. The element path is simply the fully qualified
+    * path for this expression with the provided name appended.
+    * If this is an empty path, the provided name is returned.
+    * 
+    * @param path this is the path expression to be used
+    * @param name this is the name of the element to be used
+    * 
+    * @return a fully qualified path for the specified name
+    */
+   private String getElementPath(String path, String name) {
+      if(isEmpty(name)) {
+         return path;
+      }
+      if(isEmpty(path)) {
+         return name;
+      }
+      return path + "/"+ name+"[1]";
+   }
+   
+   /**
+    * This is used to acquire the attribute path using this XPath
+    * expression. The attribute path is simply the fully qualified
+    * path for this expression with the provided name appended.
+    * If this is an empty path, the provided name is returned.
+    * 
+    * @param name this is the name of the attribute to be used
+    * 
+    * @return a fully qualified path for the specified name
+    */
+   public String getAttribute(String name) {
+      return getAttributePath(location, name);
+   }
+   
+   /**
+    * This is used to acquire the attribute path using this XPath
+    * expression. The attribute path is simply the fully qualified
+    * path for this expression with the provided name appended.
+    * If this is an empty path, the provided name is returned.
+    * 
+    * @param path this is the path expression to be used
+    * @param name this is the name of the attribute to be used
+    * 
+    * @return a fully qualified path for the specified name
+    */
+   private String getAttributePath(String path, String name) {
+      if(isEmpty(path)) { 
+         return name;
+      }
+      return path +"/@" +name;
    }
 
    /**
@@ -277,6 +380,37 @@ class PathParser implements Expression {
          segment();
       }  
       truncate();
+      build();
+   }
+   
+   /**
+    * This method is used to build a fully qualified path that has
+    * each segment index. Building a path in this manner ensures
+    * that a parsed path can have a unique string that identifies 
+    * the exact XML element the expression points to. 
+    */
+   private void build() {
+      int count = names.size();
+      int last = count - 1;
+      
+      for(int i = 0; i < count; i++) {
+         String segment = names.get(i);
+         int index = indexes.get(i);
+         
+         if(i > 0) {
+            builder.append('/');
+         } 
+         if(attribute && i == last) {
+            builder.append('@');
+            builder.append(segment);           
+         } else {
+            builder.append(segment);
+            builder.append('[');
+            builder.append(index);
+            builder.append(']');
+         }
+      }
+      location = builder.toString();
    }
 
    /**
@@ -329,7 +463,10 @@ class PathParser implements Expression {
          char value = data[off++];
          
          if(!isValid(value)) {
-            if(value == '[') {
+            if(value == '@') {
+               off--;
+               break;
+            } else if(value == '[') {
                index();            
                break;
             } else if(value != '/') { 
@@ -425,6 +562,18 @@ class PathParser implements Expression {
    }
    
    /**
+    * This is used to determine if a string is empty. A string is
+    * considered empty if it is null or of zero length. 
+    * 
+    * @param text this is the text to check if it is empty
+    * 
+    * @return this returns true if the string is empty or null
+    */
+   private boolean isEmpty(String text) {
+      return text == null || text.length() == 0;
+   }
+   
+   /** 
     * This is used to determine if the provided character is a digit.
     * Only digits can be used within a segment index, so this is used
     * when parsing the index to ensure all characters are valid.     
@@ -544,6 +693,11 @@ class PathParser implements Expression {
       private List<String> cache;
       
       /**
+       * This is the fragment of the original path this section uses.
+       */
+      private String section;
+      
+      /**
        * This contains a cache of the canonical path representation.
        */
       private String path;
@@ -574,6 +728,17 @@ class PathParser implements Expression {
       }
       
       /**
+       * This method is used to determine if this expression is an
+       * empty path. An empty path can be represented by a single
+       * period, '.'. It identifies the current path.
+       * 
+       * @return returns true if this represents an empty path
+       */
+      public boolean isEmpty() {
+         return begin == end;
+      }
+      
+      /**
        * This is used to determine if the expression is a path. An
        * expression represents a path if it contains more than one
        * segment. If only one segment exists it is an element name.
@@ -597,6 +762,59 @@ class PathParser implements Expression {
             return end >= names.size() - 1;
          }
          return false;
+      }
+      
+      /**
+       * This location contains the full path expression with all
+       * of the indexes explicitly shown for each path segment. This
+       * is used to create a uniform representation that can be used
+       * for comparisons of different path expressions. 
+       * 
+       * @return this returns an expanded version of the path
+       */
+      public String getPath() {
+         if(section == null) {
+            section = getCanonicalPath();
+         }
+         return section;
+      }
+      
+      /**
+       * This is used to acquire the element path using this XPath
+       * expression. The element path is simply the fully qualified
+       * path for this expression with the provided name appended.
+       * If this is an empty path, the provided name is returned.
+       * 
+       * @param name this is the name of the element to be used
+       * 
+       * @return a fully qualified path for the specified name
+       */
+      public String getElement(String name) {
+         String path = getPath();
+         
+         if(path != null) {
+            return getElementPath(path, name);
+         }
+         return name;
+      }
+      
+      /**
+       * This is used to acquire the attribute path using this XPath
+       * expression. The attribute path is simply the fully qualified
+       * path for this expression with the provided name appended.
+       * If this is an empty path, the provided name is returned.
+       * 
+       * @param name this is the name of the attribute to be used
+       * 
+       * @return a fully qualified path for the specified name
+       */
+      public String getAttribute(String name) {
+         String path = getPath();
+         
+         if(path != null) {
+            return getAttributePath(path, name);
+         }
+         return name;
       }
       
       /**
@@ -700,13 +918,38 @@ class PathParser implements Expression {
       }      
       
       /**
+       * This is used to acquire the path section that contains all
+       * the segments in the section as well as the indexes for the
+       * segments. This method basically gets a substring of the
+       * primary path location from the first to the last segment.
+       * 
+       * @return this returns the section as a fully qualified path
+       */
+      private String getCanonicalPath() {
+         int start = 0;
+         int last = 0;
+         int pos = 0;
+         
+         for(pos = 0; pos < begin; pos++) {
+            start = location.indexOf('/', start + 1);
+         }
+         for(last = start; pos <= end; pos++) {
+            last = location.indexOf('/', last + 1);
+            if(last == -1) {
+               last = location.length();
+            }
+         }
+         return location.substring(start + 1, last);
+      }
+      
+      /**
        * Provides a canonical XPath expression. This is used for both
        * debugging and reporting. The path returned represents the 
        * original path that has been parsed to form the expression.
        * 
        * @return this returns the string format for the XPath
        */
-      private String getPath() {        
+      private String getFragment() {        
          int last = start;
          int pos = 0; 
          
@@ -733,7 +976,7 @@ class PathParser implements Expression {
        */
       public String toString() {
          if(path == null) {
-            path = getPath();
+            path = getFragment();
          }
          return path;
       }   

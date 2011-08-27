@@ -19,7 +19,7 @@
 package org.simpleframework.xml.core;
 
 import java.lang.annotation.Annotation;
-import java.util.Set;
+import java.util.Collection;
 
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementUnion;
@@ -46,22 +46,27 @@ class ElementUnionLabel implements Label {
    /**
     * This is used to extract the individual unions in the group.
     */
-   private final GroupExtractor extractor;
+   private GroupExtractor extractor;  
+   
+   /**
+    * This is the expression that is associated with this label.
+    */
+   private Expression expression;
    
    /**
     * This is the union associated with this label instance.
     */
-   private final ElementUnion union;   
+   private ElementUnion union;   
    
    /**
     * This is the contact that this label is associated with.
     */
-   private final Contact contact;
+   private Contact contact;
    
    /**
     * This is the label that this acts as an adapter to.
     */
-   private final Label label;
+   private Label label;
    
    /**
     * Constructor for the <code>ElementUnionLabel</code> object. This 
@@ -78,6 +83,17 @@ class ElementUnionLabel implements Label {
       this.label = new ElementLabel(contact, element);
       this.contact = contact;
       this.union = union;
+   }
+   
+   /**
+    * This is used to determine if this label is a union. If this
+    * is true then this label represents a number of labels and
+    * is simply a wrapper for these labels. 
+    * 
+    * @return this returns true if the label represents a union
+    */
+   public boolean isUnion() {
+      return true;
    }
    
    /**
@@ -154,40 +170,67 @@ class ElementUnionLabel implements Label {
     * @return this returns an object that is used for conversion
     */
    public Converter getConverter(Context context) throws Exception {
+      Expression expression = getExpression();
       Type type = getContact();
       
       if(type == null) {
          throw new UnionException("Union %s was not declared on a field or method", label);
       }
-      return new CompositeUnion(context, extractor, type);
+      return new CompositeUnion(context, extractor, expression, type);
    }
    
    /**
-    * This returns a <code>Set</code> of elements in a union. This
-    * will typically be an empty set, and is never null. If this is
-    * a label union then this will return the name of each label
-    * within the group. Providing the labels for a union allows the
-    * serialization process to determine the associated labels.
+    * This returns a <code>Collection</code> of element names. This
+    * will typically contain both the name and path of the label. 
+    * However, if this is a union it can contain many names and
+    * paths. This method should never return null. 
     * 
     * @return this returns the names of each of the elements
     */
-   public Set<String> getUnion() throws Exception {
+   public Collection<String> getNames() throws Exception {
       return extractor.getNames();
    }
 
    /**
-    * This returns a <code>Set</code> of elements in a union. This
-    * will typically be an empty set, and is never null. If this is
-    * a label union then this will return the name of each label
-    * within the group. Providing the labels for a union allows the
-    * serialization process to determine the associated labels.
+    * This returns a <code>Collection</code> of element paths. This
+    * will typically contain only the path of the label, which is
+    * composed using the <code>Path</code> annotation and the name
+    * of the label. However, if this is a union it can contain many 
+    * paths. This method should never return null.
+    * 
+    * @return this returns the names of each of the elements
+    */
+   public Collection<String> getPaths() throws Exception {
+      return extractor.getPaths();
+   }
+   
+   /**
+    * This is used to acquire the full set of names and paths that
+    * can be used to identify a label. Labels can be specified using 
+    * the <code>Path</code> optionally. If the path annotation is not
+    * specified then it needs to be identified by the name alone. 
+    * For a union this can create a large set.
     *
     * @param context this is used to style the element names
     * 
     * @return this returns the names of each of the elements
     */
-   public Set<String> getUnion(Context context) throws Exception {
+   public Collection<String> getNames(Context context) throws Exception {
       return extractor.getNames(context);
+   }
+ 
+   /**
+    * This is used to acquire the full set of paths that can be used 
+    * to identify a label. Labels can be identified using a name or by 
+    * using the optional <code>Path</code> with the name. If the path 
+    * annotation is not specified this will return the names.
+    * 
+    * @param context this is used to style the element names
+    * 
+    * @return this returns the names of each of the elements
+    */
+   public Collection<String> getPaths(Context context) throws Exception {
+      return extractor.getPaths(context);
    }
  
    /**
@@ -217,6 +260,20 @@ class ElementUnionLabel implements Label {
     */
    public String getName(Context context) throws Exception {
       return label.getName(context);
+   }
+
+   /**
+    * This is used to acquire the path of the element or attribute
+    * that is used by the class schema. The path is determined by
+    * acquiring the XPath expression and appending the name of the
+    * label to form a fully qualified styled path.
+    * 
+    * @param context this is the context used to style the path
+    * 
+    * @return returns the path that is used for the XML property
+    */
+   public String getPath(Context context) throws Exception {
+      return label.getPath(context);
    }
 
    /**
@@ -271,6 +328,33 @@ class ElementUnionLabel implements Label {
    }
 
    /**
+    * This is used to acquire the path of the element or attribute
+    * that is used by the class schema. The path is determined by
+    * acquiring the XPath expression and appending the name of the
+    * label to form a fully qualified path.
+    * 
+    * @return returns the path that is used for the XML property
+    */
+   public String getPath() throws Exception {
+      return label.getPath();
+   }
+   
+   /**
+    * This method is used to return an XPath expression that is 
+    * used to represent the position of this label. If there is no
+    * XPath expression associated with this then an empty path is
+    * returned. This will never return a null expression.
+    * 
+    * @return the XPath expression identifying the location
+    */
+   public Expression getExpression() throws Exception {
+      if(expression == null) {
+         expression = label.getExpression();
+      }
+      return expression;
+   }
+
+   /**
     * This is used to acquire the name of the element or attribute
     * as taken from the annotation. If the element or attribute
     * explicitly specifies a name then that name is used for the
@@ -281,19 +365,6 @@ class ElementUnionLabel implements Label {
     */
    public String getOverride() {
       return label.getOverride();
-   }
-
-   /**
-    * This method is used to return the path where this is located.
-    * The path is an XPath expression that allows serialization to
-    * locate the XML entity within the document. If there is no
-    * path then the XML entity is written within the current context.
-    * An empty path is identified as a null value.
-    * 
-    * @return the XPath expression identifying the location
-    */
-   public String getPath() {
-      return label.getPath();
    }
 
    /**
@@ -370,6 +441,18 @@ class ElementUnionLabel implements Label {
     */
    public boolean isRequired() {
       return label.isRequired();
+   }
+   
+   /**
+    * This is used to determine if the label represents text. If
+    * a label represents text it typically does not have a name,
+    * instead the empty string represents the name. Also text
+    * labels can not exist with other text labels, or elements.
+    * 
+    * @return this returns true if this label represents text
+    */
+   public boolean isText() {
+      return label.isText();
    }
    
    /**

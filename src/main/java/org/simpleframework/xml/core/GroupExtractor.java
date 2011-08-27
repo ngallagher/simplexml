@@ -83,7 +83,18 @@ class GroupExtractor implements Group {
     * @return this returns the names of each union extracted
     */
    public Set<String> getNames() throws Exception {
-      return elements.keySet();
+      return elements.getKeys();
+   }
+   
+   /**
+    * This is used to acquire the paths for each label associated
+    * with this <code>Group</code> instance. The paths provided
+    * here are not styled according to a serialization context.
+    * 
+    * @return this returns the paths of each union extracted
+    */
+   public Set<String> getPaths() throws Exception {
+      return elements.getPaths();
    }
    
    /**
@@ -96,7 +107,20 @@ class GroupExtractor implements Group {
     * @return this returns the names of each union extracted
     */
    public Set<String> getNames(Context context) throws Exception {
-      return getElements(context).keySet();
+      return elements.getKeys(context);
+   }
+   
+   /**
+    * This is used to acquire the paths for each label associated
+    * with this <code>Group</code> instance. The paths provided
+    * here are styled according to a serialization context.
+    * 
+    * @param context this is the context used to style names
+    * 
+    * @return this returns the paths of each union extracted
+    */
+   public Set<String> getPaths(Context context) throws Exception {
+      return elements.getPaths(context);
    }
 
    /**
@@ -110,7 +134,7 @@ class GroupExtractor implements Group {
     * @return this returns a label map containing the labels 
     */
    public LabelMap getElements(Context context) throws Exception {
-      return elements.build(context);
+      return elements.getLabels(context);
    }
 
    /**

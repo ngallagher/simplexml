@@ -19,7 +19,9 @@
 package org.simpleframework.xml.core;
 
 import java.lang.annotation.Annotation;
-import java.util.Set;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 
 import org.simpleframework.xml.strategy.Type;
 import org.simpleframework.xml.stream.Style;
@@ -36,9 +38,24 @@ import org.simpleframework.xml.stream.Style;
 class CacheLabel implements Label {
    
    /**
+    * This represents the names that identify this label instance.
+    */
+   private final Collection<String> names;
+   
+   /**
+    * This represents the paths that identify this label instance.
+    */
+   private final Collection<String> paths;
+   
+   /**
     * This is the annotation that this label instance represents.
     */
    private final Annotation annotation;
+   
+   /**
+    * This is the expression that is used to represent this label.
+    */
+   private final Expression expression;
    
    /**
     * This is the decorator that is associated with the label.
@@ -91,6 +108,16 @@ class CacheLabel implements Label {
    private final boolean data;
    
    /**
+    * This is used to determine if this label represents text.
+    */
+   private final boolean text;
+   
+   /**
+    * This is used to determine if the label represents a union.
+    */
+   private final boolean union;
+   
+   /**
     * This is used to determine the styling of the label name.
     */
    private final boolean attribute;
@@ -109,6 +136,7 @@ class CacheLabel implements Label {
     * This is used to determine whether the entity is inline or not. 
     */
    private final boolean inline;
+   
    /**
     * Constructor for the <code>CacheLabel</code> object. This is used
     * to create a <code>Label</code> that acquires details from another
@@ -119,6 +147,7 @@ class CacheLabel implements Label {
     */
    public CacheLabel(Label label) throws Exception { 
       this.annotation = label.getAnnotation();
+      this.expression = label.getExpression();
       this.decorator = label.getDecorator();
       this.attribute = label.isAttribute();
       this.collection = label.isCollection();
@@ -127,11 +156,15 @@ class CacheLabel implements Label {
       this.required = label.isRequired();
       this.override = label.getOverride();
       this.inline = label.isInline();
+      this.union = label.isUnion();
+      this.names = label.getNames();
+      this.paths = label.getPaths();
       this.path = label.getPath();
       this.type = label.getType();
       this.name = label.getName();
       this.entry = label.getEntry();
       this.data = label.isData();
+      this.text = label.isText();
       this.label = label;
    }
    
@@ -164,16 +197,48 @@ class CacheLabel implements Label {
    }
    
    /**
-    * This returns a <code>Set</code> of elements in a union. This
-    * will typically be an empty set, and is never null. If this is
-    * a label union then this will return the name of each label
-    * within the group. Providing the labels for a union allows the
-    * serialization process to determine the associated labels.
+    * This returns a <code>Collection</code> of element names. This
+    * will typically contain both the name and path of the label. 
+    * However, if this is a union it can contain many names and
+    * paths. This method should never return null. 
     * 
     * @return this returns the names of each of the elements
     */
-   public Set<String> getUnion() throws Exception {
-      return label.getUnion();
+   public Collection<String> getNames() throws Exception {
+      return names;
+   }
+   
+   /**
+    * This returns a <code>Collection</code> of element paths. This
+    * will typically contain only the path of the label, which is
+    * composed using the <code>Path</code> annotation and the name
+    * of the label. However, if this is a union it can contain many 
+    * paths. This method should never return null.
+    * 
+    * @return this returns the names of each of the elements
+    */
+   public Collection<String> getPaths() throws Exception {
+      return paths;
+   }
+   
+   /**
+    * This is used to acquire the full set of paths that can be used 
+    * to identify a label. Labels can be identified using a name or by 
+    * using the optional <code>Path</code> with the name. If the path 
+    * annotation is not specified this will return the names.
+    * 
+    * @param context this is used to style the element names
+    * 
+    * @return this returns the names of each of the elements
+    */
+   public Collection<String> getNames(Context context) throws Exception {
+      if(!union) {
+         String path = getPath(context);
+         String name = getName(context);
+      
+         return Arrays.asList(path, name);
+      }
+      return label.getNames(context);
    }
    
    /**
@@ -187,8 +252,13 @@ class CacheLabel implements Label {
     * 
     * @return this returns the names of each of the elements
     */
-   public Set<String> getUnion(Context context) throws Exception {
-      return label.getUnion(context);
+   public Collection<String> getPaths(Context context) throws Exception {
+      if(!union) {
+         String path = getPath(context);
+      
+         return Collections.singleton(path);
+      }
+      return label.getPaths(context);
    }
    
    /**
@@ -263,6 +333,25 @@ class CacheLabel implements Label {
    }
    
    /**
+    * This is used to acquire the path of the element or attribute
+    * that is used by the class schema. The path is determined by
+    * acquiring the XPath expression and appending the name of the
+    * label to form a fully qualified styled path.
+    * 
+    * @param context this is the context used to style the path
+    * 
+    * @return returns the path that is used for the XML property
+    */
+   public String getPath(Context context) throws Exception {
+      String name = getName(context);
+      
+      if(attribute) {
+         return expression.getAttribute(name);
+      }
+      return expression.getElement(name);
+   }  
+   
+   /**
     * This is used to provide a configured empty value used when the
     * annotated value is null. This ensures that XML can be created
     * with required details regardless of whether values are null or
@@ -315,16 +404,27 @@ class CacheLabel implements Label {
    }
    
    /**
-    * This method is used to return the path where this is located.
-    * The path is an XPath expression that allows serialization to
-    * locate the XML entity within the document. If there is no
-    * path then the XML entity is written within the current context.
-    * An empty path is identified as a null value.
+    * This is used to acquire the path of the element or attribute
+    * that is used by the class schema. The path is determined by
+    * acquiring the XPath expression and appending the name of the
+    * label to form a fully qualified path.
+    * 
+    * @return returns the path that is used for the XML property
+    */
+   public String getPath() throws Exception {
+      return path;
+   }
+   
+   /**
+    * This method is used to return an XPath expression that is 
+    * used to represent the position of this label. If there is no
+    * XPath expression associated with this then an empty path is
+    * returned. This will never return a null expression.
     * 
     * @return the XPath expression identifying the location
     */
-   public String getPath() {
-      return path;
+   public Expression getExpression() throws Exception {
+      return expression;
    }
    
    /**
@@ -364,6 +464,18 @@ class CacheLabel implements Label {
     */
    public boolean isData() {
       return data;
+   }
+   
+   /**
+    * This is used to determine if the label represents text. If
+    * a label represents text it typically does not have a name,
+    * instead the empty string represents the name. Also text
+    * labels can not exist with other text labels, or elements.
+    * 
+    * @return this returns true if this label represents text
+    */
+   public boolean isText() {
+      return text;
    }
    
    /**
@@ -414,6 +526,17 @@ class CacheLabel implements Label {
     */
    public boolean isRequired() {
       return required;
+   }
+   
+   /**
+    * This is used to determine if this label is a union. If this
+    * is true then this label represents a number of labels and
+    * is simply a wrapper for these labels. 
+    * 
+    * @return this returns true if the label represents a union
+    */
+   public boolean isUnion() {
+      return union;
    }
    
    /**

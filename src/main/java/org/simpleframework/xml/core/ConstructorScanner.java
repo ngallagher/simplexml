@@ -59,7 +59,7 @@ class ConstructorScanner {
    /**
     * This is used to acquire a parameter by the parameter name.
     */
-   private Signature signature;
+   private Signature registry;
    
    /**
     * This is the type that is scanner for annotated constructors.
@@ -76,7 +76,7 @@ class ConstructorScanner {
     */
    public ConstructorScanner(Class type) throws Exception {
       this.list = new ArrayList<Initializer>();
-      this.signature = new Signature(type);
+      this.registry = new Signature(type);
       this.type = type;
       this.scan(type);
    }
@@ -91,7 +91,7 @@ class ConstructorScanner {
     * @return this returns the creator for the class object
     */
    public Creator getCreator() {
-      return new ClassCreator(list, signature, primary);
+      return new ClassCreator(list, registry, primary);
    }
    
    /**
@@ -134,13 +134,13 @@ class ConstructorScanner {
             Parameter value = process(factory, labels[i][j], i);
             
             if(value != null) {
-               String name = value.getName();
+               String path = value.getPath();
                
-               if(map.containsKey(name)) {
-                  throw new PersistenceException("Parameter '%s' is a duplicate in %s", name, factory);
+               if(map.containsKey(path)) {
+                  throw new PersistenceException("Parameter '%s' is a duplicate in %s", path, factory);
                }
-               signature.put(name, value);
-               map.put(name, value);
+               registry.put(path, value);
+               map.put(path, value);
             }
          }
       }
@@ -212,10 +212,10 @@ class ConstructorScanner {
     */
    private Parameter create(Constructor factory, Annotation label, int ordinal) throws Exception {
       Parameter value = ParameterFactory.getInstance(factory, label, ordinal);
-      String name = value.getName(); 
+      String path = value.getPath(); 
       
-      if(signature.containsKey(name)) {
-         validate(value, name);
+      if(registry.containsKey(path)) {
+         validate(value, path);
       }
       return value;
    }
@@ -230,7 +230,7 @@ class ConstructorScanner {
     * @param name this is the name of the parameter to validate
     */
    private void validate(Parameter parameter, String name) throws Exception {
-      Parameter other = signature.get(name);
+      Parameter other = registry.get(name);
       Annotation label = other.getAnnotation();
       
       if(!parameter.getAnnotation().equals(label)) {

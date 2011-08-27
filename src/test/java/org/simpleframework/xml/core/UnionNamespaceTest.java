@@ -18,31 +18,40 @@ public class UnionNamespaceTest extends ValidationTestCase {
       @ElementUnion({
          @Element(name="a"),
          @Element(name="b"),
-         @Element(name="c"),
-         @Element(name="d"),
-         @Element(name="e")
+         @Element(name="c")
       })
-      private String name;
+      private String a;
       
-      public Example(@Element(name="a") String name){
-         this.name = name;
-      }
-      public String getName(){
-         return name;
+      @Path("path")
+      @Namespace(prefix="x", reference="http://www.xml.com/ns")
+      @ElementUnion({
+         @Element(name="x"),
+         @Element(name="y"),
+         @Element(name="z")
+      })
+      private String x;
+      
+      public Example(
+            @Element(name="b") String a, // TODO SCORING THE ADJUSTMENT FACTOR HERE NEEDS TOBE FIXED
+            @Element(name="y") String x)
+      {
+         this.a = a;
+         this.x = x;
       }
    }
    
    public void testNamespaceWithUnion() throws Exception{
       Persister persister = new Persister();
-      Example example = new Example("example");
+      Example example = new Example("A", "X");
       StringWriter writer = new StringWriter();
       persister.write(example, writer);
       String text = writer.toString();
       Example deserialized = persister.read(Example.class, text);
-      assertEquals(deserialized.getName(), "example");
+      assertEquals(deserialized.a, "A");
+      assertEquals(deserialized.x, "X");
       validate(persister, example);
       assertElementExists(text, "/example/path/a");
-      assertElementHasValue(text, "/example/path/a", "example");
+      assertElementHasValue(text, "/example/path/a", "A");
       assertElementHasNamespace(text, "/example/path/a", "http://www.xml.com/ns");
    }
 }

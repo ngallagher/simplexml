@@ -55,6 +55,17 @@ interface Section extends Iterable<String> {
    public String getPrefix();
 
    /**
+    * This is used to acquire the text label for this section if 
+    * one has been specified. A text label can only exist in a
+    * section if there are no elements associated with the section
+    * and the section is not composite, as in it does not contain
+    * any further sections.
+    * 
+    * @return this returns the text label for this section
+    */
+   public Label getText() throws Exception;
+
+   /**
     * Returns a <code>LabelMap</code> that contains the details for
     * all fields and methods marked with XML annotations. All of the
     * element annotations are considered and gathered by name in 
@@ -107,6 +118,30 @@ interface Section extends Iterable<String> {
     * @return this returns the section associated with the name
     */
    public Section getSection(String name) throws Exception;
+   
+   /**
+    * This is used to acquire the full element path for this
+    * section. The element path is simply the fully qualified
+    * path for this expression with the provided name appended.
+    * If this is an empty path, the provided name is returned.
+    * 
+    * @param name this is the name of the element to be used
+    * 
+    * @return a fully qualified path for the specified name
+    */
+   public String getPath(String name) throws Exception;
+   
+   /**
+    * This is used to acquire the full attribute path for this 
+    * section. The attribute path is simply the fully qualified
+    * path for this expression with the provided name appended.
+    * If this is an empty path, the provided name is returned.
+    * 
+    * @param name this is the name of the attribute to be used
+    * 
+    * @return a fully qualified path for the specified name
+    */
+   public String getAttribute(String name) throws Exception;
    
    /**
     * To differentiate between a section and an element this can be

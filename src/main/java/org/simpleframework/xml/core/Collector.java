@@ -21,7 +21,6 @@ package org.simpleframework.xml.core;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.Set;
 
 /**
  * The <code>Collector</code> object is used to store variables for
@@ -64,7 +63,6 @@ class Collector implements Criteria {
       this.context = context;
    }
 
-   
    /**
     * This is used to get the <code>Variable</code> that represents
     * a deserialized object. The variable contains all the meta
@@ -98,21 +96,21 @@ class Collector implements Criteria {
     * used to set the method or field when the <code>commit</code>
     * method is invoked.
     * 
-    * @param name this is the name of the variable to be removed
+    * @param label this is the name of the variable to be removed
     * 
     * @return this returns the named variable if it exists
     */
-   public Variable remove(String name) throws Exception{
-      Variable variable = alias.remove(name);
+   public Variable remove(String label) throws Exception{
+      Variable variable = alias.remove(label);
       
       if(variable != null) {
-         Set<String> options = variable.getUnion(context);
+         Collection<String> options = variable.getNames(context);
+         String path = variable.getPath(context);
          
          for(String option : options) {
-            registry.remove(option);
             alias.remove(option);
          }
-         registry.remove(name);
+         registry.remove(path);
       }
       return variable;
    }
@@ -141,12 +139,11 @@ class Collector implements Criteria {
       Variable variable = new Variable(label, value);
 
       if(label != null) {
-         Set<String> options = label.getUnion(context);
-         String name = label.getName(context);
+         Collection<String> options = label.getNames(context);       
+         String path = label.getPath(context);
          
-         if(!registry.containsKey(name)) {
-            registry.put(name, variable);
-            alias.put(name, variable);
+         if(!registry.containsKey(path)) {
+            registry.put(path, variable);
          }
          for(String option : options) {
             alias.put(option, variable);

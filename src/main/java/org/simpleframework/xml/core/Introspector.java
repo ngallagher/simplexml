@@ -220,14 +220,31 @@ class Introspector {
    }  
    
    /**
-    * This is used to acquire the XPath location of an XML entity. 
-    * The path is acquired from a <code>Path</code> annotation. If
-    * this annotation is not defined for the field or method then
-    * this will return null, representing no defined path.
+    * This method is used to return an XPath expression that is 
+    * used to represent the position of a label. If there is no
+    * XPath expression associated with this then an empty path is
+    * returned. This will never return a null expression.
     * 
-    * @return this will return the path for the field or method
+    * @return the XPath expression identifying the location
     */
-   public String getPath() {
+   public Expression getExpression() throws Exception {
+      String path = getPath();
+      
+      if(path != null) {
+         return new PathParser(contact, path);
+      }
+      return new PathParser(contact, ".");
+   }
+   
+   /**
+    * This is used to acquire the path of the element or attribute
+    * that is used by the class schema. The path is determined by
+    * acquiring the XPath expression and appending the name of the
+    * label to form a fully qualified path.
+    * 
+    * @return returns the path that is used for the XML property
+    */
+   public String getPath() throws Exception {
       Path path = contact.getAnnotation(Path.class);
       
       if(path == null) {

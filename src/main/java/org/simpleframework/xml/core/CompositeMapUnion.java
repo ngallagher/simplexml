@@ -45,6 +45,11 @@ class CompositeMapUnion implements Repeater {
    private final LabelMap elements;
    
    /**
+    * This is the path expression used to represent this union.
+    */
+   private final Expression path;
+   
+   /**
     * This is the current context used for the serialization.
     */
    private final Context context;
@@ -72,14 +77,16 @@ class CompositeMapUnion implements Repeater {
     * 
     * @param context this is the context used for the serialization
     * @param group this is the union group used for delegation
+    * @param path this is the path expression representing this union
     * @param type this is the annotated field or method to be used
     */
-   public CompositeMapUnion(Context context, Group group, Type type) throws Exception {
+   public CompositeMapUnion(Context context, Group group, Expression path, Type type) throws Exception {
       this.elements = group.getElements(context);
       this.style = context.getStyle();
       this.context = context;
       this.group = group;
       this.type = type;
+      this.path = path;
    }
 
    /**
@@ -95,7 +102,8 @@ class CompositeMapUnion implements Repeater {
     */
    public Object read(InputNode node) throws Exception {
       String name = node.getName();
-      Label label = elements.get(name);
+      String element = path.getElement(name);
+      Label label = elements.get(element);
       Converter converter = label.getConverter(context);
       
       return converter.read(node);
@@ -115,7 +123,8 @@ class CompositeMapUnion implements Repeater {
     */
    public Object read(InputNode node, Object value) throws Exception {
       String name = node.getName();
-      Label label = elements.get(name);
+      String element = path.getElement(name);
+      Label label = elements.get(element);
       Converter converter = label.getConverter(context);
       
       return converter.read(node, value);
@@ -134,7 +143,8 @@ class CompositeMapUnion implements Repeater {
     */
    public boolean validate(InputNode node) throws Exception {
       String name = node.getName();
-      Label label = elements.get(name);
+      String element = path.getElement(name);
+      Label label = elements.get(element);
       Converter converter = label.getConverter(context);
       
       return converter.validate(node);
