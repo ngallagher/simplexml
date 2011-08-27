@@ -149,6 +149,31 @@ class CompositeListUnion implements Repeater {
       
       return converter.validate(node);
    }
+   
+   /**
+    * The <code>write</code> method uses the name of the XML element to
+    * select a converter to be used to write the instance. Selection of
+    * the converter is done by looking up the associated label from
+    * the union group using the instance type. Once the converter has
+    * been selected it is used to write the instance.
+    * 
+    * @param source this is the source collection to be serialized 
+    * @param node this is the XML element container to be populated
+    */ 
+   public void write(OutputNode node, Object source) throws Exception {
+      Collection list = (Collection) source;              
+      OutputNode parent = node.getParent();      
+      
+      if(group.isInline()) {
+         if(!list.isEmpty()) {
+            write(node, list);
+         } else if(!node.isCommitted()){
+            node.remove();
+         }
+      } else {
+         write(parent, list);
+      }
+   }
 
    /**
     * The <code>write</code> method uses the name of the XML element to
@@ -158,11 +183,9 @@ class CompositeListUnion implements Repeater {
     * been selected it is used to write the instance.
     * 
     * @param node this is the XML element used to write the instance
-    * @param value this is the value that is to be written
+    * @param list this is the value that is to be written
     */
-   public void write(OutputNode node, Object value) throws Exception {
-      Collection list = (Collection) value;
-      
+   private void write(OutputNode node, Collection list) throws Exception {     
       for(Object item : list) {
          if(item != null) {
             Class real = item.getClass();
