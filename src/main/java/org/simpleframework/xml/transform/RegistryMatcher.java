@@ -22,7 +22,7 @@ import org.simpleframework.xml.util.WeakCache;
 
 /**
  * The <code>RegistryMatcher</code> provides a simple matcher backed
- * by a registry. Registration can be done to match a class to a
+ * by a registry. Registration can be done to match a type to a
  * <code>Transform</code> class or instance. If a transform class is
  * registered an instance of it is created when requested using the
  * default no argument constructor of the type, it is then cached so 
@@ -138,8 +138,8 @@ public class RegistryMatcher implements Matcher {
    /**
     * The <code>Cache</code> object that is used store the transform
     * types and instances. Each item cached can be resolved using
-    * a type. If the key is collected by the garbage collector then
-    * this will drop the value, as this is a weak cache.
+    * a type. If the key is no longer referenced then the garbage 
+    * collector can collect the value cached.
     * 
     * @author Niall Gallagher
     */
