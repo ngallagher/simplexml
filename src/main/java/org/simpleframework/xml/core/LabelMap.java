@@ -187,16 +187,16 @@ class LabelMap extends LinkedHashMap<String, Label> implements Iterable<Label> {
     * @return this returns a cloned representation of this map
     */ 
    public LabelMap getLabels(Context context) throws Exception {
-      LabelMap clone = new LabelMap(policy);
+      LabelMap map = new LabelMap(policy);
       
       for(Label label : this) {
          if(label != null) {
             String name = label.getPath(context);
             
-            clone.put(name, label);
+            map.put(name, label);
          }
       }         
-      return clone;      
+      return map;      
    }   
 
    /**
