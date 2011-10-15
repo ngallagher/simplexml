@@ -306,10 +306,12 @@
           <fileset dir="${main.build.path}">
              <include name="**/*.class"/>
              <include name="**/*.properties"/>
+             <include name="**/*.xml"/>
           </fileset>
           <fileset dir="${benchmark.build.path}">
              <include name="**/*.class"/>
              <include name="**/*.properties"/>
+             <include name="**/*.xml"/>
           </fileset>
       </jar>
       <java classname="org.simpleframework.xml.benchmark.Benchmark" fork="yes">
