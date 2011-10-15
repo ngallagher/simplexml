@@ -20,8 +20,10 @@ package org.simpleframework.xml.core;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.simpleframework.xml.strategy.Type;
 
@@ -69,6 +71,16 @@ class PathParser implements Expression {
     * This is used to build a fully qualified path expression.
     */
    private StringBuilder builder;
+   
+   /**
+    * This is used to cache the attributes created by this path.
+    */
+   private Cache attributes;
+   
+   /**
+    * This is used to cache the elements created by this path.
+    */
+   private Cache elements;
    
    /**
     * This is the fully qualified path expression for this.
@@ -129,6 +141,8 @@ class PathParser implements Expression {
       this.prefixes = new LinkedList<String>();
       this.names = new LinkedList<String>();
       this.builder = new StringBuilder();
+      this.attributes = new Cache();
+      this.elements = new Cache();
       this.type = type;
       this.path = path;
       this.parse(path);
@@ -239,7 +253,16 @@ class PathParser implements Expression {
     * @return a fully qualified path for the specified name
     */
    public String getElement(String name) {
-      return getElementPath(location, name);
+      String path = elements.get(name); 
+      
+      if(path == null) {
+         path = getElementPath(location, name);
+         
+         if(path != null) {
+            elements.put(name, path);
+         }
+      }
+      return path;
    }
    
    /**
@@ -274,7 +297,16 @@ class PathParser implements Expression {
     * @return a fully qualified path for the specified name
     */
    public String getAttribute(String name) {
-      return getAttributePath(location, name);
+      String path = attributes.get(name); 
+      
+      if(path == null) {
+         path = getAttributePath(location, name);
+         
+         if(path != null) {
+            attributes.put(name, path);
+         }
+      }
+      return path;
    }
    
    /**
@@ -980,5 +1012,40 @@ class PathParser implements Expression {
          }
          return path;
       }   
+   }
+   
+   
+   /**
+    * This is used to cache store conversions from element names to
+    * paths. Caching the conversions like this ensures that strings
+    * do not need to be concatenated again to form the path. This
+    * should improve the overall performance and also limits size.
+    * 
+    * @author Niall Gallagher
+    */ 
+   private class Cache extends LinkedHashMap<String, String> {
+
+      /**
+       * Constructor for the <code>Cache</code> object. This is a
+       * constructor that creates the linked hash map such that 
+       * it will purge the entries that are oldest within the map.
+       */ 
+      public Cache() {      
+         super(16, 0.75f, false);              
+      }
+      
+      /**
+       * This is used to remove the eldest entry from the LRU cache.
+       * The eldest entry is removed from the cache if the size of
+       * the map grows larger than the maximum entries permitted.
+       *
+       * @param entry this is the eldest entry that can be removed
+       *
+       * @return this returns true if the entry should be removed
+       */ 
+      @Override
+      public boolean removeEldestEntry(Map.Entry entry) {
+         return size() > 16;                                    
+      } 
    }
 }
