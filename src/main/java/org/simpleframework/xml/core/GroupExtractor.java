@@ -288,8 +288,12 @@ class GroupExtractor implements Group {
        * @param name this is the name of the label to be registered
        * @param label this is the label that is to be registered
        */
-      public void register(String name, Label label) {
-         elements.put(name, label);
+      public void register(String name, Label label) throws Exception {
+         Label cache = new CacheLabel(label);
+         
+         if(!elements.containsKey(name)) {
+            elements.put(name, cache);
+         }
       }
       
       /**
@@ -300,9 +304,11 @@ class GroupExtractor implements Group {
        * @param type this is the type of the label to be registered
        * @param label this is the label that is to be registered
        */
-      public void register(Class type, Label label) {
+      public void register(Class type, Label label) throws Exception {
+         Label cache = new CacheLabel(label);
+         
          if(!containsKey(type)) {
-            put(type, label);
+            put(type, cache);
          }
       }
    }

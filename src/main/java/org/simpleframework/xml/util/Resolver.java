@@ -311,7 +311,7 @@ public class Resolver<M extends Match> extends AbstractSet<M> {
       /**
        * This is used to remove the eldest entry from the LRU cache.
        * The eldest entry is removed from the cache if the size of
-       * the map grows larger than the maximum entiries permitted.
+       * the map grows larger than the maximum entries permitted.
        *
        * @param entry this is the eldest entry that can be removed
        *
