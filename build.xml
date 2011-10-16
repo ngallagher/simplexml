@@ -7,6 +7,7 @@
       <property name="main.source.path" value="src/main/java"/>            
       <property name="test.source.path" value="src/test/java"/>
       <property name="benchmark.source.path" value="src/benchmark/java"/>
+      <property name="main.package.path" value="src/package/java"/>     
       <property name="javadoc.path" value="doc/javadoc"/>
       <property name="tutorial.path" value="doc/tutorial"/>
       <property name="target.path" value="target"/>      
@@ -491,7 +492,17 @@
 
    <target name="javadoc" depends="clean" description="Generate source documentation">
       <mkdir dir="${javadoc.path}"/>
-      <javadoc sourcepath="${main.source.path}" packagenames="org.simpleframework.*" destdir="${javadoc.path}" private="false">
+      <copy todir="${build.path}">
+         <fileset dir="${main.source.path}">
+            <include name="**/*.java"/>
+         </fileset>
+      </copy>
+      <copy todir="${build.path}">
+         <fileset dir="${main.package.path}">
+            <include name="**/*.java"/>
+         </fileset>
+      </copy>
+      <javadoc sourcepath="${build.path}" packagenames="org.simpleframework.*" destdir="${javadoc.path}" private="false">
          <classpath>
             <fileset dir="${lib.path}">
                <include name="**/*.jar"/>
