@@ -3,6 +3,7 @@
 	<classpathentry kind="src" path="src/main/java"/>
 	<classpathentry kind="src" path="src/test/java"/>
 	<classpathentry kind="src" path="src/benchmark/java"/>
+	<classpathentry kind="src" path="src/package/java"/>
 	<classpathentry kind="lib" path="lib/stax-1.2.0.jar"/>
 	<classpathentry kind="lib" path="skel/lib/stax-1.2.0.jar"/>
 	<classpathentry kind="lib" path="skel/lib/stax-api-1.0.1.jar"/>
