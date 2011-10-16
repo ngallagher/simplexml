@@ -373,6 +373,11 @@ class StructureBuilder {
     * represents an element within the root model. This will return
     * true if the specified path exists as either an element or
     * as a valid path to an existing model.
+    * <p>
+    * If the path references a <code>Model</code> then that is an
+    * element only if it is not empty. If the model is empty this
+    * means that it was used in the <code>Order</code> annotation
+    * only and this does not refer to a value XML element.
     * 
     * @param path this is the path to search for the element
     * 
@@ -384,11 +389,19 @@ class StructureBuilder {
       
       if(model != null) {
          String name = target.getLast();
-      
+         int index = target.getIndex();
+         
          if(model.isElement(name)) {
             return true;
          }
-         return model.isModel(name);
+         if(model.isModel(name)) {
+            Model element = model.lookup(name, index);
+            
+            if(element.isEmpty()) {
+               return false;
+            }
+            return true;
+         }
       }
       return false;
    }
