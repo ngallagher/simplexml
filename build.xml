@@ -1,5 +1,19 @@
 <?xml version="1.0"?>
-<project name="Simple" default="build" basedir=".">
+<project name="Simple" default="usage" basedir=".">
+
+   <target name="usage">
+      <echo message="clean - Cleans the build and jar directories"/>
+      <echo message="build - Builds the JAR archive for the project and generates SHA1 and MD5 signatures"/>
+      <echo message="report - Generates a Cobertura report from the test cases"/>
+      <echo message="test - Executes the tests once for each XML library"/>
+      <echo message="test-woodstox - Executes the tests once with the Woodstox StAX framework"/>
+      <echo message="test-kxml - Executes the tests once with the KXML framework"/>
+      <echo message="test-dom - Executes the tests once with the W3C DOM framework"/>
+      <echo message="benchmark - Runs a rather lame benchmark"/>
+      <echo message="package - Packages the framework in to a downloadable package"/>
+      <echo message="pom - Generate the POM file used for Maven"/>
+      <echo message="maven-archive - Packages a maven execution in to a deployable archive"/>
+   </target>
 
    <target name="-layout">
       <property name="root.path" value="."/>
