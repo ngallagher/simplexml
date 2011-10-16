@@ -1,5 +1,5 @@
 /**
- * Provided the core persistence framework and associated annotations.
+ * Provides the core persistence framework and associated annotations.
  * In this package the <code>Persister</code> object can be found. 
  * The persister implements the <code>Serializer</code> interface and
  * provides the main means of serializing and deserializing classes.
