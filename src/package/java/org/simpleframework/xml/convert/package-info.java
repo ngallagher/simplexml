@@ -1,5 +1,5 @@
 /**
- * Provides various strategies that can be used to convert an objects.
+ * Provides various strategies that can be used to convert an object.
  * Converting objects using a <code>Converter</code> has a number of 
  * advantages over annotating the classes directly. One of the primary
  * advantages is that it is possible to use external objects, which 
