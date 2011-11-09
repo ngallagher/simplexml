@@ -109,16 +109,19 @@ class StreamReader implements EventReader {
    private EventNode read() throws Exception {
       XMLEvent event = reader.nextEvent();
       
-      if(event.isStartElement()) {
-         return start(event);
-      } 
-      if(event.isCharacters()) {
-         return text(event);
-      } 
-      if(event.isEndElement()) {
-         return end();
+      if(!event.isEndDocument()) {
+         if(event.isStartElement()) {
+            return start(event);
+         } 
+         if(event.isCharacters()) {
+            return text(event);
+         } 
+         if(event.isEndElement()) {
+            return end();
+         }
+         return read();
       }
-      return read();
+      return null;
    }
    
    /**
