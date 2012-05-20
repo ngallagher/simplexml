@@ -100,6 +100,17 @@ class Signature implements Iterable<Parameter> {
    }
    
    /**
+    * This is used to determine if there are any parameters in the
+    * signature. If the signature contains no parameters then this
+    * will return true, if it does then this returns false.
+    * 
+    * @return this returns true of the signature has no parameters
+    */
+   public boolean isEmpty() {
+      return parameters.isEmpty();
+   }
+   
+   /**
     * This returns true if the signature contains a parameter that
     * is mapped to the specified key. If no parameter exists with
     * this key then this will return false.
@@ -124,6 +135,19 @@ class Signature implements Iterable<Parameter> {
    }
    
    /**
+    * This is used to remove a parameter from the signature. This 
+    * returns any parameter removed if it exists, if not then this
+    * returns null. This is used when performing matching.
+    * 
+    * @param key this is the key of the parameter to remove
+    * 
+    * @return this returns the parameter that was removed
+    */
+   public Parameter remove(Object key) {
+      return parameters.remove(key);
+   }
+   
+   /**
     * This is used to acquire a <code>Parameter</code> using the
     * position of that parameter within the constructor. This 
     * allows a builder to determine which parameters to use.
@@ -132,7 +156,7 @@ class Signature implements Iterable<Parameter> {
     * 
     * @return this returns the parameter for the position
     */
-   public Parameter getParameter(int ordinal) {
+   public Parameter get(int ordinal) {
       return parameters.get(ordinal);
    }
    
@@ -145,7 +169,7 @@ class Signature implements Iterable<Parameter> {
     * 
     * @return this is the parameter mapped to the given name
     */
-   public Parameter getParameter(Object key) {
+   public Parameter get(Object key) {
       return parameters.get(key);
    }
     
@@ -157,7 +181,7 @@ class Signature implements Iterable<Parameter> {
     * 
     * @return this returns the parameters in declaration order
     */
-   public List<Parameter> getParameters() {
+   public List<Parameter> getAll() {
       return parameters.getAll();
    }
    
@@ -168,7 +192,7 @@ class Signature implements Iterable<Parameter> {
     * 
     * @param parameter this is the parameter to be added
     */
-   public void addParameter(Parameter parameter) {
+   public void add(Parameter parameter) {
       Object key = parameter.getKey();
       
       if(key != null) {
@@ -186,8 +210,39 @@ class Signature implements Iterable<Parameter> {
     * 
     * @param parameter this is the parameter to be mapped
     */
-   public void setParameter(Object key, Parameter parameter) {
+   public void set(Object key, Parameter parameter) {
       parameters.put(key, parameter);
+   }
+   
+   /**
+    * This is used to instantiate the object using the default no
+    * argument constructor. If for some reason the object can not be
+    * instantiated then this will throw an exception with the reason.    
+    * 
+    * @return this returns the object that has been instantiated
+    */
+   public Object create() throws Exception {
+      if(!factory.isAccessible()) {
+         factory.setAccessible(true);
+      } 
+      return factory.newInstance();
+   }
+   
+   /**
+    * This is used to instantiate the object using a constructor that
+    * takes deserialized objects as arguments. The objects that have
+    * been deserialized are provided in declaration order so they can
+    * be passed to the constructor to instantiate the object.
+    * 
+    * @param list this is the list of objects used for instantiation
+    * 
+    * @return this returns the object that has been instantiated
+    */
+   public Object create(Object[] list) throws Exception {
+      if(!factory.isAccessible()) {
+         factory.setAccessible(true);
+      } 
+      return factory.newInstance(list);
    }
    
    /**
@@ -198,23 +253,13 @@ class Signature implements Iterable<Parameter> {
     * 
     * @return this returns a signature with styled keys
     */
-   public Signature getSignature() throws Exception {
+   public Signature copy() throws Exception {
       Signature signature = new Signature(this);
       
       for(Parameter parameter : this) {  
-         signature.addParameter(parameter);
+         signature.add(parameter);
       }
       return signature;
-   }
- 
-   /**
-    * This is the type that this class map represents. It can be 
-    * used to determine where the parameters stored are declared.
-    * 
-    * @return returns the type that the parameters are created for
-    */
-   public Constructor getConstructor() {
-      return factory;
    }
    
    /**
@@ -225,5 +270,16 @@ class Signature implements Iterable<Parameter> {
     */
    public Class getType() {
       return type;
+   }
+   
+   /**
+    * This is used to acquire a descriptive name for the instantiator.
+    * Providing a name is useful in debugging and when exceptions are
+    * thrown as it describes the constructor the instantiator represents.
+    * 
+    * @return this returns the name of the constructor to be used
+    */
+   public String toString() {
+      return factory.toString();
    }
 }

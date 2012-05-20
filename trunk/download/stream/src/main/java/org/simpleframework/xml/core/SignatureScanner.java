@@ -219,11 +219,11 @@ class SignatureScanner {
          if(signature.contains(path)) {
             throw new UnionException("Annotation name '%s' used more than once in %s for %s", path, label, type);
          } else {
-            signature.setParameter(path, parameter);
+            signature.set(path, parameter);
          }
          register(parameter);
       }
-      return signature.getParameters();
+      return signature.getAll();
    }
    
    /**

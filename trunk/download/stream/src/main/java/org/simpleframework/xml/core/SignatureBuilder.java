@@ -158,7 +158,7 @@ class SignatureBuilder {
             if(signature.contains(key)) {
                throw new ConstructorException("Parameter '%s' is a duplicate in %s", path, factory);
             }
-            signature.addParameter(parameter);
+            signature.add(parameter);
          }
          list.add(signature);
       }

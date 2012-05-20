@@ -62,40 +62,40 @@ public class SignatureScannerTest extends ScannerCreatorTest {
       assertTrue(scanner.isValid());
       assertEquals(signatures.size(), 9);
       
-      assertEquals(findSignature(signatures, String.class, String.class).getParameter(0).getName(), "a");
-      assertEquals(findSignature(signatures, String.class, String.class).getParameter(1).getName(), "x");
-      assertEquals(findSignature(signatures, String.class, String.class).getParameter(0).getType(), String.class);
-      assertEquals(findSignature(signatures, String.class, String.class).getParameter(1).getType(), String.class);
+      assertEquals(findSignature(signatures, String.class, String.class).get(0).getName(), "a");
+      assertEquals(findSignature(signatures, String.class, String.class).get(1).getName(), "x");
+      assertEquals(findSignature(signatures, String.class, String.class).get(0).getType(), String.class);
+      assertEquals(findSignature(signatures, String.class, String.class).get(1).getType(), String.class);
       
-      assertEquals(findSignature(signatures, Integer.class, String.class).getParameter(0).getName(), "b");
-      assertEquals(findSignature(signatures, Integer.class, String.class).getParameter(1).getName(), "x");
-      assertEquals(findSignature(signatures, Integer.class, String.class).getParameter(0).getType(), Integer.class);
-      assertEquals(findSignature(signatures, Integer.class, String.class).getParameter(1).getType(), String.class);
+      assertEquals(findSignature(signatures, Integer.class, String.class).get(0).getName(), "b");
+      assertEquals(findSignature(signatures, Integer.class, String.class).get(1).getName(), "x");
+      assertEquals(findSignature(signatures, Integer.class, String.class).get(0).getType(), Integer.class);
+      assertEquals(findSignature(signatures, Integer.class, String.class).get(1).getType(), String.class);
       
-      assertEquals(findSignature(signatures, Long.class, String.class).getParameter(0).getName(), "c");
-      assertEquals(findSignature(signatures, Long.class, String.class).getParameter(1).getName(), "x");
-      assertEquals(findSignature(signatures, Long.class, String.class).getParameter(0).getType(), Long.class);
-      assertEquals(findSignature(signatures, Long.class, String.class).getParameter(1).getType(), String.class);
+      assertEquals(findSignature(signatures, Long.class, String.class).get(0).getName(), "c");
+      assertEquals(findSignature(signatures, Long.class, String.class).get(1).getName(), "x");
+      assertEquals(findSignature(signatures, Long.class, String.class).get(0).getType(), Long.class);
+      assertEquals(findSignature(signatures, Long.class, String.class).get(1).getType(), String.class);
       
-      assertEquals(findSignature(signatures, String.class, Integer.class).getParameter(0).getName(), "a");
-      assertEquals(findSignature(signatures, String.class, Integer.class).getParameter(1).getName(), "y");
-      assertEquals(findSignature(signatures, String.class, Integer.class).getParameter(0).getType(), String.class);
-      assertEquals(findSignature(signatures, String.class, Integer.class).getParameter(1).getType(), Integer.class);
+      assertEquals(findSignature(signatures, String.class, Integer.class).get(0).getName(), "a");
+      assertEquals(findSignature(signatures, String.class, Integer.class).get(1).getName(), "y");
+      assertEquals(findSignature(signatures, String.class, Integer.class).get(0).getType(), String.class);
+      assertEquals(findSignature(signatures, String.class, Integer.class).get(1).getType(), Integer.class);
       
-      assertEquals(findSignature(signatures, Integer.class, Integer.class).getParameter(0).getName(), "b");
-      assertEquals(findSignature(signatures, Integer.class, Integer.class).getParameter(1).getName(), "y");
-      assertEquals(findSignature(signatures, Integer.class, Integer.class).getParameter(0).getType(), Integer.class);
-      assertEquals(findSignature(signatures, Integer.class, Integer.class).getParameter(1).getType(), Integer.class);
+      assertEquals(findSignature(signatures, Integer.class, Integer.class).get(0).getName(), "b");
+      assertEquals(findSignature(signatures, Integer.class, Integer.class).get(1).getName(), "y");
+      assertEquals(findSignature(signatures, Integer.class, Integer.class).get(0).getType(), Integer.class);
+      assertEquals(findSignature(signatures, Integer.class, Integer.class).get(1).getType(), Integer.class);
       
-      assertEquals(findSignature(signatures, Long.class, Integer.class).getParameter(0).getName(), "c");
-      assertEquals(findSignature(signatures, Long.class, Integer.class).getParameter(1).getName(), "y");
-      assertEquals(findSignature(signatures, Long.class, Integer.class).getParameter(0).getType(), Long.class);
-      assertEquals(findSignature(signatures, Long.class, Integer.class).getParameter(1).getType(), Integer.class);
+      assertEquals(findSignature(signatures, Long.class, Integer.class).get(0).getName(), "c");
+      assertEquals(findSignature(signatures, Long.class, Integer.class).get(1).getName(), "y");
+      assertEquals(findSignature(signatures, Long.class, Integer.class).get(0).getType(), Long.class);
+      assertEquals(findSignature(signatures, Long.class, Integer.class).get(1).getType(), Integer.class);
    }
    
    private Signature findSignature(List<Signature> list, Class... types) {
       for(Signature signature : list) {
-         List<Parameter> params = signature.getParameters();
+         List<Parameter> params = signature.getAll();
          int count = params.size();
          
          for(int i = 0; i < types.length; i++) {

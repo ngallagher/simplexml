@@ -224,7 +224,7 @@ class InstantiatorBuilder {
          Parameter replace = create(parameter);
          
          if(replace != null) {
-            substitute.addParameter(replace);
+            substitute.add(replace);
          }
       }
       create(substitute);
@@ -407,7 +407,7 @@ class InstantiatorBuilder {
          Object key = label.getKey();
 
          if(contact.isReadOnly()) {
-            Parameter value = signature.getParameter(key);
+            Parameter value = signature.get(key);
 
             if(value == null) {
                iterator.remove();
