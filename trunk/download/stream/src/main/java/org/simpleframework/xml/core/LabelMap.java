@@ -109,31 +109,6 @@ class LabelMap extends LinkedHashMap<String, Label> implements Iterable<Label> {
    }
    
    /**
-    * This is used to acquire the paths and names for each label in
-    * this map. Extracting the names and paths in this manner allows
-    * a labels to be referred to by either. If there are no elements
-    * registered with this map this will return an empty set.
-    * 
-    * @param context this is used to style the names and paths used
-    * 
-    * @return this returns the names and paths for each label
-    */
-   public Set<String> getKeys(Context context) throws Exception {
-      Set<String> list = new HashSet<String>();
-      
-      for(Label label : this) {
-         if(label != null) {
-            String path = label.getPath(context);
-            String name = label.getName(context);
-            
-            list.add(path);
-            list.add(name);
-         }
-      }
-      return list;
-   }
-   
-   /**
     * This is used to acquire the paths for each label in this map. 
     * Extracting the paths in this manner allows them to be used to
     * reference the labels using paths only.
@@ -154,44 +129,19 @@ class LabelMap extends LinkedHashMap<String, Label> implements Iterable<Label> {
    }
    
    /**
-    * This is used to acquire the paths for each label in this map. 
-    * Extracting the paths in this manner allows them to be used to
-    * reference the labels using paths only. Each path provided is
-    * styled using the context provided.
-    * 
-    * @param context this is used to style the paths for this map
-    * 
-    * @return this returns the paths for each label in this map
-    */
-   public Set<String> getPaths(Context context) throws Exception {
-      Set<String> list = new HashSet<String>();
-      
-      for(Label label : this) {
-         if(label != null) {
-            String path = label.getPath(context);
-            
-            list.add(path);
-         }
-      }
-      return list;
-   }
-
-   /**
     * This method is used to clone the label map such that mappings
     * can be maintained in the original even if they are modified
     * in the clone. This is used to that the <code>Schema</code> can
     * remove mappings from the label map as they are visited. 
     *
-    * @param context this is the context used to style the XML names
-    *
     * @return this returns a cloned representation of this map
     */ 
-   public LabelMap getLabels(Context context) throws Exception {
+   public LabelMap getLabels() throws Exception {
       LabelMap map = new LabelMap(policy);
       
       for(Label label : this) {
          if(label != null) {
-            String name = label.getPath(context);
+            String name = label.getPath();
             
             map.put(name, label);
          }

@@ -21,8 +21,6 @@ package org.simpleframework.xml.core;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 
-import org.simpleframework.xml.stream.Style;
-
 /**
  * The <code>ModelMap</code> object represents a map that contains 
  * string model mappings. This is used for convenience as a typedef
@@ -49,6 +47,33 @@ class ModelMap extends LinkedHashMap<String, ModelList> implements Iterable<Mode
     */ 
    public ModelMap(Class type) {
       this.type = type;
+   }
+   
+   /**
+    * This method is used to clone the model map such that mappings
+    * can be maintained in the original even if they are modified
+    * in the clone. This is used to that the <code>Schema</code> can
+    * remove mappings from the model map as they are visited. 
+    *
+    * @param style this is the style applied to the serialization
+    *
+    * @return this returns a cloned representation of this map
+    */
+   public ModelMap getModels() throws Exception {
+      ModelMap map = new ModelMap(type);
+      
+      for(String name : keySet()) {
+         ModelList list = get(name);
+         
+         if(list != null) {
+            list = list.build();
+         }
+         if(map.containsKey(name)) {
+            throw new PathException("Path with name '%s' is a duplicate in %s ", name, type);
+         }
+         map.put(name, list);
+      }         
+      return map;    
    }
    
    /**
@@ -100,52 +125,5 @@ class ModelMap extends LinkedHashMap<String, ModelList> implements Iterable<Mode
     */ 
    public Iterator<ModelList> iterator() {
       return values().iterator(); 
-   }
-   
-   /**
-    * This method is used to clone the model map such that mappings
-    * can be maintained in the original even if they are modified
-    * in the clone. This is used to that the <code>Schema</code> can
-    * remove mappings from the model map as they are visited. 
-    *
-    * @param context this is the context used to style the XML names
-    *
-    * @return this returns a cloned representation of this map
-    */
-   public ModelMap getModels(Context context) throws Exception {
-      Style style = context.getStyle();
-      
-      if(style != null){
-         return getModels(style);
-      }
-      return this;
-   }
-   
-   /**
-    * This method is used to clone the model map such that mappings
-    * can be maintained in the original even if they are modified
-    * in the clone. This is used to that the <code>Schema</code> can
-    * remove mappings from the model map as they are visited. 
-    *
-    * @param style this is the style applied to the serialization
-    *
-    * @return this returns a cloned representation of this map
-    */
-   private ModelMap getModels(Style style) throws Exception {
-      ModelMap map = new ModelMap(type);
-      
-      for(String element : keySet()) {
-         ModelList list = get(element);
-         String name = style.getElement(element);
-         
-         if(list != null) {
-            list = list.build();
-         }
-         if(map.containsKey(name)) {
-            throw new PathException("Path with name '%s' is a duplicate of '%s' in %s ", element, name, type);
-         }
-         map.put(name, list);
-      }         
-      return map;    
    }
 }

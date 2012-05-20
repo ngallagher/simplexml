@@ -245,12 +245,10 @@ class TreeModel implements Model {
     * names in the styled format. It also ensures that the model
     * remains immutable as it only provides copies of its data.
     * 
-    * @param context the context associated with the serialization
-    * 
     * @return this returns a map built from the specified context
     */   
-   public ModelMap buildModels(Context context) throws Exception {
-      return models.getModels(context);
+   public ModelMap getModels() throws Exception {
+      return models.getModels();
    }
 
    /**
@@ -260,12 +258,10 @@ class TreeModel implements Model {
     * names in the styled format. It also ensures that the model
     * remains immutable as it only provides copies of its data.
     * 
-    * @param context the context associated with the serialization
-    * 
     * @return this returns a map built from the specified context
     */   
-   public LabelMap buildAttributes(Context context) throws Exception {
-      return attributes.getLabels(context);
+   public LabelMap getAttributes() throws Exception {
+      return attributes.getLabels();
    }
 
    /**
@@ -274,13 +270,11 @@ class TreeModel implements Model {
     * the context can be used to create the XML element and attribute
     * names in the styled format. It also ensures that the model
     * remains immutable as it only provides copies of its data.
-    * 
-    * @param context the context associated with the serialization
     * 
     * @return this returns a map built from the specified context
     */
-   public LabelMap buildElements(Context context) throws Exception{
-      return elements.getLabels(context);
+   public LabelMap getElements() throws Exception{
+      return elements.getLabels();
    }
    
    /**

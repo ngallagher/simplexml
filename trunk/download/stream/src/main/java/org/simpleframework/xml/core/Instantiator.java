@@ -1,7 +1,7 @@
 /*
- * Instantiator.java July 2006
+ * Instantiator.java December 2009
  *
- * Copyright (C) 2006, Niall Gallagher <niallg@users.sf.net>
+ * Copyright (C) 2009, Niall Gallagher <niallg@users.sf.net>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,83 +18,78 @@
 
 package org.simpleframework.xml.core;
 
-import java.lang.reflect.Constructor;
-
-import org.simpleframework.xml.strategy.Value;
+import java.util.List;
 
 /**
- * The <code>Instantiator</code> is used to instantiate types that 
- * will leverage a constructor cache to quickly create the objects.
- * This is used by the various object factories to return type 
- * instances that can be used by converters to create the objects 
- * that will later be deserialized.
+ * The <code>Instantiator</code> object is used for instantiating 
+ * objects using either the default no argument constructor or one
+ * that takes deserialized values as parameters. This also exposes 
+ * the parameters and constructors used to instantiate the object.
  *
  * @author Niall Gallagher
- * 
- * @see org.simpleframework.xml.core.Instance
  */
-class Instantiator {
+interface Instantiator {
 
    /**
-    * This is used to cache the constructors for the given types.
+    * This is used to determine if this <code>Instantiator</code> has 
+    * a default constructor. If the only constructor this contains 
+    * is a default no argument constructor this returns true.
+    * 
+    * @return true if the class only has a default constructor
     */
-   private final ConstructorCache cache;
+   public boolean isDefault(); 
    
    /**
-    * Constructor for the <code>Instantiator</code> object. This will
-    * create a constructor cache that can be used to cache all of 
-    * the constructors instantiated for the required types. 
+    * This is used to instantiate the object using the default no
+    * argument constructor. If for some reason the object can not be
+    * instantiated then this will throw an exception with the reason.
+    * 
+    * @return this returns the object that has been instantiated
     */
-   public Instantiator() {
-      this.cache = new ConstructorCache();
-   }
+   public Object getInstance() throws Exception; 
    
    /**
-    * This will create an <code>Instance</code> that can be used
-    * to instantiate objects of the specified class. This leverages
-    * an internal constructor cache to ensure creation is quicker.
+    * This is used to instantiate the object using a constructor that
+    * takes deserialized objects as arguments. The object that have
+    * been deserialized can be taken from the <code>Criteria</code>
+    * object which contains the deserialized values.
     * 
-    * @param value this contains information on the object instance
+    * @param criteria this contains the criteria to be used
     * 
-    * @return this will return an object for instantiating objects
+    * @return this returns the object that has been instantiated
     */
-   public Instance getInstance(Value value) {
-      return new ValueInstance(this, value);
-   }
+   public Object getInstance(Criteria criteria) throws Exception;
 
    /**
-    * This will create an <code>Instance</code> that can be used
-    * to instantiate objects of the specified class. This leverages
-    * an internal constructor cache to ensure creation is quicker.
+    * This is used to acquire the named <code>Parameter</code> from
+    * the creator. A parameter is taken from the constructor which
+    * contains annotations for each object that is required. These
+    * parameters must have a matching field or method.
     * 
-    * @param type this is the type that is to be instantiated
+    * @param name this is the name of the parameter to be acquired
     * 
-    * @return this will return an object for instantiating objects
+    * @return this returns the named parameter for the creator
     */
-   public Instance getInstance(Class type) {
-      return new ClassInstance(this, type);
-   }
+   public Parameter getParameter(String name);
    
    /**
-    * This method will instantiate an object of the provided type. If
-    * the object or constructor does not have public access then this
-    * will ensure the constructor is accessible and can be used.
+    * This is used to acquire all parameters annotated for the class
+    * schema. Providing all parameters ensures that they can be
+    * validated against the annotated methods and fields to ensure
+    * that each parameter is valid and has a corresponding match.
     * 
-    * @param type this is used to ensure the object is accessible
+    * @return this returns the parameters declared in the schema     
+    */
+   public List<Parameter> getParameters();
+   
+   /**
+    * This is used to acquire the <code>Creator</code> objects
+    * used to create an instance of the object. Each represents a
+    * constructor and contains the parameters to the constructor. 
+    * This is primarily used to validate each constructor against the
+    * fields and methods annotated to ensure they are compatible.
     *
-    * @return this returns an instance of the specific class type
+    * @return this returns a list of creators for the type
     */ 
-   public Object getObject(Class type) throws Exception {
-      Constructor method = cache.get(type);
-      
-      if(method == null) {
-         method = type.getDeclaredConstructor();      
-
-         if(!method.isAccessible()) {
-            method.setAccessible(true);              
-         }
-         cache.put(type, method);
-      }
-      return method.newInstance();   
-   }
+   public List<Creator> getCreators();
 }

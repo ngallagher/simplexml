@@ -19,12 +19,14 @@
 package org.simpleframework.xml.core;
 
 import java.lang.annotation.Annotation;
+import java.util.List;
 
 import org.simpleframework.xml.Default;
 import org.simpleframework.xml.DefaultType;
 import org.simpleframework.xml.Order;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.Version;
+import org.simpleframework.xml.stream.Format;
 
 /**
  * The <code>Scanner</code> object performs the reflective inspection
@@ -85,12 +87,70 @@ class Scanner implements Policy {
     * @param type this is the type that is scanned for a schema
     */
    public Scanner(Class type) throws Exception {  
-      this.scanner = new ClassScanner(type);
-      this.builder = new StructureBuilder(this, type); 
+      this(type, new Format());
+   }
+   
+   /**
+    * Constructor for the <code>Scanner</code> object. This is used 
+    * to scan the provided class for annotations that are used to
+    * build a schema for an XML file to follow. 
+    * 
+    * @param type this is the type that is scanned for a schema
+    */
+   public Scanner(Class type, Format format) throws Exception {  
+      this.scanner = new ClassScanner(type, format);
+      this.builder = new StructureBuilder(this, type, format); 
       this.type = type;
       this.scan(type);
    }      
    
+   /**
+    * This is used to acquire the default signature for the class. 
+    * The default signature is the signature for the no argument
+    * constructor for the type. If there is no default constructor
+    * for the type then this will return null.
+    * 
+    * @return this returns the default signature if it exists
+    */
+   public Signature getSignature() {
+      return scanner.getSignature();
+   }
+   
+   /**
+    * This returns the signatures for the type. All constructors are
+    * represented as a signature and returned. More signatures than
+    * constructors will be returned if a constructor is annotated 
+    * with a union annotation.
+    *
+    * @return this returns the list of signatures for the type
+    */
+   public List<Signature> getSignatures() {
+      return scanner.getSignatures();
+   }
+   
+   /**
+    * This returns a map of all parameters that exist. This is used
+    * to validate all the parameters against the field and method
+    * annotations that exist within the class. 
+    * 
+    * @return this returns a map of all parameters within the type
+    */
+   public ParameterMap getParameters() {
+      return scanner.getParameters();
+   }
+   
+   /**
+    * This is used to acquire the instantiator for the type. This is
+    * used to create object instances based on the constructors that
+    * have been annotated. If no constructors have been annotated
+    * then this can be used to create default no argument instances.
+    * 
+    * @return this instantiator responsible for creating instances
+    */
+   public Instantiator getInstantiator() {
+      return structure.getInstantiator();
+   }
+
    /**
     * This is used to acquire the type that this scanner scans for
     * annotations to be used in a schema. Exposing the class that
@@ -100,19 +160,6 @@ class Scanner implements Policy {
     */
    public Class getType() {
       return type;
-   }
-   
-   /**
-    * This is used to create the object instance. It does this by
-    * either delegating to the default no argument constructor or by
-    * using one of the annotated constructors for the object. This
-    * allows deserialized values to be injected in to the created
-    * object if that is required by the class schema.
-    * 
-    * @return this returns the creator for the class object
-    */
-   public Creator getCreator() {
-      return scanner.getCreator();
    }
    
    /**
@@ -147,12 +194,10 @@ class Scanner implements Policy {
     * Each section is a tree like structure defining exactly where
     * each attribute an element is located within the source XML.
     * 
-    * @param context this is the context used to style the values
-    * 
     * @return this will return a section for serialization
     */
-   public Section getSection(Context context) {
-      return structure.getSection(context);
+   public Section getSection() {
+      return structure.getSection();
    }
    
    /**
@@ -390,6 +435,7 @@ class Scanner implements Policy {
     * @throws Exception if text and element annotations are present
     */
    private void validate(Class type) throws Exception {
+      builder.commit(type);
       builder.validate(type);
    }
   
@@ -474,7 +520,7 @@ class Scanner implements Policy {
     * 
     * @param type this is the object type that is to be scanned
     */ 
-   public void method(Class type) throws Exception {
+   private void method(Class type) throws Exception {
       ContactList list = new MethodScanner(type, access, required);
       
       for(Contact contact : list) {

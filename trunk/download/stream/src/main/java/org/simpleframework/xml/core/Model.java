@@ -38,6 +38,59 @@ package org.simpleframework.xml.core;
 interface Model extends Iterable<String> {
    
    /**
+    * Used to determine if a model is empty. A model is considered
+    * empty if that model does not contain any registered elements
+    * or attributes. However, if the model contains other models
+    * that have registered elements or attributes it is not empty.
+    * 
+    * @return true if the model does not contain registrations
+    */
+   public boolean isEmpty();
+   
+   /**
+    * This is used to determine if the provided name represents
+    * a model. This is useful when validating the model as it
+    * allows determination of a named model, which is an element. 
+    * 
+    * @param name this is the name of the section to determine
+    * 
+    * @return this returns true if the model is registered
+    */
+   public boolean isModel(String name);
+   
+   /**
+    * This is used to determine if the provided name represents
+    * an element. This is useful when validating the model as 
+    * it allows determination of a named XML element. 
+    * 
+    * @param name this is the name of the section to determine
+    * 
+    * @return this returns true if the element is registered
+    */
+   public boolean isElement(String name);
+   
+   /**
+    * This is used to determine if the provided name represents
+    * an attribute. This is useful when validating the model as 
+    * it allows determination of a named XML attribute
+    * 
+    * @param name this is the name of the attribute to determine
+    * 
+    * @return this returns true if the attribute is registered
+    */
+   public boolean isAttribute(String name);
+   
+   /**
+    * This is used to perform a recursive search of the models that
+    * have been registered, if a model has elements or attributes
+    * then this returns true. If however no other model contains 
+    * any attributes or elements then this will return false.
+    * 
+    * @return true if any model has elements or attributes
+    */
+   public boolean isComposite();
+   
+   /**
     * This is used to validate the model to ensure all elements and
     * attributes are valid. Validation also ensures that any order
     * specified by an annotated class did not contain invalid XPath
@@ -48,45 +101,6 @@ interface Model extends Iterable<String> {
     * @throws Exception if text and element annotations are present
     */
    public void validate(Class type) throws Exception;
-   
-   /**
-    * This is used to build a map from a <code>Context</code> object.
-    * Building a map in this way ensures that any style specified by
-    * the context can be used to create the XML element and attribute
-    * names in the styled format. It also ensures that the model
-    * remains immutable as it only provides copies of its data.
-    * 
-    * @param context the context associated with the serialization
-    * 
-    * @return this returns a map built from the specified context
-    */
-   public LabelMap buildElements(Context context) throws Exception;
-   
-   /**
-    * This is used to build a map from a <code>Context</code> object.
-    * Building a map in this way ensures that any style specified by
-    * the context can be used to create the XML element and attribute
-    * names in the styled format. It also ensures that the model
-    * remains immutable as it only provides copies of its data.
-    * 
-    * @param context the context associated with the serialization
-    * 
-    * @return this returns a map built from the specified context
-    */
-   public LabelMap buildAttributes(Context context) throws Exception;
-   
-   /**
-    * This is used to build a map from a <code>Context</code> object.
-    * Building a map in this way ensures that any style specified by
-    * the context can be used to create the XML element and attribute
-    * names in the styled format. It also ensures that the model
-    * remains immutable as it only provides copies of its data.
-    * 
-    * @param context the context associated with the serialization
-    * 
-    * @return this returns a map built from the specified context
-    */
-   public ModelMap buildModels(Context context) throws Exception;
    
    /**
     * This is used to register an XML entity within the model. The
@@ -194,57 +208,39 @@ interface Model extends Iterable<String> {
    public Model lookup(Expression path);
    
    /**
-    * This is used to determine if the provided name represents
-    * a model. This is useful when validating the model as it
-    * allows determination of a named model, which is an element. 
+    * This is used to build a map from a <code>Context</code> object.
+    * Building a map in this way ensures that any style specified by
+    * the context can be used to create the XML element and attribute
+    * names in the styled format. It also ensures that the model
+    * remains immutable as it only provides copies of its data.
     * 
-    * @param name this is the name of the section to determine
-    * 
-    * @return this returns true if the model is registered
+    * @return this returns a map built from the specified context
     */
-   public boolean isModel(String name);
+   public LabelMap getElements() throws Exception;
    
    /**
-    * This is used to determine if the provided name represents
-    * an element. This is useful when validating the model as 
-    * it allows determination of a named XML element. 
+    * This is used to build a map from a <code>Context</code> object.
+    * Building a map in this way ensures that any style specified by
+    * the context can be used to create the XML element and attribute
+    * names in the styled format. It also ensures that the model
+    * remains immutable as it only provides copies of its data.
     * 
-    * @param name this is the name of the section to determine
-    * 
-    * @return this returns true if the element is registered
+    * @return this returns a map built from the specified context
     */
-   public boolean isElement(String name);
+   public LabelMap getAttributes() throws Exception;
    
    /**
-    * This is used to determine if the provided name represents
-    * an attribute. This is useful when validating the model as 
-    * it allows determination of a named XML attribute
+    * This is used to build a map from a <code>Context</code> object.
+    * Building a map in this way ensures that any style specified by
+    * the context can be used to create the XML element and attribute
+    * names in the styled format. It also ensures that the model
+    * remains immutable as it only provides copies of its data.
     * 
-    * @param name this is the name of the attribute to determine
+    * @param context the context associated with the serialization
     * 
-    * @return this returns true if the attribute is registered
+    * @return this returns a map built from the specified context
     */
-   public boolean isAttribute(String name);
-   
-   /**
-    * This is used to perform a recursive search of the models that
-    * have been registered, if a model has elements or attributes
-    * then this returns true. If however no other model contains 
-    * any attributes or elements then this will return false.
-    * 
-    * @return true if any model has elements or attributes
-    */
-   public boolean isComposite();
-   
-   /**
-    * Used to determine if a model is empty. A model is considered
-    * empty if that model does not contain any registered elements
-    * or attributes. However, if the model contains other models
-    * that have registered elements or attributes it is not empty.
-    * 
-    * @return true if the model does not contain registrations
-    */
-   public boolean isEmpty();
+   public ModelMap getModels() throws Exception;
    
    /**
     * This returns a text label if one is associated with the model.

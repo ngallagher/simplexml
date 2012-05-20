@@ -22,7 +22,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 
 import org.simpleframework.xml.Attribute;
-import org.simpleframework.xml.stream.Style;
+import org.simpleframework.xml.stream.Format;
 
 /**
  * The <code>AttributeParameter</code> represents a constructor 
@@ -40,11 +40,6 @@ class AttributeParameter extends TemplateParameter {
     * This is the expression used to represent this parameter.
     */
    private final Expression expression;
-   
-   /**
-    * This is the constructor the parameter was declared in.
-    */
-   private final Constructor factory;
    
    /**
     * This is the contact used to determine the parameter name.
@@ -72,6 +67,11 @@ class AttributeParameter extends TemplateParameter {
    private final Class type;
    
    /**
+    * This is the key used to represent this parameter object.
+    */
+   private final Object key;
+   
+   /**
     * This is the index that the parameter was declared at.
     */
    private final int index;
@@ -84,16 +84,28 @@ class AttributeParameter extends TemplateParameter {
     * @param factory this is the constructor the parameter is in
     * @param value this is the annotation used for the parameter
     * @param index this is the index the parameter appears at
+    * @param format this is the format used to style the paths
     */
-   public AttributeParameter(Constructor factory, Attribute value, int index) throws Exception {
+   public AttributeParameter(Constructor factory, Attribute value, Format format, int index) throws Exception {
       this.contact = new Contact(value, factory, index);
-      this.label = new AttributeLabel(contact, value);
+      this.label = new AttributeLabel(contact, value, format);
       this.expression = label.getExpression();
       this.path = label.getPath();
       this.type = label.getType();
       this.name = label.getName();
-      this.factory = factory;
+      this.key = label.getKey();
       this.index = index;
+   }
+   
+   /**
+    * This is the key used to represent the parameter. The key is
+    * used to store the parameter in hash containers. Unlike the
+    * path is not necessarily the path for the parameter.
+    * 
+    * @return this is the key used to represent the parameter
+    */
+   public Object getKey() {
+      return key;
    }
    
    /**
@@ -132,39 +144,6 @@ class AttributeParameter extends TemplateParameter {
    }
    
    /**
-    * This is used to acquire the path of the element or attribute
-    * represented by this parameter. The path is determined by
-    * acquiring the XPath expression and appending the name of the
-    * label to form a fully qualified styled path.
-    * 
-    * @param context this is the context used to style the path
-    * 
-    * @return returns the path that is used for this parameter
-    */
-   public String getPath(Context context) {
-      Expression expression = getExpression();
-      String name = getName(context);
-      
-      return expression.getAttribute(name);
-   }
-   
-   /**
-    * This is used to acquire the name of the parameter that this
-    * represents. The name is determined using annotation and 
-    * the name attribute of that annotation, if one is provided.
-    * 
-    * @param context this is the context used to style the name
-    * 
-    * @return this returns the name of the annotated parameter
-    */
-   public String getName(Context context) {
-      Style style = context.getStyle();
-      String name = getName();
-      
-      return style.getAttribute(name);
-   }
-   
-   /**
     * This is used to acquire the annotated type class. The class
     * is the type that is to be deserialized from the XML. This
     * is used to validate against annotated fields and methods.
@@ -172,7 +151,7 @@ class AttributeParameter extends TemplateParameter {
     * @return this returns the type used for the parameter
     */
    public Class getType() {
-      return factory.getParameterTypes()[index];
+      return type;
    } 
    
    /**

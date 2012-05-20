@@ -26,6 +26,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.simpleframework.xml.strategy.Type;
+import org.simpleframework.xml.stream.Format;
+import org.simpleframework.xml.stream.Style;
 
 /**
  * The <code>PathParser</code> object is used to parse XPath paths.
@@ -83,6 +85,11 @@ class PathParser implements Expression {
    private Cache elements;
    
    /**
+    * This is the format used to style the path segments.
+    */
+   private Format format;
+   
+   /**
     * This is the fully qualified path expression for this.
     */
    private String location;
@@ -135,14 +142,16 @@ class PathParser implements Expression {
     * 
     * @param path this is the XPath expression to be parsed
     * @param type this is the type the expressions are parsed for
+    * @param format this is the format used to style the path
     */
-   public PathParser(Type type, String path) throws Exception {
+   public PathParser(String path, Type type, Format format) throws Exception {
       this.indexes = new LinkedList<Integer>();
       this.prefixes = new LinkedList<String>();
       this.names = new LinkedList<String>();
       this.builder = new StringBuilder();
       this.attributes = new Cache();
       this.elements = new Cache();
+      this.format = format;
       this.type = type;
       this.path = path;
       this.parse(path);
@@ -277,13 +286,16 @@ class PathParser implements Expression {
     * @return a fully qualified path for the specified name
     */
    private String getElementPath(String path, String name) {
-      if(isEmpty(name)) {
+      Style style = format.getStyle();
+      String element = style.getElement(name);
+      
+      if(isEmpty(element)) {
          return path;
       }
       if(isEmpty(path)) {
-         return name;
+         return element;
       }
-      return path + "/"+ name+"[1]";
+      return path + "/"+ element+"[1]";
    }
    
    /**
@@ -321,10 +333,13 @@ class PathParser implements Expression {
     * @return a fully qualified path for the specified name
     */
    private String getAttributePath(String path, String name) {
+      Style style = format.getStyle();
+      String attribute = style.getAttribute(name);
+            
       if(isEmpty(path)) { 
-         return name;
+         return attribute;
       }
-      return path +"/@" +name;
+      return path +"/@" +attribute;
    }
 
    /**
@@ -426,6 +441,7 @@ class PathParser implements Expression {
       int last = count - 1;
       
       for(int i = 0; i < count; i++) {
+         String prefix = prefixes.get(i);
          String segment = names.get(i);
          int index = indexes.get(i);
          
@@ -436,6 +452,10 @@ class PathParser implements Expression {
             builder.append('@');
             builder.append(segment);           
          } else {
+            if(prefix != null) {
+               builder.append(prefix);
+               builder.append(':');
+            }
             builder.append(segment);
             builder.append('[');
             builder.append(index);
@@ -508,7 +528,7 @@ class PathParser implements Expression {
          }
          size++;         
       }
-      insert(mark, size);
+      element(mark, size);
    }
    
    /**
@@ -532,7 +552,7 @@ class PathParser implements Expression {
       } else {
          attribute = true;
       }
-      insert(mark, off - mark);
+      attribute(mark, off - mark);
    }
    
    
@@ -665,11 +685,27 @@ class PathParser implements Expression {
     * @param start this is the start offset for the path segment
     * @param count this is the number of characters in the segment
     */
-   private void insert(int start, int count) {
+   private void element(int start, int count) {
       String segment = new String(data, start, count);
 
       if(count > 0) {
-         insert(segment);
+         element(segment);
+      }
+   }
+   
+   /**
+    * This will add a path segment to the list of segments. A path
+    * segment is added only if it has at least one character. All
+    * segments can be iterated over when parsing has completed.
+    * 
+    * @param start this is the start offset for the path segment
+    * @param count this is the number of characters in the segment
+    */
+   private void attribute(int start, int count) {
+      String segment = new String(data, start, count);
+
+      if(count > 0) {
+         attribute(segment);
       }
    }
    
@@ -681,7 +717,7 @@ class PathParser implements Expression {
     * 
     * @param segment this is the path segment to be inserted
     */
-   private void insert(String segment) {
+   private void element(String segment) {
       int index = segment.indexOf(':');
       String prefix = null;
       
@@ -689,8 +725,27 @@ class PathParser implements Expression {
          prefix = segment.substring(0, index);
          segment = segment.substring(index+1);
       }
+      Style style = format.getStyle();
+      String element = style.getElement(segment);
+      
       prefixes.add(prefix);
-      names.add(segment);
+      names.add(element);
+   }
+   
+   /**
+    * This will insert the path segment provided. A path segment is
+    * represented by an optional namespace prefix and an XML element
+    * name. If there is no prefix then a null is entered this will
+    * ensure that the names and segments are kept aligned by index.
+    * 
+    * @param segment this is the path segment to be inserted
+    */
+   private void attribute(String segment) {
+      Style style = format.getStyle();
+      String attribute = style.getAttribute(segment);
+      
+      prefixes.add(null);
+      names.add(attribute);
    }
    
    /**

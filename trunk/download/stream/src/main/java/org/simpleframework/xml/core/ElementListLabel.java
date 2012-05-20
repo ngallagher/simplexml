@@ -22,6 +22,7 @@ import java.lang.annotation.Annotation;
 
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.strategy.Type;
+import org.simpleframework.xml.stream.Format;
 import org.simpleframework.xml.stream.Style;
 
 /**
@@ -53,6 +54,11 @@ class ElementListLabel extends TemplateLabel {
    private Introspector detail;
    
    /**
+    * This is the format used to style the elements in the list.
+    */  
+   private Format format;
+   
+   /**
     * This is the type of collection this list will instantiate.
     */
    private Class type;
@@ -79,14 +85,16 @@ class ElementListLabel extends TemplateLabel {
     * 
     * @param contact this is the contact that this label represents
     * @param label the annotation that contains the schema details
+    * @param format this is used to style the elements in the list
     */
-   public ElementListLabel(Contact contact, ElementList label) {
-      this.detail = new Introspector(contact, this);
+   public ElementListLabel(Contact contact, ElementList label, Format format) {
+      this.detail = new Introspector(contact, this, format);
       this.decorator = new Qualifier(contact);
       this.type = contact.getType();
       this.entry = label.entry();
       this.item = label.type();
       this.name = label.name();      
+      this.format = format;
       this.label = label;
    }
    
@@ -114,7 +122,7 @@ class ElementListLabel extends TemplateLabel {
     * @return this returns the converter for creating a collection 
     */
    public Converter getConverter(Context context) throws Exception {
-      String entry = getEntry(context);
+      String entry = getEntry();
       
       if(!label.inline()) {
          return getConverter(context, entry);
@@ -161,56 +169,6 @@ class ElementListLabel extends TemplateLabel {
          return new CompositeInlineList(context, type, item, name);
       }
       return new PrimitiveInlineList(context, type, item, name);      
-   }
-   
-   /**
-    * This is used to acquire the name of the element or attribute
-    * that is used by the class schema. The name is determined by
-    * checking for an override within the annotation. If it contains
-    * a name then that is used, if however the annotation does not
-    * specify a name the the field or method name is used instead.
-    * 
-    * @return returns the name that is used for the XML property
-    */
-   public String getName(Context context) throws Exception{
-      Style style = context.getStyle();
-      String name = detail.getName();
-      
-      return style.getElement(name);
-   }
-   
-   /**
-    * This is used to acquire the path of the element or attribute
-    * that is used by the class schema. The path is determined by
-    * acquiring the XPath expression and appending the name of the
-    * label to form a fully qualified styled path.
-    * 
-    * @param context this is the context used to style the path
-    * 
-    * @return returns the path that is used for the XML property
-    */
-   public String getPath(Context context) throws Exception {
-      Expression path = getExpression();
-      String name = getName(context);
-
-      return path.getElement(name); 
-   }
-   
-   /**
-    * This is used to either provide the entry value provided within
-    * the annotation or compute a entry value. If the entry string
-    * is not provided the the entry value is calculated as the type
-    * of primitive the object is as a simplified class name.
-    * 
-    * @param context this is the context used to style the entry
-    * 
-    * @return this returns the name of the XML entry element used 
-    */
-   private String getEntry(Context context) throws Exception {
-      Style style = context.getStyle();
-      String entry = getEntry();
-      
-      return style.getElement(entry);
    }
    
    /**
@@ -262,10 +220,12 @@ class ElementListLabel extends TemplateLabel {
     * @return this returns the name of the XML entry element used 
     */
    public String getEntry() throws Exception {
+      Style style = format.getStyle();
+      
       if(detail.isEmpty(entry)) {
          entry = detail.getEntry();
       }
-      return entry;
+      return style.getElement(entry);
    }
    
    /**
@@ -278,7 +238,10 @@ class ElementListLabel extends TemplateLabel {
     * @return returns the name that is used for the XML property
     */
    public String getName() throws Exception{
-      return detail.getName();
+      Style style = format.getStyle();
+      String name = detail.getName();
+      
+      return style.getElement(name);
    }
    
    /**

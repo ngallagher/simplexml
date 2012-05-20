@@ -31,6 +31,7 @@ import org.simpleframework.xml.ElementMapUnion;
 import org.simpleframework.xml.ElementUnion;
 import org.simpleframework.xml.Text;
 import org.simpleframework.xml.Version;
+import org.simpleframework.xml.stream.Format;
 
 /**
  * The <code>LabelFactory</code> object is used to create instances of
@@ -56,11 +57,12 @@ final class LabelFactory {
     * 
     * @param contact this is contact that the label is produced for
     * @param label represents the XML annotation for the contact
+    * @param format this is the format used to style the labels
     * 
     * @return returns the label instantiated for the field
     */
-   public static Label getInstance(Contact contact, Annotation label) throws Exception {
-      return getInstance(contact, label, null);
+   public static Label getInstance(Contact contact, Annotation label, Format format) throws Exception {
+      return getInstance(contact, label, null, format);
    } 
    
    /**
@@ -73,11 +75,12 @@ final class LabelFactory {
     * @param contact this is contact that the label is produced for
     * @param label represents the XML annotation for the contact
     * @param entry this is the entry annotation for this label
+    * @param format this is the format used to style the labels
     * 
     * @return returns the label instantiated for the field
     */
-   public static Label getInstance(Contact contact, Annotation label, Annotation entry) throws Exception {
-      Label value = getLabel(contact, label, entry);
+   public static Label getInstance(Contact contact, Annotation label, Annotation entry, Format format) throws Exception {
+      Label value = getLabel(contact, label, entry, format);
       
       if(value == null) {
          return value;
@@ -94,16 +97,18 @@ final class LabelFactory {
     * 
     * @param contact this is contact that the label is produced for
     * @param label represents the XML annotation for the contact
+    * @param entry this is the annotation used for the entries
+    * @param format this is the format used to style the labels
     * 
     * @return returns the label instantiated for the field
     */
-   private static Label getLabel(Contact contact, Annotation label, Annotation entry) throws Exception {     
+   private static Label getLabel(Contact contact, Annotation label, Annotation entry, Format format) throws Exception {     
       Constructor factory = getConstructor(label);    
       
       if(entry != null) {
-         return (Label)factory.newInstance(contact, label, entry);
+         return (Label)factory.newInstance(contact, label, entry, format);
       }
-      return (Label)factory.newInstance(contact, label);
+      return (Label)factory.newInstance(contact, label, format);
    }
     
     /**
@@ -183,17 +188,17 @@ final class LabelFactory {
        /**       
         * This is the XML annotation type within the constructor.
         */
-       public Class label;
+       private final Class label;
        
        /**
         * This is the individual entry annotation used for the label.
         */
-       public Class entry;
+       private final Class entry;
        
        /**
         * This is the label type that is to be instantiated.
         */
-       public Class type;
+       private final Class type;
        
        /**
         * Constructor for the <code>LabelBuilder</code> object. This 
@@ -244,7 +249,7 @@ final class LabelFactory {
         * @return returns the constructor for the label object
         */
        private Constructor getConstructor(Class label) throws Exception {
-          return type.getConstructor(Contact.class, label);
+          return type.getConstructor(Contact.class, label, Format.class);
        }
        
        /**
@@ -258,7 +263,7 @@ final class LabelFactory {
         * @return returns the constructor for the label object
         */
        private Constructor getConstructor(Class label, Class entry) throws Exception {
-          return type.getConstructor(Contact.class, label, entry);
+          return type.getConstructor(Contact.class, label, entry, Format.class);
        }
     }
 }

@@ -22,6 +22,7 @@ import java.lang.annotation.Annotation;
 
 import org.simpleframework.xml.Version;
 import org.simpleframework.xml.strategy.Type;
+import org.simpleframework.xml.stream.Format;
 import org.simpleframework.xml.stream.Style;
 
 /**
@@ -50,6 +51,11 @@ class VersionLabel extends TemplateLabel {
    private Version label;
    
    /**
+    * This is used to format the paths associated with this.
+    */ 
+   private Format format;
+   
+   /**
     * This is the type that the field object references. 
     */
    private Class type;
@@ -67,12 +73,14 @@ class VersionLabel extends TemplateLabel {
     * 
     * @param contact this is the field from the XML schema class
     * @param label represents the annotation for the field
+    * @param format this is the format used to style the paths
     */
-   public VersionLabel(Contact contact, Version label) {
-      this.detail = new Introspector(contact, this);
+   public VersionLabel(Contact contact, Version label, Format format) {
+      this.detail = new Introspector(contact, this, format);
       this.decorator = new Qualifier(contact);
       this.type = contact.getType();
       this.name = label.name();      
+      this.format = format;
       this.label = label;
    }   
    
@@ -129,45 +137,13 @@ class VersionLabel extends TemplateLabel {
     * a name then that is used, if however the annotation does not
     * specify a name the the field or method name is used instead.
     *
-    * @param context the context object used to style the name
-    * 
-    * @return returns the name that is used for the XML property
-    */
-   public String getName(Context context) throws Exception {
-      Style style = context.getStyle();
-      String name = detail.getName();
-      
-      return style.getAttribute(name);
-   }
-   
-   /**
-    * This is used to acquire the path of the element or attribute
-    * that is used by the class schema. The path is determined by
-    * acquiring the XPath expression and appending the name of the
-    * label to form a fully qualified styled path.
-    * 
-    * @param context this is the context used to style the path
-    * 
-    * @return returns the path that is used for the XML property
-    */
-   public String getPath(Context context) throws Exception {
-      Expression expression = getExpression();
-      String name = getName(context);
-      
-      return expression.getAttribute(name);
-   }
-   
-   /**
-    * This is used to acquire the name of the element or attribute
-    * that is used by the class schema. The name is determined by
-    * checking for an override within the annotation. If it contains
-    * a name then that is used, if however the annotation does not
-    * specify a name the the field or method name is used instead.
-    * 
     * @return returns the name that is used for the XML property
     */
    public String getName() throws Exception {
-      return detail.getName();
+      Style style = format.getStyle();
+      String name = detail.getName();
+      
+      return style.getAttribute(name);
    }
    
    /**

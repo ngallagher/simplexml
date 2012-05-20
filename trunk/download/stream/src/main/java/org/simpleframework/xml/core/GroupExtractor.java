@@ -24,6 +24,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
 
+import org.simpleframework.xml.stream.Format;
+
 /**
  * The <code>GroupExtractor</code> represents an extractor for labels
  * associated with a particular union annotation. This extractor 
@@ -66,9 +68,10 @@ class GroupExtractor implements Group {
     * 
     * @param contact this is the annotated field or method
     * @param label this is the label associated with the contact
+    * @param format this is the format used by this extractor
     */
-   public GroupExtractor(Contact contact, Annotation label) throws Exception{
-      this.factory = new ExtractorFactory(contact, label);
+   public GroupExtractor(Contact contact, Annotation label, Format format) throws Exception{
+      this.factory = new ExtractorFactory(contact, label, format);
       this.elements = new LabelMap();
       this.registry = new Registry(elements);
       this.label = label;
@@ -98,43 +101,15 @@ class GroupExtractor implements Group {
    }
    
    /**
-    * This is used to acquire the names for each label associated
-    * with this <code>Group</code> instance. The names provided
-    * here are styled according to a serialization context.
-    * 
-    * @param context this is the context used to style names
-    * 
-    * @return this returns the names of each union extracted
-    */
-   public Set<String> getNames(Context context) throws Exception {
-      return elements.getKeys(context);
-   }
-   
-   /**
-    * This is used to acquire the paths for each label associated
-    * with this <code>Group</code> instance. The paths provided
-    * here are styled according to a serialization context.
-    * 
-    * @param context this is the context used to style names
-    * 
-    * @return this returns the paths of each union extracted
-    */
-   public Set<String> getPaths(Context context) throws Exception {
-      return elements.getPaths(context);
-   }
-
-   /**
     * This is used to acquire a <code>LabelMap</code> containing the
     * labels available to the group. Providing a context object 
     * ensures that each of the labels is mapped to a name that is
-    * styled according to the internal style of the context.
-    *
-    * @param context this is the context used for serialization
+    * styled according to its internal style.
     * 
     * @return this returns a label map containing the labels 
     */
-   public LabelMap getElements(Context context) throws Exception {
-      return elements.getLabels(context);
+   public LabelMap getElements() throws Exception {
+      return elements.getLabels();
    }
 
    /**
@@ -148,7 +123,7 @@ class GroupExtractor implements Group {
     * @return this returns the label based on the type
     */
    public Label getLabel(Class type) {
-      return registry.get(type);
+      return registry.resolve(type);
    }
    
    /**
@@ -161,6 +136,19 @@ class GroupExtractor implements Group {
     * @return this returns true if a label for the type exists
     */
    public boolean isValid(Class type) {
+      return registry.resolve(type) != null;
+   }
+   
+   /**
+    * This is used to determine if a type has been declared by the
+    * annotation associated with the group. Unlike determining if
+    * the type is valid this will not consider super types.
+    * 
+    * @param type this is the type to determine if it is declared
+    * 
+    * @return this returns true if the type has been declared
+    */
+   public boolean isDeclared(Class type) {
       return registry.containsKey(type);
    }
    
@@ -278,6 +266,29 @@ class GroupExtractor implements Group {
        */
       public Iterator<Label> iterator() {
          return values().iterator();
+      }
+      
+      /**
+       * Here we resolve the <code>Label</code> the type is matched
+       * with by checking if the type is directly mapped or if any of
+       * the super classes of the type are mapped. If there are no
+       * classes in the hierarchy of the type that are mapped then
+       * this will return null otherwise the label will be returned.
+       * 
+       * @param type this is the type to resolve the label for
+       * 
+       * @return this will return the label that is best matched
+       */
+      public Label resolve(Class type) {
+         while(type != null) {
+            Label label = get(type);
+            
+            if(label != null) {
+               return label;
+            }
+            type = type.getSuperclass();
+         }
+         return null;
       }
       
       /**

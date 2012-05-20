@@ -23,6 +23,7 @@ import java.lang.annotation.Annotation;
 import org.simpleframework.xml.Path;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.strategy.Type;
+import org.simpleframework.xml.stream.Format;
 
 /**
  * The <code>Introspector</code> object is used to determine the details
@@ -38,17 +39,22 @@ class Introspector {
    /**
     * This is the actual annotation from the specified contact.
     */
-   private Annotation marker;
+   private final Annotation marker;
    
    /**
     * This is the field or method contact that has been annotated.
     */
-   private Contact contact; 
+   private final Contact contact; 
+   
+   /**
+    * This is the format used to style the paths created.
+    */
+   private final Format format;
    
    /**
     * This is the label used to expose the annotation details.
     */
-   private Label label;
+   private final Label label;
    
    /**
     * Constructor for the <code>Introspector</code> object. This is 
@@ -58,10 +64,12 @@ class Introspector {
     * 
     * @param contact this is the method or field contact used
     * @param label this is the annotation on the contact object
+    * @param format this is used to style the paths created
     */
-   public Introspector(Contact contact, Label label) {
+   public Introspector(Contact contact, Label label, Format format) {
       this.marker = contact.getAnnotation();
       this.contact = contact;
+      this.format = format;
       this.label = label;
    }
    
@@ -231,9 +239,9 @@ class Introspector {
       String path = getPath();
       
       if(path != null) {
-         return new PathParser(contact, path);
+         return new PathParser(path, contact, format);
       }
-      return new PathParser(contact, ".");
+      return new PathParser(".", contact, format);
    }
    
    /**

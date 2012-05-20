@@ -44,17 +44,6 @@ interface Schema {
    public boolean isPrimitive();
    
    /**
-    * This is used to create the object instance. It does this by
-    * either delegating to the default no argument constructor or by
-    * using one of the annotated constructors for the object. This
-    * allows deserialized values to be injected in to the created
-    * object if that is required by the class schema.
-    * 
-    * @return this returns the creator for the class object
-    */
-   public Creator getCreator();
-   
-   /**
     * This returns the <code>Label</code> that represents the version
     * annotation for the scanned class. Only a single version can
     * exist within the class if more than one exists an exception is
@@ -85,6 +74,16 @@ interface Schema {
     * @return this returns the decorator associated with this
     */
    public Decorator getDecorator();
+   
+   /**
+    * This is used to acquire the instantiator for the type. This is
+    * used to create object instances based on the constructors that
+    * have been annotated. If no constructors have been annotated
+    * then this can be used to create default no argument instances.
+    * 
+    * @return this instantiator responsible for creating instances
+    */
+   public Instantiator getInstantiator();
    
    /**
     * This is used to acquire the <code>Caller</code> object. This

@@ -1,5 +1,5 @@
 /*
- * Creator.java December 2009
+ * Instantiator.java April 2009
  *
  * Copyright (C) 2009, Niall Gallagher <niallg@users.sf.net>
  *
@@ -18,37 +18,26 @@
 
 package org.simpleframework.xml.core;
 
-import java.util.List;
-
 /**
- * The <code>Creator</code> object is responsible for instantiating 
- * objects using either the default no argument constructor or one
- * that takes deserialized values as parameters. This also exposes 
- * the parameters and constructors used to instantiate the object.
+ * The <code>Instantiator</code> object is used to represent an single
+ * constructor within an object. It contains the actual constructor
+ * as well as the list of parameters. Each instantiator will score its
+ * weight when given a <code>Criteria</code> object. This allows
+ * the deserialization process to find the most suitable one to
+ * use when instantiating an object.
  * 
  * @author Niall Gallagher
  */
 interface Creator {
 
    /**
-    * This is used to determine if this <code>Creator</code> has a
-    * default constructor. If the class does contain a no argument
-    * constructor then this will return true.
-    * 
-    * @return true if the class has a default constructor
-    */
-   public boolean isDefault(); 
-   
-   /**
     * This is used to instantiate the object using the default no
     * argument constructor. If for some reason the object can not be
     * instantiated then this will throw an exception with the reason.
     * 
-    * @param context this is the context used to match parameters
-    * 
     * @return this returns the object that has been instantiated
     */
-   public Object getInstance(Context context) throws Exception; 
+   public Object getInstance() throws Exception; 
    
    /**
     * This is used to instantiate the object using a constructor that
@@ -56,43 +45,43 @@ interface Creator {
     * been deserialized can be taken from the <code>Criteria</code>
     * object which contains the deserialized values.
     *
-    * @param context this is the context used to match parameters
     * @param criteria this contains the criteria to be used
     * 
     * @return this returns the object that has been instantiated
     */
-   public Object getInstance(Context context, Criteria criteria) throws Exception;
+   public Object getInstance(Criteria criteria) throws Exception;
 
    /**
-    * This is used to acquire the named <code>Parameter</code> from
-    * the creator. A parameter is taken from the constructor which
-    * contains annotations for each object that is required. These
-    * parameters must have a matching field or method.
+    * This is used to score this <code>Instantiator</code> object so that
+    * it can be weighed amongst other constructors. The instantiator that
+    * scores the highest is the one that is used for insIntantiation.
+    * <p>
+    * If any read only element or attribute is not a parameter in
+    * the constructor then the constructor is discounted. This is
+    * because there is no way to set the read only entity without a
+    * constructor injection in to the instantiated object.
     * 
-    * @param name this is the name of the parameter to be acquired
+    * @param criteria this contains the criteria to be used
     * 
-    * @return this returns the named parameter for the creator
+    * @return this returns the score based on the criteria provided
     */
-   public Parameter getParameter(String name);
+   public double getScore(Criteria criteria) throws Exception;
    
    /**
-    * This is used to acquire all parameters annotated for the class
-    * schema. Providing all parameters ensures that they can be
-    * validated against the annotated methods and fields to ensure
-    * that each parameter is valid and has a corrosponding match.
+    * This is the signature associated with the creator. The signature
+    * contains all the parameters associated with the creator as well
+    * as the constructor that this represents. Exposing the signature
+    * allows the creator to be validated.
     * 
-    * @return this returns the parameters declared in the schema     
+    * @return this is the signature associated with the creator
     */
-   public List<Parameter> getParameters();
+   public Signature getSignature() throws Exception;
    
    /**
-    * This is used to acquire the <code>Initializer</code> objects
-    * used to create an instance of the object. Each represents a
-    * constructor and contains the parameters to the constructor. 
-    * This is primarily used to validate each constructor against the
-    * fields and methods annotated to ensure they are compatible.
+    * This is the type associated with the <code>Creator</code> object.
+    * All instances returned from this creator will be of this type.
     * 
-    * @return this returns a list of initializers for the creator
+    * @return this returns the type associated with this creator
     */
-   public List<Initializer> getInitializers();
+   public Class getType() throws Exception;
 }

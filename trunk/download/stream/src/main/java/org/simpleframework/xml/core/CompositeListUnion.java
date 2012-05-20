@@ -81,7 +81,7 @@ class CompositeListUnion implements Repeater {
     * @param type this is the annotated field or method to be used
     */
    public CompositeListUnion(Context context, Group group, Expression path, Type type) throws Exception {
-      this.elements = group.getElements(context);
+      this.elements = group.getElements();
       this.style = context.getStyle();
       this.context = context;
       this.group = group;

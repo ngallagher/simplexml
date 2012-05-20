@@ -1,5 +1,5 @@
 /*
- * ClassCreator.java December 2009
+ * ClassInstantiator.java December 2009
  *
  * Copyright (C) 2009, Niall Gallagher <niallg@users.sf.net>
  *
@@ -22,32 +22,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The <code>ClassCreator</code> is responsible for instantiating 
+ * The <code>ClassInstantiator</code> is used for instantiating 
  * objects using either the default no argument constructor or one
  * that takes deserialized values as parameters. This also exposes 
  * the parameters and constructors used to instantiate the object.
  * 
  * @author Niall Gallagher
  */
-class ClassCreator implements Creator {
+class ClassInstantiator implements Instantiator {
    
    /**
-    * This contains a list of all the initializers for the class.
+    * This contains a list of all the creators for the class.
     */
-   private final List<Initializer> list;   
-   
-   /**
-    * This represents the default no argument constructor used.
-    */
-   private final Initializer primary;
+   private final List<Creator> creators;  
    
    /**
     * This is used to acquire a parameter by the parameter name.
     */
-   private final Signature registry;
+   private final ParameterMap registry;
    
    /**
-    * This is the type this creator creates instances of.
+    * This represents the default no argument constructor used.
+    */
+   private final Creator primary;
+
+   /**
+    * This is the type that object instances are created for.
     */
    private final Class type;
    
@@ -56,15 +56,16 @@ class ClassCreator implements Creator {
     * used to create an object that contains all information that
     * relates to the construction of an instance. 
     * 
-    * @param list contains the list of all constructors available
-    * @param registry contains all parameters for the constructors
+    * @param creators contains the list of all constructors available
     * @param primary this is the default no argument constructor
+    * @param registry contains all parameters for the constructors
+    * @param type this is the type that instances are created for
     */
-   public ClassCreator(List<Initializer> list, Signature registry, Initializer primary) {
-      this.type = registry.getType();
+   public ClassInstantiator(List<Creator> creators, Creator primary, ParameterMap registry, Class type) {
+      this.creators = creators;
       this.registry = registry;
       this.primary = primary;
-      this.list = list;
+      this.type = type;
    }
 
    /**
@@ -75,7 +76,12 @@ class ClassCreator implements Creator {
     * @return true if the class has a default constructor
     */
    public boolean isDefault() {
-      return primary != null;
+      int count = creators.size();
+      
+      if(count <= 1) {
+         return primary != null;
+      }
+      return false;
    }
    
    /**
@@ -83,12 +89,10 @@ class ClassCreator implements Creator {
     * argument constructor. If for some reason the object can not be
     * instantiated then this will throw an exception with the reason.
     * 
-    * @param context this is the context used to match parameters
-    * 
     * @return this returns the object that has been instantiated
     */
-   public Object getInstance(Context context) throws Exception {
-      return primary.getInstance(context);
+   public Object getInstance() throws Exception {
+      return primary.getInstance();
    }
    
    /**
@@ -102,34 +106,33 @@ class ClassCreator implements Creator {
     * 
     * @return this returns the object that has been instantiated
     */
-   public Object getInstance(Context context, Criteria criteria) throws Exception {
-      Initializer initializer = getInitializer(context, criteria);
+   public Object getInstance(Criteria criteria) throws Exception {
+      Creator creator = getCreator(criteria);
       
-      if(initializer == null) {
+      if(creator == null) {
          throw new PersistenceException("Constructor not matched for %s", type);
       }
-      return initializer.getInstance(context, criteria);
+      return creator.getInstance(criteria);
    }
    
    /**
-    * This is used to acquire an <code>Initializer</code> which is used
-    * to instantiate the object. If there is no match for the initializer
+    * This is used to acquire an <code>Instantiator</code> which is used
+    * to instantiate the object. If there is no match for the instantiator
     * then the default constructor is provided.
     * 
-    * @param context this is the context used to match parameters
-    * @param criteria this contains the criteria to be used
+    * @param criteria this contains the criteria to be used for this
     * 
-    * @return this returns the initializer that has been matched
+    * @return this returns the instantiator that has been matched
     */
-   private Initializer getInitializer(Context context, Criteria criteria) throws Exception {
-      Initializer result = primary;
+   private Creator getCreator(Criteria criteria) throws Exception {
+      Creator result = primary;
       double max = 0.0;
       
-      for(Initializer initializer : list) {
-         double score = initializer.getScore(context, criteria);
+      for(Creator instantiator : creators) {
+         double score = instantiator.getScore(criteria);
          
          if(score > max) {
-            result = initializer;
+            result = instantiator;
             max = score;
          }
       }
@@ -159,20 +162,20 @@ class ClassCreator implements Creator {
     * @return this returns the parameters declared in the schema     
     */
    public List<Parameter> getParameters() {
-      return registry.getParameters();
+      return registry.getAll();
    }
    
    /**
-    * This is used to acquire all of the <code>Initializer</code> 
+    * This is used to acquire all of the <code>Instantiator</code> 
     * objects used to create an instance of the object. Each represents 
     * a constructor and contains the parameters to the constructor. 
     * This is primarily used to validate each constructor against the
     * fields and methods annotated to ensure they are compatible.
     * 
-    * @return this returns a list of initializers for the creator
+    * @return this returns a list of instantiators for the creator
     */
-   public List<Initializer> getInitializers() {
-      return new ArrayList<Initializer>(list);
+   public List<Creator> getCreators() {
+      return new ArrayList<Creator>(creators);
    }
    
    /**
