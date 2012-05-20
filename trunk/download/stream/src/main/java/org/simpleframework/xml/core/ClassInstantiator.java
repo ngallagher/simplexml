@@ -101,7 +101,6 @@ class ClassInstantiator implements Instantiator {
     * been deserialized can be taken from the <code>Criteria</code>
     * object which contains the deserialized values.
     * 
-    * @param context this is the context used to match parameters
     * @param criteria this contains the criteria to be used
     * 
     * @return this returns the object that has been instantiated

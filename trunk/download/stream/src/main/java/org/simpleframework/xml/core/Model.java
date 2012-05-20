@@ -236,8 +236,6 @@ interface Model extends Iterable<String> {
     * names in the styled format. It also ensures that the model
     * remains immutable as it only provides copies of its data.
     * 
-    * @param context the context associated with the serialization
-    * 
     * @return this returns a map built from the specified context
     */
    public ModelMap getModels() throws Exception;

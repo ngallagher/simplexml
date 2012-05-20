@@ -90,7 +90,7 @@ class KeyBuilder {
     * and the XPath options for the label. This ensures that similar
     * labels create the same key values.
     * 
-    * @param this is the list of XPath expressions to be used
+    * @param list this is the list of XPath expressions to be used
     * 
     * @return this returns a key to represent the label
     */
@@ -170,7 +170,7 @@ class KeyBuilder {
        * key value is the same and the key type is the same then the
        * key is considered equal, even if the labels are different.
        * 
-       * @param value this is the value to compared to this
+       * @param key this is the value to compared to this
        * 
        * @return this returns true if the object is equal
        */

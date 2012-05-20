@@ -79,7 +79,7 @@ class SignatureBuilder {
     * index mirroring the index it appears within the constructor.
     * 
     * @param value this is the parameter to be added in the table
-    * @param column this is the index to added the parameter to
+    * @param index this is the index to added the parameter to
     */
    public void insert(Parameter value, int index) {
       table.insert(value, index);

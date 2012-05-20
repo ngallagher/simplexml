@@ -165,7 +165,7 @@ class Signature implements Iterable<Parameter> {
     * is used for convenience when the parameter name needs to be
     * matched up with an annotated field or method.
     * 
-    * @param name this is the name of the parameter to acquire
+    * @param key this is the key of the parameter to acquire
     * 
     * @return this is the parameter mapped to the given name
     */
