@@ -83,13 +83,8 @@ public class ScannerDefaultTest extends TestCase {
    
    public void testDuplicateExample() throws Exception {
       Scanner scanner = new Scanner(DuplicateExample.class);
-      Support support = new Support();
-      Strategy strategy = new TreeStrategy();
-      Style style = new DefaultStyle();
-      Session session = new Session();
-      Context context = new Source(strategy, support, style, session);
-      LabelMap attributes = scanner.getSection(context).getAttributes();
-      LabelMap elements = scanner.getSection(context).getElements();  
+      LabelMap attributes = scanner.getSection().getAttributes();
+      LabelMap elements = scanner.getSection().getElements();  
 
       assertEquals(attributes.get("id").getType(), int.class);
       assertEquals(elements.get("id").getType(), int.class);
@@ -97,13 +92,8 @@ public class ScannerDefaultTest extends TestCase {
    
    public void testScanner() throws Exception {
       Scanner scanner = new Scanner(OrderItem.class);
-      Support support = new Support();
-      Strategy strategy = new TreeStrategy();
-      Style style = new DefaultStyle();
-      Session session = new Session();
-      Context context = new Source(strategy, support, style, session);
-      LabelMap attributes = scanner.getSection(context).getAttributes();
-      LabelMap elements = scanner.getSection(context).getElements();
+      LabelMap attributes = scanner.getSection().getAttributes();
+      LabelMap elements = scanner.getSection().getElements();
       
       assertEquals(attributes.get("price").getType(), double.class);
       assertEquals(elements.get("customer").getType(), Customer.class);

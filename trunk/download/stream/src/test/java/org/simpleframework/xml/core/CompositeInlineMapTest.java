@@ -131,7 +131,7 @@ public class CompositeInlineMapTest extends TestCase {
    
    public void testNotInlineString() throws Exception 
    {
-      Source source = new Source(new TreeStrategy(), new Support(), new DefaultStyle(), new Session());
+      Source source = new Source(new TreeStrategy(), new Support(), new Session());
       MockElementMap map = new MockElementMap(false, // attribute
                                               false, // data
                                               "entry", // entry 
@@ -157,7 +157,7 @@ public class CompositeInlineMapTest extends TestCase {
    
    public void testNoAttributeString() throws Exception 
    {
-      Source source = new Source(new TreeStrategy(), new Support(), new DefaultStyle(), new Session());
+      Source source = new Source(new TreeStrategy(), new Support(), new Session());
       MockElementMap map = new MockElementMap(false, // attribute
                                               false, // data
                                               "entry", // entry 
@@ -183,7 +183,7 @@ public class CompositeInlineMapTest extends TestCase {
    
    public void testAttributeNoKeyString() throws Exception 
    {
-      Source source = new Source(new TreeStrategy(), new Support(), new DefaultStyle(), new Session());
+      Source source = new Source(new TreeStrategy(), new Support(), new Session());
       MockElementMap map = new MockElementMap(true, // attribute
                                               false, // data
                                               "entry", // entry 

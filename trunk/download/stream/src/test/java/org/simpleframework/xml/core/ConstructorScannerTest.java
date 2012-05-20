@@ -4,14 +4,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import junit.framework.TestCase;
-
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
+import org.simpleframework.xml.ElementUnion;
 import org.simpleframework.xml.Path;
 import org.simpleframework.xml.Text;
+import org.simpleframework.xml.stream.Format;
 
-public class ConstructorScannerTest extends TestCase {
+public class ConstructorScannerTest extends SignatureScannerTest {
 
    public static class ExampleWithTextAndElement {    
       public ExampleWithTextAndElement(
@@ -31,11 +31,21 @@ public class ConstructorScannerTest extends TestCase {
             @Element(name="c") String c) {}  
    }
    
-   public static class AmbiguousParameters {
-      public AmbiguousParameters(
-            @Attribute(name="a") String x,
-            @Element(name="a") String y) {}
+   public static class ClashBetweenElementUnionAndText {
+      public ClashBetweenElementUnionAndText(
+            @Path("a/b") @ElementUnion({
+               @Element(name="x"),
+               @Element(name="y")
+            }) String a,
+            @Path("a/b/x") @Text String b){}
    }
+   
+   public static class ClashInText {
+      public ClashInText(
+            @Path("a/b/x") @Text String a,
+            @Path("a/b/x") @Text String b){}
+   }
+   
    
    public static class SameNameWithPath {
       public SameNameWithPath(
@@ -56,9 +66,9 @@ public class ConstructorScannerTest extends TestCase {
    }
    
    public void testElementWithPath() throws Exception {
-      ConstructorScanner scanner = new ConstructorScanner(ExampleWithTextAndElement.class);
-      Creator creator = scanner.getCreator();
-      List<Parameter> parameters = creator.getParameters();
+      ConstructorScanner scanner = new ConstructorScanner(ExampleWithTextAndElement.class, new Format());
+      ParameterMap signature = scanner.getParameters();
+      List<Parameter> parameters = signature.getAll();
       Set<String> names = new HashSet<String>();
       
       for(Parameter parameter : parameters) {
@@ -75,30 +85,42 @@ public class ConstructorScannerTest extends TestCase {
       boolean failure = false;
       
       try {
-         new ConstructorScanner(ClashBetweenElementAndText.class);
+         new ConstructorScanner(ClashBetweenElementAndText.class, new Format());
       }catch(Exception e) {
          e.printStackTrace();
          failure = true;
       }
-      assertTrue("Failure should occur when there is an ambiguous parameter", failure);
+      assertTrue("Failure should occur because there is a clash in element and text", failure);
    }
-   
-   public void testAmbiguousParameters() throws Exception {
+  
+   public void testClashOnElementUnionByPath() throws Exception {
       boolean failure = false;
       
       try {
-         new ConstructorScanner(AmbiguousParameters.class);
+         new ConstructorScanner(ClashBetweenElementUnionAndText.class, new Format());
       }catch(Exception e) {
          e.printStackTrace();
          failure = true;
       }
-      assertTrue("Failure should occur when there is an ambiguous parameter", failure);
+      assertTrue("Failure should occur because there is a clash in element and text", failure);
+   }
+   
+   public void testClashInText() throws Exception {
+      boolean failure = false;
+      
+      try {
+         new ConstructorScanner(ClashInText.class, new Format());
+      }catch(Exception e) {
+         e.printStackTrace();
+         failure = true;
+      }
+      assertTrue("Failure should occur when there is a clash in text", failure);
    }
    
    public void testSameNameWithPath() throws Exception {
-      ConstructorScanner scanner = new ConstructorScanner(SameNameWithPath.class);
-      Creator creator = scanner.getCreator();
-      List<Parameter> parameters = creator.getParameters();
+      ConstructorScanner scanner = new ConstructorScanner(SameNameWithPath.class, new Format());
+      ParameterMap signature = scanner.getParameters();
+      List<Parameter> parameters = signature.getAll();
       Set<String> names = new HashSet<String>();
       
       for(Parameter parameter : parameters) {
@@ -113,7 +135,7 @@ public class ConstructorScannerTest extends TestCase {
       boolean failure = false;
       
       try {
-         new ConstructorScanner(SameNameAndAnnotationWithPath.class);
+         new ConstructorScanner(SameNameAndAnnotationWithPath.class, new Format());
       }catch(Exception e) {
          e.printStackTrace();
          failure = true;
@@ -122,9 +144,9 @@ public class ConstructorScannerTest extends TestCase {
    }
    
    public void testSameNameWithDifferentPath() throws Exception {
-      ConstructorScanner scanner = new ConstructorScanner(SameNameWithDifferentPath.class);
-      Creator creator = scanner.getCreator();
-      List<Parameter> parameters = creator.getParameters();
+      ConstructorScanner scanner = new ConstructorScanner(SameNameWithDifferentPath.class, new Format());
+      ParameterMap signature = scanner.getParameters();
+      List<Parameter> parameters = signature.getAll();
       Set<String> names = new HashSet<String>();
       
       for(Parameter parameter : parameters) {

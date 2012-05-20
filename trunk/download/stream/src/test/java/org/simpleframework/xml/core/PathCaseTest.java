@@ -30,6 +30,22 @@ public class PathCaseTest extends TestCase {
    }
    
    @Root
+   public static class CollisionExample {
+      @Path("SomePath[1]")
+      @Element(name="a")
+      private final String a;
+      @Path("somePath[1]")
+      @Element(name="a")
+      private final String b;
+      public CollisionExample(
+            @Path("SomePath[1]") @Element(name="a") String a, 
+            @Path("somePath[1]") @Element(name="a") String b) {
+         this.a = a;
+         this.b = b;
+      }
+   }
+   
+   @Root
    public static class OtherCaseExample {
       @Path("FirstPath[1]/SecondPath[1]")
       @Element
@@ -59,7 +75,7 @@ public class PathCaseTest extends TestCase {
    public void testStyle() throws Exception {
       Style style = new CamelCaseStyle();
       Format format = new Format(style);
-      CaseExample example = new CaseExample("a", "b");
+      CollisionExample example = new CollisionExample("a", "b");
       Persister persister = new Persister(format);
       StringWriter writer = new StringWriter();
       boolean exception = false;
@@ -85,7 +101,8 @@ public class PathCaseTest extends TestCase {
          e.printStackTrace();
          exception = true;
       }
-      assertTrue("Exception must be thrown when paths collide on case", exception);
+      System.out.println(writer.toString());
+      assertFalse("No exception should be thrown with the elements are not the same name", exception);
    } 
 
 }

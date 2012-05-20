@@ -79,7 +79,7 @@ public class CompositeListUnionTest extends TestCase {
       Group group = getGroup();
       Type type = new ClassType(CompositeListUnionTest.class);
       List<Shape> list = new ArrayList<Shape>();
-      Expression expression = new PathParser(type, "some/path");
+      Expression expression = new PathParser("some/path", type, new Format());
       CompositeListUnion union = new CompositeListUnion(
             context,
             group,
@@ -111,7 +111,7 @@ public class CompositeListUnionTest extends TestCase {
       Group group = getGroup();
       Type type = new ClassType(CompositeListUnionTest.class);
       List<Shape> list = new ArrayList<Shape>();
-      Expression expression = new PathParser(type, "some/path");
+      Expression expression = new PathParser("some/path", type, new Format());
       CompositeListUnion union = new CompositeListUnion(
             context,
             group,
@@ -133,14 +133,14 @@ public class CompositeListUnionTest extends TestCase {
       Annotation annotation = field.getAnnotation(ElementListUnion.class);
       return new GroupExtractor(
             new FieldContact(field, annotation),
-            annotation);
+            annotation,
+            new Format());
    }
    
    private static Context getContext() {
       return new Source(
             new TreeStrategy(),
             new Support(),
-            new DefaultStyle(),
             new Session());
    }
 }
