@@ -608,40 +608,44 @@ public class ComplexDocumentTest extends TestCase {
 
    
    public static InputStream openDocument() throws Exception {
-      File file = new File("C:\\Users\\niall\\Workspace\\xml\\src\\test\\java\\org\\simpleframework\\xml\\core\\document.xml");
-      if(file.exists())  {
-         return new FileInputStream(file);
+      try {
+         return ComplexDocumentTest.class.getClassLoader().getResourceAsStream("org/simpleframework/xml/core/document.xml");
+      }catch(Exception e) {
+         e.printStackTrace();
+         return null;
       }
-      return ComplexDocumentTest.class.getClassLoader().getResourceAsStream("org/simpleframework/xml/core/document.xml");
    }
    
    @SuppressWarnings("unused")
    public void testComplexDocument() throws Exception {
       Serializer serializer = new Persister();
       InputStream source = openDocument();
-      int size = source.available();
       
-      ByteArrayOutputStream baos = new ByteArrayOutputStream();
-      byte[] buffer = new byte[4096];
-      int read = 0;        
-      while( (read = source.read(buffer)) != -1 ) {
-         baos.write(buffer, 0, read);
+      if(source != null) {
+         int size = source.available();
+         
+         ByteArrayOutputStream baos = new ByteArrayOutputStream();
+         byte[] buffer = new byte[4096];
+         int read = 0;        
+         while( (read = source.read(buffer)) != -1 ) {
+            baos.write(buffer, 0, read);
+         }
+         source.close();
+         byte[] data = baos.toByteArray(); 
+   
+         InputStream stream = new ByteArrayInputStream(data);
+         long start = System.currentTimeMillis();
+         CTDocument doc = serializer.read(CTDocument.class, stream, false);
+         System.err.println("Time taken was "+(System.currentTimeMillis() - start));
+   
+         stream = new ByteArrayInputStream(data);
+         start = System.currentTimeMillis();
+         doc = serializer.read(CTDocument.class, stream, false);
+         System.err.println("Second time taken was "+(System.currentTimeMillis() - start));
+         
+         List<WordXMLTagsOperation> bodyContentList = doc.getBody().getOperations();
+         
+         assertFalse(bodyContentList.isEmpty());
       }
-      source.close();
-      byte[] data = baos.toByteArray(); 
-
-      InputStream stream = new ByteArrayInputStream(data);
-      long start = System.currentTimeMillis();
-      CTDocument doc = serializer.read(CTDocument.class, stream, false);
-      System.err.println("Time taken was "+(System.currentTimeMillis() - start));
-
-      stream = new ByteArrayInputStream(data);
-      start = System.currentTimeMillis();
-      doc = serializer.read(CTDocument.class, stream, false);
-      System.err.println("Second time taken was "+(System.currentTimeMillis() - start));
-      
-      List<WordXMLTagsOperation> bodyContentList = doc.getBody().getOperations();
-      
-      assertFalse(bodyContentList.isEmpty());
    }
 }

@@ -153,17 +153,12 @@ public class PathStructureTest extends ValidationTestCase {
    }
    
    public void testOrder() throws Exception {
-      Scanner scanner = new Scanner(ExampleAssembledType.class);
-      Support context = new Support();
-      Strategy strategy = new TreeStrategy();
-      Style style = new DefaultStyle(); 
-      Session session = new Session();
-      Source source = new Source(strategy, context, style, session);      
+      Scanner scanner = new Scanner(ExampleAssembledType.class, new Format());      
       
-      validate(scanner.getSection(source), "some", "fifth", "sixth", "group", "ninth");
-      validate(scanner.getSection(source).getSection("some"), "path", "other");
-      validate(scanner.getSection(source).getSection("some").getSection("other"), "path", "fourth");
-      validate(scanner.getSection(source).getSection("some").getSection("other").getSection("path"), "first", "second", "third", "tenth");      
+      validate(scanner.getSection(), "some", "fifth", "sixth", "group", "ninth");
+      validate(scanner.getSection().getSection("some"), "path", "other");
+      validate(scanner.getSection().getSection("some").getSection("other"), "path", "fourth");
+      validate(scanner.getSection().getSection("some").getSection("other").getSection("path"), "first", "second", "third", "tenth");      
    }
    
    public void testSerialization() throws Exception {

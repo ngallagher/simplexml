@@ -5,6 +5,7 @@ import junit.framework.TestCase;
 import org.simpleframework.xml.Namespace;
 import org.simpleframework.xml.Order;
 import org.simpleframework.xml.Root;
+import org.simpleframework.xml.stream.Format;
 
 public class ClassScannerTest extends TestCase {
    
@@ -25,7 +26,7 @@ public class ClassScannerTest extends TestCase {
    }
 
    public void testClassScanner() throws Exception {
-      ClassScanner scanner = new ClassScanner(Example.class);
+      ClassScanner scanner = new ClassScanner(Example.class, new Format());
       
       assertNotNull(scanner.getRoot());
       assertNotNull(scanner.getOrder());

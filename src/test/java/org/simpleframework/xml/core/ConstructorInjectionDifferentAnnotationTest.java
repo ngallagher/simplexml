@@ -63,7 +63,7 @@ public class ConstructorInjectionDifferentAnnotationTest extends ValidationTestC
          return name;
       }
    }
-   public void s_testDifferentAnnotations() throws Exception{
+   public void testDifferentAnnotations() throws Exception{
       Persister persister = new Persister();
       Example example = new Example("a", "b");
       StringWriter writer = new StringWriter();
@@ -75,7 +75,7 @@ public class ConstructorInjectionDifferentAnnotationTest extends ValidationTestC
       validate(persister, deserialized);
    }
    
-   public void s_testDifferentListAnnotations() throws Exception{
+   public void testDifferentListAnnotations() throws Exception{
       Persister persister = new Persister();
       List<String> list = new ArrayList<String>();
       ExampleList example = new ExampleList(list, "a");

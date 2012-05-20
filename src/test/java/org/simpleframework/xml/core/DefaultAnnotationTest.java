@@ -16,7 +16,7 @@ import org.simpleframework.xml.Transient;
 import org.simpleframework.xml.ValidationTestCase;
 import org.simpleframework.xml.strategy.Strategy;
 import org.simpleframework.xml.strategy.TreeStrategy;
-import org.simpleframework.xml.stream.Style;
+import org.simpleframework.xml.stream.Format;
 
 public class DefaultAnnotationTest extends ValidationTestCase {
    
@@ -165,14 +165,9 @@ public class DefaultAnnotationTest extends ValidationTestCase {
       assertEquals(map.get("orders").getType(), List.class);
       assertEquals(map.get("orders").getAnnotation().annotationType(), ElementList.class);
       
-      Scanner scanner = new Scanner(OrderList.class);
-      Support support = new Support();
-      Strategy strategy = new TreeStrategy();
-      Style style = new DefaultStyle();
-      Session session = new Session();
-      Context context = new Source(strategy, support, style, session);
-      LabelMap attributes = scanner.getSection(context).getAttributes();
-      LabelMap elements = scanner.getSection(context).getElements();  
+      Scanner scanner = new Scanner(OrderList.class, new Format());
+      LabelMap attributes = scanner.getSection().getAttributes();
+      LabelMap elements = scanner.getSection().getElements();  
       
       assertEquals(elements.get("orders").getType(), List.class);
       assertEquals(elements.get("orders").getContact().getAnnotation().annotationType(), ElementList.class);
