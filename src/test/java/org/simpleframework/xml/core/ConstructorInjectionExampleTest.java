@@ -63,12 +63,26 @@ public class ConstructorInjectionExampleTest extends TestCase {
    "  </a>"+
    "</showInjectionWithoutPath>";
    
-   private static final String PATH_INJECTION_UNION =
+   private static final String PATH_INJECTION_UNION_INT =
    "<showInjectionWithoutPath>"+
    "  <a>" +
    "    <b>"+
    "      <c>"+
    "         <int>22</int>" +
+   "      </c>"+
+   "    </b>"+
+   "    <b>"+
+   "      <y>some y</y>"+
+   "    </b>"+
+   "  </a>"+
+   "</showInjectionWithoutPath>";
+   
+   private static final String PATH_INJECTION_UNION_DOUBLE =
+   "<showInjectionWithoutPath>"+
+   "  <a>" +
+   "    <b>"+
+   "      <c>"+
+   "         <double>32.178</double>" +
    "      </c>"+
    "    </b>"+
    "    <b>"+
@@ -131,6 +145,7 @@ public class ConstructorInjectionExampleTest extends TestCase {
       @Element(name="y")
       private final String y;
       public ShowInjectionWithoutPathUsingUnion(@Element(name="int") int x, @Element(name="y") String y) { this.x = x; this.y = y; }
+      public ShowInjectionWithoutPathUsingUnion(@Element(name="double") double x, @Element(name="y") String y) { this.x = x; this.y = y; }
    }
    
    @Root
@@ -178,9 +193,12 @@ public class ConstructorInjectionExampleTest extends TestCase {
    
    public void testWithoutPathUsingUnion() throws Exception {
       Persister persister = new Persister();
-      ShowInjectionWithoutPathUsingUnion a = persister.read(ShowInjectionWithoutPathUsingUnion.class, PATH_INJECTION_UNION);
+      ShowInjectionWithoutPathUsingUnion a = persister.read(ShowInjectionWithoutPathUsingUnion.class, PATH_INJECTION_UNION_INT);
+      ShowInjectionWithoutPathUsingUnion b = persister.read(ShowInjectionWithoutPathUsingUnion.class, PATH_INJECTION_UNION_DOUBLE);
       assertEquals(a.x, 22);
       assertEquals(a.y, "some y");
+      assertEquals(b.x, 32.178);
+      assertEquals(b.y, "some y");
    }
 
 }
