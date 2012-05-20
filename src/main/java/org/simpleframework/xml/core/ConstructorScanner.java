@@ -18,18 +18,12 @@
 
 package org.simpleframework.xml.core;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.simpleframework.xml.Attribute;
-import org.simpleframework.xml.Element;
-import org.simpleframework.xml.ElementArray;
-import org.simpleframework.xml.ElementList;
-import org.simpleframework.xml.ElementMap;
-import org.simpleframework.xml.Text;
+import org.simpleframework.xml.stream.Format;
 
 /**
  * The <code>ConstructorScanner</code> object is used to scan all 
@@ -47,24 +41,24 @@ import org.simpleframework.xml.Text;
 class ConstructorScanner {
 
    /**
-    * This contains a list of all the initializers for the class.
+    * This is a list of all the signatures represented by the type.
     */
-   private List<Initializer> list;
-   
-   /**
-    * This represents the default no argument constructor used.
-    */
-   private Initializer primary;
+   private List<Signature> signatures;
    
    /**
     * This is used to acquire a parameter by the parameter name.
     */
-   private Signature registry;
+   private ParameterMap registry;
    
    /**
-    * This is the type that is scanner for annotated constructors.
+    * This represents the default no argument constructor.
     */
-   private Class type;
+   private Signature primary;
+   
+   /**
+    * This is the format used to style the parameters extracted.
+    */
+   private Format format;
    
    /**
     * Constructor for the <code>ConstructorScanner</code> object. 
@@ -74,24 +68,46 @@ class ConstructorScanner {
     * 
     * @param type this is the type that is to be scanned
     */
-   public ConstructorScanner(Class type) throws Exception {
-      this.list = new ArrayList<Initializer>();
-      this.registry = new Signature(type);
-      this.type = type;
+   public ConstructorScanner(Class type, Format format) throws Exception {
+      this.signatures = new ArrayList<Signature>();
+      this.registry = new ParameterMap();
+      this.format = format;
       this.scan(type);
    }
    
    /**
-    * This is used to create the object instance. It does this by
-    * either delegating to the default no argument constructor or by
-    * using one of the annotated constructors for the object. This
-    * allows deserialized values to be injected in to the created
-    * object if that is required by the class schema.
+    * This is used to acquire the default signature for the class. 
+    * The default signature is the signature for the no argument
+    * constructor for the type. If there is no default constructor
+    * for the type then this will return null.
     * 
-    * @return this returns the creator for the class object
+    * @return this returns the default signature if it exists
     */
-   public Creator getCreator() {
-      return new ClassCreator(list, registry, primary);
+   public Signature getSignature() {
+      return primary;
+   }
+   
+   /**
+    * This returns the signatures for the type. All constructors are
+    * represented as a signature and returned. More signatures than
+    * constructors will be returned if a constructor is annotated 
+    * with a union annotation.
+    *
+    * @return this returns the list of signatures for the type
+    */
+   public List<Signature> getSignatures() {
+      return new ArrayList<Signature>(signatures);
+   }
+   
+   /**
+    * This returns a map of all parameters that exist. This is used
+    * to validate all the parameters against the field and method
+    * annotations that exist within the class. 
+    * 
+    * @return this returns a map of all parameters within the type
+    */
+   public ParameterMap getParameters() {
+      return registry;
    }
    
    /**
@@ -108,138 +124,33 @@ class ConstructorScanner {
          throw new ConstructorException("Can not construct inner %s", type);
       }
       for(Constructor factory: array){
-         Signature index = new Signature(type);
-         
          if(!type.isPrimitive()) { 
-            scan(factory, index);
+            scan(factory);
          }
       } 
    }
    
    /**
-    * This is used to scan the specified constructor for annotations
-    * that it contains. Each parameter annotation is evaluated and 
-    * if it is an XML annotation it is considered to be a valid
-    * parameter and is added to the parameter map.
+    * This is used to scan the parameters within a constructor to 
+    * determine the signature of the constructor. If the constructor
+    * contains a union annotation multiple signatures will be used.
     * 
-    * @param factory this is the constructor that is to be scanned
-    * @param map this is the parameter map that contains parameters
+    * @param factory the constructor to scan for parameters
     */
-   private void scan(Constructor factory, Signature map) throws Exception {
-      Annotation[][] labels = factory.getParameterAnnotations();
-      Class[] types = factory.getParameterTypes();
+   private void scan(Constructor factory) throws Exception {
+      SignatureScanner scanner = new SignatureScanner(factory, registry, format);
 
-      for(int i = 0; i < types.length; i++) {         
-         for(int j = 0; j < labels[i].length; j++) {
-            Parameter value = process(factory, labels[i][j], i);
+      if(scanner.isValid()) {
+         List<Signature> list = scanner.getSignatures();
             
-            if(value != null) {
-               String path = value.getPath();
+         for(Signature signature : list) {
+            int size = signature.size();
                
-               if(map.containsKey(path)) {
-                  throw new PersistenceException("Parameter '%s' is a duplicate in %s", path, factory);
+            if(size == 0) {
+               primary = signature;
                }
-               registry.put(path, value);
-               map.put(path, value);
+            signatures.add(signature);
             }
-         }
-      }
-      if(types.length == map.size()) {
-         build(factory, map);
-      }
-   }
-   
-   /**
-    * This is used to build the <code>Initializer</code> object that is
-    * to be used to instantiate the object. The initializer contains 
-    * the constructor at the parameters in the declaration order.
-    * 
-    * @param factory this is the constructor that is to be scanned
-    * @param signature the parameter map that contains parameters
-    */
-   private void build(Constructor factory, Signature signature) throws Exception {
-      Initializer initializer = new Initializer(factory, signature);
-      
-      if(initializer.isDefault()) {
-         primary = initializer;
-      }
-      list.add(initializer);   
-   }
-   
-   /**
-    * This is used to create a <code>Parameter</code> object which is
-    * used to represent a parameter to a constructor. Each parameter
-    * contains an annotation an the index it appears in.
-    * 
-    * @param factory this is the constructor the parameter is in
-    * @param label this is the annotation used for the parameter
-    * @param ordinal this is the position the parameter appears at
-    * 
-    * @return this returns the parameter for the constructor
-    */
-   private Parameter process(Constructor factory, Annotation label, int ordinal) throws Exception{
-      if(label instanceof Attribute) {
-         return create(factory, label, ordinal);
-      }
-      if(label instanceof ElementList) {
-         return create(factory, label, ordinal);
-      }     
-      if(label instanceof ElementArray) {
-         return create(factory, label, ordinal);
-      }
-      if(label instanceof ElementMap) {
-         return create(factory, label, ordinal);
-      }
-      if(label instanceof Element) {
-         return create(factory, label, ordinal);
-      }
-      if(label instanceof Text) {
-         return create(factory, label, ordinal);
-      }
-      return null;
-   }
-   
-   /**
-    * This is used to create a <code>Parameter</code> object which is
-    * used to represent a parameter to a constructor. Each parameter
-    * contains an annotation an the index it appears in.
-    * 
-    * @param factory this is the constructor the parameter is in
-    * @param label this is the annotation used for the parameter
-    * @param ordinal this is the position the parameter appears at
-    * 
-    * @return this returns the parameter for the constructor
-    */
-   private Parameter create(Constructor factory, Annotation label, int ordinal) throws Exception {
-      Parameter value = ParameterFactory.getInstance(factory, label, ordinal);
-      String path = value.getPath(); 
-      
-      if(registry.containsKey(path)) {
-         validate(value, path);
-      }
-      return value;
-   }
-   
-   /**
-    * This is used to validate the parameter against all the other
-    * parameters for the class. Validating each of the parameters
-    * ensures that the annotations for the parameters remain
-    * consistent throughout the class.
-    * 
-    * @param parameter this is the parameter to be validated
-    * @param name this is the name of the parameter to validate
-    */
-   private void validate(Parameter parameter, String name) throws Exception {
-      Parameter other = registry.get(name);
-      Annotation label = other.getAnnotation();
-      
-      if(!parameter.getAnnotation().equals(label)) {
-         throw new MethodException("Annotations do not match for '%s' in %s", name, type);
-      }
-      Class expect = other.getType();
-      
-      if(expect != parameter.getType()) {
-         throw new MethodException("Method types do not match for '%s' in %s", name, type);
       }
    }
    

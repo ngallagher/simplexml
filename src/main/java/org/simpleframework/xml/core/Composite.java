@@ -116,7 +116,7 @@ class Composite implements Converter {
    public Composite(Context context, Type type, Class override) {
       this.factory = new ObjectFactory(context, type, override);  
       this.primitive = new Primitive(context, type);
-      this.criteria = new Collector(context);
+      this.criteria = new Collector();
       this.revision = new Revision();
       this.context = context;
       this.type = type;
@@ -226,7 +226,7 @@ class Composite implements Converter {
     * @return this returns the fully deserialized object graph
     */
    private Object read(InputNode node, Schema schema, Instance value) throws Exception {
-      Creator creator = schema.getCreator();
+      Instantiator creator = schema.getInstantiator();
       
       if(creator.isDefault()) {
          return readDefault(node, schema, value);
@@ -284,8 +284,8 @@ class Composite implements Converter {
     * @return this returns the fully deserialized object graph
     */
    private Object readConstructor(InputNode node, Schema schema, Instance value) throws Exception {
-      Creator creator = schema.getCreator();
-      Object source = creator.getInstance(context, criteria);
+      Instantiator creator = schema.getInstantiator();
+      Object source = creator.getInstance(criteria);
       
       if(value != null) {
          value.setInstance(source);
@@ -578,7 +578,7 @@ class Composite implements Converter {
       Label label = map.getLabel(path);      
 
       if(label == null) {
-         label = criteria.get(path);
+         label = criteria.resolve(path);
       }
       if(label == null) {
          Position line = node.getPosition();
@@ -608,14 +608,13 @@ class Composite implements Converter {
     */
    private void readUnion(InputNode node, Object source, LabelMap map, Label label) throws Exception {
       Object value = readInstance(node, source, label);
-      Collection<String> list = label.getPaths(context);
+      Collection<String> list = label.getPaths();
       
       for(String key : list) {
-         Label union = map.getLabel(key);
-         
+         map.getLabel(key);
+      }
          if(label.isInline()) {
-            criteria.set(union, value);
-         }
+         criteria.set(label, value);
       }
    }
 
@@ -664,10 +663,9 @@ class Composite implements Converter {
     */
    private Object readVariable(InputNode node, Object source, Label label) throws Exception {    
       Converter reader = label.getConverter(context);   
-      String name = label.getName(context);
       
       if(label.isCollection()) {
-         Variable variable = criteria.get(name);
+         Variable variable = criteria.get(label);
          Contact contact = label.getContact();
          
          if(variable != null) {
@@ -682,7 +680,6 @@ class Composite implements Converter {
                return reader.read(node, value);
             }
          }
-         
       }
       return reader.read(node);
    }
@@ -908,7 +905,7 @@ class Composite implements Converter {
       Label label = map.getLabel(path);      
 
       if(label == null) {
-         label = criteria.get(path);
+         label = criteria.resolve(path);
       }
       if(label == null) {
          Position line = node.getPosition();
@@ -936,16 +933,13 @@ class Composite implements Converter {
     * @param label this is the label used to define the XML element
     */
    private void validateUnion(InputNode node, LabelMap map, Label label) throws Exception {
-      Collection<String> list = label.getPaths(context);
+      Collection<String> list = label.getPaths();
       
       for(String key : list) {
-         Label union = map.getLabel(key);
-         
-         if(union != null) {
+         map.getLabel(key);
+      }
             if(label.isInline()) {
-               criteria.set(union, null);
-            }
-         }
+         criteria.set(label, null);
       }
       validate(node, label);
    }
@@ -1156,7 +1150,7 @@ class Composite implements Converter {
             String path = section.getPath(name);
             Label label = section.getElement(path);
             Class expect = context.getType(type, source);
-            Object value = criteria.get(path);
+            Object value = criteria.get(label);
             
             if(value == null) {
                if(label == null) {
@@ -1193,15 +1187,7 @@ class Composite implements Converter {
       if(replace != null) {
          writeElement(node, replace, label);            
       }
-      Collection<String> list = label.getPaths(context);
-      
-      for(String name : list) {
-         Label union = section.getElement(name);
-         
-         if(union != null) {
-            criteria.set(union, replace);
-         }
-      }
+      criteria.set(label, replace);
    }
    
    /**
@@ -1270,7 +1256,7 @@ class Composite implements Converter {
    private void writeAttribute(OutputNode node, Object value, Label label) throws Exception {
       if(value != null) {         
          Decorator decorator = label.getDecorator();
-         String name = label.getName(context);
+         String name = label.getName();
          String text = factory.getText(value);
          OutputNode done = node.setAttribute(name, text);
          
@@ -1299,7 +1285,7 @@ class Composite implements Converter {
       if(value != null) {
          Class real = value.getClass();
          Label match = label.getLabel(real);
-         String name = match.getName(context);
+         String name = match.getName();
          Type type = label.getType(real); 
          OutputNode next = node.getChild(name);
 

@@ -21,6 +21,7 @@ package org.simpleframework.xml.core;
 import java.util.HashMap;
 
 import org.simpleframework.xml.strategy.Type;
+import org.simpleframework.xml.stream.Format;
 
 /**
  * The <code>ExpressionBuilder</code> object is used build and cache
@@ -35,6 +36,11 @@ import org.simpleframework.xml.strategy.Type;
  * @see org.simpleframework.xml.core.PathParser
  */
 class ExpressionBuilder {
+   
+   /**
+    * This is the format used to style the path segments.
+    */
+   private final Format format;
    
    /**
     * This is the cache of path expressions previously built.
@@ -52,9 +58,10 @@ class ExpressionBuilder {
     * expressions. Such caching improves the overall performance.
     * 
     * @param type this is the type containing the expressions
+    * @param format this is the format used to style the segments
     */
-   public ExpressionBuilder(Class type) {
-      this(new ClassType(type));
+   public ExpressionBuilder(Class type, Format format) {
+      this(new ClassType(type), format);
    }
    
    /**
@@ -63,9 +70,11 @@ class ExpressionBuilder {
     * expressions. Such caching improves the overall performance.
     * 
     * @param type this is the type containing the expressions
+    * @param format this is the format used to style the segments
     */
-   public ExpressionBuilder(Type type) {
+   public ExpressionBuilder(Type type, Format format) {
       this.cache = new Cache();
+      this.format = format;
       this.type = type;
    }
    
@@ -98,7 +107,7 @@ class ExpressionBuilder {
     * @return this returns the resulting expression object
     */
    private Expression create(String path) throws Exception {
-      Expression expression = new PathParser(type, path);
+      Expression expression = new PathParser(path, type, format);
       
       if(cache != null) {
          cache.put(path, expression);

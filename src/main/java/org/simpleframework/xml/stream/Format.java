@@ -67,7 +67,7 @@ public class Format {
     * @param indent this is the number of spaces used in the indent
     */ 
    public Format(int indent) {
-      this(indent, null, null);           
+      this(indent, null, new IdentityStyle());           
    }
    
    /**
@@ -92,7 +92,7 @@ public class Format {
     * @param prolog this is the prolog for the generated XML document
     */    
    public Format(int indent, String prolog) {
-      this(indent, prolog, null);           
+      this(indent, prolog, new IdentityStyle());           
    }
    
    /**

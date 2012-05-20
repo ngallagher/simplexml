@@ -180,7 +180,7 @@ class PrimitiveArray implements Converter {
     * @return true if the element matches the XML schema class given 
     */ 
    private boolean validate(InputNode node, Class type) throws Exception{
-      for(int i = 0; true; i++) {
+      while(true) {
          InputNode next = node.getNext();
     
          if(next == null) {

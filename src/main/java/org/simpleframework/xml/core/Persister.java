@@ -39,7 +39,6 @@ import org.simpleframework.xml.stream.Format;
 import org.simpleframework.xml.stream.InputNode;
 import org.simpleframework.xml.stream.NodeBuilder;
 import org.simpleframework.xml.stream.OutputNode;
-import org.simpleframework.xml.stream.Style;
 import org.simpleframework.xml.transform.Matcher;
 
 /**
@@ -86,11 +85,6 @@ public class Persister implements Serializer {
     */ 
    private final Format format;
    
-   /**
-    * This is the style that is used for the serialization process.
-    */
-   private final Style style;
-
    /**
     * Constructor for the <code>Persister</code> object. This is used
     * to create a serializer object that will use an empty filter.
@@ -390,9 +384,8 @@ public class Persister implements Serializer {
     * @param filter the filter used to replace template variables
     */
    public Persister(Strategy strategy, Filter filter, Matcher matcher, Format format) {
-      this.support = new Support(filter, matcher);
+      this.support = new Support(filter, matcher, format);
       this.manager = new SessionManager();
-      this.style = format.getStyle();
       this.strategy = strategy;
       this.format = format;
    } 
@@ -610,7 +603,7 @@ public class Persister implements Serializer {
     * @throws Exception if the object cannot be fully deserialized
     */
    private <T> T read(Class<? extends T> type, InputNode node, Session session) throws Exception {
-      return read(type, node, new Source(strategy, support, style, session));
+      return read(type, node, new Source(strategy, support, session));
    }
         
    /**
@@ -856,7 +849,7 @@ public class Persister implements Serializer {
     * @throws Exception if the object cannot be fully deserialized
     */ 
    private <T> T read(T value, InputNode node, Session session) throws Exception {
-      return read(value, node, new Source(strategy, support, style, session));
+      return read(value, node, new Source(strategy, support, session));
    }
            
    /**
@@ -1103,7 +1096,7 @@ public class Persister implements Serializer {
     * @throws Exception if the class XML schema does not fully match
     */
    private boolean validate(Class type, InputNode node, Session session) throws Exception {
-      return validate(type, node, new Source(strategy, support, style, session));
+      return validate(type, node, new Source(strategy, support, session));
    } 
            
    /**
@@ -1166,7 +1159,7 @@ public class Persister implements Serializer {
     * @throws Exception if the schema for the object is not valid
     */   
    private void write(Object source, OutputNode root, Session session)throws Exception {   
-      write(source, root, new Source(strategy, support, style, session));
+      write(source, root, new Source(strategy, support, session));
    }
 
    /**

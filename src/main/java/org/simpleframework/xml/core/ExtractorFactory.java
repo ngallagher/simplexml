@@ -30,6 +30,7 @@ import org.simpleframework.xml.ElementListUnion;
 import org.simpleframework.xml.ElementMap;
 import org.simpleframework.xml.ElementMapUnion;
 import org.simpleframework.xml.ElementUnion;
+import org.simpleframework.xml.stream.Format;
 
 /**
  * The <code>ExtractorFactory</code> is used to create an extractor 
@@ -56,6 +57,11 @@ class ExtractorFactory {
    private final Contact contact;
    
    /**
+    * The format used for each of the extractors instantiated.
+    */
+   private final Format format;
+   
+   /**
     * Constructor for the <code>ExtractorFactory</code> object. This
     * requires the contact that was annotated as a union and the
     * actual union annotation, which is used to build individual
@@ -63,9 +69,11 @@ class ExtractorFactory {
     * 
     * @param contact this is the field or method annotated
     * @param label this is the union annotation to extract from
+    * @param format this is the format used by the extractors
     */
-   public ExtractorFactory(Contact contact, Annotation label) {
+   public ExtractorFactory(Contact contact, Annotation label, Format format) {
       this.contact = contact;
+      this.format = format;
       this.label = label;
    }
    
@@ -96,7 +104,7 @@ class ExtractorFactory {
       if(!factory.isAccessible()) {
          factory.setAccessible(true);
       }
-      return factory.newInstance(contact, label); 
+      return factory.newInstance(contact, label, format); 
    }
    
    /**
@@ -162,7 +170,7 @@ class ExtractorFactory {
        * @return this returns the constructor for the extractor
        */
       private Constructor getConstructor() throws Exception {
-         return type.getConstructor(Contact.class, label);
+         return type.getConstructor(Contact.class, label, Format.class);
       }
    }
    
@@ -187,15 +195,22 @@ class ExtractorFactory {
       private final ElementUnion union;
       
       /**
+       * This is the format used to style the elements created.
+       */
+      private final Format format;
+      
+      /**
        * Constructor for the <code>ElementExtractor</code> object. This
        * is used to create an extractor that can be used to extract
        * the various labels used to serialize and deserialize objects.
        * 
        * @param contact this is the contact annotated as a union
        * @param union this is the union annotation to extract from
+       * @param format this is the format used to style the elements
        */
-      public ElementExtractor(Contact contact, ElementUnion union) throws Exception {
+      public ElementExtractor(Contact contact, ElementUnion union, Format format) throws Exception {
          this.contact = contact;
+         this.format = format;
          this.union = union;
       }
       
@@ -228,7 +243,7 @@ class ExtractorFactory {
        * @return this is the label created for the annotation
        */
       public Label getLabel(Element element) {
-         return new ElementLabel(contact, element);
+         return new ElementLabel(contact, element, format);
       }
       
       /**
@@ -271,15 +286,22 @@ class ExtractorFactory {
       private final ElementListUnion union;
       
       /**
+       * This is the format used to style the elements for this.
+       */
+      private final Format format;
+      
+      /**
        * Constructor for the <code>ElementListExtractor</code> object. 
        * This is used to create an extractor that can be used to extract
        * the various labels used to serialize and deserialize objects.
        * 
        * @param contact this is the contact annotated as a union
        * @param union this is the union annotation to extract from
+       * @param format this is the format used to style the elements
        */
-      public ElementListExtractor(Contact contact, ElementListUnion union) throws Exception {
+      public ElementListExtractor(Contact contact, ElementListUnion union, Format format) throws Exception {
          this.contact = contact;
+         this.format = format;
          this.union = union;
       }
       
@@ -312,7 +334,7 @@ class ExtractorFactory {
        * @return this is the label created for the annotation
        */
       public Label getLabel(ElementList element) {
-         return new ElementListLabel(contact, element);
+         return new ElementListLabel(contact, element, format);
       }
       
       /**
@@ -350,15 +372,22 @@ class ExtractorFactory {
       private final ElementMapUnion union;
       
       /**
+       * This is the format used to style the elements created.
+       */
+      private final Format format;
+      
+      /**
        * Constructor for the <code>ElementMapExtractor</code> object. 
        * This is used to create an extractor that can be used to extract
        * the various labels used to serialize and deserialize objects.
        * 
        * @param contact this is the contact annotated as a union
        * @param union this is the union annotation to extract from
+       * @param format this is the format used to style elements
        */
-      public ElementMapExtractor(Contact contact, ElementMapUnion union) throws Exception {
+      public ElementMapExtractor(Contact contact, ElementMapUnion union, Format format) throws Exception {
          this.contact = contact;
+         this.format = format;
          this.union = union;
       }
       
@@ -391,7 +420,7 @@ class ExtractorFactory {
        * @return this is the label created for the annotation
        */
       public Label getLabel(ElementMap element) {
-         return new ElementMapLabel(contact, element);
+         return new ElementMapLabel(contact, element, format);
       }
       
       /**

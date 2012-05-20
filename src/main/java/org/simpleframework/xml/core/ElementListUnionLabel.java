@@ -24,6 +24,7 @@ import java.util.Collection;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.ElementListUnion;
 import org.simpleframework.xml.strategy.Type;
+import org.simpleframework.xml.stream.Format;
 
 /**
  * The <code>ElementListUnionLabel</code> is an adapter for an internal
@@ -41,7 +42,7 @@ import org.simpleframework.xml.strategy.Type;
  * 
  * @see org.simpleframework.xml.ElementListUnion
  */
-class ElementListUnionLabel implements Label {
+class ElementListUnionLabel extends TemplateLabel {
     
    /**
     * This is used to extract the individual unions in the group.
@@ -72,10 +73,11 @@ class ElementListUnionLabel implements Label {
     * @param contact this is the contact associated with the union
     * @param union this is the union annotation this represents
     * @param element this is the individual annotation used
+    * @param format this is the format used to style the elements
     */
-   public ElementListUnionLabel(Contact contact, ElementListUnion union, ElementList element) throws Exception {
-      this.label = new ElementListLabel(contact, element);
-      this.extractor = new GroupExtractor(contact, union);
+   public ElementListUnionLabel(Contact contact, ElementListUnion union, ElementList element, Format format) throws Exception {
+      this.label = new ElementListLabel(contact, element, format);
+      this.extractor = new GroupExtractor(contact, union, format);
       this.contact = contact;
    }
    
@@ -189,35 +191,6 @@ class ElementListUnionLabel implements Label {
    }
    
    /**
-    * This is used to acquire the full set of names and paths that
-    * can be used to identify a label. Labels can be specified using 
-    * the <code>Path</code> optionally. If the path annotation is not
-    * specified then it needs to be identified by the name alone. 
-    * For a union this can create a large set.
-    *
-    * @param context this is used to style the element names
-    * 
-    * @return this returns the names of each of the elements
-    */
-   public Collection<String> getNames(Context context) throws Exception {
-      return extractor.getNames(context);
-   }
-   
-   /**
-    * This is used to acquire the full set of paths that can be used 
-    * to identify a label. Labels can be identified using a name or by 
-    * using the optional <code>Path</code> with the name. If the path 
-    * annotation is not specified this will return the names.
-    * 
-    * @param context this is used to style the element names
-    * 
-    * @return this returns the names of each of the elements
-    */
-   public Collection<String> getPaths(Context context) throws Exception {
-      return extractor.getPaths(context);
-   }
-   
-   /**
     * This is used to provide a configured empty value used when the
     * annotated value is null. This ensures that XML can be created
     * with required details regardless of whether values are null or
@@ -229,35 +202,6 @@ class ElementListUnionLabel implements Label {
     */
    public Object getEmpty(Context context) throws Exception {
       return label.getEmpty(context);
-   }
-
-   /**
-    * This is used to acquire the name of the element or attribute
-    * that is used by the class schema. The name is determined by
-    * checking for an override within the annotation. If it contains
-    * a name then that is used, if however the annotation does not
-    * specify a name the the field or method name is used instead.
-    * 
-    * @param context this is the context used to style the name
-    * 
-    * @return returns the name that is used for the XML property
-    */
-   public String getName(Context context) throws Exception {
-      return label.getName(context);
-   }
-
-   /**
-    * This is used to acquire the path of the element or attribute
-    * that is used by the class schema. The path is determined by
-    * acquiring the XPath expression and appending the name of the
-    * label to form a fully qualified styled path.
-    * 
-    * @param context this is the context used to style the path
-    * 
-    * @return returns the path that is used for the XML property
-    */
-   public String getPath(Context context) throws Exception {
-      return label.getPath(context);
    }
 
    /**
@@ -366,17 +310,6 @@ class ElementListUnionLabel implements Label {
    }  
 
    /**
-    * This method is used to determine if the label represents an
-    * attribute. This is used to style the name so that elements
-    * are styled as elements and attributes are styled as required.
-    * 
-    * @return this is used to determine if this is an attribute
-    */
-   public boolean isAttribute() {
-      return label.isAttribute();
-   }
-
-   /**
     * This is used to determine if the label is a collection. If the
     * label represents a collection then any original assignment to
     * the field or method can be written to without the need to 
@@ -425,18 +358,6 @@ class ElementListUnionLabel implements Label {
     */
    public boolean isRequired() {
       return label.isRequired();
-   }
-   
-   /**
-    * This is used to determine if the label represents text. If
-    * a label represents text it typically does not have a name,
-    * instead the empty string represents the name. Also text
-    * labels can not exist with other text labels, or elements.
-    * 
-    * @return this returns true if this label represents text
-    */
-   public boolean isText() {
-      return label.isText();
    }
    
    /**

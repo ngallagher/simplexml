@@ -34,6 +34,11 @@ import org.simpleframework.xml.Version;
 class ClassSchema implements Schema {
    
    /**
+    * This is the instantiator used to create all object instances.
+    */
+   private final Instantiator factory;
+   
+   /**
     * This is the decorator associated with this schema object.
     */
    private final Decorator decorator;
@@ -47,11 +52,6 @@ class ClassSchema implements Schema {
     * This is the version annotation for the XML class schema.
     */
    private final Version revision;
-   
-   /**
-    * This is the scanner that is used to acquire the constructor.
-    */
-   private final Creator factory;
    
    /**
     * This is the pointer to the schema class replace method.
@@ -88,13 +88,13 @@ class ClassSchema implements Schema {
     * @param context this is the context object for serialization
     */
    public ClassSchema(Scanner schema, Context context) throws Exception {  
-      this.section = schema.getSection(context);
       this.caller = schema.getCaller(context);
-      this.factory = schema.getCreator();
+      this.factory = schema.getInstantiator();
       this.revision = schema.getRevision();
       this.decorator = schema.getDecorator();
       this.primitive = schema.isPrimitive();
       this.version = schema.getVersion();
+      this.section = schema.getSection();
       this.text = schema.getText();
       this.type = schema.getType();
    }
@@ -112,15 +112,14 @@ class ClassSchema implements Schema {
    }
    
    /**
-    * This is used to create the object instance. It does this by
-    * either delegating to the default no argument constructor or by
-    * using one of the annotated constructors for the object. This
-    * allows deserialized values to be injected in to the created
-    * object if that is required by the class schema.
+    * This is used to acquire the instantiator for the type. This is
+    * used to create object instances based on the constructors that
+    * have been annotated. If no constructors have been annotated
+    * then this can be used to create default no argument instances.
     * 
-    * @return this returns the creator for the class object
+    * @return this instantiator responsible for creating instances
     */
-   public Creator getCreator() {
+   public Instantiator getInstantiator() {
       return factory;
    }
    

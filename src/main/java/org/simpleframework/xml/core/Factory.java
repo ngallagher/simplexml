@@ -207,7 +207,11 @@ abstract class Factory {
       Value value = context.getOverride(type, node);
       
       if(value != null && override != null) {
+         Class proposed = value.getType();
+     
+         if(!isCompatible(override, proposed)) {
          return new OverrideValue(value, override);
+         }
       }
       return value;
    }

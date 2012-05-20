@@ -20,6 +20,7 @@ package org.simpleframework.xml.core;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.List;
 import java.util.Map;
 
 import org.simpleframework.xml.Default;
@@ -27,6 +28,7 @@ import org.simpleframework.xml.Namespace;
 import org.simpleframework.xml.NamespaceList;
 import org.simpleframework.xml.Order;
 import org.simpleframework.xml.Root;
+import org.simpleframework.xml.stream.Format;
 
 /**
  * The <code>ClassScanner</code> performs the reflective inspection
@@ -107,24 +109,47 @@ class ClassScanner  {
     * to build a schema for an XML file to follow. 
     * 
     * @param type this is the type that is scanned for a schema
+    * @param format this is the format used to style the XML
     */
-   public ClassScanner(Class type) throws Exception { 
-      this.scanner = new ConstructorScanner(type);
+   public ClassScanner(Class type, Format format) throws Exception { 
+      this.scanner = new ConstructorScanner(type, format);
       this.decorator = new NamespaceDecorator();
       this.scan(type);
    }      
 
    /**
-    * This is used to create the object instance. It does this by
-    * either delegating to the default no argument constructor or by
-    * using one of the annotated constructors for the object. This
-    * allows deserialized values to be injected in to the created
-    * object if that is required by the class schema.
+    * This is used to acquire the default signature for the class. 
+    * The default signature is the signature for the no argument
+    * constructor for the type. If there is no default constructor
+    * for the type then this will return null.
     * 
-    * @return this returns the creator for the class object
+    * @return this returns the default signature if it exists
     */
-   public Creator getCreator() {
-      return scanner.getCreator();
+   public Signature getSignature() {
+      return scanner.getSignature();
+   }
+   
+   /**
+    * This returns the signatures for the type. All constructors are
+    * represented as a signature and returned. More signatures than
+    * constructors will be returned if a constructor is annotated 
+    * with a union annotation.
+    *
+    * @return this returns the list of signatures for the type
+    */
+   public List<Signature> getSignatures(){
+      return scanner.getSignatures();
+   }
+   
+   /**
+    * This returns a map of all parameters that exist. This is used
+    * to validate all the parameters against the field and method
+    * annotations that exist within the class. 
+    * 
+    * @return this returns a map of all parameters within the type
+    */
+   public ParameterMap getParameters() {
+      return scanner.getParameters();
    }
    
    /**

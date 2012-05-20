@@ -77,11 +77,6 @@ class Source implements Context {
    private Filter filter;
    
    /**
-    * This is the style that is used by this source instance.
-    */
-   private Style style;
-   
-   /**
     * Constructor for the <code>Source</code> object. This is used to
     * maintain a context during the serialization process. It holds 
     * the <code>Strategy</code> and <code>Context</code> used in the
@@ -90,16 +85,14 @@ class Source implements Context {
     * 
     * @param strategy this is used to resolve the classes used   
     * @param support this is the context used to process strings
-    * @param style this is the style used for the serialization
     * @param session this is the session to use for this context
     */       
-   public Source(Strategy strategy, Support support, Style style, Session session) {
+   public Source(Strategy strategy, Support support, Session session) {
       this.filter = new TemplateFilter(this, support);           
       this.engine = new TemplateEngine(filter);     
       this.strategy = strategy;
       this.support = support;
       this.session = session;
-      this.style = style;
    } 
    
    /**
@@ -149,10 +142,7 @@ class Source implements Context {
     * @return this returns the style used for this format object
     */
    public Style getStyle() {
-      if(style == null) {
-         style = new DefaultStyle();
-      }
-      return style;
+      return support.getStyle();
    }
    
    /**

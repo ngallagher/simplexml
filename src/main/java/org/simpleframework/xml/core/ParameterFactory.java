@@ -25,8 +25,12 @@ import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementArray;
 import org.simpleframework.xml.ElementList;
+import org.simpleframework.xml.ElementListUnion;
 import org.simpleframework.xml.ElementMap;
+import org.simpleframework.xml.ElementMapUnion;
+import org.simpleframework.xml.ElementUnion;
 import org.simpleframework.xml.Text;
+import org.simpleframework.xml.stream.Format;
 
 /**
  * The <code>ParameterFactory</code> object is used to create instances 
@@ -51,16 +55,22 @@ final class ParameterFactory {
     * 
     * @param method this is the constructor the parameter exists in
     * @param label represents the XML annotation for the contact
+    * @param format this is the format used to style the parameters
+    * @param index the index of the parameter in the constructor
     * 
     * @return returns the parameter instantiated for the field
     */
-   public static Parameter getInstance(Constructor method, Annotation label, int index) throws Exception {   
+   public static Parameter getInstance(Constructor method, Annotation label, Format format, int index) throws Exception {   
+      return getInstance(method, label, null, format, index);
+   }
+   
+   public static Parameter getInstance(Constructor method, Annotation label, Annotation entry, Format format, int index) throws Exception {   
       Constructor factory = getConstructor(label);    
       
-      if(!factory.isAccessible()) {
-         factory.setAccessible(true);
+      if(entry != null) {
+         return (Parameter)factory.newInstance(method, label, entry, format, index);
       }
-      return (Parameter)factory.newInstance(method, label, index);
+      return (Parameter)factory.newInstance(method, label, format, index);
    }
     
     /**
@@ -76,7 +86,13 @@ final class ParameterFactory {
      * @throws Exception thrown if the annotation is not supported
      */
     private static Constructor getConstructor(Annotation label) throws Exception {
-       return getBuilder(label).getConstructor();
+      ParameterBuilder builder = getBuilder(label);
+      Constructor factory = builder.getConstructor();
+      
+      if(!factory.isAccessible()) {
+         factory.setAccessible(true);
+      }
+      return factory;
     }
     
     /**
@@ -89,59 +105,101 @@ final class ParameterFactory {
      * 
      * @return this returns the entry used to create a constructor
      */
-    private static PameterBuilder getBuilder(Annotation label) throws Exception{      
+    private static ParameterBuilder getBuilder(Annotation label) throws Exception{      
        if(label instanceof Element) {
-          return new PameterBuilder(ElementParameter.class, Element.class);
+          return new ParameterBuilder(ElementParameter.class, Element.class);
        }
        if(label instanceof ElementList) {
-          return new PameterBuilder(ElementListParameter.class, ElementList.class);
+          return new ParameterBuilder(ElementListParameter.class, ElementList.class);
        }
        if(label instanceof ElementArray) {
-          return new PameterBuilder(ElementArrayParameter.class, ElementArray.class);               
+          return new ParameterBuilder(ElementArrayParameter.class, ElementArray.class);               
+       }
+       if(label instanceof ElementMapUnion) {
+          return new ParameterBuilder(ElementMapUnionParameter.class, ElementMapUnion.class, ElementMap.class);
+       }
+       if(label instanceof ElementListUnion) {
+          return new ParameterBuilder(ElementListUnionParameter.class, ElementListUnion.class, ElementList.class);
+       }
+       if(label instanceof ElementUnion) {
+          return new ParameterBuilder(ElementUnionParameter.class, ElementUnion.class, Element.class);
        }
        if(label instanceof ElementMap) {
-          return new PameterBuilder(ElementMapParameter.class, ElementMap.class);
+          return new ParameterBuilder(ElementMapParameter.class, ElementMap.class);
        }
        if(label instanceof Attribute) {
-          return new PameterBuilder(AttributeParameter.class, Attribute.class);
+          return new ParameterBuilder(AttributeParameter.class, Attribute.class);
        }
        if(label instanceof Text) {
-          return new PameterBuilder(TextParameter.class, Text.class);
+          return new ParameterBuilder(TextParameter.class, Text.class);
        }
        throw new PersistenceException("Annotation %s not supported", label);
     }
     
     /**
-     * The <code>PameterBuilder<code> is used to create a constructor 
+     * The <code>ParameterBuilder<code> is used to create a constructor 
      * that can be used to instantiate the correct parameter for the 
      * XML annotation specified. The constructor requires three 
      * arguments, the constructor, the annotation, and the index.
      * 
      * @see java.lang.reflect.Constructor
      */
-    private static class PameterBuilder {
+    private static class ParameterBuilder {
              
        /**
-        * This is the parameter type that is to be instantiated.
+        * This is the entry that is used to create the parameter.
         */
-       public Class create;
+       private final Class entry;
        
        /**       
         * This is the XML annotation type within the constructor.
         */
-       public Class type;
+       private final Class label;
+       
+       /**
+        * This is the parameter type that is to be instantiated.
+        */
+       private final Class type;
        
        /**
         * Constructor for the <code>PameterBuilder</code> object. This 
         * pairs the parameter type with the annotation argument used 
         * within the constructor. This allows constructor to be selected.
         * 
-        * @param create this is the label type to be instantiated
-        * @param type the type that is used within the constructor
+        * @param type this is the parameter type to be instantiated
+        * @param label the type that is used within the constructor
         */
-       public PameterBuilder(Class create, Class type) {
-          this.create = create;
+       public ParameterBuilder(Class type, Class label) {
+          this(type, label, null);
+       }
+       
+       /**
+        * Constructor for the <code>PameterBuilder</code> object. This 
+        * pairs the parameter type with the annotation argument used 
+        * within the constructor. This allows constructor to be selected.
+        * 
+        * @param type this is the parameter type to be instantiated
+        * @param label the type that is used within the constructor
+        * @param entry this is the entry used to create the parameter
+        */
+       public ParameterBuilder(Class type, Class label, Class entry) {
+          this.label = label;
+          this.entry = entry;
           this.type = type;
+       }
+       
+       /**
+        * Creates the constructor used to instantiate the label for
+        * the XML annotation. The constructor returned will take two
+        * arguments, a contact and the XML annotation type. 
+        * 
+        * @return returns the constructor for the label object
+        */
+       public Constructor getConstructor() throws Exception {
+          if(entry != null) {
+             return getConstructor(label, entry);
+          }
+          return getConstructor(label);
        }
        
        /**
@@ -149,10 +207,26 @@ final class ParameterFactory {
         * for the XML annotation. The constructor returned will take 
         * two arguments, a contact and the XML annotation type. 
         * 
+        * @param label the type that is used within the constructor
+        * 
         * @return returns the constructor for the parameter object
         */
-       public Constructor getConstructor() throws Exception {
-          return getConstructor(Constructor.class, type, int.class);
+       public Constructor getConstructor(Class label) throws Exception {
+          return getConstructor(Constructor.class, label, Format.class, int.class);
+       }
+       
+       /**
+        * Creates the constructor used to instantiate the parameter
+        * for the XML annotation. The constructor returned will take 
+        * two arguments, a contact and the XML annotation type. 
+        * 
+        * @param label the type that is used within the constructor
+        * @param entry this is the entry used to create the parameter
+        * 
+        * @return returns the constructor for the parameter object
+        */
+       public Constructor getConstructor(Class label, Class entry) throws Exception {
+          return getConstructor(Constructor.class, label, entry, Format.class, int.class);
        }
        
        /**
@@ -165,7 +239,7 @@ final class ParameterFactory {
         * @return returns the constructor for the parameter object
         */
        private Constructor getConstructor(Class... types) throws Exception {
-          return create.getConstructor(types);
+          return type.getConstructor(types);
        }
     }
 }

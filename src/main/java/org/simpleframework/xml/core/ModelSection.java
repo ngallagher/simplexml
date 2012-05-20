@@ -22,8 +22,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.simpleframework.xml.stream.Style;
-
 /**
  * The <code>ModelSection</code> represents a section that is backed
  * by a <code>Model</code> instance. This is used to expose the XML
@@ -51,16 +49,6 @@ class ModelSection implements Section {
    private ModelMap models;
    
    /**
-    * This is the context that contains the style for names.
-    */
-   private Context context;
-   
-   /**
-    * This is the style that is used to convert element names.
-    */
-   private Style style;
-   
-   /**
     * This is the model that contains the elements and attributes.
     */
    private Model model;
@@ -70,12 +58,9 @@ class ModelSection implements Section {
     * used to wrap a <code>Model</code> in such a way that it can
     * not be modified. This allows it to be used concurrently.
     * 
-    * @param context this is the context used by this section
     * @param model this is the model this section will wrap
     */
-   public ModelSection(Context context, Model model) {
-      this.style = context.getStyle();
-      this.context = context;
+   public ModelSection(Model model) {
       this.model = model;
    }
    
@@ -153,11 +138,7 @@ class ModelSection implements Section {
       List<String> list = new ArrayList<String>();
       
       for(String element : model) {
-         String name = style.getElement(element);
-         
-         if(name != null) {
-            list.add(name);
-         }
+         list.add(element);
       }
       return list.iterator();
    }
@@ -187,7 +168,7 @@ class ModelSection implements Section {
     */
    public ModelMap getModels() throws Exception {
       if(models == null) {
-         models = model.buildModels(context);
+         models = model.getModels();
       }
       return models;
    }
@@ -216,7 +197,7 @@ class ModelSection implements Section {
     */
    public LabelMap getAttributes() throws Exception {
       if(attributes == null) {
-         attributes = model.buildAttributes(context);
+         attributes = model.getAttributes();
       }
       return attributes;
    }
@@ -232,7 +213,7 @@ class ModelSection implements Section {
     */
    public LabelMap getElements() throws Exception {
       if(elements == null) {
-         elements = model.buildElements(context);
+         elements = model.getElements();
       }
       return elements;
    }
@@ -277,7 +258,7 @@ class ModelSection implements Section {
          Model model = list.take();
          
          if(model != null){
-            return new ModelSection(context, model);
+            return new ModelSection(model);
          }
       }
       return null;

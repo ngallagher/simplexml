@@ -27,7 +27,7 @@ package org.simpleframework.xml.core;
  * 
  * @author Niall Gallagher
  */
-interface Criteria extends Iterable<String> {
+interface Criteria extends Iterable<Object> {
    
    /**
     * This is used to get the <code>Variable</code> that represents
@@ -35,22 +35,34 @@ interface Criteria extends Iterable<String> {
     * data for the field or method and the value that is to be set
     * on the method or field.
     * 
-    * @param name this is the name of the variable to be acquired
+    * @param key this is the key of the variable to be acquired
     * 
-    * @return this returns the named variable if it exists
+    * @return this returns the keyed variable if it exists
     */
-   public Variable get(String name);
+   public Variable get(Object key) throws Exception;
+   
+   /**
+    * This is used to get the <code>Variable</code> that represents
+    * a deserialized object. The variable contains all the meta
+    * data for the field or method and the value that is to be set
+    * on the method or field.
+    * 
+    * @param label this is the label to acquire the variable for
+    * 
+    * @return this returns the variable associated with the label
+    */
+   public Variable get(Label label) throws Exception;
    
    /**
     * This is used to resolve the <code>Variable</code> by using 
     * the union names of a label. This will also acquire variables
     * based on the actual name of the variable.
     * 
-    * @param name this is the name of the variable to be acquired
+    * @param path this is the path of the variable to be acquired
     * 
-    * @return this returns the named variable if it exists
+    * @return this returns the variable mapped to the path
     */
-   public Variable resolve(String name);
+   public Variable resolve(String path) throws Exception;
    
    /**
     * This is used to remove the <code>Variable</code> from this
@@ -58,11 +70,11 @@ interface Criteria extends Iterable<String> {
     * used to set the method or field when the <code>commit</code>
     * method is invoked.
     * 
-    * @param name this is the name of the variable to be removed
+    * @param key this is the key associated with the variable
     * 
-    * @return this returns the named variable if it exists
+    * @return this returns the keyed variable if it exists
     */
-   public Variable remove(String name) throws Exception;
+   public Variable remove(Object key) throws Exception;
    
    /**
     * This is used to create a <code>Variable</code> and set it for

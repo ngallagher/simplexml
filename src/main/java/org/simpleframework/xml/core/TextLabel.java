@@ -22,6 +22,7 @@ import java.lang.annotation.Annotation;
 
 import org.simpleframework.xml.Text;
 import org.simpleframework.xml.strategy.Type;
+import org.simpleframework.xml.stream.Format;
 
 /**
  * The <code>TextLabel</code> represents a label that is used to get
@@ -68,9 +69,10 @@ class TextLabel extends TemplateLabel {
     * 
     * @param contact this is the contact this label represents
     * @param label this is the annotation for the contact 
+    * @param format this is the format used for this label
     */
-   public TextLabel(Contact contact, Text label) {
-      this.detail = new Introspector(contact, this);
+   public TextLabel(Contact contact, Text label, Format format) {
+      this.detail = new Introspector(contact, this, format);
       this.type = contact.getType();
       this.empty = label.empty();
       this.contact = contact;
@@ -107,35 +109,6 @@ class TextLabel extends TemplateLabel {
          throw new TextException("Cannot use %s to represent %s", type, label);
       }
       return new Primitive(context, type, ignore);
-   }
-     
-   /**
-    * This is used to acquire the name of the element or attribute
-    * that is used by the class schema. The name is determined by
-    * checking for an override within the annotation. If it contains
-    * a name then that is used, if however the annotation does not
-    * specify a name the the field or method name is used instead.
-    *
-    * @param context this is the context that is used for styling
-    * 
-    * @return returns the name that is used for the XML property
-    */
-   public String getName(Context context) {
-      return getName();
-   }
-   
-   /**
-    * This is used to acquire the path of the element or attribute
-    * that is used by the class schema. The path is determined by
-    * acquiring the XPath expression and appending the name of the
-    * label to form a fully qualified styled path.
-    * 
-    * @param context this is the context used to style the path
-    * 
-    * @return returns the path that is used for the XML property
-    */
-   public String getPath(Context context) throws Exception {
-      return getPath();
    }
    
    /**

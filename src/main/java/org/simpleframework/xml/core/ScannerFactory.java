@@ -18,6 +18,8 @@
 
 package org.simpleframework.xml.core;
 
+import org.simpleframework.xml.stream.Format;
+
 
 /**
  * The <code>ScannerFactory</code> is used to create scanner objects
@@ -37,13 +39,21 @@ class ScannerFactory {
    private final ScannerCache cache;
    
    /**
+    * This is the context that is used to create the scanner object.
+    */
+   private final Format format;
+   
+   /**
     * Constructor for the <code>ScannerFactory</code> object. This is
     * used to create a factory that will create and cache scanned 
     * data for a given class. Scanning the class is required to find
     * the fields and methods that have been annotated.
+    * 
+    * @param format this is the format used for the serialization
     */
-   public ScannerFactory() {
+   public ScannerFactory(Format format) {
       this.cache = new ScannerCache();
+      this.format = format;
    }
    
    /**
@@ -63,7 +73,7 @@ class ScannerFactory {
       Scanner schema = cache.get(type);
       
       if(schema == null) {
-         schema = new Scanner(type);             
+         schema = new Scanner(type, format);             
          cache.put(type, schema);
       }
       return schema;

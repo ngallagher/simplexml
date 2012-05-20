@@ -33,7 +33,7 @@ import org.simpleframework.xml.stream.OutputNode;
  * 
  * @author Niall Gallagher
  */
-class CompositeUnion implements Repeater {
+class CompositeUnion implements Converter {
    
    /**
     * This contains the labels in the union group keyed by name.
@@ -72,7 +72,7 @@ class CompositeUnion implements Repeater {
     * @param type this is the annotated field or method to be used
     */
    public CompositeUnion(Context context, Group group, Expression path, Type type) throws Exception {
-      this.elements = group.getElements(context);
+      this.elements = group.getElements();
       this.context = context;
       this.group = group;
       this.type = type;

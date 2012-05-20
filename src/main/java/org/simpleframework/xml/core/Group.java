@@ -56,13 +56,11 @@ interface Group {
     * This is used to acquire a <code>LabelMap</code> containing the
     * labels available to the group. Providing a context object 
     * ensures that each of the labels is mapped to a name that is
-    * styled according to the internal style of the context.
-    *
-    * @param context this is the context used for serialization
+    * styled according to its internal style.
     * 
     * @return this returns a label map containing the labels 
     */
-   public LabelMap getElements(Context context) throws Exception;
+   public LabelMap getElements() throws Exception ;
    
    /**
     * This returns a string representation of the union group.

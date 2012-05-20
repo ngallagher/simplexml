@@ -18,10 +18,9 @@
 
 package org.simpleframework.xml.core;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
+import java.lang.reflect.Constructor;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 /**
  * The <code>Signature</code> object represents a constructor
@@ -33,10 +32,20 @@ import java.util.Set;
  * 
  * @author Niall Gallagher
  */
-class Signature extends LinkedHashMap<String, Parameter> {
+class Signature implements Iterable<Parameter> {
+   
+   /**
+    * This is the map of parameters that this signature uses.
+    */
+   private final ParameterMap parameters;
    
    /**
     * This is the type that the parameters are created for.
+    */
+   private final Constructor factory;
+   
+   /**
+    * This is the type that the signature was created for.
     */
    private final Class type;
    
@@ -46,10 +55,72 @@ class Signature extends LinkedHashMap<String, Parameter> {
     * parameters by name. It also provides the parameters in
     * declaration order within a for each loop.
     * 
+    * @param signature this is the signature to be copied
+    */
+   public Signature(Signature signature) {
+      this(signature.factory, signature.type);
+   }
+   
+   /**
+    * Constructor for the <code>Signature</code> object. This 
+    * is used to create a hash map that can be used to acquire
+    * parameters by name. It also provides the parameters in
+    * declaration order within a for each loop.
+    * 
+    * @param factory this is the constructor this represents
+    */
+   public Signature(Constructor factory) {
+      this(factory, factory.getDeclaringClass());
+   }
+   
+   /**
+    * Constructor for the <code>Signature</code> object. This 
+    * is used to create a hash map that can be used to acquire
+    * parameters by name. It also provides the parameters in
+    * declaration order within a for each loop.
+    * 
+    * @param factory this is the constructor this represents
     * @param type this is the type the map is created for
     */
-   public Signature(Class type) {
+   public Signature(Constructor factory, Class type) {
+      this.parameters = new ParameterMap();
+      this.factory = factory;
       this.type = type;
+   }
+   
+   /**
+    * This represents the number of parameters this signature has.
+    * A signature with no parameters is the default no argument
+    * constructor, anything else is a candidate for injection.
+    * 
+    * @return this returns the number of annotated parameters
+    */
+   public int size() {
+      return parameters.size();
+   }
+   
+   /**
+    * This returns true if the signature contains a parameter that
+    * is mapped to the specified key. If no parameter exists with
+    * this key then this will return false.
+    * 
+    * @param key this is the key the parameter is mapped to
+    * 
+    * @return this returns true if there is a parameter mapping
+    */
+   public boolean contains(Object key) {
+      return parameters.containsKey(key);
+   }
+   
+   /**
+    * This is used to iterate over <code>Parameter</code> objects.
+    * Parameters are iterated in the order that they are added to
+    * the map. This is primarily used for convenience iteration. 
+    * 
+    * @return this returns an iterator for the parameters
+    */
+   public Iterator<Parameter> iterator() {
+      return parameters.iterator();
    }
    
    /**
@@ -62,7 +133,7 @@ class Signature extends LinkedHashMap<String, Parameter> {
     * @return this returns the parameter for the position
     */
    public Parameter getParameter(int ordinal) {
-      return getParameters().get(ordinal);
+      return parameters.get(ordinal);
    }
    
    /**
@@ -74,8 +145,8 @@ class Signature extends LinkedHashMap<String, Parameter> {
     * 
     * @return this is the parameter mapped to the given name
     */
-   public Parameter getParameter(String name) {
-      return get(name);
+   public Parameter getParameter(Object key) {
+      return parameters.get(key);
    }
     
    /**
@@ -87,7 +158,36 @@ class Signature extends LinkedHashMap<String, Parameter> {
     * @return this returns the parameters in declaration order
     */
    public List<Parameter> getParameters() {
-      return new ArrayList<Parameter>(values());
+      return parameters.getAll();
+   }
+   
+   /**
+    * This will add the provided parameter to the signature. The
+    * parameter is added to the signature mapped to the key of
+    * the parameter. If the key is null it is not added.
+    * 
+    * @param parameter this is the parameter to be added
+    */
+   public void addParameter(Parameter parameter) {
+      Object key = parameter.getKey();
+      
+      if(key != null) {
+         parameters.put(key, parameter);
+      }
+   }
+   
+   /**
+    * This will add a new mapping to the signature based on the
+    * provided key. Adding a mapping to a parameter using something
+    * other than the key for the parameter allows for resolution
+    * of the parameter based on a path or a name if desired.
+    * 
+    * @param key this is the key to map the parameter to
+    * 
+    * @param parameter this is the parameter to be mapped
+    */
+   public void setParameter(Object key, Parameter parameter) {
+      parameters.put(key, parameter);
    }
    
    /**
@@ -96,16 +196,13 @@ class Signature extends LinkedHashMap<String, Parameter> {
     * match styled element names or attributes to ensure that they 
     * can be used to acquire the parameters.
     * 
-    * @param context this is used to build the signature
-    * 
     * @return this returns a signature with styled keys
     */
-   public Signature getSignature(Context context) throws Exception {
-      Signature signature = new Signature(type);
+   public Signature getSignature() throws Exception {
+      Signature signature = new Signature(this);
       
-      for(Parameter value : values()) {  
-         String name = value.getPath(context);
-         signature.put(name, value);
+      for(Parameter parameter : this) {  
+         signature.addParameter(parameter);
       }
       return signature;
    }
@@ -115,6 +212,16 @@ class Signature extends LinkedHashMap<String, Parameter> {
     * used to determine where the parameters stored are declared.
     * 
     * @return returns the type that the parameters are created for
+    */
+   public Constructor getConstructor() {
+      return factory;
+   }
+   
+   /**
+    * This is the type associated with the <code>Signature</code>.
+    * All instances returned from this creator will be of this type.
+    * 
+    * @return this returns the type associated with the signature
     */
    public Class getType() {
       return type;

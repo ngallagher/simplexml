@@ -22,6 +22,7 @@ import java.lang.annotation.Annotation;
 
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.strategy.Type;
+import org.simpleframework.xml.stream.Format;
 import org.simpleframework.xml.stream.Style;
 
 /**
@@ -53,6 +54,11 @@ class ElementLabel extends TemplateLabel {
    private Element label;
    
    /**
+    * This is the format used to style this element label.
+    */
+   private Format format;
+   
+   /**
     * This is the override that has been declared for this label.
     */
    private Class override;
@@ -74,13 +80,15 @@ class ElementLabel extends TemplateLabel {
     * 
     * @param contact this is the field that this label represents
     * @param label this is the annotation for the contact 
+    * @param format this is the format used to style this element
     */
-   public ElementLabel(Contact contact, Element label) {
-      this.detail = new Introspector(contact, this);
+   public ElementLabel(Contact contact, Element label, Format format) {
+      this.detail = new Introspector(contact, this, format);
       this.decorator = new Qualifier(contact);
       this.type = contact.getType();
       this.override = label.type();
       this.name = label.name();     
+      this.format = format;
       this.label = label; 
    }
    
@@ -138,41 +146,6 @@ class ElementLabel extends TemplateLabel {
    }
    
    /**
-    * This is used to acquire the name of the element or attribute
-    * that is used by the class schema. The name is determined by
-    * checking for an override within the annotation. If it contains
-    * a name then that is used, if however the annotation does not
-    * specify a name the the field or method name is used instead.
-    * 
-    * @param context this is used to provide a styled name
-    * 
-    * @return returns the name that is used for the XML property
-    */
-   public String getName(Context context) throws Exception{
-      Style style = context.getStyle();
-      String name = detail.getName();
-      
-      return style.getElement(name);
-   }
-   
-   /**
-    * This is used to acquire the path of the element or attribute
-    * that is used by the class schema. The path is determined by
-    * acquiring the XPath expression and appending the name of the
-    * label to form a fully qualified styled path.
-    * 
-    * @param context this is the context used to style the path
-    * 
-    * @return returns the path that is used for the XML property
-    */
-   public String getPath(Context context) throws Exception {
-      Expression path = getExpression();
-      String name = getName(context);
-
-      return path.getElement(name); 
-   }
-   
-   /**
     * This is used to provide a configured empty value used when the
     * annotated value is null. This ensures that XML can be created
     * with required details regardless of whether values are null or
@@ -196,7 +169,10 @@ class ElementLabel extends TemplateLabel {
     * @return returns the name that is used for the XML property
     */
    public String getName() throws Exception{
-      return detail.getName();
+      Style style = format.getStyle();
+      String name = detail.getName();
+     
+      return style.getElement(name);
    }
    
    /**

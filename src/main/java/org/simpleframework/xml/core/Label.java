@@ -96,31 +96,6 @@ interface Label {
    public Collection<String> getPaths() throws Exception;
    
    /**
-    * This is used to acquire the full set of names and paths that
-    * can be used to identify a label. Labels can be specified using 
-    * the <code>Path</code> optionally. If the path annotation is not
-    * specified then it needs to be identified by the name alone. 
-    * For a union this can create a large set.
-    * 
-    * @param context this is used to style the element names
-    * 
-    * @return this returns the names of each of the elements
-    */
-   public Collection<String> getNames(Context context) throws Exception;
-   
-   /**
-    * This is used to acquire the full set of paths that can be used 
-    * to identify a label. Labels can be identified using a name or by 
-    * using the optional <code>Path</code> with the name. If the path 
-    * annotation is not specified this will return the names.
-    *
-    * @param context this is used to style the element names
-    * 
-    * @return this returns the names of each of the elements
-    */
-   public Collection<String> getPaths(Context context) throws Exception;
-   
-   /**
     * This is used to provide a configured empty value used when the
     * annotated value is null. This ensures that XML can be created
     * with required details regardless of whether values are null or
@@ -143,31 +118,6 @@ interface Label {
     * @return this returns an object that is used for conversion
     */
    public Converter getConverter(Context context) throws Exception;
-   
-   /**
-    * This is used to acquire the name of the element or attribute
-    * that is used by the class schema. The name is determined by
-    * checking for an override within the annotation. If it contains
-    * a name then that is used, if however the annotation does not
-    * specify a name the the field or method name is used instead.
-    * 
-    * @param context this is the context used to style the name
-    * 
-    * @return returns the name that is used for the XML property
-    */
-   public String getName(Context context) throws Exception;
-   
-   /**
-    * This is used to acquire the path of the element or attribute
-    * that is used by the class schema. The path is determined by
-    * acquiring the XPath expression and appending the name of the
-    * label to form a fully qualified styled path.
-    * 
-    * @param context this is the context used to style the path
-    * 
-    * @return returns the path that is used for the XML property
-    */
-   public String getPath(Context context) throws Exception;
    
    /**
     * This is used to acquire the name of the element or attribute
@@ -220,6 +170,15 @@ interface Label {
     * @return this returns the name of the XML entry element used 
     */
    public String getEntry() throws Exception;
+   
+   /**
+    * This is the key used to represent this label. The key is used
+    * to store the parameter in hash containers. Typically the
+    * key is generated from the paths associated with the label.
+    * 
+    * @return this is the key used to represent the label
+    */
+   public Object getKey() throws Exception;
    
    /**
     * This acquires the annotation associated with this label. This

@@ -41,26 +41,18 @@ class Collector implements Criteria {
    private final Registry registry;
    
    /**
-    * This is the registry containing labels registered by alias.
+    * This is the registry that contains variables mapped to paths.
     */
    private final Registry alias;
-   
-   /**
-    * This is the context object used by the serialization process.
-    */
-   private final Context context;
    
    /**
     * Constructor for the <code>Collector</code> object. This is 
     * used to store variables for an objects fields and methods.
     * Each variable is stored using the name of the label.
-    * 
-    * @param context this is the context for the deserialization
     */
-   public Collector(Context context) {
+   public Collector() {
       this.registry = new Registry();
       this.alias = new Registry();
-      this.context = context;
    }
 
    /**
@@ -69,12 +61,31 @@ class Collector implements Criteria {
     * data for the field or method and the value that is to be set
     * on the method or field.
     * 
-    * @param name this is the name of the variable to be acquired
+    * @param key this is the key of the variable to be acquired
     * 
-    * @return this returns the named variable if it exists
+    * @return this returns the keyed variable if it exists
     */
-   public Variable get(String name) {
-      return registry.get(name);
+   public Variable get(Object key) {
+      return registry.get(key);
+   } 
+   
+   /**
+    * This is used to get the <code>Variable</code> that represents
+    * a deserialized object. The variable contains all the meta
+    * data for the field or method and the value that is to be set
+    * on the method or field.
+    * 
+    * @param label this is the label to resolve the variable with
+    * 
+    * @return this returns the variable associated with the label
+    */
+   public Variable get(Label label) throws Exception {
+      if(label != null) {
+         Object key = label.getKey();
+         
+         return registry.get(key);
+      }
+      return null;
    } 
    
    /**
@@ -82,12 +93,12 @@ class Collector implements Criteria {
     * the union names of a label. This will also acquire variables
     * based on the actual name of the variable.
     * 
-    * @param name this is the name of the variable to be acquired
+    * @param path this is the path of the variable to be acquired
     * 
-    * @return this returns the named variable if it exists
+    * @return this returns the variable mapped to the path
     */
-   public Variable resolve(String name) {
-      return alias.get(name);
+   public Variable resolve(String path) {
+      return alias.get(path);
    }
    
    /**
@@ -96,23 +107,12 @@ class Collector implements Criteria {
     * used to set the method or field when the <code>commit</code>
     * method is invoked.
     * 
-    * @param label this is the name of the variable to be removed
+    * @param key this is the key associated with the variable
     * 
-    * @return this returns the named variable if it exists
+    * @return this returns the keyed variable if it exists
     */
-   public Variable remove(String label) throws Exception{
-      Variable variable = alias.remove(label);
-      
-      if(variable != null) {
-         Collection<String> options = variable.getNames(context);
-         String path = variable.getPath(context);
-         
-         for(String option : options) {
-            alias.remove(option);
-         }
-         registry.remove(path);
-      }
-      return variable;
+   public Variable remove(Object key) throws Exception{
+      return registry.remove(key);
    }
    
    /**
@@ -122,7 +122,7 @@ class Collector implements Criteria {
     * 
     * @return this returns an iterator of all the variable names
     */
-   public Iterator<String> iterator() {
+   public Iterator<Object> iterator() {
       return registry.iterator();
    }
    
@@ -139,15 +139,13 @@ class Collector implements Criteria {
       Variable variable = new Variable(label, value);
 
       if(label != null) {
-         Collection<String> options = label.getNames(context);       
-         String path = label.getPath(context);
+         Collection<String> paths = label.getPaths();
+         Object key = label.getKey();
          
-         if(!registry.containsKey(path)) {
-            registry.put(path, variable);
+         for(String path : paths) {
+            alias.put(path,  variable);
          }
-         for(String option : options) {
-            alias.put(option, variable);
-         }
+         registry.put(key, variable);
       }
    }
    
@@ -178,7 +176,7 @@ class Collector implements Criteria {
     * 
     * @author Niall Gallagher
     */
-   private class Registry extends LinkedHashMap<String, Variable> {
+   private class Registry extends LinkedHashMap<Object, Variable> {
       
       /**
        * This is used to iterate over the names of the variables
@@ -187,7 +185,7 @@ class Collector implements Criteria {
        * 
        * @return an iterator containing the names of the variables
        */
-      public Iterator<String> iterator() {
+      public Iterator<Object> iterator() {
          return keySet().iterator();
       }
    }

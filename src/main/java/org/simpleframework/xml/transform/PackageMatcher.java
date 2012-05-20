@@ -99,8 +99,15 @@ class PackageMatcher implements Matcher {
     * @return this will return a transform for the specified type
     */
    private Transform matchEnum(Class type) {
+      Class parent = type.getSuperclass();
+      
+      if(parent != null) {
+         if(parent.isEnum()) {
+            return new EnumTransform(type);
+         }
       if(type.isEnum()) {
          return new EnumTransform(type);
+         }
       }
       return null;
    }

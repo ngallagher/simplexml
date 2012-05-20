@@ -18,8 +18,6 @@
 
 package org.simpleframework.xml.core;
 
-import org.simpleframework.xml.stream.Style;
-
 /**
  * The <code>TemplateParameter</code> object is used to provide stock
  * functions that can be used by all implementations. This ensures
@@ -39,39 +37,6 @@ abstract class TemplateParameter implements Parameter {
     */
    protected TemplateParameter() {
       super();
-   }
-
-   /**
-    * This is used to acquire the path of the element or attribute
-    * represented by this parameter. The path is determined by
-    * acquiring the XPath expression and appending the name of the
-    * label to form a fully qualified styled path.
-    * 
-    * @param context this is the context used to style the path
-    * 
-    * @return returns the path that is used for this parameter
-    */
-   public String getPath(Context context) {
-      Expression expression = getExpression();
-      String name = getName(context);
-      
-      return expression.getElement(name);
-   }
-   
-   /**
-    * This is used to acquire the name of the parameter that this
-    * represents. The name is determined using annotation and 
-    * the name attribute of that annotation, if one is provided.
-    * 
-    * @param context this is the context used to style the name
-    * 
-    * @return this returns the name of the annotated parameter
-    */
-   public String getName(Context context) {
-      Style style = context.getStyle();
-      String name = getName();
-      
-      return style.getElement(name);
    }
    
    /**

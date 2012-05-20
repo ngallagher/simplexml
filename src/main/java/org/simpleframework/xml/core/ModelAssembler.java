@@ -19,6 +19,8 @@
 package org.simpleframework.xml.core;
 
 import org.simpleframework.xml.Order;
+import org.simpleframework.xml.stream.Format;
+import org.simpleframework.xml.stream.Style;
 
 /**
  * The <code>ModelAssembler</code> is used to assemble the model
@@ -50,6 +52,11 @@ class ModelAssembler {
    private final ExpressionBuilder builder;  
    
    /**
+    * This is the format that is used to style the order values. 
+    */
+   private final Format format;
+   
+   /**
     * This is the type this this is assembling the model for.
     */
    private final Class type;
@@ -61,9 +68,11 @@ class ModelAssembler {
     * 
     * @param builder this is the builder for XPath expressions
     * @param type this is the type to assemble the model for
+    * @param format the format used to style order values
     */
-   public ModelAssembler(ExpressionBuilder builder, Class type) throws Exception {
+   public ModelAssembler(ExpressionBuilder builder, Class type, Format format) throws Exception {
       this.builder = builder;     
+      this.format = format;
       this.type = type;
    }
    
@@ -117,7 +126,14 @@ class ModelAssembler {
          if(!path.isAttribute() && path.isPath()) {
             throw new PathException("Ordered attribute '%s' references an element in %s", path, type);
          }
+         if(!path.isPath()) {
+            Style style = format.getStyle();
+            String name = style.getAttribute(value);
+            
+            model.registerAttribute(name);
+         } else {
          registerAttributes(model, path);         
+         }
       }
    }
    

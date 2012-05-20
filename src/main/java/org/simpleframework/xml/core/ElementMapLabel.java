@@ -22,6 +22,7 @@ import java.lang.annotation.Annotation;
 
 import org.simpleframework.xml.ElementMap;
 import org.simpleframework.xml.strategy.Type;
+import org.simpleframework.xml.stream.Format;
 import org.simpleframework.xml.stream.Style;
 
 /**
@@ -51,6 +52,11 @@ class ElementMapLabel extends TemplateLabel {
     * This references the annotation that the field uses.
     */
    private ElementMap label;
+   
+   /**
+    * This is the format used to style the elements for this.
+    */
+   private Format format;
    
    /**
     * The entry object contains the details on how to write the map.
@@ -84,13 +90,15 @@ class ElementMapLabel extends TemplateLabel {
     * 
     * @param contact this is the contact that this label represents
     * @param label the annotation that contains the schema details
+    * @param format this is the format used to style this label
     */
-   public ElementMapLabel(Contact contact, ElementMap label) {
-      this.detail = new Introspector(contact, this);
+   public ElementMapLabel(Contact contact, ElementMap label, Format format) {
+      this.detail = new Introspector(contact, this, format);
       this.decorator = new Qualifier(contact);
       this.entry = new Entry(contact, label);
       this.type = contact.getType();
       this.name = label.name();      
+      this.format = format;
       this.label = label;
    }
    
@@ -125,44 +133,6 @@ class ElementMapLabel extends TemplateLabel {
       }
       return new CompositeInlineMap(context, entry, type);     
    }  
-   
-   /**
-    * This is used to acquire the name of the element or attribute
-    * that is used by the class schema. The name is determined by
-    * checking for an override within the annotation. If it contains
-    * a name then that is used, if however the annotation does not
-    * specify a name the the field or method name is used instead.
-    * 
-    * @param context this is the context used to style the name
-    * 
-    * @return returns the name that is used for the XML property
-    */
-   public String getName(Context context) throws Exception {
-      Style style = context.getStyle();
-      String name = entry.getEntry();
-      
-      if(!label.inline()) {
-         name = detail.getName();
-      }
-      return style.getElement(name);
-   }
-   
-   /**
-    * This is used to acquire the path of the element or attribute
-    * that is used by the class schema. The path is determined by
-    * acquiring the XPath expression and appending the name of the
-    * label to form a fully qualified styled path.
-    * 
-    * @param context this is the context used to style the path
-    * 
-    * @return returns the path that is used for the XML property
-    */
-   public String getPath(Context context) throws Exception {
-      Expression path = getExpression();
-      String name = getName(context);
-      
-      return path.getElement(name); 
-   }
    
    /**
     * This is used to provide a configured empty value used when the
@@ -216,10 +186,12 @@ class ElementMapLabel extends TemplateLabel {
     * @return this returns the name of the XML entry element used 
     */
    public String getEntry() throws Exception {      
+      Style style = format.getStyle();
+      
       if(detail.isEmpty(parent)) {
          parent = detail.getEntry();
       }
-      return parent;
+      return style.getElement(parent);
    }
    
    /**
@@ -232,10 +204,13 @@ class ElementMapLabel extends TemplateLabel {
     * @return returns the name that is used for the XML property
     */
    public String getName() throws Exception{
-      if(label.inline()) {
-         return entry.getEntry();
+      Style style = format.getStyle();
+      String name = entry.getEntry();
+      
+      if(!label.inline()) {
+         name = detail.getName();
       }
-      return detail.getName();
+      return style.getElement(name);
    }
    
    /**

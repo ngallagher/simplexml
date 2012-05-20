@@ -33,6 +33,15 @@ import java.lang.annotation.Annotation;
 interface Parameter {
    
    /**
+    * This is the key used to represent the parameter. The key is
+    * used to store the parameter in hash containers. Unlike the
+    * path is not necessarily the path for the parameter.
+    * 
+    * @return this is the key used to represent the parameter
+    */
+   public Object getKey();
+   
+   /**
     * This is used to acquire the annotated type class. The class
     * is the type that is to be deserialized from the XML. This
     * is used to validate against annotated fields and methods.
@@ -88,29 +97,6 @@ interface Parameter {
     * @return returns the path that is used for this parameter
     */
    public String getPath();
-   
-   /**
-    * This is used to acquire the path of the element or attribute
-    * represented by this parameter. The path is determined by
-    * acquiring the XPath expression and appending the name of the
-    * label to form a fully qualified styled path.
-    * 
-    * @param context this is the context used to style the path
-    * 
-    * @return returns the path that is used for this parameter
-    */
-   public String getPath(Context context);
-   
-   /**
-    * This is used to acquire the name of the parameter that this
-    * represents. The name is determined using annotation and 
-    * the name attribute of that annotation, if one is provided.
-    * 
-    * @param context this is the context used to style the name
-    * 
-    * @return this returns the name of the annotated parameter
-    */
-   public String getName(Context context);
    
    /**
     * This is used to determine if the parameter is required. If 

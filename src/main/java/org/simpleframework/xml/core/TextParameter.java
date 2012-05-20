@@ -22,6 +22,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 
 import org.simpleframework.xml.Text;
+import org.simpleframework.xml.stream.Format;
 
 /**
  * The <code>TextParameter</code> represents a constructor 
@@ -39,11 +40,6 @@ class TextParameter extends TemplateParameter {
     * This is the expression used to represent this parameter.
     */
    private final Expression expression;   
-   
-   /**
-    * This is the constructor the parameter was declared in.
-    */
-   private final Constructor factory;
    
    /**
     * This is the contact used to determine the parameter name.
@@ -71,6 +67,11 @@ class TextParameter extends TemplateParameter {
    private final Class type;
    
    /**
+    * This is the key used to represent this parameter object.
+    */
+   private final Object key;
+   
+   /**
     * This is the index that the parameter was declared at.
     */
    private final int index;
@@ -82,17 +83,29 @@ class TextParameter extends TemplateParameter {
     * 
     * @param factory this is the constructor the parameter is in
     * @param value this is the annotation used for the parameter
+    * @param format this is the format used for this parameter
     * @param index this is the index the parameter appears at
     */
-   public TextParameter(Constructor factory, Text value, int index) throws Exception {
+   public TextParameter(Constructor factory, Text value, Format format, int index) throws Exception {
       this.contact = new Contact(value, factory, index);
-      this.label = new TextLabel(contact, value);
+      this.label = new TextLabel(contact, value, format);
       this.expression = label.getExpression();
       this.path = label.getPath();
       this.type = label.getType();
       this.name = label.getName();
-      this.factory = factory;
+      this.key = label.getKey();
       this.index = index;
+   }
+   
+   /**
+    * This is the key used to represent the parameter. The key is
+    * used to store the parameter in hash containers. Unlike the
+    * path is not necessarily the path for the parameter.
+    * 
+    * @return this is the key used to represent the parameter
+    */
+   public Object getKey() {
+      return key;
    }
    
    /**
@@ -165,7 +178,7 @@ class TextParameter extends TemplateParameter {
     * @return this returns the type used for the parameter
     */
    public Class getType() {
-      return factory.getParameterTypes()[index];
+      return type;
    } 
    
    /**

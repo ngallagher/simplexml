@@ -25,7 +25,6 @@ import org.simpleframework.xml.strategy.Type;
 import org.simpleframework.xml.stream.InputNode;
 import org.simpleframework.xml.stream.OutputNode;
 import org.simpleframework.xml.stream.Position;
-import org.simpleframework.xml.stream.Style;
 
 /**
  * The <code>Variable</code> object is used to represent a variable 
@@ -118,35 +117,6 @@ class Variable implements Label {
    }
    
    /**
-    * This is used to acquire the full set of names and paths that
-    * can be used to identify a label. Labels can be specified using 
-    * the <code>Path</code> optionally. If the path annotation is not
-    * specified then it needs to be identified by the name alone. 
-    * For a union this can create a large set.
-    * 
-    * @param context this is used to style the element names
-    * 
-    * @return this returns the names of each of the elements
-    */
-   public Collection<String> getNames(Context context) throws Exception {
-      return label.getNames(context);
-   }
-   
-   /**
-    * This is used to acquire the full set of paths that can be used 
-    * to identify a label. Labels can be identified using a name or by 
-    * using the optional <code>Path</code> with the name. If the path 
-    * annotation is not specified this will return the names.
-    *
-    * @param context this is used to style the element names
-    * 
-    * @return this returns the names of each of the elements
-    */
-   public Collection<String> getPaths(Context context) throws Exception {
-      return label.getPaths(context);
-   }
-   
-   /**
     * This is used to acquire the value associated with the variable.
     * Once fully deserialized the value is used to set the value for 
     * a field or method of the object. This value can be repeatedly
@@ -191,35 +161,6 @@ class Variable implements Label {
    }
    
    /**
-    * This is used to acquire the name of the element or attribute
-    * that is used by the class schema. The name is determined by
-    * checking for an override within the annotation. If it contains
-    * a name then that is used, if however the annotation does not
-    * specify a name the the field or method name is used instead.
-    * 
-    * @param context this is the context used to style the name
-    * 
-    * @return returns the name that is used for the XML property
-    */
-   public String getName(Context context) throws Exception{
-      return label.getName(context);
-   }
-   
-   /**
-    * This is used to acquire the path of the element or attribute
-    * that is used by the class schema. The path is determined by
-    * acquiring the XPath expression and appending the name of the
-    * label to form a fully qualified styled path.
-    * 
-    * @param context this is the context used to style the path
-    * 
-    * @return returns the path that is used for the XML property
-    */
-   public String getPath(Context context) throws Exception {
-      return label.getPath(context);
-   }
-   
-   /**
     * This is used to provide a configured empty value used when the
     * annotated value is null. This ensures that XML can be created
     * with required details regardless of whether values are null or
@@ -257,6 +198,17 @@ class Variable implements Label {
     */
    public Type getDependent() throws Exception {
       return label.getDependent();
+   }
+   
+   /**
+    * This is the key used to represent this label. The key is used
+    * to store the parameter in hash containers. Typically the
+    * key is generated from the paths associated with the label.
+    * 
+    * @return this is the key used to represent the label
+    */
+   public Object getKey() throws Exception {
+      return label.getKey();
    }
    
    /**
@@ -512,7 +464,7 @@ class Variable implements Label {
             
             return repeat.read(node, value);
          }
-         throw new PersistenceException("Element '%s' declared twice at %s", name, line);
+         throw new PersistenceException("Element '%s' is already used with %s at %s", name, label, line);
       }
       
       /**

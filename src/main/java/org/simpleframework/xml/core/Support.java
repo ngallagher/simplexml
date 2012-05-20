@@ -21,6 +21,8 @@ package org.simpleframework.xml.core;
 import org.simpleframework.xml.filter.Filter;
 import org.simpleframework.xml.filter.PlatformFilter;
 import org.simpleframework.xml.strategy.Value;
+import org.simpleframework.xml.stream.Format;
+import org.simpleframework.xml.stream.Style;
 import org.simpleframework.xml.transform.Matcher;
 import org.simpleframework.xml.transform.Transform;
 import org.simpleframework.xml.transform.Transformer;
@@ -46,7 +48,7 @@ class Support implements Filter {
    /**
     * This is the factory that is used to create the scanners.
     */
-   private final Instantiator creator;
+   private final InstanceFactory creator;
    
    /**
     * This is the transformer used to transform objects to text.
@@ -62,6 +64,11 @@ class Support implements Filter {
     * This is the filter used to transform the template variables.
     */
    private final Filter filter;
+   
+   /**
+    * This is the format used by this persistence support object.
+    */
+   private final Format format;
    
    /**
     * Constructor for the <code>Support</code> object. This will
@@ -95,11 +102,26 @@ class Support implements Filter {
     * @param matcher this is the matcher used for transformations
     */
    public Support(Filter filter, Matcher matcher) {
+      this(filter, matcher, new Format());
+   }
+   
+   /**
+    * Constructor for the <code>Support</code> object. This will
+    * create a support object with the matcher and filter provided.
+    * This allows the user to override the transformations that
+    * are used to convert types to strings and back again.
+    * 
+    * @param filter this is the filter to use with this support
+    * @param matcher this is the matcher used for transformations
+    * @param format this contains all the formatting for the XML
+    */
+   public Support(Filter filter, Matcher matcher, Format format) {
       this.transform = new Transformer(matcher);
-      this.factory = new ScannerFactory();
-      this.creator = new Instantiator();
+      this.factory = new ScannerFactory(format);
+      this.creator = new InstanceFactory();
       this.matcher = matcher;
       this.filter = filter;
+      this.format = format;
    }
    
    /**
@@ -114,6 +136,17 @@ class Support implements Filter {
     */
    public String replace(String text) {
       return filter.replace(text);
+   }
+   
+   /**
+    * This is used to acquire the <code>Style</code> for the format.
+    * This requires that the style is not null, if a null style is
+    * returned from the format this will break serialization.
+    * 
+    * @return this returns the style used for this format object
+    */
+   public Style getStyle() {
+      return format.getStyle();
    }
    
    /**
