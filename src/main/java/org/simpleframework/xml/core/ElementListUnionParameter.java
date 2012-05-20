@@ -83,7 +83,8 @@ class ElementListUnionParameter extends TemplateParameter {
     * determine a consistent name using the provided XML annotation.
     * 
     * @param factory this is the constructor the parameter is in
-    * @param value this is the annotation used for the parameter
+    * @param union this is union parameter associated with this
+    * @param element this is the annotation used for the parameter
     * @param format this is the format used to style the parameter
     * @param index this is the index the parameter appears at
     */
@@ -225,7 +226,7 @@ class ElementListUnionParameter extends TemplateParameter {
        * used to create an object that acts like an adapter so that
        * the label can create a consistent name for the parameter.
        * 
-       * @param label this is the annotation for the parameter
+       * @param element this is the annotation for the parameter
        * @param factory this is the constructor the parameter is in
        * @param index this is the index for the parameter
        */

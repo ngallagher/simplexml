@@ -55,8 +55,6 @@ class ModelMap extends LinkedHashMap<String, ModelList> implements Iterable<Mode
     * in the clone. This is used to that the <code>Schema</code> can
     * remove mappings from the model map as they are visited. 
     *
-    * @param style this is the style applied to the serialization
-    *
     * @return this returns a cloned representation of this map
     */
    public ModelMap getModels() throws Exception {

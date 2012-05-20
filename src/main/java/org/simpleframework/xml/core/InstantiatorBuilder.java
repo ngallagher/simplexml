@@ -122,7 +122,7 @@ class InstantiatorBuilder {
     * associated with the type. This validation ensures that the labels
     * and constructor parameters match based on annotations.
     * 
-    * @param this is the type of the instantiator to be created
+    * @param type this is the type of the instantiator to be created
     * 
     * @return this returns the instance that has been built
     */
@@ -140,7 +140,7 @@ class InstantiatorBuilder {
     * associated with the type. This validation ensures that the labels
     * and constructor parameters match based on annotations.
     * 
-    * @param this is the type of the instantiator to be created
+    * @param type this is the type of the instantiator to be created
     * 
     * @return this returns the instance that has been created
     */
@@ -236,7 +236,7 @@ class InstantiatorBuilder {
     * class schema is fully readable and writable. If not method or
     * field annotation exists for the parameter validation fails.
     * 
-    * @param creator this is the creator to validate the labels with
+    * @param type this is the type to validate the labels for
     */
    private void validate(Class type) throws Exception {
       ParameterMap registry = scanner.getParameters();
@@ -332,8 +332,6 @@ class InstantiatorBuilder {
     * constructor parameter that allows the value to be injected in
     * to. Validating the constructor in this manner ensures that the
     * class schema remains fully serializable and deserializable.
-    * 
-    * @param type this is the type to validate constructors for
     */   
    private void validateConstructors() throws Exception {
       List<Creator> list = factory.getCreators(); 

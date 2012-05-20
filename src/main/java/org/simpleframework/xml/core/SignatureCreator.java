@@ -53,8 +53,7 @@ class SignatureCreator implements Creator {
     * Each instantiator will score its suitability using the parameters
     * it is provided.
     * 
-    * @param factory this is the factory used for instantiation
-    * @param signature is the map of parameters that are declared
+    * @param signature this is the signature that contains parameters
     */
    public SignatureCreator(Signature signature) {
       this.type = signature.getType();

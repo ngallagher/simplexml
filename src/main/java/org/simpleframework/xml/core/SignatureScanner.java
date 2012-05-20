@@ -202,7 +202,6 @@ class SignatureScanner {
     * used to represent a parameter to a constructor. Each parameter
     * contains an annotation an the index it appears in.
     * 
-    * @param factory this is the constructor the parameter is in
     * @param label this is the annotation used for the parameter
     * @param ordinal this is the position the parameter appears at
     * 
@@ -231,7 +230,6 @@ class SignatureScanner {
     * used to represent a parameter to a constructor. Each parameter
     * contains an annotation an the index it appears in.
     * 
-    * @param factory this is the constructor the parameter is in
     * @param label this is the annotation used for the parameter
     * @param ordinal this is the position the parameter appears at
     * 
@@ -275,7 +273,6 @@ class SignatureScanner {
     * registered parameters are registered in to a single table.
     * 
     * @param parameter this is the parameter to be registered
-    * @param path this is the path to register the parameter with
     */
    private void register(Parameter parameter) throws Exception {
       String path = parameter.getPath();
@@ -298,7 +295,7 @@ class SignatureScanner {
     * consistent throughout the class.
     * 
     * @param parameter this is the parameter to be validated
-    * @param path this is the name of the parameter to validate
+    * @param key this is the key of the parameter to validate
     */
    private void validate(Parameter parameter, Object key) throws Exception {
       Parameter other = registry.get(key);
