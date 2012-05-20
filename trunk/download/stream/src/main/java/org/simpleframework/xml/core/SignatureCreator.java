@@ -165,11 +165,12 @@ class SignatureCreator implements Creator {
          Contact contact = label.getContact();
 
          if(parameter != null) {
-            Class expect = label.getType();
+            Object value = label.getValue();
+            Class expect = value.getClass();
             Class actual = parameter.getType();
             
             if(!actual.isAssignableFrom(expect)) {
-               parameter = null;
+               return -1;
             }
          }
          if(contact.isReadOnly()) {
