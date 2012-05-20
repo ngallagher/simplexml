@@ -18,7 +18,6 @@
 
 package org.simpleframework.xml.core;
 
-import java.lang.reflect.Constructor;
 import java.util.List;
 
 /**
@@ -37,16 +36,16 @@ class SignatureCreator implements Creator {
     * This is the list of parameters in the order of declaration. 
     */
    private final List<Parameter> list;
-
-   /**
-    * This is the factory that is used to instantiate the object.
-    */
-   private final Constructor factory;
    
    /**
     * This is the map that contains the parameters to be used.
     */
    private final Signature signature;
+   
+   /**
+    * This is the type represented by the creator instance.
+    */
+   private final Class type;
    
    /**
     * Constructor for the <code>Instantiator</code> object. This is used
@@ -58,8 +57,8 @@ class SignatureCreator implements Creator {
     * @param signature is the map of parameters that are declared
     */
    public SignatureCreator(Signature signature) {
-      this.factory = signature.getConstructor();
-      this.list = signature.getParameters();
+      this.type = signature.getType();
+      this.list = signature.getAll();
       this.signature = signature;
    } 
    
@@ -70,7 +69,7 @@ class SignatureCreator implements Creator {
     * @return this returns the type associated with this creator
     */
    public Class getType() {
-      return factory.getDeclaringClass();
+      return type;
    }
    
    /**
@@ -93,12 +92,7 @@ class SignatureCreator implements Creator {
     * @return this returns the object that has been instantiated
     */
    public Object getInstance() throws Exception {
-      Constructor factory = signature.getConstructor();
-      
-      if(!factory.isAccessible()) {
-         factory.setAccessible(true);
-      } 
-      return factory.newInstance();
+      return signature.create();
    }
    
    /**
@@ -117,7 +111,7 @@ class SignatureCreator implements Creator {
       for(int i = 0; i < list.size(); i++) {
          values[i] = getVariable(criteria, i);
       }
-      return getInstance(values);
+      return signature.create(values);
    }
    
    /**
@@ -157,10 +151,10 @@ class SignatureCreator implements Creator {
     * @return this returns the score based on the criteria provided
     */
    public double getScore(Criteria criteria) throws Exception {
-      Signature match = signature.getSignature();
+      Signature match = signature.copy();
       
       for(Object key : criteria) {
-         Parameter parameter = match.getParameter(key);
+         Parameter parameter = match.get(key);
          Variable label = criteria.get(key);
          Contact contact = label.getContact();
 
@@ -169,8 +163,8 @@ class SignatureCreator implements Creator {
             Class expect = value.getClass();
             Class actual = parameter.getType();
             
-            if(!actual.isAssignableFrom(expect)) {
-               return -1;
+            if(!isAssignable(expect, actual)) {
+               return -1.0;
             }
          }
          if(contact.isReadOnly()) {
@@ -239,20 +233,61 @@ class SignatureCreator implements Creator {
    }   
    
    /**
-    * This is used to instantiate the object using a constructor that
-    * takes deserialized objects as arguments. The objects that have
-    * been deserialized are provided in declaration order so they can
-    * be passed to the constructor to instantiate the object.
+    * This is used to determine if two objects are assignable to 
+    * each other. To be sure that its is possible to inject primitive
+    * values in to a constructor the primitives are wrapped in their
+    * counterpart objects, this allows proper assignment checking.
     * 
-    * @param list this is the list of objects used for instantiation
+    * @param expect this is the expected value of the object
+    * @param actual this is the type in the declaration
     * 
-    * @return this returns the object that has been instantiated
+    * @return this returns true if the types can be assigned
     */
-   private Object getInstance(Object[] list) throws Exception {
-      if(!factory.isAccessible()) {
-         factory.setAccessible(true);
-      } 
-      return factory.newInstance(list);
+   private boolean isAssignable(Class expect, Class actual) {
+      if(expect.isPrimitive()) {
+         expect = getSubstitute(expect);
+      }
+      if(actual.isPrimitive()) {
+         actual = getSubstitute(actual);
+      }
+      return actual.isAssignableFrom(expect);
+   }
+   
+   /**
+    * This method is used to convert a primitive type to its object
+    * counterpart. Conversion to an object counterpart is useful when
+    * there is a need to mask the difference between types.
+    * 
+    * @param type this is the primitive type to convert to an object
+    * 
+    * @return this returns the primitive type as its object type
+    */
+   private Class getSubstitute(Class type) {
+      if(type == double.class) {
+         return Double.class;
+      }
+      if(type == float.class) {
+         return Float.class;
+      }
+      if(type == int.class) {
+         return Integer.class;
+      }
+      if(type == long.class) {
+         return Long.class;
+      }
+      if(type == boolean.class) {
+         return Boolean.class;
+      }
+      if(type == char.class) {
+         return Character.class;
+      }
+      if(type == short.class) {
+         return Short.class;
+      }
+      if(type == byte.class) {
+         return Byte.class;
+      }
+      return type;
    }
    
    /**
@@ -263,6 +298,6 @@ class SignatureCreator implements Creator {
     * @return this returns the name of the constructor to be used
     */
    public String toString() {
-      return factory.toString();
+      return signature.toString();
    }
 }
