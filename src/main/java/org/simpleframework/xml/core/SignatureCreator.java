@@ -18,6 +18,8 @@
 
 package org.simpleframework.xml.core;
 
+import static org.simpleframework.xml.core.Support.isAssignable;
+
 import java.util.List;
 
 /**
@@ -230,64 +232,6 @@ class SignatureCreator implements Creator {
       }
       return score / list.size();
    }   
-   
-   /**
-    * This is used to determine if two objects are assignable to 
-    * each other. To be sure that its is possible to inject primitive
-    * values in to a constructor the primitives are wrapped in their
-    * counterpart objects, this allows proper assignment checking.
-    * 
-    * @param expect this is the expected value of the object
-    * @param actual this is the type in the declaration
-    * 
-    * @return this returns true if the types can be assigned
-    */
-   private boolean isAssignable(Class expect, Class actual) {
-      if(expect.isPrimitive()) {
-         expect = getSubstitute(expect);
-      }
-      if(actual.isPrimitive()) {
-         actual = getSubstitute(actual);
-      }
-      return actual.isAssignableFrom(expect);
-   }
-   
-   /**
-    * This method is used to convert a primitive type to its object
-    * counterpart. Conversion to an object counterpart is useful when
-    * there is a need to mask the difference between types.
-    * 
-    * @param type this is the primitive type to convert to an object
-    * 
-    * @return this returns the primitive type as its object type
-    */
-   private Class getSubstitute(Class type) {
-      if(type == double.class) {
-         return Double.class;
-      }
-      if(type == float.class) {
-         return Float.class;
-      }
-      if(type == int.class) {
-         return Integer.class;
-      }
-      if(type == long.class) {
-         return Long.class;
-      }
-      if(type == boolean.class) {
-         return Boolean.class;
-      }
-      if(type == char.class) {
-         return Character.class;
-      }
-      if(type == short.class) {
-         return Short.class;
-      }
-      if(type == byte.class) {
-         return Byte.class;
-      }
-      return type;
-   }
    
    /**
     * This is used to acquire a descriptive name for the instantiator.

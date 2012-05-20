@@ -5,6 +5,7 @@ import junit.framework.TestCase;
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementUnion;
+import org.simpleframework.xml.Path;
 import org.simpleframework.xml.Root;
 
 @SuppressWarnings("all")
@@ -48,6 +49,34 @@ public class ConstructorInjectionExampleTest extends TestCase {
    "  <a>some text</a>"+
    "</showAmbiguousNames>";  
    
+   private static final String PATH_INJECTION =
+   "<showInjectionWithoutPath>"+
+   "  <a>" +
+   "    <b>"+
+   "      <c>"+
+   "         <x>some text x</x>" +
+   "      </c>"+
+   "    </b>"+
+   "    <b>"+
+   "      <y>some y</y>"+
+   "    </b>"+
+   "  </a>"+
+   "</showInjectionWithoutPath>";
+   
+   private static final String PATH_INJECTION_UNION =
+   "<showInjectionWithoutPath>"+
+   "  <a>" +
+   "    <b>"+
+   "      <c>"+
+   "         <int>22</int>" +
+   "      </c>"+
+   "    </b>"+
+   "    <b>"+
+   "      <y>some y</y>"+
+   "    </b>"+
+   "  </a>"+
+   "</showInjectionWithoutPath>";
+   
    @Root
    private static class ShowConstructorForEachUnionEntry{
       @ElementUnion({
@@ -78,6 +107,30 @@ public class ConstructorInjectionExampleTest extends TestCase {
       private String att;
       public ShowAmbiguousNames(@Element(name="a") String el) { this.el = el; }
       public ShowAmbiguousNames(@Element(name="a") String el, @Attribute(name="a") String att) { this.el = el; this.att = att; }
+   }
+   
+   private static class ShowInjectionWithoutPath {
+      @Path("a/b[1]/c")
+      @Element(name="x")
+      private final String x;
+      @Path("a/b[2]")
+      @Element(name="y")
+      private final String y;
+      public ShowInjectionWithoutPath(@Element(name="x") String x, @Element(name="y") String y) { this.x = x; this.y = y; }
+   }
+   
+   private static class ShowInjectionWithoutPathUsingUnion {
+      @Path("a/b[1]/c")
+      @ElementUnion({
+         @Element(name="int", type=Integer.class),
+         @Element(name="double", type=Double.class),
+         @Element(name="text", type=String.class)
+      })
+      private final Object x;
+      @Path("a/b[2]")
+      @Element(name="y")
+      private final String y;
+      public ShowInjectionWithoutPathUsingUnion(@Element(name="int") int x, @Element(name="y") String y) { this.x = x; this.y = y; }
    }
    
    @Root
@@ -114,6 +167,20 @@ public class ConstructorInjectionExampleTest extends TestCase {
       assertEquals(a.el, "text");
       assertEquals(a.att, "blah");
       assertEquals(a.el, "some text");
+   }
+   
+   public void testWithoutPath() throws Exception {
+      Persister persister = new Persister();
+      ShowInjectionWithoutPath a = persister.read(ShowInjectionWithoutPath.class, PATH_INJECTION);
+      assertEquals(a.x, "some text x");
+      assertEquals(a.y, "some y");
+   }
+   
+   public void testWithoutPathUsingUnion() throws Exception {
+      Persister persister = new Persister();
+      ShowInjectionWithoutPathUsingUnion a = persister.read(ShowInjectionWithoutPathUsingUnion.class, PATH_INJECTION_UNION);
+      assertEquals(a.x, 22);
+      assertEquals(a.y, "some y");
    }
 
 }
