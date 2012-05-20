@@ -18,6 +18,8 @@
 
 package org.simpleframework.xml.core;
 
+import static org.simpleframework.xml.core.Support.isAssignable;
+
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -265,10 +267,10 @@ class InstantiatorBuilder {
    private void validateParameter(Label label, Parameter parameter) throws Exception {
       Contact contact = label.getContact();
       String name = parameter.getName();
-      Class actual = parameter.getType();
-      Class expect = contact.getType();
+      Class expect = parameter.getType();
+      Class actual = contact.getType();
       
-      if(!expect.isAssignableFrom(actual)) {
+      if(!isAssignable(expect, actual)) {
          throw new ConstructorException("Type is not compatible with %s for '%s' in %s", label, name, parameter);
       }
       validateNames(label, parameter);
@@ -505,5 +507,5 @@ class InstantiatorBuilder {
          return map.get(name);
       }
       return label;
-   }  
+   }
 }
