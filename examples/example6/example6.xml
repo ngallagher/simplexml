@@ -1,0 +1,4 @@
+<example>
+  <ns1:a xmlns:ns1="http://www.blah.com/ns/a">foo</ns1:a>
+  <ns2:b xmlns:ns2="http://www.blah.com/ns/b">bar</ns2:b>
+</example>

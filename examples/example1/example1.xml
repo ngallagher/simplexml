@@ -1,0 +1,10 @@
+<example>
+  <a>
+    <b>
+      <x>foo</x>
+    </b>
+    <b>
+      <y>bar</y>
+    </b>
+  </a>
+</example>

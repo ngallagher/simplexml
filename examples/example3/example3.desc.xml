@@ -1,0 +1,8 @@
+<example>
+  <title>Using paths to create nested elements</title>
+  <introText>
+  Here is an example of how to use the @Path annotation to create nested XML elements.
+  </introText>
+  <separatorText>
+  </separatorText>
+</example>

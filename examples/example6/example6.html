@@ -1,0 +1,30 @@
+<table border='0'><tr><td><img src='/images/home_bullet.gif' border='0'></td><td><a name='optional'></a><b>Using paths to create nested elements</b></td></tr><tr><td><!-- padding --></td><td>
+<p>
+Here is an example of how to use the @Path annotation to create nested XML elements.
+</p>
+<pre class="sh_java">
+
+   @Root
+   public class Example {
+      
+      @Namespace(prefix="ns1", reference="http://www.blah.com/ns/a")
+      @Element
+      private String a;
+      
+      @Namespace(prefix="ns2", reference="http://www.blah.com/ns/b")
+      @Element
+      private String b;
+   }
+   
+</pre>
+
+<pre class="sh_xml">
+   
+   &lt;example&gt;
+     &lt;ns1:a xmlns:ns1="http://www.blah.com/ns/a"&gt;foo&lt;/ns1:a&gt;
+     &lt;ns2:b xmlns:ns2="http://www.blah.com/ns/b"&gt;bar&lt;/ns2:b&gt;
+   &lt;/example&gt;
+
+</pre>
+This example can be downloaded from <a href='example6/example6.zip'>here</a>.
+</td></tr></table>
