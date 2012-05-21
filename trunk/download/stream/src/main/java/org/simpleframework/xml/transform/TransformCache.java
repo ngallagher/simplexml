@@ -18,7 +18,7 @@
 
 package org.simpleframework.xml.transform;
 
-import org.simpleframework.xml.util.WeakCache;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * The <code>TransformCache</code> is used to cache transform objects. 
@@ -28,7 +28,7 @@ import org.simpleframework.xml.util.WeakCache;
  * 
  * @author Niall Gallagher
  */
-class TransformCache extends WeakCache<Class, Transform>{
+class TransformCache extends ConcurrentHashMap<Class, Transform>{
    
    /**
     * Constructor for the <code>TransformCache</code> object. This is

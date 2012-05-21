@@ -210,7 +210,7 @@ abstract class Factory {
          Class proposed = value.getType();
      
          if(!isCompatible(override, proposed)) {
-         return new OverrideValue(value, override);
+            return new OverrideValue(value, override);
          }
       }
       return value;

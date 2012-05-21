@@ -114,7 +114,8 @@ public class TypeTest extends ValidationTestCase {
 	
    public void testPrimitive() throws Exception {    
       Entry entry = persister.read(Entry.class, SOURCE);
-
+      entry = persister.read(Entry.class, SOURCE);
+     
       assertEquals(entry.primitive.booleanValue, true);
       assertEquals(entry.primitive.byteValue, 16);
       assertEquals(entry.primitive.shortValue, 120);
