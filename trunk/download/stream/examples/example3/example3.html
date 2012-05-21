@@ -1,0 +1,33 @@
+<table border='0'><tr><td><img src='/images/home_bullet.gif' border='0'></td><td><a name='optional'></a><b>Using paths to create nested elements</b></td></tr><tr><td><!-- padding --></td><td>
+<p>
+Here is an example of how to use the @Path annotation to create nested XML elements.
+</p>
+<pre class="sh_java">
+
+   @Root
+   public class Point {
+      
+      @Element
+      private final int x;
+      
+      @Element
+      private final int y;
+      
+      public Point(@Element(name="x") int x, @Element(name="y") int y) {
+         this.x = x;
+         this.y = y;
+      }
+   }
+   
+</pre>
+
+<pre class="sh_xml">
+   
+   &lt;point&gt;
+     &lt;x&gt;10&lt;/x&gt;
+     &lt;y&gt;4&lt;/y&gt;
+   &lt;/point&gt;
+
+</pre>
+This example can be downloaded from <a href='example3/example3.zip'>here</a>.
+</td></tr></table>
