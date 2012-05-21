@@ -119,8 +119,6 @@ class ExpressionBuilder {
     * The <code>Cache</code> is used to cache the expressions with
     * the original path. This is effectively a typedef that hides
     * the ugly generics details from the class definition.
-    * 
-    * @author Niall Gallagher
     */
    private class Cache extends HashMap<String, Expression> {
       

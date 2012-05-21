@@ -18,8 +18,8 @@
 
 package org.simpleframework.xml.transform;
 
-import org.simpleframework.xml.util.WeakCache;
-import org.simpleframework.xml.util.Cache;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * The <code>Transformer</code> object is used to convert strings to
@@ -68,7 +68,7 @@ public class Transformer {
    /**
     * This is used to cache the types that to not have a transform.
     */ 
-   private final Cache error;
+   private final Map error;
    
    /**
     * Constructor for the <code>Transformer</code> object. This is
@@ -80,8 +80,8 @@ public class Transformer {
     */
    public Transformer(Matcher matcher) {  
       this.matcher = new DefaultMatcher(matcher);
+      this.error = new ConcurrentHashMap();
       this.cache = new TransformCache();
-      this.error = new WeakCache();
    }
    
    /**
@@ -150,15 +150,15 @@ public class Transformer {
     * @return this will return a transform for the specified type
     */ 
    private Transform lookup(Class type) throws Exception {
-      Transform transform = cache.fetch(type);            
-
-      if(transform != null) {
-         return transform;
+      if(!error.containsKey(type)) {
+         Transform transform = cache.get(type);            
+   
+         if(transform != null) {
+            return transform;
+         }          
+         return match(type);
       }
-      if(error.contains(type)) {
-         return null;              
-      }           
-      return match(type);
+      return null;
    }
 
    /**
@@ -175,9 +175,9 @@ public class Transformer {
       Transform transform = matcher.match(type);
       
       if(transform != null) {
-         cache.cache(type, transform);
+         cache.put(type, transform);
       } else {
-         error.cache(type, this);               
+         error.put(type, this);               
       }
       return transform;
    }

@@ -613,7 +613,7 @@ class Composite implements Converter {
       for(String key : list) {
          map.getLabel(key);
       }
-         if(label.isInline()) {
+      if(label.isInline()) {
          criteria.set(label, value);
       }
    }
