@@ -6,7 +6,6 @@ The element declared with the same namespace reference does not need to declare 
 be inherited from the class level annotation.
 </p>
 <pre class="sh_java">
-
 @Root
 @Namespace(prefix="ns1", reference="http://www.blah.com/ns/a")
 public class Example {
@@ -16,8 +15,6 @@ public class Example {
    @Element
    private String x;
 }
-
-
 </pre>
 As can be seen in the resulting XML the namespace is declared only once, the child element inherits
 the original prefix reducing the verbosity of the XML.

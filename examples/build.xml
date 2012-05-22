@@ -59,6 +59,22 @@
 		<antcall target="run">
 			<param name="java" value="example7.Example7" />
 			<param name="name" value="example7" />
+      </antcall>
+		<antcall target="run">
+			<param name="java" value="example8.Example8" />
+			<param name="name" value="example8" />
+		</antcall>
+		<antcall target="run">
+			<param name="java" value="example9.Example9" />
+			<param name="name" value="example9" />
+		</antcall>
+		<antcall target="run">
+			<param name="java" value="example10.Example10" />
+			<param name="name" value="example10" />
+		</antcall>
+		<antcall target="run">
+			<param name="java" value="example11.Example11" />
+			<param name="name" value="example11" />
 		</antcall>
 	</target>
 
