@@ -1,0 +1,43 @@
+<table border='0'><tr><td><img src='/images/home_bullet.gif' border='0'></td><td><a name='optional'></a><b>Dynamically selecting an element name</b></td></tr><tr><td><!-- padding --></td><td>
+<p>
+Here an example of how to use the 
+<a href="/download/stream/doc/javadoc/org/simpleframework/xml/ElementUnion.html">ElementUnion</a> 
+to dynamically select a constructor based on the value deserialized. Constructor matching
+will be done by examining the declared name and the instance type.
+</p>
+<pre class="sh_java">
+
+@Root
+public class Example {
+
+   @ElementUnion({
+      @Element(name="int", type=Integer.class),
+      @Element(name="date", type=Date.class),
+      @Element(name="text", type=String.class)
+   })
+   private Object value;
+
+   public Example(@Element(name="int") int value) {
+      this.value = value;
+   }
+
+   public Example(@Element(name="int") Date value) {
+      this.value = value;
+   }
+
+   public Example(@Element(name="int") String value) {
+      this.value = value;
+   }
+}
+
+
+</pre>
+The below snippet shows an example of the resulting XML, here the constructor accepting
+a date will be invoked as that is what is deserialized from the file.
+<pre class="sh_xml">
+&lt;example&gt;
+  &lt;date&gt;2001-01-05&lt;/date&gt;
+&lt;/example&gt;
+</pre>
+This example can be downloaded from <a href='example11/example11.zip'>here</a>.
+</td></tr></table>

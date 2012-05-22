@@ -1,0 +1,10 @@
+<example>
+  <a>
+    <double>1.2</double>
+    <double>31.6</double>
+    <double>52.99</double>
+  </a>
+  <b>foo</b>
+  <c>bar</c>
+  <d>2012-05-22</d>
+</example>
