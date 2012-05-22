@@ -7,7 +7,6 @@ when deserializing from XML when a type can be choosen. Also, when serializing t
 is of a type listed in the union it is give the associated XML element name.
 </p>
 <pre class="sh_java">
-
 @Root
 public class Example {
 
@@ -18,8 +17,6 @@ public class Example {
    })
    private Object value;
 }
-
-
 </pre>
 The below snippet shows an example of the resulting XML, here because the object value was an integer
 the resulting XML element is called int.

@@ -72,7 +72,7 @@ public class TemplateProcessor {
          builder.append(line);
          builder.append("\r\n");
       }
-      return builder.toString();
+      return builder.toString().trim();
    }
    
    private static String indentText(String text, String indent) {

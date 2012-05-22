@@ -6,7 +6,6 @@ to dynamically select a constructor based on the value deserialized. Constructor
 will be done by examining the declared name and the instance type.
 </p>
 <pre class="sh_java">
-
 @Root
 public class Example {
 
@@ -29,8 +28,6 @@ public class Example {
       this.value = value;
    }
 }
-
-
 </pre>
 The below snippet shows an example of the resulting XML, here the constructor accepting
 a date will be invoked as that is what is deserialized from the file.
