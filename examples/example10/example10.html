@@ -1,0 +1,36 @@
+<table border='0'><tr><td><img src='/images/home_bullet.gif' border='0'></td><td><a name='optional'></a><b>Dynamically selecting an element name</b></td></tr><tr><td><!-- padding --></td><td>
+<p>
+Here an example of how to use the 
+<a href="/download/stream/doc/javadoc/org/simpleframework/xml/ElementListUnion.html">ElementListUnion</a> 
+can be seen. This annotation allows a number of types to be declared to match a single list, all
+elements that match the declared names will be gathered in to the list.
+</p>
+<pre class="sh_java">
+
+@Root
+public class Example {
+
+   @ElementListUnion({
+      @ElementList(entry="int", type=Integer.class, inline=true),
+      @ElementList(entry="date", type=Date.class, inline=true),
+      @ElementList(entry="text", type=String.class, inline=true)
+   })
+   private List&lt;Object&gt; list;
+}
+
+
+</pre>
+The below snippet shows an example of the resulting XML, each type is given a name according to its type.
+<pre class="sh_xml">
+&lt;example&gt;
+  &lt;int&gt;12&lt;/int&gt;
+  &lt;date&gt;2012-22-05&lt;/date&gt;
+  &lt;date&gt;1977-18-11&lt;/date&gt;
+  &lt;text&gt;blah&lt;/text&gt;
+  &lt;int&gt;1&lt;/int&gt;
+  &lt;int&gt;34525&lt;/int&gt;
+  &lt;date&gt;2001-01-05&lt;/date&gt;
+&lt;/example&gt;
+</pre>
+This example can be downloaded from <a href='example10/example10.zip'>here</a>.
+</td></tr></table>

@@ -1,0 +1,9 @@
+<example>
+  <int>12</int>
+  <date>2012-22-05</date>
+  <date>1977-18-11</date>
+  <text>blah</text>
+  <int>1</int>
+  <int>34525</int>
+  <date>2001-01-05</date>
+</example>
