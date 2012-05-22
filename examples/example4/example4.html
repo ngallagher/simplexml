@@ -1,6 +1,9 @@
-<table border='0'><tr><td><img src='/images/home_bullet.gif' border='0'></td><td><a name='optional'></a><b>${title}</b></td></tr><tr><td><!-- padding --></td><td>
+<table border='0'><tr><td><img src='/images/home_bullet.gif' border='0'></td><td><a name='optional'></a><b>Constructor injection with nested path elements</b></td></tr><tr><td><!-- padding --></td><td>
 <p>
-${introText}
+In this example constructor injection is performed on two elements which also have
+<a href="/download/stream/doc/javadoc/org/simpleframework/xml/Path.html">Path</a> annotations. As can 
+be seen if there is no ambiguity there is no need to specify the path annotations on the constructor. This 
+reduces the clutter that can occur with excessive annotations. 
 </p>
 <pre class="sh_java">
 
@@ -23,7 +26,8 @@ public class Point {
 
 
 </pre>
-${separatorText}
+The below snippet shows an example of the resulting XML, both the x and y values will be injected
+in to the annotated constructor.
 <pre class="sh_xml">
 &lt;point&gt;
   &lt;a&gt;

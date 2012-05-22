@@ -1,11 +1,15 @@
-<table border='0'><tr><td><img src='/images/home_bullet.gif' border='0'></td><td><a name='optional'></a><b>${title}</b></td></tr><tr><td><!-- padding --></td><td>
+<table border='0'><tr><td><img src='/images/home_bullet.gif' border='0'></td><td><a name='optional'></a><b>Constructor injection</b></td></tr><tr><td><!-- padding --></td><td>
 <p>
-${introText}
+Constructor injection can be performed with any number of arguments using any of the XML annotations.
+In this example the 
+<a href="/download/stream/doc/javadoc/org/simpleframework/xml/Element.html">Element</a> annotation is
+used to identify two values to be injected in to a specific constructor. 
 </p>
 <pre class="sh_java">
 ${javaSnippet}
 </pre>
-${separatorText}
+The below snippet shows an example of the resulting XML, both the x and y values will be injected
+in to the annotated constructor.
 <pre class="sh_xml">
 ${xmlSnippet}
 </pre>

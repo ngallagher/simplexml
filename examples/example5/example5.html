@@ -1,6 +1,8 @@
-<table border='0'><tr><td><img src='/images/home_bullet.gif' border='0'></td><td><a name='optional'></a><b>${title}</b></td></tr><tr><td><!-- padding --></td><td>
+<table border='0'><tr><td><img src='/images/home_bullet.gif' border='0'></td><td><a name='optional'></a><b>Using namespaces</b></td></tr><tr><td><!-- padding --></td><td>
 <p>
-${introText}
+Below is an example of how to use namespaces with the 
+<a href="/download/stream/doc/javadoc/org/simpleframework/xml/Namespace.html">Namespace</a> annotation. 
+Here two namespaces are declared without a prefix, this means they belong to the default namespace.
 </p>
 <pre class="sh_java">
 
@@ -18,7 +20,8 @@ public class Example {
 
 
 </pre>
-${separatorText}
+The below snippet shows an example of the resulting XML, as can be seen the namespaces are
+used to qualify the resulting elements.
 <pre class="sh_xml">
 &lt;example&gt;
   &lt;a xmlns="http://www.blah.com/ns/a"&gt;foo&lt;/a&gt;
