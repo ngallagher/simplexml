@@ -6,8 +6,11 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -107,9 +110,16 @@ public class TemplateProcessor {
       final File wholeFileTemplate = new File(list[1]);
       final File outputResultFile = new File(list[2]);
       final File[] fileList = baseDir.listFiles(new ExampleDirFilter());
+      final SortedSet<File> sortedFileSet = new TreeSet<File>(new ExampleDirComparator());
+      for(File file : fileList) {
+         if(file.isDirectory()) {
+            sortedFileSet.add(file);
+         }
+      }
+      System.out.println("Sorted as:"+sortedFileSet);
       final List<String> exampleHtmlList = new ArrayList<String>();
       final String wholeFileTemplateText = slurpFile(wholeFileTemplate);
-      for(File file : fileList) {
+      for(File file : sortedFileSet) {
          if(file.isDirectory()) {
             String fileName = file.getName();
             String javaFileName = "E" + fileName.substring(1);
@@ -149,7 +159,7 @@ public class TemplateProcessor {
    private static class ExampleDirFilter implements FilenameFilter {
 
       public boolean accept(File dir, String name) {
-         return name.matches(".*example\\d+");
+         return name.matches(".*example\\d+") && dir.isDirectory();
       }
       
    }
@@ -219,5 +229,25 @@ public class TemplateProcessor {
             return "";
          }
       }
+   }
+   
+   private static class ExampleDirComparator implements Comparator<File> {
+
+      public int compare(File o1, File o2) {
+         String name1 = o1.getName();
+         String name2 = o2.getName();
+         Pattern extractDigits = Pattern.compile("example(\\d+)");
+         Matcher matcher1 = extractDigits.matcher(name1);
+         if(matcher1.matches()) {
+            Matcher matcher2 = extractDigits.matcher(name2);
+            if(matcher2.matches()) {
+               Integer int1 = Integer.parseInt(matcher1.group(1));
+               Integer int2 = Integer.parseInt(matcher2.group(1));
+               return int1.compareTo(int2);
+            }
+         }
+         return name1.compareTo(name2);
+      }
+      
    }
 }
