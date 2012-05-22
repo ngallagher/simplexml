@@ -78,8 +78,8 @@
 		<mkdir dir="${example.path}/${name}/${name}" />
 		<copy todir="${example.path}/${name}/${name}">
 			<fileset dir="${example.path}/${name}">
-				<exclude name="**/*.desc.xml" />
-				<exclude name="**/*.html" />
+				<include name="**/*.java" />
+				<include name="**/*.xml" />
 			</fileset>
 		</copy>
 	    <zip destfile="${example.path}/${name}/${name}.zip" basedir="${example.path}/${name}/${name}"/>

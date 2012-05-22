@@ -1,11 +1,15 @@
-<table border='0'><tr><td><img src='/images/home_bullet.gif' border='0'></td><td><a name='optional'></a><b>${title}</b></td></tr><tr><td><!-- padding --></td><td>
+<table border='0'><tr><td><img src='/images/home_bullet.gif' border='0'></td><td><a name='optional'></a><b>Namespace prefix inheritance</b></td></tr><tr><td><!-- padding --></td><td>
 <p>
-${introText}
+Here a class level namespace is declared using the  
+<a href="/download/stream/doc/javadoc/org/simpleframework/xml/Namespace.html">Namespace</a> annotation. 
+The element declared with the same namespace reference does not need to declare a prefix as it will 
+be inherited from the class level annotation.
 </p>
 <pre class="sh_java">
 ${javaSnippet}
 </pre>
-${separatorText}
+As can be seen in the resulting XML the namespace is declared only once, the child element inherits
+the original prefix reducing the verbosity of the XML.
 <pre class="sh_xml">
 ${xmlSnippet}
 </pre>

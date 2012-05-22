@@ -1,6 +1,10 @@
-<table border='0'><tr><td><img src='/images/home_bullet.gif' border='0'></td><td><a name='optional'></a><b>${title}</b></td></tr><tr><td><!-- padding --></td><td>
+<table border='0'><tr><td><img src='/images/home_bullet.gif' border='0'></td><td><a name='optional'></a><b>Dynamically selecting an element name</b></td></tr><tr><td><!-- padding --></td><td>
 <p>
-${introText}
+Here an example of how to use the 
+<a href="/download/stream/doc/javadoc/org/simpleframework/xml/ElementUnion.html">ElementUnion</a> annotation to
+specify a list of options to use for serialization. Here an element name is paired with a type, such that 
+when deserializing from XML when a type can be choosen. Also, when serializing the object, if the instance
+is of a type listed in the union it is give the associated XML element name.
 </p>
 <pre class="sh_java">
 
@@ -17,7 +21,8 @@ public class Example {
 
 
 </pre>
-${separatorText}
+The below snippet shows an example of the resulting XML, here because the object value was an integer
+the resulting XML element is called int.
 <pre class="sh_xml">
 &lt;example&gt;
   &lt;int&gt;12&lt;/int&gt;

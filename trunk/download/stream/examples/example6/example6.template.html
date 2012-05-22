@@ -1,8 +1,16 @@
-<example>
-  <title>Using paths to create nested elements</title>
-  <introText>
-  Here is an example of how to use the @Path annotation to create nested XML elements.
-  </introText>
-  <separatorText>
-  </separatorText>
-</example>
+<table border='0'><tr><td><img src='/images/home_bullet.gif' border='0'></td><td><a name='optional'></a><b>Namespace prefix inheritance</b></td></tr><tr><td><!-- padding --></td><td>
+<p>
+When using the  
+<a href="/download/stream/doc/javadoc/org/simpleframework/xml/Namespace.html">Namespace</a> annotation a
+prefix can be specified. This prefix is added to the qualified XML elements to ensure they are within 
+a specific namespace, rather than the default namespace.
+</p>
+<pre class="sh_java">
+${javaSnippet}
+</pre>
+The resulting XML shows that both elements contain the namespace prefix declared in the annotation.
+<pre class="sh_xml">
+${xmlSnippet}
+</pre>
+This example can be downloaded from <a href='${downloadLink}'>here</a>.
+</td></tr></table>
