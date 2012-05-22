@@ -28,7 +28,6 @@
 					<include name="**/*.jar" />
 				</fileset>
 			</classpath>
-			<arg value="${example.path}/template.html" />
 			<arg value="${example.path}" />
 			<arg value="${example.path}/template.inc" />
 			<arg value="${example.path}/examples.inc" />
