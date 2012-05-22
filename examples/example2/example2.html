@@ -1,28 +1,27 @@
-<table border='0'><tr><td><img src='/images/home_bullet.gif' border='0'></td><td><a name='optional'></a><b>Using paths to create nested elements</b></td></tr><tr><td><!-- padding --></td><td>
+<table border='0'><tr><td><img src='/images/home_bullet.gif' border='0'></td><td><a name='optional'></a><b>${title}</b></td></tr><tr><td><!-- padding --></td><td>
 <p>
-Here is an example of how to use the @Path annotation to create nested XML elements.
+${introText}
 </p>
 <pre class="sh_java">
 
-   @Root
-   public class Example {
-      
-      @ElementUnion({
-         @Element(name="text", type=String.class),
-         @Element(name="int", type=Integer.class),
-         @Element(name="double", type=Double.class)
-      })
-      private Object value;
-   }
-   
+@Root
+public class Example {
+
+   @ElementUnion({
+      @Element(name="text", type=String.class),
+      @Element(name="int", type=Integer.class),
+      @Element(name="double", type=Double.class)
+   })
+   private Object value;
+}
+
+
 </pre>
-
+${separatorText}
 <pre class="sh_xml">
-   
-   &lt;example&gt;
-     &lt;int&gt;12&lt;/int&gt;
-   &lt;/example&gt;
-
+&lt;example&gt;
+  &lt;int&gt;12&lt;/int&gt;
+&lt;/example&gt;
 </pre>
 This example can be downloaded from <a href='example2/example2.zip'>here</a>.
 </td></tr></table>

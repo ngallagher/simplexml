@@ -5,29 +5,14 @@ import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.simpleframework.xml.Element;
-import org.simpleframework.xml.Root;
-import org.simpleframework.xml.core.Persister;
-
 
 public class TemplateProcessor {
-
-   @Root
-   private static class Template {
-      @Element
-      private String title;
-      @Element
-      private String introText;
-      @Element(required=false)
-      private String separatorText;
-   }
    
    private static String slurpFile(File file) throws Exception {
       FileInputStream in = new FileInputStream(file);
@@ -58,6 +43,35 @@ public class TemplateProcessor {
       return text.replaceAll("public static class", "public class").replaceAll("private static class", "public class");
    }
    
+   private static String removeIndentation(String text) {
+      List<String> lines = LineStripper.stripLines(text);
+      int minimum = 10000;
+      String indent = "";
+      Pattern pattern = Pattern.compile("(\\s*).*");
+      for(String line : lines) {
+         Matcher matcher = pattern.matcher(line);
+         if(matcher.matches()) {
+            if(line.matches(".*\\w+.*")) { // only conider real code lines
+               String indentText = matcher.group(1);
+               int length = indentText.length();
+               if(length < minimum) {
+                  minimum = length;
+                  indent = indentText;
+               }
+            }
+         }
+      }
+      StringBuilder builder = new StringBuilder();
+      for(String line : lines) {
+         if(line.indexOf(indent) != -1) {
+            line = line.substring(minimum);
+         }
+         builder.append(line);
+         builder.append("\r\n");
+      }
+      return builder.toString();
+   }
+   
    private static String indentText(String text, String indent) {
       List<String> lines = LineStripper.stripLines(text);
       StringBuilder builder = new StringBuilder();
@@ -72,7 +86,11 @@ public class TemplateProcessor {
    }
    
    private static String replaceVariable(String sourceFile, String text, String variableName) {
-      return sourceFile.replaceAll("\\$\\{"+variableName+"\\}", text);
+      try {
+         return sourceFile.replace("${"+variableName+"}", text);
+      }catch(Exception e) {
+         throw new RuntimeException(variableName, e);
+      }
    }
    
    private static String escapeHtml(String text) {
@@ -81,50 +99,40 @@ public class TemplateProcessor {
    
    //  java TemplateProcessor ./template.xml ./examples/. 
    public static void main(String[] list) throws Exception {
-      if(list.length != 4) {
+      if(list.length != 3) {
          System.out.println("Incorrect arguments, length=["+list.length+"]");
          System.exit(-1);
       }
-      final File templatePath = new File(list[0]);
-      final File baseDir = new File(list[1]);
-      final File resultFile = new File(list[2]);
-      final File outputResultFile = new File(list[3]);
-      System.out.println("Processing with template=["+templatePath.getCanonicalPath()+"] in directory=["+baseDir.getCanonicalPath()+"]");
+      final File baseDir = new File(list[0]);
+      final File wholeFileTemplate = new File(list[1]);
+      final File outputResultFile = new File(list[2]);
       final File[] fileList = baseDir.listFiles(new ExampleDirFilter());
-      final Persister persister = new Persister();
-      final String templateSource = slurpFile(templatePath);
-      List<String> exampleHtmlList = new ArrayList<String>();
-      String resultFileText = slurpFile(resultFile);
+      final List<String> exampleHtmlList = new ArrayList<String>();
+      final String wholeFileTemplateText = slurpFile(wholeFileTemplate);
       for(File file : fileList) {
          if(file.isDirectory()) {
             String fileName = file.getName();
             String javaFileName = "E" + fileName.substring(1);
-            File descFile = new File(file,fileName + ".desc.xml");
-            if(descFile.exists()) {
-               Template template = persister.read(Template.class, descFile);
-               File sourceFile = new File(file, javaFileName + ".java");
-               File xmlFile = new File(file, fileName + ".xml");
-               File outputFile = new File(file, fileName + ".html");
-               FileWriter outputWriter = new FileWriter(outputFile);
-               String xmlSource = indentText(slurpFile(xmlFile), "   ");
-               String javaSource = fixJava(slurpFile(sourceFile));
-               String javaSnippet = extractSnippet(javaSource);
+            File templateFile = new File(file,fileName + ".template.html");
+            if(templateFile.exists()) {
+               final String templateSource = slurpFile(templateFile);
+               final File sourceFile = new File(file, javaFileName + ".java");
+               final File xmlFile = new File(file, fileName + ".xml");
+               final File outputFile = new File(file, fileName + ".html");
+               final FileWriter outputWriter = new FileWriter(outputFile);
+               final String xmlSource = slurpFile(xmlFile);
+               final String javaSource = fixJava(slurpFile(sourceFile));
+               final String javaSnippet = removeIndentation(extractSnippet(javaSource));
    
                String html = replaceVariable(templateSource, escapeHtml(xmlSource), "xmlSnippet");
                html = replaceVariable(html, escapeHtml(javaSnippet), "javaSnippet");
-               html = replaceVariable(html, template.introText.trim(), "introText");
-               html = replaceVariable(html, template.title.trim(), "title");
-               if(template.separatorText == null) {
-                  template.separatorText = "";
-               }
-               html = replaceVariable(html, template.separatorText.trim(), "separatorText");
                html = replaceVariable(html, fileName+"/"+fileName+".zip", "downloadLink");
                
                outputWriter.write(html);
                outputWriter.close();
                exampleHtmlList.add(html);
             } else {
-               System.out.println("No desc file exists for "+descFile.getCanonicalPath());
+               System.out.println("No template file exists for "+templateFile.getCanonicalPath());
             }
          }
       }
@@ -133,9 +141,9 @@ public class TemplateProcessor {
       for(String html : exampleHtmlList) {
          fullContent.append(html);
       }
-      resultFileText = replaceVariable(resultFileText, fullContent.toString(), "content");
+      String fullFile = replaceVariable(wholeFileTemplateText, fullContent.toString(), "content");
       FileWriter w = new FileWriter(outputResultFile);
-      w.write(resultFileText);
+      w.write(fullFile);
       w.close();
    }
    private static class ExampleDirFilter implements FilenameFilter {

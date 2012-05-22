@@ -1,39 +1,38 @@
-<table border='0'><tr><td><img src='/images/home_bullet.gif' border='0'></td><td><a name='optional'></a><b>Using paths to create nested elements</b></td></tr><tr><td><!-- padding --></td><td>
+<table border='0'><tr><td><img src='/images/home_bullet.gif' border='0'></td><td><a name='optional'></a><b>${title}</b></td></tr><tr><td><!-- padding --></td><td>
 <p>
-Here is an example of how to use the @Path annotation to create nested XML elements.
+${introText}
 </p>
 <pre class="sh_java">
 
-   @Root
-   public class Point {
-      
-      @Path("a/b[1]")
-      @Element
-      private final int x;
-      
-      @Path("a/b[1]")
-      @Element
-      private final int y;
-      
-      public Point(@Element(name="x") int x, @Element(name="y") int y) {
-         this.x = x;
-         this.y = y;
-      }
+@Root
+public class Point {
+
+   @Path("a/b[1]")
+   @Element
+   private final int x;
+
+   @Path("a/b[1]")
+   @Element
+   private final int y;
+
+   public Point(@Element(name="x") int x, @Element(name="y") int y) {
+      this.x = x;
+      this.y = y;
    }
-   
+}
+
+
 </pre>
-
+${separatorText}
 <pre class="sh_xml">
-   
-   &lt;point&gt;
-     &lt;a&gt;
-       &lt;b&gt;
-         &lt;x&gt;2&lt;/x&gt;
-         &lt;y&gt;7&lt;/y&gt;
-       &lt;/b&gt;
-     &lt;/a&gt;
-   &lt;/point&gt;
-
+&lt;point&gt;
+  &lt;a&gt;
+    &lt;b&gt;
+      &lt;x&gt;2&lt;/x&gt;
+      &lt;y&gt;7&lt;/y&gt;
+    &lt;/b&gt;
+  &lt;/a&gt;
+&lt;/point&gt;
 </pre>
 This example can be downloaded from <a href='example4/example4.zip'>here</a>.
 </td></tr></table>
