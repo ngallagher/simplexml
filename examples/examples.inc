@@ -41,9 +41,7 @@ This example can be downloaded from <a href='example1/example1.zip'>here</a>.
 <p>
 Here an example of how to use the 
 <a href="/download/stream/doc/javadoc/org/simpleframework/xml/ElementUnion.html">ElementUnion</a> annotation to
-specify a list of options to use for serialization. Here an element name is paired with a type, such that 
-when deserializing from XML when a type can be choosen. Also, when serializing the object, if the instance
-is of a type listed in the union it is give the associated XML element name.
+specify a list of options to use for serialization. The union annotation pairs an element name with a type, this allows the element name to dictate selection of the type deserialized and also allows a known type to be serialized with a specific element name.
 </p>
 <pre class="sh_java">
 @Root
@@ -65,7 +63,8 @@ the resulting XML element is called int.
 &lt;/example&gt;
 </pre>
 This example can be downloaded from <a href='example2/example2.zip'>here</a>.
-</td></tr></table><table border='0'><tr><td><img src='/images/home_bullet.gif' border='0'></td><td><a name='optional'></a><b>Constructor injection</b></td></tr><tr><td><!-- padding --></td><td>
+</td></tr></table>
+<table border='0'><tr><td><img src='/images/home_bullet.gif' border='0'></td><td><a name='optional'></a><b>Constructor injection</b></td></tr><tr><td><!-- padding --></td><td>
 <p>
 Constructor injection can be performed with any number of arguments using any of the XML annotations.
 In this example the 
@@ -163,7 +162,7 @@ used to qualify the resulting elements.
 &lt;/example&gt;
 </pre>
 This example can be downloaded from <a href='example5/example5.zip'>here</a>.
-</td></tr></table><table border='0'><tr><td><img src='/images/home_bullet.gif' border='0'></td><td><a name='optional'></a><b>Namespace prefix inheritance</b></td></tr><tr><td><!-- padding --></td><td>
+</td></tr></table><table border='0'><tr><td><img src='/images/home_bullet.gif' border='0'></td><td><a name='optional'></a><b>Declaring a namespace prefix</b></td></tr><tr><td><!-- padding --></td><td>
 <p>
 When using the  
 <a href="/download/stream/doc/javadoc/org/simpleframework/xml/Namespace.html">Namespace</a> annotation a
@@ -191,7 +190,8 @@ The resulting XML shows that both elements contain the namespace prefix declared
 &lt;/example&gt;
 </pre>
 This example can be downloaded from <a href='example6/example6.zip'>here</a>.
-</td></tr></table><table border='0'><tr><td><img src='/images/home_bullet.gif' border='0'></td><td><a name='optional'></a><b>Namespace prefix inheritance</b></td></tr><tr><td><!-- padding --></td><td>
+</td></tr></table>
+<table border='0'><tr><td><img src='/images/home_bullet.gif' border='0'></td><td><a name='optional'></a><b>Namespace prefix inheritance</b></td></tr><tr><td><!-- padding --></td><td>
 <p>
 Here a class level namespace is declared using the  
 <a href="/download/stream/doc/javadoc/org/simpleframework/xml/Namespace.html">Namespace</a> annotation. 
@@ -221,7 +221,7 @@ the original prefix reducing the verbosity of the XML.
 &lt;/example&gt;
 </pre>
 This example can be downloaded from <a href='example7/example7.zip'>here</a>.
-</td></tr></table><table border='0'><tr><td><img src='/images/home_bullet.gif' border='0'></td><td><a name='optional'></a><b>Namespace prefix inheritance</b></td></tr><tr><td><!-- padding --></td><td>
+</td></tr></table><table border='0'><tr><td><img src='/images/home_bullet.gif' border='0'></td><td><a name='optional'></a><b>Default serialization</b></td></tr><tr><td><!-- padding --></td><td>
 <p>
 This example shows how the  
 <a href="/download/stream/doc/javadoc/org/simpleframework/xml/Default.html">Default</a> annotation
@@ -252,7 +252,8 @@ As can be seen in the resulting XML is generated for all fields within the class
 &lt;/example&gt;
 </pre>
 This example can be downloaded from <a href='example8/example8.zip'>here</a>.
-</td></tr></table><table border='0'><tr><td><img src='/images/home_bullet.gif' border='0'></td><td><a name='optional'></a><b>Namespace prefix inheritance</b></td></tr><tr><td><!-- padding --></td><td>
+</td></tr></table>
+<table border='0'><tr><td><img src='/images/home_bullet.gif' border='0'></td><td><a name='optional'></a><b>Default serialization of properties</b></td></tr><tr><td><!-- padding --></td><td>
 <p>
 This example shows how the  
 <a href="/download/stream/doc/javadoc/org/simpleframework/xml/Default.html">Default</a> annotation 
@@ -283,7 +284,8 @@ As can be seen in the resulting XML is generated for the Java Bean method.
 &lt;/example&gt;
 </pre>
 This example can be downloaded from <a href='example9/example9.zip'>here</a>.
-</td></tr></table><table border='0'><tr><td><img src='/images/home_bullet.gif' border='0'></td><td><a name='optional'></a><b>Dynamically selecting an element name</b></td></tr><tr><td><!-- padding --></td><td>
+</td></tr></table>
+<table border='0'><tr><td><img src='/images/home_bullet.gif' border='0'></td><td><a name='optional'></a><b>Collecting various types in a single list</b></td></tr><tr><td><!-- padding --></td><td>
 <p>
 Here an example of how to use the 
 <a href="/download/stream/doc/javadoc/org/simpleframework/xml/ElementListUnion.html">ElementListUnion</a> 
@@ -315,7 +317,8 @@ The below snippet shows an example of the resulting XML, each type is given a na
 &lt;/example&gt;
 </pre>
 This example can be downloaded from <a href='example10/example10.zip'>here</a>.
-</td></tr></table><table border='0'><tr><td><img src='/images/home_bullet.gif' border='0'></td><td><a name='optional'></a><b>Dynamically selecting an element name</b></td></tr><tr><td><!-- padding --></td><td>
+</td></tr></table>
+<table border='0'><tr><td><img src='/images/home_bullet.gif' border='0'></td><td><a name='optional'></a><b>Dynamically matching a constructor</b></td></tr><tr><td><!-- padding --></td><td>
 <p>
 Here an example of how to use the 
 <a href="/download/stream/doc/javadoc/org/simpleframework/xml/ElementUnion.html">ElementUnion</a> 
@@ -337,11 +340,11 @@ public class Example {
       this.value = value;
    }
 
-   public Example(@Element(name="int") Date value) {
+   public Example(@Element(name="date") Date value) {
       this.value = value;
    }
 
-   public Example(@Element(name="int") String value) {
+   public Example(@Element(name="text") String value) {
       this.value = value;
    }
 }
@@ -355,4 +358,5 @@ a date will be invoked as that is what is deserialized from the file.
 </pre>
 This example can be downloaded from <a href='example11/example11.zip'>here</a>.
 </td></tr></table>
+
 

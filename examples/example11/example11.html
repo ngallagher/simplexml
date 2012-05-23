@@ -1,4 +1,4 @@
-<table border='0'><tr><td><img src='/images/home_bullet.gif' border='0'></td><td><a name='optional'></a><b>Dynamically selecting an element name</b></td></tr><tr><td><!-- padding --></td><td>
+<table border='0'><tr><td><img src='/images/home_bullet.gif' border='0'></td><td><a name='optional'></a><b>Dynamically matching a constructor</b></td></tr><tr><td><!-- padding --></td><td>
 <p>
 Here an example of how to use the 
 <a href="/download/stream/doc/javadoc/org/simpleframework/xml/ElementUnion.html">ElementUnion</a> 
@@ -20,11 +20,11 @@ public class Example {
       this.value = value;
    }
 
-   public Example(@Element(name="int") Date value) {
+   public Example(@Element(name="date") Date value) {
       this.value = value;
    }
 
-   public Example(@Element(name="int") String value) {
+   public Example(@Element(name="text") String value) {
       this.value = value;
    }
 }

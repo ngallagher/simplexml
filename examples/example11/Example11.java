@@ -25,11 +25,11 @@ public class Example11 {
          this.value = value;
       }
       
-      public Example(@Element(name="int") Date value) {
+      public Example(@Element(name="date") Date value) {
          this.value = value;
       }
       
-      public Example(@Element(name="int") String value) {
+      public Example(@Element(name="text") String value) {
          this.value = value;
       }
    }
