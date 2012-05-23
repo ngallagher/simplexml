@@ -2,9 +2,7 @@
 <p>
 Here an example of how to use the 
 <a href="/download/stream/doc/javadoc/org/simpleframework/xml/ElementUnion.html">ElementUnion</a> annotation to
-specify a list of options to use for serialization. Here an element name is paired with a type, such that 
-when deserializing from XML when a type can be choosen. Also, when serializing the object, if the instance
-is of a type listed in the union it is give the associated XML element name.
+specify a list of options to use for serialization. The union annotation pairs an element name with a type, this allows the element name to dictate selection of the type deserialized and also allows a known type to be serialized with a specific element name.
 </p>
 <pre class="sh_java">
 ${javaSnippet}
