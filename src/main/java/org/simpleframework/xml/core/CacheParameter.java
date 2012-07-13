@@ -105,7 +105,7 @@ class CacheParameter implements Parameter{
       this.expression = value.getExpression();
       this.attribute = value.isAttribute();
       this.primitive = value.isPrimitive();
-      this.required = value.isRequired();
+      this.required = label.isRequired();
       this.string = value.toString();
       this.text = value.isText();
       this.index = value.getIndex();
