@@ -51,13 +51,12 @@ public class MissingPrefixTest extends TestCase {
       }
    }
    
-   public void setUp() throws Exception {
-      changeToPullProvider();
-   }
-   
    public void testMissingPrefix() throws Exception {
+      Object originalProvider = null;
       boolean failure = false;
       try {
+         originalProvider = changeToPullProvider();
+         
          Persister p = new Persister();
          Blah b = new Blah("x", 1, 2);
          Blah a = p.read(Blah.class, BLAH);
@@ -70,11 +69,14 @@ public class MissingPrefixTest extends TestCase {
       }catch(Exception e) {
          e.printStackTrace();
          failure = true;
+      } finally {
+         setProviderTo(originalProvider);
       }
       assertTrue("Failure should have occured for unresolved prefix", failure);
    }
    
-   private void changeToPullProvider() throws Exception {
+   private Object changeToPullProvider() throws Exception {
+      Object provider = null;
       try {      
          Class c = Class.forName("org.simpleframework.xml.stream.PullProvider");
          Constructor[] cons = c.getDeclaredConstructors();
@@ -82,12 +84,24 @@ public class MissingPrefixTest extends TestCase {
             con.setAccessible(true);
          }
          Object o = cons[0].newInstance();
-         Field f = NodeBuilder.class.getDeclaredField("provider");
-         f.setAccessible(true);
-         f.set(null, o);
+         return setProviderTo(o);
       }catch(Exception e) {
          e.printStackTrace();
       }
+      return provider;
+   }
+   
+   private Object setProviderTo(Object value) throws Exception {
+      Object provider = null;
+      try {      
+         Field f = NodeBuilder.class.getDeclaredField("provider");
+         f.setAccessible(true);
+         provider = f.get(null);
+         f.set(null, value);
+      }catch(Exception e) {
+         e.printStackTrace();
+      }
+      return provider;
    }
    
    
