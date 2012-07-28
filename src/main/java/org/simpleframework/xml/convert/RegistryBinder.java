@@ -63,7 +63,7 @@ class RegistryBinder {
     * @return this returns the converter instance for the type
     */
    public Converter lookup(Class type) throws Exception {
-      Class result = cache.fetch(type);
+      Class result = cache.get(type);
       
       if(result != null) {
          return create(result);
@@ -95,6 +95,6 @@ class RegistryBinder {
     * @param converter this is the converter class to be used
     */
    public void bind(Class type, Class converter) throws Exception {
-      cache.cache(type, converter);
+      cache.put(type, converter);
    }
 }

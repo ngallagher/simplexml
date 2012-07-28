@@ -85,7 +85,7 @@ class GroupExtractor implements Group {
     * 
     * @return this returns the names of each union extracted
     */
-   public Set<String> getNames() throws Exception {
+   public String[] getNames() throws Exception {
       return elements.getKeys();
    }
    
@@ -96,7 +96,7 @@ class GroupExtractor implements Group {
     * 
     * @return this returns the paths of each union extracted
     */
-   public Set<String> getPaths() throws Exception {
+   public String[] getPaths() throws Exception {
       return elements.getPaths();
    }
    

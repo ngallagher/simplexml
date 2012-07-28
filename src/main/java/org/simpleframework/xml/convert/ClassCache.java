@@ -18,7 +18,7 @@
 
 package org.simpleframework.xml.convert;
 
-import org.simpleframework.xml.util.WeakCache;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * The <code>ClassCache</code> is used to cache converter bindings. 
@@ -28,7 +28,7 @@ import org.simpleframework.xml.util.WeakCache;
  * 
  * @author Niall Gallagher
  */
-class ClassCache extends WeakCache<Class, Class> {
+class ClassCache extends ConcurrentHashMap<Class, Class> {
    
    /**
     * Constructor for the <code>ClassCache</code> object. This is

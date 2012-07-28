@@ -510,7 +510,7 @@ class MethodScanner extends ContactList {
     * 
     * @see org.simpleframework.xml.core.MethodPart
     */
-   private class PartMap extends LinkedHashMap<String, MethodPart> implements Iterable<String>{
+   private static class PartMap extends LinkedHashMap<String, MethodPart> implements Iterable<String>{
       
       /**
        * This returns an iterator for the Java Bean method names for

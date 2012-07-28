@@ -19,8 +19,7 @@
 package org.simpleframework.xml.convert;
 
 import java.lang.annotation.Annotation;
-
-import org.simpleframework.xml.util.WeakCache;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * The <code>ScannerBuilder</code> is used to build and cache each
@@ -33,7 +32,7 @@ import org.simpleframework.xml.util.WeakCache;
  * 
  * @see org.simpleframework.xml.convert.ConverterScanner
  */
-class ScannerBuilder extends WeakCache<Class, Scanner> {
+class ScannerBuilder extends ConcurrentHashMap<Class, Scanner> {
 
    /**
     * Constructor for the <code>ScannerBuilder</code> object. This
@@ -56,11 +55,11 @@ class ScannerBuilder extends WeakCache<Class, Scanner> {
     * @return this will return a scanner instance for the given type
     */
    public Scanner build(Class<?> type) {
-      Scanner scanner = fetch(type);
+      Scanner scanner = get(type);
       
       if(scanner == null) {
          scanner = new Entry(type);
-         cache(type, scanner);
+         put(type, scanner);
       }
       return scanner;
    }
@@ -73,7 +72,7 @@ class ScannerBuilder extends WeakCache<Class, Scanner> {
     * 
     * @author Niall Gallagher
     */
-   private static class Entry extends WeakCache<Class, Annotation> implements Scanner {
+   private static class Entry extends ConcurrentHashMap<Class, Annotation> implements Scanner {
       
       /**
        * This class is the subject for all annotation scans performed.
@@ -107,11 +106,11 @@ class ScannerBuilder extends WeakCache<Class, Scanner> {
          if(!contains(type)) {
             T value = find(type);
             
-            if(type != null) {
-               cache(type, value);
+            if(type != null && value != null) {
+               put(type, value);
             }
          }
-         return (T)fetch(type);
+         return (T)get(type);
       }
       
       /**

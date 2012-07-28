@@ -22,7 +22,7 @@ import static org.simpleframework.xml.core.Support.isAssignable;
 
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -288,10 +288,10 @@ class InstantiatorBuilder {
     * @param parameter this is the parameter that is to be validated
     */
    private void validateNames(Label label, Parameter parameter) throws Exception {
-      Collection<String> options = label.getNames();
+      String[] options = label.getNames();
       String name = parameter.getName();
       
-      if(!options.contains(name)) {
+      if(!contains(options, name)) {
          String require = label.getName();
          
          if(name != require) {
@@ -507,5 +507,27 @@ class InstantiatorBuilder {
          return map.get(name);
       }
       return label;
+   }
+   
+   /**
+    * This is used to determine if a value exists within an array. 
+    * Searching the array like this is required when no collections 
+    * are available to use on the list of attributes.
+    * 
+    * @param list this is the list to begin searching for a value
+    * @param value this is the value to be searched for
+    * 
+    * @return true if the list contains the specified value
+    */
+   private boolean contains(String[] list, String value) throws Exception {
+      for(String entry : list) {
+        if(entry == value) {
+           return true;
+        }
+        if(entry.equals(value)) {
+           return true;
+        }
+      }
+      return false;
    }
 }

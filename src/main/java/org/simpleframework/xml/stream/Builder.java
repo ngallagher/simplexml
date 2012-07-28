@@ -153,7 +153,7 @@ class Builder implements Style {
     * 
     * @author Niall Gallagher
     */
-   private class Cache extends ConcurrentHashMap<String, String> {
+   private static class Cache extends ConcurrentHashMap<String, String> {
     
       /**
        * Constructor for the <code>Cache</code> object. This will

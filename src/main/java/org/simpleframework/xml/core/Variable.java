@@ -99,7 +99,7 @@ class Variable implements Label {
     * 
     * @return this returns the names of each of the elements
     */
-   public Collection<String> getNames() throws Exception {
+   public String[] getNames() throws Exception {
       return label.getNames();
    }
    
@@ -112,7 +112,7 @@ class Variable implements Label {
     * 
     * @return this returns the names of each of the elements
     */
-   public Collection<String> getPaths() throws Exception {
+   public String[] getPaths() throws Exception {
       return label.getPaths();
    }
    
@@ -157,7 +157,7 @@ class Variable implements Label {
       if(reader instanceof Adapter) {
          return reader;
       }
-      return new Adapter(reader, value);
+      return new Adapter(reader, label, value);
    }
    
    /**
@@ -406,7 +406,7 @@ class Variable implements Label {
     * 
     * @author Niall Gallagher
     */
-   private class Adapter implements Repeater {
+   private static class Adapter implements Repeater {
       
       /**
        * This is the converter object used to perform a repeat read.
@@ -419,6 +419,11 @@ class Variable implements Label {
       private final Object value;
       
       /**
+       * This contains the details for the annotated field or method.
+       */
+      private final Label label;
+      
+      /**
        * Constructor for the <code>Adapter</code> object. This will
        * create an adapter between the converter an repeater such
        * that the reads will read from the XML to the original.
@@ -426,9 +431,10 @@ class Variable implements Label {
        * @param reader this is the converter object to be used      
        * @param value this is the originally deserialized object
        */
-      public Adapter(Converter reader, Object value) {
+      public Adapter(Converter reader, Label label, Object value) {
          this.reader = reader;
          this.value = value;
+         this.label = label;
       }
       
       /**

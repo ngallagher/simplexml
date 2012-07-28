@@ -63,7 +63,7 @@ public class Registry {
     * @return this returns the converter instance for the type
     */
    public Converter lookup(Class type) throws Exception {
-      Converter converter = cache.fetch(type);
+      Converter converter = cache.get(type);
       
       if(converter == null) {
          return create(type);
@@ -85,7 +85,7 @@ public class Registry {
       Converter converter = binder.lookup(type);
       
       if(converter != null) {
-         cache.cache(type, converter);
+         cache.put(type, converter);
       }
       return converter;
    }
@@ -121,7 +121,7 @@ public class Registry {
     */
    public Registry bind(Class type, Converter converter) throws Exception {
       if(type != null) {
-         cache.cache(type, converter);
+         cache.put(type, converter);
       }
       return this;
    }

@@ -120,7 +120,7 @@ class ExpressionBuilder {
     * the original path. This is effectively a typedef that hides
     * the ugly generics details from the class definition.
     */
-   private class Cache extends HashMap<String, Expression> {
+   private static class Cache extends HashMap<String, Expression> {
       
       /**
        * Constructor for the <code>Cache</code> object. This will

@@ -608,7 +608,7 @@ class Composite implements Converter {
     */
    private void readUnion(InputNode node, Object source, LabelMap map, Label label) throws Exception {
       Object value = readInstance(node, source, label);
-      Collection<String> list = label.getPaths();
+      String[] list = label.getPaths();
       
       for(String key : list) {
          map.getLabel(key);
@@ -933,12 +933,12 @@ class Composite implements Converter {
     * @param label this is the label used to define the XML element
     */
    private void validateUnion(InputNode node, LabelMap map, Label label) throws Exception {
-      Collection<String> list = label.getPaths();
+      String[] list = label.getPaths();
       
       for(String key : list) {
          map.getLabel(key);
       }
-            if(label.isInline()) {
+      if(label.isInline()) {
          criteria.set(label, null);
       }
       validate(node, label);

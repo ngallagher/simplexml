@@ -18,9 +18,7 @@
 
 package org.simpleframework.xml.core;
 
-import java.util.Collection;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.Arrays;
 
 /**
  * The <code>KeyBuilder</code> is used build unique keys for labels
@@ -75,7 +73,7 @@ class KeyBuilder {
     * @return this returns a key to represent the label
     */
    private Object getKey(KeyType type) throws Exception {
-      Collection<String> list = label.getPaths();
+      String[] list = label.getPaths();
       String text = getKey(list);
       
       if(type == null) {
@@ -94,13 +92,16 @@ class KeyBuilder {
     * 
     * @return this returns a key to represent the label
     */
-   private String getKey(Collection<String> list) throws Exception { 
-      Set<String> ordered = new TreeSet<String>(list);
+   private String getKey(String[] list) throws Exception { 
       StringBuilder builder = new StringBuilder();
       
-      for(String path : ordered) {
-         builder.append(path);
-         builder.append('>');
+      if(list.length > 0) {
+         Arrays.sort(list);
+         
+         for(String path : list) {
+            builder.append(path);
+            builder.append('>');
+         }
       }
       return builder.toString();
    }

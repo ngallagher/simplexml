@@ -20,7 +20,6 @@ package org.simpleframework.xml.core;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.Collection;
 
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
@@ -577,7 +576,7 @@ class StructureBuilder {
     */
    private void validateUnions(Class type) throws Exception {
       for(Label label : elements) {
-         Collection<String> options = label.getPaths();
+         String[] options = label.getPaths();
          Contact contact = label.getContact();
          
          for(String option : options) {

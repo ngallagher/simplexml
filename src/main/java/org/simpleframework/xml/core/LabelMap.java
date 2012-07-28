@@ -93,7 +93,7 @@ class LabelMap extends LinkedHashMap<String, Label> implements Iterable<Label> {
     * 
     * @return this returns the names and paths for each label
     */
-   public Set<String> getKeys() throws Exception {
+   public String[] getKeys() throws Exception {
       Set<String> list = new HashSet<String>();
       
       for(Label label : this) {
@@ -105,7 +105,7 @@ class LabelMap extends LinkedHashMap<String, Label> implements Iterable<Label> {
             list.add(name);
          }
       }
-      return list;
+      return getArray(list);
    }
    
    /**
@@ -115,7 +115,7 @@ class LabelMap extends LinkedHashMap<String, Label> implements Iterable<Label> {
     * 
     * @return this returns the paths for each label in this map
     */
-   public Set<String> getPaths() throws Exception {
+   public String[] getPaths() throws Exception {
       Set<String> list = new HashSet<String>();
       
       for(Label label : this) {
@@ -125,7 +125,7 @@ class LabelMap extends LinkedHashMap<String, Label> implements Iterable<Label> {
             list.add(path);
          }
       }
-      return list;
+      return getArray(list);
    }
    
    /**
@@ -148,6 +148,19 @@ class LabelMap extends LinkedHashMap<String, Label> implements Iterable<Label> {
       }         
       return map;      
    }   
+   
+   /**
+    * Convert a set in to an array. Conversion is required as the keys
+    * and paths must be arrays. Converting from the set in this manner
+    * helps the performance on android which works faster with arrays.
+    * 
+    * @param list this is the set to be converted to an array
+    * 
+    * @return this returns an array of strings from the provided set
+    */
+   private String[] getArray(Set<String> list) {
+      return list.toArray(new String[]{});
+   }
 
    /**
     * This method is used to determine whether strict mappings are

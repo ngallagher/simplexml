@@ -139,7 +139,7 @@ class Collector implements Criteria {
       Variable variable = new Variable(label, value);
 
       if(label != null) {
-         Collection<String> paths = label.getPaths();
+         String[] paths = label.getPaths();
          Object key = label.getKey();
          
          for(String path : paths) {
@@ -176,7 +176,7 @@ class Collector implements Criteria {
     * 
     * @author Niall Gallagher
     */
-   private class Registry extends LinkedHashMap<Object, Variable> {
+   private static class Registry extends LinkedHashMap<Object, Variable> {
       
       /**
        * This is used to iterate over the names of the variables
