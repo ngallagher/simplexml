@@ -18,6 +18,8 @@
 
 package org.simpleframework.xml.strategy;
 
+import org.simpleframework.xml.util.WeakCache;
+
 
 /**
  * The <code>WriteState</code> object is used to store all graphs that

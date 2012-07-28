@@ -16,7 +16,7 @@
  * permissions and limitations under the License.
  */
 
-package org.simpleframework.xml.strategy;
+package org.simpleframework.xml.util;
 
 import java.util.WeakHashMap;
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ import java.util.List;
  * 
  * @author Niall Gallagher
  */
-class WeakCache<K, V> implements Cache<K, V> {
+public class WeakCache<K, V> implements Cache<K, V> {
    
    /**
     * This is used to store a list of segments for the cache.
