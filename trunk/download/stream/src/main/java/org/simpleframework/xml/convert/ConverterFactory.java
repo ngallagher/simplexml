@@ -59,7 +59,7 @@ class ConverterFactory {
     * @return this returns an instance of the provided type
     */
    public Converter getInstance(Class type) throws Exception {
-      Converter converter = cache.fetch(type);
+      Converter converter = cache.get(type);
       
       if(converter == null) {
          return getConverter(type);
@@ -118,7 +118,7 @@ class ConverterFactory {
       Converter converter = (Converter)factory.newInstance();
       
       if(converter != null){
-         cache.cache(type, converter);
+         cache.put(type, converter);
       }
       return converter;
    }

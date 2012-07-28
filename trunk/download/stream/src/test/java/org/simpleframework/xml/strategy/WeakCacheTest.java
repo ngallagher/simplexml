@@ -1,6 +1,9 @@
-package org.simpleframework.xml.util;
+package org.simpleframework.xml.strategy;
 
 import java.util.HashMap;
+
+import org.simpleframework.xml.strategy.WeakCache;
+
 import junit.framework.TestCase;
 
 public class WeakCacheTest extends TestCase {

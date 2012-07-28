@@ -190,7 +190,7 @@ class Indenter {
     * create an index once for a given stack position. The number of
     * indents held within this cache can also be tracked.
     */ 
-   private class Cache {
+   private static class Cache {
 
       /**
        * This is used to track indent strings within the cache.

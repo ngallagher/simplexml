@@ -84,7 +84,7 @@ class InstanceFactory {
     *
     * @return this returns an instance of the specific class type
     */ 
-   private Object getObject(Class type) throws Exception {
+   protected Object getObject(Class type) throws Exception {
       Constructor method = cache.get(type);
       
       if(method == null) {

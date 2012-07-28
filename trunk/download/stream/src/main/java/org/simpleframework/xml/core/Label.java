@@ -19,7 +19,6 @@
 package org.simpleframework.xml.core;
 
 import java.lang.annotation.Annotation;
-import java.util.Collection;
 
 import org.simpleframework.xml.strategy.Type;
 
@@ -82,7 +81,7 @@ interface Label {
     * 
     * @return this returns the names of each of the elements
     */
-   public Collection<String> getNames() throws Exception; 
+   public String[] getNames() throws Exception; 
    
    /**
     * This returns a <code>Collection</code> of element paths. This
@@ -93,7 +92,7 @@ interface Label {
     * 
     * @return this returns the names of each of the elements
     */
-   public Collection<String> getPaths() throws Exception;
+   public String[] getPaths() throws Exception;
    
    /**
     * This is used to provide a configured empty value used when the

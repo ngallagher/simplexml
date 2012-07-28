@@ -208,7 +208,7 @@ class PullReader implements EventReader {
     * 
     * @author Niall Gallagher
     */
-   private class Entry extends EventAttribute {
+   private static class Entry extends EventAttribute {
       
       /**
        * This is the XML pull parser source that is used for this.

@@ -50,12 +50,12 @@ import java.util.Iterator;
  *
  * @see org.simpleframework.xml.util.Entry
  */ 
-public class Dictionary<E extends Entry> extends AbstractSet<E> {
+public class Dictionary<T extends Entry> extends AbstractSet<T> {
 
    /**
     * Used to map the entries to their configured names.
     */         
-   protected Table map;
+   protected final Table<T> map;
         
    /**
     * Constructor for the <code>Dictionary</code> object. This 
@@ -64,7 +64,7 @@ public class Dictionary<E extends Entry> extends AbstractSet<E> {
     * dictionary can be retrieved using its name value.
     */ 
    public Dictionary() {
-      this.map = new Table();           
+      this.map = new Table<T>();           
    }
 
    /**
@@ -74,7 +74,7 @@ public class Dictionary<E extends Entry> extends AbstractSet<E> {
     * 
     * @param item this is the entry object that is to be inserted
     */ 
-   public boolean add(E item) {
+   public boolean add(T item) {
       return map.put(item.getName(), item) != null;           
    }
 
@@ -96,7 +96,7 @@ public class Dictionary<E extends Entry> extends AbstractSet<E> {
     * 
     * @return this returns an iterator for the entry objects
     */ 
-   public Iterator<E> iterator() {
+   public Iterator<T> iterator() {
       return map.values().iterator();            
    }
 
@@ -109,7 +109,7 @@ public class Dictionary<E extends Entry> extends AbstractSet<E> {
     *
     * @return this returns the entry mapped to the specified name
     */ 
-   public E get(String name) {
+   public T get(String name) {
       return map.get(name);           
    }
 
@@ -122,7 +122,7 @@ public class Dictionary<E extends Entry> extends AbstractSet<E> {
     *
     * @return this returns the entry mapped to the specified name
     */ 
-   public E remove(String name) {
+   public T remove(String name) {
       return map.remove(name);           
    }
  
@@ -134,7 +134,7 @@ public class Dictionary<E extends Entry> extends AbstractSet<E> {
     *
     * @see org.simpleframework.xml.util.Entry
     */
-   private class Table extends HashMap<String, E> {
+   private static class Table<T> extends HashMap<String, T> {
       
       /**
        * Constructor for the <code>Table</code> object. This will

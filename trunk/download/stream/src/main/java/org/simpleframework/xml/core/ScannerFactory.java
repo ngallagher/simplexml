@@ -86,7 +86,7 @@ class ScannerFactory {
     * is not required each time an instance of that class is serialized 
     * or deserialized. This acts as a typedef for the generic type.
     */
-   private class Cache extends ConcurrentHashMap<Class, Scanner> {
+   private static class Cache extends ConcurrentHashMap<Class, Scanner> {
 
       /**
        * Constructor for the <code>ScannerCache</code> object. This is

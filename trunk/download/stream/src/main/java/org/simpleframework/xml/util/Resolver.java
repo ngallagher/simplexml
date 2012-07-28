@@ -66,12 +66,12 @@ public class Resolver<M extends Match> extends AbstractSet<M> {
    /**
     * Caches the text resolutions made to reduce the work required.
     */        
-   private final Cache cache;
+   protected final Cache cache;
 
    /**
     * Stores the matches added to the resolver in resolution order.
     */ 
-   private final Stack stack;
+   protected final Stack stack;
 
    /**
     * The default constructor will create a <code>Resolver</code>

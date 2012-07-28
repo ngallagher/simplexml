@@ -29,13 +29,13 @@ public class KeyBuilderTest extends TestCase {
    
    public class MockLabel implements Label {
       
-      private Collection<String> list;
+      private String[] list;
       private boolean attribute;
       private boolean text;
       
       public MockLabel(boolean attribute, boolean text, String... paths) {
-         this.list = Arrays.asList(paths);
          this.attribute = attribute;
+         this.list = paths;
          this.text= text;
       }
 
@@ -51,11 +51,11 @@ public class KeyBuilderTest extends TestCase {
          return null;
       }
 
-      public Collection<String> getNames() throws Exception {
+      public String[] getNames() throws Exception {
          return null;
       }
 
-      public Collection<String> getPaths() throws Exception {
+      public String[] getPaths() throws Exception {
          return list;
       }
 

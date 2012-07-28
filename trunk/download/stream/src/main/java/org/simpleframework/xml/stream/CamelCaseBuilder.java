@@ -44,12 +44,12 @@ class CamelCaseBuilder implements Style {
    /**
     * If true then the attribute will start with upper case.
     */
-   private final boolean attribute;
+   protected final boolean attribute;
    
    /**
     * If true then the element will start with upper case.
     */
-   private final boolean element;
+   protected final boolean element;
    
    /**
     * Constructor for the <code>CamelCaseBuilder</code> object. This 

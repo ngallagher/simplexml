@@ -18,7 +18,7 @@
 
 package org.simpleframework.xml.transform;
 
-import org.simpleframework.xml.util.WeakCache;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * The <code>RegistryMatcher</code> provides a simple matcher backed
@@ -64,7 +64,7 @@ public class RegistryMatcher implements Matcher {
     * @param transform this is the transform type to instantiate
     */
    public void bind(Class type, Class transform) {
-      types.cache(type, transform);
+      types.put(type, transform);
    }
    
    /**
@@ -76,7 +76,7 @@ public class RegistryMatcher implements Matcher {
     * @param transform this transform instance to be used
     */
    public void bind(Class type, Transform transform) {
-      transforms.cache(type, transform);
+      transforms.put(type, transform);
    }
    
    /**
@@ -89,7 +89,7 @@ public class RegistryMatcher implements Matcher {
     * @return returns a transform for processing the type given
     */ 
    public Transform match(Class type) throws Exception {
-      Transform transform = transforms.fetch(type);
+      Transform transform = transforms.get(type);
       
       if(transform == null) {
          return create(type);
@@ -107,7 +107,7 @@ public class RegistryMatcher implements Matcher {
     * @return returns a transform for processing the type given
     */ 
    private Transform create(Class type) throws Exception {
-      Class factory = types.fetch(type);
+      Class factory = types.get(type);
       
       if(factory != null) {
          return create(type, factory);
@@ -130,7 +130,7 @@ public class RegistryMatcher implements Matcher {
       Transform transform = (Transform)value;
          
       if(transform != null) {
-         transforms.cache(type, transform);
+         transforms.put(type, transform);
       }
       return transform;
    }
@@ -143,7 +143,7 @@ public class RegistryMatcher implements Matcher {
     * 
     * @author Niall Gallagher
     */
-   private static class Cache<T> extends WeakCache<Class, T> {
+   private static class Cache<T> extends ConcurrentHashMap<Class, T> {
     
       /**
        * Constructor for the <code>Cache</code> object. This is

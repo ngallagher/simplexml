@@ -35,16 +35,6 @@ import org.simpleframework.xml.strategy.Type;
 class CacheLabel implements Label {
    
    /**
-    * This represents the names that identify this label instance.
-    */
-   private final Collection<String> names;
-   
-   /**
-    * This represents the paths that identify this label instance.
-    */
-   private final Collection<String> paths;
-   
-   /**
     * This is the annotation that this label instance represents.
     */
    private final Annotation annotation;
@@ -63,6 +53,16 @@ class CacheLabel implements Label {
     * This is the contact used to set and get the value for the node.
     */
    private final Contact contact;
+   
+   /**
+    * This represents the names that identify this label instance.
+    */
+   private final String[] names;
+   
+   /**
+    * This represents the paths that identify this label instance.
+    */
+   private final String[] paths;
    
    /**
     * This is used to represent the label class that this will use.
@@ -207,7 +207,7 @@ class CacheLabel implements Label {
     * 
     * @return this returns the names of each of the elements
     */
-   public Collection<String> getNames() throws Exception {
+   public String[] getNames() throws Exception {
       return names;
    }
    
@@ -220,7 +220,7 @@ class CacheLabel implements Label {
     * 
     * @return this returns the names of each of the elements
     */
-   public Collection<String> getPaths() throws Exception {
+   public String[] getPaths() throws Exception {
       return paths;
    }
    

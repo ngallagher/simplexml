@@ -85,7 +85,7 @@ class DebugLabel implements Label{
       return label.getName();
    }
 
-   public Collection<String> getNames() throws Exception {
+   public String[] getNames() throws Exception {
       showMethodInvocation();
       return label.getNames();
    }
@@ -105,7 +105,7 @@ class DebugLabel implements Label{
       return label.getPath();
    }
 
-   public Collection<String> getPaths() throws Exception {
+   public String[] getPaths() throws Exception {
       showMethodInvocation();
       return label.getPaths();
    }

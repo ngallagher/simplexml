@@ -192,7 +192,7 @@ class ElementUnionLabel extends TemplateLabel {
     * 
     * @return this returns the names of each of the elements
     */
-   public Collection<String> getNames() throws Exception {
+   public String[] getNames() throws Exception {
       return extractor.getNames();
    }
 
@@ -205,7 +205,7 @@ class ElementUnionLabel extends TemplateLabel {
     * 
     * @return this returns the names of each of the elements
     */
-   public Collection<String> getPaths() throws Exception {
+   public String[] getPaths() throws Exception {
       return extractor.getPaths();
    }
    

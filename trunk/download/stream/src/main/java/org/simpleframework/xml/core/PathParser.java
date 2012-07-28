@@ -21,7 +21,6 @@ package org.simpleframework.xml.core;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -57,82 +56,82 @@ class PathParser implements Expression {
    /**
     * This contains a list of the indexes for each path segment.
     */
-   private LinkedList<Integer> indexes;   
+   protected List<Integer> indexes;   
    
    /**
     * This is used to store the path prefixes for the parsed path.
     */
-   private LinkedList<String> prefixes;
+   protected List<String> prefixes;
    
    /**
     * This contains a list of the path segments that were parsed.
     */
-   private LinkedList<String> names;
+   protected List<String> names;
    
    /**
     * This is used to build a fully qualified path expression.
     */
-   private StringBuilder builder;
+   protected StringBuilder builder;
    
    /**
     * This is used to cache the attributes created by this path.
     */
-   private Cache attributes;
+   protected Cache attributes;
    
    /**
     * This is used to cache the elements created by this path.
     */
-   private Cache elements;
+   protected Cache elements;
    
    /**
     * This is the format used to style the path segments.
     */
-   private Format format;
+   protected Format format;
    
    /**
     * This is the fully qualified path expression for this.
     */
-   private String location;
+   protected String location;
    
    /**
     * This is the the cached canonical representation of the path.
     */
-   private String cache;
+   protected String cache;
    
    /**
     * This is a cache of the canonical path representation.
     */
-   private String path;
+   protected String path;
    
    /**
     * This is the type the expressions are to be parsed for.
     */
-   private Type type;
+   protected Type type;
    
    /**
     * This is used to determine if the path is an attribute.
     */
-   private boolean attribute;
+   protected boolean attribute;
    
    /**
     * This is a copy of the source data that is to be parsed.
     */
-   private char[] data;
+   protected char[] data;
    
    /**
     * This represents the number of characters in the source path.
     */
-   private int count;
+   protected int count;
    
    /**
     * This is the start offset that skips any root references.
     */
-   private int start;
+   protected int start;
  
    /**
     * This is the current seek position for the parser.
     */
-   private int off;
+   protected int off;
 
    /**
     * Constructor for the <code>PathParser</code> object. This must
@@ -145,9 +144,9 @@ class PathParser implements Expression {
     * @param format this is the format used to style the path
     */
    public PathParser(String path, Type type, Format format) throws Exception {
-      this.indexes = new LinkedList<Integer>();
-      this.prefixes = new LinkedList<String>();
-      this.names = new LinkedList<String>();
+      this.indexes = new ArrayList<Integer>();
+      this.prefixes = new ArrayList<String>();
+      this.names = new ArrayList<String>();
       this.builder = new StringBuilder();
       this.attributes = new Cache();
       this.elements = new Cache();
@@ -200,7 +199,7 @@ class PathParser implements Expression {
     * @return this returns the index of this path expression
     */
    public int getIndex() {
-      return indexes.getFirst();
+      return indexes.get(0);
    }
    
    /**
@@ -212,7 +211,7 @@ class PathParser implements Expression {
     * @return this returns the prefix for the path expression
     */
    public String getPrefix(){
-      return prefixes.getFirst();
+      return prefixes.get(0);
    }
    
    /**
@@ -224,7 +223,7 @@ class PathParser implements Expression {
     * @return this returns the parent element for the path
     */
    public String getFirst() {
-      return names.getFirst();
+      return names.get(0);
    }
    
    /**
@@ -236,7 +235,10 @@ class PathParser implements Expression {
     * @return this returns the leaf element for the path
     */ 
    public String getLast() {
-      return names.getLast();
+      int count = names.size();
+      int index = count - 1;
+      
+      return names.get(index);
    }
 
    /**
@@ -285,7 +287,7 @@ class PathParser implements Expression {
     * 
     * @return a fully qualified path for the specified name
     */
-   private String getElementPath(String path, String name) {
+   protected String getElementPath(String path, String name) {
       Style style = format.getStyle();
       String element = style.getElement(name);
       
@@ -332,7 +334,7 @@ class PathParser implements Expression {
     * 
     * @return a fully qualified path for the specified name
     */
-   private String getAttributePath(String path, String name) {
+   protected String getAttributePath(String path, String name) {
       Style style = format.getStyle();
       String attribute = style.getAttribute(name);
             

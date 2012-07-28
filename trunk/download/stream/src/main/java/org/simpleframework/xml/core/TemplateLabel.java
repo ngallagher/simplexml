@@ -86,11 +86,11 @@ abstract class TemplateLabel implements Label {
     * 
     * @return this returns the names of each of the elements
     */
-   public Collection<String> getNames() throws Exception {
+   public String[] getNames() throws Exception {
       String path = getPath();
       String name = getName();
       
-      return asList(path, name);
+      return new String[] {path, name};
    }
    
    /**
@@ -102,10 +102,10 @@ abstract class TemplateLabel implements Label {
     * 
     * @return this returns the names of each of the elements
     */
-   public Collection<String> getPaths() throws Exception {
+   public String[] getPaths() throws Exception {
       String path = getPath();
       
-      return asList(path);
+      return new String[] {path};
    }
    
    /**
