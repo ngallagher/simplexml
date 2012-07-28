@@ -84,11 +84,6 @@ class PathParser implements Expression {
    protected Cache elements;
    
    /**
-    * This is the format used to style the path segments.
-    */
-   protected Format format;
-   
-   /**
     * This is the fully qualified path expression for this.
     */
    protected String location;
@@ -102,6 +97,12 @@ class PathParser implements Expression {
     * This is a cache of the canonical path representation.
     */
    protected String path;
+   
+   
+   /**
+    * This is the format used to style the path segments.
+    */
+   protected Style style;
    
    /**
     * This is the type the expressions are to be parsed for.
@@ -150,7 +151,7 @@ class PathParser implements Expression {
       this.builder = new StringBuilder();
       this.attributes = new Cache();
       this.elements = new Cache();
-      this.format = format;
+      this.style = format.getStyle();
       this.type = type;
       this.path = path;
       this.parse(path);
@@ -264,16 +265,19 @@ class PathParser implements Expression {
     * @return a fully qualified path for the specified name
     */
    public String getElement(String name) {
-      String path = elements.get(name); 
-      
-      if(path == null) {
-         path = getElementPath(location, name);
+      if(!isEmpty(location)) {
+         String path = elements.get(name); 
          
-         if(path != null) {
-            elements.put(name, path);
+         if(path == null) {
+            path = getElementPath(location, name);
+            
+            if(path != null) {
+               elements.put(name, path);
+            }
          }
+         return path;
       }
-      return path;
+      return style.getElement(name);
    }
    
    /**
@@ -288,7 +292,6 @@ class PathParser implements Expression {
     * @return a fully qualified path for the specified name
     */
    protected String getElementPath(String path, String name) {
-      Style style = format.getStyle();
       String element = style.getElement(name);
       
       if(isEmpty(element)) {
@@ -311,16 +314,19 @@ class PathParser implements Expression {
     * @return a fully qualified path for the specified name
     */
    public String getAttribute(String name) {
-      String path = attributes.get(name); 
-      
-      if(path == null) {
-         path = getAttributePath(location, name);
+      if(!isEmpty(location)) {
+         String path = attributes.get(name); 
          
-         if(path != null) {
-            attributes.put(name, path);
+         if(path == null) {
+            path = getAttributePath(location, name);
+            
+            if(path != null) {
+               attributes.put(name, path);
+            }
          }
+         return path;
       }
-      return path;
+      return style.getAttribute(name);
    }
    
    /**
@@ -335,7 +341,6 @@ class PathParser implements Expression {
     * @return a fully qualified path for the specified name
     */
    protected String getAttributePath(String path, String name) {
-      Style style = format.getStyle();
       String attribute = style.getAttribute(name);
             
       if(isEmpty(path)) { 
@@ -727,7 +732,6 @@ class PathParser implements Expression {
          prefix = segment.substring(0, index);
          segment = segment.substring(index+1);
       }
-      Style style = format.getStyle();
       String element = style.getElement(segment);
       
       prefixes.add(prefix);
@@ -743,7 +747,6 @@ class PathParser implements Expression {
     * @param segment this is the path segment to be inserted
     */
    private void attribute(String segment) {
-      Style style = format.getStyle();
       String attribute = style.getAttribute(segment);
       
       prefixes.add(null);

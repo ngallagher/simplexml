@@ -18,6 +18,8 @@
 
 package org.simpleframework.xml.strategy;
 
+import org.simpleframework.xml.util.WeakCache;
+
 
 /**
  * The <code>ReadState</code> object is used to store all graphs that
@@ -30,7 +32,7 @@ package org.simpleframework.xml.strategy;
  * 
  * @author Niall Gallagher
  * 
- * @see org.simpleframework.xml.strategy.WeakCache
+ * @see org.simpleframework.xml.util.WeakCache
  */
 class ReadState extends WeakCache<Object, ReadGraph>{
    

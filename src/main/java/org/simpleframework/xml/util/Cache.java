@@ -16,7 +16,7 @@
  * permissions and limitations under the License.
  */
 
-package org.simpleframework.xml.strategy;
+package org.simpleframework.xml.util;
 
 /**
  * The <code>Cache</code> interface is used to represent a cache
@@ -26,7 +26,7 @@ package org.simpleframework.xml.strategy;
  * 
  * @author Niall Gallagher
  */
-interface Cache<K, V> {
+public interface Cache<K, V> {
    
    /**
     * This method is used to insert a key value mapping in to the
