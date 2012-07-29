@@ -13,6 +13,7 @@
 
 -libraryjars  <java.home>/lib/rt.jar
 -libraryjars lib/xpp3-1.1.3.3.jar
+-libraryjars lib/stax-api-1.0.1.jar
 
 # Save the obfuscation mapping to a file, so we can de-obfuscate any stack
 # traces later on. Keep a fixed source file attribute and all line number
