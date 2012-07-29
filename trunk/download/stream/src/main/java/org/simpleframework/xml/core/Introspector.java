@@ -180,9 +180,9 @@ class Introspector {
     */
    private String getRoot(Class<?> real, Class<?> type) {
       String name = type.getSimpleName();
+      Root root = type.getAnnotation(Root.class);
       
-      if(type.isAnnotationPresent(Root.class)) {
-         Root root = type.getAnnotation(Root.class);
+      if(root != null) {
          String text = root.name();
           
          if(!isEmpty(text)) {

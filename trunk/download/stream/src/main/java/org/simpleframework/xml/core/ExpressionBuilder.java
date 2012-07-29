@@ -18,10 +18,10 @@
 
 package org.simpleframework.xml.core;
 
-import java.util.HashMap;
-
 import org.simpleframework.xml.strategy.Type;
 import org.simpleframework.xml.stream.Format;
+import org.simpleframework.xml.util.Cache;
+import org.simpleframework.xml.util.LimitedCache;
 
 /**
  * The <code>ExpressionBuilder</code> object is used build and cache
@@ -38,15 +38,15 @@ import org.simpleframework.xml.stream.Format;
 class ExpressionBuilder {
    
    /**
+    * This is the cache of path expressions previously built.
+    */
+   private final Cache<Expression> cache;
+   
+   /**
     * This is the format used to style the path segments.
     */
    private final Format format;
-   
-   /**
-    * This is the cache of path expressions previously built.
-    */
-   private final Cache cache;
-   
+
    /**
     * This is the type the expressions are being built for.
     */
@@ -73,7 +73,7 @@ class ExpressionBuilder {
     * @param format this is the format used to style the segments
     */
    public ExpressionBuilder(Type type, Format format) {
-      this.cache = new Cache();
+      this.cache = new LimitedCache<Expression>();
       this.format = format;
       this.type = type;
    }
@@ -89,7 +89,7 @@ class ExpressionBuilder {
     * @return this returns the resulting expression object
     */
    public Expression build(String path) throws Exception {
-      Expression expression = cache.get(path);
+      Expression expression = cache.fetch(path);
       
       if(expression == null) {
          return create(path);
@@ -110,25 +110,8 @@ class ExpressionBuilder {
       Expression expression = new PathParser(path, type, format);
       
       if(cache != null) {
-         cache.put(path, expression);
+         cache.cache(path, expression);
       }
       return expression;
-   }
-
-   /**
-    * The <code>Cache</code> is used to cache the expressions with
-    * the original path. This is effectively a typedef that hides
-    * the ugly generics details from the class definition.
-    */
-   private static class Cache extends HashMap<String, Expression> {
-      
-      /**
-       * Constructor for the <code>Cache</code> object. This will
-       * create a cache for the path expressions that are built.
-       * All path expressions are cached using the original path.
-       */
-      public Cache() {
-         super();
-      }
    }
 }

@@ -21,10 +21,8 @@ package org.simpleframework.xml.util;
 import java.util.AbstractSet;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * This is used to store <code>Match</code> objects, which can then be
@@ -297,7 +295,7 @@ public class Resolver<M extends Match> extends AbstractSet<M> {
     * 
     * @author Niall Gallagher
     */ 
-   private class Cache extends LinkedHashMap<String, List<M>> {
+   private class Cache extends LimitedCache<List<M>> {
 
       /**
        * Constructor for the <code>Cache</code> object. This is a
@@ -305,22 +303,8 @@ public class Resolver<M extends Match> extends AbstractSet<M> {
        * it will purge the entries that are oldest within the map.
        */ 
       public Cache() {      
-         super(1024, 0.75f, false);              
+         super(1024);              
       }
-      
-      /**
-       * This is used to remove the eldest entry from the LRU cache.
-       * The eldest entry is removed from the cache if the size of
-       * the map grows larger than the maximum entries permitted.
-       *
-       * @param entry this is the eldest entry that can be removed
-       *
-       * @return this returns true if the entry should be removed
-       */ 
-      @Override
-      public boolean removeEldestEntry(Map.Entry entry) {
-         return size() > 1024;                                    
-      } 
    }
 
    /**

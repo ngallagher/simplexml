@@ -18,7 +18,8 @@
 
 package org.simpleframework.xml.transform;
 
-import java.util.concurrent.ConcurrentHashMap;
+import org.simpleframework.xml.util.Cache;
+import org.simpleframework.xml.util.ConcurrentCache;
 
 /**
  * The <code>RegistryMatcher</code> provides a simple matcher backed
@@ -51,8 +52,8 @@ public class RegistryMatcher implements Matcher {
     * is essentially a convenience implementation.
     */
    public RegistryMatcher() {
-      this.transforms = new Cache<Transform>();
-      this.types = new Cache<Class>();
+      this.transforms = new ConcurrentCache<Transform>();
+      this.types = new ConcurrentCache<Class>();
    }
    
    /**
@@ -64,7 +65,7 @@ public class RegistryMatcher implements Matcher {
     * @param transform this is the transform type to instantiate
     */
    public void bind(Class type, Class transform) {
-      types.put(type, transform);
+      types.cache(type, transform);
    }
    
    /**
@@ -76,7 +77,7 @@ public class RegistryMatcher implements Matcher {
     * @param transform this transform instance to be used
     */
    public void bind(Class type, Transform transform) {
-      transforms.put(type, transform);
+      transforms.cache(type, transform);
    }
    
    /**
@@ -89,7 +90,7 @@ public class RegistryMatcher implements Matcher {
     * @return returns a transform for processing the type given
     */ 
    public Transform match(Class type) throws Exception {
-      Transform transform = transforms.get(type);
+      Transform transform = transforms.fetch(type);
       
       if(transform == null) {
          return create(type);
@@ -107,7 +108,7 @@ public class RegistryMatcher implements Matcher {
     * @return returns a transform for processing the type given
     */ 
    private Transform create(Class type) throws Exception {
-      Class factory = types.get(type);
+      Class factory = types.fetch(type);
       
       if(factory != null) {
          return create(type, factory);
@@ -130,30 +131,8 @@ public class RegistryMatcher implements Matcher {
       Transform transform = (Transform)value;
          
       if(transform != null) {
-         transforms.put(type, transform);
+         transforms.cache(type, transform);
       }
       return transform;
    }
-   
-   /**
-    * The <code>Cache</code> object that is used store the transform
-    * types and instances. Each item cached can be resolved using
-    * a type. If the key is no longer referenced then the garbage 
-    * collector can collect the value cached.
-    * 
-    * @author Niall Gallagher
-    */
-   private static class Cache<T> extends ConcurrentHashMap<Class, T> {
-    
-      /**
-       * Constructor for the <code>Cache</code> object. This is
-       * used to instantiate a weak cache that is keyed by type.
-       * Weak keys ensure that the registrations can be collected
-       * when the keys are collected by the garbage collector.
-       */
-      public Cache() {
-         super();
-      }
-   }
-
 }
