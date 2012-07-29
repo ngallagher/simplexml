@@ -92,4 +92,9 @@
 -keep class * implements org.simpleframework.xml.core.Parameter {
    public *;
 }
-
+-keep interface org.simpleframework.xml.core.Extractor {
+   public *;
+}
+-keep class * implements org.simpleframework.xml.core.Extractor {
+   public *;
+}
