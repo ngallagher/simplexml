@@ -8,7 +8,6 @@ import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.ValidationTestCase;
-import org.simpleframework.xml.stream.NodeException;
 
 public class PullParserStackOverflowTest extends ValidationTestCase {
 
