@@ -18,9 +18,9 @@
 
 package org.simpleframework.xml.core;
 
-import java.util.concurrent.ConcurrentHashMap;
-
 import org.simpleframework.xml.stream.Format;
+import org.simpleframework.xml.util.Cache;
+import org.simpleframework.xml.util.ConcurrentCache;
 
 /**
  * The <code>ScannerFactory</code> is used to create scanner objects
@@ -35,14 +35,14 @@ import org.simpleframework.xml.stream.Format;
 class ScannerFactory {
    
    /**
+    * This is used to cache all schemas built to represent a class.
+    */
+   private final Cache<Scanner> cache;
+   
+   /**
     * This is the context that is used to create the scanner object.
     */
    private final Format format;
-   
-   /**
-    * This is used to cache all schemas built to represent a class.
-    */
-   private final Cache cache;
    
    /**
     * Constructor for the <code>ScannerFactory</code> object. This is
@@ -53,7 +53,7 @@ class ScannerFactory {
     * @param format this is the format used for the serialization
     */
    public ScannerFactory(Format format) {
-      this.cache = new Cache();
+      this.cache = new ConcurrentCache<Scanner>();
       this.format = format;
    }
    
@@ -71,32 +71,12 @@ class ScannerFactory {
     * @throws Exception if the class contains an illegal schema 
     */ 
    public Scanner getInstance(Class type) throws Exception {
-      Scanner schema = cache.get(type);
+      Scanner schema = cache.fetch(type);
       
       if(schema == null) {
          schema = new Scanner(type, format);             
-         cache.put(type, schema);
+         cache.cache(type, schema);
       }
       return schema;
    }
-   
-   /**
-    * The <code>Cache</code> object is used to cache schema objects. It 
-    * is used so the overhead of reflectively interrogating each class 
-    * is not required each time an instance of that class is serialized 
-    * or deserialized. This acts as a typedef for the generic type.
-    */
-   private static class Cache extends ConcurrentHashMap<Class, Scanner> {
-
-      /**
-       * Constructor for the <code>ScannerCache</code> object. This is
-       * a concurrent hash map that maps class types to the XML schema
-       * objects they represent. To enable reloading of classes by the
-       * system this will drop the scanner if the class in unloaded.
-       */
-      public Cache() {
-         super();
-      }
-   }
-
 }

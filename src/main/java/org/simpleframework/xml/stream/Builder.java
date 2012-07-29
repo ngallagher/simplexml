@@ -18,7 +18,8 @@
 
 package org.simpleframework.xml.stream;
 
-import java.util.concurrent.ConcurrentHashMap;
+import org.simpleframework.xml.util.Cache;
+import org.simpleframework.xml.util.ConcurrentCache;
 
 /**
  * The <code>Builder</code> class is used to represent an XML style
@@ -46,12 +47,12 @@ class Builder implements Style {
    /**
     * This is the cache for the constructed attribute values.
     */
-   private final Cache attributes;
+   private final Cache<String> attributes;
    
    /**
     * This is the cache for the constructed element values. 
     */
-   private final Cache elements;
+   private final Cache<String> elements;
    
    /**
     * This is the style object used to create the values used.
@@ -66,8 +67,8 @@ class Builder implements Style {
     * @param style this is the internal style object to be used
     */
    public Builder(Style style) {
-      this.attributes = new Cache();
-      this.elements = new Cache();
+      this.attributes = new ConcurrentCache<String>();
+      this.elements = new ConcurrentCache<String>();
       this.style = style;
    }
 
@@ -82,7 +83,7 @@ class Builder implements Style {
     * @return this returns the styled name of the XML attribute
     */
    public String getAttribute(String name) {
-      String value = attributes.get(name);
+      String value = attributes.fetch(name);
       
       if(value != null) {
          return value;
@@ -90,7 +91,7 @@ class Builder implements Style {
       value = style.getAttribute(name);
       
       if(value != null) {
-         attributes.put(name, value);
+         attributes.cache(name, value);
       }
       return value;
    }
@@ -106,7 +107,7 @@ class Builder implements Style {
     * @return this returns the styled name of the XML element
     */
    public String getElement(String name) {
-      String value = elements.get(name);
+      String value = elements.fetch(name);
       
       if(value != null) {
          return value;
@@ -114,7 +115,7 @@ class Builder implements Style {
       value = style.getElement(name);
       
       if(value != null) {
-         elements.put(name, value);
+         elements.cache(name, value);
       }
       return value;
    }
@@ -129,7 +130,7 @@ class Builder implements Style {
     * @param value the value that is to be used for that attribute
     */
    public void setAttribute(String name, String value) {
-      attributes.put(name, value);
+      attributes.cache(name, value);
    }
 
    /**
@@ -142,26 +143,6 @@ class Builder implements Style {
     * @param value the value that is to be used for that element
     */
    public void setElement(String name, String value) {
-      elements.put(name, value);   
-   }
-
-   /**
-    * The <code>Cache</code> object is used to cache the values 
-    * used to represent the styled attributes and elements. This 
-    * is a concurrent hash map so that styles can be used by more
-    * than one thread simultaneously.
-    * 
-    * @author Niall Gallagher
-    */
-   private static class Cache extends ConcurrentHashMap<String, String> {
-    
-      /**
-       * Constructor for the <code>Cache</code> object. This will
-       * create a concurrent cache that can translate between the
-       * XML attributes and elements and the styled values.
-       */
-      public Cache() {
-         super();
-      }
+      elements.cache(name, value);   
    }
 }
