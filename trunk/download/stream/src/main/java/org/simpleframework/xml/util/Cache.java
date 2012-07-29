@@ -28,6 +28,13 @@ package org.simpleframework.xml.util;
  */
 public interface Cache<T> {
    
+   /**
+    * This method is used to determine if the cache is empty. This
+    * is done by checking if there are any elements in the cache.
+    * If anything has been cached this will return false.
+    * 
+    * @return this returns true if the cache is empty
+    */
    public boolean isEmpty();
    
    /**
