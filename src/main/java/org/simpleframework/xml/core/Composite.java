@@ -18,8 +18,6 @@
 
 package org.simpleframework.xml.core;
 
-import java.util.Collection;
-
 import org.simpleframework.xml.Version;
 import org.simpleframework.xml.strategy.Type;
 import org.simpleframework.xml.stream.InputNode;
@@ -199,7 +197,8 @@ class Composite implements Converter {
    private Object read(InputNode node, Instance value, Class real) throws Exception {
       Schema schema = context.getSchema(real);
       Caller caller = schema.getCaller();
-      Object source = read(node, schema, value);
+      Builder builder = read(schema, value);
+      Object source = builder.read(node);
       
       caller.validate(source); 
       caller.commit(source); 
@@ -225,73 +224,13 @@ class Composite implements Converter {
     * 
     * @return this returns the fully deserialized object graph
     */
-   private Object read(InputNode node, Schema schema, Instance value) throws Exception {
+   private Builder read(Schema schema, Instance value) throws Exception {
       Instantiator creator = schema.getInstantiator();
       
       if(creator.isDefault()) {
-         return readDefault(node, schema, value);
-      } else {
-         read(node, null, schema);
-      }
-      return readConstructor(node, schema, value);
-   }
-   
-   /**
-    * This <code>readDefault</code> method performs deserialization of the 
-    * XM schema class type by traversing the contacts and instantiating 
-    * them using details from the provided XML element. Because this will
-    * convert a non-primitive value it delegates to other converters to
-    * perform deserialization of lists and primitives.
-    * <p>
-    * This takes the approach that the object is instantiated first and
-    * then the annotated fields and methods are deserialized from the XML
-    * elements and attributes. When all the details have be deserialized
-    * they are set on the internal contacts of the object.
-    * 
-    * @param node the XML element contact values are deserialized from
-    * @param schema this is the schema for the class to be deserialized
-    * @param value this is the value used for the deserialization
-    * 
-    * @return this returns the fully deserialized object graph
-    */
-   private Object readDefault(InputNode node, Schema schema, Instance value) throws Exception {
-      Object source = value.getInstance();
-      
-      if(value != null) {
-         value.setInstance(source);
-         read(node, source, schema);
-         criteria.commit(source);  
-      }
-      return source;
-   }
-   
-   /**
-    * This <code>readConstructor</code> method performs deserialization of 
-    * the XML schema class type by traversing the contacts and creating 
-    * them using details from the provided XML element. Because this will
-    * convert a non-primitive value it delegates to other converters to
-    * perform deserialization of lists and primitives.
-    * <p>
-    * This takes the approach of reading the XML elements and attributes
-    * before instantiating the object. Instantiation is performed using a
-    * declared constructor. The parameters for the constructor are taken
-    * from the deserialized objects.
-    * 
-    * @param node the XML element contact values are deserialized from
-    * @param schema this is the schema for the class to be deserialized
-    * @param value this is the value used for the deserialization
-    * 
-    * @return this returns the fully deserialized object graph
-    */
-   private Object readConstructor(InputNode node, Schema schema, Instance value) throws Exception {
-      Instantiator creator = schema.getInstantiator();
-      Object source = creator.getInstance(criteria);
-      
-      if(value != null) {
-         value.setInstance(source);
-         criteria.commit(source); 
-      }
-      return source;
+         return new Builder(this, criteria, schema, value);
+      } 
+      return new Injector(this, criteria, schema, value);
    }
 
    /**
@@ -1372,4 +1311,157 @@ class Composite implements Converter {
    private boolean isOverridden(OutputNode node, Object value, Type type) throws Exception{
       return factory.setOverride(type, value, node);
    }
+   
+   /**
+    * This takes the approach that the object is instantiated first and
+    * then the annotated fields and methods are deserialized from the 
+    * XML elements and attributes. When all the details have be read 
+    * they are set on the internal contacts of the object. This is used
+    * for places where we have a default no argument constructor.
+    *  
+    * @author Niall Gallagher
+    */
+   private static class Builder {
+      
+      /**
+       * This is the composite converter that the builder will use.
+       */
+      protected final Composite composite;
+      
+      /**
+       * This is the criteria object used to collect the values.
+       */
+      protected final Criteria criteria;
+      
+      /**
+       * This is the schema object that contains the XML definition.
+       */
+      protected final Schema schema;
+      
+      /**
+       * This is the object instance created by the strategy object.
+       */
+      protected final Instance value;
+      
+      /**
+       * Constructor for the <code>Builder</code> object. This creates
+       * a builder object capable of instantiating a object using a
+       * default no argument constructor. All fields are deserialized
+       * after the object has been instantiated.
+       * 
+       * @param composite this is the composite object used by this
+       * @param criteria this collects the objects being deserialized
+       * @param schema this is the class schema used by this
+       * @param value this is the instance created by the strategy
+       */
+      public Builder(Composite composite, Criteria criteria, Schema schema, Instance value) {
+         this.composite = composite;
+         this.criteria = criteria;
+         this.schema = schema;
+         this.value = value;
+      }
+      
+      /**
+       * This <code>read</code> method performs deserialization of the
+       * XML schema class type by traversing the contacts and using
+       * details from the provided XML element. Here an instance is
+       * created first then the contacts are traversed, this is done
+       * when a default constructor is the only option.
+       * 
+       * @param node the XML element that will be deserialized by this 
+       * 
+       * @return this returns the fully deserialized object graph
+       */
+      public Object read(InputNode node) throws Exception {
+         Object source = value.getInstance();
+         Section section = schema.getSection();
+         
+         value.setInstance(source);
+         composite.readVersion(node, source, schema);
+         composite.readText(node, source, section);
+         composite.readAttributes(node, source, section);
+         composite.readElements(node, source, section);
+         criteria.commit(source);  
+            
+         return source;
+      }
+   }
+   
+   /**
+    * This takes the approach that the objects are deserialized first
+    * then the instance is created using a constructor. In order for
+    * the best constructor to be found all the potential objects need
+    * to be deserialized first, then based on what has been deserialized
+    * a constructor is chosen and the parameters are injected in to it.
+    *  
+    * @author Niall Gallagher
+    */
+   private class Injector extends Builder {
+      
+      /**
+       * Constructor for the <code>Injector</code> object. This creates
+       * a builder object capable of instantiating a object using a
+       * constructor. It injects the constructor parameters in to the
+       * constructor by using the deserialized objects.
+       * 
+       * @param composite this is the composite object used by this
+       * @param criteria this collects the objects being deserialized
+       * @param schema this is the class schema used by this
+       * @param value this is the instance created by the strategy
+       */
+      private Injector(Composite composite, Criteria criteria, Schema schema, Instance value) {
+         super(composite, criteria, schema, value);
+      }
+
+      /**
+       * This <code>read</code> method performs deserialization of the
+       * XML schema class type by traversing the contacts and using
+       * details from the provided XML element. Here an instance is
+       * instantiated only after everything has been deserialized so
+       * that the instances can be injected in to a constructor.
+       * 
+       * @param node the XML element that will be deserialized by this 
+       * 
+       * @return this returns the fully deserialized object graph
+       */
+      public Object read(InputNode node) throws Exception {
+         Section section = schema.getSection();
+         
+         composite.readVersion(node, null, schema);
+         composite.readText(node, null, section);
+         composite.readAttributes(node, null, section);
+         composite.readElements(node, null, section);
+         
+         return readInject(node);
+      } 
+      
+
+      /**
+       * This <code>readInject</code> method performs deserialization
+       * of the XML schema class type by traversing the contacts and 
+       * creating them using details from the provided XML element. 
+       * Because this will convert a non-primitive value it delegates 
+       * to other converters to perform deserialization of lists and 
+       * primitives.
+       * <p>
+       * This takes the approach of reading the elements and attributes
+       * before instantiating the object. Instantiation is performed 
+       * using a declared constructor. The parameters are taken from 
+       * the deserialized objects.
+       * 
+       * @param node the XML element that will be deserialized by this 
+       * 
+       * @return this returns the fully deserialized object graph
+       */
+      private Object readInject(InputNode node) throws Exception {
+         Instantiator creator = schema.getInstantiator();
+         Object source = creator.getInstance(criteria);
+         
+         value.setInstance(source);
+         criteria.commit(source); 
+
+         return source;
+      }
+   }
 }
+
