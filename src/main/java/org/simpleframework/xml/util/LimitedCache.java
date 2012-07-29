@@ -1,5 +1,5 @@
 /*
- * ConcurrentCache.java July 2012
+ * LinkedCache.java July 2012
  *
  * Copyright (C) 2006, Niall Gallagher <niallg@users.sf.net>
  *
@@ -18,26 +18,46 @@
 
 package org.simpleframework.xml.util;
 
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.LinkedHashMap;
+import java.util.Map.Entry;
 
 /**
- * The <code>ConcurrentCache</code> interface is used to represent a 
+ * The <code>LimitedCache</code> interface is used to represent a 
  * cache that will store key value pairs. This implementation is
- * backed by a <code>ConcurrentHashMap</code> for best performance.
+ * backed by a <code>LinkedHashMap</code> so that only a specific
+ * number of elements can be stored in the cache at one time.
  * 
  * @author Niall Gallagher
- */
-public class ConcurrentCache<T> extends ConcurrentHashMap<Object, T> implements Cache<T> {
+ */   
+public class LimitedCache<T> extends LinkedHashMap<Object, T> implements Cache<T> {
    
    /**
-    * Constructor for the <code>ConcurrentCache</code> object. This
-    * is an implementation of a cache that uses the conventional
-    * concurrent hash map from the Java collections API.
+    * This represents the capacity of this cache instance.
     */
-   public ConcurrentCache() {
-      super();
+   private final int capacity;
+   
+   /**
+    * Constructor of the <code>LimitedCache</code> object. This is
+    * used to create a cache with a fixed size. The strategy for
+    * this cache is least recently used. Any insert or fetch from
+    * the cache is considered to be a use.
+    */
+   public LimitedCache() {
+      this(50000);
    }
    
+   /**
+    * Constructor of the <code>LimitedCache</code> object. This is
+    * used to create a cache with a fixed size. The strategy for
+    * this cache is least recently used. Any insert or fetch from
+    * the cache is considered to be a use.
+    *
+    * @param capacity this is the capacity of the cache object
+    */
+   public LimitedCache(int capacity) {
+      this.capacity = capacity;
+   }
+
    /**
     * This method is used to insert a key value mapping in to the
     * cache. The value can later be retrieved or removed from the
@@ -88,5 +108,18 @@ public class ConcurrentCache<T> extends ConcurrentHashMap<Object, T> implements 
     */
    public boolean contains(Object key) {
       return containsKey(key);
+   }
+   
+   /**
+    * This is used to remove the eldest entry from the cache.
+    * The eldest entry is removed from the cache if the size of
+    * the map grows larger than the maximum entries permitted.
+    *
+    * @param entry this is the eldest entry that can be removed
+    *
+    * @return this returns true if the entry should be removed
+    */ 
+   protected boolean removeEldestEntry(Entry<Object, T> entry) {
+      return size() > capacity;
    }
 }
