@@ -114,9 +114,6 @@ class AttributeLabel extends TemplateLabel {
       String ignore = getEmpty(context);
       Type type = getContact();
       
-      if(!context.isPrimitive(type)) {
-         throw new AttributeException("Cannot use %s to represent %s", label, type);
-      }
       return new Primitive(context, type, ignore);
    }
    

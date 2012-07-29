@@ -468,6 +468,9 @@ class TreeModel implements Model {
          if(label == null) {
             throw new AttributeException("Ordered attribute '%s' does not exist in %s", name, type);
          }
+         if(expression != null) {
+            expression.getAttribute(name); // prime cache
+         }
       }
    }
    
@@ -493,6 +496,9 @@ class TreeModel implements Model {
             if(!list.isEmpty()) {
                throw new ElementException("Element '%s' is also a path name in %s", name, type);
             }
+         }
+         if(expression != null) {
+            expression.getElement(name); // prime cache
          }
       }
    }

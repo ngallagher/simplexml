@@ -1,8 +1,8 @@
-package org.simpleframework.xml.strategy;
+package org.simpleframework.xml.util;
 
 import java.util.HashMap;
 
-import org.simpleframework.xml.strategy.WeakCache;
+import org.simpleframework.xml.util.WeakCache;
 
 import junit.framework.TestCase;
 
