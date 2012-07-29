@@ -20,9 +20,6 @@ package org.simpleframework.xml.core;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
@@ -223,13 +220,8 @@ class ExtractorFactory {
        * 
        * @return this returns each annotation within the union group
        */
-      public List<Element> getAnnotations() {
-         Element[] list = union.value();
-         
-         if(list.length > 0) {
-            return Arrays.asList(list);
-         }
-         return Collections.emptyList();
+      public Element[] getAnnotations() {
+         return union.value();
       }
       
       /**
@@ -314,13 +306,8 @@ class ExtractorFactory {
        * 
        * @return this returns each annotation within the union group
        */
-      public List<ElementList> getAnnotations() {
-         ElementList[] list = union.value();
-         
-         if(list.length > 0) {
-            return Arrays.asList(list);
-         }
-         return Collections.emptyList();
+      public ElementList[] getAnnotations() {
+         return union.value();
       }
       
       /**
@@ -400,13 +387,8 @@ class ExtractorFactory {
        * 
        * @return this returns each annotation within the union group
        */
-      public List<ElementMap> getAnnotations() {
-         ElementMap[] list = union.value();
-         
-         if(list.length > 0) {
-            return Arrays.asList(list);
-         }
-         return Collections.emptyList();
+      public ElementMap[] getAnnotations() {
+         return union.value();
       }
       
       /**

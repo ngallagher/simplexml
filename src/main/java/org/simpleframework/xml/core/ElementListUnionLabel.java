@@ -19,7 +19,6 @@
 package org.simpleframework.xml.core;
 
 import java.lang.annotation.Annotation;
-import java.util.Collection;
 
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.ElementListUnion;
@@ -52,7 +51,7 @@ class ElementListUnionLabel extends TemplateLabel {
    /**
     * This is the expression that is associated with this label.
     */
-   private Expression expression;
+   private Expression path;
    
    /**
     * This is the contact that this label is associated with.
@@ -276,10 +275,10 @@ class ElementListUnionLabel extends TemplateLabel {
     * @return the XPath expression identifying the location
     */
    public Expression getExpression() throws Exception {
-      if(expression == null) {
-         expression = label.getExpression();
+      if(path == null) {
+         path = label.getExpression();
       }
-      return expression;
+      return path;
    }
 
    /**

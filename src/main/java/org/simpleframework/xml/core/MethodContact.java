@@ -42,6 +42,11 @@ class MethodContact implements Contact {
     * This is the set method which is used to set the value.
     */ 
    private MethodPart set;
+   
+   /**
+    * This is the get method which is used to get the value.
+    */
+   private MethodPart get;
 
    /**
     * This is the dependent types as taken from the get method.
@@ -57,11 +62,6 @@ class MethodContact implements Contact {
     * This is the type associated with this point of contact.
     */ 
    private Class type; 
-   
-   /**
-    * This is the get method which is used to get the value.
-    */
-   private Method get;
    
    /**
     * This represents the name of the method for this contact.
@@ -93,10 +93,10 @@ class MethodContact implements Contact {
       this.label = get.getAnnotation();   
       this.items = get.getDependents();
       this.item = get.getDependent();
-      this.get = get.getMethod();
       this.type = get.getType();   
       this.name = get.getName();
       this.set = set;
+      this.get = get;
    }  
    
    /**
@@ -200,7 +200,8 @@ class MethodContact implements Contact {
     * @param value this is the value that is to be set on the object
     */    
    public void set(Object source, Object value) throws Exception{
-      Class type = get.getDeclaringClass();
+      Method method = get.getMethod();
+      Class type = method.getDeclaringClass();
       
       if(set == null) {
          throw new MethodException("Property '%s' is read only in %s", name, type);
@@ -219,7 +220,7 @@ class MethodContact implements Contact {
     * @return this is the value that is acquired from the object
     */ 
    public Object get(Object source) throws Exception {
-      return get.invoke(source);
+      return get.getMethod().invoke(source);
    }
    
    /**

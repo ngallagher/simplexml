@@ -34,7 +34,7 @@ import org.simpleframework.xml.util.WeakCache;
  * 
  * @see org.simpleframework.xml.util.WeakCache
  */
-class ReadState extends WeakCache<Object, ReadGraph>{
+class ReadState extends WeakCache<ReadGraph>{
    
    /** 
     * This is the contract that specifies the attributes to use.

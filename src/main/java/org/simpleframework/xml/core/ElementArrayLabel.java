@@ -55,6 +55,11 @@ class ElementArrayLabel extends TemplateLabel {
    private Introspector detail;
    
    /**
+    * This is the path that is used to represent this attribute.
+    */
+   private Expression path;
+   
+   /**
     * This is used to style the elements associated with this.
     */
    private Format format;
@@ -222,7 +227,10 @@ class ElementArrayLabel extends TemplateLabel {
     * @return the XPath expression identifying the location
     */
    public Expression getExpression() throws Exception {
-      return detail.getExpression();
+      if(path == null) {
+         path = detail.getExpression();
+      }
+      return path;
    }   
    
    /**

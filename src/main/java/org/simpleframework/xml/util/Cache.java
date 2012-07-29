@@ -26,7 +26,9 @@ package org.simpleframework.xml.util;
  * 
  * @author Niall Gallagher
  */
-public interface Cache<K, V> {
+public interface Cache<T> {
+   
+   public boolean isEmpty();
    
    /**
     * This method is used to insert a key value mapping in to the
@@ -37,7 +39,7 @@ public interface Cache<K, V> {
     * @param key this is the key to cache the provided value to
     * @param value this is the value that is to be cached
     */
-   public void cache(K key, V value);
+   public void cache(Object key, T value);
  
    /**
     * This is used to exclusively take the value mapped to the 
@@ -48,7 +50,7 @@ public interface Cache<K, V> {
     * 
     * @return this returns the value mapped to the specified key 
     */
-   public V take(K key);
+   public T take(Object key);
    
    /**
     * This method is used to get the value from the cache that is
@@ -59,7 +61,7 @@ public interface Cache<K, V> {
     * 
     * @return this returns the value mapped to the specified key 
     */
-   public V fetch(K key);   
+   public T fetch(Object key);   
    
    /**
     * This is used to determine whether the specified key exists
@@ -70,5 +72,5 @@ public interface Cache<K, V> {
     * 
     * @return true if the specified key is within the cache
     */
-   public boolean contains(K key);
+   public boolean contains(Object key);
 }

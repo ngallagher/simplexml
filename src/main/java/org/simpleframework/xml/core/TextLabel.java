@@ -43,6 +43,11 @@ class TextLabel extends TemplateLabel {
    private Introspector detail;
    
    /**
+    * This is the path that is used to represent this text.
+    */
+   private Expression path;
+   
+   /**
     * The contact that this annotation label represents.
     */
    private Contact contact;
@@ -149,7 +154,10 @@ class TextLabel extends TemplateLabel {
     * @return the XPath expression identifying the location
     */
    public Expression getExpression() throws Exception {
-      return detail.getExpression();
+      if(path == null) {
+         path = detail.getExpression();
+      }
+      return path;
    }
    
    /**

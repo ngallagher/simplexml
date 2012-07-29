@@ -77,16 +77,17 @@ class MethodPartFactory {
     * method the Java Bean conventions must be followed by the method.
     * 
     * @param method this is the method to acquire the part for
+    * @param list this is the list of annotations on the method
     * 
     * @return this is the method part object for the method
     * 
     * @throws Exception if Java Bean conventions are not followed
     */
-   public MethodPart getInstance(Method method) throws Exception {
+   public MethodPart getInstance(Method method, Annotation[] list) throws Exception {
       Annotation label = getAnnotation(method);
       
       if(label != null) {
-         return getInstance(method, label);
+         return getInstance(method, label, list);
       }
       return null;
    }
@@ -101,19 +102,20 @@ class MethodPartFactory {
     * 
     * @param method this is the method to acquire the part for
     * @param label this is the annotation associated with the method
+    * @param list this is the list of annotations on the method
     * 
     * @return this is the method part object for the method
     * 
     * @throws Exception if Java Bean conventions are not followed
     */
-   public MethodPart getInstance(Method method, Annotation label) throws Exception {
+   public MethodPart getInstance(Method method, Annotation label, Annotation[] list) throws Exception {
       MethodName name = getName(method, label);
       MethodType type = name.getType();
       
       if(type == MethodType.SET) {
-         return new SetPart(name, label);
+         return new SetPart(name, label, list);
       }
-      return new GetPart(name, label);
+      return new GetPart(name, label, list);
    }
    
    /**
