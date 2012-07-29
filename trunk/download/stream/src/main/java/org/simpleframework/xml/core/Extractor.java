@@ -19,7 +19,6 @@
 package org.simpleframework.xml.core;
 
 import java.lang.annotation.Annotation;
-import java.util.List;
 
 /**
  * The <code>Extractor</code> interface is used to represent an object
@@ -42,7 +41,7 @@ interface Extractor<T extends Annotation>{
     * 
     * @return this returns each annotation within the union group
     */
-   public List<T> getAnnotations() throws Exception;
+   public T[] getAnnotations() throws Exception;
    
    /**
     * Each annotation can provide a class which is used to determine

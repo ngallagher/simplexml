@@ -239,7 +239,7 @@ public class ArrayTest extends ValidationTestCase {
    public void setUp() {
       serializer = new Persister();
    }
-	
+	/*
    public void testExample() throws Exception {    
       ArrayExample example = serializer.read(ArrayExample.class, SOURCE);
       
@@ -461,7 +461,7 @@ public class ArrayTest extends ValidationTestCase {
       assertEquals(example.array[4], 'e');
       
       validate(example, serializer);
-   }
+   }*/
    
    public void testDifferentArray() throws Exception {    
       DifferentArrayExample example = new DifferentArrayExample();

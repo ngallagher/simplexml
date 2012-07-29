@@ -158,7 +158,7 @@ class FieldScanner extends ContactList {
       Annotation[] list = field.getDeclaredAnnotations();
       
       for(Annotation label : list) {
-         scan(field, label);                       
+         scan(field, label, list);                       
       }  
    }
    
@@ -172,14 +172,15 @@ class FieldScanner extends ContactList {
     * @param access this is the default access type for the class
     */
    private void scan(Class type, DefaultType access) throws Exception {
-      Field[] list = type.getDeclaredFields();
+      Field[] fields = type.getDeclaredFields();
       
       if(access == FIELD) {
-         for(Field field : list) {
+         for(Field field : fields) {
+            Annotation[] list = field.getDeclaredAnnotations();
             Class real = field.getType();
             
             if(!isStatic(field)) {
-               process(field, real);
+               process(field, real, list);
             }
          }   
       }
@@ -193,40 +194,41 @@ class FieldScanner extends ContactList {
     * 
     * @param field the field that the annotation comes from
     * @param label the annotation used to model the XML schema
+    * @param list this is the list of annotations on the field
     */
-   private void scan(Field field, Annotation label) {
+   private void scan(Field field, Annotation label, Annotation[] list) {
       if(label instanceof Attribute) {
-         process(field, label);
+         process(field, label, list);
       }
       if(label instanceof ElementUnion) {
-         process(field, label);
+         process(field, label, list);
       }
       if(label instanceof ElementListUnion) {
-         process(field, label);
+         process(field, label, list);
       }
       if(label instanceof ElementMapUnion) {
-         process(field, label);
+         process(field, label, list);
       }
       if(label instanceof ElementList) {
-         process(field, label);
+         process(field, label, list);
       }     
       if(label instanceof ElementArray) {
-         process(field, label);
+         process(field, label, list);
       }
       if(label instanceof ElementMap) {
-         process(field, label);
+         process(field, label, list);
       }
       if(label instanceof Element) {
-         process(field, label);
+         process(field, label, list);
       }       
-      if(label instanceof Transient) {
-         remove(field, label);
-      }
       if(label instanceof Version) {
-         process(field, label);
+         process(field, label, list);
       }
       if(label instanceof Text) {
-         process(field, label);
+         process(field, label, list);
+      }
+      if(label instanceof Transient) {
+         remove(field, label);
       }
    }
    
@@ -238,12 +240,13 @@ class FieldScanner extends ContactList {
     * 
     * @param field this is the field to be added as a contact
     * @param type this is the type to acquire the annotation
+    * @param list this is the list of annotations on the field
     */
-   private void process(Field field, Class type) throws Exception {
+   private void process(Field field, Class type, Annotation[] list) throws Exception {
       Annotation label = factory.getInstance(type);
       
       if(label != null) {
-         process(field, label);
+         process(field, label, list);
       }
    }
    
@@ -255,9 +258,10 @@ class FieldScanner extends ContactList {
     * 
     * @param field this is the field to be added as a contact
     * @param label this is the XML annotation used by the field
+    * @param list this is the list of annotations on the field
     */
-   private void process(Field field, Annotation label) {
-      Contact contact = new FieldContact(field, label);
+   private void process(Field field, Annotation label, Annotation[] list) {
+      Contact contact = new FieldContact(field, label, list);
       
       if(!field.isAccessible()) {
          field.setAccessible(true);              

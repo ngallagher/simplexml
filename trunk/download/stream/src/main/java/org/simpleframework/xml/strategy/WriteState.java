@@ -34,7 +34,7 @@ import org.simpleframework.xml.util.WeakCache;
  * 
  * @see org.simpleframework.xml.strategy.WriteGraph
  */
-class WriteState extends WeakCache<Object, WriteGraph> {
+class WriteState extends WeakCache<WriteGraph> {
 
    /**
     * This is the contract that specifies the attributes to use.

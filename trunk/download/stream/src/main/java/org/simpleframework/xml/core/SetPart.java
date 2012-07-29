@@ -21,6 +21,9 @@ package org.simpleframework.xml.core;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
+import org.simpleframework.xml.util.Cache;
+import org.simpleframework.xml.util.ConcurrentCache;
+
 /**
  * The <code>SetPart</code> object represents the setter method for
  * a Java Bean property. This composes the set part of the method
@@ -33,6 +36,16 @@ import java.lang.reflect.Method;
  * @see org.simpleframework.xml.core.MethodContact
  */
 class SetPart implements MethodPart {
+   
+   /**
+    * This cache contains the annotations present on the method.
+    */
+   private final Cache<Annotation> cache; 
+   
+   /**
+    * This is the list of annotations associated with the method.
+    */
+   private final Annotation[] list;
    
    /**
     * This is the annotation for the set method provided.
@@ -61,12 +74,15 @@ class SetPart implements MethodPart {
     * 
     * @param method the method that is used to set the value
     * @param label this describes how to deserialize the value
+    * @param list this is the list of annotations on the method
     */
-   public SetPart(MethodName method, Annotation label) {
+   public SetPart(MethodName method, Annotation label, Annotation[] list) {
+      this.cache = new ConcurrentCache<Annotation>();
       this.method = method.getMethod();
       this.name = method.getName();
       this.type = method.getType();
       this.label = label;
+      this.list = list;
    }
    
    /**
@@ -138,7 +154,13 @@ class SetPart implements MethodPart {
     * @return this provides the annotation associated with this
     */
    public <T extends Annotation> T getAnnotation(Class<T> type) {
-      return method.getAnnotation(type);
+      if(cache.isEmpty()) {
+         for(Annotation entry : list) {
+            Class key = entry.annotationType();
+            cache.cache(key, entry);
+         }
+      }
+      return (T)cache.fetch(type);
    }
   
    /**

@@ -18,9 +18,10 @@
 
 package org.simpleframework.xml.util;
 
-import java.util.WeakHashMap;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.WeakHashMap;
 
 /**
  * The <code>WeakCache</code> object is an implementation of a cache
@@ -31,7 +32,7 @@ import java.util.List;
  * 
  * @author Niall Gallagher
  */
-public class WeakCache<K, V> implements Cache<K, V> {
+public class WeakCache<T> implements Cache<T> {
    
    /**
     * This is used to store a list of segments for the cache.
@@ -60,6 +61,16 @@ public class WeakCache<K, V> implements Cache<K, V> {
       this.list = new SegmentList(size);
    }
    
+   public boolean isEmpty() {
+      for(Segment segment : list) {
+         if(!segment.isEmpty()) {
+            return false;
+         }
+      }
+      return true;
+   }
+   
+   
    /**
     * This method is used to insert a key value mapping in to the
     * cache. The value can later be retrieved or removed from the
@@ -69,7 +80,7 @@ public class WeakCache<K, V> implements Cache<K, V> {
     * @param key this is the key to cache the provided value to
     * @param value this is the value that is to be cached
     */
-   public void cache(K key, V value) {
+   public void cache(Object key, T value) {
       map(key).cache(key, value);
    }
    
@@ -82,7 +93,7 @@ public class WeakCache<K, V> implements Cache<K, V> {
     * 
     * @return this returns the value mapped to the specified key 
     */
-   public V take(K key) {
+   public T take(Object key) {
       return map(key).take(key);
    }
    
@@ -95,7 +106,7 @@ public class WeakCache<K, V> implements Cache<K, V> {
     * 
     * @return this returns the value mapped to the specified key 
     */
-   public V fetch(K key) {
+   public T fetch(Object key) {
       return map(key).fetch(key);
    }
    
@@ -108,7 +119,7 @@ public class WeakCache<K, V> implements Cache<K, V> {
     * 
     * @return true if the specified key is within the cache
     */
-   public boolean contains(K key) {
+   public boolean contains(Object key) {
       return map(key).contains(key);
    }
    
@@ -121,7 +132,7 @@ public class WeakCache<K, V> implements Cache<K, V> {
     * 
     * @return this returns the segment used to get acquire value
     */
-   private Segment map(K key) {
+   private Segment map(Object key) {
       return list.get(key);
    }   
    
@@ -134,7 +145,7 @@ public class WeakCache<K, V> implements Cache<K, V> {
     * 
     * @author Niall Gallagher
     */
-   private class SegmentList {
+   private class SegmentList implements Iterable<Segment> {
       
       /**
        * The list of segment objects maintained by this object.
@@ -159,6 +170,10 @@ public class WeakCache<K, V> implements Cache<K, V> {
          this.create(size);         
       }
       
+      public Iterator<Segment> iterator() {
+         return list.iterator();
+      }
+      
       /**
        * This is used to acquire the segment using the given key.
        * The keys hash is used to determine the index within the 
@@ -169,7 +184,7 @@ public class WeakCache<K, V> implements Cache<K, V> {
        * 
        * @return the segment that is stored at the resolved hash 
        */
-      public Segment get(K key) {
+      public Segment get(Object key) {
          int segment = segment(key);
          
          if(segment < size) {
@@ -202,7 +217,7 @@ public class WeakCache<K, V> implements Cache<K, V> {
        * 
        * @return the index of the segment within the list 
        */
-      private int segment(K key) {
+      private int segment(Object key) {
          return Math.abs(key.hashCode() % size);
       }
    }
@@ -215,7 +230,7 @@ public class WeakCache<K, V> implements Cache<K, V> {
     * 
     * @author Niall Gallagher
     */
-   private class Segment extends WeakHashMap<K, V> {      
+   private class Segment extends WeakHashMap<Object, T> {      
       
       /**
        * This method is used to insert a key value mapping in to the
@@ -226,7 +241,7 @@ public class WeakCache<K, V> implements Cache<K, V> {
        * @param key this is the key to cache the provided value to
        * @param value this is the value that is to be cached
        */
-      public synchronized void cache(K key, V value) {
+      public synchronized void cache(Object key, T value) {
          put(key, value);
       }
       
@@ -239,7 +254,7 @@ public class WeakCache<K, V> implements Cache<K, V> {
        * 
        * @return this returns the value mapped to the specified key 
        */
-      public synchronized V fetch(K key) {
+      public synchronized T fetch(Object key) {
          return get(key);
       }
       
@@ -252,7 +267,7 @@ public class WeakCache<K, V> implements Cache<K, V> {
        * 
        * @return this returns the value mapped to the specified key 
        */
-      public synchronized V take(K key) {
+      public synchronized T take(Object key) {
          return remove(key);
       }
  
@@ -265,7 +280,7 @@ public class WeakCache<K, V> implements Cache<K, V> {
        * 
        * @return true if the specified key is within the cache
        */
-      public synchronized boolean contains(K key) {
+      public synchronized boolean contains(Object key) {
          return containsKey(key);
       }
    }

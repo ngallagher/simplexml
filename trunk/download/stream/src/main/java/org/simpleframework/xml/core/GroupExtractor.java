@@ -21,8 +21,6 @@ package org.simpleframework.xml.core;
 import java.lang.annotation.Annotation;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Set;
 
 import org.simpleframework.xml.stream.Format;
 
@@ -177,7 +175,7 @@ class GroupExtractor implements Group {
     */
    private void extract() throws Exception {
       Extractor extractor = factory.getInstance();
-    
+
       if(extractor != null) {
          extract(extractor);
       }
@@ -192,7 +190,7 @@ class GroupExtractor implements Group {
     * @param extractor this is the extractor to get labels for
     */
    private void extract(Extractor extractor) throws Exception {
-      List<Annotation> list = extractor.getAnnotations();
+      Annotation[] list = extractor.getAnnotations();
       
       for(Annotation label : list) {
          extract(extractor, label);
@@ -214,8 +212,7 @@ class GroupExtractor implements Group {
       String name = label.getName();
       
       if(registry != null) {
-         registry.register(name, label);
-         registry.register(type, label);
+         registry.register(type, name, label);
       }
    }
    
@@ -299,25 +296,12 @@ class GroupExtractor implements Group {
        * @param name this is the name of the label to be registered
        * @param label this is the label that is to be registered
        */
-      public void register(String name, Label label) throws Exception {
+      public void register(Class type, String name, Label label) throws Exception {
          Label cache = new CacheLabel(label);
          
          if(!elements.containsKey(name)) {
             elements.put(name, cache);
          }
-      }
-      
-      /**
-       * This is used to register a label based on the type. This is
-       * done to ensure the label instance can be dynamically found
-       * during the deserialization process by providing the type.
-       * 
-       * @param type this is the type of the label to be registered
-       * @param label this is the label that is to be registered
-       */
-      public void register(Class type, Label label) throws Exception {
-         Label cache = new CacheLabel(label);
-         
          if(!containsKey(type)) {
             put(type, cache);
          }

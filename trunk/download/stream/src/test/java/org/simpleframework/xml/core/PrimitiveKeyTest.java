@@ -114,15 +114,15 @@ public class PrimitiveKeyTest extends TestCase {
       }
       
       public Contact getString() throws Exception {
-         return new FieldContact(PrimitiveType.class.getDeclaredField("string"), map);      
+         return new FieldContact(PrimitiveType.class.getDeclaredField("string"), map,new Annotation[0]);      
       }
       
       public Contact getNumber() throws Exception {
-         return new FieldContact(PrimitiveType.class.getDeclaredField("number"), map);      
+         return new FieldContact(PrimitiveType.class.getDeclaredField("number"), map,new Annotation[0]);      
       }
       
       public Contact getOctet() throws Exception {
-         return new FieldContact(PrimitiveType.class.getDeclaredField("octet"), map);      
+         return new FieldContact(PrimitiveType.class.getDeclaredField("octet"), map,new Annotation[0]);      
       }
    }
    

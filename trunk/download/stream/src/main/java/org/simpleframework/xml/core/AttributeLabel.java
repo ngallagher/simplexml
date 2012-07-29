@@ -44,6 +44,11 @@ class AttributeLabel extends TemplateLabel {
     * This contains the details of the annotated contact object.
     */
    private Introspector detail;
+   
+   /**
+    * This is the path that is used to represent this attribute.
+    */
+   private Expression path;
 
    /**
     * Represents the annotation used to label the field.
@@ -174,7 +179,10 @@ class AttributeLabel extends TemplateLabel {
     * @return the XPath expression identifying the location
     */
    public Expression getExpression() throws Exception {
-      return detail.getExpression();
+      if(path == null) {
+         path = detail.getExpression();
+      }
+      return path;
    }
    
    /**

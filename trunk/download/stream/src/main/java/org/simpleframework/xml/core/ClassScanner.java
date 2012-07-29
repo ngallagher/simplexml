@@ -310,7 +310,6 @@ class ClassScanner  {
       
       while(type != null) {
          global(type);
-         scope(type);
          scan(real, type);
          type = type.getSuperclass();
       }      
@@ -327,17 +326,24 @@ class ClassScanner  {
     * @param type this is the type to extract the annotations from
     */
    private void global(Class type) throws Exception {
-      if(namespace == null) {
-         namespace(type);
-      }
-      if(root == null) {              
-         root(type);
-      }  
-      if(order == null) {
-         order(type);
-      }
-      if(access == null) {
-         access(type);
+      Annotation[] list = type.getDeclaredAnnotations();
+      
+      for(Annotation label : list) {
+         if(label instanceof Namespace) {
+            namespace(label);
+         }
+         if(label instanceof NamespaceList) {
+            scope(label);
+         }
+         if(label instanceof Root) {
+            root(label);
+         }
+         if(label instanceof Order) {
+            order(label);
+         }
+         if(label instanceof Default) {
+            access(label);
+         }
       }
    }
 
@@ -361,44 +367,41 @@ class ClassScanner  {
    }
 
    /**
-    * This is used to acquire the optional <code>Root</code> from the
-    * specified class. The root annotation provides information as
-    * to how the object is to be parsed as well as other information
-    * such as the name of the object if it is to be serialized.
+    * This is used to set the optional <code>Root</code> annotation for
+    * the class. The root can only be set once, so if a supertype also
+    * has a root annotation define it must be ignored. 
     *
-    * @param type this is the type of the class to be inspected
+    * @param label this is the label used to define the root
     */    
-   private void root(Class<?> type) {
-      if(type.isAnnotationPresent(Root.class)) {
-         root = type.getAnnotation(Root.class);
+   private void root(Annotation label) {
+      if(root == null) {
+         root = (Root)label;
       }
    }
    
    /**
-    * This is used to acquire the optional order annotation to provide
-    * order to the elements and attributes for the generated XML. This
-    * acts as an override to the order provided by the declaration of
-    * the types within the object.  
+    * This is used to set the optional <code>Order</code> annotation for
+    * the class. The order can only be set once, so if a supertype also
+    * has a order annotation define it must be ignored. 
     * 
-    * @param type this is the type to be scanned for the order
+    * @param label this is the label used to define the order
     */
-   private void order(Class<?> type) {
-      if(type.isAnnotationPresent(Order.class)) {
-         order = type.getAnnotation(Order.class);
+   private void order(Annotation label) {
+      if(order == null) {
+         order = (Order)label;
       }
    }
    
    /**
-    * This is used to extract the <code>Default</code> annotation from
-    * the class. If this annotation is present it provides the access
-    * type that should be used to determine default fields and methods.
-    * If it is not present no default annotations will be applied.
+    * This is used to set the optional <code>Default</code> annotation for
+    * the class. The default can only be set once, so if a supertype also
+    * has a default annotation define it must be ignored. 
     * 
-    * @param type this is the type to extract the annotation from
+    * @param label this is the label used to define the defaults
     */
-   private void access(Class<?> type) {
-      if(type.isAnnotationPresent(Default.class)) {
-         access = type.getAnnotation(Default.class);
+   private void access(Annotation label) {
+      if(access == null) {
+         access = (Default)label;
       }
    }
    
@@ -408,11 +411,11 @@ class ClassScanner  {
     * to populate the internal namespace decorator. This can then be
     * used to decorate any output node that requires it.
     * 
-    * @param type this is the XML schema class to scan for namespaces
+    * @param label this XML annotation to scan for namespaces
     */
-   private void namespace(Class<?> type) {
-      if(type.isAnnotationPresent(Namespace.class)) {
-         namespace = type.getAnnotation(Namespace.class);
+   private void namespace(Annotation label) {
+      if(label != null) {
+         namespace = (Namespace)label;
          
          if(namespace != null) {
             decorator.add(namespace);
@@ -426,11 +429,11 @@ class ClassScanner  {
     * used to populate the internal namespace decorator. This can then 
     * be used to decorate any output node that requires it.
     * 
-    * @param type this is the XML class to scan for namespace lists
+    * @param label the XML annotation to scan for namespace lists
     */
-   private void scope(Class<?> type) {
-      if(type.isAnnotationPresent(NamespaceList.class)) {
-         NamespaceList scope = type.getAnnotation(NamespaceList.class);
+   private void scope(Annotation label) {
+      if(label != null) {
+         NamespaceList scope = (NamespaceList)label;
          Namespace[] list = scope.value();
          
          for(Namespace name : list) {
@@ -447,7 +450,7 @@ class ClassScanner  {
     *
     * @param type this is the object type that is to be scanned
     */  
-   private void process(Class type) throws Exception {
+   private void process(Class type) {
       if(namespace != null) {
          decorator.set(namespace);
       }
@@ -462,24 +465,28 @@ class ClassScanner  {
     * @param method this is the method to scan for callback methods
     */
    private void scan(Method method) {
-      if(commit == null) {           
-         commit(method);
+      Annotation[] list = method.getDeclaredAnnotations();
+      
+      for(Annotation label : list) {
+         if(label instanceof Commit) {           
+            commit(method);
+         }
+         if(label instanceof Validate) {      
+            validate(method);
+         }
+         if(label instanceof Persist) {      
+            persist(method);
+         }
+         if(label instanceof Complete) {      
+            complete(method);
+         }    
+         if(label instanceof Replace) {
+            replace(method);              
+         }   
+         if(label instanceof Resolve) {
+            resolve(method);              
+         }  
       }
-      if(validate == null) {      
-         validate(method);
-      }
-      if(persist == null) {      
-         persist(method);
-      }
-      if(complete == null) {      
-         complete(method);
-      }    
-      if(replace == null) {
-         replace(method);              
-      }   
-      if(resolve == null) {
-         resolve(method);              
-      }  
    }
    
    /**
@@ -491,11 +498,9 @@ class ClassScanner  {
     * @param method this is the method checked for the annotation
     */ 
    private void replace(Method method) {
-      Annotation mark = method.getAnnotation(Replace.class);
-
-      if(mark != null) {
-         replace = getFunction(method);                    
-      }      
+      if(replace == null) {
+         replace = getFunction(method);
+      }
    }
    
    /**
@@ -507,11 +512,9 @@ class ClassScanner  {
     * @param method this is the method checked for the annotation
     */ 
    private void resolve(Method method) {
-      Annotation mark = method.getAnnotation(Resolve.class);
-
-      if(mark != null) {
-         resolve = getFunction(method);                    
-      }      
+      if(resolve == null) {
+         resolve = getFunction(method);
+      }
    }
    
    /**
@@ -522,12 +525,10 @@ class ClassScanner  {
     *
     * @param method this is the method checked for the annotation
     */ 
-   private void commit(Method method) {
-      Annotation mark = method.getAnnotation(Commit.class);
-
-      if(mark != null) {
-         commit = getFunction(method);                    
-      }    
+   private void commit(Method method) { 
+      if(commit == null) {
+         commit = getFunction(method);
+      }
    }
    
    /**
@@ -539,11 +540,9 @@ class ClassScanner  {
     * @param method this is the method checked for the annotation
     */ 
    private void validate(Method method) {
-      Annotation mark = method.getAnnotation(Validate.class);
-
-      if(mark != null) {
-         validate = getFunction(method);                    
-      }         
+      if(validate == null) {
+         validate = getFunction(method);  
+      }
    }
    
    /**
@@ -555,11 +554,9 @@ class ClassScanner  {
     * @param method this is the method checked for the annotation
     */    
    private void persist(Method method) {
-      Annotation mark = method.getAnnotation(Persist.class);
-
-      if(mark != null) {
-         persist = getFunction(method);                    
-      }      
+      if(persist == null) {
+         persist = getFunction(method);  
+      }
    }
 
    /**
@@ -571,11 +568,9 @@ class ClassScanner  {
     * @param method this is the method checked for the annotation
     */ 
    private void complete(Method method) {
-      Annotation mark = method.getAnnotation(Complete.class);
-
-      if(mark != null) {
-         complete = getFunction(method);                    
-      }      
+      if(complete == null) {
+         complete = getFunction(method);    
+      }
    } 
    
    /**

@@ -131,8 +131,9 @@ public class CompositeListUnionTest extends TestCase {
    private static Group getGroup() throws Exception {
       Field field = CompositeListUnionTest.class.getDeclaredField("EXAMPLE");
       Annotation annotation = field.getAnnotation(ElementListUnion.class);
+      Annotation path = field.getAnnotation(Path.class);
       return new GroupExtractor(
-            new FieldContact(field, annotation),
+            new FieldContact(field, annotation, new Annotation[]{annotation, path}),
             annotation,
             new Format());
    }

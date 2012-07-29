@@ -125,6 +125,9 @@ class CompositeListUnion implements Repeater {
       String name = node.getName();
       String element = path.getElement(name);
       Label label = elements.get(element);
+      if(label == null) {
+         System.err.println("X");
+      }
       Converter converter = label.getConverter(context);
       
       return converter.read(node, value);

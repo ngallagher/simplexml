@@ -54,6 +54,11 @@ class ElementListLabel extends TemplateLabel {
    private Introspector detail;
    
    /**
+    * This is the path that is used to represent this elements list.
+    */
+   private Expression path;
+   
+   /**
     * This is the format used to style the elements in the list.
     */  
    private Format format;
@@ -268,7 +273,10 @@ class ElementListLabel extends TemplateLabel {
     * @return the XPath expression identifying the location
     */
    public Expression getExpression() throws Exception {
-      return detail.getExpression();
+      if(path == null) {
+         path = detail.getExpression();
+      }
+      return path;
    }
    
    /**

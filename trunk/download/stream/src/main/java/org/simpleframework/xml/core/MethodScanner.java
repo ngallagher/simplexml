@@ -198,7 +198,7 @@ class MethodScanner extends ContactList {
       Annotation[] list = method.getDeclaredAnnotations();
       
       for(Annotation label : list) {
-         scan(method, label);                       
+         scan(method, label, list);                       
       }  
    }
    
@@ -212,14 +212,15 @@ class MethodScanner extends ContactList {
     * @param access this is the default access type for the class
     */
    private void scan(Class type, DefaultType access) throws Exception {
-      Method[] list = type.getDeclaredMethods();
+      Method[] methods = type.getDeclaredMethods();
 
       if(access == PROPERTY) {
-         for(Method method : list) {
+         for(Method method : methods) {
+            Annotation[] list = method.getDeclaredAnnotations();
             Class value = factory.getType(method);
             
             if(value != null) {
-               process(method);
+               process(method, list);
             }
          }  
       }
@@ -233,42 +234,43 @@ class MethodScanner extends ContactList {
     * 
     * @param method the method that the annotation comes from
     * @param label the annotation used to model the XML schema
+    * @param list this is the list of annotations on the method
     * 
     * @throws Exception if there is more than one text annotation
     */ 
-   private void scan(Method method, Annotation label) throws Exception {
+   private void scan(Method method, Annotation label, Annotation[] list) throws Exception {
       if(label instanceof Attribute) {
-         process(method, label);
+         process(method, label, list);
       }
       if(label instanceof ElementUnion) {
-         process(method, label);
+         process(method, label, list);
       }
       if(label instanceof ElementListUnion) {
-         process(method, label);
+         process(method, label, list);
       }
       if(label instanceof ElementMapUnion) {
-         process(method, label);
+         process(method, label, list);
       }
       if(label instanceof ElementList) {
-         process(method, label);
+         process(method, label, list);
       }
       if(label instanceof ElementArray) {
-         process(method, label);
+         process(method, label, list);
       }
       if(label instanceof ElementMap) {
-         process(method, label);
+         process(method, label, list);
       }
       if(label instanceof Element) {
-         process(method, label);
+         process(method, label, list);
       }    
-      if(label instanceof Transient) {
-         remove(method, label);
-      }
       if(label instanceof Version) {
-         process(method, label);
+         process(method, label, list);
       }
       if(label instanceof Text) {
-         process(method, label);
+         process(method, label, list);
+      }
+      if(label instanceof Transient) {
+         remove(method, label, list);
       }
    }
   
@@ -282,9 +284,10 @@ class MethodScanner extends ContactList {
     * 
     * @param method this is the method that is to be classified
     * @param label this is the annotation applied to the method
+    * @param list this is the list of annotations on the method
     */  
-   private void process(Method method, Annotation label) throws Exception {
-      MethodPart part = factory.getInstance(method, label);
+   private void process(Method method, Annotation label, Annotation[] list) throws Exception {
+      MethodPart part = factory.getInstance(method, label, list);
       MethodType type = part.getMethodType();     
       
       if(type == MethodType.GET) {
@@ -307,9 +310,10 @@ class MethodScanner extends ContactList {
     * write map so that it can be paired after scanning is complete.
     * 
     * @param method this is the method that is to be classified
+    * @param list this is the list of annotations on the method
     */  
-   private void process(Method method) throws Exception {
-      MethodPart part = factory.getInstance(method);
+   private void process(Method method, Annotation[] list) throws Exception {
+      MethodPart part = factory.getInstance(method, list);
       MethodType type = part.getMethodType();     
       
       if(type == MethodType.GET) {
@@ -349,9 +353,10 @@ class MethodScanner extends ContactList {
     * 
     * @param method this is the method that is to be removed
     * @param label this is the label associated with the method
+    * @param list this is the list of annotations on the method
     */
-   private void remove(Method method, Annotation label) throws Exception {
-      MethodPart part = factory.getInstance(method, label);
+   private void remove(Method method, Annotation label, Annotation[] list) throws Exception {
+      MethodPart part = factory.getInstance(method, label, list);
       MethodType type = part.getMethodType();     
       
       if(type == MethodType.GET) {

@@ -106,7 +106,7 @@ public class EntryTest extends TestCase {
       Field field = getField(type, name);
       Annotation label = field.getAnnotation(ElementMap.class);     
       
-      return new FieldContact(field, label);
+      return new FieldContact(field, label,new Annotation[]{label});
    }
    
    public Annotation getAnnotation(Field field) {

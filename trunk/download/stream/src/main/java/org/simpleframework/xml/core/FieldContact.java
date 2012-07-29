@@ -22,6 +22,9 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
+import org.simpleframework.xml.util.Cache;
+import org.simpleframework.xml.util.ConcurrentCache;
+
 /**
  * The <code>FieldContact</code> object is used to act as a contact
  * for a field within an object. This allows a value to be set on an
@@ -35,24 +38,34 @@ import java.lang.reflect.Modifier;
 class FieldContact implements Contact {
    
    /**
+    * This cache contains the annotations present on the field.
+    */
+   private final Cache<Annotation> cache; 
+   
+   /**
+    * This is the list of annotations associated with the field.
+    */
+   private final Annotation[] list;
+   
+   /**
     * This is the label that marks the field within the object.
     */           
-   private Annotation label;
+   private final Annotation label;
    
    /**
     * This represents the field within the schema class object.
     */ 
-   private Field field;
+   private final Field field;
    
    /**
     * This is the name for this contact as taken from the field.
     */
-   private String name;
+   private final String name;
    
    /**
     * This is the modifiers for the field that this represents.
     */
-   private int modifier;
+   private final int modifier;
    
    /**
     * Constructor for the <code>FieldContact</code> object. This is 
@@ -61,11 +74,15 @@ class FieldContact implements Contact {
     *
     * @param field this is the field that is the point of contact
     * @param label this is the annotation that is used by the field
+    * @param list this is the list of annotations on the field
     */ 
-   public FieldContact(Field field, Annotation label) {
+   public FieldContact(Field field, Annotation label, Annotation[] list) {
+      this.cache = new ConcurrentCache<Annotation>();
       this.modifier = field.getModifiers();
+      this.name = field.getName();
       this.label = label;
       this.field = field;
+      this.list = list;
    } 
    
    /**
@@ -147,28 +164,6 @@ class FieldContact implements Contact {
     *  @return this returns the name of the field represented
     */
    public String getName() {
-      if(name == null) {
-         name = getName(field);
-      }
-      return name;
-   }
-   
-   /**
-    * This is used to acquire the name of the field such that it is
-    * an internalized string. Internalization of the contact name
-    * ensures that comparisons can be made to annotation names with
-    * a simple reference comparison rather than a string comparison.
-    * 
-    * @param field the field to acquire the internalized name from
-    * 
-    * @return this returns the name of the string, internalized
-    */
-   private String getName(Field field) {
-      String name = field.getName();
-      
-      if(name != null) {
-         name = name.intern();
-      }
       return name;
    }
 
@@ -196,7 +191,26 @@ class FieldContact implements Contact {
       if(type == label.annotationType()) {
          return (T) label;
       }
-      return field.getAnnotation(type);
+      return getCache(type);
+   }
+   
+   /**
+    * This is the annotation associated with the point of contact.
+    * This will be an XML annotation that describes how the contact
+    * should be serialized and deserialized from the object.
+    * 
+    * @param type this is the type of the annotation to acquire
+    *
+    * @return this provides the annotation associated with this
+    */
+   private <T extends Annotation> T getCache(Class<T> type) {
+      if(cache.isEmpty()) {
+         for(Annotation entry : list) {
+            Class key = entry.annotationType();
+            cache.cache(key, entry);
+         }
+      }
+      return (T)cache.fetch(type);
    }
 
    /**

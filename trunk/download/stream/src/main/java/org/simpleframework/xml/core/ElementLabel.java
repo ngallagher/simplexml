@@ -49,6 +49,11 @@ class ElementLabel extends TemplateLabel {
    private Introspector detail;
    
    /**
+    * This is the path that is used to represent this element.
+    */
+   private Expression path;
+   
+   /**
     * References the annotation that was used by the field.
     */
    private Element label;
@@ -199,7 +204,10 @@ class ElementLabel extends TemplateLabel {
     * @return the XPath expression identifying the location
     */
    public Expression getExpression() throws Exception {
-      return detail.getExpression();
+      if(path == null) {
+         path = detail.getExpression();
+      }
+      return path;
    }
    
    /**
