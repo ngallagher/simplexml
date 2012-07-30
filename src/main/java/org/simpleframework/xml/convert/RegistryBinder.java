@@ -18,6 +18,9 @@
 
 package org.simpleframework.xml.convert;
 
+import org.simpleframework.xml.util.Cache;
+import org.simpleframework.xml.util.ConcurrentCache;
+
 /**
  * The <code>RegistryBinder</code> object is used acquire converters
  * using a binding between a type and its converter. All converters
@@ -39,7 +42,7 @@ class RegistryBinder {
    /**
     * This is used to cache bindings between types and converters.
     */
-   private final ClassCache cache;
+   private final Cache<Class> cache;
    
    /**
     * Constructor for the <code>RegistryBinder</code> object. This 
@@ -48,8 +51,8 @@ class RegistryBinder {
     * All converters are instantiated once and cached for reuse.
     */
    public RegistryBinder() {
+      this.cache = new ConcurrentCache<Class>();
       this.factory = new ConverterFactory();
-      this.cache = new ClassCache();
    }
    
    /**
@@ -63,7 +66,7 @@ class RegistryBinder {
     * @return this returns the converter instance for the type
     */
    public Converter lookup(Class type) throws Exception {
-      Class result = cache.get(type);
+      Class result = cache.fetch(type);
       
       if(result != null) {
          return create(result);
@@ -95,6 +98,6 @@ class RegistryBinder {
     * @param converter this is the converter class to be used
     */
    public void bind(Class type, Class converter) throws Exception {
-      cache.put(type, converter);
+      cache.cache(type, converter);
    }
 }

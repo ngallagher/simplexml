@@ -19,7 +19,8 @@
 package org.simpleframework.xml.convert;
 
 import java.lang.annotation.Annotation;
-import java.util.concurrent.ConcurrentHashMap;
+
+import org.simpleframework.xml.util.ConcurrentCache;
 
 /**
  * The <code>ScannerBuilder</code> is used to build and cache each
@@ -32,7 +33,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * 
  * @see org.simpleframework.xml.convert.ConverterScanner
  */
-class ScannerBuilder extends ConcurrentHashMap<Class, Scanner> {
+class ScannerBuilder extends ConcurrentCache<Scanner> {
 
    /**
     * Constructor for the <code>ScannerBuilder</code> object. This
@@ -72,7 +73,7 @@ class ScannerBuilder extends ConcurrentHashMap<Class, Scanner> {
     * 
     * @author Niall Gallagher
     */
-   private static class Entry extends ConcurrentHashMap<Class, Annotation> implements Scanner {
+   private static class Entry extends ConcurrentCache<Annotation> implements Scanner {
       
       /**
        * This class is the subject for all annotation scans performed.

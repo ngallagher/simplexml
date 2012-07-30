@@ -19,7 +19,9 @@
 package org.simpleframework.xml.transform;
 
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+
+import org.simpleframework.xml.util.Cache;
+import org.simpleframework.xml.util.ConcurrentCache;
 
 /**
  * The <code>Transformer</code> object is used to convert strings to
@@ -58,17 +60,17 @@ public class Transformer {
    /**
     * This is used to cache all transforms matched to a given type.
     */
-   private final TransformCache cache;
+   private final Cache<Transform> cache;
+   
+   /**
+    * This is used to cache the types that to not have a transform.
+    */ 
+   private final Cache<Object> error;
 
    /**
     * This is used to perform the matching of types to transforms.
     */
    private final Matcher matcher;
-   
-   /**
-    * This is used to cache the types that to not have a transform.
-    */ 
-   private final Map error;
    
    /**
     * Constructor for the <code>Transformer</code> object. This is
@@ -79,9 +81,9 @@ public class Transformer {
     * @param matcher this is used to match types to transforms
     */
    public Transformer(Matcher matcher) {  
+      this.cache = new ConcurrentCache<Transform>();
+      this.error = new ConcurrentCache<Object>();
       this.matcher = new DefaultMatcher(matcher);
-      this.error = new ConcurrentHashMap();
-      this.cache = new TransformCache();
    }
    
    /**
@@ -150,8 +152,8 @@ public class Transformer {
     * @return this will return a transform for the specified type
     */ 
    private Transform lookup(Class type) throws Exception {
-      if(!error.containsKey(type)) {
-         Transform transform = cache.get(type);            
+      if(!error.contains(type)) {
+         Transform transform = cache.fetch(type);            
    
          if(transform != null) {
             return transform;
@@ -175,9 +177,9 @@ public class Transformer {
       Transform transform = matcher.match(type);
       
       if(transform != null) {
-         cache.put(type, transform);
+         cache.cache(type, transform);
       } else {
-         error.put(type, this);               
+         error.cache(type, this);               
       }
       return transform;
    }

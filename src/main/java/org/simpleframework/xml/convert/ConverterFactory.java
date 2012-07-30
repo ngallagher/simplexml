@@ -20,6 +20,9 @@ package org.simpleframework.xml.convert;
 
 import java.lang.reflect.Constructor;
 
+import org.simpleframework.xml.util.Cache;
+import org.simpleframework.xml.util.ConcurrentCache;
+
 /**
  * The <code>ConverterFactory</code> is used to instantiate objects
  * based on a provided type or annotation. This provides a single
@@ -37,7 +40,7 @@ class ConverterFactory {
    /**
     * This is the cache that is used to cache converter instances.
     */
-   private final ConverterCache cache; 
+   private final Cache<Converter> cache; 
    
    /**
     * Constructor for the <code>ConverterFactory</code> object. 
@@ -46,7 +49,7 @@ class ConverterFactory {
     * ensures there is no overhead with instantiations.
     */
    public ConverterFactory() {
-      this.cache = new ConverterCache();
+      this.cache = new ConcurrentCache<Converter>();
    }
    
    /**
@@ -59,7 +62,7 @@ class ConverterFactory {
     * @return this returns an instance of the provided type
     */
    public Converter getInstance(Class type) throws Exception {
-      Converter converter = cache.get(type);
+      Converter converter = cache.fetch(type);
       
       if(converter == null) {
          return getConverter(type);
@@ -118,7 +121,7 @@ class ConverterFactory {
       Converter converter = (Converter)factory.newInstance();
       
       if(converter != null){
-         cache.put(type, converter);
+         cache.cache(type, converter);
       }
       return converter;
    }

@@ -18,6 +18,9 @@
 
 package org.simpleframework.xml.convert;
 
+import org.simpleframework.xml.util.Cache;
+import org.simpleframework.xml.util.ConcurrentCache;
+
 /**
  * The <code>Registry</code> represents an object that is used to
  * register bindings between a class and a converter implementation.
@@ -32,14 +35,14 @@ package org.simpleframework.xml.convert;
 public class Registry {
    
    /**
+    * This is used to cache the converters based on object types.
+    */
+   private final Cache<Converter> cache;
+   
+   /**
     * This is used to bind converter types to serializable types.
     */
    private final RegistryBinder binder;
-   
-   /**
-    * This is used to cache the converters based on object types.
-    */
-   private final ConverterCache cache;
    
    /**
     * Constructor for the <code>Registry</code> object. This is used
@@ -48,8 +51,8 @@ public class Registry {
     * converters are instantiated once and cached for reuse.
     */
    public Registry() {
+      this.cache = new ConcurrentCache<Converter>();
       this.binder = new RegistryBinder();
-      this.cache = new ConverterCache();
    }
    
    /**
@@ -63,7 +66,7 @@ public class Registry {
     * @return this returns the converter instance for the type
     */
    public Converter lookup(Class type) throws Exception {
-      Converter converter = cache.get(type);
+      Converter converter = cache.fetch(type);
       
       if(converter == null) {
          return create(type);
@@ -85,7 +88,7 @@ public class Registry {
       Converter converter = binder.lookup(type);
       
       if(converter != null) {
-         cache.put(type, converter);
+         cache.cache(type, converter);
       }
       return converter;
    }
@@ -121,7 +124,7 @@ public class Registry {
     */
    public Registry bind(Class type, Converter converter) throws Exception {
       if(type != null) {
-         cache.put(type, converter);
+         cache.cache(type, converter);
       }
       return this;
    }

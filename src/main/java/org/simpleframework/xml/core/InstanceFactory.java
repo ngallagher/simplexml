@@ -21,6 +21,8 @@ package org.simpleframework.xml.core;
 import java.lang.reflect.Constructor;
 
 import org.simpleframework.xml.strategy.Value;
+import org.simpleframework.xml.util.Cache;
+import org.simpleframework.xml.util.ConcurrentCache;
 
 /**
  * The <code>Instantiator</code> is used to instantiate types that 
@@ -38,7 +40,7 @@ class InstanceFactory {
    /**
     * This is used to cache the constructors for the given types.
     */
-   private final ConstructorCache cache;
+   private final Cache<Constructor> cache;
    
    /**
     * Constructor for the <code>Instantiator</code> object. This will
@@ -46,7 +48,7 @@ class InstanceFactory {
     * the constructors instantiated for the required types. 
     */
    public InstanceFactory() {
-      this.cache = new ConstructorCache();
+      this.cache = new ConcurrentCache<Constructor>();
    }
    
    /**
@@ -85,7 +87,7 @@ class InstanceFactory {
     * @return this returns an instance of the specific class type
     */ 
    protected Object getObject(Class type) throws Exception {
-      Constructor method = cache.get(type);
+      Constructor method = cache.fetch(type);
       
       if(method == null) {
          method = type.getDeclaredConstructor();      
@@ -93,7 +95,7 @@ class InstanceFactory {
          if(!method.isAccessible()) {
             method.setAccessible(true);              
          }
-         cache.put(type, method);
+         cache.cache(type, method);
       }
       return method.newInstance();   
    }
