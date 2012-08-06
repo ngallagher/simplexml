@@ -158,8 +158,8 @@ class ElementUnionLabel extends TemplateLabel {
          throw new UnionException("No type matches %s in %s for %s", type, union, contact);
       }
       if(extractor.isDeclared(type)) {
-      return new OverrideType(contact, type);
-   }
+    	  return new OverrideType(contact, type);
+      }
       return contact;
    }
 

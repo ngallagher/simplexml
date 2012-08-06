@@ -80,6 +80,16 @@ class ElementArrayLabel extends TemplateLabel {
    private String name;
    
    /**
+    * This is used to determine if the element is required.
+    */
+   private boolean required;
+   
+   /**
+    * This is used to determine if the element is data.
+    */
+   private boolean data;
+   
+   /**
     * Constructor for the <code>ElementArrayLabel</code> object. This
     * creates a label object, which can be used to convert an element
     * node to an array of XML serializable objects.
@@ -91,8 +101,10 @@ class ElementArrayLabel extends TemplateLabel {
    public ElementArrayLabel(Contact contact, ElementArray label, Format format) {
       this.detail = new Introspector(contact, this, format);
       this.decorator = new Qualifier(contact);
+      this.required = label.required();
       this.type = contact.getType();
       this.entry = label.entry();
+      this.data = label.data();
       this.name = label.name();
       this.format = format;
       this.label = label;
@@ -312,7 +324,7 @@ class ElementArrayLabel extends TemplateLabel {
     * @return true if the label represents a some required data
     */  
    public boolean isRequired() {
-      return label.required();
+      return required;
    }
    
    /**
@@ -324,7 +336,7 @@ class ElementArrayLabel extends TemplateLabel {
     * @return this returns true if the element requires CDATA
     */
    public boolean isData() {
-      return label.data();
+      return data;
    }
    
    /**

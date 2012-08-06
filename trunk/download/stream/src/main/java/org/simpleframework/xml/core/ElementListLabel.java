@@ -82,6 +82,21 @@ class ElementListLabel extends TemplateLabel {
     * This is the name of the element for this label instance.
     */
    private String name;  
+   
+   /**
+    * This is used to determine if the attribute is required.
+    */
+   private boolean required;
+   
+   /**
+    * This is used to determine if the attribute is inline.
+    */
+   private boolean inline;
+   
+   /**
+    * This is used to determine if the attribute is data.
+    */
+   private boolean data;
 
    /**
     * Constructor for the <code>ElementListLabel</code> object. This
@@ -95,8 +110,11 @@ class ElementListLabel extends TemplateLabel {
    public ElementListLabel(Contact contact, ElementList label, Format format) {
       this.detail = new Introspector(contact, this, format);
       this.decorator = new Qualifier(contact);
+      this.required = label.required();
       this.type = contact.getType();
+      this.inline = label.inline();
       this.entry = label.entry();
+      this.data = label.data();
       this.item = label.type();
       this.name = label.name();      
       this.format = format;
@@ -340,7 +358,7 @@ class ElementListLabel extends TemplateLabel {
     * @return currently the element list does not require CDATA
     */
    public boolean isData() {
-      return label.data();
+      return data;
    }
    
    /**
@@ -366,7 +384,7 @@ class ElementListLabel extends TemplateLabel {
     * @return true if the label represents a some required data
     */   
    public boolean isRequired() {
-      return label.required();
+      return required;
    }
    
    /**
@@ -377,7 +395,7 @@ class ElementListLabel extends TemplateLabel {
     * @return this returns whether the annotation is inline
     */
    public boolean isInline() {
-      return label.inline();
+      return inline;
    }
    
    /**

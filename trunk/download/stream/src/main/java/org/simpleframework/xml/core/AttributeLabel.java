@@ -76,6 +76,11 @@ class AttributeLabel extends TemplateLabel {
    private String empty;
    
    /**
+    * This is used to determine if the attribute is required.
+    */
+   private boolean required;
+   
+   /**
     * Constructor for the <code>AttributeLabel</code> object. This 
     * is used to create a label that can convert from an object to an
     * XML attribute and vice versa. This requires the annotation and
@@ -88,6 +93,7 @@ class AttributeLabel extends TemplateLabel {
    public AttributeLabel(Contact contact, Attribute label, Format format) {
       this.detail = new Introspector(contact, this, format);
       this.decorator = new Qualifier(contact);
+      this.required = label.required();
       this.type = contact.getType();
       this.empty = label.empty();
       this.name = label.name();      
@@ -255,7 +261,7 @@ class AttributeLabel extends TemplateLabel {
     * @return true if the label represents a some required data
     */  
    public boolean isRequired() {
-      return label.required();
+      return required;
    }
    
    /**

@@ -89,6 +89,21 @@ class ElementMapLabel extends TemplateLabel {
    private String name;  
    
    /**
+    * This is used to determine if the attribute is required.
+    */
+   private boolean required;
+   
+   /**
+    * This is used to determine if the attribute is inline.
+    */
+   private boolean inline;
+   
+   /**
+    * This is used to determine if the attribute is data.
+    */
+   private boolean data;
+   
+   /**
     * Constructor for the <code>ElementMapLabel</code> object. This
     * creates a label object, which can be used to convert an XML 
     * node to a <code>Map</code> of XML serializable objects.
@@ -101,8 +116,11 @@ class ElementMapLabel extends TemplateLabel {
       this.detail = new Introspector(contact, this, format);
       this.decorator = new Qualifier(contact);
       this.entry = new Entry(contact, label);
+      this.required = label.required();
       this.type = contact.getType();
+      this.inline = label.inline();
       this.name = label.name();      
+      this.data = label.data();
       this.format = format;
       this.label = label;
    }
@@ -320,7 +338,7 @@ class ElementMapLabel extends TemplateLabel {
     * @return currently the element list does not require CDATA
     */
    public boolean isData() {
-      return label.data();
+      return data;
    }
    
    /**
@@ -346,7 +364,7 @@ class ElementMapLabel extends TemplateLabel {
     * @return true if the label represents a some required data
     */   
    public boolean isRequired() {
-      return label.required();
+      return required;
    }
    
    /**
@@ -357,7 +375,7 @@ class ElementMapLabel extends TemplateLabel {
     * @return this returns whether the annotation is inline
     */
    public boolean isInline() {
-      return label.inline();
+      return inline;
    }
    
    /**

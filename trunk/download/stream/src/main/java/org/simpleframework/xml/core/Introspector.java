@@ -237,11 +237,11 @@ class Introspector {
     */
    public Expression getExpression() throws Exception {
       String path = getPath();
-      
+
       if(path != null) {
          return new PathParser(path, contact, format);
       }
-      return new PathParser(".", contact, format);
+      return new EmptyExpression(format);
    }
    
    /**
