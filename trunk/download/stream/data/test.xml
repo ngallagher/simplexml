@@ -1,5 +1,5 @@
 <execute>
-        <context identifier="ROOT_PATH" rootPath="c:\Users\niall\Workspace\development\simpleframework\simple-xml\data"/>
+        <context identifier="ROOT_PATH" rootPath="/home/niall/Work/development/simpleframework/simple-xml/data"/>
    <list>
       <test debug="true" id="JAXB Test 1">
          <executorClass>org.simpleframework.xml.benchmark.jaxb.JAXBExecutor</executorClass>
