@@ -79,6 +79,16 @@ class ElementLabel extends TemplateLabel {
    private String name;
    
    /**
+    * This is used to determine if the element is required.
+    */
+   private boolean required;
+   
+   /**
+    * This is used to determine if the element is data.
+    */
+   private boolean data;
+   
+   /**
     * Constructor for the <code>ElementLabel</code> object. This is
     * used to create a label that can convert a XML node into a 
     * composite object or a primitive type from an XML element. 
@@ -90,8 +100,10 @@ class ElementLabel extends TemplateLabel {
    public ElementLabel(Contact contact, Element label, Format format) {
       this.detail = new Introspector(contact, this, format);
       this.decorator = new Qualifier(contact);
+      this.required = label.required();
       this.type = contact.getType();
       this.override = label.type();
+      this.data = label.data();
       this.name = label.name();     
       this.format = format;
       this.label = label; 
@@ -275,7 +287,7 @@ class ElementLabel extends TemplateLabel {
     * @return true if the label represents a some required data
     */   
    public boolean isRequired() {
-      return label.required();
+      return required;
    }
    
    /**
@@ -287,7 +299,7 @@ class ElementLabel extends TemplateLabel {
     * @return this returns true if the element requires CDATA
     */
    public boolean isData() {
-      return label.data();
+      return data;
    }
    
    /**

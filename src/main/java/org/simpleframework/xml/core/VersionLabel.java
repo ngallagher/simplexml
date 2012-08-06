@@ -71,6 +71,11 @@ class VersionLabel extends TemplateLabel {
    private String name;
    
    /**
+    * This is used to determine if the attribute is required.
+    */
+   private boolean required;
+   
+   /**
     * Constructor for the <code>VersionLabel</code> object. This is
     * used to create a label that can convert from a double to an
     * XML attribute and vice versa. This requires the annotation and
@@ -83,6 +88,7 @@ class VersionLabel extends TemplateLabel {
    public VersionLabel(Contact contact, Version label, Format format) {
       this.detail = new Introspector(contact, this, format);
       this.decorator = new Qualifier(contact);
+      this.required = label.required();
       this.type = contact.getType();
       this.name = label.name();      
       this.format = format;
@@ -251,7 +257,7 @@ class VersionLabel extends TemplateLabel {
     * @return true if the label represents a some required data
     */  
    public boolean isRequired() {
-      return label.required();
+      return required;
    }
    
    /**

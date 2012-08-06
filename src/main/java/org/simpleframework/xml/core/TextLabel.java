@@ -68,6 +68,16 @@ class TextLabel extends TemplateLabel {
    private String empty;
    
    /**
+    * This is used to determine if the attribute is required.
+    */
+   private boolean required;
+   
+   /**
+    * This is used to determine if the attribute is data.
+    */
+   private boolean data;
+   
+   /**
     * Constructor for the <code>TextLabel</code> object. This is
     * used to create a label that can convert a XML node into a 
     * primitive value from an XML element text value.
@@ -78,8 +88,10 @@ class TextLabel extends TemplateLabel {
     */
    public TextLabel(Contact contact, Text label, Format format) {
       this.detail = new Introspector(contact, this, format);
+      this.required = label.required();
       this.type = contact.getType();
       this.empty = label.empty();
+      this.data = label.data();
       this.contact = contact;
       this.label = label;  
    }
@@ -235,7 +247,7 @@ class TextLabel extends TemplateLabel {
     * @return true if the label represents a some required data
     */   
    public boolean isRequired() {
-      return label.required();
+      return required;
    }
    
    /**
@@ -248,7 +260,7 @@ class TextLabel extends TemplateLabel {
     * @return this returns true if the text is to be a CDATA block
     */
    public boolean isData() {
-      return label.data();
+      return data;
    }
    
    /**
