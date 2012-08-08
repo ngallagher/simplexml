@@ -153,7 +153,7 @@ public class PathStructureTest extends ValidationTestCase {
    }
    
    public void testOrder() throws Exception {
-      Scanner scanner = new Scanner(ExampleAssembledType.class, new Format());      
+      Scanner scanner = new ObjectScanner(ExampleAssembledType.class, new Format());      
       
       validate(scanner.getSection(), "some", "fifth", "sixth", "group", "ninth");
       validate(scanner.getSection().getSection("some"), "path", "other");

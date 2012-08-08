@@ -116,8 +116,8 @@ class Support implements Filter {
     * @param format this contains all the formatting for the XML
     */
    public Support(Filter filter, Matcher matcher, Format format) {
+      this.factory = new ScannerFactory(this, format);
       this.transform = new Transformer(matcher);
-      this.factory = new ScannerFactory(format);
       this.creator = new InstanceFactory();
       this.matcher = matcher;
       this.filter = filter;
@@ -305,6 +305,21 @@ class Support implements Filter {
     */
    public boolean isPrimitive(Class type) throws Exception{
       if(type == String.class) {
+         return true;
+      }
+      if(type == Float.class) {
+         return true;
+      }
+      if(type == Double.class) {
+         return true;
+      }
+      if(type == Long.class) {
+         return true;
+      }
+      if(type == Integer.class) {
+         return true;
+      }
+      if(type == Boolean.class) {
          return true;
       }
       if(type.isEnum()) {
