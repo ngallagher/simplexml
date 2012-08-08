@@ -253,7 +253,7 @@ public class TreeStrategyTest extends ValidationTestCase {
       entry = (RootEntry)systemSerializer.read(RootEntry.class, out.toString());
       systemSerializer.write(entry, System.out);
    }
-/** XPP3 is broken with this MissingPrefixTest switches providers!!
+
    public void testBasicWrite() throws Exception {
       RootEntry entry = (RootEntry)systemSerializer.read(RootEntry.class, BASIC_ENTRY);
       long start = System.currentTimeMillis();
@@ -274,5 +274,5 @@ public class TreeStrategyTest extends ValidationTestCase {
       validate(entry, systemSerializer);
       entry = (RootEntry)systemSerializer.read(RootEntry.class, out.toString());
       systemSerializer.write(entry, System.out);
-   }*/
+   }
 }

@@ -165,7 +165,7 @@ public class DefaultAnnotationTest extends ValidationTestCase {
       assertEquals(map.get("orders").getType(), List.class);
       assertEquals(map.get("orders").getAnnotation().annotationType(), ElementList.class);
       
-      Scanner scanner = new Scanner(OrderList.class, new Format());
+      Scanner scanner = new ObjectScanner(OrderList.class, new Format());
       LabelMap attributes = scanner.getSection().getAttributes();
       LabelMap elements = scanner.getSection().getElements();  
       

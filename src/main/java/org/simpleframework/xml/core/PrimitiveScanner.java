@@ -1,5 +1,5 @@
 /*
- * Scanner.java July 2006
+ * PrimitiveScanner.java July 2006
  *
  * Copyright (C) 2006, Niall Gallagher <niallg@users.sf.net>
  *
@@ -18,13 +18,15 @@
 
 package org.simpleframework.xml.core;
 
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.simpleframework.xml.Order;
 import org.simpleframework.xml.Version;
 
 /**
- * The <code>Scanner</code> object performs the reflective inspection
+ * The <code>PrimitiveScanner</code> performs the reflective inspection
  * of a class and builds a map of attributes and elements for each
  * annotated field. This acts as a cachable container for reflection
  * actions performed on a specific type. When scanning the provided
@@ -37,7 +39,29 @@ import org.simpleframework.xml.Version;
  * 
  * @see org.simpleframework.xml.core.Schema
  */ 
-interface Scanner extends Policy {
+class PrimitiveScanner implements Scanner {
+   
+   /**
+    * This is an empty section that is used by every scanner object.
+    */
+   private final Section section;
+   
+   /**
+    * This is the type that this primitive scanner will represent.
+    */
+   private final Class type;
+   
+   /**
+    * Constructor for the <code>PrimitiveScanner</code> object. This 
+    * is used to represent primitives or other types that do not have
+    * and XML annotations present.      
+    * 
+    * @param type this is the type of primitive to be represented
+    */
+   public PrimitiveScanner(Class type) {
+      this.section = new EmptySection(this);
+      this.type = type;
+   }
    
    /**
     * This is used to acquire the default signature for the class. 
@@ -47,7 +71,9 @@ interface Scanner extends Policy {
     * 
     * @return this returns the default signature if it exists
     */
-   public Signature getSignature();
+   public Signature getSignature() {
+      return null;
+   }
    
    /**
     * This returns the signatures for the type. All constructors are
@@ -57,7 +83,9 @@ interface Scanner extends Policy {
     *
     * @return this returns the list of signatures for the type
     */
-   public List<Signature> getSignatures();
+   public List<Signature> getSignatures() {
+      return new LinkedList<Signature>();
+   }
    
    /**
     * This returns a map of all parameters that exist. This is used
@@ -66,7 +94,9 @@ interface Scanner extends Policy {
     * 
     * @return this returns a map of all parameters within the type
     */
-   public ParameterMap getParameters();
+   public ParameterMap getParameters() {
+      return new ParameterMap();
+   }
    
    /**
     * This is used to acquire the instantiator for the type. This is
@@ -76,7 +106,9 @@ interface Scanner extends Policy {
     * 
     * @return this instantiator responsible for creating instances
     */
-   public Instantiator getInstantiator();
+   public Instantiator getInstantiator() {
+      return null;
+   }
 
    /**
     * This is used to acquire the type that this scanner scans for
@@ -85,7 +117,9 @@ interface Scanner extends Policy {
     * 
     * @return this is the type that this creator will represent
     */
-   public Class getType();
+   public Class getType() {
+      return type;
+   }
    
    /**
     * This is used to acquire the <code>Decorator</code> for this.
@@ -96,7 +130,9 @@ interface Scanner extends Policy {
     * 
     * @return this returns the decorator associated with this
     */
-   public Decorator getDecorator();
+   public Decorator getDecorator() {
+      return null;
+   }
    
    /**
     * This method is used to return the <code>Caller</code> for this
@@ -106,7 +142,9 @@ interface Scanner extends Policy {
     * 
     * @return this returns a caller used for delivering callbacks
     */
-   public Caller getCaller(Context context);
+   public Caller getCaller(Context context) {
+      return new Caller(this, context);
+   }
 
    /**
     * This is used to create a <code>Section</code> given the context
@@ -117,7 +155,9 @@ interface Scanner extends Policy {
     * 
     * @return this will return a section for serialization
     */
-   public Section getSection();
+   public Section getSection() {
+      return section;
+   }
    
    /**
     * This is the <code>Version</code> for the scanned class. It 
@@ -128,7 +168,9 @@ interface Scanner extends Policy {
     * 
     * @return this returns the version of the class that is scanned
     */
-   public Version getRevision();
+   public Version getRevision() {
+      return null;
+   }
    
    /**
     * This is used to acquire the <code>Order</code> annotation for
@@ -139,7 +181,9 @@ interface Scanner extends Policy {
     * 
     * @return this returns the order, if any, defined for the class
     */
-   public Order getOrder();
+   public Order getOrder() {
+      return null;
+   }
    
    /**
     * This returns the <code>Label</code> that represents the version
@@ -149,7 +193,9 @@ interface Scanner extends Policy {
     * 
     * @return this returns the label used for reading the version
     */
-   public Label getVersion();
+   public Label getVersion() {
+      return null;
+   }
    
    /**
     * This returns the <code>Label</code> that represents the text
@@ -160,7 +206,9 @@ interface Scanner extends Policy {
     * 
     * @return this returns the text label for the scanned class
     */
-   public Label getText();
+   public Label getText() {
+      return null;
+   }
    
    /**
     * This returns the name of the class processed by this scanner.
@@ -171,7 +219,9 @@ interface Scanner extends Policy {
     * 
     * @return this returns the name of the object being scanned
     */
-   public String getName();
+   public String getName() {
+      return null;
+   }
 
    /**
     * This method is used to retrieve the schema class commit method
@@ -182,7 +232,9 @@ interface Scanner extends Policy {
     * 
     * @return this returns the commit method for the schema class
     */
-   public Function getCommit();
+   public Function getCommit() {
+      return null;
+   }
 
    /**
     * This method is used to retrieve the schema class validation
@@ -193,7 +245,9 @@ interface Scanner extends Policy {
     * 
     * @return this returns the validate method for the schema class
     */   
-   public Function getValidate();
+   public Function getValidate() {
+      return null;
+   }
    
    /**
     * This method is used to retrieve the schema class persistence
@@ -204,7 +258,9 @@ interface Scanner extends Policy {
     * 
     * @return this returns the persist method for the schema class
     */
-   public Function getPersist();
+   public Function getPersist() {
+      return null;
+   }
 
    /**
     * This method is used to retrieve the schema class completion
@@ -215,7 +271,9 @@ interface Scanner extends Policy {
     * 
     * @return returns the complete method for the schema class
     */   
-   public Function getComplete();
+   public Function getComplete() {
+      return null;
+   }
    
    /**
     * This method is used to retrieve the schema class replacement
@@ -226,7 +284,9 @@ interface Scanner extends Policy {
     * 
     * @return returns the replace method for the schema class
     */
-   public Function getReplace();
+   public Function getReplace() {
+      return null;
+   }
    
    /**
     * This method is used to retrieve the schema class replacement
@@ -237,7 +297,9 @@ interface Scanner extends Policy {
     * 
     * @return returns the replace method for the schema class
     */
-   public Function getResolve();
+   public Function getResolve() {
+      return null;
+   }
 
    /**
     * This is used to determine whether the scanned class represents
@@ -247,7 +309,9 @@ interface Scanner extends Policy {
     * 
     * @return this returns true if no XML annotations were found
     */
-   public boolean isPrimitive();
+   public boolean isPrimitive() {
+      return true;
+   }
    
    /**
     * This is used to determine whether the scanned class represents
@@ -257,7 +321,9 @@ interface Scanner extends Policy {
     * 
     * @return this returns true if no XML annotations were found
     */
-   public boolean isEmpty();
+   public boolean isEmpty() {
+      return true;
+   }
    
    /**
     * This method is used to determine whether strict mappings are
@@ -269,6 +335,184 @@ interface Scanner extends Policy {
     *
     * @return true if strict parsing is enabled, false otherwise
     */ 
-   public boolean isStrict();
+   public boolean isStrict() {
+      return true;
+   }
+   
+   /**
+    * The <code>EmptySection</code> object creates a section for
+    * used with primitives that has no values. No primitive can have
+    * annotations as they will be processed by a transform rather
+    * than by a schema object, this object saves memory and time.
+    * 
+    * @author Niall Gallagher
+    */
+   private static class EmptySection implements Section {
+   
+      /**
+       * This is an empty list used to create empty iterators.
+       */
+      private final List<String> list;
+      
+      /**
+       * This is the source scanner object this is created for.
+       */
+      private final Scanner scanner;
+      
+      /**
+       * Constructor for the <code>EmptySection</code> object. This
+       * is used to represent a primitive where thare are no other
+       * parts to the object. This acts as a lightweight container.
+       * 
+       * @param scanner this is the owning scanner for the section
+       */
+      public EmptySection(Scanner scanner) {
+         this.list = new LinkedList<String>();
+         this.scanner = scanner;
+      }
+
+      /**
+       * This will produce an interator with no elements. No elements
+       * are returned because this represents an empty section. A
+       * non-null value is best as it avoids possible exceptions.
+       * 
+       * @return this returns an empty iterator for the section
+       */
+      public Iterator<String> iterator() {
+         return list.iterator();
+      }
+
+      /**
+       * This is used to return the name of the section. The name is 
+       * must be a valid XML element name. It is used when a style
+       * is applied to a path as the section name must be styled.
+       * 
+       * @return this returns the name of this section instance
+       */
+      public String getName() {
+         return null;
+      }
+
+      /**
+       * This is used to acquire the path prefix for the section. The
+       * path prefix is used when the section is transformed in to an
+       * XML structure. This ensures that the XML element created to
+       * represent the section contains the optional prefix.
+       * 
+       * @return this returns the prefix for this section
+       */
+      public String getPrefix() {
+         return null;
+      }
+
+      /**
+       * This is used to acquire the text label for this section if 
+       * one has been specified. A text label can only exist in a
+       * section if there are no elements associated with the section
+       * and the section is not composite, as in it does not contain
+       * any further sections.
+       * 
+       * @return this returns the text label for this section
+       */
+      public Label getText() {
+         return null;
+      }
+
+      /**
+       * Returns a <code>LabelMap</code> that contains the details for
+       * all fields and methods marked with XML annotations. All of the
+       * element annotations are considered and gathered by name in 
+       * this map. Also, if there is an associated <code>Style</code> 
+       * for serialization the element names are renamed with this.
+       * 
+       * @return returns the elements associated with this section
+       */
+      public LabelMap getElements()  {
+         return new LabelMap(scanner);
+      }
+
+      /**
+       * Returns a <code>LabelMap</code> that contains the details for
+       * all fields and methods marked with XML annotations. All of the
+       * attribute annotations are considered and gathered by name in 
+       * this map. Also, if there is an associated <code>Style</code> 
+       * for serialization the attribute names are renamed with this.
+       * 
+       * @return returns the attributes associated with this section
+       */
+      public LabelMap getAttributes() {
+         return new LabelMap(scanner);
+      }
+
+      /**
+       * Returns the named element as a <code>Label</code> object.
+       * For convenience this method is provided so that when iterating
+       * over the names of the elements in the section a specific one
+       * of interest can be acquired.    
+       * 
+       * @param name the name of the element that is to be acquired
+       * 
+       * @return this returns the label associated with the name
+       */
+      public Label getElement(String name) {
+         return null;
+      }
+
+      /**
+       * Returns the named section as a <code>Section</code> object.
+       * For convenience this method is provided so that when iterating
+       * over the names of the elements in the section a specific one
+       * of interest can be acquired. 
+       * 
+       * @param name the name of the element that is to be acquired
+       * 
+       * @return this returns the section associated with the name
+       */
+      public Section getSection(String name) {
+         return null;
+      }
+
+      /**
+       * This is used to acquire the full element path for this
+       * section. The element path is simply the fully qualified
+       * path for this expression with the provided name appended.
+       * If this is an empty path, the provided name is returned.
+       * 
+       * @param name this is the name of the element to be used
+       * 
+       * @return a fully qualified path for the specified name
+       */
+      public String getPath(String name) {
+         return null;
+      }
+
+      /**
+       * This is used to acquire the full attribute path for this 
+       * section. The attribute path is simply the fully qualified
+       * path for this expression with the provided name appended.
+       * If this is an empty path, the provided name is returned.
+       * 
+       * @param name this is the name of the attribute to be used
+       * 
+       * @return a fully qualified path for the specified name
+       */
+      public String getAttribute(String name) {
+         return null;
+      }
+
+      /**
+       * To differentiate between a section and an element this can be
+       * used. When iterating over the elements within the section the
+       * names of both elements and sections are provided. So in order
+       * to determine how to interpret the structure this can be used.
+       * 
+       * @param name this is the name of the element to be determined
+       * 
+       * @return this returns true if the name represents a section
+       */
+      public boolean isSection(String name) {
+         return false;
+      }      
+   }
 }
 

@@ -40,6 +40,11 @@ class ScannerFactory {
    private final Cache<Scanner> cache;
    
    /**
+    * This is used to determine which objects are primitives.
+    */
+   private final Support support;
+   
+   /**
     * This is the context that is used to create the scanner object.
     */
    private final Format format;
@@ -50,10 +55,12 @@ class ScannerFactory {
     * data for a given class. Scanning the class is required to find
     * the fields and methods that have been annotated.
     * 
+    * @param support this is used to determine if a type is primitive
     * @param format this is the format used for the serialization
     */
-   public ScannerFactory(Format format) {
+   public ScannerFactory(Support support, Format format) {
       this.cache = new ConcurrentCache<Scanner>();
+      this.support = support;
       this.format = format;
    }
    
@@ -74,7 +81,11 @@ class ScannerFactory {
       Scanner schema = cache.fetch(type);
       
       if(schema == null) {
-         schema = new Scanner(type, format);             
+         if(support.isPrimitive(type)) {
+            schema = new PrimitiveScanner(type);
+         } else {
+            schema = new ObjectScanner(type, format);
+         }
          cache.cache(type, schema);
       }
       return schema;

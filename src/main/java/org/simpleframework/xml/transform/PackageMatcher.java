@@ -105,8 +105,8 @@ class PackageMatcher implements Matcher {
          if(parent.isEnum()) {
             return new EnumTransform(type);
          }
-      if(type.isEnum()) {
-         return new EnumTransform(type);
+         if(type.isEnum()) {
+            return new EnumTransform(type);
          }
       }
       return null;

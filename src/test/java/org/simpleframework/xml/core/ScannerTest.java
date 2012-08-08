@@ -118,7 +118,7 @@ public class ScannerTest extends TestCase {
    }
    
    public void testExampleWithPath() throws Exception {
-      Scanner scanner = new Scanner(ExampleWithPath.class);
+      Scanner scanner = new ObjectScanner(ExampleWithPath.class);
       ArrayList<Class> types = new ArrayList<Class>();
       
       assertEquals(scanner.getSection().getElements().size(), 0);
@@ -133,7 +133,7 @@ public class ScannerTest extends TestCase {
    }
    
    public void testExample() throws Exception {
-      Scanner scanner = new Scanner(Example.class);
+      Scanner scanner = new ObjectScanner(Example.class);
       ArrayList<Class> types = new ArrayList<Class>();
       
       assertEquals(scanner.getSection().getElements().size(), 1);
@@ -160,7 +160,7 @@ public class ScannerTest extends TestCase {
    }
    
    public void testMixedExample() throws Exception {
-      Scanner scanner = new Scanner(MixedExample.class);
+      Scanner scanner = new ObjectScanner(MixedExample.class);
       ArrayList<Class> types = new ArrayList<Class>();
       
       assertEquals(scanner.getSection().getElements().size(), 3);
@@ -192,7 +192,7 @@ public class ScannerTest extends TestCase {
       boolean success = false;
       
       try {
-         new Scanner(DuplicateAttributeExample.class);
+         new ObjectScanner(DuplicateAttributeExample.class);
       } catch(Exception e) {
          success = true;
       }
@@ -203,7 +203,7 @@ public class ScannerTest extends TestCase {
       boolean success = false;
       
       try {
-         new Scanner(NonMatchingElementExample.class);
+         new ObjectScanner(NonMatchingElementExample.class);
       } catch(Exception e) {
          success = true;
       }
@@ -214,7 +214,7 @@ public class ScannerTest extends TestCase {
       boolean success = false;
       
       try {
-         new Scanner(IllegalTextExample.class);
+         new ObjectScanner(IllegalTextExample.class);
       } catch(Exception e) {
          success = true;
       }
