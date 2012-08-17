@@ -444,7 +444,7 @@ class InstantiatorBuilder {
     * name and path. However, because we want these mappings to be
     * unique we do not allow multiple names to be mapped to the same
     * label. For example, say we have 'x/@a' and 'y/@a', these both 
-    * have the same name 'a' even though the point to different
+    * have the same name 'a' even though the point/put( to different
     * things. Here we would not allow a mapping from 'a' and keep
     * only mappings based on the full path. This means that any
     * parameters specified must declare the full path also.
@@ -461,7 +461,7 @@ class InstantiatorBuilder {
          String key = current.getPath();
          
          if(!key.equals(name)) {
-            map.put(name, null); 
+            map.remove(name); 
          }
       } else {
          map.put(name, label);
