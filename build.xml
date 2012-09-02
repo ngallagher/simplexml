@@ -568,7 +568,7 @@
    </target>
 
    <target name="obfuscate" depends="build" description="Obfuscates and optimizes the JAR">
-      <copy todir="${root.path}">
+      <copy todir="${root.path}" overwrite="true">
          <fileset file="${script.path}/proguard.pro"/>
          <filterset>
             <filter token="injar" value="${jar.path}/simple-xml-${version}.jar"/>
