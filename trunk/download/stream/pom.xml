@@ -18,6 +18,13 @@
     <url>http://svn.sourceforge.net/viewvc/simple/trunk/download/stream</url>
     <connection>https://svn.sourceforge.net/svnroot/simple/trunk/download/stream</connection>
   </scm>
+  <developers>
+    <developer>
+      <id>niallg</id>
+      <name>Niall</name>
+      <email>niallg@users.sf.net</email>
+    </developer>
+  </developers>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
