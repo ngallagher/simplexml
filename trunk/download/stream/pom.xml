@@ -16,12 +16,13 @@
   </licenses>
   <scm>
     <url>http://svn.sourceforge.net/viewvc/simple/trunk/download/stream</url>
-    <connection>https://svn.sourceforge.net/svnroot/simple/trunk/download/stream</connection>
+    <developerConnection>scm:svn:https://svn.sourceforge.net/svnroot/simple/trunk/download/stream</developerConnection>
+    <connection>scm:svn:https://svn.sourceforge.net/svnroot/simple/trunk/download/stream</connection>
   </scm>
   <developers>
     <developer>
       <id>niallg</id>
-      <name>Niall</name>
+      <name>Niall Gallagher</name>
       <email>niallg@users.sf.net</email>
     </developer>
   </developers>
@@ -99,11 +100,4 @@
       </plugin>
     </plugins>
   </build>
-  <distributionManagement>
-    <repository>
-      <id>sourceforge</id>
-      <name>Source Forge Repository</name>
-      <url>scp://web.sourceforge.net/home/groups/s/si/simpleweb/htdocs/maven</url>
-    </repository>
-  </distributionManagement>
 </project>
