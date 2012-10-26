@@ -20,9 +20,9 @@
     </license>
   </licenses>
   <scm>
-    <url>http://svn.sourceforge.net/viewvc/simple/trunk/download/stream</url>
-    <developerConnection>scm:svn:https://svn.sourceforge.net/svnroot/simple/trunk/download/stream</developerConnection>
-    <connection>scm:svn:https://svn.sourceforge.net/svnroot/simple/trunk/download/stream</connection>
+    <url>http://svn.sourceforge.net/viewvc/simple/tags/simple-xml-2.6.7</url>
+    <developerConnection>scm:svn:https://svn.sourceforge.net/svnroot/simple/tags/simple-xml-2.6.7</developerConnection>
+    <connection>scm:svn:https://svn.sourceforge.net/svnroot/simple/tags/simple-xml-2.6.7</connection>
   </scm>
   <developers>
     <developer>
