@@ -482,6 +482,7 @@
          <fileset dir="${target.path}">
             <include name="simple-xml-${version}.jar"/>
             <include name="simple-xml-${version}-sources.jar"/>
+            <include name="simple-xml-${version}-javadoc.jar"/>
          </fileset>
          <fileset dir="${root.path}">
             <include name="pom.xml"/>
@@ -507,15 +508,50 @@
          </filterset>        
       </copy> 
       <move file="${target.path}/maven/${version}/pom.xml" tofile="${target.path}/maven/${version}/simple-xml-${version}.pom"/>
+      <exec executable="gpg">
+         <arg value="-ab"/>
+         <arg value="--passphrase"/>
+         <arg value="${password}"/>
+         <arg value="${target.path}/maven/${version}/simple-xml-${version}.jar"/>
+      </exec>
+      <exec executable="gpg">
+         <arg value="-ab"/>
+         <arg value="--passphrase"/>
+         <arg value="${password}"/>
+         <arg value="${target.path}/maven/${version}/simple-xml-${version}-sources.jar"/>
+      </exec>
+      <exec executable="gpg">
+         <arg value="-ab"/>
+         <arg value="--passphrase"/>
+         <arg value="${password}"/>
+         <arg value="${target.path}/maven/${version}/simple-xml-${version}-javadoc.jar"/>
+      </exec>
+      <exec executable="gpg">
+         <arg value="-ab"/>
+         <arg value="--passphrase"/>
+         <arg value="${password}"/>
+         <arg value="${target.path}/maven/${version}/simple-xml-${version}.pom"/>
+      </exec>
       <checksum file="${target.path}/maven/${version}/simple-xml-${version}.jar" algorithm="SHA1" fileext=".sha1"/>
       <checksum file="${target.path}/maven/${version}/simple-xml-${version}.jar" algorithm="MD5" fileext=".md5"/>      
+      <checksum file="${target.path}/maven/${version}/simple-xml-${version}.jar.asc" algorithm="SHA1" fileext=".sha1"/>
+      <checksum file="${target.path}/maven/${version}/simple-xml-${version}.jar.asc" algorithm="MD5" fileext=".md5"/>
       <checksum file="${target.path}/maven/${version}/simple-xml-${version}-sources.jar" algorithm="SHA1" fileext=".sha1"/>
       <checksum file="${target.path}/maven/${version}/simple-xml-${version}-sources.jar" algorithm="MD5" fileext=".md5"/> 
+      <checksum file="${target.path}/maven/${version}/simple-xml-${version}-sources.jar.asc" algorithm="SHA1" fileext=".sha1"/>
+      <checksum file="${target.path}/maven/${version}/simple-xml-${version}-sources.jar.asc" algorithm="MD5" fileext=".md5"/>
+      <checksum file="${target.path}/maven/${version}/simple-xml-${version}-javadoc.jar" algorithm="SHA1" fileext=".sha1"/>
+      <checksum file="${target.path}/maven/${version}/simple-xml-${version}-javadoc.jar" algorithm="MD5" fileext=".md5"/>
+      <checksum file="${target.path}/maven/${version}/simple-xml-${version}-javadoc.jar.asc" algorithm="SHA1" fileext=".sha1"/>
+      <checksum file="${target.path}/maven/${version}/simple-xml-${version}-javadoc.jar.asc" algorithm="MD5" fileext=".md5"/>
       <checksum file="${target.path}/maven/${version}/simple-xml-${version}.pom" algorithm="SHA1" fileext=".sha1"/>
       <checksum file="${target.path}/maven/${version}/simple-xml-${version}.pom" algorithm="MD5" fileext=".md5"/>
+      <checksum file="${target.path}/maven/${version}/simple-xml-${version}.pom.asc" algorithm="SHA1" fileext=".sha1"/>
+      <checksum file="${target.path}/maven/${version}/simple-xml-${version}.pom.asc" algorithm="MD5" fileext=".md5"/>
       <checksum file="${target.path}/maven/maven-metadata.xml" algorithm="SHA1" fileext=".sha1"/>
       <checksum file="${target.path}/maven/maven-metadata.xml" algorithm="MD5" fileext=".md5"/>       
       <zip destfile="${root.path}/maven-${version}.zip" basedir="${target.path}/maven"/>      
+      <jar destfile="${root.path}/bundle-${version}.jar" basedir="${target.path}/maven/${version}"/>
    </target>
 
    <target name="javadoc" depends="clean" description="Generate source documentation">
