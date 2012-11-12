@@ -22,7 +22,6 @@ import static org.simpleframework.xml.core.Support.isAssignable;
 
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -78,7 +77,7 @@ class InstantiatorBuilder {
    /**
     * This is the type the instantiator used to create objects.
     */
-   private Class type;
+   private Detail detail;
    
    /**
     * Constructor for the <code>InstantiatorBuilder</code> object. This 
@@ -89,14 +88,14 @@ class InstantiatorBuilder {
     * @param scanner this is the scanner to acquire signatures from
     * @param type this is the type that the instantiator represents
     */
-   public InstantiatorBuilder(Scanner scanner, Class type) {
+   public InstantiatorBuilder(Scanner scanner, Detail detail) {
       this.options = new ArrayList<Creator>();
       this.comparer = new Comparer();
       this.attributes = new LabelMap();
       this.elements = new LabelMap();
       this.texts = new LabelMap();
       this.scanner = scanner;
-      this.type = type;
+      this.detail = detail;
    }
    
    /**
@@ -110,9 +109,9 @@ class InstantiatorBuilder {
     */
    public Instantiator build() throws Exception {
       if(factory == null) {
-         populate(type);
-         build(type);
-         validate(type);
+         populate(detail);
+         build(detail);
+         validate(detail);
       }
       return factory;
    }
@@ -128,9 +127,9 @@ class InstantiatorBuilder {
     * 
     * @return this returns the instance that has been built
     */
-   private Instantiator build(Class type) throws Exception {
+   private Instantiator build(Detail detail) throws Exception {
       if(factory == null) {
-         factory = create(type);
+         factory = create(detail);
       }
       return factory;
    }
@@ -146,7 +145,7 @@ class InstantiatorBuilder {
     * 
     * @return this returns the instance that has been created
     */
-   private Instantiator create(Class type) throws Exception {
+   private Instantiator create(Detail detail) throws Exception {
       Signature primary = scanner.getSignature();
       ParameterMap registry = scanner.getParameters();
       Creator creator = null;
@@ -154,7 +153,7 @@ class InstantiatorBuilder {
       if(primary != null) {
          creator = new SignatureCreator(primary);
       }
-      return new ClassInstantiator(options, creator, registry, type);
+      return new ClassInstantiator(options, creator, registry, detail);
    }
    
    /**
@@ -203,7 +202,7 @@ class InstantiatorBuilder {
     * 
     * @param type this is the type of the associated object
     */
-   private void populate(Class type) throws Exception {
+   private void populate(Detail detail) throws Exception {
       List<Signature> list = scanner.getSignatures();
       
       for(Signature signature : list) {
@@ -240,7 +239,7 @@ class InstantiatorBuilder {
     * 
     * @param type this is the type to validate the labels for
     */
-   private void validate(Class type) throws Exception {
+   private void validate(Detail detail) throws Exception {
       ParameterMap registry = scanner.getParameters();
       List<Parameter> list = registry.getAll();
       
@@ -249,7 +248,7 @@ class InstantiatorBuilder {
          String path = parameter.getPath();
          
          if(label == null) {
-            throw new ConstructorException("Parameter '%s' does not have a match in %s", path, type);
+            throw new ConstructorException("Parameter '%s' does not have a match in %s", path, detail);
          }
          validateParameter(label, parameter);
       }
@@ -362,7 +361,7 @@ class InstantiatorBuilder {
             Contact contact = label.getContact();
             
             if(contact.isReadOnly()) {
-               throw new ConstructorException("Default constructor can not accept read only %s in %s", label, type);
+               throw new ConstructorException("Default constructor can not accept read only %s in %s", label, detail);
             }
          }
       }
@@ -384,7 +383,7 @@ class InstantiatorBuilder {
          }
       }   
       if(list.isEmpty()) {
-         throw new ConstructorException("No constructor accepts all read only values in %s", type);
+         throw new ConstructorException("No constructor accepts all read only values in %s", detail);
       }
    }
    

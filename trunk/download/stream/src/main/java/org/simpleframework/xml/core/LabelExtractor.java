@@ -20,6 +20,11 @@ package org.simpleframework.xml.core;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
@@ -32,6 +37,8 @@ import org.simpleframework.xml.ElementUnion;
 import org.simpleframework.xml.Text;
 import org.simpleframework.xml.Version;
 import org.simpleframework.xml.stream.Format;
+import org.simpleframework.xml.util.Cache;
+import org.simpleframework.xml.util.ConcurrentCache;
 
 /**
  * The <code>LabelFactory</code> object is used to create instances of
@@ -46,8 +53,16 @@ import org.simpleframework.xml.stream.Format;
  * 
  * @author Niall Gallagher
  */
-final class LabelFactory {
+class LabelExtractor {
 
+   private final Cache<LabelList> cache;
+   private final Format format;
+   
+   public LabelExtractor(Format format) {
+      this.cache = new ConcurrentCache<LabelList>();
+      this.format = format;
+   }
+   
    /**
     * Creates a <code>Label</code> using the provided contact and XML
     * annotation. The label produced contains all information related
@@ -57,12 +72,17 @@ final class LabelFactory {
     * 
     * @param contact this is contact that the label is produced for
     * @param label represents the XML annotation for the contact
-    * @param format this is the format used to style the labels
     * 
     * @return returns the label instantiated for the field
     */
-   public static Label getInstance(Contact contact, Annotation label, Format format) throws Exception {
-      return getInstance(contact, label, null, format);
+   public Label getLabel(Contact contact, Annotation label) throws Exception {
+      Object key = getKey(contact, label);
+      LabelList list = getList(contact, label, key);
+      
+      if(list != null) {
+         return list.getPrimary();
+      }
+      return null;
    } 
    
    /**
@@ -75,18 +95,96 @@ final class LabelFactory {
     * @param contact this is contact that the label is produced for
     * @param label represents the XML annotation for the contact
     * @param entry this is the entry annotation for this label
-    * @param format this is the format used to style the labels
     * 
     * @return returns the label instantiated for the field
     */
-   public static Label getInstance(Contact contact, Annotation label, Annotation entry, Format format) throws Exception {
-      Label value = getLabel(contact, label, entry, format);
+   public List<Label> getList(Contact contact, Annotation label) throws Exception {
+      Object key = getKey(contact, label);
+      LabelList list = getList(contact, label, key);
+      
+      if(list != null) {
+         return list.getList();
+      }
+      return Collections.emptyList();
+   }
+
+   private LabelList getList(Contact contact, Annotation label, Object key) throws Exception {
+      LabelList value = cache.fetch(key);
       
       if(value == null) {
-         return value;
-      }      
-      return new CacheLabel(value);
-   } 
+         LabelList list = getLabels(contact, label);
+         
+         if(list != null) {
+            cache.cache(key, list);
+         }
+         return list;
+      }
+      return value;
+   }
+   
+   
+   private LabelList getLabels(Contact contact, Annotation label) throws Exception {
+      if(label instanceof ElementUnion) {
+         return getUnion(contact, label);
+      }
+      if(label instanceof ElementListUnion) {
+         return getUnion(contact, label);
+      }
+      if(label instanceof ElementMapUnion) {
+         return getUnion(contact, label);
+      }
+      return getSingle(contact, label);
+   }
+   
+   private LabelList getSingle(Contact contact, Annotation label) throws Exception {
+      Label value = getLabel(contact, label, null);
+      
+      if(value != null) {
+         value = new CacheLabel(value);
+      }
+      return new LabelList(value);
+   }
+   
+   private LabelList getUnion(Contact contact, Annotation label) throws Exception {
+      Annotation[] list = getAnnotations(contact, label);
+      
+      if(list.length > 0) {
+         List<Label> labels = new LinkedList<Label>();
+      
+         for(Annotation value : list) {
+            Label entry = getLabel(contact, label, value);
+            
+            if(entry != null) {
+               entry = new CacheLabel(entry);
+            }
+            labels.add(entry);
+         }
+         return new LabelList(labels);
+      }
+      return null;
+   }
+   
+   /**
+    * This is used to extract the individual annotations associated
+    * with the union annotation provided. If the annotation does
+    * not represent a union then this will return null.
+    * 
+    * @param label this is the annotation to extract from
+    * 
+    * @return this returns an array of annotations from the union
+    */
+   private Annotation[] getAnnotations(Contact contact, Annotation label) throws Exception {
+      Class union = label.annotationType();
+      Method[] list = union.getDeclaredMethods();
+      
+      if(list.length > 0) {
+         Method method = list[0];
+         Object value = method.invoke(label);
+      
+         return (Annotation[])value;
+      }
+      return new Annotation[0];
+   }
    
    /**
     * Creates a <code>Label</code> using the provided contact and XML
@@ -102,7 +200,7 @@ final class LabelFactory {
     * 
     * @return returns the label instantiated for the field
     */
-   private static Label getLabel(Contact contact, Annotation label, Annotation entry, Format format) throws Exception {     
+   private Label getLabel(Contact contact, Annotation label, Annotation entry) throws Exception {     
       Constructor factory = getConstructor(label);    
       
       if(entry != null) {
@@ -111,6 +209,11 @@ final class LabelFactory {
       return (Label)factory.newInstance(contact, label, format);
    }
     
+   
+   private Object getKey(Contact contact, Annotation label) {
+      return new LabelKey(contact, label);
+   }
+   
     /**
      * Creates a constructor that can be used to instantiate the label
      * used to represent the specified annotation. The constructor
@@ -121,7 +224,7 @@ final class LabelFactory {
      * 
      * @return returns a constructor for instantiating the label 
      */
-    private static Constructor getConstructor(Annotation label) throws Exception {
+    private Constructor getConstructor(Annotation label) throws Exception {
        LabelBuilder builder = getBuilder(label);
        Constructor factory = builder.getConstructor();
        
@@ -141,7 +244,7 @@ final class LabelFactory {
      * 
      * @return this returns the entry used to create a constructor
      */
-    private static LabelBuilder getBuilder(Annotation label) throws Exception{   
+    private LabelBuilder getBuilder(Annotation label) throws Exception{   
        if(label instanceof Element) {
           return new LabelBuilder(ElementLabel.class, Element.class);
        }
@@ -173,6 +276,33 @@ final class LabelFactory {
           return new LabelBuilder(TextLabel.class, Text.class);
        }
        throw new PersistenceException("Annotation %s not supported", label);
+    }
+
+    
+    private static class LabelList {
+       
+       private final List<Label> list;
+       private final int size;
+       
+       public LabelList(Label label) {
+          this(Arrays.asList(label));
+       }
+       
+       public LabelList(List<Label> list) {
+          this.size = list.size();
+          this.list = list;
+       }
+       
+       public List<Label> getList() {
+          return list;
+       }
+       
+       public Label getPrimary(){
+          if(size > 0) {
+             return list.get(0);
+          }
+          return null;
+       }
     }
     
     /**

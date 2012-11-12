@@ -38,7 +38,7 @@ public interface InputNode extends Node {
     * 
     * @return true if this is the root node within the document
     */
-   public boolean isRoot();
+   boolean isRoot();
 
    /**
     * This is used to determine if this node is an element. This
@@ -49,7 +49,7 @@ public interface InputNode extends Node {
     *
     * @return this returns true if the node is an element node
     */ 
-   public boolean isElement();
+   boolean isElement();
    
    /**
     * This is used to acquire the namespace prefix for the node.
@@ -60,7 +60,7 @@ public interface InputNode extends Node {
     * 
     * @return this returns the prefix associated with this node
     */
-   public String getPrefix();
+   String getPrefix();
    
    /**
     * This allows the namespace reference URI to be determined.
@@ -71,7 +71,7 @@ public interface InputNode extends Node {
     * 
     * @return this returns the associated namespace reference URI 
     */
-   public String getReference();
+   String getReference();
    
    /**
     * This provides the position of this node within the document.
@@ -81,7 +81,7 @@ public interface InputNode extends Node {
     *
     * @return this returns the position of the XML read cursor
     */         
-   public Position getPosition();
+   Position getPosition();
         
    /**
     * Provides an attribute from the element represented. If an
@@ -92,7 +92,7 @@ public interface InputNode extends Node {
     *
     * @return this returns the value for the named attribute
     */ 
-   public InputNode getAttribute(String name);
+   InputNode getAttribute(String name);
 
    /**
     * This returns a map of the attributes contained within the
@@ -101,7 +101,7 @@ public interface InputNode extends Node {
     * 
     * @return this returns a map of attributes for the element
     */  
-   public NodeMap<InputNode> getAttributes();
+   NodeMap<InputNode> getAttributes();
    
    /**
     * This is used to acquire the <code>Node</code> that is the
@@ -111,7 +111,7 @@ public interface InputNode extends Node {
     *   
     * @return this returns the parent node for this node
     */
-   public InputNode getParent();
+   InputNode getParent();
    
    /**
     * This is used to return the source object for this node. This
@@ -121,7 +121,7 @@ public interface InputNode extends Node {
     * 
     * @return this returns the source of this input node
     */
-   public Object getSource();
+   Object getSource();
    
    /**
     * This returns the next child element within this element if
@@ -132,7 +132,7 @@ public interface InputNode extends Node {
     *
     * @exception Exception thrown if there was a parse error
     */ 
-   public InputNode getNext() throws Exception;  
+   InputNode getNext() throws Exception;  
    
    /**
     * This returns the next child in this element if that child
@@ -145,7 +145,7 @@ public interface InputNode extends Node {
     * 
     * @exception Exception thrown if there was a parse error
     */
-   public InputNode getNext(String name) throws Exception;
+   InputNode getNext(String name) throws Exception;
 
    /**
     * This method is used to skip all child elements from this
@@ -155,7 +155,7 @@ public interface InputNode extends Node {
     *
     * @exception Exception thrown if there was a parse error
     */ 
-   public void skip() throws Exception;
+   void skip() throws Exception;
    
    /**
     * This is used to determine if this input node is empty. An
@@ -167,5 +167,5 @@ public interface InputNode extends Node {
     * 
     * @throws Exception thrown if there was a parse error
     */
-   public boolean isEmpty() throws Exception;
+   boolean isEmpty() throws Exception;
 }

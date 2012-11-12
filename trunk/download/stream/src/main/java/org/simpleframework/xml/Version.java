@@ -42,7 +42,7 @@ public @interface Version {
     * 
     * @return the name of the XML attribute this represents
     */
-   public String name() default "";
+   String name() default "";
 
    /**
     * This represents the revision of the class. A revision is used
@@ -54,7 +54,7 @@ public @interface Version {
     * 
     * @return this returns the version of the XML class schema
     */
-   public double revision() default 1.0;
+   double revision() default 1.0;
    
    /**
     * Determines whether the version is required within an XML
@@ -64,5 +64,5 @@ public @interface Version {
     * 
     * @return true if the version is required, false otherwise
     */
-   public boolean required() default false;
+   boolean required() default false;
 }

@@ -61,5 +61,5 @@ public @interface ElementUnion {
     * 
     * @return the elements defined for the union declaration
     */
-   public Element[] value();
+   Element[] value();
 }

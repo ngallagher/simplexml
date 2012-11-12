@@ -37,7 +37,7 @@ interface EventReader {
     * 
     * @return this returns the next event taken from the source XML
     */
-   public EventNode next() throws Exception;
+   EventNode next() throws Exception;
    
    /**
     * This is used to peek at the node from the document. This will
@@ -47,5 +47,5 @@ interface EventReader {
     * 
     * @return this returns the next event taken from the source XML
     */
-   public EventNode peek() throws Exception;
+   EventNode peek() throws Exception;
 }

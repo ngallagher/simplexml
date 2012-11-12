@@ -36,7 +36,7 @@ public interface OutputNode extends Node {
     * 
     * @return true if this is the root node within the document
     */
-   public boolean isRoot();  
+   boolean isRoot();  
    
    /**
     * This returns a <code>NodeMap</code> which can be used to add
@@ -46,7 +46,7 @@ public interface OutputNode extends Node {
     *
     * @return returns the node map used to manipulate attributes
     */ 
-   public NodeMap<OutputNode> getAttributes();
+   NodeMap<OutputNode> getAttributes();
    
    /**
     * The <code>Mode</code> is used to indicate the output mode
@@ -58,7 +58,7 @@ public interface OutputNode extends Node {
     * 
     * @return this returns the mode of this output node object
     */
-   public Mode getMode();
+   Mode getMode();
    
    /**
     * This is used to set the output mode of this node to either
@@ -70,7 +70,7 @@ public interface OutputNode extends Node {
     * 
     * @param mode this is the output mode to set the node to 
     */
-   public void setMode(Mode mode);
+   void setMode(Mode mode);
    
    /**
     * This is used to set the output mode of this node to either
@@ -81,7 +81,7 @@ public interface OutputNode extends Node {
     * 
     * @param data if true the value is written as a CDATA block
     */
-   public void setData(boolean data);
+   void setData(boolean data);
   
    /**
     * This is used to acquire the prefix for this output node. If
@@ -92,7 +92,7 @@ public interface OutputNode extends Node {
     *
     * @return this returns the prefix associated with this node
     */  
-   public String getPrefix();
+   String getPrefix();
    
    /**
     * This is used to acquire the prefix for this output node. If
@@ -105,7 +105,7 @@ public interface OutputNode extends Node {
     *
     * @return this returns the prefix associated with this node
     */  
-   public String getPrefix(boolean inherit);
+   String getPrefix(boolean inherit);
    
    /**
     * This is used to acquire the namespace URI reference associated
@@ -115,7 +115,7 @@ public interface OutputNode extends Node {
     *
     * @return this returns the namespace URI reference for this
     */
-   public String getReference();
+   String getReference();
   
    /**
     * This is used to set the reference for the node. Setting the
@@ -127,7 +127,7 @@ public interface OutputNode extends Node {
     *
     * @param reference this is used to set the reference for the node
     */  
-   public void setReference(String reference);
+   void setReference(String reference);
   
    /**
     * This returns the <code>NamespaceMap</code> for this node. Only
@@ -138,7 +138,7 @@ public interface OutputNode extends Node {
     *
     * @return this returns the namespaces associated with the node
     */  
-   public NamespaceMap getNamespaces();
+   NamespaceMap getNamespaces();
    
    /**
     * This is used to get the text comment for the element. This can
@@ -147,7 +147,7 @@ public interface OutputNode extends Node {
     * 
     * @return this is the comment associated with this element
     */
-   public String getComment();
+   String getComment();
    
    /**
     * This is used to set a text comment to the element. This will
@@ -156,7 +156,7 @@ public interface OutputNode extends Node {
     * 
     * @param comment this is the comment to set on the node
     */
-   public void setComment(String comment);
+   void setComment(String comment);
    
    /**
     * This is used to set a text value to the element. This should
@@ -167,7 +167,7 @@ public interface OutputNode extends Node {
     *
     * @throws Exception thrown if the text value cannot be added
     */ 
-   public void setValue(String value);
+   void setValue(String value);
    
    /**
     * This is used to change the name of an output node. This will
@@ -177,7 +177,7 @@ public interface OutputNode extends Node {
     * 
     * @param name this is the name to change the node to
     */
-   public void setName(String name);
+   void setName(String name);
    
    /**
     * This method is used for convenience to add an attribute node 
@@ -189,7 +189,7 @@ public interface OutputNode extends Node {
     * 
     * @return this returns the node that has just been added
     */ 
-   public OutputNode setAttribute(String name, String value);
+   OutputNode setAttribute(String name, String value);
    
    /**
     * This is used to acquire the <code>Node</code> that is the
@@ -199,7 +199,7 @@ public interface OutputNode extends Node {
     *   
     * @return this returns the parent node for this node
     */
-   public OutputNode getParent();
+   OutputNode getParent();
    
    /**
     * This is used to create a child element within the element that
@@ -210,7 +210,7 @@ public interface OutputNode extends Node {
     *
     * @param name this is the name of the child element to create
     */ 
-   public OutputNode getChild(String name) throws Exception;        
+   OutputNode getChild(String name) throws Exception;        
 
    /**
     * This is used to remove any uncommitted changes. Removal of an
@@ -220,7 +220,7 @@ public interface OutputNode extends Node {
     * 
     * @throws Exception thrown if the node cannot be removed
     */
-   public void remove() throws Exception;
+   void remove() throws Exception;
    
    /**
     * The <code>commit</code> method is used flush and commit any 
@@ -230,7 +230,7 @@ public interface OutputNode extends Node {
     * 
     * @throws Exception thrown if the node cannot be committed
     */ 
-   public void commit() throws Exception;
+   void commit() throws Exception;
 
    /**
     * This is used to determine whether the node has been committed.
@@ -239,5 +239,5 @@ public interface OutputNode extends Node {
     * 
     * @return true if this node has already been committed
     */
-   public boolean isCommitted();
+   boolean isCommitted();
 }

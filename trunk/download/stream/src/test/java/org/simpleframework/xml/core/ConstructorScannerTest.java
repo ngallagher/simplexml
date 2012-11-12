@@ -66,7 +66,7 @@ public class ConstructorScannerTest extends SignatureScannerTest {
    }
    
    public void testElementWithPath() throws Exception {
-      ConstructorScanner scanner = new ConstructorScanner(ExampleWithTextAndElement.class, new Format());
+      ConstructorScanner scanner = new ConstructorScanner(new DetailScanner(ExampleWithTextAndElement.class), new Support());
       ParameterMap signature = scanner.getParameters();
       List<Parameter> parameters = signature.getAll();
       Set<String> names = new HashSet<String>();
@@ -85,7 +85,7 @@ public class ConstructorScannerTest extends SignatureScannerTest {
       boolean failure = false;
       
       try {
-         new ConstructorScanner(ClashBetweenElementAndText.class, new Format());
+         new ConstructorScanner(new DetailScanner(ClashBetweenElementAndText.class), new Support());
       }catch(Exception e) {
          e.printStackTrace();
          failure = true;
@@ -97,7 +97,7 @@ public class ConstructorScannerTest extends SignatureScannerTest {
       boolean failure = false;
       
       try {
-         new ConstructorScanner(ClashBetweenElementUnionAndText.class, new Format());
+         new ConstructorScanner(new DetailScanner(ClashBetweenElementUnionAndText.class), new Support());
       }catch(Exception e) {
          e.printStackTrace();
          failure = true;
@@ -109,7 +109,7 @@ public class ConstructorScannerTest extends SignatureScannerTest {
       boolean failure = false;
       
       try {
-         new ConstructorScanner(ClashInText.class, new Format());
+         new ConstructorScanner(new DetailScanner(ClashInText.class), new Support());
       }catch(Exception e) {
          e.printStackTrace();
          failure = true;
@@ -118,7 +118,7 @@ public class ConstructorScannerTest extends SignatureScannerTest {
    }
    
    public void testSameNameWithPath() throws Exception {
-      ConstructorScanner scanner = new ConstructorScanner(SameNameWithPath.class, new Format());
+      ConstructorScanner scanner = new ConstructorScanner(new DetailScanner(SameNameWithPath.class), new Support());
       ParameterMap signature = scanner.getParameters();
       List<Parameter> parameters = signature.getAll();
       Set<String> names = new HashSet<String>();
@@ -135,7 +135,7 @@ public class ConstructorScannerTest extends SignatureScannerTest {
       boolean failure = false;
       
       try {
-         new ConstructorScanner(SameNameAndAnnotationWithPath.class, new Format());
+         new ConstructorScanner(new DetailScanner(SameNameAndAnnotationWithPath.class), new Support());
       }catch(Exception e) {
          e.printStackTrace();
          failure = true;
@@ -144,7 +144,7 @@ public class ConstructorScannerTest extends SignatureScannerTest {
    }
    
    public void testSameNameWithDifferentPath() throws Exception {
-      ConstructorScanner scanner = new ConstructorScanner(SameNameWithDifferentPath.class, new Format());
+      ConstructorScanner scanner = new ConstructorScanner(new DetailScanner(SameNameWithDifferentPath.class), new Support());
       ParameterMap signature = scanner.getParameters();
       List<Parameter> parameters = signature.getAll();
       Set<String> names = new HashSet<String>();

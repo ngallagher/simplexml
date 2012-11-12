@@ -39,7 +39,7 @@ public interface Type {
     *
     * @return this returns the type for this method o field
     */ 
-   public Class getType();
+   Class getType();
    
    /**
     * This is the annotation associated with the method or field
@@ -51,7 +51,7 @@ public interface Type {
     *
     * @return this provides the annotation associated with this
     */
-   public <T extends Annotation> T getAnnotation(Class<T> type);
+   <T extends Annotation> T getAnnotation(Class<T> type);
    
    /**
     * This is used to describe the type as it exists within the
@@ -60,5 +60,5 @@ public interface Type {
     * 
     * @return this returns a string representation of the type
     */
-   public String toString();
+   String toString();
 }

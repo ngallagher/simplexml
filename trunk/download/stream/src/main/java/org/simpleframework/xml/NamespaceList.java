@@ -56,5 +56,5 @@ public @interface NamespaceList {
     * 
     * @return this returns the namespaces that are declared.
     */
-   public Namespace[] value() default {};
+   Namespace[] value() default {};
 }

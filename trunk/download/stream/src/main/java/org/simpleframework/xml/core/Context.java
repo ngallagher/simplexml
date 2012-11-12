@@ -59,7 +59,7 @@ interface Context {
     * 
     * @return this returns true if the deserialization is strict
     */
-   public boolean isStrict();
+   boolean isStrict();
    
    /**
     * This is used to acquire the <code>Style</code> for the format.
@@ -69,7 +69,7 @@ interface Context {
     * 
     * @return this returns the style used for this format object
     */
-   public Style getStyle();
+   Style getStyle();
    
    /**
     * This is used to acquire the <code>Session</code> object that 
@@ -79,7 +79,7 @@ interface Context {
     * 
     * @return this returns the session that is used by this source
     */
-   public Session getSession();
+   Session getSession();
    
    /**
     * This is used to acquire the <code>Support</code> object.
@@ -90,7 +90,7 @@ interface Context {
     * 
     * @return this returns the support used by the context
     */
-   public Support getSupport();
+   Support getSupport();
    
    /**
     * This is used to determine if the type specified is a floating
@@ -101,7 +101,7 @@ interface Context {
     * 
     * @return this returns true if the type is a floating point
     */
-   public boolean isFloat(Class type) throws Exception;
+   boolean isFloat(Class type) throws Exception;
    
    /**
     * This is used to determine if the type specified is a floating
@@ -112,7 +112,7 @@ interface Context {
     * 
     * @return this returns true if the type is a floating point
     */
-   public boolean isFloat(Type type) throws Exception;
+   boolean isFloat(Type type) throws Exception;
    
    /**
     * This is used to determine whether the scanned class represents
@@ -124,7 +124,7 @@ interface Context {
     * 
     * @return this returns true if no XML annotations were found
     */
-   public boolean isPrimitive(Class type) throws Exception;  
+   boolean isPrimitive(Class type) throws Exception;  
    
    /**
     * This is used to determine whether the scanned type represents
@@ -136,7 +136,7 @@ interface Context {
     * 
     * @return this returns true if no XML annotations were found
     */
-   public boolean isPrimitive(Type type) throws Exception;   
+   boolean isPrimitive(Type type) throws Exception;   
    
    /**
     * This will create an <code>Instance</code> that can be used
@@ -147,7 +147,7 @@ interface Context {
     * 
     * @return this will return an object for instantiating objects
     */
-   public Instance getInstance(Value value);
+   Instance getInstance(Value value);
 
    /**
     * This will create an <code>Instance</code> that can be used
@@ -158,7 +158,7 @@ interface Context {
     * 
     * @return this will return an object for instantiating objects
     */
-   public Instance getInstance(Class type);
+   Instance getInstance(Class type);
    
    /**
     * This is used to acquire the name of the specified type using
@@ -173,7 +173,7 @@ interface Context {
     * 
     * @throws Exception if the class contains an illegal schema
     */
-   public String getName(Class type) throws Exception;
+   String getName(Class type) throws Exception;
    
    /**
     * This is used to acquire the <code>Caller</code> object. This
@@ -185,7 +185,7 @@ interface Context {
     * 
     * @return this returns the caller for the specified type
     */
-   public Caller getCaller(Class type) throws Exception;
+   Caller getCaller(Class type) throws Exception;
    
    /**
     * This returns the version for the type specified. The version is
@@ -197,7 +197,7 @@ interface Context {
     * 
     * @return the version that has been set for this XML schema class
     */
-   public Version getVersion(Class type) throws Exception;
+   Version getVersion(Class type) throws Exception;
    
    /**
     * This will acquire the <code>Decorator</code> for the type.
@@ -210,7 +210,7 @@ interface Context {
     *
     * @return this returns the decorator associated with this
     */
-   public Decorator getDecorator(Class type) throws Exception;
+   Decorator getDecorator(Class type) throws Exception;
 
    /**
     * This creates a <code>Schema</code> object that can be used to
@@ -225,7 +225,7 @@ interface Context {
     * 
     * @throws Exception if the class contains an illegal schema 
     */   
-   public Schema getSchema(Class type) throws Exception;
+   Schema getSchema(Class type) throws Exception;
    
    /**
     * This is used to resolve and load a class for the given element.
@@ -243,7 +243,7 @@ interface Context {
     * 
     * @throws Exception thrown if the class cannot be resolved  
     */
-   public Value getOverride(Type type, InputNode node) throws Exception;
+   Value getOverride(Type type, InputNode node) throws Exception;
 
    /**    
     * This is used to attach elements or attributes to the given 
@@ -260,7 +260,7 @@ interface Context {
     * 
     * @throws Exception thrown if the details cannot be set
     */
-   public boolean setOverride(Type type, Object value, OutputNode node) throws Exception;
+   boolean setOverride(Type type, Object value, OutputNode node) throws Exception;
    
    /**
     * This is used to determine the type of an object given the 
@@ -273,7 +273,7 @@ interface Context {
     * 
     * @return the best match given the criteria
     */
-   public Class getType(Type type, Object value);
+   Class getType(Type type, Object value);
 
    /**
     * This is used to acquire the attribute mapped to the specified
@@ -284,7 +284,7 @@ interface Context {
     *
     * @return this returns the value mapped to the specified key
     */     
-   public Object getAttribute(Object key);
+   Object getAttribute(Object key);
    
    /**
     * Replaces any template variables within the provided string. 
@@ -297,5 +297,5 @@ interface Context {
     * 
     * @return this returns the text will all variables replaced
     */
-   public String getProperty(String text);
+   String getProperty(String text);
 }

@@ -19,7 +19,7 @@
 package org.simpleframework.xml.core;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
+import java.util.List;
 
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
@@ -32,7 +32,6 @@ import org.simpleframework.xml.ElementUnion;
 import org.simpleframework.xml.Order;
 import org.simpleframework.xml.Text;
 import org.simpleframework.xml.Version;
-import org.simpleframework.xml.stream.Format;
 
 /**
  * The <code>StructureBuilder</code> object is used to build the XML
@@ -93,10 +92,7 @@ class StructureBuilder {
     */
    private Scanner scanner;
    
-   /**
-    * This is the context object used by this serialization object.
-    */
-   private Format format;
+   private Support support;
    
    /**
     * This is the version annotation extracted from the class.
@@ -134,16 +130,16 @@ class StructureBuilder {
     * @param type this is the type that is being scanned
     * @param format this is the format used to style the XML
     */
-   public StructureBuilder(Scanner scanner, Class type, Format format) throws Exception {
-      this.builder = new ExpressionBuilder(type, format);
-      this.assembler = new ModelAssembler(builder, type, format);
-      this.resolver = new InstantiatorBuilder(scanner, type);
+   public StructureBuilder(Scanner scanner, Detail detail, Support support) throws Exception {
+      this.builder = new ExpressionBuilder(detail, support);
+      this.assembler = new ModelAssembler(builder, detail, support);
+      this.resolver = new InstantiatorBuilder(scanner, detail);
       this.root = new TreeModel(scanner, type);
       this.attributes = new LabelMap(scanner);
       this.elements = new LabelMap(scanner);
       this.texts = new LabelMap(scanner);
       this.scanner = scanner;
-      this.format = format;
+      this.support = support;
       this.type = type;
    }   
    
@@ -221,10 +217,9 @@ class StructureBuilder {
     * @throws Exception thrown if the label can not be created
     */   
    private void union(Contact field, Annotation type, LabelMap map) throws Exception {
-      Annotation[] list = extract(type);
+      List<Label> list = support.getLabels(field, type);
       
-      for(Annotation value : list) {
-         Label label = LabelFactory.getInstance(field, type, value, format);
+      for(Label label : list) {
          String path = label.getPath();
          String name = label.getName();
          
@@ -249,7 +244,7 @@ class StructureBuilder {
     * @throws Exception thrown if the label can not be created
     */   
    private void process(Contact field, Annotation type, LabelMap map) throws Exception {
-      Label label = LabelFactory.getInstance(field, type, format);
+      Label label = support.getLabel(field, type);
       String path = label.getPath();
       String name = label.getName();
       
@@ -297,7 +292,7 @@ class StructureBuilder {
     * @throws Exception if there is more than one text annotation
     */   
    private void text(Contact field, Annotation type) throws Exception {
-      Label label = LabelFactory.getInstance(field, type, format);
+      Label label = support.getLabel(field, type);
       Expression expression = label.getExpression();
       String path = label.getPath();
       Model model = root;
@@ -325,36 +320,14 @@ class StructureBuilder {
     * @throws Exception if there is more than one text annotation
     */   
    private void version(Contact field, Annotation type) throws Exception {
-      Label label = LabelFactory.getInstance(field, type, format);
+      Label label = support.getLabel(field, type);
       
       if(version != null) {
          throw new AttributeException("Multiple version annotations in %s", type);
       }
       version = label;
    }
-   
-   /**
-    * This is used to extract the individual annotations associated
-    * with the union annotation provided. If the annotation does
-    * not represent a union then this will return null.
-    * 
-    * @param label this is the annotation to extract from
-    * 
-    * @return this returns an array of annotations from the union
-    */
-   private Annotation[] extract(Annotation label) throws Exception {
-      Class union = label.annotationType();
-      Method[] list = union.getDeclaredMethods();
-      
-      if(list.length != 1) {
-         throw new UnionException("Annotation '%s' is not a valid union for %s", label, type);
-      }
-      Method method = list[0];
-      Object value = method.invoke(label);
-      
-      return (Annotation[])value;
-   }
-   
+
    /**
     * This is used to build the <code>Structure</code> that has been
     * built. The structure will contain all the details required to

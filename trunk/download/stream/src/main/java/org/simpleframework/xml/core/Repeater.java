@@ -47,6 +47,6 @@ interface Repeater extends Converter {
     * 
     * @throws Exception if a deserialized type cannot be instantiated
     */
-   public Object read(InputNode node, Object value) throws Exception;
+   Object read(InputNode node, Object value) throws Exception;
 
 }

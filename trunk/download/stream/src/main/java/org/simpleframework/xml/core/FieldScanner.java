@@ -55,30 +55,13 @@ class FieldScanner extends ContactList {
    private final AnnotationFactory factory;
    
    /**
-    * This is used to acquire the hierarchy for the class scanned.
-    */
-   private final Hierarchy hierarchy;
-   
-   /**
-    * This is the default access type to be used for this scanner.
-    */
-   private final DefaultType access;
-   
-   /**
     * This is used to determine which fields have been scanned.
     */
    private final ContactMap done;
    
-   /**
-    * Constructor for the <code>FieldScanner</code> object. This is
-    * used to perform a scan on the specified class in order to find
-    * all fields that are labeled with an XML annotation.
-    * 
-    * @param type this is the schema class that is to be scanned
-    */
-   public FieldScanner(Class type) throws Exception {
-      this(type, null);
-   }
+   private final Support support;
+   
+   private final Detail detail;
    
    /**
     * Constructor for the <code>FieldScanner</code> object. This is
@@ -86,27 +69,16 @@ class FieldScanner extends ContactList {
     * all fields that are labeled with an XML annotation.
     * 
     * @param type this is the schema class that is to be scanned
-    * @param access this is the access type for the class
     */
-   public FieldScanner(Class type, DefaultType access) throws Exception {
-      this(type, access, true);
-   }
-   
-   /**
-    * Constructor for the <code>FieldScanner</code> object. This is
-    * used to perform a scan on the specified class in order to find
-    * all fields that are labeled with an XML annotation.
-    * 
-    * @param type this is the schema class that is to be scanned
-    * @param access this is the access type for the class
-    * @param required this is used to determine the requirement
-    */
-   public FieldScanner(Class type, DefaultType access, boolean required) throws Exception {
-      this.factory = new AnnotationFactory(required);
-      this.hierarchy = new Hierarchy(type);
+   public FieldScanner(Detail detail, Support support) throws Exception {
+      if(detail.toString().indexOf("PersonD") != -1) {
+         System.err.println();
+      }
+      this.factory = new AnnotationFactory(detail);
       this.done = new ContactMap();
-      this.access = access;
-      this.scan(type);
+      this.support = support;
+      this.detail = detail;
+      this.scan(detail);
    }
    
    /**
@@ -119,14 +91,25 @@ class FieldScanner extends ContactList {
     * 
     * @throws Exception thrown if the object schema is invalid
     */
-   private void scan(Class type) throws Exception {
-      for(Class next : hierarchy) {
-         scan(next, access);
-      } 
-      for(Class next : hierarchy) {
-         scan(next, type);
-      }  
+   private void scan(Detail detail) throws Exception {
+      DefaultType access = detail.getAccess();
+      Class type = detail.getType();
+      Class base = detail.getSuper();
+      
+      if(base != null) {
+         extend(base);
+      }
+      scan(type, access);
+      scan(type, type);
       build();
+   }
+   
+   private void extend(Class base) throws Exception {
+      ContactList list = support.getFields(base);
+      
+      if(list != null) {
+         addAll(list);
+      }
    }
    
    /**

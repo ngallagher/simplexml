@@ -62,7 +62,7 @@ public @interface Text {
     * 
     * @return this returns the default attribute value to use
     */
-   public String empty() default "";
+   String empty() default "";
    
    /**
     * This is used to determine whether the text is written within 
@@ -72,7 +72,7 @@ public @interface Text {
     * 
     * @return true if the data is to be wrapped in a CDATA block
     */
-   public boolean data() default false;
+   boolean data() default false;
    
    /**
     * Determines whether the text value is required within the XML
@@ -82,5 +82,5 @@ public @interface Text {
     * 
     * @return true if the element is required, false otherwise
     */
-   public boolean required() default true; 
+   boolean required() default true; 
 }

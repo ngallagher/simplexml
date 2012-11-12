@@ -47,9 +47,9 @@ class ClassInstantiator implements Instantiator {
    private final Creator primary;
 
    /**
-    * This is the type that object instances are created for.
+    * This contains the details for the class to instantiate.
     */
-   private final Class type;
+   private final Detail detail;
    
    /**
     * Constructor for the <code>ClassCreator</code> object. This is
@@ -59,13 +59,13 @@ class ClassInstantiator implements Instantiator {
     * @param creators contains the list of all constructors available
     * @param primary this is the default no argument constructor
     * @param registry contains all parameters for the constructors
-    * @param type this is the type that instances are created for
+    * @param detail contains the details for the instantiated class
     */
-   public ClassInstantiator(List<Creator> creators, Creator primary, ParameterMap registry, Class type) {
+   public ClassInstantiator(List<Creator> creators, Creator primary, ParameterMap registry, Detail detail) {
       this.creators = creators;
       this.registry = registry;
       this.primary = primary;
-      this.type = type;
+      this.detail = detail;
    }
 
    /**
@@ -109,7 +109,7 @@ class ClassInstantiator implements Instantiator {
       Creator creator = getCreator(criteria);
       
       if(creator == null) {
-         throw new PersistenceException("Constructor not matched for %s", type);
+         throw new PersistenceException("Constructor not matched for %s", detail);
       }
       return creator.getInstance(criteria);
    }
@@ -185,6 +185,6 @@ class ClassInstantiator implements Instantiator {
     * @return this returns a visible description of the creator
     */
    public String toString() {
-      return String.format("creator for %s", type);
+      return String.format("creator for %s", detail);
    }
 }

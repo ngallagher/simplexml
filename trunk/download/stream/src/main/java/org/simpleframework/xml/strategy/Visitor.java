@@ -54,7 +54,7 @@ public interface Visitor {
     * @param type this is the type that represents the element
     * @param node this is the XML element to be intercepted
     */
-   public void read(Type type, NodeMap<InputNode> node) throws Exception;
+   void read(Type type, NodeMap<InputNode> node) throws Exception;
    
    /**
     * This is used to intercept an XML element after it is written
@@ -67,5 +67,5 @@ public interface Visitor {
     * @param type this is the type that represents the element
     * @param node this is the XML element to be intercepted
     */
-   public void write(Type type, NodeMap<OutputNode> node) throws Exception;
+   void write(Type type, NodeMap<OutputNode> node) throws Exception;
 }

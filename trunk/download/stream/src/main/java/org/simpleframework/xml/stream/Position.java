@@ -35,7 +35,7 @@ public interface Position {
     *
     * @return this returns the line number of an XML event 
     */        
-   public int getLine();
+   int getLine();
 
    /**
     * This provides a textual description of the position the 
@@ -44,5 +44,5 @@ public interface Position {
     *
     * @return this returns a textual description of the position
     */ 
-   public String toString();   
+   String toString();   
 }

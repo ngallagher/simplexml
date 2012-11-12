@@ -49,22 +49,12 @@ class AnnotationFactory {
    /**
     * Constructor for the <code>AnnotationFactory</code> object. This
     * is used to create a factory for annotations used to provide
-    * the default annotations for generated labels. By default this
-    * will set the requirement of annotations to true.
-    */
-   public AnnotationFactory() {
-      this(true);
-   }
-   
-   /**
-    * Constructor for the <code>AnnotationFactory</code> object. This
-    * is used to create a factory for annotations used to provide
     * the default annotations for generated labels.
     * 
-    * @param required used to determine if the annotation is required
+    * @param detail this contains details for the annotated class
     */
-   public AnnotationFactory(boolean required) {
-      this.required = required;
+   public AnnotationFactory(Detail detail) {
+      this.required = detail.isRequired();
    }
   
    /**

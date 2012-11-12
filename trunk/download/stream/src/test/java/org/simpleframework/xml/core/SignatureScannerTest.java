@@ -45,7 +45,7 @@ public class SignatureScannerTest extends ScannerCreatorTest {
       Constructor factory = UnionExample.class.getDeclaredConstructor(Object.class);
       ParameterMap registry = new ParameterMap();
       Format format = new Format();
-      SignatureScanner scanner = new SignatureScanner(factory, registry, format);
+      SignatureScanner scanner = new SignatureScanner(factory, registry, new Support());
       List<Signature> signatures = scanner.getSignatures();
       
       assertTrue(scanner.isValid());
@@ -56,7 +56,7 @@ public class SignatureScannerTest extends ScannerCreatorTest {
       Constructor factory = UnionBigPermutationExample.class.getDeclaredConstructor(Object.class, Object.class);
       ParameterMap registry = new ParameterMap();
       Format format = new Format();
-      SignatureScanner scanner = new SignatureScanner(factory, registry, format);
+      SignatureScanner scanner = new SignatureScanner(factory, registry, new Support());
       List<Signature> signatures = scanner.getSignatures();
       
       assertTrue(scanner.isValid());

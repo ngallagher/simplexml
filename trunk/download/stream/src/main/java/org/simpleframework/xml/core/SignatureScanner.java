@@ -36,7 +36,6 @@ import org.simpleframework.xml.ElementMap;
 import org.simpleframework.xml.ElementMapUnion;
 import org.simpleframework.xml.ElementUnion;
 import org.simpleframework.xml.Text;
-import org.simpleframework.xml.stream.Format;
 
 /**
  * The <code>SignatureScanner</code> object is used to scan each of
@@ -56,6 +55,8 @@ class SignatureScanner {
     */
    private final SignatureBuilder builder;
    
+   private final ParameterFactory factory;
+   
    /**
     * This is used to collect all the parameters that are extracted.
     */
@@ -64,12 +65,7 @@ class SignatureScanner {
    /**
     * This is the constructor that is scanned for the parameters.
     */
-   private final Constructor factory;
-   
-   /**
-    * This is the format used to style the elements on a parameter.
-    */
-   private final Format format;
+   private final Constructor constructor;
    
    /**
     * This is the declaring class for the constructor scanned.
@@ -82,16 +78,16 @@ class SignatureScanner {
     * for parameters within the constructor this will collect each
     * of the scanned parameters in a registry so it can be validated.
     * 
-    * @param factory this is the constructor that will be scanned
+    * @param constructor this is the constructor that will be scanned
     * @param registry this is the registry used to collect parameters
     * @param format this is the format used to style parameters
     */
-   public SignatureScanner(Constructor factory, ParameterMap registry, Format format) throws Exception {
-      this.builder = new SignatureBuilder(factory);
-      this.type = factory.getDeclaringClass();
+   public SignatureScanner(Constructor constructor, ParameterMap registry, Support support) throws Exception {
+      this.builder = new SignatureBuilder(constructor);
+      this.factory = new ParameterFactory(support);
+      this.type = constructor.getDeclaringClass();
+      this.constructor = constructor;
       this.registry = registry;
-      this.factory = factory;
-      this.format = format;
       this.scan(type);
    }
    
@@ -128,7 +124,7 @@ class SignatureScanner {
     * @param type this is the constructor that is to be scanned
     */
    private void scan(Class type) throws Exception {
-      Class[] types = factory.getParameterTypes();
+      Class[] types = constructor.getParameterTypes();
 
       for(int i = 0; i < types.length; i++) {         
          scan(types[i], i);
@@ -145,7 +141,7 @@ class SignatureScanner {
     * @param index this is the index of the parameter to scan
     */
    private void scan(Class type, int index) throws Exception {
-      Annotation[][] labels = factory.getParameterAnnotations();
+      Annotation[][] labels = constructor.getParameterAnnotations();
         
       for(int j = 0; j < labels[index].length; j++) {
          Collection<Parameter> value = process(labels[index][j], index); 
@@ -208,11 +204,11 @@ class SignatureScanner {
     * @return this returns the parameter for the constructor
     */
    private List<Parameter> union(Annotation label, int ordinal) throws Exception {
-      Signature signature = new Signature(factory);
+      Signature signature = new Signature(constructor);
       Annotation[] list = extract(label);
 
       for(Annotation value : list) {
-         Parameter parameter = ParameterFactory.getInstance(factory, label, value, format, ordinal);
+         Parameter parameter = factory.getInstance(constructor, label, value, ordinal);
          String path = parameter.getPath(); 
          
          if(signature.contains(path)) {
@@ -236,7 +232,7 @@ class SignatureScanner {
     * @return this returns the parameter for the constructor
     */
    private List<Parameter> create(Annotation label, int ordinal) throws Exception {
-      Parameter parameter = ParameterFactory.getInstance(factory, label, format, ordinal);
+      Parameter parameter = factory.getInstance(constructor, label, ordinal);
       
       if(parameter != null) {
          register(parameter);
@@ -306,12 +302,12 @@ class SignatureScanner {
          String path = parameter.getPath();
          
          if(!expect.equals(actual)) {
-         throw new ConstructorException("Annotations do not match for '%s' in %s", path, type);
-      }
+            throw new ConstructorException("Annotations do not match for '%s' in %s", path, type);
+         }
          Class real = other.getType();
       
          if(real != parameter.getType()) {
-         throw new ConstructorException("Parameter types do not match for '%s' in %s", path, type);
+            throw new ConstructorException("Parameter types do not match for '%s' in %s", path, type);
          }
       }
    }

@@ -59,7 +59,7 @@ class ModelAssembler {
    /**
     * This is the type this this is assembling the model for.
     */
-   private final Class type;
+   private final Detail detail;
 
    /**
     * Constructor for the <code>ModelAssembler</code> object. If
@@ -70,10 +70,10 @@ class ModelAssembler {
     * @param type this is the type to assemble the model for
     * @param format the format used to style order values
     */
-   public ModelAssembler(ExpressionBuilder builder, Class type, Format format) throws Exception {
+   public ModelAssembler(ExpressionBuilder builder, Detail detail, Support support) throws Exception {
+      this.format = support.getFormat();
       this.builder = builder;     
-      this.format = format;
-      this.type = type;
+      this.detail = detail;
    }
    
    /**
@@ -104,7 +104,7 @@ class ModelAssembler {
          Expression path = builder.build(value);
          
          if(path.isAttribute()) {
-            throw new PathException("Ordered element '%s' references an attribute in %s", path, type);
+            throw new PathException("Ordered element '%s' references an attribute in %s", path, detail);
          }         
          registerElements(model, path);         
       }
@@ -124,7 +124,7 @@ class ModelAssembler {
          Expression path = builder.build(value);
          
          if(!path.isAttribute() && path.isPath()) {
-            throw new PathException("Ordered attribute '%s' references an element in %s", path, type);
+            throw new PathException("Ordered attribute '%s' references an element in %s", path, detail);
          }
          if(!path.isPath()) {
             Style style = format.getStyle();
@@ -155,7 +155,7 @@ class ModelAssembler {
          Expression child = path.getPath(1);
          
          if(next == null) {
-            throw new PathException("Element '%s' does not exist in %s", name, type);
+            throw new PathException("Element '%s' does not exist in %s", name, detail);
          }
          registerAttributes(next, child);
       } else {         
@@ -233,7 +233,7 @@ class ModelAssembler {
          Model previous = model.lookup(name, index -1);
          
          if(previous == null) {
-            throw new PathException("Ordered element '%s' in path '%s' is out of sequence for %s", name, path, type);
+            throw new PathException("Ordered element '%s' in path '%s' is out of sequence for %s", name, path, detail);
          }
       }
       model.register(name, prefix, index);

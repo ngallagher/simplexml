@@ -39,7 +39,7 @@ interface Criteria extends Iterable<Object> {
     * 
     * @return this returns the keyed variable if it exists
     */
-   public Variable get(Object key) throws Exception;
+   Variable get(Object key) throws Exception;
    
    /**
     * This is used to get the <code>Variable</code> that represents
@@ -51,7 +51,7 @@ interface Criteria extends Iterable<Object> {
     * 
     * @return this returns the variable associated with the label
     */
-   public Variable get(Label label) throws Exception;
+   Variable get(Label label) throws Exception;
    
    /**
     * This is used to resolve the <code>Variable</code> by using 
@@ -62,7 +62,7 @@ interface Criteria extends Iterable<Object> {
     * 
     * @return this returns the variable mapped to the path
     */
-   public Variable resolve(String path) throws Exception;
+   Variable resolve(String path) throws Exception;
    
    /**
     * This is used to remove the <code>Variable</code> from this
@@ -74,7 +74,7 @@ interface Criteria extends Iterable<Object> {
     * 
     * @return this returns the keyed variable if it exists
     */
-   public Variable remove(Object key) throws Exception;
+   Variable remove(Object key) throws Exception;
    
    /**
     * This is used to create a <code>Variable</code> and set it for
@@ -85,7 +85,7 @@ interface Criteria extends Iterable<Object> {
     * @param label this is the label used to create the pointer
     * @param value this is the value of the object to be read
     */
-   public void set(Label label, Object value) throws Exception;
+   void set(Label label, Object value) throws Exception;
    
    /**
     * This is used to set the values for the methods and fields of
@@ -95,5 +95,5 @@ interface Criteria extends Iterable<Object> {
     * 
     * @param source this is the object that is to be populated
     */
-   public void commit(Object source) throws Exception;
+   void commit(Object source) throws Exception;
 }

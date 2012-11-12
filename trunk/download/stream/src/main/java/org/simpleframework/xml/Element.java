@@ -63,7 +63,7 @@ public @interface Element {
     * 
     * @return the name of the XML element this represents
     */
-   public String name() default "";
+   String name() default "";
    
    /**
     * This is used to determine whether the element data is written
@@ -73,7 +73,7 @@ public @interface Element {
     * 
     * @return true if the data is to be wrapped in a CDATA block
     */
-   public boolean data() default false;
+   boolean data() default false;
    
    /**
     * Determines whether the element is required within the XML
@@ -83,7 +83,7 @@ public @interface Element {
     * 
     * @return true if the element is required, false otherwise
     */
-   public boolean required() default true; 
+   boolean required() default true; 
    
    /**
     * This represents an explicit type that should be used for the
@@ -93,5 +93,5 @@ public @interface Element {
     * 
     * @return this returns the explicit type to use for this
     */
-   public Class type() default void.class;
+   Class type() default void.class;
 }

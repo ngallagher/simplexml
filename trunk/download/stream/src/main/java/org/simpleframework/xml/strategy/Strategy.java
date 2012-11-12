@@ -73,7 +73,7 @@ public interface Strategy {
     * 
     * @throws Exception thrown if the class cannot be resolved
     */
-   public Value read(Type type, NodeMap<InputNode> node, Map map) throws Exception;
+   Value read(Type type, NodeMap<InputNode> node, Map map) throws Exception;
 
    /**
     * This is used to attach attribute values to the given node
@@ -91,6 +91,6 @@ public interface Strategy {
     * 
     * @throws Exception thrown if the details cannot be set
     */
-   public boolean write(Type type, Object value, NodeMap<OutputNode> node, Map map) throws Exception;
+   boolean write(Type type, Object value, NodeMap<OutputNode> node, Map map) throws Exception;
 
 }

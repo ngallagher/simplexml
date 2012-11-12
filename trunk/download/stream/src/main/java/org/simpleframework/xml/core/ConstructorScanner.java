@@ -23,8 +23,6 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.simpleframework.xml.stream.Format;
-
 /**
  * The <code>ConstructorScanner</code> object is used to scan all 
  * all constructors that have XML annotations for their parameters. 
@@ -58,7 +56,7 @@ class ConstructorScanner {
    /**
     * This is the format used to style the parameters extracted.
     */
-   private Format format;
+   private Support support;
    
    /**
     * Constructor for the <code>ConstructorScanner</code> object. 
@@ -68,11 +66,11 @@ class ConstructorScanner {
     * 
     * @param type this is the type that is to be scanned
     */
-   public ConstructorScanner(Class type, Format format) throws Exception {
+   public ConstructorScanner(Detail detail, Support support) throws Exception {
       this.signatures = new ArrayList<Signature>();
       this.registry = new ParameterMap();
-      this.format = format;
-      this.scan(type);
+      this.support = support;
+      this.scan(detail);
    }
    
    /**
@@ -117,14 +115,14 @@ class ConstructorScanner {
     * 
     * @param type this is the type that is to be scanned
     */
-   private void scan(Class type) throws Exception {
-      Constructor[] array = type.getDeclaredConstructors();
+   private void scan(Detail detail) throws Exception {
+      Constructor[] array = detail.getConstructors();
       
-      if(!isInstantiable(type)) {
-         throw new ConstructorException("Can not construct inner %s", type);
+      if(!detail.isInstantiable()) {
+         throw new ConstructorException("Can not construct inner %s", detail);
       }
       for(Constructor factory: array){
-         if(!type.isPrimitive()) { 
+         if(!detail.isPrimitive()) { 
             scan(factory);
          }
       } 
@@ -138,7 +136,7 @@ class ConstructorScanner {
     * @param factory the constructor to scan for parameters
     */
    private void scan(Constructor factory) throws Exception {
-      SignatureScanner scanner = new SignatureScanner(factory, registry, format);
+      SignatureScanner scanner = new SignatureScanner(factory, registry, support);
 
       if(scanner.isValid()) {
          List<Signature> list = scanner.getSignatures();
@@ -148,9 +146,9 @@ class ConstructorScanner {
                
             if(size == 0) {
                primary = signature;
-               }
-            signatures.add(signature);
             }
+            signatures.add(signature);
+         }
       }
    }
    

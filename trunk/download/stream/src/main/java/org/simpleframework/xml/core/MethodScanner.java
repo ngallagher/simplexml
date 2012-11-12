@@ -30,12 +30,12 @@ import org.simpleframework.xml.DefaultType;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementArray;
 import org.simpleframework.xml.ElementList;
+import org.simpleframework.xml.ElementListUnion;
 import org.simpleframework.xml.ElementMap;
+import org.simpleframework.xml.ElementMapUnion;
+import org.simpleframework.xml.ElementUnion;
 import org.simpleframework.xml.Text;
 import org.simpleframework.xml.Transient;
-import org.simpleframework.xml.ElementUnion;
-import org.simpleframework.xml.ElementListUnion;
-import org.simpleframework.xml.ElementMapUnion;
 import org.simpleframework.xml.Version;
 
 /**
@@ -67,15 +67,8 @@ class MethodScanner extends ContactList {
     */
    private final MethodPartFactory factory;
    
-   /**
-    * This is used to acquire the hierarchy for the class scanned.
-    */
-   private final Hierarchy hierarchy;
    
-   /**
-    * This is the default access type to be used for this scanner.
-    */
-   private final DefaultType access;
+   private final Support support;
    
    /**
     * This is used to collect all the set methods from the object.
@@ -86,11 +79,10 @@ class MethodScanner extends ContactList {
     * This is used to collect all the get methods from the object.
     */
    private final PartMap read;
+
+   private final Detail detail;
    
-   /**
-    * This is the type of the object that is being scanned.
-    */
-   private final Class type;
+
    
    /**
     * Constructor for the <code>MethodScanner</code> object. This is
@@ -102,45 +94,13 @@ class MethodScanner extends ContactList {
     * 
     * @throws Exception thrown if there was a problem scanning
     */
-   public MethodScanner(Class type) throws Exception {
-      this(type, null);
-   }
-   
-   /**
-    * Constructor for the <code>MethodScanner</code> object. This is
-    * used to create an object that will scan the specified class
-    * such that all bean property methods can be paired under the
-    * XML annotation specified within the class.
-    * 
-    * @param type this is the type that is to be scanned for methods
-    * @param access this is the access type for default values
-    * 
-    * @throws Exception thrown if there was a problem scanning
-    */
-   public MethodScanner(Class type, DefaultType access) throws Exception {
-      this(type, access, true);
-   }
-   
-   /**
-    * Constructor for the <code>MethodScanner</code> object. This is
-    * used to create an object that will scan the specified class
-    * such that all bean property methods can be paired under the
-    * XML annotation specified within the class.
-    * 
-    * @param type this is the type that is to be scanned for methods
-    * @param access this is the access type for default values
-    * @param required used to determine if defaults are required
-    * 
-    * @throws Exception thrown if there was a problem scanning
-    */
-   public MethodScanner(Class type, DefaultType access, boolean required) throws Exception {
-      this.factory = new MethodPartFactory(required);
-      this.hierarchy = new Hierarchy(type);
+   public MethodScanner(Detail detail, Support support) throws Exception {
+      this.factory = new MethodPartFactory(detail);
       this.write = new PartMap();
       this.read = new PartMap();
-      this.access = access;
-      this.type = type;
-      this.scan(type);
+      this.support = support;
+      this.detail = detail;
+      this.scan(detail);
    }
    
    /**
@@ -153,15 +113,26 @@ class MethodScanner extends ContactList {
     * 
     * @throws Exception thrown if the object schema is invalid
     */
-   private void scan(Class type) throws Exception {
-      for(Class next : hierarchy) {
-         scan(next, access);
+   private void scan(Detail detail) throws Exception {
+      DefaultType access = detail.getAccess();
+      Class type = detail.getType();
+      Class base = detail.getSuper();
+
+      if(base != null) {
+         extend(base);
       }
-      for(Class next : hierarchy) {
-         scan(next, type);
-      } 
+      scan(type, access);
+      scan(type, type);
       build();
       validate();
+   }
+   
+   private void extend(Class base) throws Exception {
+      ContactList list = support.getMethods(base);
+      
+      for(Contact contact : list) {
+         process((MethodContact)contact);
+      }
    }
    
    /**
@@ -344,6 +315,17 @@ class MethodScanner extends ContactList {
       }
    }
    
+   private void process(MethodContact contact) {
+      MethodPart get = contact.getRead();
+      MethodPart set = contact.getWrite();
+      String name = get.getName();
+      
+      if(set != null) {
+         write.put(name, set);
+      }
+      read.put(name,  get);
+   }
+   
    /**
     * This method is used to remove a particular method from the list
     * of contacts. If the <code>Transient</code> annotation is used
@@ -424,7 +406,7 @@ class MethodScanner extends ContactList {
       if(match != null) {
          build(read, match);
       } else {
-         build(read); // read only
+         build(read); 
       }
    }   
    
@@ -459,7 +441,7 @@ class MethodScanner extends ContactList {
       String name = read.getName();
       
       if(!write.getAnnotation().equals(label)) {
-         throw new MethodException("Annotations do not match for '%s' in %s", name, type);
+         throw new MethodException("Annotations do not match for '%s' in %s", name, detail);
       }
       Class type = read.getType();
       
@@ -503,7 +485,7 @@ class MethodScanner extends ContactList {
       Method method = write.getMethod();      
          
       if(match == null) {
-         throw new MethodException("No matching get method for %s in %s", method, type);
+         throw new MethodException("No matching get method for %s in %s", method, detail);
       }      
    }
    

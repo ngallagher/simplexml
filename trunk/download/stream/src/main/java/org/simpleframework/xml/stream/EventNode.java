@@ -41,7 +41,7 @@ interface EventNode extends Iterable<Attribute> {
     * 
     * @return this returns the line number if it is available
     */
-   public int getLine();
+   int getLine();
    
    /**
     * This provides the name of the event. Typically this will be
@@ -51,7 +51,7 @@ interface EventNode extends Iterable<Attribute> {
     * 
     * @return this returns the name of this event or null
     */
-   public String getName();
+   String getName();
    
    /**
     * This returns the value of the event. Typically this will be
@@ -61,7 +61,7 @@ interface EventNode extends Iterable<Attribute> {
     * 
     * @return this returns the value represented by this event
     */
-   public String getValue();
+   String getValue();
    
    /**
     * This is used to acquire the namespace reference that this 
@@ -71,7 +71,7 @@ interface EventNode extends Iterable<Attribute> {
     * 
     * @return this will provide the associated namespace reference
     */
-   public String getReference();
+   String getReference();
    
    /**
     * This is used to acquire the namespace prefix associated with
@@ -81,7 +81,7 @@ interface EventNode extends Iterable<Attribute> {
     * 
     * @return this returns the namespace prefix for this event
     */
-   public String getPrefix();
+   String getPrefix();
    
    /**
     * This is used to return the source of the event. Depending on
@@ -91,7 +91,7 @@ interface EventNode extends Iterable<Attribute> {
     * 
     * @return this will return the source object for this event
     */
-   public Object getSource();
+   Object getSource();
    
    /**
     * This is true when the node represents an element close. Such
@@ -101,7 +101,7 @@ interface EventNode extends Iterable<Attribute> {
     * 
     * @return this returns true if the event is an element close
     */
-   public boolean isEnd();
+   boolean isEnd();
    
    /**
     * This is true when the node represents a new element. This is
@@ -111,7 +111,7 @@ interface EventNode extends Iterable<Attribute> {
     * 
     * @return this returns true if the event represents an element
     */
-   public boolean isStart();
+   boolean isStart();
  
    /**
     * This is true when the node represents a text token. Text 
@@ -120,5 +120,5 @@ interface EventNode extends Iterable<Attribute> {
     *  
     * @return this returns true if this represents text  
     */
-   public boolean isText();
+   boolean isText();
 }

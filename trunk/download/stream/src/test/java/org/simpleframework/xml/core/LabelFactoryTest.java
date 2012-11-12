@@ -29,22 +29,24 @@ public class LabelFactoryTest extends TestCase {
    }
 
    public void testUnion() throws Exception {
-      FieldScanner scanner = new FieldScanner(Example.class);
+      FieldScanner scanner = new FieldScanner(new DetailScanner(Example.class), new Support());
+      Support support = new Support();
       Contact contact = scanner.get(0);
       Element element = ((ElementUnion)contact.getAnnotation()).value()[0];
-      Label unionLabel = LabelFactory.getInstance(contact, contact.getAnnotation(), element, new Format());
-      Label elementLabel = LabelFactory.getInstance(contact, element, new Format());
+      Label unionLabel = support.getLabel(contact, contact.getAnnotation());
+      Label elementLabel = support.getLabel(contact, element);
       
       assertEquals(unionLabel.getName(), "a");
       assertEquals(elementLabel.getName(), "a");
    }
    
    public void testUnionList() throws Exception {
-      FieldScanner scanner = new FieldScanner(ExampleList.class);
+      FieldScanner scanner = new FieldScanner(new DetailScanner(ExampleList.class), new Support());
+      Support support = new Support();
       Contact contact = scanner.get(0);
       ElementList element = ((ElementListUnion)contact.getAnnotation()).value()[0];
-      Label unionLabel = LabelFactory.getInstance(contact, contact.getAnnotation(), element, new Format());
-      Label elementLabel = LabelFactory.getInstance(contact, element, new Format());
+      Label unionLabel = support.getLabel(contact, contact.getAnnotation());
+      Label elementLabel = support.getLabel(contact, element);
       
       assertEquals(unionLabel.getName(), "a");
       assertEquals(elementLabel.getName(), "a");

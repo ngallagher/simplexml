@@ -39,7 +39,7 @@ interface Instance {
     * 
     * @return an instance of the type this object represents
     */
-   public Object getInstance() throws Exception;
+   Object getInstance() throws Exception;
    
    /**
     * This method is used acquire the value from the type and if
@@ -51,7 +51,7 @@ interface Instance {
     * 
     * @return an instance of the type this object represents
     */
-   public Object setInstance(Object value) throws Exception;
+   Object setInstance(Object value) throws Exception;
    
    /**
     * This is used to determine if the type is a reference type.
@@ -61,7 +61,7 @@ interface Instance {
     * 
     * @return this returns true if the object is a reference
     */
-   public boolean isReference();
+   boolean isReference();
    
    /**
     * This is the type of the object instance that will be created
@@ -70,5 +70,5 @@ interface Instance {
     * 
     * @return the type of the object that will be instantiated
     */
-   public Class getType();
+   Class getType();
 }

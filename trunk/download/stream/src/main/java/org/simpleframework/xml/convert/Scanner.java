@@ -41,5 +41,5 @@ interface Scanner {
     * 
     * @return this will return the annotation if it is found
     */
-   public <T extends Annotation> T scan(Class<T> type);
+   <T extends Annotation> T scan(Class<T> type);
 }

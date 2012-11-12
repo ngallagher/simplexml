@@ -52,7 +52,7 @@ interface Expression extends Iterable<String> {
     * 
     * @return this returns the index of this path expression
     */
-   public int getIndex();
+   int getIndex();
    
    /**
     * This is used to extract a namespace prefix from the path
@@ -62,7 +62,7 @@ interface Expression extends Iterable<String> {
     * 
     * @return this returns the prefix for the path expression
     */
-   public String getPrefix();
+   String getPrefix();
    
    /**
     * This can be used to acquire the first path segment within
@@ -72,7 +72,7 @@ interface Expression extends Iterable<String> {
     * 
     * @return this returns the parent element for the path
     */
-   public String getFirst();
+   String getFirst();
 
    /**
     * This can be used to acquire the last path segment within
@@ -82,7 +82,7 @@ interface Expression extends Iterable<String> {
     * 
     * @return this returns the leaf element for the path
     */   
-   public String getLast();
+   String getLast();
    
    /**
     * This location contains the full path expression with all
@@ -92,7 +92,7 @@ interface Expression extends Iterable<String> {
     * 
     * @return this returns an expanded version of the path
     */
-   public String getPath();
+   String getPath();
    
    /**
     * This is used to acquire the element path using this XPath
@@ -104,7 +104,7 @@ interface Expression extends Iterable<String> {
     * 
     * @return a fully qualified path for the specified name
     */
-   public String getElement(String name);
+   String getElement(String name);
    
    /**
     * This is used to acquire the attribute path using this XPath
@@ -116,7 +116,7 @@ interface Expression extends Iterable<String> {
     * 
     * @return a fully qualified path for the specified name
     */
-   public String getAttribute(String name);
+   String getAttribute(String name);
    
    /**
     * This allows an expression to be extracted from the current
@@ -129,7 +129,7 @@ interface Expression extends Iterable<String> {
     * 
     * @return this returns an expression from this one
     */
-   public Expression getPath(int from);
+   Expression getPath(int from);
    
    /**
     * This allows an expression to be extracted from the current
@@ -143,7 +143,7 @@ interface Expression extends Iterable<String> {
     * 
     * @return this returns an expression from this one
     */
-   public Expression getPath(int from, int trim);
+   Expression getPath(int from, int trim);
    
    /**
     * This is used to determine if the expression points to an
@@ -153,7 +153,7 @@ interface Expression extends Iterable<String> {
     * 
     * @return this returns true if the path has an attribute
     */
-   public boolean isAttribute();
+   boolean isAttribute();
    
    /**
     * This is used to determine if the expression is a path. An
@@ -162,7 +162,7 @@ interface Expression extends Iterable<String> {
     * 
     * @return true if this contains more than one segment
     */
-   public boolean isPath();
+   boolean isPath();
    
    /**
     * This method is used to determine if this expression is an
@@ -171,7 +171,7 @@ interface Expression extends Iterable<String> {
     * 
     * @return returns true if this represents an empty path
     */
-   public boolean isEmpty();
+   boolean isEmpty();
 
    /**
     * Provides a canonical XPath expression. This is used for both
@@ -180,5 +180,5 @@ interface Expression extends Iterable<String> {
     * 
     * @return this returns the string format for the XPath
     */
-   public String toString();
+   String toString();
 }

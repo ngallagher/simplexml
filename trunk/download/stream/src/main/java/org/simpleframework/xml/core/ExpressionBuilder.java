@@ -50,7 +50,7 @@ class ExpressionBuilder {
    /**
     * This is the type the expressions are being built for.
     */
-   private final Type type;
+   private final Class type;
    
    /**
     * Constructor for the <code>ExpressionBuilder</code>. This is
@@ -60,22 +60,10 @@ class ExpressionBuilder {
     * @param type this is the type containing the expressions
     * @param format this is the format used to style the segments
     */
-   public ExpressionBuilder(Class type, Format format) {
-      this(new ClassType(type), format);
-   }
-   
-   /**
-    * Constructor for the <code>ExpressionBuilder</code>. This is
-    * used to create a builder to cache frequently requested XPath
-    * expressions. Such caching improves the overall performance.
-    * 
-    * @param type this is the type containing the expressions
-    * @param format this is the format used to style the segments
-    */
-   public ExpressionBuilder(Type type, Format format) {
+   public ExpressionBuilder(Detail detail, Support support) {
       this.cache = new LimitedCache<Expression>();
-      this.format = format;
-      this.type = type;
+      this.format = support.getFormat();
+      this.type = detail.getType();
    }
    
    /**
@@ -107,7 +95,8 @@ class ExpressionBuilder {
     * @return this returns the resulting expression object
     */
    private Expression create(String path) throws Exception {
-      Expression expression = new PathParser(path, type, format);
+      Type description = new ClassType(type);
+      Expression expression = new PathParser(path, description, format);
       
       if(cache != null) {
          cache.cache(path, expression);

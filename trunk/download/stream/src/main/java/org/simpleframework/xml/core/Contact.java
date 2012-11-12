@@ -65,6 +65,8 @@ interface Contact extends Type {
     */
    public Class[] getDependents(); 
    
+   public Class getDeclaringClass();
+   
    /**
     * This is the annotation associated with the point of contact.
     * This will be an XML annotation that describes how the contact

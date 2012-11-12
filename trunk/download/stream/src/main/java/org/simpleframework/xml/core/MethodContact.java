@@ -53,6 +53,8 @@ class MethodContact implements Contact {
     */
    private Class[] items;
    
+   private Class owner;
+   
    /**
     * This is the dependent type as taken from the get method.
     */
@@ -77,7 +79,7 @@ class MethodContact implements Contact {
     * @param get this forms the get method for the object
     */ 
    public MethodContact(MethodPart get) {
-      this(get, null);
+      this(get, (MethodPart)null);
    }
    
    /**
@@ -90,6 +92,7 @@ class MethodContact implements Contact {
     * @param set this forms the get method for the object 
     */ 
    public MethodContact(MethodPart get, MethodPart set) {
+      this.owner = get.getDeclaringClass();
       this.label = get.getAnnotation();   
       this.items = get.getDependents();
       this.item = get.getDependent();
@@ -109,6 +112,14 @@ class MethodContact implements Contact {
     */
    public boolean isReadOnly() {
       return set == null;
+   }
+   
+   public MethodPart getRead() {
+      return get;
+   }
+   
+   public MethodPart getWrite() {
+      return set;
    }
    
    /**
@@ -177,6 +188,10 @@ class MethodContact implements Contact {
    public Class[] getDependents() {
       return items;
    } 
+   
+   public Class getDeclaringClass() {
+      return owner;
+   }
    
    /**
     * This is used to acquire the name of the method. This returns

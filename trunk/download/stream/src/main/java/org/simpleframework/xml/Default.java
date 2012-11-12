@@ -59,7 +59,7 @@ public @interface Default {
     * 
     * @return this returns the type of defaults to be applied
     */
-   public DefaultType value() default DefaultType.FIELD;
+   DefaultType value() default DefaultType.FIELD;
    
    /**
     * This is used to determine if the generated annotations are
@@ -69,5 +69,5 @@ public @interface Default {
     * 
     * @return this is used to determine if defaults are required
     */
-   public boolean required() default true;
+   boolean required() default true;
 }

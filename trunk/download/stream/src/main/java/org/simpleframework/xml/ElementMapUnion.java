@@ -64,5 +64,5 @@ public @interface ElementMapUnion {
     * 
     * @return the element maps defined for the union declaration
     */ 
-   public ElementMap[] value();
+   ElementMap[] value();
 }

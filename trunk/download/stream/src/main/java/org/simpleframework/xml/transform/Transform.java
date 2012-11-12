@@ -50,7 +50,7 @@ public interface Transform<T> {
     * 
     * @return this returns an appropriate instanced to be used
     */
-    public T read(String value) throws Exception;
+    T read(String value) throws Exception;
     
     /**
      * This method is used to convert the provided value into an XML
@@ -62,5 +62,5 @@ public interface Transform<T> {
      * 
      * @return this is the string representation of the given value
      */
-    public String write(T value) throws Exception;
+    String write(T value) throws Exception;
 }

@@ -40,5 +40,5 @@ public interface Match {
     * 
     * @return this returns the pattern that is to be matched
     */      
-   public String getPattern();
+   String getPattern();
 }

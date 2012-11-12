@@ -40,5 +40,5 @@ interface Policy {
     *
     * @return true if strict parsing is enabled, false otherwise
     */ 
-   public boolean isStrict();
+   boolean isStrict();
 }

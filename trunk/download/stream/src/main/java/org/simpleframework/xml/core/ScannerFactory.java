@@ -18,7 +18,6 @@
 
 package org.simpleframework.xml.core;
 
-import org.simpleframework.xml.stream.Format;
 import org.simpleframework.xml.util.Cache;
 import org.simpleframework.xml.util.ConcurrentCache;
 
@@ -45,23 +44,16 @@ class ScannerFactory {
    private final Support support;
    
    /**
-    * This is the context that is used to create the scanner object.
-    */
-   private final Format format;
-   
-   /**
     * Constructor for the <code>ScannerFactory</code> object. This is
     * used to create a factory that will create and cache scanned 
     * data for a given class. Scanning the class is required to find
     * the fields and methods that have been annotated.
     * 
     * @param support this is used to determine if a type is primitive
-    * @param format this is the format used for the serialization
     */
-   public ScannerFactory(Support support, Format format) {
+   public ScannerFactory(Support support) {
       this.cache = new ConcurrentCache<Scanner>();
       this.support = support;
-      this.format = format;
    }
    
    /**
@@ -81,10 +73,12 @@ class ScannerFactory {
       Scanner schema = cache.fetch(type);
       
       if(schema == null) {
+         Detail detail = support.getDetail(type);
+         
          if(support.isPrimitive(type)) {
-            schema = new PrimitiveScanner(type);
+            schema = new PrimitiveScanner(detail);
          } else {
-            schema = new ObjectScanner(type, format);
+            schema = new ObjectScanner(detail, support);
          }
          cache.cache(type, schema);
       }

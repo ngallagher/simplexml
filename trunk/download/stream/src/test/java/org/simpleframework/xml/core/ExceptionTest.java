@@ -208,6 +208,7 @@ public class ExceptionTest extends TestCase {
       try {           
          serializer.read(EntryList.class, VALID);
       }catch(Exception e) {
+         e.printStackTrace();
          assertTrue(false);              
       }         
    }

@@ -34,7 +34,7 @@ public class FieldScannerTest extends TestCase {
    }
    
    public void testExample() throws Exception {
-      FieldScanner scanner = new FieldScanner(Example.class);
+      FieldScanner scanner = new FieldScanner(new DetailScanner(Example.class), new Support());
       ArrayList<Class> list = new ArrayList<Class>();
       
       for(Contact contact : scanner) {

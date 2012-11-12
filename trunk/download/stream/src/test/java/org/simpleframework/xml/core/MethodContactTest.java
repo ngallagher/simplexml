@@ -63,7 +63,7 @@ public class MethodContactTest extends TestCase {
    }
    
    public void testContact() throws Exception {
-      MethodScanner scanner = new MethodScanner(Example.class);
+      MethodScanner scanner = new MethodScanner(new DetailScanner(Example.class), new Support());
       ArrayList<Class> types = new ArrayList<Class>();
      
       for(Contact contact : scanner) {

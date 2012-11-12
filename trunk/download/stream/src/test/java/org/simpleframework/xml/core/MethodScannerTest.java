@@ -110,7 +110,7 @@ public class MethodScannerTest extends TestCase {
    }
    
    public void testExample() throws Exception {
-      MethodScanner scanner = new MethodScanner(Example.class);
+      MethodScanner scanner = new MethodScanner(new DetailScanner(Example.class), new Support());
       ArrayList<Class> list = new ArrayList<Class>();
      
       for(Contact contact : scanner) {
@@ -125,7 +125,7 @@ public class MethodScannerTest extends TestCase {
       boolean success = false;
       
       try {
-         new MethodScanner(IllegalOverload.class);
+         new MethodScanner(new DetailScanner(IllegalOverload.class), new Support());
       }catch(Exception e){
          success = true;
       }
@@ -136,7 +136,7 @@ public class MethodScannerTest extends TestCase {
       boolean success = false;
       
       try {
-         new MethodScanner(NonMatchingMethods.class);
+         new MethodScanner(new DetailScanner(NonMatchingMethods.class), new Support());
       }catch(Exception e){
          success = true;
       }
@@ -147,7 +147,7 @@ public class MethodScannerTest extends TestCase {
       boolean success = false;
       
       try {
-         new MethodScanner(NotBeanMethod.class);
+         new MethodScanner(new DetailScanner(NotBeanMethod.class), new Support());
       }catch(Exception e){
          success = true;
       }
@@ -156,7 +156,7 @@ public class MethodScannerTest extends TestCase {
    
    
    public void testText() throws Exception {
-      MethodScanner scanner = new MethodScanner(TextMethod.class);
+      MethodScanner scanner = new MethodScanner(new DetailScanner(TextMethod.class), new Support());
       ArrayList<Class> list = new ArrayList<Class>();
 
       for(Contact contact : scanner) {
@@ -169,7 +169,7 @@ public class MethodScannerTest extends TestCase {
    }
    
    public void testCollection() throws Exception {
-      MethodScanner scanner = new MethodScanner(CollectionMethod.class);
+      MethodScanner scanner = new MethodScanner(new DetailScanner(CollectionMethod.class), new Support());
       ArrayList<Class> list = new ArrayList<Class>();
       
       for(Contact contact : scanner) {

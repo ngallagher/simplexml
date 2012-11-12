@@ -3,6 +3,7 @@ package org.simpleframework.xml.convert;
 import java.io.StringWriter;
 
 import org.simpleframework.xml.Default;
+import org.simpleframework.xml.DefaultType;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.Serializer;
@@ -42,13 +43,25 @@ public class RegistryConverterTest extends ValidationTestCase {
          serializer.write(person, node);
       }
       @Root
-      @Default
+      @Default(DefaultType.PROPERTY)
       private static class PersonDelegate extends Person {
          public PersonDelegate() {
             super();
          }
          public PersonDelegate(Person person) {
             super(person.name, person.age);
+         }
+         public String getName() {
+            return name;
+         }
+         public void setName(String name) {
+            this.name = name;
+         }
+         public int getAge() {
+            return age;
+         }
+         public void setAge(int age) {
+            this.age = age;
          }
       }
    }
@@ -79,8 +92,8 @@ public class RegistryConverterTest extends ValidationTestCase {
    }
    
    private static class Person {
-      private String name;
-      private int age;
+      protected String name;
+      protected int age;
       public Person() {
          super();
       }

@@ -41,7 +41,7 @@ interface Schema {
     * 
     * @return this returns true if no XML annotations were found
     */
-   public boolean isPrimitive();
+   boolean isPrimitive();
    
    /**
     * This returns the <code>Label</code> that represents the version
@@ -51,7 +51,7 @@ interface Schema {
     * 
     * @return this returns the label used for reading the version
     */
-   public Label getVersion();
+   Label getVersion();
    
    /**
     * This is the <code>Version</code> for the scanned class. It 
@@ -62,7 +62,7 @@ interface Schema {
     * 
     * @return this returns the version of the class that is scanned
     */
-   public Version getRevision();
+   Version getRevision();
    
    /**
     * This is used to acquire the <code>Decorator</code> for this.
@@ -73,7 +73,7 @@ interface Schema {
     * 
     * @return this returns the decorator associated with this
     */
-   public Decorator getDecorator();
+   Decorator getDecorator();
    
    /**
     * This is used to acquire the instantiator for the type. This is
@@ -83,7 +83,7 @@ interface Schema {
     * 
     * @return this instantiator responsible for creating instances
     */
-   public Instantiator getInstantiator();
+   Instantiator getInstantiator();
    
    /**
     * This is used to acquire the <code>Caller</code> object. This
@@ -93,7 +93,7 @@ interface Schema {
     * 
     * @return this returns the caller for the specified type
     */
-   public Caller getCaller();
+   Caller getCaller();
    
    /**
     * This is used to acquire the <code>Section</code> that defines
@@ -104,7 +104,7 @@ interface Schema {
     * 
     * @return this returns the section defined for the schama
     */
-   public Section getSection();
+   Section getSection();
    
    /**
     * This returns the <code>Label</code> that represents the text
@@ -115,5 +115,5 @@ interface Schema {
     * 
     * @return this returns the text label for the scanned class
     */
-   public Label getText();
+   Label getText();
 }

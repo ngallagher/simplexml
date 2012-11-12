@@ -6,6 +6,7 @@ import java.util.List;
 import junit.framework.TestCase;
 
 import org.simpleframework.xml.Default;
+import org.simpleframework.xml.DefaultType;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
@@ -31,13 +32,31 @@ public class RegistryConverterCycleTest extends TestCase {
          serializer.write(person, node);
       }
       @Root
-      @Default
+      @Default(DefaultType.PROPERTY)
       private static class PersonDelegate extends Person {
          public PersonDelegate() {
             super();
          }
          public PersonDelegate(Person person) {
             super(person.address, person.name, person.age);
+         }
+         public Address getAddress() {
+            return address;
+         }
+         public void setAddress(Address address) {
+            this.address = address;
+         }
+         public String getName() {
+            return name;
+         }
+         public void setName(String name) {
+            this.name = name;
+         }
+         public int getAge() {
+            return age;
+         }
+         public void setAge(int age) {
+            this.age = age;
          }
       }
    }
@@ -60,9 +79,9 @@ public class RegistryConverterCycleTest extends TestCase {
    }
    
    private static class Person {
-      private Address address;
-      private String name;
-      private int age;
+      protected Address address;
+      protected String name;
+      protected int age;
       public Person() {
          super();
       }
@@ -70,7 +89,7 @@ public class RegistryConverterCycleTest extends TestCase {
          this.address = address;
          this.name= name;
          this.age = age;
-      }
+      }      
    }
    
    @Root

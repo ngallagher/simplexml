@@ -39,7 +39,7 @@ interface Attribute {
     * 
     * @return this returns the name of this attribute object
     */
-   public String getName();
+   String getName();
    
    /**
     * This returns the value of the event. Typically this will be
@@ -48,7 +48,7 @@ interface Attribute {
     * 
     * @return this returns the value represented by this attribute
     */
-   public String getValue();
+   String getValue();
    
    /**
     * This is used to acquire the namespace reference that this 
@@ -58,7 +58,7 @@ interface Attribute {
     * 
     * @return this provides the associated namespace reference
     */
-   public String getReference();
+   String getReference();
    
    /**
     * This is used to acquire the namespace prefix associated with
@@ -68,7 +68,7 @@ interface Attribute {
     * 
     * @return this returns the namespace prefix for the attribute
     */
-   public String getPrefix();
+   String getPrefix();
    
    /**
     * This is used to return the source of the attribute. Depending 
@@ -78,7 +78,7 @@ interface Attribute {
     * 
     * @return this will return the source object for this event
     */
-   public Object getSource();
+   Object getSource();
    
    /**
     * This returns true if the attribute is reserved. An attribute
@@ -88,5 +88,5 @@ interface Attribute {
     *
     * @return this returns true if the attribute is reserved
     */
-   public boolean isReserved();
+   boolean isReserved();
 }

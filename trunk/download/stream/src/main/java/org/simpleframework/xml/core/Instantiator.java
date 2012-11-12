@@ -37,7 +37,7 @@ interface Instantiator {
     * 
     * @return true if the class only has a default constructor
     */
-   public boolean isDefault(); 
+   boolean isDefault(); 
    
    /**
     * This is used to instantiate the object using the default no
@@ -46,7 +46,7 @@ interface Instantiator {
     * 
     * @return this returns the object that has been instantiated
     */
-   public Object getInstance() throws Exception; 
+   Object getInstance() throws Exception; 
    
    /**
     * This is used to instantiate the object using a constructor that
@@ -58,7 +58,7 @@ interface Instantiator {
     * 
     * @return this returns the object that has been instantiated
     */
-   public Object getInstance(Criteria criteria) throws Exception;
+   Object getInstance(Criteria criteria) throws Exception;
 
    /**
     * This is used to acquire the named <code>Parameter</code> from
@@ -70,7 +70,7 @@ interface Instantiator {
     * 
     * @return this returns the named parameter for the creator
     */
-   public Parameter getParameter(String name);
+   Parameter getParameter(String name);
    
    /**
     * This is used to acquire all parameters annotated for the class
@@ -80,7 +80,7 @@ interface Instantiator {
     * 
     * @return this returns the parameters declared in the schema     
     */
-   public List<Parameter> getParameters();
+   List<Parameter> getParameters();
    
    /**
     * This is used to acquire the <code>Creator</code> objects
@@ -91,5 +91,5 @@ interface Instantiator {
     *
     * @return this returns a list of creators for the type
     */ 
-   public List<Creator> getCreators();
+   List<Creator> getCreators();
 }
