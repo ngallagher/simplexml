@@ -155,6 +155,10 @@ class FieldContact implements Contact {
       return Reflector.getDependents(field);
    }
    
+   public Class getDeclaringClass() {
+      return field.getDeclaringClass();
+   }
+   
    /**
     * This is used to acquire the name of the field. This will return
     * the name of the field which can then be used to determine the 

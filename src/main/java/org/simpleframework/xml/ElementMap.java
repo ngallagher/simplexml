@@ -78,7 +78,7 @@ public @interface ElementMap {
     * 
     * @return the name of the XML element this represents
     */
-   public String name() default "";
+   String name() default "";
    
    /**
     * This is used to provide a the name of the entry XML element 
@@ -89,7 +89,7 @@ public @interface ElementMap {
     * 
     * @return this returns the entry XML element for each entry
     */
-   public String entry() default ""; 
+   String entry() default ""; 
 
    /**
     * This is used to provide a value XML element for each of the
@@ -100,7 +100,7 @@ public @interface ElementMap {
     * 
     * @return this returns the value XML element for each value
     */
-   public String value() default "";
+   String value() default "";
 
    /**
     * This is used to provide a key XML element for each of the
@@ -111,7 +111,7 @@ public @interface ElementMap {
     * 
     * @return this returns the key XML element for each key
     */
-   public String key() default "";
+   String key() default "";
    
    /**
     * Represents the type of key the element map contains. This
@@ -124,7 +124,7 @@ public @interface ElementMap {
     * 
     * @return the type of the entry key deserialized from the XML
     */
-   public Class keyType() default void.class;
+   Class keyType() default void.class;
    
    /**
     * Represents the type of value the element map contains. This
@@ -137,7 +137,7 @@ public @interface ElementMap {
     * 
     * @return the type of the entry value deserialized from the XML
     */
-   public Class valueType() default void.class;
+   Class valueType() default void.class;
 
    /**
     * Represents whether the key value is to be an attribute or an
@@ -149,7 +149,7 @@ public @interface ElementMap {
     *  
     * @return true if the key is to be inlined as an attribute
     */
-   public boolean attribute() default false;
+   boolean attribute() default false;
    
    /**
     * Determines whether the element is required within the XML
@@ -159,7 +159,7 @@ public @interface ElementMap {
     * 
     * @return true if the element is required, false otherwise
     */ 
-   public boolean required() default true;
+   boolean required() default true;
    
    /**
     * This is used to determine whether the element data is written
@@ -170,7 +170,7 @@ public @interface ElementMap {
     * 
     * @return true if entries are to be wrapped in a CDATA block
     */
-   public boolean data() default false;
+   boolean data() default false;
    
    /**
     * Determines whether the element list is inlined with respect
@@ -181,7 +181,7 @@ public @interface ElementMap {
     *
     * @return this returns true if the element list is inline
     */
-   public boolean inline() default false;
+   boolean inline() default false;
    
    /**
     * This is used to determine if an optional field or method can
@@ -192,5 +192,5 @@ public @interface ElementMap {
     * 
     * @return false if an optional element is always instantiated
     */
-   public boolean empty() default true;
+   boolean empty() default true;
 }

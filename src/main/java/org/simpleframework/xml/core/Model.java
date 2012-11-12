@@ -45,7 +45,7 @@ interface Model extends Iterable<String> {
     * 
     * @return true if the model does not contain registrations
     */
-   public boolean isEmpty();
+   boolean isEmpty();
    
    /**
     * This is used to determine if the provided name represents
@@ -56,7 +56,7 @@ interface Model extends Iterable<String> {
     * 
     * @return this returns true if the model is registered
     */
-   public boolean isModel(String name);
+   boolean isModel(String name);
    
    /**
     * This is used to determine if the provided name represents
@@ -67,7 +67,7 @@ interface Model extends Iterable<String> {
     * 
     * @return this returns true if the element is registered
     */
-   public boolean isElement(String name);
+   boolean isElement(String name);
    
    /**
     * This is used to determine if the provided name represents
@@ -78,7 +78,7 @@ interface Model extends Iterable<String> {
     * 
     * @return this returns true if the attribute is registered
     */
-   public boolean isAttribute(String name);
+   boolean isAttribute(String name);
    
    /**
     * This is used to perform a recursive search of the models that
@@ -88,7 +88,7 @@ interface Model extends Iterable<String> {
     * 
     * @return true if any model has elements or attributes
     */
-   public boolean isComposite();
+   boolean isComposite();
    
    /**
     * This is used to validate the model to ensure all elements and
@@ -100,7 +100,7 @@ interface Model extends Iterable<String> {
     * 
     * @throws Exception if text and element annotations are present
     */
-   public void validate(Class type) throws Exception;
+   void validate(Class type) throws Exception;
    
    /**
     * This is used to register an XML entity within the model. The
@@ -111,7 +111,7 @@ interface Model extends Iterable<String> {
     * 
     * @param label this is the label to register with the model
     */
-   public void register(Label label) throws Exception;
+   void register(Label label) throws Exception;
    
    /**
     * This is used to register an XML entity within the model. The
@@ -122,7 +122,7 @@ interface Model extends Iterable<String> {
     * 
     * @param label this is the label to register with the model
     */
-   public void registerText(Label label) throws Exception;
+   void registerText(Label label) throws Exception;
    
    /**
     * This is used to register an XML entity within the model. The
@@ -133,7 +133,7 @@ interface Model extends Iterable<String> {
     * 
     * @param label this is the label to register with the model
     */
-   public void registerElement(Label label) throws Exception;
+   void registerElement(Label label) throws Exception;
    
    /**
     * This is used to register an XML entity within the model. The
@@ -144,7 +144,7 @@ interface Model extends Iterable<String> {
     * 
     * @param label this is the label to register with the model
     */
-   public void registerAttribute(Label label) throws Exception;
+   void registerAttribute(Label label) throws Exception;
    
    /**
     * This is used to register an XML entity within the model. The
@@ -155,7 +155,7 @@ interface Model extends Iterable<String> {
     * 
     * @param name this is the name of the element to register
     */
-   public void registerElement(String name) throws Exception;
+   void registerElement(String name) throws Exception;
    
    /**
     * This is used to register an XML entity within the model. The
@@ -166,7 +166,7 @@ interface Model extends Iterable<String> {
     * 
     * @param name this is the name of the element to register
     */
-   public void registerAttribute(String name) throws Exception;
+   void registerAttribute(String name) throws Exception;
    
    /**
     * This is used to register a <code>Model</code> within this
@@ -180,7 +180,7 @@ interface Model extends Iterable<String> {
     * 
     * @return this returns the model that was registered
     */
-   public Model register(String name, String prefix, int index) throws Exception;   
+   Model register(String name, String prefix, int index) throws Exception;   
    
    /**
     * This method is used to look for a <code>Model</code> that
@@ -193,7 +193,7 @@ interface Model extends Iterable<String> {
     * 
     * @return this returns the model located by the expression
     */
-   public Model lookup(String name, int index);
+   Model lookup(String name, int index);
    
    /**
     * This method is used to look for a <code>Model</code> that
@@ -205,7 +205,7 @@ interface Model extends Iterable<String> {
     * 
     * @return this returns the model located by the expression
     */
-   public Model lookup(Expression path);
+   Model lookup(Expression path);
    
    /**
     * This is used to build a map from a <code>Context</code> object.
@@ -216,7 +216,7 @@ interface Model extends Iterable<String> {
     * 
     * @return this returns a map built from the specified context
     */
-   public LabelMap getElements() throws Exception;
+   LabelMap getElements() throws Exception;
    
    /**
     * This is used to build a map from a <code>Context</code> object.
@@ -227,7 +227,7 @@ interface Model extends Iterable<String> {
     * 
     * @return this returns a map built from the specified context
     */
-   public LabelMap getAttributes() throws Exception;
+   LabelMap getAttributes() throws Exception;
    
    /**
     * This is used to build a map from a <code>Context</code> object.
@@ -238,7 +238,7 @@ interface Model extends Iterable<String> {
     * 
     * @return this returns a map built from the specified context
     */
-   public ModelMap getModels() throws Exception;
+   ModelMap getModels() throws Exception;
    
    /**
     * This returns a text label if one is associated with the model.
@@ -248,7 +248,7 @@ interface Model extends Iterable<String> {
     * 
     * @return this is the optional text label for this model
     */
-   public Label getText();
+   Label getText();
    
    /**
     * This returns an <code>Expression</code> representing the path
@@ -257,7 +257,7 @@ interface Model extends Iterable<String> {
     * 
     * @return this returns the expression associated with this
     */
-   public Expression getExpression();
+   Expression getExpression();
    
    /**
     * This is used to acquire the path prefix for the model. The
@@ -267,7 +267,7 @@ interface Model extends Iterable<String> {
     * 
     * @return this returns the prefix for this model
     */
-   public String getPrefix();
+   String getPrefix();
    
    /**
     * This is used to return the name of the model. The name is 
@@ -276,7 +276,7 @@ interface Model extends Iterable<String> {
     * 
     * @return this returns the name of this model instance
     */
-   public String getName();   
+   String getName();   
 
    /**
     * This method is used to return the index of the model. The
@@ -286,5 +286,5 @@ interface Model extends Iterable<String> {
     * 
     * @return this is the index of this model instance
     */
-   public int getIndex();
+   int getIndex();
 }

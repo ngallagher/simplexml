@@ -41,7 +41,7 @@ interface Extractor<T extends Annotation>{
     * 
     * @return this returns each annotation within the union group
     */
-   public T[] getAnnotations() throws Exception;
+   T[] getAnnotations() throws Exception;
    
    /**
     * Each annotation can provide a class which is used to determine
@@ -52,7 +52,7 @@ interface Extractor<T extends Annotation>{
     * 
     * @return this returns the class associated with the annotation
     */
-   public Class getType(T label) throws Exception;
+   Class getType(T label) throws Exception;
    
    /**
     * This creates a <code>Label</code> object used to represent the
@@ -64,5 +64,5 @@ interface Extractor<T extends Annotation>{
     * 
     * @return this is the label created for the annotation
     */
-   public Label getLabel(T label) throws Exception;
+   Label getLabel(T label) throws Exception;
 }

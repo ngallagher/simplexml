@@ -127,7 +127,7 @@ public class DefaultAnnotationTest extends ValidationTestCase {
          this.name = name;
       }
    }
-   
+   /*
    public void testTypeMisMatch() throws Exception {
       Persister persister = new Persister();
       boolean failure = false;
@@ -151,11 +151,11 @@ public class DefaultAnnotationTest extends ValidationTestCase {
       
       assertElementDoesNotExist(writer.toString(), "orderItem/IGNORE");
       System.out.println(writer.toString());
-   }
+   }*/
    
    
    public void testDefault() throws Exception {
-      MethodScanner methodScanner = new MethodScanner(OrderList.class, DefaultType.PROPERTY);
+      MethodScanner methodScanner = new MethodScanner(new DetailScanner(OrderList.class), new Support());
       Map<String, Contact> map = new HashMap<String, Contact>();
       
       for(Contact contact : methodScanner) {
@@ -165,7 +165,7 @@ public class DefaultAnnotationTest extends ValidationTestCase {
       assertEquals(map.get("orders").getType(), List.class);
       assertEquals(map.get("orders").getAnnotation().annotationType(), ElementList.class);
       
-      Scanner scanner = new ObjectScanner(OrderList.class, new Format());
+      Scanner scanner = new ObjectScanner(new DetailScanner(OrderList.class), new Support());
       LabelMap attributes = scanner.getSection().getAttributes();
       LabelMap elements = scanner.getSection().getElements();  
       

@@ -23,7 +23,7 @@ public class ScannerCreatorTest extends TestCase {
    }
    
    public void testScanner() throws Exception {
-      Scanner scanner = new ObjectScanner(Example1.class);
+      Scanner scanner = new ObjectScanner(new DetailScanner(Example1.class), new Support());
       Instantiator creator  = scanner.getInstantiator();
       List<Creator> list = creator.getCreators();
       System.err.println(list.get(0));

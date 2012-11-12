@@ -75,7 +75,7 @@ public @interface Namespace {
     *
     * @return this returns the reference used by this namespace    
     */         
-   public String reference() default "";
+   String reference() default "";
 
    /**
     * This is used to specify the prefix used for the namespace. If
@@ -86,5 +86,5 @@ public @interface Namespace {
     *
     * @return this returns the prefix used for this namespace
     */ 
-   public String prefix() default "";
+   String prefix() default "";
 }

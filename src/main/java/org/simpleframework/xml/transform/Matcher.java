@@ -40,5 +40,5 @@ public interface Matcher {
     * 
     * @return returns a transform for processing the type given
     */ 
-   public Transform match(Class type) throws Exception;
+   Transform match(Class type) throws Exception;
 }

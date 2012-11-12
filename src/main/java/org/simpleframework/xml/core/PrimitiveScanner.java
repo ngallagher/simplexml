@@ -49,7 +49,7 @@ class PrimitiveScanner implements Scanner {
    /**
     * This is the type that this primitive scanner will represent.
     */
-   private final Class type;
+   private final Detail detail;
    
    /**
     * Constructor for the <code>PrimitiveScanner</code> object. This 
@@ -58,9 +58,9 @@ class PrimitiveScanner implements Scanner {
     * 
     * @param type this is the type of primitive to be represented
     */
-   public PrimitiveScanner(Class type) {
+   public PrimitiveScanner(Detail detail) {
       this.section = new EmptySection(this);
-      this.type = type;
+      this.detail = detail;
    }
    
    /**
@@ -118,7 +118,7 @@ class PrimitiveScanner implements Scanner {
     * @return this is the type that this creator will represent
     */
    public Class getType() {
-      return type;
+      return detail.getType();
    }
    
    /**

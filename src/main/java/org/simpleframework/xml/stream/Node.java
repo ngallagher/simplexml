@@ -33,7 +33,7 @@ public interface Node {
     *  
     * @return returns the name of the node that this represents
     */
-   public String getName();
+   String getName();
 
    /**
     * Returns the value for the node that this represents. This 
@@ -43,7 +43,7 @@ public interface Node {
     * 
     * @throws Exception if there is a problem getting the value
     */
-   public String getValue() throws Exception;  
+   String getValue() throws Exception;  
    
    /**
     * This is used to acquire the <code>Node</code> that is the
@@ -53,5 +53,5 @@ public interface Node {
     *   
     * @return this returns the parent node for this node
     */
-   public Node getParent();
+   Node getParent();
 }

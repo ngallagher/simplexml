@@ -45,7 +45,7 @@ interface Converter {
     * 
     * @throws Exception if a deserialized type cannot be instantiated
     */
-   public Object read(InputNode node) throws Exception; 
+   Object read(InputNode node) throws Exception; 
    
    /**
     * The <code>read</code> method reads an object to a specific type
@@ -60,7 +60,7 @@ interface Converter {
     * 
     * @throws Exception if a deserialized type cannot be instantiated
     */
-   public Object read(InputNode node, Object value) throws Exception; 
+   Object read(InputNode node, Object value) throws Exception; 
    
    /**
     * The <code>validate</code> method is used to validate the class
@@ -74,7 +74,7 @@ interface Converter {
     * 
     * @throws Exception if the class XML schema does not fully match
     */
-   public boolean validate(InputNode node) throws Exception;
+   boolean validate(InputNode node) throws Exception;
    
    /**
     * The <code>write</code> method writes the fields from the given 
@@ -86,5 +86,5 @@ interface Converter {
     * 
     * @throws Exception throw if the object cannot be serialized
     */
-   public void write(OutputNode node, Object object) throws Exception;
+   void write(OutputNode node, Object object) throws Exception;
 }

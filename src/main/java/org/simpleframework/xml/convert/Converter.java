@@ -53,7 +53,7 @@ public interface Converter<T> {
     * 
     * @return the object instance resulting from the deserialization
     */
-   public T read(InputNode node) throws Exception; 
+   T read(InputNode node) throws Exception; 
 
    /**
     * This <code>write</code> method is used to serialize an object
@@ -65,5 +65,5 @@ public interface Converter<T> {
     * @param node this is the node to serialized to object to
     * @param value this is the value that is to be serialized
     */
-   public void write(OutputNode node, T value) throws Exception;
+   void write(OutputNode node, T value) throws Exception;
 }

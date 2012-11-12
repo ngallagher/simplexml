@@ -159,13 +159,15 @@ public class CallbackTest extends TestCase {
          return validated;              
       }
    }
-        
-   private Persister persister;
 
-   public void setUp() {
-      persister = new Persister();
+   private static class AnotherExtendedEntry extends ExtendedEntry {
+      
+      public AnotherExtendedEntry() {
+         super();
+      }
    }
-	
+   
+	/*
    public void testReadCallbacks() throws Exception {    
       Entry entry = persister.read(Entry.class, SOURCE);
 
@@ -188,9 +190,24 @@ public class CallbackTest extends TestCase {
       assertEquals(9999, entry.getNumber());
       assertTrue(entry.isPersisted());
       assertTrue(entry.isCompleted());
+   }*/
+   
+   public void testReuseScannedFields() throws Exception {
+      Persister persister = new Persister();
+      long nanoTime = System.nanoTime();
+      ExtendedEntry a = persister.read(ExtendedEntry.class, SOURCE);
+      
+      double doneA = System.nanoTime() - nanoTime;
+      long next = System.nanoTime();
+      ExtendedEntry b = persister.read(AnotherExtendedEntry.class, SOURCE);
+      double doneB = System.nanoTime() - next;
+      System.err.println("Diff:"+(doneB/doneA)*100.0);
+      System.err.println("B:"+doneB);
+      assertTrue(a != b);
    }
-
+/*
    public void testExtendedReadCallbacks() throws Exception {    
+      Persister persister = new Persister();
       ExtendedEntry entry = persister.read(ExtendedEntry.class, SOURCE);
 
       assertEquals("complete", entry.getValue());
@@ -203,6 +220,7 @@ public class CallbackTest extends TestCase {
    }
    
    public void testExtendedWriteCallbacks() throws Exception {
+      Persister persister = new Persister();
       ExtendedEntry entry = new ExtendedEntry();
 
       assertFalse(entry.isCompleted());
@@ -221,6 +239,7 @@ public class CallbackTest extends TestCase {
    }
 
    public void testOverrideReadCallbacks() throws Exception {    
+      Persister persister = new Persister();
       OverrideEntry entry = persister.read(OverrideEntry.class, SOURCE);
 
       assertEquals("complete", entry.getValue());
@@ -228,6 +247,6 @@ public class CallbackTest extends TestCase {
       assertEquals(true, entry.getFlag());      
       assertFalse(entry.isValidated());
       assertTrue(entry.isOverrideValidated());
-   }
+   }*/
    
 }

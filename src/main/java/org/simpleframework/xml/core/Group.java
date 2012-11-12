@@ -38,7 +38,7 @@ interface Group {
     * 
     * @return this returns true if each label in the group is inline
     */
-   public boolean isInline();
+   boolean isInline();
    
    /**
     * This is used to acquire a <code>Label</code> based on the type
@@ -50,7 +50,7 @@ interface Group {
     * 
     * @return this returns the label based on the type
     */
-   public Label getLabel(Class type);
+   Label getLabel(Class type);
    
    /**
     * This is used to acquire a <code>LabelMap</code> containing the
@@ -60,7 +60,7 @@ interface Group {
     * 
     * @return this returns a label map containing the labels 
     */
-   public LabelMap getElements() throws Exception ;
+   LabelMap getElements() throws Exception ;
    
    /**
     * This returns a string representation of the union group.
@@ -69,5 +69,5 @@ interface Group {
     * 
     * @return this returns a string representation of the group
     */
-   public String toString();
+   String toString();
 }

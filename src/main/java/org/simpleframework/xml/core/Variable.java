@@ -19,7 +19,6 @@
 package org.simpleframework.xml.core;
 
 import java.lang.annotation.Annotation;
-import java.util.Collection;
 
 import org.simpleframework.xml.strategy.Type;
 import org.simpleframework.xml.stream.InputNode;

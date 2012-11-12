@@ -73,7 +73,7 @@ public class ScannerDefaultTest extends TestCase {
       boolean failure = false;
       
       try {
-         new ObjectScanner(NonMatchingAnnotationExample.class);
+         new ObjectScanner(new DetailScanner(NonMatchingAnnotationExample.class), new Support());
       }catch(Exception e) {
          e.printStackTrace();
          failure = true;
@@ -82,7 +82,7 @@ public class ScannerDefaultTest extends TestCase {
    }
    
    public void testDuplicateExample() throws Exception {
-      Scanner scanner = new ObjectScanner(DuplicateExample.class);
+      Scanner scanner = new ObjectScanner(new DetailScanner(DuplicateExample.class), new Support());
       LabelMap attributes = scanner.getSection().getAttributes();
       LabelMap elements = scanner.getSection().getElements();  
 
@@ -91,7 +91,7 @@ public class ScannerDefaultTest extends TestCase {
    }
    
    public void testScanner() throws Exception {
-      Scanner scanner = new ObjectScanner(OrderItem.class);
+      Scanner scanner = new ObjectScanner(new DetailScanner(OrderItem.class), new Support());
       LabelMap attributes = scanner.getSection().getAttributes();
       LabelMap elements = scanner.getSection().getElements();
       

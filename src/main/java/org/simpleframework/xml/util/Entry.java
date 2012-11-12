@@ -41,5 +41,5 @@ public interface Entry {
     * 
     * @return this returns the name of the entry that is used 
     */         
-   public String getName();
+   String getName();
 }

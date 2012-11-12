@@ -45,8 +45,14 @@ import org.simpleframework.xml.stream.Format;
  * 
  * @author Niall Gallagher
  */
-final class ParameterFactory {
+class ParameterFactory {
 
+   private final Format format;
+   
+   public ParameterFactory(Support support) {
+      this.format = support.getFormat();
+   }
+   
    /**
     * Creates a <code>Parameter</code> using the provided constructor
     * and the XML annotation. The parameter produced contains all 
@@ -60,11 +66,11 @@ final class ParameterFactory {
     * 
     * @return returns the parameter instantiated for the field
     */
-   public static Parameter getInstance(Constructor method, Annotation label, Format format, int index) throws Exception {   
-      return getInstance(method, label, null, format, index);
+   public Parameter getInstance(Constructor method, Annotation label, int index) throws Exception {   
+      return getInstance(method, label, null, index);
    }
    
-   public static Parameter getInstance(Constructor method, Annotation label, Annotation entry, Format format, int index) throws Exception {   
+   public Parameter getInstance(Constructor method, Annotation label, Annotation entry, int index) throws Exception {   
       Constructor factory = getConstructor(label);    
       
       if(entry != null) {
@@ -85,7 +91,7 @@ final class ParameterFactory {
      * 
      * @throws Exception thrown if the annotation is not supported
      */
-    private static Constructor getConstructor(Annotation label) throws Exception {
+    private Constructor getConstructor(Annotation label) throws Exception {
       ParameterBuilder builder = getBuilder(label);
       Constructor factory = builder.getConstructor();
       
@@ -105,7 +111,7 @@ final class ParameterFactory {
      * 
      * @return this returns the entry used to create a constructor
      */
-    private static ParameterBuilder getBuilder(Annotation label) throws Exception{      
+    private ParameterBuilder getBuilder(Annotation label) throws Exception{      
        if(label instanceof Element) {
           return new ParameterBuilder(ElementParameter.class, Element.class);
        }

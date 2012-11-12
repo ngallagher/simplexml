@@ -62,7 +62,7 @@ public @interface ElementArray {
     * 
     * @return the name of the XML element this represents
     */
-   public String name() default "";
+   String name() default "";
    
    /**
     * This is used to provide a name of the XML element representing
@@ -72,7 +72,7 @@ public @interface ElementArray {
     * 
     * @return this returns the entry XML element for each value
     */
-   public String entry() default "";
+   String entry() default "";
    
    /**
     * This is used to determine whether the element data is written
@@ -83,7 +83,7 @@ public @interface ElementArray {
     * 
     * @return true if entries are to be wrapped in a CDATA block
     */
-   public boolean data() default false;
+   boolean data() default false;
    
    /**
     * Determines whether the element is required within the XML
@@ -93,7 +93,7 @@ public @interface ElementArray {
     * 
     * @return true if the element is required, false otherwise
     */        
-   public boolean required() default true;
+   boolean required() default true;
    
    /**
     * This is used to determine if an optional field or method can
@@ -104,5 +104,5 @@ public @interface ElementArray {
     * 
     * @return false if an optional element is always instantiated
     */
-   public boolean empty() default true;
+   boolean empty() default true;
 }

@@ -43,7 +43,7 @@ public @interface Root {
     * 
     * @return the name of the XML element this represents
     */
-   public String name() default "";
+   String name() default "";
 
    /**
     * This is used to determine whether the object represented
@@ -56,5 +56,5 @@ public @interface Root {
     * 
     * @return true if strict parsing is enabled, false otherwise
     */ 
-   public boolean strict() default true;
+   boolean strict() default true;
 }

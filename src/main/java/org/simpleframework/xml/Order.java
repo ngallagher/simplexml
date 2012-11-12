@@ -41,7 +41,7 @@ public @interface Order {
     * 
     * @return an ordered array of elements representing order
     */
-   public String[] elements() default {};
+   String[] elements() default {};
    
    /**
     * Specifies the appearance order of the XML attributes within 
@@ -52,5 +52,5 @@ public @interface Order {
     * 
     * @return an ordered array of attributes representing order
     */
-   public String[] attributes() default {};
+   String[] attributes() default {};
 }

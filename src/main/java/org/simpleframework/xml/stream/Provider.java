@@ -46,7 +46,7 @@ interface Provider {
     * 
     * @return this is used to return the event reader implementation
     */
-   public EventReader provide(InputStream source) throws Exception;
+   EventReader provide(InputStream source) throws Exception;
    
    /**
     * This provides an <code>EventReader</code> that will read from
@@ -57,5 +57,5 @@ interface Provider {
     * 
     * @return this is used to return the event reader implementation
     */
-   public EventReader provide(Reader source) throws Exception;
+   EventReader provide(Reader source) throws Exception;
 }

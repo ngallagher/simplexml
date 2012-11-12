@@ -73,5 +73,5 @@ public @interface Convert {
     * 
     * @return this returns the converter that has been specified
     */
-   public Class<? extends Converter> value();
+   Class<? extends Converter> value();
 }

@@ -39,7 +39,7 @@ interface MethodPart {
     * 
     * @return this returns the Java Bean name of the method part
     */
-   public String getName(); 
+   String getName(); 
    
    /**
     * This is the annotation associated with the point of contact.
@@ -48,7 +48,7 @@ interface MethodPart {
     *
     * @return this provides the annotation associated with this
     */
-   public Annotation getAnnotation();
+   Annotation getAnnotation();
    
    /**
     * This is the annotation associated with the point of contact.
@@ -59,7 +59,7 @@ interface MethodPart {
     *
     * @return this provides the annotation associated with this
     */
-   public <T extends Annotation> T getAnnotation(Class<T> type);
+   <T extends Annotation> T getAnnotation(Class<T> type);
    
    /**
     * This will provide the contact type. The contact type is the
@@ -68,7 +68,7 @@ interface MethodPart {
     *
     * @return this returns the type that this contact represents
     */ 
-   public Class getType();
+   Class getType();
    
    /**
     * This is used to acquire the dependent class for the method 
@@ -79,7 +79,7 @@ interface MethodPart {
     * 
     * @return this returns the generic dependent for the type
     */
-   public Class getDependent();
+   Class getDependent();
    
    /**
     * This is used to acquire the dependent classes for the method 
@@ -90,7 +90,9 @@ interface MethodPart {
     * 
     * @return this returns the generic dependent for the type
     */
-   public Class[] getDependents();
+   Class[] getDependents();
+   
+   Class getDeclaringClass();
    
    /**
     * This is the method for this point of contact. This is what
@@ -99,7 +101,7 @@ interface MethodPart {
     * 
     * @return this returns the method associated with this
     */
-   public Method getMethod();
+   Method getMethod();
    
    /**
     * This is the method type for the method part. This is used in
@@ -109,7 +111,7 @@ interface MethodPart {
     * 
     * @return the method type that this part represents
     */
-   public MethodType getMethodType();
+   MethodType getMethodType();
    
    /**
     * This is used to describe the method as it exists within the
@@ -119,5 +121,5 @@ interface MethodPart {
     * 
     * @return this returns a string representation of the method
     */
-   public String toString();
+   String toString();
 }

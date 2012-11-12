@@ -39,7 +39,7 @@ public interface Value {
     * 
     * @return an instance of the type this object represents
     */
-   public Object getValue();
+   Object getValue();
    
    /**
     * This method is used set the value within this object. Once
@@ -48,7 +48,7 @@ public interface Value {
     * 
     * @param value this is the value to insert as the type
     */
-   public void setValue(Object value);
+   void setValue(Object value);
    
    /**
     * This is the type of the object instance this represents. The
@@ -57,7 +57,7 @@ public interface Value {
     * 
     * @return the type of the object that must be instantiated
     */
-   public Class getType();
+   Class getType();
    
    /**
     * This returns the length of the array that is to be allocated.
@@ -66,7 +66,7 @@ public interface Value {
     * 
     * @return this returns the number of elements for the array
     */
-   public int getLength();
+   int getLength();
    
    /**
     * This will return true if the object represents a reference.
@@ -75,5 +75,5 @@ public interface Value {
     * 
     * @return this returns true if this represents a reference
     */
-   public boolean isReference();
+   boolean isReference();
 }

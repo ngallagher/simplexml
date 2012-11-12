@@ -40,7 +40,7 @@ public interface NodeMap<T extends Node> extends Iterable<String> {
      * 
      * @return this returns the node that this map represents
      */
-    public T getNode();
+    T getNode();
 
    /**
     * This is used to get the name of the element that owns the
@@ -49,7 +49,7 @@ public interface NodeMap<T extends Node> extends Iterable<String> {
     * 
     * @return this returns the name of the owning element
     */         
-   public String getName();        
+   String getName();        
 
    /**
     * This is used to acquire the <code>Node</code> mapped to the
@@ -61,7 +61,7 @@ public interface NodeMap<T extends Node> extends Iterable<String> {
     * 
     * @return this will return the node mapped to the given name
     */         
-   public T get(String name);        
+   T get(String name);        
 
    /**
     * This is used to remove the <code>Node</code> mapped to the
@@ -73,7 +73,7 @@ public interface NodeMap<T extends Node> extends Iterable<String> {
     * 
     * @return this will return the node mapped to the given name
     */ 
-   public T remove(String name);
+   T remove(String name);
    
    /**
     * This returns an iterator for the names of all the nodes in
@@ -82,7 +82,7 @@ public interface NodeMap<T extends Node> extends Iterable<String> {
     *
     * @return this returns the names of the nodes in the map
     */ 
-   public Iterator<String> iterator();
+   Iterator<String> iterator();
 
    /**
     * This is used to add a new <code>Node</code> to the map. The
@@ -95,5 +95,5 @@ public interface NodeMap<T extends Node> extends Iterable<String> {
     * 
     * @return this is the node that has been added to the map
     */ 
-   public T put(String name, String value);
+   T put(String name, String value);
 }

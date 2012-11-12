@@ -122,5 +122,5 @@ public @interface Path {
     * 
     * @return this returns an XPath expression for the location
     */
-   public String value();
+   String value();
 }

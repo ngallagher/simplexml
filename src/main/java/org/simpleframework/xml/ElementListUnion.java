@@ -64,6 +64,6 @@ public @interface ElementListUnion {
     * 
     * @return the element lists defined for the union declaration
     */   
-   public ElementList[] value();
+   ElementList[] value();
 }
 

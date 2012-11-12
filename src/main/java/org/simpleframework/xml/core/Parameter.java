@@ -39,7 +39,7 @@ interface Parameter {
     * 
     * @return this is the key used to represent the parameter
     */
-   public Object getKey();
+   Object getKey();
    
    /**
     * This is used to acquire the annotated type class. The class
@@ -48,7 +48,7 @@ interface Parameter {
     * 
     * @return this returns the type used for the parameter
     */
-   public Class getType();
+   Class getType();
    
    /**
     * This returns the index position of the parameter in the
@@ -57,7 +57,7 @@ interface Parameter {
     * 
     * @return this returns the index for the parameter
     */
-   public int getIndex();
+   int getIndex();
    
    /**
     * This is used to acquire the annotation that is used for the
@@ -67,7 +67,7 @@ interface Parameter {
     * 
     * @return this returns the annotation used on the parameter
     */
-   public Annotation getAnnotation();
+   Annotation getAnnotation();
 
    /**
     * This method is used to return an XPath expression that is 
@@ -77,7 +77,7 @@ interface Parameter {
     * 
     * @return the XPath expression identifying the location
     */
-   public Expression getExpression(); 
+   Expression getExpression(); 
    
    /**
     * This is used to acquire the name of the parameter that this
@@ -86,7 +86,7 @@ interface Parameter {
     * 
     * @return this returns the name of the annotated parameter
     */
-   public String getName();
+   String getName();
    
    /**
     * This is used to acquire the path of the element or attribute
@@ -96,7 +96,7 @@ interface Parameter {
     * 
     * @return returns the path that is used for this parameter
     */
-   public String getPath();
+   String getPath();
    
    /**
     * This is used to determine if the parameter is required. If 
@@ -106,7 +106,7 @@ interface Parameter {
     * 
     * @return this returns true if the parameter is required
     */
-   public boolean isRequired();
+   boolean isRequired();
    
    /**
     * This is used to determine if the parameter is primitive. A
@@ -116,7 +116,7 @@ interface Parameter {
     * 
     * @return this returns true if the parameter is primitive
     */
-   public boolean isPrimitive();
+   boolean isPrimitive();
    
    /**
     * This method is used to determine if the parameter represents 
@@ -125,7 +125,7 @@ interface Parameter {
     * 
     * @return this is used to determine if this is an attribute
     */
-   public boolean isAttribute();
+   boolean isAttribute();
    
    /**
     * This is used to determine if the parameter represents text. 
@@ -135,7 +135,7 @@ interface Parameter {
     * 
     * @return returns true if this parameter represents text
     */
-   public boolean isText();
+   boolean isText();
    
    /**
     * This is used to provide a textual representation of the 
@@ -144,5 +144,5 @@ interface Parameter {
     * 
     * @return this returns the string representation for this
     */
-   public String toString();
+   String toString();
 }

@@ -47,7 +47,7 @@ interface Label {
     * 
     * @return this returns the decorator associated with this
     */
-   public Decorator getDecorator() throws Exception;
+   Decorator getDecorator() throws Exception;
 
    /**
     * This is used to acquire the <code>Type</code> that the type
@@ -59,7 +59,7 @@ interface Label {
     * 
     * @return this returns the type represented by this class
     */
-   public Type getType(Class type) throws Exception;   
+   Type getType(Class type) throws Exception;   
    
    /**
     * This is used to acquire the <code>Label</code> that the type
@@ -71,7 +71,7 @@ interface Label {
     * 
     * @return this returns the label represented by this type
     */
-   public Label getLabel(Class type) throws Exception;
+   Label getLabel(Class type) throws Exception;
 
    /**
     * This returns a <code>Collection</code> of element names. This
@@ -81,7 +81,7 @@ interface Label {
     * 
     * @return this returns the names of each of the elements
     */
-   public String[] getNames() throws Exception; 
+   String[] getNames() throws Exception; 
    
    /**
     * This returns a <code>Collection</code> of element paths. This
@@ -92,7 +92,7 @@ interface Label {
     * 
     * @return this returns the names of each of the elements
     */
-   public String[] getPaths() throws Exception;
+   String[] getPaths() throws Exception;
    
    /**
     * This is used to provide a configured empty value used when the
@@ -104,7 +104,7 @@ interface Label {
     * 
     * @return this returns the string to use for default values
     */
-   public Object getEmpty(Context context) throws Exception;
+   Object getEmpty(Context context) throws Exception;
    
    /**
     * This method returns a <code>Converter</code> which can be used to
@@ -116,7 +116,7 @@ interface Label {
     * 
     * @return this returns an object that is used for conversion
     */
-   public Converter getConverter(Context context) throws Exception;
+   Converter getConverter(Context context) throws Exception;
    
    /**
     * This is used to acquire the name of the element or attribute
@@ -127,7 +127,7 @@ interface Label {
     * 
     * @return returns the name that is used for the XML property
     */
-   public String getName() throws Exception;
+   String getName() throws Exception;
    
    /**
     * This is used to acquire the path of the element or attribute
@@ -137,7 +137,7 @@ interface Label {
     * 
     * @return returns the path that is used for the XML property
     */
-   public String getPath() throws Exception;
+   String getPath() throws Exception;
    
    /**
     * This method is used to return an XPath expression that is 
@@ -147,7 +147,7 @@ interface Label {
     * 
     * @return the XPath expression identifying the location
     */
-   public Expression getExpression() throws Exception;
+   Expression getExpression() throws Exception;
    
    /**
     * This returns the dependent type for the annotation. This type
@@ -158,7 +158,7 @@ interface Label {
     * 
     * @return this is the type that the annotation depends on
     */
-   public Type getDependent() throws Exception;
+   Type getDependent() throws Exception;
    
    /**
     * This is used to either provide the entry value provided within
@@ -168,7 +168,7 @@ interface Label {
     * 
     * @return this returns the name of the XML entry element used 
     */
-   public String getEntry() throws Exception;
+   String getEntry() throws Exception;
    
    /**
     * This is the key used to represent this label. The key is used
@@ -177,7 +177,7 @@ interface Label {
     * 
     * @return this is the key used to represent the label
     */
-   public Object getKey() throws Exception;
+   Object getKey() throws Exception;
    
    /**
     * This acquires the annotation associated with this label. This
@@ -187,7 +187,7 @@ interface Label {
     * 
     * @return this returns the annotation that this represents
     */
-   public Annotation getAnnotation();
+   Annotation getAnnotation();
    
    /**
     * This is used to acquire the contact object for this label. The 
@@ -198,7 +198,7 @@ interface Label {
     * 
     * @return returns the field that this label is representing
     */
-   public Contact getContact();
+   Contact getContact();
 
    /**
     * This acts as a convenience method used to determine the type of
@@ -210,7 +210,7 @@ interface Label {
     *  
     * @return this returns the type of the field class
     */
-   public Class getType();
+   Class getType();
    
    /**
     * This is used to acquire the name of the element or attribute
@@ -221,7 +221,7 @@ interface Label {
     * 
     * @return returns the name of the annotation for the contact
     */
-   public String getOverride();
+   String getOverride();
    
    /**
     * This is used to determine whether the annotation requires it
@@ -231,7 +231,7 @@ interface Label {
     * 
     * @return this returns true if the element requires CDATA
     */
-   public boolean isData();
+   boolean isData();
    
    /**
     * Determines whether the XML attribute or element is required. 
@@ -242,7 +242,7 @@ interface Label {
     * 
     * @return true if the label represents a some required data
     */
-   public boolean isRequired();
+   boolean isRequired();
    
    /**
     * This method is used to determine if the label represents an
@@ -251,7 +251,7 @@ interface Label {
     * 
     * @return this is used to determine if this is an attribute
     */
-   public boolean isAttribute();
+   boolean isAttribute();
    
    /**
     * This is used to determine if the label is a collection. If the
@@ -262,7 +262,7 @@ interface Label {
     * 
     * @return true if the label represents a collection value
     */
-   public boolean isCollection();
+   boolean isCollection();
    
    /**
     * This is used to determine whether the label represents an
@@ -273,7 +273,7 @@ interface Label {
     * 
     * @return this returns true if the annotation is inline
     */
-   public boolean isInline();
+   boolean isInline();
    
    /**
     * This is used to determine if the label represents text. If
@@ -283,7 +283,7 @@ interface Label {
     * 
     * @return this returns true if this label represents text
     */
-   public boolean isText();
+   boolean isText();
    
    /**
     * This is used to determine if this label is a union. If this
@@ -292,7 +292,7 @@ interface Label {
     * 
     * @return this returns true if the label represents a union
     */
-   public boolean isUnion();
+   boolean isUnion();
    
    /**
     * This is used to describe the annotation and method or field
@@ -303,5 +303,5 @@ interface Label {
     * 
     * @return this returns a string representation of the label
     */
-   public String toString();
+   String toString();
 }

@@ -59,7 +59,7 @@ public interface Serializer {
     * 
     * @throws Exception if the object cannot be fully deserialized
     */
-   public <T> T read(Class<? extends T> type, String source) throws Exception;
+   <T> T read(Class<? extends T> type, String source) throws Exception;
         
    /**
     * This <code>read</code> method will read the contents of the XML
@@ -75,7 +75,7 @@ public interface Serializer {
     * 
     * @throws Exception if the object cannot be fully deserialized
     */
-   public <T> T read(Class<? extends T> type, File source) throws Exception;
+   <T> T read(Class<? extends T> type, File source) throws Exception;
 
    /**
     * This <code>read</code> method will read the contents of the XML
@@ -91,7 +91,7 @@ public interface Serializer {
     * 
     * @throws Exception if the object cannot be fully deserialized
     */
-   public <T> T read(Class<? extends T> type, InputStream source) throws Exception;
+   <T> T read(Class<? extends T> type, InputStream source) throws Exception;
 
    /**
     * This <code>read</code> method will read the contents of the XML
@@ -107,7 +107,7 @@ public interface Serializer {
     * 
     * @throws Exception if the object cannot be fully deserialized
     */   
-   public <T> T read(Class<? extends T> type, Reader source) throws Exception;
+   <T> T read(Class<? extends T> type, Reader source) throws Exception;
    
    /**
     * This <code>read</code> method will read the contents of the XML
@@ -123,7 +123,7 @@ public interface Serializer {
     * 
     * @throws Exception if the object cannot be fully deserialized
     */   
-   public <T> T read(Class<? extends T> type, InputNode source) throws Exception;
+   <T> T read(Class<? extends T> type, InputNode source) throws Exception;
    
    /**
     * This <code>read</code> method will read the contents of the XML
@@ -140,7 +140,7 @@ public interface Serializer {
     * 
     * @throws Exception if the object cannot be fully deserialized
     */
-   public <T> T read(Class<? extends T> type, String source, boolean strict) throws Exception;
+   <T> T read(Class<? extends T> type, String source, boolean strict) throws Exception;
         
    /**
     * This <code>read</code> method will read the contents of the XML
@@ -157,7 +157,7 @@ public interface Serializer {
     * 
     * @throws Exception if the object cannot be fully deserialized
     */
-   public <T> T read(Class<? extends T> type, File source, boolean strict) throws Exception;
+   <T> T read(Class<? extends T> type, File source, boolean strict) throws Exception;
 
    /**
     * This <code>read</code> method will read the contents of the XML
@@ -174,7 +174,7 @@ public interface Serializer {
     * 
     * @throws Exception if the object cannot be fully deserialized
     */
-   public <T> T read(Class<? extends T> type, InputStream source, boolean strict) throws Exception;
+   <T> T read(Class<? extends T> type, InputStream source, boolean strict) throws Exception;
 
    /**
     * This <code>read</code> method will read the contents of the XML
@@ -191,7 +191,7 @@ public interface Serializer {
     * 
     * @throws Exception if the object cannot be fully deserialized
     */   
-   public <T> T read(Class<? extends T> type, Reader source, boolean strict) throws Exception;
+   <T> T read(Class<? extends T> type, Reader source, boolean strict) throws Exception;
    
    /**
     * This <code>read</code> method will read the contents of the XML
@@ -208,7 +208,7 @@ public interface Serializer {
     * 
     * @throws Exception if the object cannot be fully deserialized
     */   
-   public <T> T read(Class<? extends T> type, InputNode source, boolean strict) throws Exception;
+   <T> T read(Class<? extends T> type, InputNode source, boolean strict) throws Exception;
    
    /**
     * This <code>read</code> method will read the contents of the XML
@@ -225,7 +225,7 @@ public interface Serializer {
     * 
     * @throws Exception if the object cannot be fully deserialized
     */
-   public <T> T read(T value, String source) throws Exception;
+   <T> T read(T value, String source) throws Exception;
         
    /**
     * This <code>read</code> method will read the contents of the XML
@@ -242,7 +242,7 @@ public interface Serializer {
     * 
     * @throws Exception if the object cannot be fully deserialized
     */
-   public <T> T read(T value, File source) throws Exception;
+   <T> T read(T value, File source) throws Exception;
 
    /**
     * This <code>read</code> method will read the contents of the XML
@@ -259,7 +259,7 @@ public interface Serializer {
     * 
     * @throws Exception if the object cannot be fully deserialized
     */
-   public <T> T read(T value, InputStream source) throws Exception;
+   <T> T read(T value, InputStream source) throws Exception;
 
    /**
     * This <code>read</code> method will read the contents of the XML
@@ -276,7 +276,7 @@ public interface Serializer {
     * 
     * @throws Exception if the object cannot be fully deserialized
     */   
-   public <T> T read(T value, Reader source) throws Exception;
+   <T> T read(T value, Reader source) throws Exception;
    
    /**
     * This <code>read</code> method will read the contents of the XML
@@ -293,7 +293,7 @@ public interface Serializer {
     * 
     * @throws Exception if the object cannot be fully deserialized
     */ 
-   public <T> T read(T value, InputNode source) throws Exception;
+   <T> T read(T value, InputNode source) throws Exception;
    
    /**
     * This <code>read</code> method will read the contents of the XML
@@ -311,7 +311,7 @@ public interface Serializer {
     * 
     * @throws Exception if the object cannot be fully deserialized
     */
-   public <T> T read(T value, String source, boolean strict) throws Exception;
+   <T> T read(T value, String source, boolean strict) throws Exception;
         
    /**
     * This <code>read</code> method will read the contents of the XML
@@ -329,7 +329,7 @@ public interface Serializer {
     * 
     * @throws Exception if the object cannot be fully deserialized
     */
-   public <T> T read(T value, File source, boolean strict) throws Exception;
+   <T> T read(T value, File source, boolean strict) throws Exception;
 
    /**
     * This <code>read</code> method will read the contents of the XML
@@ -347,7 +347,7 @@ public interface Serializer {
     * 
     * @throws Exception if the object cannot be fully deserialized
     */
-   public <T> T read(T value, InputStream source, boolean strict) throws Exception;
+   <T> T read(T value, InputStream source, boolean strict) throws Exception;
 
    /**
     * This <code>read</code> method will read the contents of the XML
@@ -365,7 +365,7 @@ public interface Serializer {
     * 
     * @throws Exception if the object cannot be fully deserialized
     */   
-   public <T> T read(T value, Reader source, boolean strict) throws Exception;
+   <T> T read(T value, Reader source, boolean strict) throws Exception;
    
    /**
     * This <code>read</code> method will read the contents of the XML
@@ -383,7 +383,7 @@ public interface Serializer {
     * 
     * @throws Exception if the object cannot be fully deserialized
     */ 
-   public <T> T read(T value, InputNode source, boolean strict) throws Exception;
+   <T> T read(T value, InputNode source, boolean strict) throws Exception;
    
    /**
     * This <code>validate</code> method will validate the contents of
@@ -400,7 +400,7 @@ public interface Serializer {
     * 
     * @throws Exception if the class XML schema does not fully match
     */
-   public boolean validate(Class type, String source) throws Exception;
+   boolean validate(Class type, String source) throws Exception;
         
    /**
     * This <code>validate</code> method will validate the contents of
@@ -417,7 +417,7 @@ public interface Serializer {
     * 
     * @throws Exception if the class XML schema does not fully match
     */
-   public boolean validate(Class type, File source) throws Exception;
+   boolean validate(Class type, File source) throws Exception;
 
    /**
     * This <code>validate</code> method will validate the contents of
@@ -434,7 +434,7 @@ public interface Serializer {
     * 
     * @throws Exception if the class XML schema does not fully match
     */
-   public boolean validate(Class type, InputStream source) throws Exception;
+   boolean validate(Class type, InputStream source) throws Exception;
 
    /**
     * This <code>validate</code> method will validate the contents of
@@ -451,7 +451,7 @@ public interface Serializer {
     * 
     * @throws Exception if the class XML schema does not fully match
     */  
-   public boolean validate(Class type, Reader source) throws Exception;
+   boolean validate(Class type, Reader source) throws Exception;
    
    /**
     * This <code>validate</code> method will validate the contents of
@@ -468,7 +468,7 @@ public interface Serializer {
     * 
     * @throws Exception if the class XML schema does not fully match
     */
-   public boolean validate(Class type, InputNode source) throws Exception;
+   boolean validate(Class type, InputNode source) throws Exception;
    
    /**
     * This <code>validate</code> method will validate the contents of
@@ -486,7 +486,7 @@ public interface Serializer {
     * 
     * @throws Exception if the class XML schema does not fully match
     */
-   public boolean validate(Class type, String source, boolean strict) throws Exception;
+   boolean validate(Class type, String source, boolean strict) throws Exception;
         
    /**
     * This <code>validate</code> method will validate the contents of
@@ -504,7 +504,7 @@ public interface Serializer {
     * 
     * @throws Exception if the class XML schema does not fully match
     */
-   public boolean validate(Class type, File source, boolean strict) throws Exception;
+   boolean validate(Class type, File source, boolean strict) throws Exception;
 
    /**
     * This <code>validate</code> method will validate the contents of
@@ -522,7 +522,7 @@ public interface Serializer {
     * 
     * @throws Exception if the class XML schema does not fully match
     */
-   public boolean validate(Class type, InputStream source, boolean strict) throws Exception;
+   boolean validate(Class type, InputStream source, boolean strict) throws Exception;
 
    /**
     * This <code>validate</code> method will validate the contents of
@@ -540,7 +540,7 @@ public interface Serializer {
     * 
     * @throws Exception if the class XML schema does not fully match
     */  
-   public boolean validate(Class type, Reader source, boolean strict) throws Exception;
+   boolean validate(Class type, Reader source, boolean strict) throws Exception;
    
    /**
     * This <code>validate</code> method will validate the contents of
@@ -558,7 +558,7 @@ public interface Serializer {
     * 
     * @throws Exception if the class XML schema does not fully match
     */
-   public boolean validate(Class type, InputNode source, boolean strict) throws Exception;
+   boolean validate(Class type, InputNode source, boolean strict) throws Exception;
      
    /**
     * This <code>write</code> method will traverse the provided object
@@ -574,7 +574,7 @@ public interface Serializer {
     * 
     * @throws Exception if the schema for the object is not valid
     */
-   public void write(Object source, File out) throws Exception;
+   void write(Object source, File out) throws Exception;
 
    /**
     * This <code>write</code> method will traverse the provided object
@@ -590,7 +590,7 @@ public interface Serializer {
     * 
     * @throws Exception if the schema for the object is not valid
     */   
-   public void write(Object source, OutputStream out) throws Exception;
+   void write(Object source, OutputStream out) throws Exception;
    
    /**
     * This <code>write</code> method will traverse the provided object
@@ -606,7 +606,7 @@ public interface Serializer {
     * 
     * @throws Exception if the schema for the object is not valid
     */   
-   public void write(Object source, Writer out) throws Exception;
+   void write(Object source, Writer out) throws Exception;
    
    /**
     * This <code>write</code> method will traverse the provided object
@@ -622,5 +622,5 @@ public interface Serializer {
     * 
     * @throws Exception if the schema for the object is not valid
     */
-   public void write(Object source, OutputNode root) throws Exception;
+   void write(Object source, OutputNode root) throws Exception;
 }

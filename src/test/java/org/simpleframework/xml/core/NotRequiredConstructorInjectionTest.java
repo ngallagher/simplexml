@@ -26,17 +26,17 @@ public class NotRequiredConstructorInjectionTest extends ValidationTestCase{
          this.value = value;
       }
       @Attribute
-      public String getValue() {
+      public String getValue() { // VERY VERY STRANGE STUFF, ExampleNotRequiredByDefault ends up declaring this method if its class scope is public
          return value;
       }
       @Element(required=false)
-      public String getName() {
+      public String getName() { // VERY VERY STRANGE STUFF, ExampleNotRequiredByDefault ends up declaring this method if its class scope is public
          return name;
       }
    }
    
    @Default(value=DefaultType.PROPERTY, required=false)
-   public static class ExampleNotRequiredByDefault extends ExampleNotRequired {
+   private static class ExampleNotRequiredByDefault extends ExampleNotRequired {
       private final String extra;
       public ExampleNotRequiredByDefault(@Element(name="name", required=false) String name, @Attribute(name="value") String value, @Element(name="extra", required=false) String extra) {
          super(name, value);

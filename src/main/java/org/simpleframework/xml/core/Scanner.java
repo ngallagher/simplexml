@@ -47,7 +47,7 @@ interface Scanner extends Policy {
     * 
     * @return this returns the default signature if it exists
     */
-   public Signature getSignature();
+   Signature getSignature();
    
    /**
     * This returns the signatures for the type. All constructors are
@@ -57,7 +57,7 @@ interface Scanner extends Policy {
     *
     * @return this returns the list of signatures for the type
     */
-   public List<Signature> getSignatures();
+   List<Signature> getSignatures();
    
    /**
     * This returns a map of all parameters that exist. This is used
@@ -66,7 +66,7 @@ interface Scanner extends Policy {
     * 
     * @return this returns a map of all parameters within the type
     */
-   public ParameterMap getParameters();
+   ParameterMap getParameters();
    
    /**
     * This is used to acquire the instantiator for the type. This is
@@ -76,7 +76,7 @@ interface Scanner extends Policy {
     * 
     * @return this instantiator responsible for creating instances
     */
-   public Instantiator getInstantiator();
+   Instantiator getInstantiator();
 
    /**
     * This is used to acquire the type that this scanner scans for
@@ -85,7 +85,7 @@ interface Scanner extends Policy {
     * 
     * @return this is the type that this creator will represent
     */
-   public Class getType();
+   Class getType();
    
    /**
     * This is used to acquire the <code>Decorator</code> for this.
@@ -96,7 +96,7 @@ interface Scanner extends Policy {
     * 
     * @return this returns the decorator associated with this
     */
-   public Decorator getDecorator();
+   Decorator getDecorator();
    
    /**
     * This method is used to return the <code>Caller</code> for this
@@ -106,7 +106,7 @@ interface Scanner extends Policy {
     * 
     * @return this returns a caller used for delivering callbacks
     */
-   public Caller getCaller(Context context);
+   Caller getCaller(Context context);
 
    /**
     * This is used to create a <code>Section</code> given the context
@@ -117,7 +117,7 @@ interface Scanner extends Policy {
     * 
     * @return this will return a section for serialization
     */
-   public Section getSection();
+   Section getSection();
    
    /**
     * This is the <code>Version</code> for the scanned class. It 
@@ -128,7 +128,7 @@ interface Scanner extends Policy {
     * 
     * @return this returns the version of the class that is scanned
     */
-   public Version getRevision();
+   Version getRevision();
    
    /**
     * This is used to acquire the <code>Order</code> annotation for
@@ -139,7 +139,7 @@ interface Scanner extends Policy {
     * 
     * @return this returns the order, if any, defined for the class
     */
-   public Order getOrder();
+   Order getOrder();
    
    /**
     * This returns the <code>Label</code> that represents the version
@@ -149,7 +149,7 @@ interface Scanner extends Policy {
     * 
     * @return this returns the label used for reading the version
     */
-   public Label getVersion();
+   Label getVersion();
    
    /**
     * This returns the <code>Label</code> that represents the text
@@ -160,7 +160,7 @@ interface Scanner extends Policy {
     * 
     * @return this returns the text label for the scanned class
     */
-   public Label getText();
+   Label getText();
    
    /**
     * This returns the name of the class processed by this scanner.
@@ -171,7 +171,7 @@ interface Scanner extends Policy {
     * 
     * @return this returns the name of the object being scanned
     */
-   public String getName();
+   String getName();
 
    /**
     * This method is used to retrieve the schema class commit method
@@ -182,7 +182,7 @@ interface Scanner extends Policy {
     * 
     * @return this returns the commit method for the schema class
     */
-   public Function getCommit();
+   Function getCommit();
 
    /**
     * This method is used to retrieve the schema class validation
@@ -193,7 +193,7 @@ interface Scanner extends Policy {
     * 
     * @return this returns the validate method for the schema class
     */   
-   public Function getValidate();
+   Function getValidate();
    
    /**
     * This method is used to retrieve the schema class persistence
@@ -204,7 +204,7 @@ interface Scanner extends Policy {
     * 
     * @return this returns the persist method for the schema class
     */
-   public Function getPersist();
+   Function getPersist();
 
    /**
     * This method is used to retrieve the schema class completion
@@ -215,7 +215,7 @@ interface Scanner extends Policy {
     * 
     * @return returns the complete method for the schema class
     */   
-   public Function getComplete();
+   Function getComplete();
    
    /**
     * This method is used to retrieve the schema class replacement
@@ -226,7 +226,7 @@ interface Scanner extends Policy {
     * 
     * @return returns the replace method for the schema class
     */
-   public Function getReplace();
+   Function getReplace();
    
    /**
     * This method is used to retrieve the schema class replacement
@@ -237,7 +237,7 @@ interface Scanner extends Policy {
     * 
     * @return returns the replace method for the schema class
     */
-   public Function getResolve();
+   Function getResolve();
 
    /**
     * This is used to determine whether the scanned class represents
@@ -247,7 +247,7 @@ interface Scanner extends Policy {
     * 
     * @return this returns true if no XML annotations were found
     */
-   public boolean isPrimitive();
+   boolean isPrimitive();
    
    /**
     * This is used to determine whether the scanned class represents
@@ -257,7 +257,7 @@ interface Scanner extends Policy {
     * 
     * @return this returns true if no XML annotations were found
     */
-   public boolean isEmpty();
+   boolean isEmpty();
    
    /**
     * This method is used to determine whether strict mappings are
@@ -269,6 +269,6 @@ interface Scanner extends Policy {
     *
     * @return true if strict parsing is enabled, false otherwise
     */ 
-   public boolean isStrict();
+   boolean isStrict();
 }
 

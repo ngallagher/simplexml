@@ -26,7 +26,9 @@ public class ClassScannerTest extends TestCase {
    }
 
    public void testClassScanner() throws Exception {
-      ClassScanner scanner = new ClassScanner(Example.class, new Format());
+      Support support = new Support();
+      Detail detail = new DetailScanner(Example.class);
+      ClassScanner scanner = new ClassScanner(detail, support);
       
       assertNotNull(scanner.getRoot());
       assertNotNull(scanner.getOrder());

@@ -118,7 +118,7 @@ public class ScannerTest extends TestCase {
    }
    
    public void testExampleWithPath() throws Exception {
-      Scanner scanner = new ObjectScanner(ExampleWithPath.class);
+      Scanner scanner = new ObjectScanner(new DetailScanner(ExampleWithPath.class), new Support());
       ArrayList<Class> types = new ArrayList<Class>();
       
       assertEquals(scanner.getSection().getElements().size(), 0);
@@ -133,7 +133,7 @@ public class ScannerTest extends TestCase {
    }
    
    public void testExample() throws Exception {
-      Scanner scanner = new ObjectScanner(Example.class);
+      Scanner scanner = new ObjectScanner(new DetailScanner(Example.class), new Support());
       ArrayList<Class> types = new ArrayList<Class>();
       
       assertEquals(scanner.getSection().getElements().size(), 1);
@@ -160,7 +160,7 @@ public class ScannerTest extends TestCase {
    }
    
    public void testMixedExample() throws Exception {
-      Scanner scanner = new ObjectScanner(MixedExample.class);
+      Scanner scanner = new ObjectScanner(new DetailScanner(MixedExample.class), new Support());
       ArrayList<Class> types = new ArrayList<Class>();
       
       assertEquals(scanner.getSection().getElements().size(), 3);
@@ -192,7 +192,7 @@ public class ScannerTest extends TestCase {
       boolean success = false;
       
       try {
-         new ObjectScanner(DuplicateAttributeExample.class);
+         new ObjectScanner(new DetailScanner(DuplicateAttributeExample.class), new Support());
       } catch(Exception e) {
          success = true;
       }
@@ -203,7 +203,7 @@ public class ScannerTest extends TestCase {
       boolean success = false;
       
       try {
-         new ObjectScanner(NonMatchingElementExample.class);
+         new ObjectScanner(new DetailScanner(NonMatchingElementExample.class), new Support());
       } catch(Exception e) {
          success = true;
       }
@@ -214,7 +214,7 @@ public class ScannerTest extends TestCase {
       boolean success = false;
       
       try {
-         new ObjectScanner(IllegalTextExample.class);
+         new ObjectScanner(new DetailScanner(IllegalTextExample.class), new Support());
       } catch(Exception e) {
          success = true;
       }

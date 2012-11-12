@@ -40,7 +40,7 @@ public class FieldScannerDefaultTest extends TestCase {
    }
    
    public void testMixedAnnotations() throws Exception {
-      Map<String, Contact> map = getContacts(MixedAnnotations.class, DefaultType.FIELD);
+      Map<String, Contact> map = getContacts(MixedAnnotations.class);
       
       assertEquals(map.size(), 3);
       assertFalse(map.get("name").isReadOnly());
@@ -65,7 +65,7 @@ public class FieldScannerDefaultTest extends TestCase {
    }
    
    public void testNoAnnotations() throws Exception {
-      Map<String, Contact> map = getContacts(NoAnnotations.class, DefaultType.FIELD);
+      Map<String, Contact> map = getContacts(NoAnnotations.class);
       
       assertFalse(map.get("name").isReadOnly());
       assertFalse(map.get("value").isReadOnly());
@@ -108,8 +108,8 @@ public class FieldScannerDefaultTest extends TestCase {
       assertNull(map.get("map").getAnnotation(Root.class));
    }
    
-   private static Map<String, Contact> getContacts(Class type, DefaultType defaultType) throws Exception {
-      FieldScanner scanner = new FieldScanner(type, defaultType);
+   private static Map<String, Contact> getContacts(Class type) throws Exception {
+      FieldScanner scanner = new FieldScanner(new DetailScanner(type), new Support());
       Map<String, Contact> map = new HashMap<String, Contact>();
       
       for(Contact contact : scanner) {

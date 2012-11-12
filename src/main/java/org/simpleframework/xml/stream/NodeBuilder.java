@@ -39,10 +39,10 @@ public final class NodeBuilder {
    /**
     * This is the XML provider implementation that creates readers.
     */         
-   private static Provider provider;
+   private static Provider PROVIDER;
 
    static {
-      provider = ProviderFactory.getInstance();                    
+      PROVIDER = ProviderFactory.getInstance();                    
    }
 
    /**
@@ -55,7 +55,7 @@ public final class NodeBuilder {
     * @throws Exception thrown if there is an I/O exception
     */   
    public static InputNode read(InputStream source) throws Exception {
-      return read(provider.provide(source));   
+      return read(PROVIDER.provide(source));   
    }
         
    /**
@@ -68,7 +68,7 @@ public final class NodeBuilder {
     * @throws Exception thrown if there is an I/O exception
     */   
    public static InputNode read(Reader source) throws Exception {
-      return read(provider.provide(source));   
+      return read(PROVIDER.provide(source));   
    }
 
    /**

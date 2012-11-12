@@ -45,5 +45,5 @@ public interface Filter {
     * 
     * @return returns a replacement for the provided text value
     */
-   public String replace(String text);        
+   String replace(String text);        
 }

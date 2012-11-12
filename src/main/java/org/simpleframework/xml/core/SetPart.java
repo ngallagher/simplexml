@@ -133,6 +133,11 @@ class SetPart implements MethodPart {
       return Reflector.getParameterDependents(method, 0);
    }
    
+   public Class getDeclaringClass() {
+      return method.getDeclaringClass();
+   }
+   
+   
    /**
     * This is used to acquire the annotation that was used to label
     * the method this represents. This acts as a means to match the

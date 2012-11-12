@@ -18,6 +18,9 @@
 
 package org.simpleframework.xml.core;
 
+import java.lang.annotation.Annotation;
+import java.util.List;
+
 import org.simpleframework.xml.filter.Filter;
 import org.simpleframework.xml.filter.PlatformFilter;
 import org.simpleframework.xml.strategy.Value;
@@ -41,14 +44,19 @@ import org.simpleframework.xml.transform.Transformer;
 class Support implements Filter {
    
    /**
-    * This will perform the scanning of types are provide scanners.
-    */
-   private final ScannerFactory factory;
-   
-   /**
     * This is the factory that is used to create the scanners.
     */
-   private final InstanceFactory creator;
+   private final InstanceFactory instances;
+   
+   /**
+    * This will perform the scanning of types are provide scanners.
+    */
+   private final ScannerFactory scanners;
+   
+   private final DetailExtractor details;
+   
+   private final LabelExtractor labels;
+
    
    /**
     * This is the transformer used to transform objects to text.
@@ -116,9 +124,11 @@ class Support implements Filter {
     * @param format this contains all the formatting for the XML
     */
    public Support(Filter filter, Matcher matcher, Format format) {
-      this.factory = new ScannerFactory(this, format);
       this.transform = new Transformer(matcher);
-      this.creator = new InstanceFactory();
+      this.scanners = new ScannerFactory(this);
+      this.instances = new InstanceFactory();
+      this.details = new DetailExtractor(this);
+      this.labels = new LabelExtractor(format);
       this.matcher = matcher;
       this.filter = filter;
       this.format = format;
@@ -149,6 +159,10 @@ class Support implements Filter {
       return format.getStyle();
    }
    
+   public Format getFormat() {
+      return format;
+   }
+   
    /**
     * This will create an <code>Instance</code> that can be used
     * to instantiate objects of the specified class. This leverages
@@ -159,7 +173,7 @@ class Support implements Filter {
     * @return this will return an object for instantiating objects
     */
    public Instance getInstance(Value value) {
-      return creator.getInstance(value);
+      return instances.getInstance(value);
    }
    
    /**
@@ -172,7 +186,7 @@ class Support implements Filter {
     * @return this will return an object for instantiating objects
     */
    public Instance getInstance(Class type) {
-      return creator.getInstance(type);
+      return instances.getInstance(type);
    }
    
    /**
@@ -188,6 +202,27 @@ class Support implements Filter {
       return matcher.match(type);
    }
 
+   public Label getLabel(Contact contact, Annotation label) throws Exception {
+      return labels.getLabel(contact, label);
+   }
+   
+   public List<Label> getLabels(Contact contact, Annotation label) throws Exception {
+      return labels.getList(contact, label);
+   }
+   
+   public Detail getDetail(Class type) throws Exception {
+      return details.getDetail(type);
+   }
+   
+   public ContactList getFields(Class type) throws Exception {
+      return details.getFields(type);
+   }
+   
+   public ContactList getMethods(Class type) throws Exception {
+      return details.getMethods(type);
+   }
+  
+   
    /**
     * This creates a <code>Scanner</code> object that can be used to
     * examine the fields within the XML class schema. The scanner
@@ -200,7 +235,7 @@ class Support implements Filter {
     * @return a scanner that can maintains information on the type
     */ 
    public Scanner getScanner(Class type) throws Exception {
-      return factory.getInstance(type);
+      return scanners.getInstance(type);
    }
    
    /**

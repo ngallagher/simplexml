@@ -18,10 +18,6 @@
 
 package org.simpleframework.xml.core;
 
-import static java.util.Arrays.asList;
-
-import java.util.Collection;
-
 import org.simpleframework.xml.strategy.Type;
 
 /**

@@ -43,6 +43,8 @@ abstract class ParameterContact<T extends Annotation> implements Contact {
     */
    protected final Constructor factory;
    
+   protected final Class owner;
+   
    /**
     * This is the index of the parameter within the constructor.
     */
@@ -65,6 +67,7 @@ abstract class ParameterContact<T extends Annotation> implements Contact {
     */
    public ParameterContact(T label, Constructor factory, int index) {
       this.labels = factory.getParameterAnnotations()[index];
+      this.owner = factory.getDeclaringClass();
       this.factory = factory;
       this.index = index;
       this.label = label;
@@ -114,6 +117,10 @@ abstract class ParameterContact<T extends Annotation> implements Contact {
     */
    public Class[] getDependents() {
       return Reflector.getParameterDependents(factory, index);
+   }
+   
+   public Class getDeclaringClass() {
+      return owner;
    }
    
    /**

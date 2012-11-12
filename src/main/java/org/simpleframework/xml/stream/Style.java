@@ -51,7 +51,7 @@ public interface Style {
     * 
     * @return this returns the styled name of the XML element
     */
-   public String getElement(String name);
+   String getElement(String name);
    
    /**
     * This is used to generate the XML attribute representation of 
@@ -63,5 +63,5 @@ public interface Style {
     * 
     * @return this returns the styled name of the XML attribute
     */
-   public String getAttribute(String name);
+   String getAttribute(String name);
 }

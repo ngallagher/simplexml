@@ -41,7 +41,7 @@ public interface NamespaceMap extends Iterable<String> {
     * 
     * @return this returns the prefix that is currently in scope
     */
-   public String getPrefix();
+   String getPrefix();
 
    /**
     * This acquires the prefix for the specified namespace reference.
@@ -54,7 +54,7 @@ public interface NamespaceMap extends Iterable<String> {
     * 
     * @return this will return the prefix that is is scope
     */
-   public String getPrefix(String reference);
+   String getPrefix(String reference);
    
    /**
     * This acquires the namespace reference for the specified prefix.
@@ -67,7 +67,7 @@ public interface NamespaceMap extends Iterable<String> {
     * 
     * @return this will return the reference that is is scope
     */
-   public String getReference(String prefix);
+   String getReference(String prefix);
 
    /**
     * This returns an iterator for the namespace of all the nodes 
@@ -77,7 +77,7 @@ public interface NamespaceMap extends Iterable<String> {
     *
     * @return this returns the namespaces contained in this map
     */ 
-   public Iterator<String> iterator();
+   Iterator<String> iterator();
    
    /**
     * This is used to add the namespace reference to the namespace
@@ -89,7 +89,7 @@ public interface NamespaceMap extends Iterable<String> {
     * 
     * @return this returns the prefix that has been replaced
     */
-   public String setReference(String reference);
+   String setReference(String reference);
    
    /**
     * This is used to add the namespace reference to the namespace
@@ -101,5 +101,5 @@ public interface NamespaceMap extends Iterable<String> {
     * 
     * @return this returns the prefix that has been replaced
     */
-   public String setReference(String reference, String prefix);
+   String setReference(String reference, String prefix);
 }

@@ -42,7 +42,7 @@ interface Section extends Iterable<String> {
     * 
     * @return this returns the name of this section instance
     */
-   public String getName();
+   String getName();
    
    /**
     * This is used to acquire the path prefix for the section. The
@@ -52,7 +52,7 @@ interface Section extends Iterable<String> {
     * 
     * @return this returns the prefix for this section
     */
-   public String getPrefix();
+   String getPrefix();
 
    /**
     * This is used to acquire the text label for this section if 
@@ -63,7 +63,7 @@ interface Section extends Iterable<String> {
     * 
     * @return this returns the text label for this section
     */
-   public Label getText() throws Exception;
+   Label getText() throws Exception;
 
    /**
     * Returns a <code>LabelMap</code> that contains the details for
@@ -74,7 +74,7 @@ interface Section extends Iterable<String> {
     * 
     * @return returns the elements associated with this section
     */
-   public LabelMap getElements() throws Exception;
+   LabelMap getElements() throws Exception;
    
    /**
     * Returns a <code>LabelMap</code> that contains the details for
@@ -85,7 +85,7 @@ interface Section extends Iterable<String> {
     * 
     * @return returns the attributes associated with this section
     */
-   public LabelMap getAttributes() throws Exception;
+   LabelMap getAttributes() throws Exception;
    
    /**
     * Returns the named element as a <code>Label</code> object.
@@ -101,7 +101,7 @@ interface Section extends Iterable<String> {
     * 
     * @return this returns the label associated with the name
     */
-   public Label getElement(String name) throws Exception;
+   Label getElement(String name) throws Exception;
    
    /**
     * Returns the named section as a <code>Section</code> object.
@@ -117,7 +117,7 @@ interface Section extends Iterable<String> {
     * 
     * @return this returns the section associated with the name
     */
-   public Section getSection(String name) throws Exception;
+   Section getSection(String name) throws Exception;
    
    /**
     * This is used to acquire the full element path for this
@@ -129,7 +129,7 @@ interface Section extends Iterable<String> {
     * 
     * @return a fully qualified path for the specified name
     */
-   public String getPath(String name) throws Exception;
+   String getPath(String name) throws Exception;
    
    /**
     * This is used to acquire the full attribute path for this 
@@ -141,7 +141,7 @@ interface Section extends Iterable<String> {
     * 
     * @return a fully qualified path for the specified name
     */
-   public String getAttribute(String name) throws Exception;
+   String getAttribute(String name) throws Exception;
    
    /**
     * To differentiate between a section and an element this can be
@@ -153,5 +153,5 @@ interface Section extends Iterable<String> {
     * 
     * @return this returns true if the name represents a section
     */
-   public boolean isSection(String name) throws Exception;
+   boolean isSection(String name) throws Exception;
 }

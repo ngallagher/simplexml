@@ -119,15 +119,15 @@ public class MethodScannerDefaultTest extends TestCase {
    }
    
    public void testNoAnnotationsWithNoDefaults() throws Exception {
-      Map<String, Contact> map = getContacts(NoAnnotations.class, null);
+      Map<String, Contact> map = getContacts(NoAnnotations.class);
       
-      assertTrue(map.isEmpty());
+      assertFalse(map.isEmpty());
    }
    
    public void testMixedAnnotationsWithNoDefaults() throws Exception {
-      Map<String, Contact> map = getContacts(MixedAnnotations.class, null);
+      Map<String, Contact> map = getContacts(MixedAnnotations.class);
       
-      assertEquals(map.size(), 2);
+      assertEquals(map.size(), 4);
       assertFalse(map.get("name").isReadOnly());
       assertFalse(map.get("value").isReadOnly());
       
@@ -145,7 +145,7 @@ public class MethodScannerDefaultTest extends TestCase {
    }
    
    public void testExtendedAnnotations() throws Exception {
-      Map<String, Contact> map = getContacts(ExtendedAnnotations.class, DefaultType.PROPERTY);
+      Map<String, Contact> map = getContacts(ExtendedAnnotations.class);
       
       assertFalse(map.get("array").isReadOnly());
       assertFalse(map.get("map").isReadOnly());
@@ -174,7 +174,7 @@ public class MethodScannerDefaultTest extends TestCase {
    }
    
    public void testMixedAnnotations() throws Exception {
-      Map<String, Contact> map = getContacts(MixedAnnotations.class, DefaultType.PROPERTY);
+      Map<String, Contact> map = getContacts(MixedAnnotations.class);
       
       assertFalse(map.get("array").isReadOnly());
       assertFalse(map.get("map").isReadOnly());
@@ -203,7 +203,7 @@ public class MethodScannerDefaultTest extends TestCase {
    }
    
    public void testNoAnnotations() throws Exception {
-      Map<String, Contact> map = getContacts(NoAnnotations.class, DefaultType.PROPERTY);
+      Map<String, Contact> map = getContacts(NoAnnotations.class);
       
       assertFalse(map.get("date").isReadOnly());
       assertFalse(map.get("customer").isReadOnly());
@@ -246,8 +246,8 @@ public class MethodScannerDefaultTest extends TestCase {
       assertNull(map.get("array").getAnnotation(Root.class));
    }
    
-   private static Map<String, Contact> getContacts(Class type, DefaultType defaultType) throws Exception {
-      MethodScanner scanner = new MethodScanner(type, defaultType, true);
+   private static Map<String, Contact> getContacts(Class type) throws Exception {
+      MethodScanner scanner = new MethodScanner(new DetailScanner(type), new Support());
       Map<String, Contact> map = new HashMap<String, Contact>();
       
       for(Contact contact : scanner) {

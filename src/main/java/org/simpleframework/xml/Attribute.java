@@ -46,7 +46,7 @@ public @interface Attribute {
     * 
     * @return the name of the XML attribute this represents
     */
-   public String name() default "";
+   String name() default "";
    
    /**
     * This is used to provide a default value for the attribute if
@@ -57,7 +57,7 @@ public @interface Attribute {
     * 
     * @return this returns the default attribute value to use
     */
-   public String empty() default "";
+   String empty() default "";
 
    /**
     * Determines whether the attribute is required within an XML
@@ -67,5 +67,5 @@ public @interface Attribute {
     * 
     * @return true if the attribute is required, false otherwise
     */
-   public boolean required() default true;   
+   boolean required() default true;   
 }

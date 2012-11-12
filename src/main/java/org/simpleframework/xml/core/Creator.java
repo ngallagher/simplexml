@@ -37,7 +37,7 @@ interface Creator {
     * 
     * @return this returns the object that has been instantiated
     */
-   public Object getInstance() throws Exception; 
+   Object getInstance() throws Exception; 
    
    /**
     * This is used to instantiate the object using a constructor that
@@ -49,7 +49,7 @@ interface Creator {
     * 
     * @return this returns the object that has been instantiated
     */
-   public Object getInstance(Criteria criteria) throws Exception;
+   Object getInstance(Criteria criteria) throws Exception;
 
    /**
     * This is used to score this <code>Instantiator</code> object so that
@@ -65,7 +65,7 @@ interface Creator {
     * 
     * @return this returns the score based on the criteria provided
     */
-   public double getScore(Criteria criteria) throws Exception;
+   double getScore(Criteria criteria) throws Exception;
    
    /**
     * This is the signature associated with the creator. The signature
@@ -75,7 +75,7 @@ interface Creator {
     * 
     * @return this is the signature associated with the creator
     */
-   public Signature getSignature() throws Exception;
+   Signature getSignature() throws Exception;
    
    /**
     * This is the type associated with the <code>Creator</code> object.
@@ -83,5 +83,5 @@ interface Creator {
     * 
     * @return this returns the type associated with this creator
     */
-   public Class getType() throws Exception;
+   Class getType() throws Exception;
 }

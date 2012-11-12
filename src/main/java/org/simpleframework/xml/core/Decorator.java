@@ -41,7 +41,7 @@ interface Decorator {
     * 
     * @param node this is the node that is to be decorated by this
     */
-   public void decorate(OutputNode node);
+   void decorate(OutputNode node);
    
    /**
     * This method is used to decorate the provided node. This node 
@@ -54,5 +54,5 @@ interface Decorator {
     * @param node this is the node that is to be decorated by this
     * @param secondary this is a secondary decorator to be applied
     */
-   public void decorate(OutputNode node, Decorator secondary);
+   void decorate(OutputNode node, Decorator secondary);
 }

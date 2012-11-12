@@ -35,7 +35,7 @@ public interface Cache<T> {
     * 
     * @return this returns true if the cache is empty
     */
-   public boolean isEmpty();
+   boolean isEmpty();
    
    /**
     * This method is used to insert a key value mapping in to the
@@ -46,7 +46,7 @@ public interface Cache<T> {
     * @param key this is the key to cache the provided value to
     * @param value this is the value that is to be cached
     */
-   public void cache(Object key, T value);
+   void cache(Object key, T value);
  
    /**
     * This is used to exclusively take the value mapped to the 
@@ -57,7 +57,7 @@ public interface Cache<T> {
     * 
     * @return this returns the value mapped to the specified key 
     */
-   public T take(Object key);
+   T take(Object key);
    
    /**
     * This method is used to get the value from the cache that is
@@ -68,7 +68,7 @@ public interface Cache<T> {
     * 
     * @return this returns the value mapped to the specified key 
     */
-   public T fetch(Object key);   
+   T fetch(Object key);   
    
    /**
     * This is used to determine whether the specified key exists
@@ -79,5 +79,5 @@ public interface Cache<T> {
     * 
     * @return true if the specified key is within the cache
     */
-   public boolean contains(Object key);
+   boolean contains(Object key);
 }
