@@ -10,7 +10,6 @@ import org.simpleframework.xml.Root;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.Transient;
 import org.simpleframework.xml.ValidationTestCase;
-import org.simpleframework.xml.convert.HideEnclosingConverterTest.EntryHolder;
 import org.simpleframework.xml.core.Persister;
 import org.simpleframework.xml.strategy.Strategy;
 import org.simpleframework.xml.stream.InputNode;
