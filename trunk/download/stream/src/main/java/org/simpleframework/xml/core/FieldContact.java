@@ -155,6 +155,13 @@ class FieldContact implements Contact {
       return Reflector.getDependents(field);
    }
    
+   /**
+    * This is the class that declares the contact. The declaring
+    * class is where the field represented been defined. This will
+    * typically be a class rather than an interface.
+    * 
+    * @return this returns the class the contact is declared within
+    */
    public Class getDeclaringClass() {
       return field.getDeclaringClass();
    }

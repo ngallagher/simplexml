@@ -67,8 +67,8 @@ class ModelAssembler {
     * will perform no registrations on the specified model.   
     * 
     * @param builder this is the builder for XPath expressions
-    * @param type this is the type to assemble the model for
-    * @param format the format used to style order values
+    * @param detail this contains the details for the assembler
+    * @param support this contains various support functions
     */
    public ModelAssembler(ExpressionBuilder builder, Detail detail, Support support) throws Exception {
       this.format = support.getFormat();

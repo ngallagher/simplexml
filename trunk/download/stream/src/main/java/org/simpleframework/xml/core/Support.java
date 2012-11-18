@@ -53,10 +53,15 @@ class Support implements Filter {
     */
    private final ScannerFactory scanners;
    
+   /**
+    * This is used to extract the details for a specific class.
+    */
    private final DetailExtractor details;
    
+   /**
+    * This is used to extract the labels for a specific contact.
+    */
    private final LabelExtractor labels;
-
    
    /**
     * This is the transformer used to transform objects to text.
@@ -126,9 +131,9 @@ class Support implements Filter {
    public Support(Filter filter, Matcher matcher, Format format) {
       this.transform = new Transformer(matcher);
       this.scanners = new ScannerFactory(this);
-      this.instances = new InstanceFactory();
       this.details = new DetailExtractor(this);
       this.labels = new LabelExtractor(format);
+      this.instances = new InstanceFactory();
       this.matcher = matcher;
       this.filter = filter;
       this.format = format;
@@ -142,6 +147,7 @@ class Support implements Filter {
     * and output the result for inclusion in the generated XML.
     *
     * @param text this is the text value that is to be replaced
+    * 
     * @return returns a replacement for the provided text value
     */
    public String replace(String text) {
@@ -159,6 +165,13 @@ class Support implements Filter {
       return format.getStyle();
    }
    
+   /**
+    * This is used to acquire the <code>Format</code> for this.
+    * The format should never be null and contains information that
+    * relates to the indentation that is to be used with XML elements.
+    * 
+    * @return this returns the format to be used for serialization
+    */
    public Format getFormat() {
       return format;
    }
@@ -202,26 +215,64 @@ class Support implements Filter {
       return matcher.match(type);
    }
 
+   /**
+    * Creates a <code>Label</code> using the provided contact and XML
+    * annotation. The label produced contains all information related
+    * to an object member. It knows the name of the XML entity, as
+    * well as whether it is required. Once created the converter can
+    * transform an XML node into Java object and vice versa.
+    * 
+    * @param contact this is contact that the label is produced for
+    * @param label represents the XML annotation for the contact
+    * 
+    * @return returns the label instantiated for the contact
+    */
    public Label getLabel(Contact contact, Annotation label) throws Exception {
       return labels.getLabel(contact, label);
    }
    
+   /**
+    * Creates a <code>List</code> using the provided contact and XML
+    * annotation. The labels produced contain all information related
+    * to an object member. It knows the name of the XML entity, as
+    * well as whether it is required. Once created the converter can
+    * transform an XML node into Java object and vice versa.
+    * 
+    * @param contact this is contact that the label is produced for
+    * @param label represents the XML annotation for the contact
+    * 
+    * @return returns the list of labels associated with the contact
+    */
    public List<Label> getLabels(Contact contact, Annotation label) throws Exception {
       return labels.getList(contact, label);
    }
    
+   /**
+    * 
+    * @param type
+    * @return
+    */
    public Detail getDetail(Class type) throws Exception {
       return details.getDetail(type);
    }
    
+   /**
+    * 
+    * @param type
+    * @return
+    */
    public ContactList getFields(Class type) throws Exception {
       return details.getFields(type);
    }
    
+   /**
+    * 
+    * @param type
+    * @return
+    */
    public ContactList getMethods(Class type) throws Exception {
       return details.getMethods(type);
    }
-  
    
    /**
     * This creates a <code>Scanner</code> object that can be used to

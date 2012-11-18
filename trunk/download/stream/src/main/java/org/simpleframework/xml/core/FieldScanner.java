@@ -23,18 +23,19 @@ import static org.simpleframework.xml.DefaultType.FIELD;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.List;
 
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.DefaultType;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementArray;
 import org.simpleframework.xml.ElementList;
+import org.simpleframework.xml.ElementListUnion;
 import org.simpleframework.xml.ElementMap;
+import org.simpleframework.xml.ElementMapUnion;
+import org.simpleframework.xml.ElementUnion;
 import org.simpleframework.xml.Text;
 import org.simpleframework.xml.Transient;
-import org.simpleframework.xml.ElementUnion;
-import org.simpleframework.xml.ElementListUnion;
-import org.simpleframework.xml.ElementMapUnion;
 import org.simpleframework.xml.Version;
 
 /**
@@ -59,25 +60,23 @@ class FieldScanner extends ContactList {
     */
    private final ContactMap done;
    
+   /**
+    * This object contains various support functions for the class.
+    */
    private final Support support;
-   
-   private final Detail detail;
    
    /**
     * Constructor for the <code>FieldScanner</code> object. This is
     * used to perform a scan on the specified class in order to find
     * all fields that are labeled with an XML annotation.
     * 
-    * @param type this is the schema class that is to be scanned
+    * @param detail this contains the details for the class scanned
+    * @param support this contains various support functions
     */
    public FieldScanner(Detail detail, Support support) throws Exception {
-      if(detail.toString().indexOf("PersonD") != -1) {
-         System.err.println();
-      }
       this.factory = new AnnotationFactory(detail);
       this.done = new ContactMap();
       this.support = support;
-      this.detail = detail;
       this.scan(detail);
    }
    
@@ -87,23 +86,28 @@ class FieldScanner extends ContactList {
     * the field is annotated it is converted to a contact so that
     * it can be used during serialization and deserialization.
     * 
-    * @param type this is the type to be scanned for fields
-    * 
-    * @throws Exception thrown if the object schema is invalid
+    * @param detail this contains the details for the class scanned
     */
    private void scan(Detail detail) throws Exception {
       DefaultType access = detail.getAccess();
-      Class type = detail.getType();
       Class base = detail.getSuper();
       
       if(base != null) {
          extend(base);
       }
-      scan(type, access);
-      scan(type, type);
+      extract(detail, access);
+      extract(detail);
       build();
    }
    
+   /**
+    * This method is used to extend the provided class. Extending a
+    * class in this way basically means that the fields that have
+    * been scanned in the specific class will be added to this. Doing
+    * this improves the performance of classes within a hierarchy.
+    * 
+    * @param base the class to inherit scanned fields from
+    */
    private void extend(Class base) throws Exception {
       ContactList list = support.getFields(base);
       
@@ -118,31 +122,19 @@ class FieldScanner extends ContactList {
     * an XML element and can be used as a <code>Contact</code> for
     * an entity within the object.
     * 
-    * @param real this is the actual type of the object scanned
-    * @param type this is one of the super classes for the object
+    * @param detail this is one of the super classes for the object
     */  
-   private void scan(Class type, Class real) {
-      Field[] list = type.getDeclaredFields();
+   private void extract(Detail detail) {
+      List<FieldDetail> fields = detail.getFields();
       
-      for(Field field : list) {
-         scan(field);                      
+      for(FieldDetail entry : fields) {
+         Annotation[] list = entry.getAnnotations();
+         Field field = entry.getField();
+         
+         for(Annotation label : list) {
+            scan(field, label, list);                  
+         }
       }   
-   }
-   
-   /**
-    * This is used to scan all annotations within the given field.
-    * Each annotation is checked against the set of supported XML
-    * annotations. If the annotation is one of the XML annotations
-    * then the field is considered for acceptance as a contact.
-    * 
-    * @param field the field to be scanned for XML annotations
-    */
-   private void scan(Field field) {
-      Annotation[] list = field.getDeclaredAnnotations();
-      
-      for(Annotation label : list) {
-         scan(field, label, list);                       
-      }  
    }
    
    /**
@@ -151,15 +143,16 @@ class FieldScanner extends ContactList {
     * should have a default XML annotation then it is added to the
     * list of contacts to be used to form the class schema.
     * 
-    * @param type this is the type to have its fields scanned
+    * @param detail this is the detail to have its fields scanned
     * @param access this is the default access type for the class
     */
-   private void scan(Class type, DefaultType access) throws Exception {
-      Field[] fields = type.getDeclaredFields();
+   private void extract(Detail detail, DefaultType access) throws Exception {
+      List<FieldDetail> fields = detail.getFields();
       
       if(access == FIELD) {
-         for(Field field : fields) {
-            Annotation[] list = field.getDeclaredAnnotations();
+         for(FieldDetail entry : fields) {
+            Annotation[] list = entry.getAnnotations();
+            Field field = entry.getField();
             Class real = field.getType();
             
             if(!isStatic(field)) {

@@ -57,8 +57,8 @@ class ExpressionBuilder {
     * used to create a builder to cache frequently requested XPath
     * expressions. Such caching improves the overall performance.
     * 
-    * @param type this is the type containing the expressions
-    * @param format this is the format used to style the segments
+    * @param detail the details for the the class with expressions
+    * @param support this contains various support functions
     */
    public ExpressionBuilder(Detail detail, Support support) {
       this.cache = new LimitedCache<Expression>();
@@ -95,8 +95,8 @@ class ExpressionBuilder {
     * @return this returns the resulting expression object
     */
    private Expression create(String path) throws Exception {
-      Type description = new ClassType(type);
-      Expression expression = new PathParser(path, description, format);
+      Type detail = new ClassType(type);
+      Expression expression = new PathParser(path, detail, format);
       
       if(cache != null) {
          cache.cache(path, expression);

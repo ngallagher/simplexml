@@ -55,8 +55,14 @@ class ObjectScanner implements Scanner {
     */
    private Structure structure;
    
+   /**
+    * This object contains various support functions for the class.
+    */
    private Support support;
    
+   /**
+    * This contains the details for the class that is being scanned.
+    */
    private Detail detail;
    
    /**
@@ -64,8 +70,8 @@ class ObjectScanner implements Scanner {
     * used to scan the provided class for annotations that are used 
     * to build a schema for an XML file to follow. 
     * 
-    * @param type this is the type that is scanned for a schema
-    * @param format this is used to format the elements and attributes
+    * @param detail this contains the details for the class scanned
+    * @param support this contains various support functions
     */
    public ObjectScanner(Detail detail, Support support) throws Exception {  
       this.scanner = new ClassScanner(detail, support);
@@ -357,7 +363,7 @@ class ObjectScanner implements Scanner {
     * This will acquire all fields and getter setter pairs that have
     * been annotated with the XML annotations.
     *
-    * @param type this is the object type that is to be scanned
+    * @param detail this contains the details for the class scanned
     */  
    private void scan(Detail detail) throws Exception {
       order(detail);
@@ -373,7 +379,7 @@ class ObjectScanner implements Scanner {
     * acts as an override to the order provided by the declaration of
     * the types within the object.  
     * 
-    * @param type this is the type to be scanned for the order
+    * @param detail this contains the details for the class scanned
     */
    private void order(Detail detail) throws Exception {
       Class type = detail.getType();
@@ -387,7 +393,7 @@ class ObjectScanner implements Scanner {
     * the process. This will build a <code>Structure</code> object and
     * clean up any data structures no longer required by the scanner.
     * 
-    * @param type this is the type that this scanner has scanned
+    * @param detail this contains the details for the class scanned
     */
    private void commit(Detail detail) throws Exception {
       Class type = detail.getType();
@@ -403,9 +409,7 @@ class ObjectScanner implements Scanner {
     * If a <code>Text</code> annotation has been used with elements
     * then validation will fail and an exception will be thrown. 
     * 
-    * @param type this is the object type that is being scanned
-    * 
-    * @throws Exception if text and element annotations are present
+    * @param detail this contains the details for the class scanned
     */
    private void validate(Detail detail) throws Exception {
       Class type = detail.getType();
@@ -419,7 +423,7 @@ class ObjectScanner implements Scanner {
     * within the specified class. The field contacts are added to
     * either the attributes or elements map depending on annotation.
     * 
-    * @param type this is the object type that is to be scanned
+    * @param detail this contains the details for the class scanned
     */    
    private void field(Detail detail) throws Exception {
       Class type = detail.getType();
@@ -439,7 +443,7 @@ class ObjectScanner implements Scanner {
     * within the specified class. The field contacts are added to
     * either the attributes or elements map depending on annotation.
     * 
-    * @param type this is the object type that is to be scanned
+    * @param detail this contains the details for the class scanned
     */ 
    private void method(Detail detail) throws Exception {
       Class type = detail.getType();
