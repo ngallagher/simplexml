@@ -63,7 +63,7 @@ interface Section extends Iterable<String> {
     * 
     * @return this returns the text label for this section
     */
-   Label getText() throws Exception;
+   Label getText() throws Exception; 
 
    /**
     * Returns a <code>LabelMap</code> that contains the details for

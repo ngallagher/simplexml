@@ -82,7 +82,7 @@ class ClassScanner  {
    private Function resolve;
    
    /**
-    * This object contains various details for the class to be scanned.
+    * This object contains various support functions for the class.
     */
    private Support support;
    
@@ -102,7 +102,7 @@ class ClassScanner  {
     * to build a schema for an XML file to follow. 
     * 
     * @param detail this contains the details for the class scanned
-    * @param support this contains various details for the class
+    * @param support this contains various support functions
     */
    public ClassScanner(Detail detail, Support support) throws Exception { 
       this.scanner = new ConstructorScanner(detail, support);
@@ -268,7 +268,7 @@ class ClassScanner  {
     * fields and methods from higher up the inheritance hierarchy. This
     * means that annotated details can be overridden.
     * 
-    * @param type the class to extract method and class annotations
+    * @param detail contains the methods and fields to be examined
     */   
    private void scan(Detail detail) throws Exception {
       Class type = detail.getType();
@@ -281,9 +281,17 @@ class ClassScanner  {
          definition(value);
          type = value.getSuper();
       }      
-      process(detail); 
+      commit(detail); 
    }
    
+   /**
+    * This method is used to extract the <code>Root</code> annotation
+    * and the <code>Order</code> annotation from the detail provided.
+    * These annotation are taken from the first definition encountered
+    * from the most specialized class up through the base classes.
+    * 
+    * @param detail this detail object used to acquire the annotations
+    */
    private void definition(Detail detail) throws Exception {
       if(root == null) {
          root = detail.getRoot();
@@ -294,11 +302,11 @@ class ClassScanner  {
    }
    
    /**
-    * This is used to acquire the annotations that apply globally to 
-    * the scanned class. Global annotations are annotations that
-    * are applied to the class, such annotations will be used to
-    * determine characteristics for the fields and methods of the
-    * class, which the serializer uses in the serialization process.  
+    * This is used to acquire the namespace annotations that apply to 
+    * the scanned class. Namespace annotations are added only if they
+    * have not already been extracted from a more specialized class.
+    * When scanned all the namespace definitions are used to qualify
+    * the XML that is produced from serializing the class.
     * 
     * @param type this is the type to extract the annotations from
     */
@@ -318,7 +326,15 @@ class ClassScanner  {
       }
    }
    
-   private void process(Detail detail) {
+   /**
+    * This is used to set the primary namespace for nodes that will
+    * be decorated by the namespace decorator. If no namespace is set
+    * using this method then this decorator will leave the namespace
+    * reference unchanged and only add namespaces for scoping.
+    * 
+    * @param detail the detail object that contains the namespace
+    */
+   private void commit(Detail detail) {
       Namespace namespace = detail.getNamespace();
       
       if(namespace != null) {
@@ -332,16 +348,13 @@ class ClassScanner  {
     * annotations help object implementations to validate the data
     * that is injected into the instance during deserialization.
     * 
-    * @param real this is the actual type of the scanned class 
-    * @param type this is a type from within the class hierarchy
-    * 
-    * @throws Exception thrown if the class schema is invalid
+    * @param detail this is a detail from within the class hierarchy
     */
    private void method(Detail detail) throws Exception {
-      Method[] method = detail.getMethods();
+      List<MethodDetail> list = detail.getMethods();
 
-      for(int i = 0; i < method.length; i++) {         
-         method(method[i]);              
+      for(MethodDetail entry : list) {
+         method(entry);              
       }     
    }
    
@@ -351,10 +364,11 @@ class ClassScanner  {
     * method is stored so that it can be invoked by the persister
     * during the serialization and deserialization process.
     * 
-    * @param method this is the method to scan for callback methods
+    * @param detail the method to scan for callback annotations
     */
-   private void method(Method method) {
-      Annotation[] list = method.getDeclaredAnnotations();
+   private void method(MethodDetail detail) {
+      Annotation[] list = detail.getAnnotations();
+      Method method = detail.getMethod();
       
       for(Annotation label : list) {
          if(label instanceof Commit) {           

@@ -2,9 +2,11 @@ package org.simpleframework.xml.core;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.simpleframework.xml.Default;
 import org.simpleframework.xml.DefaultType;
@@ -15,11 +17,11 @@ import org.simpleframework.xml.Root;
 
 class DetailScanner implements Detail {
    
+   private List<MethodDetail> methods;
+   private List<FieldDetail> fields;
    private NamespaceList declaration;
    private Namespace namespace;
-   private Annotation[] annotations;
-   private Method[] methods;
-   private Field[] fields;
+   private Annotation[] labels;
    private DefaultType access;
    private Order order;
    private Root root;
@@ -29,9 +31,9 @@ class DetailScanner implements Detail {
    private boolean strict;
    
    public DetailScanner(Class type) throws Exception {
-      this.annotations = type.getDeclaredAnnotations();
-      this.methods = type.getDeclaredMethods();
-      this.fields = type.getDeclaredFields();
+      this.methods = new LinkedList<MethodDetail>();
+      this.fields = new LinkedList<FieldDetail>();
+      this.labels = type.getDeclaredAnnotations();
       this.strict = true;
       this.type = type;
       this.scan(type);
@@ -40,8 +42,7 @@ class DetailScanner implements Detail {
    public boolean isRequired() {
       return required;
    }
-   
-   
+     
    /**
     * This method is used to determine whether strict mappings are
     * required. Strict mapping means that all labels in the class
@@ -69,8 +70,6 @@ class DetailScanner implements Detail {
     * the class is a inner class and not static then this returns
     * false. Only static inner classes can be instantiated using
     * reflection as they do not require a "this" argument.
-    * 
-    * @param type this is the class that is to be evaluated
     * 
     * @return this returns true if the class is a static inner
     */
@@ -111,12 +110,16 @@ class DetailScanner implements Detail {
       return declaration;
    }
    
-   public Method[] getMethods() {
+   public List<MethodDetail> getMethods() {
       return methods;
    }
    
+   public List<FieldDetail> getFields() {
+      return fields;
+   }
+   
    public Annotation[] getAnnotations() {
-      return annotations;
+      return labels;
    }
 
    public Constructor[] getConstructors() {
@@ -132,9 +135,14 @@ class DetailScanner implements Detail {
       return base;
    }
    
-   
    private void scan(Class type) throws Exception {
-      for(Annotation label : annotations) {
+      methods(type);
+      fields(type);
+      extract(type);
+   }
+   
+   private void extract(Class type) throws Exception {
+      for(Annotation label : labels) {
          if(label instanceof Namespace) {
             namespace(label);
          }
@@ -150,6 +158,24 @@ class DetailScanner implements Detail {
          if(label instanceof Default) {
             access(label);
          }
+      }
+   }
+   
+   private void methods(Class type) throws Exception {
+      Method[] list = type.getDeclaredMethods();
+      
+      for(Method method : list) {
+         MethodDetail detail = new MethodDetail(method);
+         methods.add(detail);
+      }
+   }
+   
+   private void fields(Class type) throws Exception {
+      Field[] list = type.getDeclaredFields();
+      
+      for(Field field : list) {
+         FieldDetail detail = new FieldDetail(field);
+         fields.add(detail);
       }
    }
    

@@ -204,6 +204,39 @@ class NodeReader {
     * @return this returns the characters from the specified node
     */ 
    public String readValue(InputNode from) throws Exception {
+      if(!stack.isRelevant(from)) { 
+         return null;
+      }
+      EventNode event = reader.peek();
+      
+      if(event.isEnd()) { 
+         if(stack.top() == from) {
+            return null;
+         } else {
+            stack.pop();
+         }
+         event = reader.next();
+         event = reader.peek();
+      }
+      if(event.isText()) {
+         if(stack.top() == from) {
+            return readText(from);
+         }
+      }
+      return null;
+   } 
+   
+   /**
+    * Read the contents of the characters between the specified XML
+    * element tags, if the read is currently at that element. This 
+    * allows characters associated with the element to be used. If
+    * the specified node is not the current node, null is returned.
+    *
+    * @param from this is the input node to read the value from
+    *
+    * @return this returns the characters from the specified node
+    */ 
+   private String readText(InputNode from) throws Exception {
       StringBuilder value = new StringBuilder();
       
       while(stack.top() == from) {         

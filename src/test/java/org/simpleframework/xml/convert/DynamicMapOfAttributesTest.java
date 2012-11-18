@@ -20,7 +20,7 @@ public class DynamicMapOfAttributesTest extends ValidationTestCase {
 
    private static final String SOURCE =
    "<Car color='green' length='3.3' nrOfDoors='2' topSpeed='190' brand='audi' /> ";
-  
+   
    private static class CarConverter implements Converter<Car> {
 
       private final Persister persister;

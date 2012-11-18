@@ -133,6 +133,13 @@ class GetPart implements MethodPart {
       return Reflector.getReturnDependents(method);
    }
    
+   /**
+    * This is the class that declares the contact. The declaring
+    * class is where the method represented has been defined. This
+    * will typically be a class rather than an interface.
+    * 
+    * @return this returns the class the part is declared within
+    */
    public Class getDeclaringClass() {
       return method.getDeclaringClass();
    }

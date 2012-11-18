@@ -43,7 +43,7 @@ interface Contact extends Type {
     * 
     * @return this returns the name of the contact represented
     */
-   public String getName();
+   String getName();
    
    /**
     * This provides the dependent class for the contact. This will
@@ -53,7 +53,7 @@ interface Contact extends Type {
     * 
     * @return this returns the dependent type for the contact
     */
-   public Class getDependent();
+   Class getDependent();
    
    /**
     * This provides the dependent classes for the contact. This will
@@ -63,9 +63,16 @@ interface Contact extends Type {
     * 
     * @return this returns the dependent types for the contact
     */
-   public Class[] getDependents(); 
+   Class[] getDependents(); 
    
-   public Class getDeclaringClass();
+   /**
+    * This is the class that declares the contact. The declaring
+    * class is where the field or method has been defined. This will
+    * typically be a class rather than an interface.
+    * 
+    * @return this returns the class the contact is declared within
+    */
+   Class getDeclaringClass();
    
    /**
     * This is the annotation associated with the point of contact.
@@ -74,7 +81,7 @@ interface Contact extends Type {
     *
     * @return this provides the annotation associated with this
     */
-   public Annotation getAnnotation();
+   Annotation getAnnotation();
    
    /**
     * This is used to set the value on the specified object through
@@ -85,7 +92,7 @@ interface Contact extends Type {
     * @param source this is the object to set the value on
     * @param value this is the value to be set through the contact
     */ 
-   public void set(Object source, Object value) throws Exception;
+   void set(Object source, Object value) throws Exception;
    
    /**
     * This is used to get the value from the specified object using
@@ -97,7 +104,7 @@ interface Contact extends Type {
     *
     * @return this is the value acquired from the point of contact
     */ 
-   public Object get(Object source) throws Exception;
+   Object get(Object source) throws Exception;
    
    /**
     * This is used to determine if the annotated contact is for a
@@ -107,7 +114,7 @@ interface Contact extends Type {
     * 
     * @return this returns true if the contact is a constant one
     */
-   public boolean isReadOnly();
+   boolean isReadOnly();
    
    /**
     * This is used to describe the contact as it exists within the
@@ -116,5 +123,5 @@ interface Contact extends Type {
     * 
     * @return this returns a string representation of the contact
     */
-   public String toString();
+   String toString();
 }

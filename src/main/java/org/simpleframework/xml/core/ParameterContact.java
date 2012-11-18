@@ -119,6 +119,13 @@ abstract class ParameterContact<T extends Annotation> implements Contact {
       return Reflector.getParameterDependents(factory, index);
    }
    
+   /**
+    * This is the class that declares the contact. The declaring
+    * class is where the parameter has been defined. Typically
+    * this will not be a class rather than an interface.
+    * 
+    * @return the class this parameter is declared within
+    */
    public Class getDeclaringClass() {
       return owner;
    }

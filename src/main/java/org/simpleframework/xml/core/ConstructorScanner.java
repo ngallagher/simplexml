@@ -19,7 +19,6 @@
 package org.simpleframework.xml.core;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,7 +63,7 @@ class ConstructorScanner {
     * can be used to instantiate the class. Only constructors that
     * have all parameters annotated will be considered.
     * 
-    * @param type this is the type that is to be scanned
+    * @param detail this is the class detail that is to be scanned
     */
    public ConstructorScanner(Detail detail, Support support) throws Exception {
       this.signatures = new ArrayList<Signature>();
@@ -113,7 +112,7 @@ class ConstructorScanner {
     * can be used to instantiate the class. Only constructors that
     * have all parameters annotated will be considered.
     * 
-    * @param type this is the type that is to be scanned
+    * @param detail this is the class detail that is to be scanned
     */
    private void scan(Detail detail) throws Exception {
       Constructor[] array = detail.getConstructors();
@@ -150,24 +149,5 @@ class ConstructorScanner {
             signatures.add(signature);
          }
       }
-   }
-   
-   /**
-    * This is used to determine if the class is an inner class. If
-    * the class is a inner class and not static then this returns
-    * false. Only static inner classes can be instantiated using
-    * reflection as they do not require a "this" argument.
-    * 
-    * @param type this is the class that is to be evaluated
-    * 
-    * @return this returns true if the class is a static inner
-    */
-   private boolean isInstantiable(Class type) {
-      int modifiers = type.getModifiers();
-       
-      if(Modifier.isStatic(modifiers)) {
-         return true;
-      }
-      return !type.isMemberClass();       
    }
 }

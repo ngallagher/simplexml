@@ -75,7 +75,7 @@ class InstantiatorBuilder {
    private Scanner scanner;
    
    /**
-    * This is the type the instantiator used to create objects.
+    * This is the detail the instantiator uses to create objects.
     */
    private Detail detail;
    
@@ -86,7 +86,7 @@ class InstantiatorBuilder {
     * the parameter or the path of the parameter.
     * 
     * @param scanner this is the scanner to acquire signatures from
-    * @param type this is the type that the instantiator represents
+    * @param detail contains the details instantiators are built with
     */
    public InstantiatorBuilder(Scanner scanner, Detail detail) {
       this.options = new ArrayList<Creator>();
@@ -123,9 +123,7 @@ class InstantiatorBuilder {
     * associated with the type. This validation ensures that the labels
     * and constructor parameters match based on annotations.
     * 
-    * @param type this is the type of the instantiator to be created
-    * 
-    * @return this returns the instance that has been built
+    * @param detail contains the details instantiators are built with
     */
    private Instantiator build(Detail detail) throws Exception {
       if(factory == null) {
@@ -141,7 +139,7 @@ class InstantiatorBuilder {
     * associated with the type. This validation ensures that the labels
     * and constructor parameters match based on annotations.
     * 
-    * @param type this is the type of the instantiator to be created
+    * @param detail contains the details instantiators are built with
     * 
     * @return this returns the instance that has been created
     */
@@ -200,7 +198,7 @@ class InstantiatorBuilder {
     * replacing parameters in this way the parameters can be better
     * matched with the associated labels using the label keys.
     * 
-    * @param type this is the type of the associated object
+    * @param detail contains the details instantiators are built with
     */
    private void populate(Detail detail) throws Exception {
       List<Signature> list = scanner.getSignatures();
@@ -237,7 +235,7 @@ class InstantiatorBuilder {
     * class schema is fully readable and writable. If not method or
     * field annotation exists for the parameter validation fails.
     * 
-    * @param type this is the type to validate the labels for
+    * @param detail contains the details instantiators are built with
     */
    private void validate(Detail detail) throws Exception {
       ParameterMap registry = scanner.getParameters();
