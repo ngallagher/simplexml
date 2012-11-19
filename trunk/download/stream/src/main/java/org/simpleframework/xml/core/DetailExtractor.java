@@ -39,6 +39,15 @@ class DetailExtractor {
       this.support = support;
    }
    
+   /**
+    * This is used to get a <code>Detail</code> object describing a
+    * class and its annotations. Any detail retrieved from this will 
+    * be cached to increase the performance of future accesses.
+    * 
+    * @param type this is the type to acquire the detail for
+    * 
+    * @return an object describing the type and its annotations
+    */
    public Detail getDetail(Class type) throws Exception {
       Detail detail = details.fetch(type);
       
@@ -49,6 +58,16 @@ class DetailExtractor {
       return detail;
    }
    
+   /**
+    * This is used to acquire a list of <code>Contact</code> objects
+    * that represent the annotated fields in a type. The entire
+    * class hierarchy is scanned for annotated fields. Caching of
+    * the contact list is done to increase performance.
+    * 
+    * @param type this is the type to scan for annotated fields
+    * 
+    * @return this returns a list of the annotated fields
+    */
    public ContactList getFields(Class type) throws Exception {
       ContactList list = fields.fetch(type);
       
@@ -62,6 +81,16 @@ class DetailExtractor {
       return list;
    }
    
+   /**
+    * This is used to acquire a list of <code>Contact</code> objects
+    * that represent the annotated fields in a type. The entire
+    * class hierarchy is scanned for annotated fields. Caching of
+    * the contact list is done to increase performance.
+    * 
+    * @param detail this is the detail to scan for annotated fields
+    * 
+    * @return this returns a list of the annotated fields
+    */
    private ContactList getFields(Detail detail) throws Exception {
       ContactList list = new FieldScanner(detail, support);
       
@@ -71,6 +100,16 @@ class DetailExtractor {
       return list;
    }
    
+   /**
+    * This is used to acquire a list of <code>Contact</code> objects
+    * that represent the annotated methods in a type. The entire
+    * class hierarchy is scanned for annotated methods. Caching of
+    * the contact list is done to increase performance.
+    * 
+    * @param type this is the type to scan for annotated methods
+    * 
+    * @return this returns a list of the annotated methods
+    */
    public ContactList getMethods(Class type) throws Exception {
       ContactList list = methods.fetch(type);
       
@@ -84,6 +123,16 @@ class DetailExtractor {
       return list;
    }
    
+   /**
+    * This is used to acquire a list of <code>Contact</code> objects
+    * that represent the annotated methods in a type. The entire
+    * class hierarchy is scanned for annotated methods. Caching of
+    * the contact list is done to increase performance.
+    * 
+    * @param detail this is the type to scan for annotated methods
+    * 
+    * @return this returns a list of the annotated methods
+    */
    private ContactList getMethods(Detail detail) throws Exception {
       ContactList list = new MethodScanner(detail, support);
       
