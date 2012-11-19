@@ -248,27 +248,41 @@ class Support implements Filter {
    }
    
    /**
+    * This is used to get a <code>Detail</code> object describing a
+    * class and its annotations. Any detail retrieved from this will 
+    * be cached to increase the performance of future accesses.
     * 
-    * @param type
-    * @return
+    * @param type this is the type to acquire the detail for
+    * 
+    * @return an object describing the type and its annotations
     */
    public Detail getDetail(Class type) throws Exception {
       return details.getDetail(type);
    }
    
    /**
+    * This is used to acquire a list of <code>Contact</code> objects
+    * that represent the annotated fields in a type. The entire
+    * class hierarchy is scanned for annotated fields. Caching of
+    * the contact list is done to increase performance.
     * 
-    * @param type
-    * @return
+    * @param type this is the type to scan for annotated fields
+    * 
+    * @return this returns a list of the annotated fields
     */
    public ContactList getFields(Class type) throws Exception {
       return details.getFields(type);
    }
    
    /**
+    * This is used to acquire a list of <code>Contact</code> objects
+    * that represent the annotated methods in a type. The entire
+    * class hierarchy is scanned for annotated methods. Caching of
+    * the contact list is done to increase performance.
     * 
-    * @param type
-    * @return
+    * @param type this is the type to scan for annotated methods
+    * 
+    * @return this returns a list of the annotated methods
     */
    public ContactList getMethods(Class type) throws Exception {
       return details.getMethods(type);
