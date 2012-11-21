@@ -28,7 +28,20 @@ import org.simpleframework.xml.NamespaceList;
 import org.simpleframework.xml.Order;
 import org.simpleframework.xml.Root;
 
+/**
+ * The <code>Detail</code> object is used to provide various details
+ * for a type. Most of the data that can be acquired from this can
+ * also be acquired from the <code>Class</code>. However, in some
+ * environments, particularly Android, reflection and introspection
+ * is very slow. This class attempts to reduce the overheads by 
+ * caching all the data extracted from the class for future use.
+ * 
+ * @author Niall Gallagher
+ * 
+ * @see org.simpleframework.xml.core.Support
+ */
 interface Detail {
+   
    /**
     * This method is used to determine whether strict mappings are
     * required. Strict mapping means that all labels in the class
@@ -121,45 +134,67 @@ interface Detail {
    
    /**
     * This returns the <code>Default</code> annotation access type
-    * that has been specified by this.
+    * that has been specified by this. If no default annotation has
+    * been declared on the type then this will return null.
     * 
-    * @return
+    * @return this returns the default access type for this type
     */
    DefaultType getAccess();
    
    /**
+    * This returns the <code>Namespace</code> annotation that was
+    * declared on the type. If no annotation has been declared on the
+    * type this will return null as not belonging to any.
     * 
-    * @return
+    * @return this returns the namespace this type belongs to, if any
     */
    Namespace getNamespace();
    
    /**
+    * This returns the <code>NamespaceList</code> annotation that was
+    * declared on the type. A list of namespaces are used to simply 
+    * declare the namespaces without specifically making the type
+    * belong to any of the declared namespaces.
     * 
-    * @return
+    * @return this returns the namespace declarations, if any
     */
    NamespaceList getNamespaceList();
    
    /**
+    * This returns a list of the methods that belong to this type. 
+    * The methods here do not include any methods from the super
+    * types and simply provides a means of caching method data.
     * 
-    * @return
+    * @return returns the list of methods declared for the type
     */
    List<MethodDetail> getMethods();
    
    /**
+    * This returns a list of the fields that belong to this type. 
+    * The fields here do not include any fields from the super
+    * types and simply provides a means of caching method data.
     * 
-    * @return
+    * @return returns the list of fields declared for the type
     */
    List<FieldDetail> getFields();
    
    /**
+    * This returns the annotations that have been declared for this
+    * type. It is preferable to acquire the declared annotations
+    * from this method as they are cached. Older versions of some
+    * runtime environments, particularly Android, are slow at this.
     * 
-    * @return
+    * @return this returns the annotations associated with this
     */
    Annotation[] getAnnotations();
    
    /**
+    * This returns the constructors that have been declared for this
+    * type. It is preferable to acquire the declared constructors
+    * from this method as they are cached. Older versions of some
+    * runtime environments, particularly Android, are slow at this.
     * 
-    * @return
+    * @return this returns the constructors associated with this
     */
    Constructor[] getConstructors();
 }
