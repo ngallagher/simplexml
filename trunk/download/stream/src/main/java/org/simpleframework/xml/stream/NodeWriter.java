@@ -208,6 +208,9 @@ class NodeWriter {
          while(stack.top() != parent) {
             writeEnd(stack.pop());
          }       
+         if(!stack.isEmpty()) {
+            writeValue(parent);
+         }
          return writeStart(parent, name);
       }
       return null;
@@ -282,23 +285,31 @@ class NodeWriter {
    }
  
    /**
-    * This is used to write a new end element to the resulting XML
-    * document. This will acquire the name and value of the given
-    * node, if the node has a value that is written. Finally a new
-    * end tag is written to the document and the output is flushed.
+    * This is used to write an element value to the resulting XML
+    * document. This will search the nodes parents for the write 
+    * mode, if the mode is CDATA then that is what is used to write
+    * the data, otherwise the value is written as plain text. 
+    * <p>
+    * One side effect of this method is that it clears the value
+    * of the output node once it has been written to the XML. This
+    * is needed, it can however cause confusion within the API.
     *
-    * @param node this is the node that is to have an end tag
+    * @param node this is the node to write the value of
     */  
-   private void writeEnd(OutputNode node) throws Exception {
+   private void writeValue(OutputNode node) throws Exception {
       Mode mode = node.getMode();
+      String value = node.getValue();
   
-      for(OutputNode next : stack) {         
-         if(mode != Mode.INHERIT) {
-            break; 
+      if(value != null) {
+         for(OutputNode next : stack) {         
+            if(mode != Mode.INHERIT) {
+               break; 
+            }
+            mode = next.getMode();
          }
-         mode = next.getMode();
+         writer.writeText(value, mode);
       }
-      writeEnd(node, mode);
+      node.setValue(null);
    }
    
    /**
@@ -309,15 +320,14 @@ class NodeWriter {
     *
     * @param node this is the node that is to have an end tag
     */  
-   private void writeEnd(OutputNode node, Mode mode) throws Exception {
-      String value = node.getValue();
-
-      if(value != null) { 
-         writer.writeText(value, mode);
-      }
+   private void writeEnd(OutputNode node) throws Exception {
       String name = node.getName();
       String prefix = node.getPrefix(verbose);
+      String value = node.getValue();
       
+      if(value != null) {
+         writeValue(node);
+      }
       if(name != null) {
          writer.writeEnd(name, prefix);
          writer.flush();
