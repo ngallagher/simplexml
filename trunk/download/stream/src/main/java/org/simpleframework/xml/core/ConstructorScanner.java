@@ -53,17 +53,18 @@ class ConstructorScanner {
    private Signature primary;
    
    /**
-    * This is the format used to style the parameters extracted.
+    * This object contains various support functions for the class.
     */
    private Support support;
    
    /**
     * Constructor for the <code>ConstructorScanner</code> object. 
-    * This is used to scan the specified class for constructors that
+    * This is used to scan the specified detail for constructors that
     * can be used to instantiate the class. Only constructors that
     * have all parameters annotated will be considered.
     * 
-    * @param detail this is the class detail that is to be scanned
+    * @param detail this contains the details for the class scanned
+    * @param support this contains various support functions
     */
    public ConstructorScanner(Detail detail, Support support) throws Exception {
       this.signatures = new ArrayList<Signature>();

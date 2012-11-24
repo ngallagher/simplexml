@@ -47,7 +47,7 @@ class PrimitiveScanner implements Scanner {
    private final Section section;
    
    /**
-    * This is the type that this primitive scanner will represent.
+    * This contains the details for the class that is being scanned.
     */
    private final Detail detail;
    
@@ -56,7 +56,7 @@ class PrimitiveScanner implements Scanner {
     * is used to represent primitives or other types that do not have
     * and XML annotations present.      
     * 
-    * @param type this is the type of primitive to be represented
+    * @param detail this contains the details for the class scanned
     */
    public PrimitiveScanner(Detail detail) {
       this.section = new EmptySection(this);

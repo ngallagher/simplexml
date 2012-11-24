@@ -92,6 +92,9 @@ class StructureBuilder {
     */
    private Scanner scanner;
    
+   /**
+    * This object contains various support functions for the class.
+    */
    private Support support;
    
    /**
