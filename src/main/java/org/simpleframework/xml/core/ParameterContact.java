@@ -43,6 +43,9 @@ abstract class ParameterContact<T extends Annotation> implements Contact {
     */
    protected final Constructor factory;
    
+   /**
+    * This represents the class that this parameter was declared in.
+    */
    protected final Class owner;
    
    /**

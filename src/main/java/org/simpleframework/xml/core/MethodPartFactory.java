@@ -52,7 +52,7 @@ class MethodPartFactory {
     * and the XML annotation is uses. The created part can be used to
     * either set or get values depending on its type.
     * 
-    * @param required used to determine if defaults are required
+    * @param detail this contains details for the annotated class
     */
    public MethodPartFactory(Detail detail) {
       this.factory = new AnnotationFactory(detail);

@@ -22,16 +22,47 @@ import org.simpleframework.xml.util.Cache;
 import org.simpleframework.xml.util.ConcurrentCache;
 
 /**
+ * The <code>DetailExtractor</code> object is used to extract details
+ * for a specific class. All details extracted are cached so that 
+ * they can be reused when requested several times. This provides an
+ * increase in performance when there are large class hierarchies
+ * as annotations does not need to be scanned a second time.
  * 
  * @author Niall Gallagher
+ * 
+ * @see org.simpleframework.xml.core.Detail
  */
 class DetailExtractor {
    
+   /**
+    * This is the cache of methods for specific classes scanned.
+    */
    private final Cache<ContactList> methods;
+   
+   /**
+    * This is the cache of fields for specific classes scanned.
+    */
    private final Cache<ContactList> fields;
+   
+   /**
+    * This contains a cache of the details scanned for classes.
+    */
    private final Cache<Detail> details;
+   
+   /**
+    * This contains various support functions for the details.
+    */
    private final Support support;
    
+   /**
+    * Constructor for the <code>DetailExtractor</code> object. This
+    * is used to extract various details for a class, such as the
+    * method and field details as well as the annotations used on
+    * the class. The primary purpose for this is to create cachable
+    * values that reduce the amount of reflection required.
+    * 
+    * @param support this contains various support functions
+    */
    public DetailExtractor(Support support) {
       this.methods = new ConcurrentCache<ContactList>();
       this.fields = new ConcurrentCache<ContactList>();

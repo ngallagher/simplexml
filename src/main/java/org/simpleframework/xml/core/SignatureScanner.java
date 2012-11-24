@@ -55,6 +55,9 @@ class SignatureScanner {
     */
    private final SignatureBuilder builder;
    
+   /**
+    * This factory is used to creating annotated parameter objects.
+    */
    private final ParameterFactory factory;
    
    /**
