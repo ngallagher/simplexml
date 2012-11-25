@@ -308,6 +308,10 @@ class ElementListUnionLabel extends TemplateLabel {
       return label.getType();
    }  
 
+   public boolean isTextList() {
+      return label.isTextList();
+   }
+   
    /**
     * This is used to determine if the label is a collection. If the
     * label represents a collection then any original assignment to

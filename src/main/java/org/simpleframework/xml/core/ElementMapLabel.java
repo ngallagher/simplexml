@@ -39,6 +39,11 @@ import org.simpleframework.xml.stream.Style;
 class ElementMapLabel extends TemplateLabel {
    
    /**
+    * This is the path that is used to represent this element map.
+    */
+   private Expression expression;
+   
+   /**
     * This is the decorator that is associated with the element.
     */
    private Decorator decorator;
@@ -47,11 +52,6 @@ class ElementMapLabel extends TemplateLabel {
     * This contains the details of the annotated contact object.
     */
    private Introspector detail;
-   
-   /**
-    * This is the path that is used to represent this element map.
-    */
-   private Expression path;
    
    /**
     * This references the annotation that the field uses.
@@ -69,14 +69,9 @@ class ElementMapLabel extends TemplateLabel {
    private Entry entry;
    
    /**
-    * This is the type of map object this list will instantiate.
+    * This is the name of the element for this label instance.
     */
-   private Class type;
-   
-   /**
-    * Represents the type of objects this map object will hold.
-    */
-   private Class[] items;
+   private String override;  
    
    /**
     * This is the name of the XML entry from the annotation.
@@ -84,9 +79,24 @@ class ElementMapLabel extends TemplateLabel {
    private String parent;
    
    /**
+    * This is the path of the element for this label instance.
+    */
+   private String path;  
+   
+   /**
     * This is the name of the element for this label instance.
     */
    private String name;  
+   
+   /**
+    * Represents the type of objects this map object will hold.
+    */
+   private Class[] items;
+   
+   /**
+    * This is the type of map object this list will instantiate.
+    */
+   private Class type;
    
    /**
     * This is used to determine if the attribute is required.
@@ -119,7 +129,7 @@ class ElementMapLabel extends TemplateLabel {
       this.required = label.required();
       this.type = contact.getType();
       this.inline = label.inline();
-      this.name = label.name();      
+      this.override = label.name();      
       this.data = label.data();
       this.format = format;
       this.label = label;
@@ -227,13 +237,16 @@ class ElementMapLabel extends TemplateLabel {
     * @return returns the name that is used for the XML property
     */
    public String getName() throws Exception{
-      Style style = format.getStyle();
-      String name = entry.getEntry();
-      
-      if(!label.inline()) {
-         name = detail.getName();
+      if(name == null) {
+         Style style = format.getStyle();
+         String value = entry.getEntry();
+         
+         if(!label.inline()) {
+            value = detail.getName();
+         }
+         name = style.getElement(value);
       }
-      return style.getElement(name);
+      return name;
    }
    
    /**
@@ -245,10 +258,13 @@ class ElementMapLabel extends TemplateLabel {
     * @return returns the path that is used for the XML property
     */
    public String getPath() throws Exception {
-      Expression path = getExpression();
-      String name = getName();
-      
-      return path.getElement(name);  
+      if(path == null) {
+         Expression expression = getExpression();
+         String name = getName();
+         
+         path = expression.getElement(name);  
+      }
+      return path;
    }
    
    /**
@@ -260,10 +276,10 @@ class ElementMapLabel extends TemplateLabel {
     * @return the XPath expression identifying the location
     */
    public Expression getExpression() throws Exception {
-      if(path == null) {
-         path = detail.getExpression();
+      if(expression == null) {
+         expression = detail.getExpression();
       }
-      return path;
+      return expression;
    }
    
    /**
@@ -326,7 +342,7 @@ class ElementMapLabel extends TemplateLabel {
     * @return returns the name of the annotation for the contact
     */
    public String getOverride() {
-      return name;
+      return override;
    }
    
    /**

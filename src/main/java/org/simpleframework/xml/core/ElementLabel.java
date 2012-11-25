@@ -39,6 +39,11 @@ import org.simpleframework.xml.stream.Style;
 class ElementLabel extends TemplateLabel {
    
    /**
+    * This is the path that is used to represent this element.
+    */
+   private Expression expression;
+   
+   /**
     * This is the decorator that is associated with the element.
     */
    private Decorator decorator;
@@ -47,11 +52,6 @@ class ElementLabel extends TemplateLabel {
     * The contact that this element label represents.
     */
    private Introspector detail;
-   
-   /**
-    * This is the path that is used to represent this element.
-    */
-   private Expression path;
    
    /**
     * References the annotation that was used by the field.
@@ -64,19 +64,29 @@ class ElementLabel extends TemplateLabel {
    private Format format;
    
    /**
-    * This is the override that has been declared for this label.
+    * This is the name of the element for this label instance.
     */
-   private Class override;
+   private String override;
+   
+   /**
+    * This is the path of the XML element from the annotation.
+    */
+   private String path;
+   
+   /**
+    * This is the name of the XML element from the annotation.
+    */
+   private String name;
+   
+   /**
+    * This is the expected type that has been declared for this.
+    */
+   private Class expect;
    
    /**
     * This is the type of the class that the field references.
     */
    private Class type;
-   
-   /**
-    * This is the name of the element for this label instance.
-    */
-   private String name;
    
    /**
     * This is used to determine if the element is required.
@@ -102,9 +112,9 @@ class ElementLabel extends TemplateLabel {
       this.decorator = new Qualifier(contact);
       this.required = label.required();
       this.type = contact.getType();
-      this.override = label.type();
+      this.override = label.name();     
+      this.expect = label.type();
       this.data = label.data();
-      this.name = label.name();     
       this.format = format;
       this.label = label; 
    }
@@ -135,10 +145,10 @@ class ElementLabel extends TemplateLabel {
    public Type getType(Class type){
       Type contact = getContact();
       
-      if(override == void.class) {
+      if(expect == void.class) {
          return contact;
       }
-      return new OverrideType(contact, override);
+      return new OverrideType(contact, expect);
    }
    
    /**
@@ -156,10 +166,10 @@ class ElementLabel extends TemplateLabel {
       if(context.isPrimitive(type)) {
          return new Primitive(context, type);
       }      
-      if(override == void.class) {
+      if(expect == void.class) {
          return new Composite(context, type);
       }
-      return new Composite(context, type, override);
+      return new Composite(context, type, expect);
    }
    
    /**
@@ -186,10 +196,13 @@ class ElementLabel extends TemplateLabel {
     * @return returns the name that is used for the XML property
     */
    public String getName() throws Exception{
-      Style style = format.getStyle();
-      String name = detail.getName();
-     
-      return style.getElement(name);
+      if(name == null) {
+         Style style = format.getStyle();
+         String value = detail.getName();
+        
+         name = style.getElement(value);
+      }
+      return name;
    }
    
    /**
@@ -201,10 +214,13 @@ class ElementLabel extends TemplateLabel {
     * @return returns the path that is used for the XML property
     */
    public String getPath() throws Exception {
-      Expression path = getExpression();
-      String name = getName();
-      
-      return path.getElement(name);  
+      if(path == null) {
+         Expression expression = getExpression();
+         String name = getName();
+         
+         path = expression.getElement(name);  
+      }
+      return path;
    }
    
    /**
@@ -216,10 +232,10 @@ class ElementLabel extends TemplateLabel {
     * @return the XPath expression identifying the location
     */
    public Expression getExpression() throws Exception {
-      if(path == null) {
-         path = detail.getExpression();
+      if(expression == null) {
+         expression = detail.getExpression();
       }
-      return path;
+      return expression;
    }
    
    /**
@@ -257,7 +273,7 @@ class ElementLabel extends TemplateLabel {
     * @return returns the name of the annotation for the contact
     */
    public String getOverride() {
-      return name;
+      return override;
    }
    
    /**
@@ -271,10 +287,10 @@ class ElementLabel extends TemplateLabel {
     * @return this returns the type of the contact class
     */  
    public Class getType() {
-      if(override == void.class) {
+      if(expect == void.class) {
          return type;
       }
-      return override;
+      return expect;
    }
    
    /**

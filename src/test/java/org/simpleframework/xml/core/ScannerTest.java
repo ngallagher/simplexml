@@ -142,16 +142,16 @@ public class ScannerTest extends TestCase {
       assertTrue(scanner.isStrict());
       
       for(Label label : scanner.getSection().getElements()) {
-         assertTrue(label.getName() == intern(label.getName()));
-         assertTrue(label.getEntry() == intern(label.getEntry()));
+         assertTrue(label.getName().equals(label.getName()));
+         assertTrue(label.getEntry().equals(label.getEntry()));
          
          types.add(label.getType());
       }
       assertTrue(types.contains(Collection.class));      
       
       for(Label label : scanner.getSection().getAttributes()) {
-         assertTrue(label.getName() == intern(label.getName()));
-         assertTrue(label.getEntry() == intern(label.getEntry()));
+         assertTrue(label.getName() == label.getName());
+         assertTrue(label.getEntry() == label.getEntry());
          
          types.add(label.getType());
       }
@@ -169,8 +169,8 @@ public class ScannerTest extends TestCase {
       assertFalse(scanner.isStrict());
       
       for(Label label : scanner.getSection().getElements()) {
-         assertTrue(label.getName() == intern(label.getName()));
-         assertTrue(label.getEntry() == intern(label.getEntry()));
+         assertTrue(label.getName().equals(label.getName()));
+         assertTrue(label.getEntry() == label.getEntry());
          
          types.add(label.getType());
       }
@@ -179,8 +179,8 @@ public class ScannerTest extends TestCase {
       assertTrue(types.contains(String.class));
       
       for(Label label : scanner.getSection().getAttributes()) {
-         assertTrue(label.getName() == intern(label.getName()));
-         assertTrue(label.getEntry() == intern(label.getEntry()));
+         assertTrue(label.getName().equals(label.getName()));
+         assertTrue(label.getEntry() == label.getEntry());
          
          types.add(label.getType());
       }
@@ -219,12 +219,5 @@ public class ScannerTest extends TestCase {
          success = true;
       }
       assertTrue(success);
-   }
-   
-   private static String intern(String text) {
-      if(text != null) {
-         return text.intern();
-      }
-      return null;
    }
 }

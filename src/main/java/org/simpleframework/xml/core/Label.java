@@ -285,6 +285,8 @@ interface Label {
     */
    boolean isText();
    
+   boolean isTextList();
+   
    /**
     * This is used to determine if this label is a union. If this
     * is true then this label represents a number of labels and

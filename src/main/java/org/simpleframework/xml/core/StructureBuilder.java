@@ -113,11 +113,6 @@ class StructureBuilder {
    private Model root;
    
    /**
-    * This is the type that the XML structure is being built for.
-    */
-   private Class type;
-   
-   /**
     * This is used to determine if the scanned class is primitive.
     */
    private boolean primitive;
@@ -137,13 +132,12 @@ class StructureBuilder {
       this.builder = new ExpressionBuilder(detail, support);
       this.assembler = new ModelAssembler(builder, detail, support);
       this.resolver = new InstantiatorBuilder(scanner, detail);
-      this.root = new TreeModel(scanner, type);
+      this.root = new TreeModel(scanner, detail);
       this.attributes = new LabelMap(scanner);
       this.elements = new LabelMap(scanner);
       this.texts = new LabelMap(scanner);
       this.scanner = scanner;
       this.support = support;
-      this.type = type;
    }   
    
    /**
@@ -528,7 +522,7 @@ class StructureBuilder {
     * @param type this is the object type that is being scanned
     */
    private void validateText(Class type) throws Exception {
-      if(root.getText() != null) {
+      if(root.getText() != null && !root.getText().isCollection()) {
          if(!elements.isEmpty()) {
             throw new TextException("Elements used with %s in %s", text, type);
          }

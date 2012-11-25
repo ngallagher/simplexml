@@ -414,9 +414,9 @@ class DetailScanner implements Detail {
             if(isEmpty(text)) {
                text = Reflector.getName(real);
             }      
-            name = text.intern();  
             strict = value.strict();
             root = value;
+            name = text;  
          }
       }
    }

@@ -187,6 +187,10 @@ abstract class TemplateLabel implements Label {
       return false;
    }
    
+   public boolean isTextList() {
+      return false;
+   }
+   
    /**
     * This is used to determine if this label is a union. If this
     * is true then this label represents a number of labels and

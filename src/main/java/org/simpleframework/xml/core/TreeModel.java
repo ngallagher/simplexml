@@ -43,6 +43,8 @@ class TreeModel implements Model {
     * This is the XPath expression representing the location.
     */
    private Expression expression;
+   
+   private ContactMap contacts;
   
    /**
     * This holds the mappings for elements within the model.
@@ -70,6 +72,11 @@ class TreeModel implements Model {
    private Policy policy;
    
    /**
+    * This is the type used for reporting validation errors.
+    */
+   private Detail detail;
+   
+   /**
     * This must be a valid XML element representing the name.
     */
    private String name;
@@ -80,14 +87,14 @@ class TreeModel implements Model {
    private String prefix;
    
    /**
-    * This is the type used for reporting validation errors.
+    * This is an optional text label used for this model.
     */
-   private Class type;
+   private Label text;
    
    /**
     * This is an optional text label used for this model.
     */
-   private Label text;
+   private Label list;
    
    /**
     * This is the index used to sort similarly named models.
@@ -102,8 +109,8 @@ class TreeModel implements Model {
     * 
     * @param policy this is the serialization policy enforced
     */
-   public TreeModel(Policy policy, Class type) {
-      this(policy, type, null, null, 1);
+   public TreeModel(Policy policy, Detail detail) {
+      this(policy, detail, null, null, 1);
    }
    
    /**
@@ -117,16 +124,17 @@ class TreeModel implements Model {
     * @param prefix this is the prefix used for this model object
     * @param index this is the index used to order the model
     */
-   public TreeModel(Policy policy, Class type, String name, String prefix, int index) {
+   public TreeModel(Policy policy, Detail detail, String name, String prefix, int index) {
       this.attributes = new LabelMap(policy);
       this.elements = new LabelMap(policy);
-      this.models = new ModelMap(type);
+      this.models = new ModelMap(detail);
+      this.contacts = new ContactMap();
       this.order = new OrderList();
+      this.detail = detail;
       this.policy = policy;
       this.prefix = prefix;
       this.index = index;
       this.name = name;
-      this.type = type;
    }
    
    /**
@@ -193,10 +201,19 @@ class TreeModel implements Model {
     * @param label this is the label to register with the model
     */   
    public void registerText(Label label) throws Exception {
-      if(text != null) {
-         throw new TextException("Duplicate text annotation on %s", label);
+      if(label.isCollection()) {
+         Contact contact = label.getContact();
+         
+         if(contacts.containsKey(contact)) {
+           // merge();
+         }
+         list = label;
+      } else {
+         if(text != null) {
+            throw new TextException("Duplicate text annotation on %s", label);
+         }
+         text = label;
       }
-      text = label;
    }
    
    /**
@@ -227,6 +244,7 @@ class TreeModel implements Model {
     * @param label this is the label to register with the model
     */   
    public void registerElement(Label label) throws Exception {
+      Contact contact = label.getContact();
       String name = label.getName();
       
       if(elements.get(name) != null) {
@@ -234,6 +252,9 @@ class TreeModel implements Model {
       }
       if(!order.contains(name)) {
          order.add(name);
+      }
+      if(label.isCollection()) {
+         contacts.put(contact, contact);
       }
       elements.put(name, label);
    }
@@ -413,7 +434,7 @@ class TreeModel implements Model {
          String expect = location.getPath();
          
          if(!path.equals(expect)) {
-            throw new PathException("Path '%s' does not match '%s' in %s", path, expect, type);
+            throw new PathException("Path '%s' does not match '%s' in %s", path, expect, detail);
          }
       } else {
          expression = location;
@@ -570,7 +591,7 @@ class TreeModel implements Model {
     * @return this returns the model that was registered
     */
    private Model create(String name, String prefix, int index) throws Exception {
-      Model model = new TreeModel(policy, type, name, prefix, index);
+      Model model = new TreeModel(policy, detail, name, prefix, index);
       
       if(name != null) {
          models.register(name, model);
@@ -630,6 +651,9 @@ class TreeModel implements Model {
     * @return this is the optional text label for this model
     */
    public Label getText() {
+      if(list != null) {
+         return list;
+      }
       return text;
    }
    

@@ -111,12 +111,7 @@ class Introspector {
       if(type.isArray()) {
          type = type.getComponentType();
       }
-      String name = getName(type);
-      
-      if(name == null) {
-         return null;
-      }
-      return name.intern();
+      return getName(type);
    }
    
    /**
@@ -207,7 +202,7 @@ class Introspector {
       if(!label.isInline()) {
          entry = getDefault();
       }
-      return entry.intern();
+      return entry;
    }
    
    /**

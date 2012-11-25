@@ -55,9 +55,9 @@ class MethodName {
     * @param name this is the Java Bean property name of the method
     */
    public MethodName(Method method, MethodType type, String name) {
-      this.name = name.intern();
       this.method = method;
       this.type = type;      
+      this.name = name;
    }
    
    /**
