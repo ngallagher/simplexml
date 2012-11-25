@@ -73,6 +73,8 @@ class MethodScanner extends ContactList {
     */
    private final Support support;
    
+   private final ContactMap done;
+   
    /**
     * This is used to collect all the set methods from the object.
     */
@@ -99,6 +101,7 @@ class MethodScanner extends ContactList {
     */
    public MethodScanner(Detail detail, Support support) throws Exception {
       this.factory = new MethodPartFactory(detail);
+      this.done = new ContactMap();
       this.write = new PartMap();
       this.read = new PartMap();
       this.support = support;
@@ -301,7 +304,7 @@ class MethodScanner extends ContactList {
       String name = method.getName();
       
       if(name != null) {
-         map.put(name, method);
+         insert(method, map);
       }
    }
    
@@ -316,12 +319,32 @@ class MethodScanner extends ContactList {
    private void process(MethodContact contact) {
       MethodPart get = contact.getRead();
       MethodPart set = contact.getWrite();
-      String name = get.getName();
       
       if(set != null) {
-         write.put(name, set);
+         insert(set, write);
       }
-      read.put(name,  get);
+      insert(get, read);
+   }
+   
+   private void insert(MethodPart method, PartMap map) {
+      String name = method.getName();
+      MethodPart existing = map.remove(name);
+      
+      if(existing != null) {
+         if(isText(method)) {
+            method = existing;
+         }
+      }
+      map.put(name, method);
+   }
+      
+   private boolean isText(MethodPart method) {
+      Annotation label = method.getAnnotation();
+      
+      if(label instanceof Text) {
+         return true;
+      }
+      return false;
    }
    
    /**

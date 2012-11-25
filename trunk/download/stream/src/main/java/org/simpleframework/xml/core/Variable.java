@@ -372,6 +372,10 @@ class Variable implements Label {
       return label.isText();
    }
    
+   public boolean isTextList() {
+      return label.isTextList();
+   }
+   
    /**
     * This is used to determine if this label is a union. If this
     * is true then this label represents a number of labels and

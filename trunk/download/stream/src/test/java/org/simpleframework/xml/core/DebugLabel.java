@@ -154,5 +154,9 @@ class DebugLabel implements Label{
       showMethodInvocation();
       return label.isUnion();
    }
+   
+   public boolean isTextList() {
+      return false;
+   }
 
 }

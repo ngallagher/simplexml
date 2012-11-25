@@ -19,6 +19,7 @@
 package org.simpleframework.xml.core;
 
 import java.lang.annotation.Annotation;
+import java.util.List;
 
 import org.simpleframework.xml.Text;
 import org.simpleframework.xml.strategy.Type;
@@ -122,6 +123,9 @@ class TextLabel extends TemplateLabel {
       String ignore = getEmpty(context);
       Type type = getContact();
       
+      if(isCollection()) {
+         return new TextList(context, type, this);
+      }
       if(!context.isPrimitive(type)) {
          throw new TextException("Cannot use %s to represent %s", type, label);
       }
@@ -273,6 +277,10 @@ class TextLabel extends TemplateLabel {
     */
    public boolean isText() {
       return true;
+   }
+   
+   public boolean isCollection() {
+      return type.isAssignableFrom(List.class);
    }
    
    /**

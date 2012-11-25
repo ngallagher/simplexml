@@ -134,6 +134,10 @@ public class KeyBuilderTest extends TestCase {
       public boolean isUnion() {
          return false;
       }
+
+      public boolean isTextList() {
+         return false;
+      }
       
    }
 }

@@ -38,15 +38,15 @@ class ModelMap extends LinkedHashMap<String, ModelList> implements Iterable<Mode
    /**
     * This is the type associated with this model map instance.
     */
-   private final Class type;
+   private final Detail detail;
    
    /**
     * Constructor for the <code>ModelMap</code> object is used to 
     * create an empty map. This is used for convenience as a typedef
     * like construct which avoids having to use the generic type.
     */ 
-   public ModelMap(Class type) {
-      this.type = type;
+   public ModelMap(Detail detail) {
+      this.detail = detail;
    }
    
    /**
@@ -58,7 +58,7 @@ class ModelMap extends LinkedHashMap<String, ModelList> implements Iterable<Mode
     * @return this returns a cloned representation of this map
     */
    public ModelMap getModels() throws Exception {
-      ModelMap map = new ModelMap(type);
+      ModelMap map = new ModelMap(detail);
       
       for(String name : keySet()) {
          ModelList list = get(name);
@@ -67,7 +67,7 @@ class ModelMap extends LinkedHashMap<String, ModelList> implements Iterable<Mode
             list = list.build();
          }
          if(map.containsKey(name)) {
-            throw new PathException("Path with name '%s' is a duplicate in %s ", name, type);
+            throw new PathException("Path with name '%s' is a duplicate in %s ", name, detail);
          }
          map.put(name, list);
       }         

@@ -138,6 +138,8 @@ class CacheLabel implements Label {
     */
    private final boolean inline;
    
+   private final boolean list;
+   
    /**
     * Constructor for the <code>CacheLabel</code> object. This is used
     * to create a <code>Label</code> that acquires details from another
@@ -156,6 +158,7 @@ class CacheLabel implements Label {
       this.depend = label.getDependent();
       this.required = label.isRequired();
       this.override = label.getOverride();
+      this.list = label.isTextList();
       this.inline = label.isInline();
       this.union = label.isUnion();
       this.names = label.getNames();
@@ -410,6 +413,10 @@ class CacheLabel implements Label {
     */
    public boolean isText() {
       return text;
+   }
+   
+   public boolean isTextList() {
+      return list;
    }
    
    /**
