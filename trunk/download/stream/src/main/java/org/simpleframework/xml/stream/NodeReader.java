@@ -113,7 +113,6 @@ class NodeReader {
                return null;
             }               
          } else if(event.isStart()) {
-            readText(from);
             return readStart(from, event);                 
          }
          event = reader.next();
@@ -142,21 +141,19 @@ class NodeReader {
      while(event != null) {
         if(event.isText()) {
            fillText(from);
-        } else {
-           if(event.isEnd()) { 
-              if(stack.top() == from) {
-                 return null;
-              } else {
-                 stack.pop();
-              }
-           } else if(event.isStart()) {
-              if(isName(event, name)) {
-                 return readElement(from);
-              }   
-              break;
+        } else if(event.isEnd()) { 
+           if(stack.top() == from) {
+              return null;
+           } else {
+              stack.pop();
            }
-           event = reader.next();
+        } else if(event.isStart()) {
+           if(isName(event, name)) {
+              return readElement(from);
+           }   
+           break;
         }
+        event = reader.next();
         event = reader.peek();
      }
      return null;
@@ -227,20 +224,27 @@ class NodeReader {
             stack.pop();
          }
          event = reader.next();
-         event = reader.peek();
       }
+      return readText(from);
+   } 
+   
+   private String readText(InputNode from) throws Exception {
+      EventNode event = reader.peek();
+      
       while(stack.top() == from) {   
          if(event.isText()) {
             fillText(from);
          } else {
             break;
          }
+         event = reader.next();
          event = reader.peek();
       }
-      return readText(from);
-   } 
+      return readBuffer(from);
+
+   }
    
-   private String readText(InputNode from) {
+   private String readBuffer(InputNode from) throws Exception {
       int length = text.length();
       
       if(length > 0) {
@@ -269,7 +273,6 @@ class NodeReader {
          String data = event.getValue();
          
          text.append(data); 
-         reader.next();
       }
    }  
    
