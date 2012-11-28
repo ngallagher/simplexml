@@ -60,6 +60,6 @@ public class HtmlParseTest extends TestCase {
       assertNotNull(doc.body);
       assertEquals((((Paragraph)doc.body.list.get(0)).list.get(0)), "\nThis is a test ");
       assertEquals(((Bold)((Paragraph)doc.body.list.get(0)).list.get(1)).text, "Bold text");
-      assertEquals((((Paragraph)doc.body.list.get(0)).list.get(3)), " other text");
+      assertEquals((((Paragraph)doc.body.list.get(0)).list.get(2)), " other text");
    }
 }

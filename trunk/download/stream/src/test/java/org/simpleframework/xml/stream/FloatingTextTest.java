@@ -15,6 +15,36 @@ public class FloatingTextTest extends TestCase {
    "   <other>Some other text</other>Following text\n" +
    "</root>";
    
+   public static final String COMPLEX =
+   "<root>\n" +
+   "   First line\n"+
+   "   <a>A</a>\n" +
+   "   Second line\n"+
+   "   <b>B</b>\n" +
+   "   Third line\n" +
+   "</root>";       
+   
+   public void testComplexSource() throws Exception {
+      InputNode event = NodeBuilder.read(new StringReader(COMPLEX));
+
+      assertTrue(event.isRoot());
+      assertFalse(event.isEmpty());
+      assertEquals(event.getValue(), "\n   First line\n   ");
+      assertEquals("root", event.getName());
+      
+      InputNode a = event.getNext("a");
+      
+      assertNotNull(a);
+      assertEquals(a.getName(), "a");
+      assertEquals(a.getValue(), "A");
+      
+      InputNode a2 = event.getNext("a");
+      
+      assertEquals(event.getValue(), "\n   Second line\n   ");
+      assertNull(a2);
+
+   }
+   
    public void testEmptySource() throws Exception {
       InputNode event = NodeBuilder.read(new StringReader(SOURCE));
 
