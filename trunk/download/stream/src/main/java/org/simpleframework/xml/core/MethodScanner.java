@@ -304,7 +304,7 @@ class MethodScanner extends ContactList {
       String name = method.getName();
       
       if(name != null) {
-         insert(method, map);
+         map.put(name, method);
       }
    }
    
@@ -319,6 +319,7 @@ class MethodScanner extends ContactList {
    private void process(MethodContact contact) {
       MethodPart get = contact.getRead();
       MethodPart set = contact.getWrite();
+      String name = get.getName();
       
       if(set != null) {
          insert(set, write);

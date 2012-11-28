@@ -441,7 +441,8 @@ class Composite implements Converter {
          
          if(block != null) {
             readSection(child, source, block);
-         } else {         
+         } else { 
+            readText(node, source, section);
             readElement(child, source, section, map);
          }
          child = node.getNext();

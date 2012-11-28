@@ -43,8 +43,6 @@ class TreeModel implements Model {
     * This is the XPath expression representing the location.
     */
    private Expression expression;
-   
-   private ContactMap contacts;
   
    /**
     * This holds the mappings for elements within the model.
@@ -128,7 +126,6 @@ class TreeModel implements Model {
       this.attributes = new LabelMap(policy);
       this.elements = new LabelMap(policy);
       this.models = new ModelMap(detail);
-      this.contacts = new ContactMap();
       this.order = new OrderList();
       this.detail = detail;
       this.policy = policy;
@@ -201,19 +198,10 @@ class TreeModel implements Model {
     * @param label this is the label to register with the model
     */   
    public void registerText(Label label) throws Exception {
-      if(label.isCollection()) {
-         Contact contact = label.getContact();
-         
-         if(contacts.containsKey(contact)) {
-           // merge();
-         }
-         list = label;
-      } else {
-         if(text != null) {
-            throw new TextException("Duplicate text annotation on %s", label);
-         }
-         text = label;
+      if(text != null) {
+         throw new TextException("Duplicate text annotation on %s", label);
       }
+      text = label;
    }
    
    /**
@@ -253,8 +241,8 @@ class TreeModel implements Model {
       if(!order.contains(name)) {
          order.add(name);
       }
-      if(label.isCollection()) {
-         contacts.put(contact, contact);
+      if(label.isTextList()) {
+         list = new TextListLabel(label);
       }
       elements.put(name, label);
    }

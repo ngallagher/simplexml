@@ -21,6 +21,7 @@ package org.simpleframework.xml.core;
 import java.lang.annotation.Annotation;
 
 import org.simpleframework.xml.ElementList;
+import org.simpleframework.xml.Text;
 import org.simpleframework.xml.strategy.Type;
 import org.simpleframework.xml.stream.Format;
 import org.simpleframework.xml.stream.Style;
@@ -421,7 +422,10 @@ class ElementListLabel extends TemplateLabel {
    }
    
    public boolean isTextList() {
-      return false;
+      Contact contact = detail.getContact();
+      Text text = contact.getAnnotation(Text.class);
+      
+      return text != null;
    }
    
    /**
