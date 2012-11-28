@@ -522,7 +522,9 @@ class StructureBuilder {
     * @param type this is the object type that is being scanned
     */
    private void validateText(Class type) throws Exception {
-      if(root.getText() != null && !root.getText().isCollection()) {
+   	Label label = root.getText();
+   	
+      if(label != null && !label.isTextList()) {
          if(!elements.isEmpty()) {
             throw new TextException("Elements used with %s in %s", text, type);
          }

@@ -34,6 +34,8 @@ package org.simpleframework.xml.stream;
  */ 
 class NodeReader {
 
+   private final StringBuilder text;
+   
    /**
     * Represents the XML event reader used to read all elements.
     */ 
@@ -51,6 +53,7 @@ class NodeReader {
     * @param reader this is the event reader for the XML document
     */ 
    public NodeReader(EventReader reader) {
+      this.text = new StringBuilder();
       this.stack = new InputStack();
       this.reader = reader;            
    }        
@@ -110,6 +113,7 @@ class NodeReader {
                return null;
             }               
          } else if(event.isStart()) {
+            readText(from);
             return readStart(from, event);                 
          }
          event = reader.next();
@@ -136,19 +140,23 @@ class NodeReader {
      EventNode event = reader.peek();
           
      while(event != null) {
-        if(event.isEnd()) { 
-           if(stack.top() == from) {
-              return null;
-           } else {
-              stack.pop();
+        if(event.isText()) {
+           fillText(from);
+        } else {
+           if(event.isEnd()) { 
+              if(stack.top() == from) {
+                 return null;
+              } else {
+                 stack.pop();
+              }
+           } else if(event.isStart()) {
+              if(isName(event, name)) {
+                 return readElement(from);
+              }   
+              break;
            }
-        } else if(event.isStart()) {
-           if(isName(event, name)) {
-              return readElement(from);
-           }   
-           break;
+           event = reader.next();
         }
-        event = reader.next();
         event = reader.peek();
      }
      return null;
@@ -167,7 +175,10 @@ class NodeReader {
     */    
    private InputNode readStart(InputNode from, EventNode event) throws Exception {
       InputElement input = new InputElement(from, this, event);
-               
+       
+      if(text.length() > 0) {
+         text.setLength(0);
+      }
       if(event.isStart()) {
          return stack.push(input);
       }
@@ -218,13 +229,28 @@ class NodeReader {
          event = reader.next();
          event = reader.peek();
       }
-      if(event.isText()) {
-         if(stack.top() == from) {
-            return readText(from);
+      while(stack.top() == from) {   
+         if(event.isText()) {
+            fillText(from);
+         } else {
+            break;
          }
+         event = reader.peek();
+      }
+      return readText(from);
+   } 
+   
+   private String readText(InputNode from) {
+      int length = text.length();
+      
+      if(length > 0) {
+         String value = text.toString();
+         
+         text.setLength(0);
+         return value;
       }
       return null;
-   } 
+   }
    
    /**
     * Read the contents of the characters between the specified XML
@@ -236,24 +262,15 @@ class NodeReader {
     *
     * @return this returns the characters from the specified node
     */ 
-   private String readText(InputNode from) throws Exception {
-      StringBuilder value = new StringBuilder();
+   private void fillText(InputNode from) throws Exception {      
+      EventNode event = reader.peek();
       
-      while(stack.top() == from) {         
-         EventNode event = reader.peek();
-         
-         if(!event.isText()) {
-            if(value.length() == 0) {
-               return null;
-            }
-            return value.toString();                    
-         } 
+      if(event.isText()) {
          String data = event.getValue();
          
-         value.append(data);
-         reader.next();         
-      }         
-      return null;
+         text.append(data); 
+         reader.next();
+      }
    }  
    
    /**

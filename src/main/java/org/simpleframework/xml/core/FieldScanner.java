@@ -60,8 +60,6 @@ class FieldScanner extends ContactList {
     */
    private final ContactMap done;
    
-   private final ContactMap text;
-   
    /**
     * This object contains various support functions for the class.
     */
@@ -77,7 +75,6 @@ class FieldScanner extends ContactList {
     */
    public FieldScanner(Detail detail, Support support) throws Exception {
       this.factory = new AnnotationFactory(detail);
-      this.text = new ContactMap();
       this.done = new ContactMap();
       this.support = support;
       this.scan(detail);
@@ -245,12 +242,28 @@ class FieldScanner extends ContactList {
       if(!field.isAccessible()) {
          field.setAccessible(true);              
       }  
-      // Here we need to find some way to merge
-      if(label instanceof Text) {
-         text.put(field,  contact);
-      } else {
-         done.put(field, contact);
+      insert(field, contact);
+   }
+   
+   private void insert(Field field, Contact contact) {
+      Contact existing = done.remove(field);
+      
+      if(existing != null)  {
+         if(isText(contact)) {
+            contact = existing;
+         }
       }
+      done.put(field, contact);
+   }
+
+   
+   private boolean isText(Contact contact) {
+      Annotation label = contact.getAnnotation();
+      
+      if(label instanceof Text) {
+         return true;
+      }
+      return false;
    }
    
    /**
@@ -264,7 +277,6 @@ class FieldScanner extends ContactList {
     */
    private void remove(Field field, Annotation label) {
       done.remove(field);
-      text.remove(field);
    }
  
    /**
@@ -275,9 +287,6 @@ class FieldScanner extends ContactList {
     */
    private void build() {
       for(Contact contact : done) {
-         add(contact);
-      }
-      for(Contact contact : text) {
          add(contact);
       }
    }
