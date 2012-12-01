@@ -39,11 +39,6 @@ import org.simpleframework.xml.stream.Style;
 class ElementMapLabel extends TemplateLabel {
    
    /**
-    * This is the path that is used to represent this element map.
-    */
-   private Expression expression;
-   
-   /**
     * This is the decorator that is associated with the element.
     */
    private Decorator decorator;
@@ -57,6 +52,11 @@ class ElementMapLabel extends TemplateLabel {
     * This references the annotation that the field uses.
     */
    private ElementMap label;
+   
+   /**
+    * This is a cache of the expression for this element map.
+    */
+   private Expression cache;
    
    /**
     * This is the format used to style the elements for this.
@@ -276,10 +276,10 @@ class ElementMapLabel extends TemplateLabel {
     * @return the XPath expression identifying the location
     */
    public Expression getExpression() throws Exception {
-      if(expression == null) {
-         expression = detail.getExpression();
+      if(cache == null) {
+         cache = detail.getExpression();
       }
-      return expression;
+      return cache;
    }
    
    /**
