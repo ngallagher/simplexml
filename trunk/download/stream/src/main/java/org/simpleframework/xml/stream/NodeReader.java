@@ -34,6 +34,9 @@ package org.simpleframework.xml.stream;
  */ 
 class NodeReader {
 
+   /**
+    * This is used to collect the text between the element tags.
+    */
    private final StringBuilder text;
    
    /**
@@ -232,6 +235,16 @@ class NodeReader {
       return readText(from);
    } 
    
+   /**
+    * Read the contents of the characters between the specified XML
+    * element tags, if the read is currently at that element. This 
+    * allows characters associated with the element to be used. If
+    * the specified node is not the current node, null is returned.
+    *
+    * @param from this is the input node to read the value from
+    *
+    * @return this returns the characters from the specified node
+    */ 
    private String readText(InputNode from) throws Exception {
       EventNode event = reader.peek();
       
@@ -245,9 +258,18 @@ class NodeReader {
          event = reader.peek();
       }
       return readBuffer(from);
-
    }
    
+   /**
+    * This is used to read the text between element tags. If there
+    * is any text held in the buffer then this will return that
+    * text and clear the buffer. Clearing the buffer in this
+    * way means that the text can only ever be read once.
+    * 
+    * @param from this is the node to read the text from
+    * 
+    * @return this returns the string within the buffer if any
+    */
    private String readBuffer(InputNode from) throws Exception {
       int length = text.length();
       
