@@ -1,13 +1,28 @@
+/*
+ * TextListLabel.java December 2012
+ *
+ * Copyright (C) 2012, Niall Gallagher <niallg@users.sf.net>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or 
+ * implied. See the License for the specific language governing 
+ * permissions and limitations under the License.
+ */
+
 package org.simpleframework.xml.core;
 
 import java.lang.annotation.Annotation;
-import java.util.Collection;
 
 import org.simpleframework.xml.strategy.Type;
-import org.simpleframework.xml.stream.InputNode;
-import org.simpleframework.xml.stream.OutputNode;
 
-public class TextListLabel implements Label {
+class TextListLabel extends TemplateLabel {
    
    private final Label label;
    
@@ -15,183 +30,143 @@ public class TextListLabel implements Label {
       this.label = label;
    }
 
-   @Override
+
    public Decorator getDecorator() throws Exception {
       return null;
    }
 
-   @Override
+
    public Type getType(Class type) throws Exception {
       return null;
    }
 
-   @Override
+
    public Label getLabel(Class type) throws Exception {
       return null;
    }
 
-   @Override
+
    public String[] getNames() throws Exception {
       return label.getNames();
    }
 
-   @Override
+
    public String[] getPaths() throws Exception {
       return label.getPaths();
    }
 
-   @Override
+
    public String getEmpty(Context context) throws Exception {
       return null;
    }
 
-   @Override
+
+   // This will be an individual element list so each of the registered 
+   // labels will be of a specific type...only the last one registered
+   // will be used
+   //
+   // It seems to me that the composite list union is the way
+   // to go, this knows that it is a composite, it only needs to
+   // know it has text values and read them or write them...
    public Converter getConverter(Context context) throws Exception {
+      Type dependent = getDependent();
+      Class real = dependent.getType();
       Type type = getContact();
       
+      //if(real == String.class) {
+        return new TextList(context, type, label);
+     // }
       
-      if(!context.isPrimitive(type)) {
-        // throw new TextException("Cannot use %s to represent %s", type, label);
-      }
-      return new Convert(context, type, label);
-   }
-   
-   private static class Convert implements Repeater {
+      //if(!context.isPrimitive(type)) {
+      //   throw new TextException("Cannot use %s to represent %s", type, label);
+     // }
       
-      private final CollectionFactory factory;
-      private final Primitive primitive;
-      private final Label label;
       
-      public Convert(Context context, Type type, Label label) {
-         this.factory = new CollectionFactory(context, type);
-         this.primitive = new Primitive(context, new ClassType(String.class));
-         this.label = label;
-      }
-
-      @Override
-      public Object read(InputNode node) throws Exception {
-         Instance value = factory.getInstance(node); 
-         Object data = value.getInstance();
-         
-         if(value.isReference()) {      
-            return value.getInstance(); 
-         }
-         return read(node, data);
-      }
-
-      @Override
-      public boolean validate(InputNode node) throws Exception {
-         // TODO Auto-generated method stub
-         return false;
-      }
-
-      @Override
-      public void write(OutputNode node, Object object) throws Exception {
-         // TODO Auto-generated method stub
-         
-      }
-
-      @Override
-      public Object read(InputNode node, Object result) throws Exception {
-         Collection list = (Collection) result;                 
-         Object value = primitive.read(node);
-         
-         if(value != null) {
-            list.add(value);
-         }
-         return result;
-      } 
+      // Perhaps we should wrap this converter, and then for each of the values that
+      // have been read we will strip off the text too....?????
       
+      //
+      // IDEA: here what we do is we return the CompositeListUnion converter object when a text converter
+      // IDEA: is requested. The CompositeListUnion label will handle the text before we read the element.
+      // IDEA: it will also through some means be used to read the final text from a section, when the
+      // IDEA: section is finished we need to grab the CompsiteListUnion label and read the final bit of
+      // IDEA: text to complete the list.
+      //
+     //return label.getConverter(context);
    }
 
-   @Override
+
    public String getName() throws Exception {
       return label.getName();
    }
 
-   @Override
+
    public String getPath() throws Exception {
       return label.getPath();
    }
 
-   @Override
+
    public Expression getExpression() throws Exception {
       return label.getExpression();
    }
 
-   @Override
+
    public Type getDependent() throws Exception {
       return label.getDependent();
    }
 
-   @Override
+
    public String getEntry() throws Exception {
       return label.getEntry();
    }
 
-   @Override
+
    public Object getKey() throws Exception {
       return label.getKey();
    }
 
-   @Override
+
    public Annotation getAnnotation() {
       return label.getAnnotation();
    }
 
-   @Override
+
    public Contact getContact() {
       return label.getContact();
    }
 
-   @Override
+
    public Class getType() {
       return label.getType();
    }
 
-   @Override
+
    public String getOverride() {
       return label.getOverride();
    }
 
-   @Override
+
    public boolean isData() {
       return label.isData();
    }
 
-   @Override
+
    public boolean isRequired() {
       return label.isRequired();
    }
 
-   @Override
-   public boolean isAttribute() {
-      return label.isAttribute();
-   }
 
-   @Override
    public boolean isCollection() {
-      return label.isCollection();
+      return true;
    }
 
-   @Override
+
    public boolean isInline() {
       return label.isInline();
    }
 
-   @Override
-   public boolean isText() {
-      return false;
-   }
 
-   @Override
-   public boolean isUnion() {
-      return false;
-   }
-
-   @Override
    public boolean isTextList() {
       return true;
    }
-
 }

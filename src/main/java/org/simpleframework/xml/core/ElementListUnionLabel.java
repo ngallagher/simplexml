@@ -309,7 +309,7 @@ class ElementListUnionLabel extends TemplateLabel {
    }  
 
    public boolean isTextList() {
-      return label.isTextList();
+      return extractor.isTextList();
    }
    
    /**

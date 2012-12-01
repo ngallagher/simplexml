@@ -215,15 +215,19 @@ class NodeReader {
       if(!stack.isRelevant(from)) { 
          return null;
       }
-      EventNode event = reader.peek();
+      int length = text.length();
       
-      if(event.isEnd()) { 
-         if(stack.top() == from) {
-            return null;
-         } else {
-            stack.pop();
+      if(length <= 0) {
+         EventNode event = reader.peek();
+         
+         if(event.isEnd()) { 
+            if(stack.top() == from) {
+               return null;
+            } else {
+               stack.pop();
+            }
+            event = reader.next();
          }
-         event = reader.next();
       }
       return readText(from);
    } 

@@ -421,13 +421,6 @@ class ElementListLabel extends TemplateLabel {
       return inline;
    }
    
-   public boolean isTextList() {
-      Contact contact = detail.getContact();
-      Text text = contact.getAnnotation(Text.class);
-      
-      return text != null;
-   }
-   
    /**
     * This is used to describe the annotation and method or field
     * that this label represents. This is used to provide error
