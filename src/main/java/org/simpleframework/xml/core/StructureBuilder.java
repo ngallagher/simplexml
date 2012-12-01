@@ -32,6 +32,7 @@ import org.simpleframework.xml.ElementUnion;
 import org.simpleframework.xml.Order;
 import org.simpleframework.xml.Text;
 import org.simpleframework.xml.Version;
+import org.simpleframework.xml.strategy.Type;
 
 /**
  * The <code>StructureBuilder</code> object is used to build the XML
@@ -498,6 +499,7 @@ class StructureBuilder {
       validateAttributes(type, order);
       validateModel(type);
       validateText(type);  
+      validateTextList(type);
    }
    
    /**
@@ -524,18 +526,53 @@ class StructureBuilder {
    private void validateText(Class type) throws Exception {
    	Label label = root.getText();
    	
-      if(label != null && !label.isTextList()) {
-         if(!elements.isEmpty()) {
-            throw new TextException("Elements used with %s in %s", text, type);
-         }
-         if(root.isComposite()) {
-            throw new TextException("Paths used with %s in %s", text, type);
+      if(label != null) {
+         if(!label.isTextList()) {
+            if(!elements.isEmpty()) {
+               throw new TextException("Elements used with %s in %s", label, type);
+            }
+            if(root.isComposite()) {
+               throw new TextException("Paths used with %s in %s", label, type);
+            }
          }
       }  else {
          if(scanner.isEmpty()) {
             primitive = isEmpty();
          }
       }
+   }
+   
+   /**
+    * This is used to validate the configuration of the scanned class.
+    * If a <code>Text</code> annotation has been used with elements
+    * then validation will fail and an exception will be thrown. 
+    * 
+    * @param type this is the object type that is being scanned
+    */
+   private void validateTextList(Class type) throws Exception {
+      Label label = root.getText();
+      
+      if(label != null) {
+         if(label.isTextList()) {
+            Object key = label.getKey();
+            
+            for(Label element : elements) {
+               Type dependent = element.getDependent();
+               Object identity = element.getKey();
+               Class actual = dependent.getType();
+               
+               if(actual == String.class) {
+                  throw new TextException("Entries can not be of %s with text annotations on %s", actual, label);
+               }
+               if(!identity.equals(key)) {
+                  throw new TextException("Elements used with %s in %s", label, type);
+               }
+            }
+            if(root.isComposite()) {
+               throw new TextException("Paths used with %s in %s", label, type);
+            }
+         }
+      } 
    }
    
    /**
