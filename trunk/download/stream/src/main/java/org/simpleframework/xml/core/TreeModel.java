@@ -232,7 +232,6 @@ class TreeModel implements Model {
     * @param label this is the label to register with the model
     */   
    public void registerElement(Label label) throws Exception {
-      Contact contact = label.getContact();
       String name = label.getName();
       
       if(elements.get(name) != null) {
@@ -242,7 +241,7 @@ class TreeModel implements Model {
          order.add(name);
       }
       if(label.isTextList()) {
-         list = new TextListLabel(label);
+         list = label;
       }
       elements.put(name, label);
    }

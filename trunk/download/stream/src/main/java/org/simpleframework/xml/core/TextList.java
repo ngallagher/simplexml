@@ -10,15 +10,14 @@ class TextList implements Repeater {
    
    private final CollectionFactory factory;
    private final Primitive primitive;
-   private final Label label;
+   private final Type type;
    
-   public TextList(Context context, Type type, Label label) {
-      this.factory = new CollectionFactory(context, type);
-      this.primitive = new Primitive(context, new ClassType(String.class));
-      this.label = label;
+   public TextList(Context context, Type list, Label label) {
+      this.type = new ClassType(String.class);
+      this.factory = new CollectionFactory(context, list);
+      this.primitive = new Primitive(context, type);
    }
 
-   @Override
    public Object read(InputNode node) throws Exception {
       Instance value = factory.getInstance(node); 
       Object data = value.getInstance();
@@ -29,19 +28,11 @@ class TextList implements Repeater {
       return read(node, data);
    }
 
-   @Override
    public boolean validate(InputNode node) throws Exception {
       // TODO Auto-generated method stub
       return false;
    }
 
-   @Override
-   public void write(OutputNode node, Object object) throws Exception {
-      // TODO Auto-generated method stub
-      
-   }
-
-   @Override
    public Object read(InputNode node, Object result) throws Exception {
       Collection list = (Collection) result;                 
       Object value = primitive.read(node);
@@ -52,4 +43,12 @@ class TextList implements Repeater {
       return result;
    } 
    
+   public void write(OutputNode node, Object object) throws Exception {
+      Collection list = (Collection) object;
+      OutputNode parent = node.getParent();
+      
+      for(Object item : list) {
+         primitive.write(parent, item);
+      }
+   }
 }

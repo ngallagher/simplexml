@@ -101,10 +101,26 @@ class CompositeListUnion implements Repeater {
     * @return this is the instance that has been read by this
     */
    public Object read(InputNode node) throws Exception {
+      Label text = group.getText();
+      
+      if(text == null) {
+         return readElement(node);
+      } 
+      return readText(node);
+   }
+   
+   private Object readElement(InputNode node) throws Exception {
       String name = node.getName();
       String element = path.getElement(name);
       Label label = elements.get(element);
       Converter converter = label.getConverter(context);
+   
+      return converter.read(node);
+   }
+   
+   private Object readText(InputNode node) throws Exception {
+      Label text = group.getText();
+      Converter converter = text.getConverter(context);
       
       return converter.read(node);
    }
@@ -122,12 +138,30 @@ class CompositeListUnion implements Repeater {
     * @return this is the instance that has been read by this
     */
    public Object read(InputNode node, Object value) throws Exception {
+      Object result = readElement(node, value);
+      Label text = group.getText();
+     
+      if(text != null) {
+         return readText(node, value);
+      }
+      return result;
+   }
+   
+   private Object readElement(InputNode node, Object value) throws Exception {
       String name = node.getName();
       String element = path.getElement(name);
       Label label = elements.get(element);
       Converter converter = label.getConverter(context);
       
       return converter.read(node, value);
+   }
+   
+   private Object readText(InputNode node, Object value) throws Exception {
+      Label label = group.getText();
+      Converter converter = label.getConverter(context);
+      InputNode parent = node.getParent();
+      
+      return converter.read(parent, value);
    }
    
    /**
@@ -190,7 +224,7 @@ class CompositeListUnion implements Repeater {
             Class real = item.getClass();
             Label label = group.getLabel(real);
             
-            if(label == null) {               
+            if(label == null) {          
                throw new UnionException("Entry of %s not declared in %s with annotation %s", real, type, group);
             }
             write(node, item, label);

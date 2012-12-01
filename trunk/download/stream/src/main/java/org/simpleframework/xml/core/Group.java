@@ -40,6 +40,8 @@ interface Group {
     */
    boolean isInline();
    
+   boolean isTextList();
+   
    /**
     * This is used to acquire a <code>Label</code> based on the type
     * of an object. Selecting a label based on the type ensures that
@@ -60,7 +62,9 @@ interface Group {
     * 
     * @return this returns a label map containing the labels 
     */
-   LabelMap getElements() throws Exception ;
+   LabelMap getElements() throws Exception;
+   
+   Label getText() throws Exception;
    
    /**
     * This returns a string representation of the union group.

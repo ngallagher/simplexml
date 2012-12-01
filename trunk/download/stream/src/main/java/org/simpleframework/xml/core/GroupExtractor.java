@@ -22,6 +22,7 @@ import java.lang.annotation.Annotation;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 
+import org.simpleframework.xml.Text;
 import org.simpleframework.xml.stream.Format;
 
 /**
@@ -124,6 +125,10 @@ class GroupExtractor implements Group {
       return registry.resolve(type);
    }
    
+   public Label getText() {
+      return registry.resolveText();
+   }
+   
    /**
     * This is used to determine if the associated type represents a
     * label defined within the union group. If the label exists
@@ -165,6 +170,10 @@ class GroupExtractor implements Group {
          }
       }
       return !registry.isEmpty();
+   }
+   
+   public boolean isTextList() {
+      return registry.isText();
    }
    
    /**
@@ -209,10 +218,9 @@ class GroupExtractor implements Group {
    private void extract(Extractor extractor, Annotation value) throws Exception {
       Label label = extractor.getLabel(value);
       Class type = extractor.getType(value);
-      String name = label.getName();
       
       if(registry != null) {
-         registry.register(type, name, label);
+         registry.register(type, label);
       }
    }
    
@@ -240,7 +248,9 @@ class GroupExtractor implements Group {
       /**
        * This maintains a mapping between label names and labels.
        */
-      private final LabelMap elements;
+      private LabelMap elements;
+      
+      private Label text;
       
       /**
        * Constructor for the <code>Registry</code> object. This is
@@ -252,6 +262,10 @@ class GroupExtractor implements Group {
        */
       public Registry(LabelMap elements){
          this.elements = elements;
+      }
+      
+      public boolean isText() {
+         return text != null;
       }
       
       /**
@@ -277,6 +291,28 @@ class GroupExtractor implements Group {
        * @return this will return the label that is best matched
        */
       public Label resolve(Class type) {
+         Label label = resolveText(type);
+         
+         if(label == null) {
+            return resolveElement(type);
+         }
+         return label;
+      }
+      
+      public Label resolveText() {
+         return resolveText(String.class);
+      }
+      
+      private Label resolveText(Class type) {
+         if(text != null) {
+            if(type == String.class) {
+               return text;
+            }
+         }
+         return null;
+      }
+      
+      private Label resolveElement(Class type) {
          while(type != null) {
             Label label = get(type);
             
@@ -285,7 +321,7 @@ class GroupExtractor implements Group {
             }
             type = type.getSuperclass();
          }
-         return null;
+         return null; 
       }
       
       /**
@@ -296,14 +332,30 @@ class GroupExtractor implements Group {
        * @param name this is the name of the label to be registered
        * @param label this is the label that is to be registered
        */
-      public void register(Class type, String name, Label label) throws Exception {
+      public void register(Class type, Label label) throws Exception {
          Label cache = new CacheLabel(label);
          
+         registerElement(type, cache);
+         registerText(type, cache);
+      }
+      
+      private void registerElement(Class type, Label label) throws Exception {
+         String name = label.getName();
+         
          if(!elements.containsKey(name)) {
-            elements.put(name, cache);
+            elements.put(name, label);
          }
          if(!containsKey(type)) {
-            put(type, cache);
+            put(type, label);
+         }
+      }
+      
+      private void registerText(Class type, Label label) throws Exception {
+         Contact contact = label.getContact();
+         Text value = contact.getAnnotation(Text.class);
+         
+         if(value != null) {
+            text = new TextListLabel(label);
          }
       }
    }
