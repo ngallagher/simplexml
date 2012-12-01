@@ -544,8 +544,10 @@ class StructureBuilder {
    
    /**
     * This is used to validate the configuration of the scanned class.
-    * If a <code>Text</code> annotation has been used with elements
-    * then validation will fail and an exception will be thrown. 
+    * If an <code>ElementListUnion</code> annotation has been used with 
+    * a <code>Text</code> annotation this validates to ensure there are
+    * no other elements declared and no <code>Path</code> annotations 
+    * have been used, which ensures free text can be processed.
     * 
     * @param type this is the object type that is being scanned
     */
@@ -557,15 +559,16 @@ class StructureBuilder {
             Object key = label.getKey();
             
             for(Label element : elements) {
-               Type dependent = element.getDependent();
                Object identity = element.getKey();
+               
+               if(!identity.equals(key)) {
+                  throw new TextException("Elements used with %s in %s", label, type);
+               }
+               Type dependent = element.getDependent();
                Class actual = dependent.getType();
                
                if(actual == String.class) {
-                  throw new TextException("Entries can not be of %s with text annotations on %s", actual, label);
-               }
-               if(!identity.equals(key)) {
-                  throw new TextException("Elements used with %s in %s", label, type);
+                  throw new TextException("Illegal entry of %s with text annotations on %s in %s", actual, label, type);
                }
             }
             if(root.isComposite()) {

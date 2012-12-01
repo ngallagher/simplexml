@@ -187,6 +187,14 @@ abstract class TemplateLabel implements Label {
       return false;
    }
    
+   /**
+    * This is used to determine if an annotated list is a text 
+    * list. A text list is a list of elements that also accepts
+    * free text. Typically this will be an element list union that
+    * will allow unstructured XML such as XHTML to be parsed.
+    * 
+    * @return returns true if the label represents a text list
+    */
    public boolean isTextList() {
       return false;
    }
