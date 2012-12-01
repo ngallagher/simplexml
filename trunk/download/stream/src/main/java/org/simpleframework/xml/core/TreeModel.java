@@ -106,6 +106,7 @@ class TreeModel implements Model {
     * this can contain a tree of models mirroring the XML structure.
     * 
     * @param policy this is the serialization policy enforced
+    * @param detail this is the detail associated with this model
     */
    public TreeModel(Policy policy, Detail detail) {
       this(policy, detail, null, null, 1);
@@ -118,6 +119,7 @@ class TreeModel implements Model {
     * this can contain a tree of models mirroring the XML structure.
     * 
     * @param policy this is the serialization policy enforced
+    * @param detail this is the detail associated with this model
     * @param name this is the XML element name for this model
     * @param prefix this is the prefix used for this model object
     * @param index this is the index used to order the model

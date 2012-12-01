@@ -36,7 +36,7 @@ import java.util.LinkedHashMap;
 class ModelMap extends LinkedHashMap<String, ModelList> implements Iterable<ModelList>{
    
    /**
-    * This is the type associated with this model map instance.
+    * This is the detail associated with this model map instance.
     */
    private final Detail detail;
    
@@ -44,6 +44,8 @@ class ModelMap extends LinkedHashMap<String, ModelList> implements Iterable<Mode
     * Constructor for the <code>ModelMap</code> object is used to 
     * create an empty map. This is used for convenience as a typedef
     * like construct which avoids having to use the generic type.
+    *
+    * @param detail this is the detail associated with the map
     */ 
    public ModelMap(Detail detail) {
       this.detail = detail;
