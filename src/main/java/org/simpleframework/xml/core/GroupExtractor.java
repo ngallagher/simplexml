@@ -355,7 +355,7 @@ class GroupExtractor implements Group {
          Text value = contact.getAnnotation(Text.class);
          
          if(value != null) {
-            text = new TextListLabel(label);
+            text = new TextListLabel(label, value);
          }
       }
    }
