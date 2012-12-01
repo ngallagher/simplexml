@@ -125,6 +125,14 @@ class GroupExtractor implements Group {
       return registry.resolve(type);
    }
    
+   /**
+    * This is used to get a <code>Label</code> that represents the
+    * text between elements on an element union. Providing a label
+    * here ensures that the free text found between elements can
+    * be converted in to strings and added to the list.
+    * 
+    * @return a label if a text annotation has been declared
+    */
    public Label getText() {
       return registry.resolveText();
    }
@@ -172,6 +180,14 @@ class GroupExtractor implements Group {
       return !registry.isEmpty();
    }
    
+   /**
+    * This is used to determine if an annotated list is a text 
+    * list. A text list is a list of elements that also accepts
+    * free text. Typically this will be an element list union that
+    * will allow unstructured XML such as XHTML to be parsed.
+    * 
+    * @return returns true if the label represents a text list
+    */
    public boolean isTextList() {
       return registry.isText();
    }
@@ -237,11 +253,9 @@ class GroupExtractor implements Group {
    
    /**
     * The <code>Registry</code> object is used to maintain mappings
-    * from types to labels. Each of the mapppings can be used to 
+    * from types to labels. Each of the mappings can be used to 
     * dynamically select a label based on the instance type that is
     * to be serialized. This also registers based on the label name.
-    * 
-    * @author Niall Gallagher
     */
    private static class Registry extends LinkedHashMap<Class, Label> implements Iterable<Label> {
    
@@ -250,6 +264,9 @@ class GroupExtractor implements Group {
        */
       private LabelMap elements;
       
+      /**
+       * This label represents the free text between elements.
+       */
       private Label text;
       
       /**
@@ -264,6 +281,14 @@ class GroupExtractor implements Group {
          this.elements = elements;
       }
       
+      /**
+       * This is used to determine if an annotated list is a text 
+       * list. A text list is a list of elements that also accepts
+       * free text. Typically this will be an element list union that
+       * will allow unstructured XML such as XHTML to be parsed.
+       * 
+       * @return returns true if the label represents a text list
+       */
       public boolean isText() {
          return text != null;
       }
@@ -277,6 +302,18 @@ class GroupExtractor implements Group {
        */
       public Iterator<Label> iterator() {
          return values().iterator();
+      }
+      
+      /**
+       * This is used to resolve the text for this registry. If there
+       * is a text annotation declared with the union then this will
+       * return a <code>Label</code> that can be used to convert the
+       * free text between elements in to strings.
+       * 
+       * @return this returns the label representing free text
+       */
+      public Label resolveText() {
+         return resolveText(String.class);
       }
       
       /**
@@ -299,10 +336,16 @@ class GroupExtractor implements Group {
          return label;
       }
       
-      public Label resolveText() {
-         return resolveText(String.class);
-      }
-      
+      /**
+       * This is used to resolve the text for this registry. If there
+       * is a text annotation declared with the union then this will
+       * return a <code>Label</code> that can be used to convert the
+       * free text between elements in to strings.
+       * 
+       * @param type this is the type to resolve the text as
+       * 
+       * @return this returns the label representing free text
+       */
       private Label resolveText(Class type) {
          if(text != null) {
             if(type == String.class) {
@@ -312,6 +355,17 @@ class GroupExtractor implements Group {
          return null;
       }
       
+      /**
+       * Here we resolve the <code>Label</code> the type is matched
+       * with by checking if the type is directly mapped or if any of
+       * the super classes of the type are mapped. If there are no
+       * classes in the hierarchy of the type that are mapped then
+       * this will return null otherwise the label will be returned.
+       * 
+       * @param type this is the type to resolve the label for
+       * 
+       * @return this will return the label that is best matched
+       */
       private Label resolveElement(Class type) {
          while(type != null) {
             Label label = get(type);
@@ -336,9 +390,18 @@ class GroupExtractor implements Group {
          Label cache = new CacheLabel(label);
          
          registerElement(type, cache);
-         registerText(type, cache);
+         registerText(cache);
       }
       
+      
+      /**
+       * This is used to register a label based on the name. This is
+       * done to ensure the label instance can be dynamically found
+       * during the deserialization process by providing the name.
+       * 
+       * @param name this is the name of the label to be registered
+       * @param label this is the label that is to be registered
+       */
       private void registerElement(Class type, Label label) throws Exception {
          String name = label.getName();
          
@@ -350,7 +413,14 @@ class GroupExtractor implements Group {
          }
       }
       
-      private void registerText(Class type, Label label) throws Exception {
+      /**
+       * This is used to register the provided label is a text label.
+       * Registration as a text label can only happen if the field or
+       * method has a <code>Text</code> annotation declared on it.
+       * 
+       * @param label this is the label to register as text
+       */
+      private void registerText(Label label) throws Exception {
          Contact contact = label.getContact();
          Text value = contact.getAnnotation(Text.class);
          

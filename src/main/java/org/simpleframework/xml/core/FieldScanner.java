@@ -238,25 +238,43 @@ class FieldScanner extends ContactList {
     */
    private void process(Field field, Annotation label, Annotation[] list) {
       Contact contact = new FieldContact(field, label, list);
+      Object key = new FieldKey(field);
       
       if(!field.isAccessible()) {
          field.setAccessible(true);              
       }  
-      insert(field, contact);
+      insert(key, contact);
    }
    
-   private void insert(Field field, Contact contact) {
-      Contact existing = done.remove(field);
+   /**
+    * This is used to insert a contact to this contact list. Here if
+    * a <code>Text</code> annotation is declared on a field that
+    * already has an annotation then the other annotation is given
+    * the priority, this is to so text can be processes separately.
+    * 
+    * @param key this is the key that uniquely identifies the field
+    * @param contact this is the contact that is to be inserted
+    */
+   private void insert(Object key, Contact contact) {
+      Contact existing = done.remove(key);
       
       if(existing != null)  {
          if(isText(contact)) {
             contact = existing;
          }
       }
-      done.put(field, contact);
+      done.put(key, contact);
    }
 
-   
+   /**
+    * This is used to determine if the <code>Text</code> annotation
+    * has been declared on the field. If this annotation is used
+    * then this will return true, otherwise this returns false.
+    * 
+    * @param contact the contact to check for the text annotation
+    * 
+    * @return true if the text annotation was declared on the field
+    */
    private boolean isText(Contact contact) {
       Annotation label = contact.getAnnotation();
       
@@ -276,7 +294,7 @@ class FieldScanner extends ContactList {
     * @param label this is the label associated with the field
     */
    private void remove(Field field, Annotation label) {
-      done.remove(field);
+      done.remove(new FieldKey(field));
    }
  
    /**
@@ -307,5 +325,34 @@ class FieldScanner extends ContactList {
          return true;
       }
       return false;
+   }
+   
+   private static class FieldKey {
+      
+      private final Class type;
+      private final String name;
+      
+      public FieldKey(Field field) {
+         this.type = field.getType();
+         this.name = field.getName();
+      }
+      
+      public int hashCode() {
+         return name.hashCode();
+      }
+      
+      public boolean equals(Object value) {
+         if(value instanceof FieldKey) {
+            return equals((FieldKey)value);
+         }
+         return false;
+      }
+      
+      private boolean equals(FieldKey other) {
+         if(other.type != type) {
+            return false;
+         }
+         return other.name.equals(name);
+      }
    }
 }
