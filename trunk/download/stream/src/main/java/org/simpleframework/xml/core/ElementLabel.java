@@ -39,11 +39,6 @@ import org.simpleframework.xml.stream.Style;
 class ElementLabel extends TemplateLabel {
    
    /**
-    * This is the path that is used to represent this element.
-    */
-   private Expression expression;
-   
-   /**
     * This is the decorator that is associated with the element.
     */
    private Decorator decorator;
@@ -51,7 +46,12 @@ class ElementLabel extends TemplateLabel {
    /**
     * The contact that this element label represents.
     */
-   private Introspector detail;
+   private Introspector detail;   
+   
+   /**
+    * This is a cache of the expression for this element.
+    */
+   private Expression cache;
    
    /**
     * References the annotation that was used by the field.
@@ -232,10 +232,10 @@ class ElementLabel extends TemplateLabel {
     * @return the XPath expression identifying the location
     */
    public Expression getExpression() throws Exception {
-      if(expression == null) {
-         expression = detail.getExpression();
+      if(cache == null) {
+         cache = detail.getExpression();
       }
-      return expression;
+      return cache;
    }
    
    /**

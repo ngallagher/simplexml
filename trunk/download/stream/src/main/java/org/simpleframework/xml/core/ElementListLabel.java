@@ -21,7 +21,6 @@ package org.simpleframework.xml.core;
 import java.lang.annotation.Annotation;
 
 import org.simpleframework.xml.ElementList;
-import org.simpleframework.xml.Text;
 import org.simpleframework.xml.strategy.Type;
 import org.simpleframework.xml.stream.Format;
 import org.simpleframework.xml.stream.Style;
@@ -40,11 +39,6 @@ import org.simpleframework.xml.stream.Style;
 class ElementListLabel extends TemplateLabel {
    
    /**
-    * This is the path that is used to represent this elements list.
-    */
-   private Expression expression;
-   
-   /**
     * This is the decorator that is associated with the element.
     */
    private Decorator decorator; 
@@ -60,6 +54,11 @@ class ElementListLabel extends TemplateLabel {
    private ElementList label;
    
    /**
+    * This is a cache of the expression for this element list.
+    */
+   private Expression cache;
+   
+   /**
     * This is the format used to style the elements in the list.
     */  
    private Format format;
@@ -68,11 +67,6 @@ class ElementListLabel extends TemplateLabel {
     * This is the name of the element for this label instance.
     */
    private String override;  
-   
-   /**
-    * This is the original value for the entry label attribute.
-    */
-   private String original;
    
    /**
     * This is the name of the XML entry from the annotation.
@@ -133,7 +127,6 @@ class ElementListLabel extends TemplateLabel {
       this.entry = label.entry();
       this.data = label.data();
       this.item = label.type();
-      this.original = entry;
       this.format = format;
       this.label = label;
    }
@@ -314,10 +307,10 @@ class ElementListLabel extends TemplateLabel {
     * @return the XPath expression identifying the location
     */
    public Expression getExpression() throws Exception {
-      if(expression == null) {
-         expression = detail.getExpression();
+      if(cache == null) {
+         cache = detail.getExpression();
       }
-      return expression;
+      return cache;
    }
    
    /**
