@@ -604,6 +604,7 @@
    </target>
 
    <target name="obfuscate" depends="build" description="Obfuscates and optimizes the JAR">
+      <echo message="Copying script from ${script.path} replacing tokens with ${version} where required"/>
       <copy todir="${root.path}" overwrite="true">
          <fileset file="${script.path}/proguard.pro"/>
          <filterset>
@@ -611,6 +612,7 @@
             <filter token="outjar" value="${obfuscated.path}/simple-xml-${version}-obfuscated.jar"/>
          </filterset>
       </copy>
+      <echo message="Running the pro guard task"/>
       <java classname="proguard.ProGuard" fork="yes">
          <classpath>
             <fileset dir="${lib.path}">

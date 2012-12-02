@@ -8,8 +8,8 @@
 # Specify the input jars, output jars, and library jars.
 # In this case, the input jar is the program library that we want to process.
 
--injars  jar/simple-xml-2.6.7.jar
--outjars obfuscated/simple-xml-2.6.7-obfuscated.jar
+-injars  jar/simple-xml-2.6.9.jar
+-outjars obfuscated/simple-xml-2.6.9-obfuscated.jar
 
 -libraryjars  <java.home>/lib/rt.jar
 -libraryjars lib/xpp3-1.1.3.3.jar
