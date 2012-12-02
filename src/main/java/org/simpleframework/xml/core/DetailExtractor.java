@@ -79,7 +79,7 @@ class DetailExtractor {
     * 
     * @return an object describing the type and its annotations
     */
-   public Detail getDetail(Class type) throws Exception {
+   public Detail getDetail(Class type) {
       Detail detail = details.fetch(type);
       
       if(detail == null) {
