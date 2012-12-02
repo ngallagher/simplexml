@@ -2,21 +2,22 @@ package org.simpleframework.xml.core;
 
 import java.util.List;
 
-import junit.framework.TestCase;
-
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.ElementListUnion;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.Text;
+import org.simpleframework.xml.ValidationTestCase;
+import org.simpleframework.xml.stream.Format;
 
-public class HtmlParseTest extends TestCase {
+public class HtmlParseTest extends ValidationTestCase {
    
    private static final String HTML =
    "<html>\n"+
    "<body>\n"+
    "<p>\n"+
-   "This is a test <b>Bold text</b> other text"+
+   "This is a test <b>Bold text</b> other text. This is <i>italics</i> and"+
+   " also another <p>Paragraph <i>italic</i> inside a paragraph</p>"+
    "</p>\n"+
    "</body>\n"+
    "</html>\n";
@@ -29,14 +30,22 @@ public class HtmlParseTest extends TestCase {
    }
    
    @Root
+   private static class Italic {
+      
+      @Text
+      private String text;
+   }
+   
+   @Root
    private static class Paragraph {
       
+      @Text
       @ElementListUnion({
          @ElementList(entry="b", type=Bold.class, required=false, inline=true),
-         @ElementList(entry="i", type=String.class, required=false, inline=true)
+         @ElementList(entry="i", type=Italic.class, required=false, inline=true),
+         @ElementList(entry="p", type=Paragraph.class, required=false, inline=true),
       })
-      @Text
-      private List<Object> list;
+      private List<Object> boldOrText;
    }
    
    @Root
@@ -46,6 +55,7 @@ public class HtmlParseTest extends TestCase {
       private List<Paragraph> list;
    }
    
+   
    @Root
    private static class Document {
       
@@ -54,12 +64,24 @@ public class HtmlParseTest extends TestCase {
    }
 
    public void testDocument() throws Exception {
-      Persister persister = new Persister();
+      Format format = new Format(0);
+      Persister persister = new Persister(format);
       Document doc = persister.read(Document.class, HTML);
       
       assertNotNull(doc.body);
-      assertEquals((((Paragraph)doc.body.list.get(0)).list.get(0)), "\nThis is a test ");
-      assertEquals(((Bold)((Paragraph)doc.body.list.get(0)).list.get(1)).text, "Bold text");
-      assertEquals((((Paragraph)doc.body.list.get(0)).list.get(2)), " other text");
+      
+      Body body = doc.body;
+      List<Paragraph> paragraphs = body.list;
+      
+      assertEquals(paragraphs.size(), 1);
+      assertEquals(paragraphs.get(0).boldOrText.size(), 6);
+      assertEquals(paragraphs.get(0).boldOrText.get(0), "\nThis is a test ");
+      assertEquals(paragraphs.get(0).boldOrText.get(1).getClass(), Bold.class);
+      assertEquals(paragraphs.get(0).boldOrText.get(2), " other text. This is ");
+      assertEquals(paragraphs.get(0).boldOrText.get(3).getClass(), Italic.class);
+      assertEquals(paragraphs.get(0).boldOrText.get(4), " and also another ");
+      assertEquals(paragraphs.get(0).boldOrText.get(5).getClass(), Paragraph.class);
+      
+      validate(persister, doc);
    }
 }
