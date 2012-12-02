@@ -421,7 +421,7 @@
       </exec>
    </target>
 
-   <target name="maven" depends="-compile" description="Upload release to maven">
+   <!--target name="maven" depends="-compile" description="Upload release to maven">
       <copy todir="${root.path}" overwrite="true">
          <fileset dir="${script.path}">
             <include name="pom.xml"/>
@@ -434,7 +434,7 @@
       <exec executable="sh">
          <arg value="${root.path}/maven.sh"/>
       </exec>
-   </target>
+   </target-->
 
    
    <target name="pom" depends="-compile" description="Create maven bundle">
@@ -465,7 +465,7 @@
       <antcall target="maven-archive"/>
    </target>
 
-   <target name="maven-archive" depends="-setup">
+   <target name="maven" depends="-setup">
       <copy todir="${root.path}" overwrite="true">
          <fileset dir="${script.path}">
             <include name="pom.xml"/>
@@ -532,7 +532,7 @@
          <arg value="${password}"/>
          <arg value="${target.path}/maven/${version}/simple-xml-${version}.pom"/>
       </exec>
-      <checksum file="${target.path}/maven/${version}/simple-xml-${version}.jar" algorithm="SHA1" fileext=".sha1"/>
+      <!--checksum file="${target.path}/maven/${version}/simple-xml-${version}.jar" algorithm="SHA1" fileext=".sha1"/>
       <checksum file="${target.path}/maven/${version}/simple-xml-${version}.jar" algorithm="MD5" fileext=".md5"/>      
       <checksum file="${target.path}/maven/${version}/simple-xml-${version}.jar.asc" algorithm="SHA1" fileext=".sha1"/>
       <checksum file="${target.path}/maven/${version}/simple-xml-${version}.jar.asc" algorithm="MD5" fileext=".md5"/>
@@ -549,7 +549,7 @@
       <checksum file="${target.path}/maven/${version}/simple-xml-${version}.pom.asc" algorithm="SHA1" fileext=".sha1"/>
       <checksum file="${target.path}/maven/${version}/simple-xml-${version}.pom.asc" algorithm="MD5" fileext=".md5"/>
       <checksum file="${target.path}/maven/maven-metadata.xml" algorithm="SHA1" fileext=".sha1"/>
-      <checksum file="${target.path}/maven/maven-metadata.xml" algorithm="MD5" fileext=".md5"/>       
+      <checksum file="${target.path}/maven/maven-metadata.xml" algorithm="MD5" fileext=".md5"/-->    
       <zip destfile="${root.path}/maven-${version}.zip" basedir="${target.path}/maven"/>      
       <jar destfile="${root.path}/bundle-${version}.jar" basedir="${target.path}/maven/${version}"/>
    </target>
