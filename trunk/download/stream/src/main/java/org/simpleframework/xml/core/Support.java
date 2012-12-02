@@ -256,7 +256,7 @@ class Support implements Filter {
     * 
     * @return an object describing the type and its annotations
     */
-   public Detail getDetail(Class type) throws Exception {
+   public Detail getDetail(Class type) {
       return details.getDetail(type);
    }
    
@@ -455,7 +455,6 @@ class Support implements Filter {
       }
       return false;
    }
-   
    
    /**
     * This is used to determine if two objects are assignable to 

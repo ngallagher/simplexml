@@ -112,7 +112,7 @@ class DetailScanner implements Detail {
     * 
     * @param type this is the type to scan for various details
     */
-   public DetailScanner(Class type) throws Exception {
+   public DetailScanner(Class type) {
       this.methods = new LinkedList<MethodDetail>();
       this.fields = new LinkedList<FieldDetail>();
       this.labels = type.getDeclaredAnnotations();
@@ -327,7 +327,7 @@ class DetailScanner implements Detail {
     * 
     * @param type this is the type to scan for details
     */
-   private void scan(Class type) throws Exception {
+   private void scan(Class type) {
       methods(type);
       fields(type);
       extract(type);
@@ -341,7 +341,7 @@ class DetailScanner implements Detail {
     * 
     * @param type this is the type to extract the annotations from
     */
-   private void extract(Class type) throws Exception {
+   private void extract(Class type) {
       for(Annotation label : labels) {
          if(label instanceof Namespace) {
             namespace(label);
@@ -369,7 +369,7 @@ class DetailScanner implements Detail {
     * 
     * @param type this is the type to scan for declared annotations
     */
-   private void methods(Class type) throws Exception {
+   private void methods(Class type) {
       Method[] list = type.getDeclaredMethods();
       
       for(Method method : list) {
@@ -386,7 +386,7 @@ class DetailScanner implements Detail {
     * 
     * @param type this is the type to scan for declared annotations
     */
-   private void fields(Class type) throws Exception {
+   private void fields(Class type) {
       Field[] list = type.getDeclaredFields();
       
       for(Field field : list) {

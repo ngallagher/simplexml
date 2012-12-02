@@ -480,7 +480,7 @@ class Formatter {
    /**
     * This is used to determine if the specified character is a text
     * character. If the character specified is not a text value then
-    * this returls true, otherwise this returns false.
+    * this returns true, otherwise this returns false.
     *
     * @param ch this is the character to be evaluated as text
     *
