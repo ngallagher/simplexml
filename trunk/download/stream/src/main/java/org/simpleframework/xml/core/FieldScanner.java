@@ -327,20 +327,56 @@ class FieldScanner extends ContactList {
       return false;
    }
    
+   /**
+    * The <code>FieldKey</code> object is used to create a key that
+    * can store a contact using a field without using the methods
+    * of <code>hashCode</code> and <code>equals</code> on the field
+    * directly, as these can perform poorly on certain platforms.
+    */
    private static class FieldKey {
       
+      /**
+       * This is the class that the field has been declared on.
+       */
       private final Class type;
+      
+      /**
+       * This is the name of the field that this represents.
+       */
       private final String name;
       
+      /**
+       * Constructor of the <code>FieldKey</code> object. This is
+       * used to create an object that can reference something
+       * in a similar manner to a field. 
+       * 
+       * @param field this is the field to create the key with
+       */
       public FieldKey(Field field) {
-         this.type = field.getType();
+         this.type = field.getDeclaringClass();
          this.name = field.getName();
       }
       
+      /**
+       * This is basically the hash code for the field name. Because
+       * field names are unique within a class collisions using 
+       * just the name for the hash code should be infrequent.
+       * 
+       * @return this returns the hash code for this key
+       */
       public int hashCode() {
          return name.hashCode();
       }
       
+      /**
+       * This method is used to compare this key to other keys. The
+       * declaring class and the name of the field are used to test
+       * for equality. If both are the same this returns true.
+       * 
+       * @param value this is the value that is to be compared to
+       * 
+       * @return this returns true if the field values are equal
+       */
       public boolean equals(Object value) {
          if(value instanceof FieldKey) {
             return equals((FieldKey)value);
@@ -348,6 +384,15 @@ class FieldScanner extends ContactList {
          return false;
       }
       
+      /**
+       * This method is used to compare this key to other keys. The
+       * declaring class and the name of the field are used to test
+       * for equality. If both are the same this returns true.
+       * 
+       * @param other this is the value that is to be compared to
+       * 
+       * @return this returns true if the field values are equal
+       */
       private boolean equals(FieldKey other) {
          if(other.type != type) {
             return false;
