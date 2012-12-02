@@ -132,6 +132,9 @@ class TextListLabel extends TemplateLabel {
    public Converter getConverter(Context context) throws Exception {
       Type type = getContact();
       
+      if(!label.isCollection()) {
+         throw new TextException("Cannot use %s to represent %s", type, label);
+      }
       return new TextList(context, type, label);
    }
 
