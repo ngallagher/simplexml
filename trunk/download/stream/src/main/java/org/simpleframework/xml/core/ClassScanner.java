@@ -23,6 +23,7 @@ import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 
+import org.simpleframework.xml.DefaultType;
 import org.simpleframework.xml.Namespace;
 import org.simpleframework.xml.NamespaceList;
 import org.simpleframework.xml.Order;
@@ -271,10 +272,11 @@ class ClassScanner  {
     * @param detail contains the methods and fields to be examined
     */   
    private void scan(Detail detail) throws Exception {
+      DefaultType access = detail.getOverride();
       Class type = detail.getType();
-      
+
       while(type != null) {
-         Detail value = support.getDetail(type);
+         Detail value = support.getDetail(type, access);
 
          namespace(value);
          method(value);
