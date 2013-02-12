@@ -18,6 +18,7 @@
 
 package org.simpleframework.xml.core;
 
+import org.simpleframework.xml.DefaultType;
 import org.simpleframework.xml.util.Cache;
 import org.simpleframework.xml.util.ConcurrentCache;
 
@@ -50,6 +51,11 @@ class DetailExtractor {
    private final Cache<Detail> details;
    
    /**
+    * This is an optional access type for the details created.
+    */
+   private final DefaultType override;
+   
+   /**
     * This contains various support functions for the details.
     */
    private final Support support;
@@ -64,9 +70,24 @@ class DetailExtractor {
     * @param support this contains various support functions
     */
    public DetailExtractor(Support support) {
+      this(support, null);
+   }
+   
+   /**
+    * Constructor for the <code>DetailExtractor</code> object. This
+    * is used to extract various details for a class, such as the
+    * method and field details as well as the annotations used on
+    * the class. The primary purpose for this is to create cachable
+    * values that reduce the amount of reflection required.
+    * 
+    * @param support this contains various support functions
+    * @param override this is the override used for details created
+    */
+   public DetailExtractor(Support support, DefaultType override) {
       this.methods = new ConcurrentCache<ContactList>();
       this.fields = new ConcurrentCache<ContactList>();
       this.details = new ConcurrentCache<Detail>();
+      this.override = override;
       this.support = support;
    }
    
@@ -83,7 +104,7 @@ class DetailExtractor {
       Detail detail = details.fetch(type);
       
       if(detail == null) {
-         detail = new DetailScanner(type);
+         detail = new DetailScanner(type, override);
          details.cache(type, detail);
       }
       return detail;

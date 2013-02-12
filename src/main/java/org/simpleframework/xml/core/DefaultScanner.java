@@ -1,5 +1,5 @@
 /*
- * ObjectScanner.java July 2006
+ * DefaultScanner.java July 2006
  *
  * Copyright (C) 2006, Niall Gallagher <niallg@users.sf.net>
  *
@@ -18,48 +18,33 @@
 
 package org.simpleframework.xml.core;
 
-import java.lang.annotation.Annotation;
+import static org.simpleframework.xml.DefaultType.FIELD;
+
 import java.util.List;
 
-import org.simpleframework.xml.DefaultType;
 import org.simpleframework.xml.Order;
 import org.simpleframework.xml.Version;
 
 /**
- * The <code>ObjectScanner</code> performs the reflective inspection
+ * The <code>DefaultScanner</code> performs the reflective inspection
  * of a class and builds a map of attributes and elements for each
  * annotated field. This acts as a cachable container for reflection
- * actions performed on a specific type. When scanning the provided
- * class this inserts the scanned field as a <code>Label</code> in to
- * a map so that it can be retrieved by name. Annotations classified
- * as attributes have the <code>Attribute</code> annotation, all other
- * annotated fields are stored as elements.
+ * actions performed on a specific type. This specific scanner is 
+ * used to extract fields from a class that is not annotated. Such
+ * a scanner can allow external classes to be serialized without the
+ * need to annotate the serialized type.
  * 
  * @author Niall Gallagher
  * 
+ * @see org.simpleframework.xml.core.ObjectScanner
  * @see org.simpleframework.xml.core.Schema
  */ 
-class ObjectScanner implements Scanner {
-   
-   /**
-    * This is used to store all XML attributes and XML elements.
-    */
-   private StructureBuilder builder;
-   
-   /**
-    * This method acts as a pointer to the types commit process.
-    */
-   private ClassScanner scanner;
-   
-   /**
-    * This defines the structure build from the class annotations.
-    */
-   private Structure structure;
+class DefaultScanner implements Scanner {
    
    /**
     * This object contains various support functions for the class.
     */
-   private Support support;
+   private Scanner scanner;
    
    /**
     * This contains the details for the class that is being scanned.
@@ -67,19 +52,16 @@ class ObjectScanner implements Scanner {
    private Detail detail;
    
    /**
-    * Constructor for the <code>ObjectScanner</code> object. This is 
+    * Constructor for the <code>DefaultScanner</code> object. This is 
     * used to scan the provided class for annotations that are used 
     * to build a schema for an XML file to follow. 
     * 
-    * @param detail this contains the details for the class scanned
+    * @param original this contains the details for the class scanned
     * @param support this contains various support functions
     */
-   public ObjectScanner(Detail detail, Support support) throws Exception {  
-      this.scanner = new ClassScanner(detail, support);
-      this.builder = new StructureBuilder(this, detail, support); 
-      this.support = support;
-      this.detail = detail;
-      this.scan(detail);
+   public DefaultScanner(Detail original, Support support) throws Exception {  
+      this.detail = new DefaultDetail(original, FIELD);
+      this.scanner = new ObjectScanner(detail, support);
    }      
    
    /**
@@ -126,7 +108,7 @@ class ObjectScanner implements Scanner {
     * @return this instantiator responsible for creating instances
     */
    public Instantiator getInstantiator() {
-      return structure.getInstantiator();
+      return scanner.getInstantiator();
    }
 
    /**
@@ -137,7 +119,7 @@ class ObjectScanner implements Scanner {
     * @return this is the type that this creator will represent
     */
    public Class getType() {
-      return detail.getType();
+      return scanner.getType();
    }
    
    /**
@@ -162,7 +144,7 @@ class ObjectScanner implements Scanner {
     * @return this returns a caller used for delivering callbacks
     */
    public Caller getCaller(Context context) {
-      return new Caller(this, context);
+      return scanner.getCaller(context);
    }
 
    /**
@@ -175,7 +157,7 @@ class ObjectScanner implements Scanner {
     * @return this will return a section for serialization
     */
    public Section getSection() {
-      return structure.getSection();
+      return scanner.getSection();
    }
    
    /**
@@ -188,7 +170,7 @@ class ObjectScanner implements Scanner {
     * @return this returns the version of the class that is scanned
     */
    public Version getRevision() {
-      return structure.getRevision();
+      return scanner.getRevision();
    }
    
    /**
@@ -213,7 +195,7 @@ class ObjectScanner implements Scanner {
     * @return this returns the label used for reading the version
     */
    public Label getVersion() {
-      return structure.getVersion();
+      return scanner.getVersion();
    }
    
    /**
@@ -226,7 +208,7 @@ class ObjectScanner implements Scanner {
     * @return this returns the text label for the scanned class
     */
    public Label getText() {
-      return structure.getText();
+      return scanner.getText();
    }
    
    /**
@@ -329,7 +311,7 @@ class ObjectScanner implements Scanner {
     * @return this returns true if no XML annotations were found
     */
    public boolean isPrimitive() {
-      return structure.isPrimitive();
+      return scanner.isPrimitive();
    }
    
    /**
@@ -341,7 +323,7 @@ class ObjectScanner implements Scanner {
     * @return this returns true if no XML annotations were found
     */
    public boolean isEmpty() {
-      return scanner.getRoot() == null;
+      return scanner.isEmpty();
    }
    
    /**
@@ -355,109 +337,6 @@ class ObjectScanner implements Scanner {
     * @return true if strict parsing is enabled, false otherwise
     */ 
    public boolean isStrict() {
-      return detail.isStrict();
-   }
-   
-   /**
-    * This is used to scan the specified object to extract the fields
-    * and methods that are to be used in the serialization process.
-    * This will acquire all fields and getter setter pairs that have
-    * been annotated with the XML annotations.
-    *
-    * @param detail this contains the details for the class scanned
-    */  
-   private void scan(Detail detail) throws Exception {
-      order(detail);
-      field(detail);
-      method(detail);
-      validate(detail);
-      commit(detail);
-   }
-   
-   /**
-    * This is used to acquire the optional order annotation to provide
-    * order to the elements and attributes for the generated XML. This
-    * acts as an override to the order provided by the declaration of
-    * the types within the object.  
-    * 
-    * @param detail this contains the details for the class scanned
-    */
-   private void order(Detail detail) throws Exception {
-      Class type = detail.getType();
-      
-      builder.assemble(type);
-   }
-   
-   /**
-    * Once the scanner has completed extracting the annotations and
-    * validating the resulting structure this is called to complete 
-    * the process. This will build a <code>Structure</code> object and
-    * clean up any data structures no longer required by the scanner.
-    * 
-    * @param detail this contains the details for the class scanned
-    */
-   private void commit(Detail detail) throws Exception {
-      Class type = detail.getType();
-      
-      if(structure == null) {
-         structure = builder.build(type);
-      }
-      builder = null;
-   }
-   
-   /**
-    * This is used to validate the configuration of the scanned class.
-    * If a <code>Text</code> annotation has been used with elements
-    * then validation will fail and an exception will be thrown. 
-    * 
-    * @param detail this contains the details for the class scanned
-    */
-   private void validate(Detail detail) throws Exception {
-      Class type = detail.getType();
-      
-      builder.commit(type);
-      builder.validate(type);
-   }
-  
-   /**
-    * This is used to acquire the contacts for the annotated fields 
-    * within the specified class. The field contacts are added to
-    * either the attributes or elements map depending on annotation.
-    * 
-    * @param detail this contains the details for the class scanned
-    */    
-   private void field(Detail detail) throws Exception {
-      Class type = detail.getType();
-      DefaultType access = detail.getOverride();
-      ContactList list = support.getFields(type, access);
-      
-      for(Contact contact : list) {
-         Annotation label = contact.getAnnotation();
-         
-         if(label != null) {
-            builder.process(contact, label);
-         }
-      }
-   }
-   
-   /**
-    * This is used to acquire the contacts for the annotated fields 
-    * within the specified class. The field contacts are added to
-    * either the attributes or elements map depending on annotation.
-    * 
-    * @param detail this contains the details for the class scanned
-    */ 
-   private void method(Detail detail) throws Exception {
-      Class type = detail.getType();
-      DefaultType access = detail.getOverride();
-      ContactList list = support.getMethods(type, access);
-      
-      for(Contact contact : list) {
-         Annotation label = contact.getAnnotation();
-         
-         if(label != null) {
-            builder.process(contact, label);
-         }
-      }
+      return scanner.isStrict();
    }
 }
