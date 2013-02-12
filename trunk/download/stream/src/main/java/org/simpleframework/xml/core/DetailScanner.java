@@ -70,6 +70,11 @@ class DetailScanner implements Detail {
    private Annotation[] labels;
    
    /**
+    * This represents the access type override declared or the type.
+    */
+   private DefaultType override;
+   
+   /**
     * This represents the default access type declared or the type.
     */
    private DefaultType access;
@@ -113,9 +118,23 @@ class DetailScanner implements Detail {
     * @param type this is the type to scan for various details
     */
    public DetailScanner(Class type) {
+      this(type, null);
+   }
+   
+   /**
+    * Constructor for the <code>DetailScanner</code> object. This is
+    * used to create a detail object from a type. All of the methods
+    * fields and annotations are extracted so that they can be used
+    * many times over without the need to process them again.
+    * 
+    * @param type this is the type to scan for various details
+    * @param override this is the override used for this detail
+    */
+   public DetailScanner(Class type, DefaultType override) {
       this.methods = new LinkedList<MethodDetail>();
       this.fields = new LinkedList<FieldDetail>();
       this.labels = type.getDeclaredAnnotations();
+      this.override = override;
       this.strict = true;
       this.type = type;
       this.scan(type);
@@ -224,6 +243,19 @@ class DetailScanner implements Detail {
    }
    
    /**
+    * This returns the <code>DefaultType</code> override used for this
+    * detail. An override is used only when the class contains no
+    * annotations and does not have a <code>Transform</code> of any 
+    * type associated with it. It allows serialization of external
+    * objects without the need to annotate the types.
+    * 
+    * @return this returns the  access type override for this type
+    */
+   public DefaultType getOverride() {
+      return override;
+   }
+   
+   /**
     * This returns the <code>Default</code> annotation access type
     * that has been specified by this. If no default annotation has
     * been declared on the type then this will return null.
@@ -231,6 +263,9 @@ class DetailScanner implements Detail {
     * @return this returns the default access type for this type
     */
    public DefaultType getAccess() {
+      if(override != null) {
+         return override;
+      }
       return access;
    }
    

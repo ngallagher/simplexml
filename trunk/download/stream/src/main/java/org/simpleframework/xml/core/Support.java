@@ -18,9 +18,14 @@
 
 package org.simpleframework.xml.core;
 
-import java.lang.annotation.Annotation;
-import java.util.List;
+import static org.simpleframework.xml.DefaultType.FIELD;
 
+import java.lang.annotation.Annotation;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+
+import org.simpleframework.xml.DefaultType;
 import org.simpleframework.xml.filter.Filter;
 import org.simpleframework.xml.filter.PlatformFilter;
 import org.simpleframework.xml.strategy.Value;
@@ -52,6 +57,11 @@ class Support implements Filter {
     * This will perform the scanning of types are provide scanners.
     */
    private final ScannerFactory scanners;
+   
+   /**
+    * This is used to extract the defaults for a specific class.
+    */
+   private final DetailExtractor defaults;
    
    /**
     * This is used to extract the details for a specific class.
@@ -129,6 +139,7 @@ class Support implements Filter {
     * @param format this contains all the formatting for the XML
     */
    public Support(Filter filter, Matcher matcher, Format format) {
+      this.defaults = new DetailExtractor(this, FIELD);
       this.transform = new Transformer(matcher);
       this.scanners = new ScannerFactory(this);
       this.details = new DetailExtractor(this);
@@ -257,6 +268,13 @@ class Support implements Filter {
     * @return an object describing the type and its annotations
     */
    public Detail getDetail(Class type) {
+      return getDetail(type, null);
+   }
+   
+   public Detail getDetail(Class type, DefaultType access) {
+      if(access != null) {
+         return defaults.getDetail(type);   
+      }
       return details.getDetail(type);
    }
    
@@ -271,6 +289,24 @@ class Support implements Filter {
     * @return this returns a list of the annotated fields
     */
    public ContactList getFields(Class type) throws Exception {
+      return getFields(type, null);
+   }
+   
+   /**
+    * This is used to acquire a list of <code>Contact</code> objects
+    * that represent the annotated fields in a type. The entire
+    * class hierarchy is scanned for annotated fields. Caching of
+    * the contact list is done to increase performance.
+    * 
+    * @param type this is the type to scan for annotated fields
+    * @param access this is the access type to use for the fields
+    * 
+    * @return this returns a list of the annotated fields
+    */
+   public ContactList getFields(Class type, DefaultType access) throws Exception {
+      if(access != null) {
+         return defaults.getFields(type);
+      }
       return details.getFields(type);
    }
    
@@ -285,6 +321,24 @@ class Support implements Filter {
     * @return this returns a list of the annotated methods
     */
    public ContactList getMethods(Class type) throws Exception {
+      return getMethods(type, null);
+   }
+   
+   /**
+    * This is used to acquire a list of <code>Contact</code> objects
+    * that represent the annotated methods in a type. The entire
+    * class hierarchy is scanned for annotated methods. Caching of
+    * the contact list is done to increase performance.
+    * 
+    * @param type this is the type to scan for annotated methods
+    * @param access this is the access type used for the methods
+    * 
+    * @return this returns a list of the annotated methods
+    */
+   public ContactList getMethods(Class type, DefaultType access) throws Exception {
+      if(access != null) {
+         return defaults.getMethods(type);
+      }
       return details.getMethods(type);
    }
    
@@ -429,6 +483,27 @@ class Support implements Filter {
          return true;
       }
       return transform.valid(type);
+   }
+   
+   /**
+    * This is used to determine if the type in question is a container
+    * of some kind. A container is a Java collection object of an 
+    * array of objects. Containers are treated as special objects in
+    * the case of default serialization as we do not want to apply
+    * default annotations when we can use them to better effect. 
+    * 
+    * @param type this is the type to determine if it is a container
+    * 
+    * @return this returns true if the type represents a container
+    */
+   public boolean isContainer(Class type) {
+      if(Collection.class.isAssignableFrom(type)) {
+         return true;
+      }
+      if(Map.class.isAssignableFrom(type)) {
+         return true;
+      }
+      return type.isArray();
    }
    
    /**

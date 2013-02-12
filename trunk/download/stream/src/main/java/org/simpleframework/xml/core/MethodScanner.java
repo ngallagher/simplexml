@@ -115,11 +115,12 @@ class MethodScanner extends ContactList {
     * @param detail this contains the details for the class scanned
     */
    private void scan(Detail detail) throws Exception {
+      DefaultType override = detail.getOverride();
       DefaultType access = detail.getAccess();
       Class base = detail.getSuper();
 
       if(base != null) {
-         extend(base);
+         extend(base, override);
       }
       extract(detail, access);
       extract(detail);
@@ -134,9 +135,10 @@ class MethodScanner extends ContactList {
     * this improves the performance of classes within a hierarchy.
     * 
     * @param base the class to inherit scanned fields from
+    * @param access this is the access type used for the super type
     */
-   private void extend(Class base) throws Exception {
-      ContactList list = support.getMethods(base);
+   private void extend(Class base, DefaultType access) throws Exception {
+      ContactList list = support.getMethods(base, access);
       
       for(Contact contact : list) {
          process((MethodContact)contact);

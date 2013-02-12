@@ -79,6 +79,10 @@ class ScannerFactory {
             schema = new PrimitiveScanner(detail);
          } else {
             schema = new ObjectScanner(detail, support);
+            
+            if(schema.isPrimitive() && !support.isContainer(type)) {
+               schema = new DefaultScanner(detail, support);
+            }
          }
          cache.cache(type, schema);
       }

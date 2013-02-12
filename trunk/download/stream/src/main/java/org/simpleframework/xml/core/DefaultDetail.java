@@ -1,5 +1,5 @@
 /*
- * Detail.java July 2012
+ * DefaultDetail.java December 2012
  *
  * Copyright (C) 2012, Niall Gallagher <niallg@users.sf.net>
  *
@@ -29,18 +29,39 @@ import org.simpleframework.xml.Order;
 import org.simpleframework.xml.Root;
 
 /**
- * The <code>Detail</code> object is used to provide various details
- * for a type. Most of the data that can be acquired from this can
- * also be acquired from the <code>Class</code>. However, in some
- * environments, particularly Android, reflection and introspection
- * is very slow. This class attempts to reduce the overheads by 
- * caching all the data extracted from the class for future use.
+ * This <code>DefaultDetail</code> object is used to create a detail
+ * object that contains a default access override. Default overrides
+ * can be used to scan a class with no annotations and treat it as if
+ * it was annotated with the <code>Default</code> annotation. This 
+ * allows external classes to be serialized without modification.
  * 
  * @author Niall Gallagher
- * 
- * @see org.simpleframework.xml.core.Support
  */
-interface Detail {
+class DefaultDetail implements Detail {
+
+   /**
+    * This is the default access type to be used with this detail.
+    */
+   private final DefaultType access;
+   
+   /**
+    * This is the original detail object that is to be delegated to.
+    */
+   private final Detail detail;
+
+   /**
+    * Constructor for the <code>DefaultDetail</code> object. This is
+    * used to create a description of a class and also provide a
+    * default access override type. This is used when we want to scan
+    * a class with no annotations and extract default details.
+    * 
+    * @param detail this is the detail that is delegated to
+    * @param access this is the access type override used
+    */
+   public DefaultDetail(Detail detail, DefaultType access) {
+      this.detail = detail;
+      this.access = access;
+   }
    
    /**
     * This method is used to determine whether strict mappings are
@@ -52,7 +73,9 @@ interface Detail {
     *
     * @return true if strict parsing is enabled, false otherwise
     */ 
-   boolean isStrict();
+   public boolean isStrict() {
+      return detail.isStrict();
+   }
    
    /**
     * This is used to determine if the generated annotations are
@@ -62,7 +85,9 @@ interface Detail {
     * 
     * @return this is used to determine if defaults are required
     */
-   boolean isRequired();
+   public boolean isRequired() {
+      return detail.isRequired();
+   }
    
    /**
     * This is used to determine if the class is an inner class. If
@@ -72,7 +97,9 @@ interface Detail {
     * 
     * @return this returns true if the class is a static inner
     */
-   boolean isInstantiable();
+   public boolean isInstantiable() {
+      return detail.isInstantiable();
+   }
    
    /**
     * This is used to determine whether this detail represents a
@@ -81,7 +108,9 @@ interface Detail {
     * 
     * @return this returns true if no XML annotations were found
     */
-   boolean isPrimitive();
+   public boolean isPrimitive() {
+      return detail.isPrimitive();
+   }
    
    /**
     * This is used to acquire the super type for the class that is
@@ -90,7 +119,9 @@ interface Detail {
     * 
     * @return returns the super type for this class or null
     */
-   Class getSuper();
+   public Class getSuper() {
+      return detail.getSuper();
+   }
    
    /**
     * This returns the type represented by this detail. The type is
@@ -99,7 +130,9 @@ interface Detail {
     * 
     * @return the type that this detail object represents
     */
-   Class getType();
+   public Class getType() {
+      return detail.getType();
+   }
    
    /**
     * This returns the name of the class represented by this detail.
@@ -110,7 +143,9 @@ interface Detail {
     * 
     * @return this returns the name of the object being scanned
     */
-   String getName();
+   public String getName() {
+      return detail.getName();
+   }
    
    /**
     * This returns the <code>Root</code> annotation for the class.
@@ -119,7 +154,9 @@ interface Detail {
     * 
     * @return this returns the name of the object being scanned
     */
-   Root getRoot();
+   public Root getRoot() {
+      return detail.getRoot();
+   }
    
    /**
     * This returns the order annotation used to determine the order
@@ -130,7 +167,9 @@ interface Detail {
     * 
     * @return this returns the name of the object being scanned
     */
-   Order getOrder();
+   public Order getOrder() {
+      return detail.getOrder();
+   }
    
    /**
     * This returns the <code>Default</code> annotation access type
@@ -139,18 +178,20 @@ interface Detail {
     * 
     * @return this returns the default access type for this type
     */
-   DefaultType getAccess();
+   public DefaultType getAccess() {
+      return detail.getAccess();
+   }
    
    /**
-    * This returns the <code>DefaultType</code> override used for this
-    * detail. An override is used only when the class contains no
-    * annotations and does not have a <code>Transform</code> of any 
-    * type associated with it. It allows serialization of external
-    * objects without the need to annotate the types.
+    * This returns the <code>Default</code> annotation access type
+    * that has been specified by this. If no default annotation has
+    * been declared on the type then this will return null.
     * 
-    * @return this returns the  access type override for this type
+    * @return this returns the default access type for this type
     */
-   DefaultType getOverride();
+   public DefaultType getOverride() {
+      return access;
+   }
    
    /**
     * This returns the <code>Namespace</code> annotation that was
@@ -159,7 +200,9 @@ interface Detail {
     * 
     * @return this returns the namespace this type belongs to, if any
     */
-   Namespace getNamespace();
+   public Namespace getNamespace() {
+      return detail.getNamespace();
+   }
    
    /**
     * This returns the <code>NamespaceList</code> annotation that was
@@ -169,7 +212,9 @@ interface Detail {
     * 
     * @return this returns the namespace declarations, if any
     */
-   NamespaceList getNamespaceList();
+   public NamespaceList getNamespaceList() {
+      return detail.getNamespaceList();
+   }
    
    /**
     * This returns a list of the methods that belong to this type. 
@@ -178,7 +223,9 @@ interface Detail {
     * 
     * @return returns the list of methods declared for the type
     */
-   List<MethodDetail> getMethods();
+   public List<MethodDetail> getMethods() {
+      return detail.getMethods();
+   }
    
    /**
     * This returns a list of the fields that belong to this type. 
@@ -187,7 +234,9 @@ interface Detail {
     * 
     * @return returns the list of fields declared for the type
     */
-   List<FieldDetail> getFields();
+   public List<FieldDetail> getFields() {
+      return detail.getFields();
+   }
    
    /**
     * This returns the annotations that have been declared for this
@@ -197,7 +246,9 @@ interface Detail {
     * 
     * @return this returns the annotations associated with this
     */
-   Annotation[] getAnnotations();
+   public Annotation[] getAnnotations() {
+      return detail.getAnnotations();
+   }
    
    /**
     * This returns the constructors that have been declared for this
@@ -207,5 +258,7 @@ interface Detail {
     * 
     * @return this returns the constructors associated with this
     */
-   Constructor[] getConstructors();
+   public Constructor[] getConstructors() {
+      return detail.getConstructors();
+   }
 }
