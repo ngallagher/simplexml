@@ -18,7 +18,7 @@
 
 package org.simpleframework.xml.core;
 
-import static org.simpleframework.xml.stream.Verbosity.HIGH;
+import static org.simpleframework.xml.stream.Verbosity.LOW;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Proxy;
@@ -85,7 +85,7 @@ class AnnotationFactory {
       ClassLoader loader = getClassLoader();
       
       if(Map.class.isAssignableFrom(type)) {
-         if(isPrimitiveKey(dependents) && !isVerbose(format)) { 
+         if(isPrimitiveKey(dependents) && isAttribute()) { 
             return getInstance(loader, ElementMap.class, true);
          }
          return getInstance(loader, ElementMap.class);
@@ -117,7 +117,7 @@ class AnnotationFactory {
          }
          return getInstance(loader, ElementArray.class);
       }
-      if(type.isPrimitive() && !isVerbose(format)) {
+      if(type.isPrimitive() && isAttribute()) {
          return getInstance(loader, Attribute.class);
       }
       return getInstance(loader, Element.class);
@@ -165,24 +165,6 @@ class AnnotationFactory {
     */
    private ClassLoader getClassLoader() throws Exception {
       return AnnotationFactory.class.getClassLoader();
-   }
-   
-   /**
-    * This is used to determine whether the format for the current
-    * serialization is verbose or not. The verbosity dictates the
-    * type of default annotations that are generated for an object.
-    * 
-    * @param format the format that is used for serialization
-    * 
-    * @return this is used to determine the verbosity to use
-    */
-   private boolean isVerbose(Format format) {
-      Verbosity verbosity = format.getVerbosity();
-      
-      if(verbosity != null) {
-         return verbosity == HIGH;
-      }
-      return true;
    }
    
    /**
@@ -245,5 +227,21 @@ class AnnotationFactory {
          return true;
       }
       return type.isPrimitive();
+   }
+   
+   /**
+    * This is used to determine whether the format for the current
+    * serialization is verbose or not. The verbosity dictates the
+    * type of default annotations that are generated for an object.
+    * 
+    * @return this is used to determine the verbosity to use
+    */
+   private boolean isAttribute() {
+      Verbosity verbosity = format.getVerbosity();
+      
+      if(verbosity != null) {
+         return verbosity == LOW;
+      }
+      return false;
    }
 }
