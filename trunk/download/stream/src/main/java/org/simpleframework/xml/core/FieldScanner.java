@@ -74,7 +74,7 @@ class FieldScanner extends ContactList {
     * @param support this contains various support functions
     */
    public FieldScanner(Detail detail, Support support) throws Exception {
-      this.factory = new AnnotationFactory(detail);
+      this.factory = new AnnotationFactory(detail, support);
       this.done = new ContactMap();
       this.support = support;
       this.scan(detail);
@@ -221,7 +221,8 @@ class FieldScanner extends ContactList {
     * @param list this is the list of annotations on the field
     */
    private void process(Field field, Class type, Annotation[] list) throws Exception {
-      Annotation label = factory.getInstance(type);
+      Class[] dependents = Reflector.getDependents(field);
+      Annotation label = factory.getInstance(type, dependents);
       
       if(label != null) {
          process(field, label, list);

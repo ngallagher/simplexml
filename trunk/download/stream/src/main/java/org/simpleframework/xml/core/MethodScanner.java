@@ -98,7 +98,7 @@ class MethodScanner extends ContactList {
     * @param support this contains various support functions
     */
    public MethodScanner(Detail detail, Support support) throws Exception {
-      this.factory = new MethodPartFactory(detail);
+      this.factory = new MethodPartFactory(detail, support);
       this.write = new PartMap();
       this.read = new PartMap();
       this.support = support;

@@ -53,9 +53,10 @@ class MethodPartFactory {
     * either set or get values depending on its type.
     * 
     * @param detail this contains details for the annotated class
+    * @param support this contains various support functions
     */
-   public MethodPartFactory(Detail detail) {
-      this.factory = new AnnotationFactory(detail);
+   public MethodPartFactory(Detail detail, Support support) {
+      this.factory = new AnnotationFactory(detail, support);
    }
    
    /**
@@ -172,10 +173,36 @@ class MethodPartFactory {
     * @return an XML annotation or null if the method is not suitable
     */
    private Annotation getAnnotation(Method method) throws Exception {
+      Class[] dependents = getDependents(method);
       Class type = getType(method);
       
       if(type != null) {
-         return factory.getInstance(type);
+         return factory.getInstance(type, dependents);
+      }
+      return null;
+   }
+   
+   /**
+    * This is used extract the dependents of the method. Extracting
+    * the dependents in this way ensures that they can be used when
+    * creating a default annotation. Any default annotation can then
+    * create the optimal attributes for the method it represents.
+    * 
+    * @param method this is the method to acquire the dependents for
+    * 
+    * @return this returns the dependents for the method
+    */
+   private Class[] getDependents(Method method) throws Exception {
+      MethodType type = getMethodType(method);
+      
+      if(type == MethodType.SET) {
+         return Reflector.getParameterDependents(method, 0);
+      }
+      if(type == MethodType.GET) {
+         return Reflector.getReturnDependents(method);
+      }
+      if(type == MethodType.IS) {
+         return Reflector.getReturnDependents(method);
       }
       return null;
    }

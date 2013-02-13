@@ -49,6 +49,11 @@ class AnnotationHandler implements InvocationHandler {
    private static final String REQUIRED = "required";
    
    /**
+    * This is used to determine if a key should be an attribute.
+    */
+   private static final String ATTRIBUTE = "attribute";
+   
+   /**
     * This is used to perform a comparison of the annotations.
     */
    private static final String EQUAL = "equals";
@@ -62,6 +67,11 @@ class AnnotationHandler implements InvocationHandler {
     * This is annotation type associated with this handler. 
     */
    private final Class type;
+   
+   /**
+    * This determines if a map should have a key attribute.
+    */
+   private final boolean attribute;
    
    /**
     * This is used to determine if the annotation is required.
@@ -89,7 +99,21 @@ class AnnotationHandler implements InvocationHandler {
     * @param required this is used to determine if its required
     */
    public AnnotationHandler(Class type, boolean required) {
+      this(type, required, false);
+   }
+   
+   /**
+    * Constructor for the <code>AnnotationHandler</code> object. This 
+    * is used to create a handler for invocations on a synthetic 
+    * annotation. The annotation type wrapped must be provided.
+    * 
+    * @param type this is the annotation type that this is wrapping
+    * @param required this is used to determine if its required
+    * @param attribute determines if map keys are attributes
+    */
+   public AnnotationHandler(Class type, boolean required, boolean attribute) {
       this.comparer = new Comparer();
+      this.attribute = attribute;
       this.required = required;
       this.type = type;
    }
@@ -121,6 +145,9 @@ class AnnotationHandler implements InvocationHandler {
       }
       if(name.equals(REQUIRED)) {
          return required;
+      }
+      if(name.equals(ATTRIBUTE)) {
+         return attribute;
       }
       return method.getDefaultValue();
    }
