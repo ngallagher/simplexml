@@ -253,6 +253,9 @@ class AnnotationHandler implements InvocationHandler {
       if(name.equals(REQUIRED)) {
          return required;
       }
+      if(name.equals(ATTRIBUTE)) {
+         return attribute;
+      }
       return method.getDefaultValue();
    }
 }
