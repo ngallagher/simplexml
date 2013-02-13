@@ -27,6 +27,7 @@ public class FieldScannerDefaultTest extends TestCase {
       private Date date;
       private Locale locale;
       private int[] array;
+      private String[] strings;
       private List<String> list;
       private Map<String, String> map;
    }
@@ -87,7 +88,8 @@ public class FieldScannerDefaultTest extends TestCase {
       assertEquals(Element.class, map.get("value").getAnnotation().annotationType());
       assertEquals(Element.class, map.get("date").getAnnotation().annotationType());
       assertEquals(Element.class, map.get("locale").getAnnotation().annotationType());
-      assertEquals(ElementArray.class, map.get("array").getAnnotation().annotationType());
+      assertEquals(Element.class, map.get("array").getAnnotation().annotationType());
+      assertEquals(ElementArray.class, map.get("strings").getAnnotation().annotationType());
       assertEquals(ElementList.class, map.get("list").getAnnotation().annotationType());
       assertEquals(ElementMap.class, map.get("map").getAnnotation().annotationType());
       
@@ -95,7 +97,8 @@ public class FieldScannerDefaultTest extends TestCase {
       assertEquals(Element.class, map.get("value").getAnnotation(Element.class).annotationType());
       assertEquals(Element.class, map.get("date").getAnnotation(Element.class).annotationType());
       assertEquals(Element.class, map.get("locale").getAnnotation(Element.class).annotationType());
-      assertEquals(ElementArray.class, map.get("array").getAnnotation(ElementArray.class).annotationType());
+      assertEquals(Element.class, map.get("array").getAnnotation(Element.class).annotationType());
+      assertEquals(ElementArray.class, map.get("strings").getAnnotation(ElementArray.class).annotationType());
       assertEquals(ElementList.class, map.get("list").getAnnotation(ElementList.class).annotationType());
       assertEquals(ElementMap.class, map.get("map").getAnnotation(ElementMap.class).annotationType());
       
@@ -104,6 +107,7 @@ public class FieldScannerDefaultTest extends TestCase {
       assertNull(map.get("date").getAnnotation(Root.class));
       assertNull(map.get("locale").getAnnotation(Root.class));
       assertNull(map.get("array").getAnnotation(Root.class));
+      assertNull(map.get("strings").getAnnotation(Root.class));
       assertNull(map.get("list").getAnnotation(Root.class));
       assertNull(map.get("map").getAnnotation(Root.class));
    }

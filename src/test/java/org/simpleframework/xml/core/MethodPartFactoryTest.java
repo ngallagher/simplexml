@@ -25,13 +25,13 @@ public class MethodPartFactoryTest extends TestCase {
    }
 
    public void testMethodPart() throws Exception {
-      assertTrue(Element.class.isAssignableFrom(new MethodPartFactory(new DetailScanner(MethodPartFactoryTest.class)).getInstance(Bean.class.getMethod("getInteger"), new Annotation[0]).getAnnotation().getClass()));
-      assertTrue(Element.class.isAssignableFrom(new MethodPartFactory(new DetailScanner(MethodPartFactoryTest.class)).getInstance(Bean.class.getMethod("setInteger", int.class), new Annotation[0]).getAnnotation().getClass()));
-      assertTrue(ElementMap.class.isAssignableFrom(new MethodPartFactory(new DetailScanner(MethodPartFactoryTest.class)).getInstance(Bean.class.getMethod("getMap"), new Annotation[0]).getAnnotation().getClass()));
-      assertTrue(ElementMap.class.isAssignableFrom(new MethodPartFactory(new DetailScanner(MethodPartFactoryTest.class)).getInstance(Bean.class.getMethod("setMap", Map.class), new Annotation[0]).getAnnotation().getClass()));
-      assertTrue(ElementList.class.isAssignableFrom(new MethodPartFactory(new DetailScanner(MethodPartFactoryTest.class)).getInstance(Bean.class.getMethod("getList"), new Annotation[0]).getAnnotation().getClass()));
-      assertTrue(ElementList.class.isAssignableFrom(new MethodPartFactory(new DetailScanner(MethodPartFactoryTest.class)).getInstance(Bean.class.getMethod("setList", List.class), new Annotation[0]).getAnnotation().getClass()));
-      assertTrue(ElementArray.class.isAssignableFrom(new MethodPartFactory(new DetailScanner(MethodPartFactoryTest.class)).getInstance(Bean.class.getMethod("getArray"), new Annotation[0]).getAnnotation().getClass()));
-      assertTrue(ElementArray.class.isAssignableFrom(new MethodPartFactory(new DetailScanner(MethodPartFactoryTest.class)).getInstance(Bean.class.getMethod("setArray", String[].class), new Annotation[0]).getAnnotation().getClass()));
+      assertTrue(Element.class.isAssignableFrom(new MethodPartFactory(new DetailScanner(MethodPartFactoryTest.class), new Support()).getInstance(Bean.class.getMethod("getInteger"), new Annotation[0]).getAnnotation().getClass()));
+      assertTrue(Element.class.isAssignableFrom(new MethodPartFactory(new DetailScanner(MethodPartFactoryTest.class), new Support()).getInstance(Bean.class.getMethod("setInteger", int.class), new Annotation[0]).getAnnotation().getClass()));
+      assertTrue(ElementMap.class.isAssignableFrom(new MethodPartFactory(new DetailScanner(MethodPartFactoryTest.class), new Support()).getInstance(Bean.class.getMethod("getMap"), new Annotation[0]).getAnnotation().getClass()));
+      assertTrue(ElementMap.class.isAssignableFrom(new MethodPartFactory(new DetailScanner(MethodPartFactoryTest.class), new Support()).getInstance(Bean.class.getMethod("setMap", Map.class), new Annotation[0]).getAnnotation().getClass()));
+      assertTrue(ElementList.class.isAssignableFrom(new MethodPartFactory(new DetailScanner(MethodPartFactoryTest.class), new Support()).getInstance(Bean.class.getMethod("getList"), new Annotation[0]).getAnnotation().getClass()));
+      assertTrue(ElementList.class.isAssignableFrom(new MethodPartFactory(new DetailScanner(MethodPartFactoryTest.class), new Support()).getInstance(Bean.class.getMethod("setList", List.class), new Annotation[0]).getAnnotation().getClass()));
+      assertTrue(ElementArray.class.isAssignableFrom(new MethodPartFactory(new DetailScanner(MethodPartFactoryTest.class), new Support()).getInstance(Bean.class.getMethod("getArray"), new Annotation[0]).getAnnotation().getClass()));
+      assertTrue(ElementArray.class.isAssignableFrom(new MethodPartFactory(new DetailScanner(MethodPartFactoryTest.class), new Support()).getInstance(Bean.class.getMethod("setArray", String[].class), new Annotation[0]).getAnnotation().getClass()));
    }
 }
