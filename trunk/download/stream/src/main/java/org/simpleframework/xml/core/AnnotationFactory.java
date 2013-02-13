@@ -149,7 +149,7 @@ class AnnotationFactory {
     * @return this returns the synthetic annotation to be used
     */
    private Annotation getInstance(ClassLoader loader, Class label, boolean attribute) throws Exception {
-      AnnotationHandler handler = new AnnotationHandler(label, required);
+      AnnotationHandler handler = new AnnotationHandler(label, required, attribute);
       Class[] list = new Class[] {label};
       
       return (Annotation) Proxy.newProxyInstance(loader, list, handler);
