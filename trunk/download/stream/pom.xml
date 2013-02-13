@@ -3,7 +3,7 @@
   <groupId>org.simpleframework</groupId>
   <artifactId>simple-xml</artifactId>
   <packaging>jar</packaging>
-  <version>2.6.9</version>
+  <version>2.7</version>
   <name>Simple XML</name>
   <url>http://simple.sourceforge.net</url>
   <description>Simple is a high performance XML serialization and configuration framework for Java</description>
@@ -15,9 +15,9 @@
     </license>
   </licenses>
   <scm>
-    <url>http://simple.svn.sourceforge.net/viewvc/simple/tags/simple-xml-2.6.8</url>
-    <developerConnection>scm:svn:https://simple.svn.sourceforge.net/svnroot/simple/tags/simple-xml-2.6.8</developerConnection>
-    <connection>scm:svn:https://simple.svn.sourceforge.net/svnroot/simple/tags/simple-xml-2.6.8</connection>
+    <url>http://simple.svn.sourceforge.net/viewvc/simple/tags/simple-xml-2.7</url>
+    <developerConnection>scm:svn:https://simple.svn.sourceforge.net/svnroot/simple/tags/simple-xml-2.7</developerConnection>
+    <connection>scm:svn:https://simple.svn.sourceforge.net/svnroot/simple/tags/simple-xml-2.7</connection>
   </scm>
   <developers>
     <developer>
