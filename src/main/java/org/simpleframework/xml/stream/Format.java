@@ -18,6 +18,8 @@
 
 package org.simpleframework.xml.stream;
 
+import static org.simpleframework.xml.stream.Verbosity.HIGH;
+
 /**
  * The <code>Format</code> object is used to provide information on 
  * how a generated XML document should be structured. The information
@@ -35,19 +37,24 @@ package org.simpleframework.xml.stream;
 public class Format {
 
    /**
+    * This is used to determine the verbosity preference of XML.
+    */
+   private final Verbosity verbosity;
+   
+   /**
     * Represents the prolog that appears in the generated XML.
     */         
-   private String prolog;
+   private final String prolog;
    
    /**
     * This is the style that is used internally by the format.
     */
-   private Style style;
+   private final Style style;
          
    /**
     * Represents the indent size to use for the generated XML.
     */ 
-   private int indent;        
+   private final int indent;        
 
    /**
     * Constructor for the <code>Format</code> object. This creates an
@@ -101,10 +108,48 @@ public class Format {
     * the XML document. This constructor uses the specified style
     * to style the attributes and elements of the XML document.
     * 
+    * @param verbosity this indicates the verbosity of the format 
+    */    
+   public Format(Verbosity verbosity) {
+      this(3, verbosity);         
+   }
+   
+   /**
+    * Constructor for the <code>Format</code> object. This creates an
+    * object that is used to describe how the formatter should create
+    * the XML document. This constructor uses the specified style
+    * to style the attributes and elements of the XML document.
+    * 
+    * @param indent this is the number of spaces used in the indent
+    * @param verbosity this indicates the verbosity of the format 
+    */    
+   public Format(int indent, Verbosity verbosity) {
+      this(3, null, new IdentityStyle(), verbosity);         
+   }
+   
+   /**
+    * Constructor for the <code>Format</code> object. This creates an
+    * object that is used to describe how the formatter should create
+    * the XML document. This constructor uses the specified style
+    * to style the attributes and elements of the XML document.
+    * 
     * @param style this is the style to apply to the format object
     */    
-   public Format(Style  style) {
-      this(3, null, style);         
+   public Format(Style style) {
+      this(3, style);         
+   }
+   
+   /**
+    * Constructor for the <code>Format</code> object. This creates an
+    * object that is used to describe how the formatter should create
+    * the XML document. This constructor uses the specified style
+    * to style the attributes and elements of the XML document.
+    * 
+    * @param style this is the style to apply to the format object
+    * @param verbosity this indicates the verbosity of the format 
+    */    
+   public Format(Style style, Verbosity verbosity) {
+      this(3, style, verbosity);         
    }
    
    /**
@@ -116,8 +161,22 @@ public class Format {
     * @param indent this is the number of spaces used in the indent
     * @param style this is the style to apply to the format object
     */    
-   public Format(int indent, Style  style) {
+   public Format(int indent, Style style) {
       this(indent, null, style);  
+   }
+   
+   /**
+    * Constructor for the <code>Format</code> object. This creates an
+    * object that is used to describe how the formatter should create
+    * the XML document. This constructor uses the specified indent
+    * size and the style provided to style the XML document.
+    *
+    * @param indent this is the number of spaces used in the indent
+    * @param style this is the style to apply to the format object
+    * @param verbosity this indicates the verbosity of the format  
+    */    
+   public Format(int indent, Style style, Verbosity verbosity) {
+      this(indent, null, style, verbosity);  
    }
    
    /**
@@ -131,6 +190,22 @@ public class Format {
     * @param style this is the style to apply to the format object
     */    
    public Format(int indent, String prolog, Style style) {
+     this(indent, prolog, style, HIGH); 
+   }
+   
+   /**
+    * Constructor for the <code>Format</code> object. This creates an
+    * object that is used to describe how the formatter should create
+    * the XML document. This constructor uses the specified indent
+    * size and the text to use in the generated prolog.
+    *
+    * @param indent this is the number of spaces used in the indent
+    * @param prolog this is the prolog for the generated XML document
+    * @param style this is the style to apply to the format object
+    * @param verbosity this indicates the verbosity of the format
+    */    
+   public Format(int indent, String prolog, Style style, Verbosity verbosity) {
+      this.verbosity = verbosity;
       this.prolog = prolog;           
       this.indent = indent;       
       this.style = style;
@@ -169,5 +244,17 @@ public class Format {
     */
    public Style getStyle() {
       return style;
+   }
+   
+   /**
+    * This method is used to indicate the preference of verbosity
+    * for the resulting XML. This is typically used when default
+    * serialization is used. It ensures that the various types
+    * that are serialized are of either high or low verbosity.
+    * 
+    * @return this returns the verbosity preference for the XML
+    */
+   public Verbosity getVerbosity() {
+      return verbosity;
    }
 }
