@@ -19,17 +19,17 @@ import org.simpleframework.xml.ElementMap;
 public class AnnotationProviderTest extends TestCase {
    
    public void testProvider() throws Exception {
-      assertTrue(ElementMap.class.isAssignableFrom(new AnnotationFactory(new DetailScanner(AnnotationProviderTest.class)).getInstance(Map.class).getClass()));
-      assertTrue(ElementMap.class.isAssignableFrom(new AnnotationFactory(new DetailScanner(AnnotationProviderTest.class)).getInstance(HashMap.class).getClass()));
-      assertTrue(ElementMap.class.isAssignableFrom(new AnnotationFactory(new DetailScanner(AnnotationProviderTest.class)).getInstance(ConcurrentHashMap.class).getClass()));
-      assertTrue(ElementMap.class.isAssignableFrom(new AnnotationFactory(new DetailScanner(AnnotationProviderTest.class)).getInstance(LinkedHashMap.class).getClass()));
-      assertTrue(ElementMap.class.isAssignableFrom(new AnnotationFactory(new DetailScanner(AnnotationProviderTest.class)).getInstance(Map.class).getClass()));
-      assertTrue(ElementList.class.isAssignableFrom(new AnnotationFactory(new DetailScanner(AnnotationProviderTest.class)).getInstance(Set.class).getClass()));
-      assertTrue(ElementList.class.isAssignableFrom(new AnnotationFactory(new DetailScanner(AnnotationProviderTest.class)).getInstance(Collection.class).getClass()));
-      assertTrue(ElementList.class.isAssignableFrom(new AnnotationFactory(new DetailScanner(AnnotationProviderTest.class)).getInstance(List.class).getClass()));
-      assertTrue(ElementList.class.isAssignableFrom(new AnnotationFactory(new DetailScanner(AnnotationProviderTest.class)).getInstance(TreeSet.class).getClass()));
-      assertTrue(ElementList.class.isAssignableFrom(new AnnotationFactory(new DetailScanner(AnnotationProviderTest.class)).getInstance(HashSet.class).getClass()));
-      assertTrue(ElementList.class.isAssignableFrom(new AnnotationFactory(new DetailScanner(AnnotationProviderTest.class)).getInstance(ArrayList.class).getClass()));
+      assertTrue(ElementMap.class.isAssignableFrom(new AnnotationFactory(new DetailScanner(AnnotationProviderTest.class), new Support()).getInstance(Map.class, null).getClass()));
+      assertTrue(ElementMap.class.isAssignableFrom(new AnnotationFactory(new DetailScanner(AnnotationProviderTest.class), new Support()).getInstance(HashMap.class, null).getClass()));
+      assertTrue(ElementMap.class.isAssignableFrom(new AnnotationFactory(new DetailScanner(AnnotationProviderTest.class), new Support()).getInstance(ConcurrentHashMap.class, null).getClass()));
+      assertTrue(ElementMap.class.isAssignableFrom(new AnnotationFactory(new DetailScanner(AnnotationProviderTest.class), new Support()).getInstance(LinkedHashMap.class, null).getClass()));
+      assertTrue(ElementMap.class.isAssignableFrom(new AnnotationFactory(new DetailScanner(AnnotationProviderTest.class), new Support()).getInstance(Map.class, null).getClass()));
+      assertTrue(ElementList.class.isAssignableFrom(new AnnotationFactory(new DetailScanner(AnnotationProviderTest.class), new Support()).getInstance(Set.class, null).getClass()));
+      assertTrue(ElementList.class.isAssignableFrom(new AnnotationFactory(new DetailScanner(AnnotationProviderTest.class), new Support()).getInstance(Collection.class, null).getClass()));
+      assertTrue(ElementList.class.isAssignableFrom(new AnnotationFactory(new DetailScanner(AnnotationProviderTest.class), new Support()).getInstance(List.class, null).getClass()));
+      assertTrue(ElementList.class.isAssignableFrom(new AnnotationFactory(new DetailScanner(AnnotationProviderTest.class), new Support()).getInstance(TreeSet.class, null).getClass()));
+      assertTrue(ElementList.class.isAssignableFrom(new AnnotationFactory(new DetailScanner(AnnotationProviderTest.class), new Support()).getInstance(HashSet.class, null).getClass()));
+      assertTrue(ElementList.class.isAssignableFrom(new AnnotationFactory(new DetailScanner(AnnotationProviderTest.class), new Support()).getInstance(ArrayList.class, null).getClass()));
    }
 
 }
