@@ -157,7 +157,7 @@ class FieldScanner extends ContactList {
             Field field = entry.getField();
             Class real = field.getType();
             
-            if(!isStatic(field)) {
+            if(!isStatic(field) && !isTransient(field)) {
                process(field, real, list);
             }
          }   
@@ -325,6 +325,25 @@ class FieldScanner extends ContactList {
       int modifier = field.getModifiers();
       
       if(Modifier.isStatic(modifier)) {
+         return true;
+      }
+      return false;
+   }
+   
+   /**
+    * This is used to determine if a field is transient. For default
+    * fields that are processed no transient field should be 
+    * considered. This ensures that the serialization of the object
+    * behaves in the same manner as with Java Object Serialization.
+    * 
+    * @param field this is the field to check for transience
+    * 
+    * @return this returns true if the field is a transient one
+    */
+   private boolean isTransient(Field field) {
+      int modifier = field.getModifiers();
+      
+      if(Modifier.isTransient(modifier)) {
          return true;
       }
       return false;

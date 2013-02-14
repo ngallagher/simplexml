@@ -38,6 +38,7 @@ public class NoAnnotationsRequiredTest extends ValidationTestCase {
    }
    
    private static class PrimitiveEntry implements Serializable {// Verbosity {HIGH,LOW}
+      private transient String transientText = "THIS TEXT IS NOT SERIALZED";
       private boolean booleanValue = false; 
       private byte byteValue = 6;
       private short shortValue = 78;
