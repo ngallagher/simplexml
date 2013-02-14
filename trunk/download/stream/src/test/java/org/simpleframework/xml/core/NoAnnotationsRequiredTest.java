@@ -1,5 +1,6 @@
 package org.simpleframework.xml.core;
 
+import java.io.Serializable;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Date;
@@ -36,7 +37,7 @@ public class NoAnnotationsRequiredTest extends ValidationTestCase {
       private String country = "US";
    }
    
-   private static class PrimitiveEntry {// Verbosity {HIGH,LOW}
+   private static class PrimitiveEntry implements Serializable {// Verbosity {HIGH,LOW}
       private boolean booleanValue = false; 
       private byte byteValue = 6;
       private short shortValue = 78;
@@ -54,6 +55,67 @@ public class NoAnnotationsRequiredTest extends ValidationTestCase {
          doubleToString.put(1.0, "ONE");
          doubleToString.put(12.0, "TWELVE");
       }
+   }
+   
+   public void testPerformance() throws Exception {
+      Format format = new Format(Verbosity.LOW);
+      Persister persister = new Persister(format);
+      PrimitiveEntry entry = new PrimitiveEntry();
+      StringWriter writer = new StringWriter();
+      Marshaller marshaller = new CompressionMarshaller(Compression.NONE);
+      int iterations = 100000;
+      
+      for(int i = 0; i < iterations; i++) {
+         persister.write(entry, writer);
+         String text = writer.getBuffer().toString();
+         if(i == 0) {
+            System.err.println(text);
+         }
+         writer.getBuffer().setLength(0);
+
+      }
+      for(int i = 0; i < iterations; i++) {
+         String text = marshaller.marshallText(entry, PrimitiveEntry.class);
+         if(i == 0) {
+            System.err.println(text);
+         }
+      }
+      long startTime = System.currentTimeMillis();
+      for(int i = 0; i < iterations; i++) {
+         persister.write(entry, writer);
+         writer.getBuffer().toString();
+         writer.getBuffer().setLength(0);
+      }
+      long duration = System.currentTimeMillis() - startTime;
+      
+      System.err.println("Time for XML: " + duration);
+      
+      startTime = System.currentTimeMillis();
+      for(int i = 0; i < iterations; i++) {
+         marshaller.marshallText(entry, PrimitiveEntry.class);
+      }
+      duration = System.currentTimeMillis() - startTime;
+      
+      System.err.println("Time for BINARY: " + duration);
+      
+      startTime = System.currentTimeMillis();
+      for(int i = 0; i < iterations; i++) {
+         persister.write(entry, writer);
+         writer.getBuffer().toString();
+         writer.getBuffer().setLength(0);
+      }
+      duration = System.currentTimeMillis() - startTime;
+      
+      System.err.println("Time for XML: " + duration);
+      
+      startTime = System.currentTimeMillis();
+      for(int i = 0; i < iterations; i++) {
+         marshaller.marshallText(entry, PrimitiveEntry.class);
+      }
+      duration = System.currentTimeMillis() - startTime;
+      
+      System.err.println("Time for BINARY: " + duration);
+      validate(persister, entry);
    }
    
    public void testType() throws Exception {
