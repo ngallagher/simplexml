@@ -59,26 +59,28 @@ public class NoAnnotationsRequiredTest extends ValidationTestCase {
    }
    
    public void testPerformance() throws Exception {
-      Format format = new Format(Verbosity.LOW);
+      Format format = new Format(0, Verbosity.LOW);
       Persister persister = new Persister(format);
       PrimitiveEntry entry = new PrimitiveEntry();
       StringWriter writer = new StringWriter();
       Marshaller marshaller = new CompressionMarshaller(Compression.NONE);
-      int iterations = 100000;
-      
+      int iterations = 10000;
+      String xmlText = null;
+      String binaryText = null;
+         
       for(int i = 0; i < iterations; i++) {
          persister.write(entry, writer);
-         String text = writer.getBuffer().toString();
+         xmlText = writer.getBuffer().toString();
          if(i == 0) {
-            System.err.println(text);
+            System.err.println(xmlText);
          }
          writer.getBuffer().setLength(0);
 
       }
       for(int i = 0; i < iterations; i++) {
-         String text = marshaller.marshallText(entry, PrimitiveEntry.class);
+         binaryText = marshaller.marshallText(entry, PrimitiveEntry.class);
          if(i == 0) {
-            System.err.println(text);
+            System.err.println(binaryText);
          }
       }
       long startTime = System.currentTimeMillis();
@@ -89,7 +91,7 @@ public class NoAnnotationsRequiredTest extends ValidationTestCase {
       }
       long duration = System.currentTimeMillis() - startTime;
       
-      System.err.println("Time for XML: " + duration);
+      System.err.println("Time for writing XML: " + duration);
       
       startTime = System.currentTimeMillis();
       for(int i = 0; i < iterations; i++) {
@@ -97,7 +99,7 @@ public class NoAnnotationsRequiredTest extends ValidationTestCase {
       }
       duration = System.currentTimeMillis() - startTime;
       
-      System.err.println("Time for BINARY: " + duration);
+      System.err.println("Time for writing BINARY: " + duration);
       
       startTime = System.currentTimeMillis();
       for(int i = 0; i < iterations; i++) {
@@ -107,7 +109,7 @@ public class NoAnnotationsRequiredTest extends ValidationTestCase {
       }
       duration = System.currentTimeMillis() - startTime;
       
-      System.err.println("Time for XML: " + duration);
+      System.err.println("Time for writing XML: " + duration);
       
       startTime = System.currentTimeMillis();
       for(int i = 0; i < iterations; i++) {
@@ -115,7 +117,58 @@ public class NoAnnotationsRequiredTest extends ValidationTestCase {
       }
       duration = System.currentTimeMillis() - startTime;
       
-      System.err.println("Time for BINARY: " + duration);
+      System.err.println("Time for writing BINARY: " + duration);
+      
+      // Test the writing...;
+      
+      startTime = System.currentTimeMillis();
+      for(int i = 0; i < iterations; i++) {
+         persister.read(PrimitiveEntry.class, xmlText);
+      }
+      duration = System.currentTimeMillis() - startTime;
+      
+      System.err.println("Time for reading XML: " + duration);
+      
+      startTime = System.currentTimeMillis();
+      for(int i = 0; i < iterations; i++) {
+         marshaller.unmarshallText(binaryText, PrimitiveEntry.class);
+      }
+      duration = System.currentTimeMillis() - startTime;
+      
+      System.err.println("Time for reading BINARY: " + duration);
+      
+      startTime = System.currentTimeMillis();
+      for(int i = 0; i < iterations; i++) {
+         persister.read(PrimitiveEntry.class, xmlText);
+      }
+      duration = System.currentTimeMillis() - startTime;
+      
+      System.err.println("Time for reading XML: " + duration);
+      
+      startTime = System.currentTimeMillis();
+      for(int i = 0; i < iterations; i++) {
+         marshaller.unmarshallText(binaryText, PrimitiveEntry.class);
+      }
+      duration = System.currentTimeMillis() - startTime;
+      
+      System.err.println("Time for reading BINARY: " + duration);
+      
+      startTime = System.currentTimeMillis();
+      for(int i = 0; i < iterations; i++) {
+         persister.read(PrimitiveEntry.class, xmlText);
+      }
+      duration = System.currentTimeMillis() - startTime;
+      
+      System.err.println("Time for reading XML: " + duration);
+      
+      startTime = System.currentTimeMillis();
+      for(int i = 0; i < iterations; i++) {
+         marshaller.unmarshallText(binaryText, PrimitiveEntry.class);
+      }
+      duration = System.currentTimeMillis() - startTime;
+      
+      System.err.println("Time for reading BINARY: " + duration);
+      
       validate(persister, entry);
    }
    
