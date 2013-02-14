@@ -124,7 +124,7 @@ public class Format {
     * @param verbosity this indicates the verbosity of the format 
     */    
    public Format(int indent, Verbosity verbosity) {
-      this(3, null, new IdentityStyle(), verbosity);         
+      this(indent, new IdentityStyle(), verbosity);         
    }
    
    /**
