@@ -64,7 +64,7 @@ public class NoAnnotationsRequiredTest extends ValidationTestCase {
       PrimitiveEntry entry = new PrimitiveEntry();
       StringWriter writer = new StringWriter();
       Marshaller marshaller = new CompressionMarshaller(Compression.NONE);
-      int iterations = 10000;
+      int iterations = 100000;
       String xmlText = null;
       String binaryText = null;
          
@@ -91,7 +91,7 @@ public class NoAnnotationsRequiredTest extends ValidationTestCase {
       }
       long duration = System.currentTimeMillis() - startTime;
       
-      System.err.println("Time for writing XML: " + duration);
+      System.err.println("Time for writing XML: " + duration + " 1 per " + ((double)duration / (double)iterations));
       
       startTime = System.currentTimeMillis();
       for(int i = 0; i < iterations; i++) {
@@ -99,7 +99,7 @@ public class NoAnnotationsRequiredTest extends ValidationTestCase {
       }
       duration = System.currentTimeMillis() - startTime;
       
-      System.err.println("Time for writing BINARY: " + duration);
+      System.err.println("Time for writing BINARY: " + duration + " 1 per " + ((double)duration / (double)iterations));
       
       startTime = System.currentTimeMillis();
       for(int i = 0; i < iterations; i++) {
@@ -109,7 +109,7 @@ public class NoAnnotationsRequiredTest extends ValidationTestCase {
       }
       duration = System.currentTimeMillis() - startTime;
       
-      System.err.println("Time for writing XML: " + duration);
+      System.err.println("Time for writing XML: " + duration + " 1 per " + ((double)duration / (double)iterations));
       
       startTime = System.currentTimeMillis();
       for(int i = 0; i < iterations; i++) {
@@ -117,7 +117,7 @@ public class NoAnnotationsRequiredTest extends ValidationTestCase {
       }
       duration = System.currentTimeMillis() - startTime;
       
-      System.err.println("Time for writing BINARY: " + duration);
+      System.err.println("Time for writing BINARY: " + duration + " 1 per " + ((double)duration / (double)iterations));
       
       // Test the writing...;
       
@@ -127,7 +127,7 @@ public class NoAnnotationsRequiredTest extends ValidationTestCase {
       }
       duration = System.currentTimeMillis() - startTime;
       
-      System.err.println("Time for reading XML: " + duration);
+      System.err.println("Time for reading XML: " + duration + " 1 per " + ((double)duration / (double)iterations));
       
       startTime = System.currentTimeMillis();
       for(int i = 0; i < iterations; i++) {
@@ -135,7 +135,7 @@ public class NoAnnotationsRequiredTest extends ValidationTestCase {
       }
       duration = System.currentTimeMillis() - startTime;
       
-      System.err.println("Time for reading BINARY: " + duration);
+      System.err.println("Time for reading BINARY: " + duration + " 1 per " + ((double)duration / (double)iterations));
       
       startTime = System.currentTimeMillis();
       for(int i = 0; i < iterations; i++) {
@@ -143,7 +143,7 @@ public class NoAnnotationsRequiredTest extends ValidationTestCase {
       }
       duration = System.currentTimeMillis() - startTime;
       
-      System.err.println("Time for reading XML: " + duration);
+      System.err.println("Time for reading XML: " + duration + " 1 per " + ((double)duration / (double)iterations));
       
       startTime = System.currentTimeMillis();
       for(int i = 0; i < iterations; i++) {
@@ -151,7 +151,7 @@ public class NoAnnotationsRequiredTest extends ValidationTestCase {
       }
       duration = System.currentTimeMillis() - startTime;
       
-      System.err.println("Time for reading BINARY: " + duration);
+      System.err.println("Time for reading BINARY: " + duration + " 1 per " + ((double)duration / (double)iterations));
       
       startTime = System.currentTimeMillis();
       for(int i = 0; i < iterations; i++) {
@@ -159,7 +159,7 @@ public class NoAnnotationsRequiredTest extends ValidationTestCase {
       }
       duration = System.currentTimeMillis() - startTime;
       
-      System.err.println("Time for reading XML: " + duration);
+      System.err.println("Time for reading XML: " + duration + " 1 per " + ((double)duration / (double)iterations));
       
       startTime = System.currentTimeMillis();
       for(int i = 0; i < iterations; i++) {
@@ -167,7 +167,7 @@ public class NoAnnotationsRequiredTest extends ValidationTestCase {
       }
       duration = System.currentTimeMillis() - startTime;
       
-      System.err.println("Time for reading BINARY: " + duration);
+      System.err.println("Time for reading BINARY: " + duration + " 1 per " + ((double)duration / (double)iterations));
       
       validate(persister, entry);
    }

@@ -9,10 +9,6 @@ import org.simpleframework.xml.ElementArray;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.Text;
 import org.simpleframework.xml.ValidationTestCase;
-import org.simpleframework.xml.core.Persister;
-import org.simpleframework.xml.core.TextException;
-import org.simpleframework.xml.core.ValueRequiredException;
-import org.simpleframework.xml.transform.TransformException;
 
 public class TextTest extends ValidationTestCase {
         

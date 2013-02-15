@@ -11,9 +11,6 @@ import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Path;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.Text;
-import org.simpleframework.xml.strategy.Strategy;
-import org.simpleframework.xml.strategy.TreeStrategy;
-import org.simpleframework.xml.stream.Style;
 
 public class ScannerTest extends TestCase {
    

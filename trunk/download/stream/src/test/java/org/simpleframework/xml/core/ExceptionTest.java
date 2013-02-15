@@ -1,22 +1,14 @@
 package org.simpleframework.xml.core;
 
-import java.io.StringReader;
 import java.io.StringWriter;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
+
+import junit.framework.TestCase;
 
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
-import org.simpleframework.xml.core.AttributeException;
-import org.simpleframework.xml.core.ElementException;
-import org.simpleframework.xml.core.Persister;
-import org.simpleframework.xml.core.RootException;
-import org.simpleframework.xml.core.ValueRequiredException;
-
-import junit.framework.TestCase;
 
 public class ExceptionTest extends TestCase {
         
