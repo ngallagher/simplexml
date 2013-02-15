@@ -1,21 +1,13 @@
 package org.simpleframework.xml.util;
 
-import java.io.StringWriter;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
-import java.util.SortedSet;
-import java.util.Set;
 
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
-import org.simpleframework.xml.core.Persister;
-import org.simpleframework.xml.util.Dictionary;
-import org.simpleframework.xml.util.Entry;
-
 import org.simpleframework.xml.ValidationTestCase;
+import org.simpleframework.xml.core.Persister;
 
 public class DictionaryTest extends ValidationTestCase {
         
