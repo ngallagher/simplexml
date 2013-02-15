@@ -9,7 +9,6 @@ import junit.framework.TestCase;
 
 import org.simpleframework.xml.ElementMap;
 import org.simpleframework.xml.strategy.TreeStrategy;
-import org.simpleframework.xml.stream.Mode;
 import org.simpleframework.xml.stream.NodeBuilder;
 import org.simpleframework.xml.stream.OutputNode;
 
