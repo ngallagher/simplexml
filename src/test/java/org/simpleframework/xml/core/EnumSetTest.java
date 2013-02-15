@@ -1,7 +1,6 @@
 package org.simpleframework.xml.core;
 
 import java.util.EnumSet;
-import java.util.Set;
 
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;

@@ -1,23 +1,16 @@
 package org.simpleframework.xml.core;
 
 import java.io.StringWriter;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
-import org.simpleframework.xml.ElementList;
-import org.simpleframework.xml.ElementMap;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.Text;
 import org.simpleframework.xml.ValidationTestCase;
-import org.simpleframework.xml.core.Persister;
 
 public class MixTest extends ValidationTestCase {
    

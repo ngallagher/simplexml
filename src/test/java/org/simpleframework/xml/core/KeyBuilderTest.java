@@ -1,12 +1,10 @@
 package org.simpleframework.xml.core;
 
 import java.lang.annotation.Annotation;
-import java.util.Arrays;
-import java.util.Collection;
-
-import org.simpleframework.xml.strategy.Type;
 
 import junit.framework.TestCase;
+
+import org.simpleframework.xml.strategy.Type;
 
 public class KeyBuilderTest extends TestCase {
 
