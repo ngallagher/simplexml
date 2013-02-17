@@ -18,17 +18,19 @@
 
 package org.simpleframework.xml.transform;
 
-import java.util.GregorianCalendar;
+import java.io.File;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.TimeZone;
-import java.util.Locale;
+import java.net.URL;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Currency;
 import java.util.Date;
-import java.sql.Time;
-import java.io.File;
-import java.net.URL;
+import java.util.GregorianCalendar;
+import java.util.Locale;
+import java.util.TimeZone;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * The <code>PackageMatcher</code> object is used to match the stock
@@ -204,7 +206,13 @@ class PackageMatcher implements Matcher {
       }
       if(type == TimeZone.class) {
          return new TimeZoneTransform();
-      }      
+      }   
+      if(type == AtomicInteger.class) {
+         return new AtomicIntegerTransform();
+      }
+      if(type == AtomicLong.class) {
+         return new AtomicLongTransform();
+      } 
       return null;
    }  
    

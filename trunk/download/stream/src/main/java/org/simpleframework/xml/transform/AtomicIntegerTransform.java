@@ -1,5 +1,5 @@
 /*
- * LongTransform.java May 2007
+ * AtomicIntegerTransform.java January 2013
  *
  * Copyright (C) 2007, Niall Gallagher <niallg@users.sf.net>
  *
@@ -18,8 +18,11 @@
 
 package org.simpleframework.xml.transform;
 
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
+
 /**
- * The <code>LongTransform</code> object is used to transform long
+ * The <code>AtomicIntegerTransform</code> object is used to transform
  * values to and from string representations, which will be inserted
  * in the generated XML document as the value place holder. The
  * value must be readable and writable in the same format. Fields
@@ -28,7 +31,7 @@ package org.simpleframework.xml.transform;
  * <pre>
  * 
  *    &#64;Attribute
- *    private Long value;
+ *    private AtomicInteger integer;
  *    
  * </pre>
  * As well as the XML attribute values using transforms, fields and
@@ -39,7 +42,7 @@ package org.simpleframework.xml.transform;
  * 
  * @author Niall Gallagher
  */
-class LongTransform implements Transform<Long> {
+class AtomicIntegerTransform implements Transform<AtomicInteger> {
    
    /**
     * This method is used to convert the string value given to an
@@ -51,8 +54,9 @@ class LongTransform implements Transform<Long> {
     * 
     * @return this returns an appropriate instanced to be used
     */
-   public Long read(String value) {
-      return Long.valueOf(value);
+   public AtomicInteger read(String value) {
+      Integer number = Integer.valueOf(value);
+      return new AtomicInteger(number);
    }
    
    /**
@@ -65,7 +69,7 @@ class LongTransform implements Transform<Long> {
     * 
     * @return this is the string representation of the given value
     */
-   public String write(Long value) {
+   public String write(AtomicInteger value) {
       return value.toString();
    }
 }
