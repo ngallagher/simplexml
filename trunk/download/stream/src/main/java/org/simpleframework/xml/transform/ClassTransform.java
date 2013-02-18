@@ -41,6 +41,51 @@ package org.simpleframework.xml.transform;
  * @author Niall Gallagher
  */
 class ClassTransform implements Transform<Class> {
+   
+   /**
+    * This is the string that represents the class for an integer.
+    */
+   private static final String INTEGER = "int";
+   
+   /**
+    * This is the string that represents the class for a double.
+    */
+   private static final String DOUBLE = "double";
+   
+   /**
+    * This is the string that represents the class for a float.
+    */
+   private static final String FLOAT = "float";
+   
+   /**
+    * This is the string that represents the class for a boolean.
+    */
+   private static final String BOOLEAN = "boolean";
+   
+   /**
+    * This is the string that represents the class for a short.
+    */
+   private static final String SHORT = "short";
+   
+   /**
+    * This is the string that represents the class for a character.
+    */
+   private static final String CHARACTER = "char";
+   
+   /**
+    * This is the string that represents the class for a long.
+    */
+   private static final String LONG = "long";
+   
+   /**
+    * This is the string that represents the class for a byte.
+    */
+   private static final String BYTE = "byte";
+   
+   /**
+    * This is the string that represents the class for a void.
+    */
+   private static final String VOID = "void";
   
    /**
     * This method is used to convert the string value given to an
@@ -77,31 +122,31 @@ class ClassTransform implements Transform<Class> {
     * @return this returns an appropriate instanced to be used
     */
    private Class readPrimitive(String target) throws Exception {
-      if(target.equals("byte")) {
+      if(target.equals(BYTE)) {
          return byte.class;
       }
-      if(target.equals("short")) {
+      if(target.equals(SHORT)) {
          return short.class;
       }
-      if(target.equals("int")) {
+      if(target.equals(INTEGER)) {
          return int.class;
       }
-      if(target.equals("long")) {
+      if(target.equals(LONG)) {
          return long.class;
       }
-      if(target.equals("char")) {
+      if(target.equals(CHARACTER)) {
          return char.class;
       }
-      if(target.equals("float")) {
+      if(target.equals(FLOAT)) {
          return float.class;
       }
-      if(target.equals("double")) {
+      if(target.equals(DOUBLE)) {
          return double.class;
       }
-      if(target.equals("boolean")) {
+      if(target.equals(BOOLEAN)) {
          return boolean.class;
       }
-      if(target.equals("void")) {
+      if(target.equals(VOID)) {
          return void.class;
       }
       return null;
