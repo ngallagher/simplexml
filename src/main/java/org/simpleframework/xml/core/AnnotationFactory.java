@@ -211,6 +211,9 @@ class AnnotationFactory {
       if(type == Boolean.class) {
          return true;
       }
+      if(type == Character.class) {
+         return true;
+      }
       return type.isPrimitive();
    }
    
