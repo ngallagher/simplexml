@@ -52,14 +52,60 @@ class ClassTransform implements Transform<Class> {
     * 
     * @return this returns an appropriate instanced to be used
     */
-   public Class read(String target) throws Exception {
-      ClassLoader loader = getClassLoader();
-      
-      if(loader == null) {
-         loader = getCallerClassLoader();
+   public Class read(String target) throws Exception {                 
+      Class type = readPrimitive(target);
+
+      if(type == null) {
+         ClassLoader loader = getClassLoader();
+
+         if(loader == null) {
+            loader = getCallerClassLoader();
+         }
+         return loader.loadClass(target);
       }
-      return loader.loadClass(target);
+      return type;
    }
+
+   /**
+    * This method is used to convert the string value given to an
+    * appropriate representation. This is used when an object is
+    * being deserialized from the XML document and the value for
+    * the string representation is required.
+    * 
+    * @param target this is the string representation of the class
+    * 
+    * @return this returns an appropriate instanced to be used
+    */
+   private Class readPrimitive(String target) throws Exception {
+      if(target.equals("byte")) {
+         return byte.class;
+      }
+      if(target.equals("short")) {
+         return short.class;
+      }
+      if(target.equals("int")) {
+         return int.class;
+      }
+      if(target.equals("long")) {
+         return long.class;
+      }
+      if(target.equals("char")) {
+         return char.class;
+      }
+      if(target.equals("float")) {
+         return float.class;
+      }
+      if(target.equals("double")) {
+         return double.class;
+      }
+      if(target.equals("boolean")) {
+         return boolean.class;
+      }
+      if(target.equals("void")) {
+         return void.class;
+      }
+      return null;
+   }   
    
    /**
     * This method is used to convert the provided value into an XML

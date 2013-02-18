@@ -261,4 +261,15 @@ class DefaultDetail implements Detail {
    public Constructor[] getConstructors() {
       return detail.getConstructors();
    }
+   
+   /**
+    * This is used to return a string representation of the detail. 
+    * The string returned from this is the same that is returned
+    * from the <code>toString</code> of the type represented. 
+    * 
+    * @return this returns the string representation of the type
+    */   
+   public String toString() {
+      return detail.toString();       
+   }        
 }
