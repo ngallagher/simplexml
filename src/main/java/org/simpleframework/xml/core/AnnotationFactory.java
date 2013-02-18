@@ -112,12 +112,12 @@ class AnnotationFactory {
       Class entry = type.getComponentType();
       
       if(type.isArray()) {
-         if(entry.isPrimitive()) {
+         if(isPrimitive(entry)) {
             return getInstance(loader, Element.class);
          }
          return getInstance(loader, ElementArray.class);
       }
-      if(type.isPrimitive() && isAttribute()) {
+      if(isPrimitive(type) && isAttribute()) {
          return getInstance(loader, Attribute.class);
       }
       return getInstance(loader, Element.class);
