@@ -42,6 +42,11 @@ class Reference implements Value {
    private Object data;
    
    /**
+    * This is the actual type of the reference that is represented.
+    */
+   private Class actual;
+   
+   /**
     * Constructor for a <code>Reference</code> object. To create
     * this a value and an object instance is required. The value
     * provided may be null, but the instance should be a valid
@@ -49,8 +54,10 @@ class Reference implements Value {
     * 
     * @param value this is the original value from a strategy
     * @param data this is the object instance that is wrapped
+    * @param actual this is the overriding type of the reference
     */
-   public Reference(Value value, Object data){
+   public Reference(Value value, Object data, Class actual){
+      this.actual = actual;
       this.value = value;
       this.data = data;
    }
@@ -66,8 +73,18 @@ class Reference implements Value {
       return 0;
    }
    
+   /**
+    * This is the type of the object instance this represents. The
+    * type returned by this is used to instantiate an object which
+    * will be set on this value and the internal graph maintained.
+    * 
+    * @return the type of the object that must be instantiated
+    */
    public Class getType() {
-      return data.getClass();
+      if(data != null) {
+         return data.getClass();
+      }
+      return actual;
    }
    
    /**

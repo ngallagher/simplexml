@@ -127,11 +127,12 @@ public class RegistryStrategy implements Strategy {
       
       if(converter != null) {
          Object data = converter.read(source);
+         Class actual = type.getType();
       
          if(value != null) {
             value.setValue(data);
          }
-         return new Reference(value, data);
+         return new Reference(value, data, actual);
       }
       return value;
    }
