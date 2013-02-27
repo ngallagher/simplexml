@@ -64,7 +64,7 @@ public class NoAnnotationsRequiredTest extends ValidationTestCase {
       PrimitiveEntry entry = new PrimitiveEntry();
       StringWriter writer = new StringWriter();
       Marshaller marshaller = new CompressionMarshaller(Compression.NONE);
-      int iterations = 1000;
+      int iterations = 10000;
       String xmlText = null;
       String binaryText = null;
          

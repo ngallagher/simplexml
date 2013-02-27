@@ -5,37 +5,37 @@
          <executorClass>org.simpleframework.xml.benchmark.jaxb.JAXBExecutor</executorClass>
          <schemaClass>org.simpleframework.xml.benchmark.jaxb.JAXBClass</schemaClass>
          <sourceFile>${ROOT_PATH}/example.xml</sourceFile>
-         <iterations>10000</iterations>
+         <iterations>100000</iterations>
       </test>
       <test debug="true" id="Simple Test 1">
          <executorClass>org.simpleframework.xml.benchmark.simple.SimpleExecutor</executorClass>
          <schemaClass>org.simpleframework.xml.benchmark.simple.SimpleClass</schemaClass>
          <sourceFile>${ROOT_PATH}/example.xml</sourceFile>
-         <iterations>10000</iterations>
+         <iterations>100000</iterations>
       </test>
       <test debug="false" id="JAXB Test 2">
          <executorClass>org.simpleframework.xml.benchmark.jaxb.JAXBExecutor</executorClass>
          <schemaClass>org.simpleframework.xml.benchmark.jaxb.JAXBClass</schemaClass>
          <sourceFile>${ROOT_PATH}/example.xml</sourceFile>
-         <iterations>10000</iterations>
+         <iterations>100000</iterations>
       </test>
       <test debug="false" id="Simple Test 2">
          <executorClass>org.simpleframework.xml.benchmark.simple.SimpleExecutor</executorClass>
          <schemaClass>org.simpleframework.xml.benchmark.simple.SimpleClass</schemaClass>
          <sourceFile>${ROOT_PATH}/example.xml</sourceFile>
-         <iterations>10000</iterations>
+         <iterations>100000</iterations>
       </test>
       <test debug="false" id="JAXB Test 3">
          <executorClass>org.simpleframework.xml.benchmark.jaxb.JAXBExecutor</executorClass>
          <schemaClass>org.simpleframework.xml.benchmark.jaxb.JAXBClass</schemaClass>
          <sourceFile>${ROOT_PATH}/example.xml</sourceFile>
-         <iterations>10000</iterations>
+         <iterations>100000</iterations>
       </test>
       <test debug="false" id="Simple Test 3">
          <executorClass>org.simpleframework.xml.benchmark.simple.SimpleExecutor</executorClass>
          <schemaClass>org.simpleframework.xml.benchmark.simple.SimpleClass</schemaClass>
          <sourceFile>${ROOT_PATH}/example.xml</sourceFile>
-         <iterations>10000</iterations>
+         <iterations>100000</iterations>
       </test>
    </list>
 </execute>
