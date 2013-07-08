@@ -114,8 +114,8 @@ public class ErasureReflectorTest extends ValidationTestCase {
    public void testMethodReflection() throws Exception {
       assertEquals(Object.class, Reflector.getReturnDependent(CollectionErasure.getMethod("getErased")));
       assertEquals(String.class, Reflector.getReturnDependent(CollectionErasure.getMethod("getString")));
-      assertEquals(null, Reflector.getReturnDependent(CollectionErasure.getMethod("setErased")));
-      assertEquals(null, Reflector.getReturnDependent(CollectionErasure.getMethod("setString")));
+      assertEquals(Object.class, Reflector.getReturnDependent(CollectionErasure.getMethod("setErased")));
+      assertEquals(Object.class, Reflector.getReturnDependent(CollectionErasure.getMethod("setString")));
       
       assertEquals(Object.class, Reflector.getParameterDependent(CollectionErasure.getConstructor(), 0)); // Collection<T>
       assertEquals(String.class, Reflector.getParameterDependent(CollectionErasure.getConstructor(), 1)); // Collection<String>
@@ -126,10 +126,10 @@ public class ErasureReflectorTest extends ValidationTestCase {
       assertEquals(Object.class, Reflector.getReturnDependent(MapErasure.getMethod("getErasedToString")));
       assertEquals(String.class, Reflector.getReturnDependent(MapErasure.getMethod("getStringToErased")));
       assertEquals(String.class, Reflector.getReturnDependent(MapErasure.getMethod("getStringToString")));      
-      assertEquals(null, Reflector.getReturnDependent(MapErasure.getMethod("setErasedToErased")));
-      assertEquals(null, Reflector.getReturnDependent(MapErasure.getMethod("setErasedToString")));
-      assertEquals(null, Reflector.getReturnDependent(MapErasure.getMethod("setStringToErased")));
-      assertEquals(null, Reflector.getReturnDependent(MapErasure.getMethod("setStringToString")));
+      assertEquals(Object.class, Reflector.getReturnDependent(MapErasure.getMethod("setErasedToErased")));
+      assertEquals(Object.class, Reflector.getReturnDependent(MapErasure.getMethod("setErasedToString")));
+      assertEquals(Object.class, Reflector.getReturnDependent(MapErasure.getMethod("setStringToErased")));
+      assertEquals(Object.class, Reflector.getReturnDependent(MapErasure.getMethod("setStringToString")));
       
       assertEquals(Object.class, Reflector.getReturnDependents(MapErasure.getMethod("getErasedToErased"))[0]);
       assertEquals(Object.class, Reflector.getReturnDependents(MapErasure.getMethod("getErasedToString"))[0]);
