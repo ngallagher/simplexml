@@ -56,7 +56,7 @@ final class Reflector {
       if(type != null) {
          return getClass(type);
       }
-      return null;
+      return Object.class;
    }
    
    /**
@@ -114,7 +114,7 @@ final class Reflector {
       if(type != null) {
          return getClass(type);
       }
-      return null;
+      return Object.class;
    }
    
    /**
@@ -175,7 +175,7 @@ final class Reflector {
       if(type != null) {
          return getClass(type);
       }
-      return null;
+      return Object.class;
    }
    
    /**
@@ -219,7 +219,7 @@ final class Reflector {
       if(type != null) {
          return getClass(type);
       }
-      return null;
+      return Object.class;
    }
    
    /**

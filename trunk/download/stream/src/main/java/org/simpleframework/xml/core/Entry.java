@@ -227,7 +227,10 @@ class Entry {
       Class[] list = contact.getDependents();
       
       if(list.length < index) {
-         throw new PersistenceException("Could not find type for %s at index %s", contact, index);
+         return Object.class;
+      }
+      if(list.length == 0) {
+         return Object.class;
       }
       return list[index];
    }

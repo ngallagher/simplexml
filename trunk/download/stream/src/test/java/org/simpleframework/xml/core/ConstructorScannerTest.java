@@ -9,7 +9,6 @@ import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementUnion;
 import org.simpleframework.xml.Path;
 import org.simpleframework.xml.Text;
-import org.simpleframework.xml.stream.Format;
 
 public class ConstructorScannerTest extends SignatureScannerTest {
 
