@@ -1,8 +1,3 @@
-C:\Program Files (x86)\Android\android-sdk-windows\platforms\android-8\tools>dx --dex --output=simple-xml-2.5.1.dex --verbose simple-xml-2.5.1.jar
-mvn source:jar javadoc:jar repository:bundle-create
-https://sourceforge.net/project/admin/editpackages.php?group_id=112203
-sftp niallg,simple@web.sourceforge.net
-svn copy https://niallg@simple.svn.sourceforge.net/svnroot/simple/trunk https://niallg@simple.svn.sourceforge.net/svnroot/simple/branches/4.0.3/ssl -m "Create branch to work on SSL"
-scp -r -v build niallg,simple@web.sourceforge.net:/home/groups/s/si/simple/htdocs/.
-http://oss.sonatype.org
-mvn clean site cobertura:cobertura
+#SimpleXML
+
+This is an initial check in of code for the library hosted at http://simple.sourceforge.net. It contains quite a bit of rubbish, however the core is structured in a fairly standard manner where all source code and tests live under the src directory.
