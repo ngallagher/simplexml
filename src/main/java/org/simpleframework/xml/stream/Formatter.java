@@ -159,17 +159,20 @@ class Formatter {
     * front of the tag, this is done for all but the first start tag.
     * 
     * @param name this is the name of the start tag to be written
+    * @param indent set to <code>false</code> if indentation should be omitted.
     *
     * @throws Exception thrown if there is an I/O exception
     */ 
-   public void writeStart(String name, String prefix) throws Exception{
+   public void writeStart(String name, String prefix, boolean indent) throws Exception{
       String text = indenter.push();
 
       if(last == Tag.START) {
          append('>');    
       }        
       flush();
-      append(text);
+      if (indent) {
+    	 append(text);
+      }
       append('<');
       
       if(!isEmpty(prefix)) {
@@ -270,17 +273,18 @@ class Formatter {
     * some text was written then a full end tag is written.
     *
     * @param name this is the name of the element to be closed
+    * @param indent set to <code>false</code> if indentation should be omitted.
     *
     * @throws Exception thrown if there is an I/O exception
     */ 
-   public void writeEnd(String name, String prefix) throws Exception {
+   public void writeEnd(String name, String prefix, boolean indent) throws Exception {
       String text = indenter.pop();
 
       if(last == Tag.START) {
          write('/');
          write('>');
       } else {                       
-         if(last != Tag.TEXT) {
+         if(last != Tag.TEXT && indent) {
             write(text);   
          }                        
          if(last != Tag.START) {

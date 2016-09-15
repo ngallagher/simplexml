@@ -241,4 +241,19 @@ public interface OutputNode extends Node {
     * @return true if this node has already been committed
     */
    boolean isCommitted();
+   
+   /**
+    * The {@link IndentationMode} is used to indicate if the serializer should apply indentation
+    * when writing this node. If the mode is disabled, this node will not be indented. If the mode
+    * is enabled, the indentation set in the {@link Format} will be applied. The default is to
+    * enable indentation
+    */
+   IndentationMode getIndentationMode();
+   
+   /**
+    * The {@link IndentationMode} is used to indicate if the serializer should apply indentation
+    * when writing this node. If the mode is disabled, this node will not be indented. If the mode
+    * is enabled, the indentation set in the {@link Format} will be applied.
+    */
+   void setIndentationMode(IndentationMode mode);
 }

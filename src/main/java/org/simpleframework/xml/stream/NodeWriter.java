@@ -276,8 +276,12 @@ class NodeWriter {
       String prefix = node.getPrefix(verbose);
       String name = node.getName();
       
+      // Don't indent if it is disabled on the parent.
+	  boolean indent = node.getParent() == null || node.getParent()
+	     .getIndentationMode() == IndentationMode.ENABLED;
+      
       if(name != null) {
-         writer.writeStart(name, prefix);
+         writer.writeStart(name, prefix, indent);
       }
    }
  
@@ -326,7 +330,7 @@ class NodeWriter {
          writeValue(node);
       }
       if(name != null) {
-         writer.writeEnd(name, prefix);
+         writer.writeEnd(name, prefix, node.getIndentationMode() == IndentationMode.ENABLED);
          writer.flush();
       }
    }
