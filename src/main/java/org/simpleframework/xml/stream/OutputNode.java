@@ -201,15 +201,16 @@ public interface OutputNode extends Node {
     */
    OutputNode getParent();
    
-   /**
-    * This is used to create a child element within the element that
-    * this object represents. When a new child is created with this
-    * method then the previous child is committed to the document.
-    * The created <code>OutputNode</code> object can be used to add
-    * attributes to the child element as well as other elements.
-    *
-    * @param name this is the name of the child element to create
-    */ 
+   	/**
+	 * This is used to create a child element within the element that this object represents. When a
+	 * new child is created with this method then the previous child is committed to the document.
+	 * The created <code>OutputNode</code> object can be used to add attributes to the child element
+	 * as well as other elements.
+	 *
+	 * @param name this is the name of the child element to create. If the name is
+	 *            <code>null</code>, a text node is created, which is useful for creating elements
+	 *            with mixed content.
+	 */ 
    OutputNode getChild(String name) throws Exception;        
 
    /**

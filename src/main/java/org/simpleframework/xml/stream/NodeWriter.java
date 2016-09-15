@@ -231,9 +231,6 @@ class NodeWriter {
    private OutputNode writeStart(OutputNode parent, String name) throws Exception {
       OutputNode node = new OutputElement(parent, this, name);
 
-      if(name == null) {
-         throw new NodeException("Can not have a null name");
-      }          
       return stack.push(node);
    }
   
