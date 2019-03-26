@@ -41,11 +41,11 @@ public class RegistryStrategyTest extends ValidationTestCase {
       StringWriter writer = new StringWriter();
       PetShop shop = new PetShop();
       
-      registry.bind(Dog.class, DogConverter.class)
-              .bind(Cat.class, CatConverter.class);
-   
-      shop.addPet(new Dog("Lassie", 10));
+      registry.bind(Cat.class, CatConverter.class);
+      registry.bind(Dog.class, DogConverter.class);
+              
       shop.addPet(new Cat("Kitty", 2));
+      shop.addPet(new Dog("Lassie", 10));
       
       persister.write(shop, writer);
       persister.write(shop, System.out);
@@ -65,10 +65,10 @@ public class RegistryStrategyTest extends ValidationTestCase {
       assertElementDoesNotExist(text, "/petShop/pets/pet[3]");
       assertElementHasNamespace(text, "/petShop", "http://domain/a");
       assertElementHasNamespace(text, "/petShop/pets", "http://domain/b");
-      assertElementHasNamespace(text, "/petShop/pets/pet[1]", null);
-      assertElementHasAttribute(text, "/petShop/pets/pet[1]", "name", "Lassie");
-      assertElementHasAttribute(text, "/petShop/pets/pet[1]", "age", "10");
-      assertElementHasValue(text, "/petShop/pets/pet[2]/name", "Kitty");
-      assertElementHasValue(text, "/petShop/pets/pet[2]/age", "2");
+      assertElementHasNamespace(text, "/petShop/pets/pet[2]", null);
+      assertElementHasAttribute(text, "/petShop/pets/pet[2]", "name", "Lassie");
+      assertElementHasAttribute(text, "/petShop/pets/pet[2]", "age", "10");
+      assertElementHasValue(text, "/petShop/pets/pet[1]/name", "Kitty");
+      assertElementHasValue(text, "/petShop/pets/pet[1]/age", "2");
    }
 }
