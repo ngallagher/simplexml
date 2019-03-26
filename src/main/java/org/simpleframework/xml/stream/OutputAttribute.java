@@ -350,4 +350,11 @@ class OutputAttribute implements OutputNode {
    public String toString() {
        return String.format("attribute %s='%s'", name, value);
    }
+   
+   public IndentationMode getIndentationMode() {
+      return null;
+   }
+   
+   public void setIndentationMode(IndentationMode mode) {
+   }
 }

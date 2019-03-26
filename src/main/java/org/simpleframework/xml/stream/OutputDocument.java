@@ -361,4 +361,11 @@ class OutputDocument implements OutputNode {
    public boolean isCommitted() {
       return stack.isEmpty();
    }
+   
+   public IndentationMode getIndentationMode() {
+      return null;
+   }
+   
+   public void setIndentationMode(IndentationMode mode) {
+   }
 }

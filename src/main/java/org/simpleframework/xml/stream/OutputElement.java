@@ -75,6 +75,13 @@ class OutputElement implements OutputNode {
    private Mode mode;
    
    /**
+    * The {@link IndentationMode} is used to indicate if the serializer should apply indentation
+    * when writing this node. If the mode is disabled, this node will not be indented. If the mode
+    * is enabled, the indentation set in the {@link Format} will be applied.
+    */
+   private IndentationMode indentationMode;
+   
+   /**
     * Constructor for the <code>OutputElement</code> object. This is
     * used to create an output element that can create elements for
     * an XML document. This requires the writer that is used to 
@@ -91,6 +98,7 @@ class OutputElement implements OutputNode {
       this.writer = writer;           
       this.parent = parent;
       this.name = name;
+      this.indentationMode = IndentationMode.ENABLED;
    }     
 
    /**
@@ -388,5 +396,13 @@ class OutputElement implements OutputNode {
     */
    public String toString() {
       return String.format("element %s", name);
+   }
+
+   public IndentationMode getIndentationMode() {
+      return indentationMode;
+   }
+
+   public void setIndentationMode(IndentationMode mode) {
+      this.indentationMode = mode;
    }
 }
